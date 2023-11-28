@@ -24,7 +24,8 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Data.HTML
+      Data.HTML.Types
   other-modules:
       Paths_safe_html
   autogen-modules:
