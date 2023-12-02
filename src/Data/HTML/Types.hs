@@ -8,7 +8,7 @@
 {-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
 
 module Data.HTML.Types
-  (
+  ( Elem
   ) where
 
 import           Data.Kind (Type)

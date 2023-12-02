@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/Augm
 dependencies:
 - base
 - blaze-html
+- text
 
 ghc-options:
 - -j

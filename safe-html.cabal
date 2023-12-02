@@ -25,6 +25,7 @@ source-repository head
 library
   exposed-modules:
       Data.HTML
+      Data.HTML.Attributes
       Data.HTML.Elements.Tags
       Data.HTML.Types
   other-modules:
@@ -37,6 +38,7 @@ library
   build-depends:
       base
     , blaze-html
+    , text
   default-language: Haskell2010
 
 test-suite safe-html-test
@@ -53,4 +55,5 @@ test-suite safe-html-test
       base
     , blaze-html
     , safe-html
+    , text
   default-language: Haskell2010
