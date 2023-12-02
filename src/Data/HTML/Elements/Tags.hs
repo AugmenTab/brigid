@@ -8,6 +8,7 @@ module Data.HTML.Elements.Tags
   , Audio
   , Bold
   , Base
+  , BiDirectionalIsolation
   , BiDirectionalOverride
   , Blockquote
   , Body
@@ -19,11 +20,13 @@ module Data.HTML.Elements.Tags
   , Code
   , Column
   , ColumnGroup
+  , Data
   , DataList
   , Description
   , Deletion
   , Details
   , Definition
+  , Dialog
   , Division
   , DescriptionList
   , DescriptionTerm
@@ -70,6 +73,7 @@ module Data.HTML.Elements.Tags
   , Option
   , Output
   , Paragraph
+  , Picture
   , PreformattedText
   , Progress
   , Quotation
@@ -78,11 +82,14 @@ module Data.HTML.Elements.Tags
   , Ruby
   , Sample
   , Script
+  , Search
   , Section
   , Select
+  , Slot
   , Small
   , Source
   , Span
+  , Strikethrough
   , Strong
   , Style
   , Subscript
@@ -95,9 +102,10 @@ module Data.HTML.Elements.Tags
   , TableFooter
   , TableHeaderCell
   , TableHeader
+  , TableRow
+  , Template
   , Time
   , Title
-  , TableRow
   , Track
   , Underline
   , UnorderedList
@@ -146,6 +154,9 @@ data Bold
 -- | This data tag represents the @\<base>@ element.
 data Base
 
+-- | This data tag represents the @\<bdi>@ element.
+data BiDirectionalIsolation
+
 -- | This data tag represents the @\<bdo>@ element.
 data BiDirectionalOverride
 
@@ -179,6 +190,9 @@ data Column
 -- | This data tag represents the @\<colgroup>@ element.
 data ColumnGroup
 
+-- | This data tag represents the @\<data>@ element.
+data Data
+
 -- | This data tag represents the @\<datalist>@ element.
 data DataList
 
@@ -193,6 +207,9 @@ data Details
 
 -- | This data tag represents the @\<dfn>@ element.
 data Definition
+
+-- | This data tag represents the @\<dialog>@ element.
+data Dialog
 
 -- | This data tag represents the @\<div>@ element.
 data Division
@@ -334,6 +351,9 @@ data Output
 -- | This data tag represents the @\<p>@ element.
 data Paragraph
 
+-- | This data tag represents the @\<picture>@ element.
+data Picture
+
 -- | This data tag represents the @\<pre>@ element.
 data PreformattedText
 
@@ -358,11 +378,17 @@ data Sample
 -- | This data tag represents the @\<script>@ element.
 data Script
 
+-- | This data tag represents the @\<search>@ element.
+data Search
+
 -- | This data tag represents the @\<section>@ element.
 data Section
 
 -- | This data tag represents the @\<select>@ element.
 data Select
+
+-- | This data tag represents the @\<slot>@ element.
+data Slot
 
 -- | This data tag represents the @\<small>@ element.
 data Small
@@ -372,6 +398,9 @@ data Source
 
 -- | This data tag represents the @\<span>@ element.
 data Span
+
+-- | This data tag represents the @\<s>@ element.
+data Strikethrough
 
 -- | This data tag represents the @\<strong>@ element.
 data Strong
@@ -409,14 +438,17 @@ data TableHeaderCell
 -- | This data tag represents the @\<thead>@ element.
 data TableHeader
 
+-- | This data tag represents the @\<tr>@ element.
+data TableRow
+
+-- | This data tag represents the @\<template>@ element.
+data Template
+
 -- | This data tag represents the @\<time>@ element.
 data Time
 
 -- | This data tag represents the @\<title>@ element.
 data Title
-
--- | This data tag represents the @\<tr>@ element.
-data TableRow
 
 -- | This data tag represents the @\<track>@ element.
 data Track

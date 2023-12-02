@@ -36,6 +36,7 @@ library
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
   build-depends:
       base
+    , blaze-html
   default-language: Haskell2010
 
 test-suite safe-html-test
@@ -50,5 +51,6 @@ test-suite safe-html-test
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base
+    , blaze-html
     , safe-html
   default-language: Haskell2010

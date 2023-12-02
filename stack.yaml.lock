@@ -3,7 +3,18 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    name: blaze-html
+    pantry-tree:
+      sha256: 65c2551a8a7bdb6ed280f04edcc45d6daed11cef15b7805f9b06862e85868f18
+      size: 3669
+    sha256: 2e790da16fc69c8eb07773524e2ea7d3253876320e4e362f9b3fcd8c2550795e
+    size: 126228
+    url: https://github.com/AugmenTab/blaze-html/archive/97f6223bdab862cb3863c32ec1f0371d9301c910.tar.gz
+    version: 0.9.2.0
+  original:
+    url: https://github.com/AugmenTab/blaze-html/archive/97f6223bdab862cb3863c32ec1f0371d9301c910.tar.gz
 snapshots:
 - completed:
     sha256: fb482b8e2d5d061cdda4ba1da2957c012740c893a5ee1c1b99001adae7b1fbe7

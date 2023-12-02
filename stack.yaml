@@ -13,6 +13,7 @@ install-ghc: false
 #   - wai
 packages:
 - .
+
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
@@ -22,7 +23,10 @@ packages:
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
-# extra-deps: []
+extra-deps:
+# Blaze HTML
+- github: AugmenTab/blaze-html
+  commit: 97f6223bdab862cb3863c32ec1f0371d9301c910
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
