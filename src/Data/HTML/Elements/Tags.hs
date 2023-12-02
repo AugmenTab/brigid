@@ -112,6 +112,8 @@ module Data.HTML.Elements.Tags
   , Variable
   , Video
   , WordBreakOpportunity
+  , Comment
+  , TextContent
   ) where
 
 -- Other elements that are in the HTML 5 spec, but not in Blaze:
@@ -467,3 +469,9 @@ data Video
 
 -- | This data tag represents the @\<wbr>@ element.
 data WordBreakOpportunity
+
+-- | This data tag represents an HTML comment.
+data Comment
+
+-- | This data tag represents textual content within an element.
+data TextContent
