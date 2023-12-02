@@ -26,6 +26,7 @@ library
   exposed-modules:
       Data.HTML
       Data.HTML.Attributes
+      Data.HTML.Elements
       Data.HTML.Elements.Tags
       Data.HTML.Elements.TagType
       Data.HTML.Types
@@ -39,6 +40,7 @@ library
   build-depends:
       base
     , blaze-html
+    , blaze-markup
     , text
   default-language: Haskell2010
 
@@ -55,6 +57,7 @@ test-suite safe-html-test
   build-depends:
       base
     , blaze-html
+    , blaze-markup
     , safe-html
     , text
   default-language: Haskell2010

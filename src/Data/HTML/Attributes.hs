@@ -12,6 +12,7 @@ module Data.HTML.Attributes
 import           Prelude hiding (id)
 import           Data.Kind (Type)
 import qualified Data.Text as T
+import qualified Text.Blaze as Blaze
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 
@@ -34,7 +35,7 @@ unwrapAttribute (WrapAttribute attr) = toAttribute attr
 newtype Id = Id T.Text
 
 instance Attribute Id where
-  toAttribute (Id idText) = A.id $ H.toValue idText
+  toAttribute (Id idText) = A.id $ Blaze.textValue idText
 
 {-| The id global attribute defines an identifier (ID) which must be unique in
    the whole document. Its purpose is to identify the element when linking
