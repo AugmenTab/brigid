@@ -27,6 +27,7 @@ library
       Data.HTML
       Data.HTML.Attributes
       Data.HTML.Elements.Tags
+      Data.HTML.Elements.TagType
       Data.HTML.Types
   other-modules:
       Paths_safe_html
