@@ -27,6 +27,7 @@ library
       Data.HTML
       Data.HTML.Attributes
       Data.HTML.Elements
+      Data.HTML.Elements.TagGroups
       Data.HTML.Elements.Tags
       Data.HTML.Elements.TagType
       Data.HTML.Types

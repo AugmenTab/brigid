@@ -54,7 +54,6 @@ module Data.HTML.Elements.Tags
   , Input
   , Insertion
   , KeyboardInput
-  , Keygen
   , Label
   , Legend
   , ListItem
@@ -98,12 +97,12 @@ module Data.HTML.Elements.Tags
   , Table
   , TableBody
   , TableDataCell
-  , TextArea
   , TableFooter
   , TableHeaderCell
   , TableHeader
   , TableRow
   , Template
+  , TextArea
   , Time
   , Title
   , Track
@@ -296,9 +295,6 @@ data Insertion
 -- | This data tag represents the @\<kbd>@ element.
 data KeyboardInput
 
--- | This data tag represents the @\<keygen>@ element.
-data Keygen
-
 -- | This data tag represents the @\<label>@ element.
 data Label
 
@@ -428,9 +424,6 @@ data TableBody
 -- | This data tag represents the @\<td>@ element.
 data TableDataCell
 
--- | This data tag represents the @\<textarea>@ element.
-data TextArea
-
 -- | This data tag represents the @\<tfoot>@ element.
 data TableFooter
 
@@ -445,6 +438,9 @@ data TableRow
 
 -- | This data tag represents the @\<template>@ element.
 data Template
+
+-- | This data tag represents the @\<textarea>@ element.
+data TextArea
 
 -- | This data tag represents the @\<time>@ element.
 data Time
