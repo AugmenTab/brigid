@@ -26,7 +26,7 @@ packages:
 extra-deps:
 # Blaze HTML
 - github: AugmenTab/blaze-html
-  commit: 97f6223bdab862cb3863c32ec1f0371d9301c910
+  commit: 5f8df2cf72091d6082737c1f579bd69094f51fa0
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
