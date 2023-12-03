@@ -113,7 +113,7 @@ type MetadataContent =
 -- This list represents all elements that are considered flow content.
 --
 type FlowContent =
-  '[ Tags.TextContent
+  '[ Tags.Text
    , Tags.Anchor
    , Tags.Abbreviation
    , Tags.Address
@@ -217,7 +217,7 @@ type HeadingContent =
 -- This list represents all elements that are considered phrasing content.
 --
 type PhrasingContent =
-  '[ Tags.TextContent
+  '[ Tags.Text
    , Tags.Abbreviation
    , Tags.Audio
    , Tags.Bold

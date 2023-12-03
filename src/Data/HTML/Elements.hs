@@ -1,9 +1,10 @@
+{-# LANGUAGE DataKinds #-}
+
 module Data.HTML.Elements
   ( HTML
-  , ValidChildOf (WrapElement)
-
-  , Tags.Comment, comment
-  , Tags.TextContent, text
+  , ValidChildOf
+  , Tags.Comment
+  , Tags.Text
   , Tags.Anchor, a
   , Tags.Abbreviation
   , Tags.Address
@@ -11,7 +12,7 @@ module Data.HTML.Elements
   , Tags.Article
   , Tags.Aside
   , Tags.Audio
-  , Tags.Bold
+  , Tags.Bold, b
   , Tags.Base
   , Tags.BiDirectionalIsolation
   , Tags.BiDirectionalOverride
@@ -32,7 +33,7 @@ module Data.HTML.Elements
   , Tags.Details
   , Tags.Definition
   , Tags.Dialog
-  , Tags.Division
+  , Tags.Division, div
   , Tags.DescriptionList
   , Tags.DescriptionTerm
   , Tags.Emphasis
@@ -42,7 +43,7 @@ module Data.HTML.Elements
   , Tags.Figure
   , Tags.Footer
   , Tags.Form
-  , Tags.H1
+  , Tags.H1, h1
   , Tags.H2
   , Tags.H3
   , Tags.H4
@@ -92,7 +93,7 @@ module Data.HTML.Elements
   , Tags.Slot
   , Tags.Small
   , Tags.Source
-  , Tags.Span
+  , Tags.Span, span
   , Tags.Strikethrough
   , Tags.Strong
   , Tags.Style
@@ -118,6 +119,7 @@ module Data.HTML.Elements
   , Tags.WordBreakOpportunity
   ) where
 
+import           Prelude hiding (div, span)
 import qualified Data.Text as T
 import qualified Text.Blaze as Blaze
 import qualified Text.Blaze.Html as H
@@ -126,16 +128,22 @@ import qualified Text.Blaze.Html5 as H
 import           Data.HTML.Attributes (ValidAttributeOf)
 import           Data.HTML.Elements.Children (ValidChildrenFor)
 import qualified Data.HTML.Elements.Tags as Tags
-import           Data.HTML.Elements.TagType (TagType)
+import           Data.HTML.Elements.TagType (TagType, Leaf)
 import           Data.HTML.Types (Elem)
 
-data ValidChildOf parent where
-  WrapElement :: Elem child (ValidChildrenFor parent)
-              => HTML child -> ValidChildOf parent
+type HTML element parent =
+  IsValidChild element parent => ValidChildOf parent
 
-data HTML tag
+type IsValidChild child parent =
+  Elem child (ValidChildrenFor parent)
+
+data ValidChildOf parent where
+  WrapElement :: IsValidChild child parent
+              => Node child -> ValidChildOf parent
+
+data Node tag
   = Element (ElementDetails tag)
-  | NonElement H.Html
+  | NonElement (Content tag)
 
 data SelfClosing = SelfClosing
 
@@ -143,41 +151,81 @@ data ElementDetails tag =
   ElementDetails
     { tag        :: TagType tag
     , attributes :: [ValidAttributeOf tag]
-    , content    :: Either SelfClosing [ValidChildOf tag]
+    , children   :: Either SelfClosing [ValidChildOf tag]
     }
 
-createElement :: TagType element
+newtype Content tag = Content { unContent :: TagType tag }
+
+createElement :: IsValidChild element parent
+              => TagType element
               -> [ValidAttributeOf element]
               -> [ValidChildOf element]
-              -> HTML element
+              -> ValidChildOf parent
 createElement element attributes children =
-  Element $
-    ElementDetails
-      { tag        = element
-      , attributes = attributes
-      , content    = Right children
-      }
+  WrapElement
+    . Element
+    $ ElementDetails
+        { tag        = element
+        , attributes = attributes
+        , children   = Right children
+        }
 
-createElementSelfClosing :: TagType element
+createElementSelfClosing :: IsValidChild element parent
+                         => TagType element
                          -> [ValidAttributeOf element]
-                         -> HTML element
+                         -> ValidChildOf parent
 createElementSelfClosing element attributes =
-  Element $
-    ElementDetails
-      { tag        = element
-      , attributes = attributes
-      , content    = Left SelfClosing
-      }
+  WrapElement
+    . Element
+    $ ElementDetails
+        { tag        = element
+        , attributes = attributes
+        , children   = Left SelfClosing
+        }
 
-comment :: T.Text -> HTML Tags.TextContent
-comment = NonElement . H.toHtml . Blaze.textComment
+-- createContent :: IsValidChild content parent
+--               => TagType content -> ValidChildOf parent
+-- createContent = WrapElement . NonElement . Content
 
-text :: T.Text -> HTML Tags.TextContent
-text = NonElement . H.toHtml . Blaze.text
+-- comment :: IsValidChild Tags.Comment parent
+--         => T.Text -> ValidChildOf parent
+-- comment = createContent . H.toHtml . Blaze.textComment
 
-a :: Elem child (ValidChildrenFor Tags.Anchor)
-  => [ValidAttributeOf Tags.Anchor] -> [HTML child] -> HTML Tags.Anchor
-a attrs children = createElement H.a attrs $ WrapElement <$> children
+-- text :: IsValidChild Tags.Text parent
+--      => T.Text -> ValidChildOf parent
+-- text = createContent . H.toHtml . Blaze.text
 
-img :: [ValidAttributeOf Tags.Image] -> HTML Tags.Image
+a :: IsValidChild Tags.Anchor parent
+  => [ValidAttributeOf Tags.Anchor]
+  -> [ValidChildOf Tags.Anchor]
+  -> ValidChildOf parent
+a = createElement H.a
+
+b :: IsValidChild Tags.Bold parent
+  => [ValidAttributeOf Tags.Bold]
+  -> [ValidChildOf Tags.Bold]
+  -> ValidChildOf parent
+b = createElement H.b
+
+div :: IsValidChild Tags.Division parent
+    => [ValidAttributeOf Tags.Division]
+    -> [ValidChildOf Tags.Division]
+    -> ValidChildOf parent
+div = createElement H.div
+
+h1 :: IsValidChild Tags.H1 parent
+   => [ValidAttributeOf Tags.H1]
+   -> [ValidChildOf Tags.H1]
+   -> ValidChildOf parent
+h1 = createElement H.h1
+
+img :: IsValidChild Tags.Image parent
+    => [ValidAttributeOf Tags.Image]
+    -> ValidChildOf parent
 img = createElementSelfClosing H.img
+
+span :: IsValidChild Tags.Span parent
+     => [ValidAttributeOf Tags.Span]
+     -> [ValidChildOf Tags.Span]
+     -> ValidChildOf parent
+span = createElement H.span

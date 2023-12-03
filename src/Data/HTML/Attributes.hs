@@ -25,8 +25,11 @@ type family ValidElementsFor attribute :: [Type] where
 class Attribute attr where
   toAttribute :: attr -> H.Attribute
 
+type IsValidAttribute element attr =
+  Elem element (ValidElementsFor attr)
+
 data ValidAttributeOf element where
-  WrapAttribute :: (Attribute attr, Elem element (ValidElementsFor attr))
+  WrapAttribute :: (Attribute attr, IsValidAttribute element attr)
                 => attr -> ValidAttributeOf element
 
 unwrapAttribute :: ValidAttributeOf element -> H.Attribute
@@ -41,5 +44,5 @@ instance Attribute Id where
    the whole document. Its purpose is to identify the element when linking
    (using a fragment identifier), scripting, or styling (with CSS).
 -}
-id :: Elem element (ValidElementsFor Id) => T.Text -> ValidAttributeOf element
+id :: IsValidAttribute element Id => T.Text -> ValidAttributeOf element
 id = WrapAttribute . Id -- TODO: Escape the provided id string.

@@ -12,9 +12,9 @@ import qualified Data.HTML.Elements.TagGroups as TagGroups
 
 type family ValidChildrenFor element :: [Type] where
   ValidChildrenFor Tags.Comment                = TagGroups.NonElement
-  ValidChildrenFor Tags.TextContent            = TagGroups.NonElement
+  ValidChildrenFor Tags.Text                   = TagGroups.NonElement
 
---ValidChildrenFor Tags.Anchor                 = _
+  ValidChildrenFor Tags.Anchor                 = '[]
   ValidChildrenFor Tags.Abbreviation           = TagGroups.PhrasingContent
 --ValidChildrenFor Tags.Address                = _
   ValidChildrenFor Tags.Area                   = TagGroups.VoidElement
@@ -85,14 +85,14 @@ type family ValidChildrenFor element :: [Type] where
 --ValidChildrenFor Tags.Object                 = _
   ValidChildrenFor Tags.OrderedList            = TagGroups.ListElements
   ValidChildrenFor Tags.OptionGroup            = '[Tags.Option]
-  ValidChildrenFor Tags.Option                 = '[Tags.TextContent]
+  ValidChildrenFor Tags.Option                 = '[Tags.Text]
   ValidChildrenFor Tags.Output                 = TagGroups.PhrasingContent
   ValidChildrenFor Tags.Paragraph              = TagGroups.PhrasingContent
   ValidChildrenFor Tags.Picture                = Tags.Source ': Tags.Image ': TagGroups.ScriptSupportingContent
   ValidChildrenFor Tags.PreformattedText       = TagGroups.PhrasingContent
 --ValidChildrenFor Tags.Progress               = _
   ValidChildrenFor Tags.Quotation              = TagGroups.PhrasingContent
-  ValidChildrenFor Tags.RubyParenthesis        = '[Tags.TextContent]
+  ValidChildrenFor Tags.RubyParenthesis        = '[Tags.Text]
   ValidChildrenFor Tags.RubyText               = TagGroups.PhrasingContent
   ValidChildrenFor Tags.Ruby                   = TagGroups.PhrasingContent
   ValidChildrenFor Tags.Sample                 = TagGroups.PhrasingContent
@@ -118,9 +118,9 @@ type family ValidChildrenFor element :: [Type] where
   ValidChildrenFor Tags.TableHeader            = '[Tags.TableRow]
   ValidChildrenFor Tags.TableRow               = TagGroups.TableRowElements
 --ValidChildrenFor Tags.Template               = _
-  ValidChildrenFor Tags.TextArea               = '[Tags.TextContent]
+  ValidChildrenFor Tags.TextArea               = '[Tags.Text]
   ValidChildrenFor Tags.Time                   = TagGroups.PhrasingContent
-  ValidChildrenFor Tags.Title                  = '[Tags.TextContent]
+  ValidChildrenFor Tags.Title                  = '[Tags.Text]
   ValidChildrenFor Tags.Track                  = TagGroups.VoidElement
   ValidChildrenFor Tags.Underline              = TagGroups.PhrasingContent
   ValidChildrenFor Tags.UnorderedList          = TagGroups.ListElements

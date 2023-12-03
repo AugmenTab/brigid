@@ -128,5 +128,5 @@ type instance TagType Tags.Variable               = Branch
 type instance TagType Tags.Video                  = Branch
 type instance TagType Tags.WordBreakOpportunity   = Leaf
 
-type instance TagType Tags.Comment     = Leaf
-type instance TagType Tags.TextContent = Leaf
+type instance TagType Tags.Comment = Leaf
+type instance TagType Tags.Text    = Leaf

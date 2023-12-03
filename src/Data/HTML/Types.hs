@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeFamilies #-}
 
 -- This is to prevent warnings for the non-matching case in the third `Elem`
 -- instance. GHC claims that this is a redundant constraint, but attributes
@@ -17,3 +18,10 @@ class Elem (a :: Type) (list :: [Type]) where
 instance Elem a '[] where
 instance {-# OVERLAPPING #-} Elem a (a ': rest) where
 instance {-# OVERLAPPABLE #-} Elem a (b ': rest) where
+
+{-
+type family Elem x ys where
+  Elem x '[]       = 'False
+  Elem x (x ': ys) = 'True
+  Elem x (y ': ys) = Elem y ys
+  -}
