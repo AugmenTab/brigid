@@ -6,9 +6,9 @@ module Data.HTML.Elements.TagType
   , Leaf
   ) where
 
-import qualified Text.Blaze.Html5 as H
+import Text.Blaze.Html5 qualified as H
 
-import qualified Data.HTML.Elements.Tags as Tags
+import Data.HTML.Elements.Tags qualified as Tags
 
 type Branch = H.Html -> H.Html
 type Leaf   = H.Html

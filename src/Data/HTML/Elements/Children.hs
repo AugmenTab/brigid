@@ -5,10 +5,10 @@ module Data.HTML.Elements.Children
   ( ValidChildrenFor
   ) where
 
-import           Data.Kind (Type)
+import Data.Kind (Type)
 
-import qualified Data.HTML.Elements.Tags as Tags
-import qualified Data.HTML.Elements.TagGroups as TagGroups
+import Data.HTML.Elements.Tags qualified as Tags
+import Data.HTML.Elements.TagGroups qualified as TagGroups
 
 type family ValidChildrenFor element :: [Type] where
   ValidChildrenFor Tags.Comment                = TagGroups.NonElement

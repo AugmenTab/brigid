@@ -1,19 +1,16 @@
-{-# LANGUAGE DataKinds #-}
-
-module Data.HTML
+module Data.HTML3
   ( -- example
   ) where
 
 -- import Data.Text qualified as T
 
--- import Data.HTML.Elements qualified as H
--- import Data.HTML.Attributes qualified as A
+-- import Data.HTML3.Internal
 
-  {-
-example :: H.ValidChildOf parent
+{-
+example :: H.HTML H.Html
 example =
   -- This attribute assignment should be failing, but isn't.
-  H.div [ A.id $ T.pack "div-id" ]
+  H.div [ H.id $ T.pack "div-id" ]
     [ H.img []
     , H.span []
         [ H.div []
@@ -30,12 +27,12 @@ example =
  -- , H.div []
  --     example2
     -- This should be failing, but it isn't.
-    , H.a [ A.id $ T.pack "anchor-id" ]
+    , H.a [ H.id $ T.pack "anchor-id" ]
         [ example1
         ]
     ]
 
-example1 :: H.ValidChildOf H.Anchor
+example1 :: H.HTML H.Anchor
 example1 = H.h1 [] [ H.img [] ]
 
 -- example2 :: [H.HTML H.Division H.Division]
@@ -44,4 +41,4 @@ example1 = H.h1 [] [ H.img [] ]
 --   , H.div [] []
 --   , H.div [] []
 --   ]
---   -}
+-}

@@ -32,12 +32,32 @@ library
       Data.HTML.Elements.Tags
       Data.HTML.Elements.TagType
       Data.HTML.Types
+      Data.HTML1
+      Data.HTML1.Elements.Tags
+      Data.HTML2
+      Data.HTML2.Internal
+      Data.HTML3
+      Data.HTML3.Attributes.AttributeType
+      Data.HTML3.Elements.TagType
+      Data.HTML3.Internal
+      Data.HTML4
+      Data.HTML4.Attributes.AttributeType
+      Data.HTML4.Elements.TagType
+      Data.HTML4.Internal
   other-modules:
       Paths_safe_html
   autogen-modules:
       Paths_safe_html
   hs-source-dirs:
       src
+  default-extensions:
+      DeriveDataTypeable
+      DerivingStrategies
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      MultiParamTypeClasses
+      OverloadedStrings
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
   build-depends:
       base
@@ -55,6 +75,14 @@ test-suite safe-html-test
       Paths_safe_html
   hs-source-dirs:
       test
+  default-extensions:
+      DeriveDataTypeable
+      DerivingStrategies
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      MultiParamTypeClasses
+      OverloadedStrings
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base

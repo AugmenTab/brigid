@@ -9,15 +9,15 @@ module Data.HTML.Attributes
   , id
   ) where
 
-import           Prelude hiding (id)
-import           Data.Kind (Type)
-import qualified Data.Text as T
-import qualified Text.Blaze as Blaze
-import qualified Text.Blaze.Html5 as H
-import qualified Text.Blaze.Html5.Attributes as A
+import Prelude hiding (id)
+import Data.Kind (Type)
+import Data.Text qualified as T
+import Text.Blaze qualified as Blaze
+import Text.Blaze.Html5 qualified as H
+import Text.Blaze.Html5.Attributes qualified as A
 
-import qualified Data.HTML.Elements.Tags as Tags
-import           Data.HTML.Types (Elem)
+import Data.HTML.Elements.Tags qualified as Tags
+import Data.HTML.Types (Elem)
 
 type family ValidElementsFor attribute :: [Type] where
   ValidElementsFor Id = '[Tags.Anchor]
@@ -46,3 +46,10 @@ instance Attribute Id where
 -}
 id :: IsValidAttribute element Id => T.Text -> ValidAttributeOf element
 id = WrapAttribute . Id -- TODO: Escape the provided id string.
+
+-- class_ :: IsValidAttribute element Class => T.Text -> ValidAttributeOf element
+-- class_ = WrapAttribute . Class
+
+-- classes :: IsValidAttribute element Class
+--         => [T.Text] -> ValidAttributeOf element
+-- classes = class_ . T.unwords

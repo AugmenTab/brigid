@@ -29,9 +29,9 @@ module Data.HTML.Elements.TagGroups
   , ScriptSupportingContent
   ) where
 
-import           Data.Kind (Type)
+import Data.Kind (Type)
 
-import qualified Data.HTML.Elements.Tags as Tags
+import Data.HTML.Elements.Tags qualified as Tags
 
 type family (xs :: [Type]) ++ (ys :: [Type]) :: [Type] where
   '[]       ++ ys = ys

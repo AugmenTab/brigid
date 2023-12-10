@@ -119,17 +119,17 @@ module Data.HTML.Elements
   , Tags.WordBreakOpportunity
   ) where
 
-import           Prelude hiding (div, span)
-import qualified Data.Text as T
-import qualified Text.Blaze as Blaze
-import qualified Text.Blaze.Html as H
-import qualified Text.Blaze.Html5 as H
+import Prelude hiding (div, span)
+import Data.Text qualified as T
+import Text.Blaze qualified as Blaze
+import Text.Blaze.Html qualified as H
+import Text.Blaze.Html5 qualified as H
 
-import           Data.HTML.Attributes (ValidAttributeOf)
-import           Data.HTML.Elements.Children (ValidChildrenFor)
-import qualified Data.HTML.Elements.Tags as Tags
-import           Data.HTML.Elements.TagType (TagType, Leaf)
-import           Data.HTML.Types (Elem)
+import Data.HTML.Attributes (ValidAttributeOf)
+import Data.HTML.Elements.Children (ValidChildrenFor)
+import Data.HTML.Elements.Tags qualified as Tags
+import Data.HTML.Elements.TagType (TagType, Leaf)
+import Data.HTML.Types (Elem)
 
 type HTML element parent =
   IsValidChild element parent => ValidChildOf parent
@@ -194,6 +194,10 @@ createElementSelfClosing element attributes =
 -- text :: IsValidChild Tags.Text parent
 --      => T.Text -> ValidChildOf parent
 -- text = createContent . H.toHtml . Blaze.text
+
+-- texts :: IsValidChild Tags.Text parent
+--       => [T.Text] -> ValidChildOf parent
+-- texts = text . T.unwords
 
 a :: IsValidChild Tags.Anchor parent
   => [ValidAttributeOf Tags.Anchor]

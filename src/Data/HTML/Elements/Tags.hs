@@ -116,17 +116,7 @@ module Data.HTML.Elements.Tags
   ) where
 
 -- Other elements that are in the HTML 5 spec, but not in Blaze:
---   - bdi
---   - data
---   - dialog
---   - picture
---   - s
---   - search
---   - slot
 --   - svg (maybe in the Blaze SVG library?)
---   - template
---
--- These could perhaps be added in a PR to the `blaze-html` repo.
 
 -- | This data tag represents the @\<a>@ element.
 data Anchor

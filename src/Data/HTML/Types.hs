@@ -11,7 +11,7 @@ module Data.HTML.Types
   ( Elem
   ) where
 
-import           Data.Kind (Type)
+import Data.Kind (Type)
 
 class Elem (a :: Type) (list :: [Type]) where
 
@@ -24,4 +24,4 @@ type family Elem x ys where
   Elem x '[]       = 'False
   Elem x (x ': ys) = 'True
   Elem x (y ': ys) = Elem y ys
-  -}
+-}
