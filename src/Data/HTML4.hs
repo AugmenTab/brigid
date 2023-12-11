@@ -4,18 +4,19 @@ module Data.HTML4
 
 -- import Data.Text qualified as T
 
+import Data.HTML4.Attributes qualified as A
+import Data.HTML4.Elements qualified as E
 import Data.HTML4.Elements.Tags qualified as Tags
-import Data.HTML4.Internal
 
-example :: HTML Tags.Division
+example :: E.HTML Tags.Division
 example =
-  Div [ Id "div1" ]
-    [ Div []
-        [ P [ {- Width 100 -} ]
-            [ A []
-                [ Ul []
-                    [ Li [] []
-                 -- , Div [] [] -- This fails, because Div produces Flow, not ListItem.
+  E.div [ A.id "div1" ]
+    [ E.div []
+        [ E.p [ {- Width 100 -} ]
+            [ E.a []
+                [ E.ul []
+                    [ E.li [] []
+                 -- , E.div [] [] -- This fails, because Div produces Flow, not ListItem.
                     ]
                 ]
             ]
