@@ -4,9 +4,10 @@ module Data.HTML4
 
 -- import Data.Text qualified as T
 
+import Data.HTML4.Elements.Tags qualified as Tags
 import Data.HTML4.Internal
 
-example :: HTML Division
+example :: HTML Tags.Division
 example =
   Div [ Id "div1" ]
     [ Div []

@@ -42,6 +42,7 @@ library
       Data.HTML3.Internal
       Data.HTML4
       Data.HTML4.Attributes.AttributeType
+      Data.HTML4.Elements.Tags
       Data.HTML4.Elements.TagType
       Data.HTML4.Internal
   other-modules:
