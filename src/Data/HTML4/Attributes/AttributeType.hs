@@ -2,6 +2,8 @@ module Data.HTML4.Attributes.AttributeType
   ( AttributeType
       ( Id
       , Class
+      , Width
+      , Disabled
       )
   ) where
 
@@ -9,3 +11,5 @@ module Data.HTML4.Attributes.AttributeType
 data AttributeType
   = Id
   | Class
+  | Width
+  | Disabled

@@ -11,21 +11,20 @@ module Data.HTML4.Attributes
 import Prelude hiding (id)
 import Data.Text qualified as T
 
-import Data.HTML4.Internal qualified as H
+import Data.HTML4.Attributes.AttributeType qualified as AttrType
+import Data.HTML4.Attributes.Internal qualified as A
 
-id :: T.Text -> H.Attribute tag
-id = H.Id
+id :: T.Text -> A.Attribute tag
+id = A.Id
 
-class_ :: T.Text -> H.Attribute tag
-class_ = H.Class
+class_ :: T.Text -> A.Attribute tag
+class_ = A.Class
 
-classes :: [T.Text] -> H.Attribute tag
-classes = H.Class . T.unwords
+classes :: [T.Text] -> A.Attribute tag
+classes = A.Class . T.unwords
 
-disabled :: H.Contains (H.ValidElementsFor 'H.DisabledType) tag
-         => H.Attribute tag
+disabled :: A.ValidAttribute 'AttrType.Disabled tag => A.Attribute tag
 disabled = disable True
 
-disable :: H.Contains (H.ValidElementsFor 'H.DisabledType) tag
-        => Bool -> H.Attribute tag
-disable = H.Disabled
+disable :: A.ValidAttribute 'AttrType.Disabled tag => Bool -> A.Attribute tag
+disable = A.Disabled

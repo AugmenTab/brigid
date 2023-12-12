@@ -9,7 +9,8 @@ import Data.List qualified as L
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 
-import Data.HTML4.Internal (Attribute(..), Node(..))
+import Data.HTML4.Elements.Internal (Node(..))
+import Data.HTML4.Attributes.Internal (Attribute(..))
 
 renderHTML :: Node cat -> T.Text
 renderHTML html =

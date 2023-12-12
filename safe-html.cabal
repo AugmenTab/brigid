@@ -41,11 +41,16 @@ library
       Data.HTML3.Elements.TagType
       Data.HTML3.Internal
       Data.HTML4
+      Data.HTML4.Attributes
       Data.HTML4.Attributes.AttributeType
+      Data.HTML4.Attributes.Internal
+      Data.HTML4.Elements
+      Data.HTML4.Elements.Category
+      Data.HTML4.Elements.Internal
       Data.HTML4.Elements.Tags
       Data.HTML4.Elements.TagType
-      Data.HTML4.Internal
       Data.HTML4.Render.Text
+      Data.HTML4.Types.Contains
   other-modules:
       Paths_safe_html
   autogen-modules:
