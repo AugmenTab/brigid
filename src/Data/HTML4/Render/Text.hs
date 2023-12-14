@@ -9,10 +9,10 @@ import Data.List qualified as L
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 
-import Data.HTML4.Elements.Internal (Node(..))
+import Data.HTML4.Elements.Internal (ChildHTML(..))
 import Data.HTML4.Attributes.Internal (Attribute(..))
 
-renderHTML :: Node cat -> T.Text
+renderHTML :: ChildHTML parent -> T.Text
 renderHTML html =
   case html of
     A      attrs content -> buildTag "a"      attrs $ Right content
@@ -24,6 +24,9 @@ renderHTML html =
     Li     attrs content -> buildTag "li"     attrs $ Right content
     Img    attrs         -> buildTag "img"    attrs $ Left OmitTag
     Iframe attrs         -> buildTag "iframe" attrs $ Left WithTag
+
+    Html attrs content ->
+      ("<!DOCTYPE html>\n" :: T.Text) <> buildTag "html" attrs (Right content)
 
 -- This represents an element that, for one reason or another, does not contain
 -- child elements.
@@ -37,13 +40,13 @@ data NoContent
 
 buildTag :: T.Text
          -> [Attribute attr]
-         -> Either NoContent [Node content]
+         -> Either NoContent [ChildHTML parent]
          -> T.Text
 buildTag tag attributes content =
   T.concat
     [ "<"
     , tag
-    , B.bool T.empty " " $ L.null attributes
+    , B.bool " " T.empty $ L.null attributes
     , T.unwords $ mapMaybe renderAttribute attributes
     , case content of
         Left  OmitTag   -> " />"

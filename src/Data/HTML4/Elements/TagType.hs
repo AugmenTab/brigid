@@ -1,6 +1,7 @@
 module Data.HTML4.Elements.TagType
   ( TagType
-      ( Comment
+      ( Document
+      , Comment
       , Text
       , Anchor
       , Abbreviation
@@ -118,7 +119,8 @@ module Data.HTML4.Elements.TagType
   ) where
 
 data TagType
-  = Comment
+  = Document
+  | Comment
   | Text
   | Anchor
   | Abbreviation

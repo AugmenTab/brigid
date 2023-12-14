@@ -1,24 +1,41 @@
 module Data.HTML4
-  ( example
+  ( documentExample
+  , example
   ) where
 
 -- import Data.Text qualified as T
 
 import Data.HTML4.Attributes qualified as A
 import Data.HTML4.Elements qualified as E
-import Data.HTML4.Elements.Tags qualified as Tags
 
-example :: E.HTML Tags.Division
+documentExample :: E.Document
+documentExample =
+  E.html []
+    [ example
+    ]
+
+example :: E.HTML E.Division parent
 example =
-  E.div [ A.id "div1" ]
+  E.div [ A.id "div1", A.class_ "myCoolClass" ]
     [ E.div []
-        [ E.p [ {- Width 100 -} ]
+        [ E.p [ A.width 100 ]
             [ E.a []
                 [ E.ul []
-                    [ E.li [] []
+                    [ E.li []
+                        [ E.div [] $
+                            listExample
+                        ]
                  -- , E.div [] [] -- This fails, because Div produces Flow, not ListItem.
                     ]
+             -- , E.a [] []
                 ]
             ]
         ]
     ]
+
+listExample :: [E.ChildHTML E.Division]
+listExample =
+  [ E.div [] []
+  , E.p [] []
+  , E.img []
+  ]

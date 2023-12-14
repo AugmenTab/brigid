@@ -4,6 +4,7 @@ module Data.HTML4.Attributes
   ( id
   , class_
   , classes
+  , width
   , disabled
   , disable
   ) where
@@ -22,6 +23,9 @@ class_ = A.Class
 
 classes :: [T.Text] -> A.Attribute tag
 classes = A.Class . T.unwords
+
+width :: A.ValidAttribute 'AttrType.Width tag => Int -> A.Attribute tag
+width = A.Width
 
 disabled :: A.ValidAttribute 'AttrType.Disabled tag => A.Attribute tag
 disabled = disable True

@@ -3,7 +3,9 @@
 
 module Data.HTML4.Elements.Internal
   ( HTML
-  , Node
+  , Document
+  , ValidChild
+  , ChildHTML
       ( A
       , Div
       , Span
@@ -13,43 +15,49 @@ module Data.HTML4.Elements.Internal
       , Li
       , Img
       , Iframe
+      , Html
       )
   ) where
 
 import Data.HTML4.Attributes.Internal (Attribute)
-import Data.HTML4.Elements.Category qualified as Cat
 import Data.HTML4.Elements.TagType qualified as TagType
+import Data.HTML4.Types.Contains (Contains)
 
-type HTML eType =
-  Node (ElementCategory eType)
+type HTML tag parent =
+  ValidChild tag parent => ChildHTML parent
 
-{-
--- For declaring lists of content to a particular Node.
-type ChildHTML eType =
-  Node (ChildCategory eType)
--}
+type ValidChild tag parent =
+  Contains (ValidChildrenFor parent) tag
 
--- element :: [Attribute for Node] -> [child category Node]-> parent category Node
-data Node (cat :: Cat.Category) where
-  A      :: [Attribute 'TagType.Anchor]        -> [Node 'Cat.Flow]     -> Node 'Cat.Phrasing
-  Div    :: [Attribute 'TagType.Division]      -> [Node 'Cat.Flow]     -> Node 'Cat.Flow
-  Span   :: [Attribute 'TagType.Span]          -> [Node 'Cat.Phrasing] -> Node 'Cat.Phrasing
-  P      :: [Attribute 'TagType.Paragraph]     -> [Node 'Cat.Phrasing] -> Node 'Cat.Flow
-  H1     :: [Attribute 'TagType.H1]            -> [Node 'Cat.Phrasing] -> Node 'Cat.Heading
-  Ul     :: [Attribute 'TagType.UnorderedList] -> [Node 'Cat.ListItem] -> Node 'Cat.Flow
-  Li     :: [Attribute 'TagType.ListItem]      -> [Node 'Cat.Flow]     -> Node 'Cat.ListItem
-  Img    :: [Attribute 'TagType.Image]                                 -> Node 'Cat.Phrasing
-  Iframe :: [Attribute 'TagType.IFrame]                                -> Node 'Cat.Phrasing
+type Document =
+  ChildHTML 'TagType.Document
 
-type family ElementCategory (eType :: TagType.TagType) :: Cat.Category
+data ChildHTML (parent :: TagType.TagType) where
+  A      :: ValidChild 'TagType.Anchor        parent => [Attribute 'TagType.Anchor]        -> [ChildHTML 'TagType.Anchor]        -> ChildHTML parent
+  Div    :: ValidChild 'TagType.Division      parent => [Attribute 'TagType.Division]      -> [ChildHTML 'TagType.Division]      -> ChildHTML parent
+  Span   :: ValidChild 'TagType.Span          parent => [Attribute 'TagType.Span]          -> [ChildHTML 'TagType.Span]          -> ChildHTML parent
+  P      :: ValidChild 'TagType.Paragraph     parent => [Attribute 'TagType.Paragraph]     -> [ChildHTML 'TagType.Paragraph]     -> ChildHTML parent
+  H1     :: ValidChild 'TagType.H1            parent => [Attribute 'TagType.H1]            -> [ChildHTML 'TagType.H1]            -> ChildHTML parent
+  Ul     :: ValidChild 'TagType.UnorderedList parent => [Attribute 'TagType.UnorderedList] -> [ChildHTML 'TagType.UnorderedList] -> ChildHTML parent
+  Li     :: ValidChild 'TagType.ListItem      parent => [Attribute 'TagType.ListItem]      -> [ChildHTML 'TagType.ListItem]      -> ChildHTML parent
+  Img    :: ValidChild 'TagType.Image         parent => [Attribute 'TagType.Image]                                               -> ChildHTML parent
+  Iframe :: ValidChild 'TagType.IFrame        parent => [Attribute 'TagType.IFrame]                                              -> ChildHTML parent
+  Html   :: ValidChild 'TagType.Html          parent => [Attribute 'TagType.Html]          -> [ChildHTML 'TagType.Html]          -> ChildHTML parent
 
-type instance ElementCategory 'TagType.Anchor        = 'Cat.Phrasing
-type instance ElementCategory 'TagType.Division      = 'Cat.Flow
-type instance ElementCategory 'TagType.Span          = 'Cat.Phrasing
-type instance ElementCategory 'TagType.Paragraph     = 'Cat.Flow
-type instance ElementCategory 'TagType.H1            = 'Cat.Heading
-type instance ElementCategory 'TagType.UnorderedList = 'Cat.Flow
-type instance ElementCategory 'TagType.ListItem      = 'Cat.ListItem
-type instance ElementCategory 'TagType.Image         = 'Cat.Phrasing
-type instance ElementCategory 'TagType.IFrame        = 'Cat.Phrasing
--- TODO: Add remaining HTML elements.
+type family ValidChildrenFor (parent :: TagType.TagType) :: [TagType.TagType]
+
+type instance ValidChildrenFor 'TagType.Anchor        = FlowWithoutAnchor
+type instance ValidChildrenFor 'TagType.Division      = Flow
+type instance ValidChildrenFor 'TagType.Span          = [ 'TagType.Anchor, 'TagType.Span, 'TagType.Image, 'TagType.IFrame ]
+type instance ValidChildrenFor 'TagType.Paragraph     = [ 'TagType.Anchor, 'TagType.Span, 'TagType.Image, 'TagType.IFrame ]
+type instance ValidChildrenFor 'TagType.H1            = [ 'TagType.Anchor, 'TagType.Span, 'TagType.Image, 'TagType.IFrame ]
+type instance ValidChildrenFor 'TagType.UnorderedList = '[ TagType.ListItem ]
+type instance ValidChildrenFor 'TagType.ListItem      = [ 'TagType.Division, 'TagType.Paragraph, 'TagType.UnorderedList ]
+type instance ValidChildrenFor 'TagType.Image         = '[]
+type instance ValidChildrenFor 'TagType.IFrame        = '[]
+type instance ValidChildrenFor 'TagType.Html          = '[ TagType.Division ]
+type instance ValidChildrenFor 'TagType.Document      = '[ TagType.Html ]
+
+type FlowWithoutAnchor = [ 'TagType.Division, 'TagType.Image, 'TagType.Paragraph, 'TagType.UnorderedList ]
+
+type Flow = 'TagType.Anchor ': FlowWithoutAnchor

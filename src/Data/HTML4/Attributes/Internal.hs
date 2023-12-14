@@ -23,7 +23,7 @@ type ValidAttribute attributeType tag =
 type family ValidElementsFor (attribute :: A.AttributeType) :: [E.TagType] where
   ValidElementsFor A.Id       = [ 'E.Division, 'E.Span ]
   ValidElementsFor A.Class    = '[ E.Division ]
-  ValidElementsFor A.Width    = '[]
+  ValidElementsFor A.Width    = '[ E.Paragraph ]
   ValidElementsFor A.Disabled = '[ E.Anchor ]
 
 -- TODO: Add HTMX, Aria, and Event Listener attributes
