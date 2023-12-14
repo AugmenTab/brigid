@@ -47,6 +47,7 @@ library
       Data.HTML4.Elements
       Data.HTML4.Elements.Category
       Data.HTML4.Elements.Internal
+      Data.HTML4.Elements.TagGroups
       Data.HTML4.Elements.Tags
       Data.HTML4.Elements.TagType
       Data.HTML4.Render.Text
