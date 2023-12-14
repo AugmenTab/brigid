@@ -123,62 +123,62 @@ module Data.HTML4.Elements
 import Prelude hiding (div, span)
 
 import Data.HTML4.Attributes.Internal (Attribute(..))
+import Data.HTML4.Elements.Children (ValidChild)
 import Data.HTML4.Elements.Tags qualified as Tags
-import Data.HTML4.Elements.TagType qualified as TagType
-import Data.HTML4.Elements.Internal (Document, HTML, ChildHTML(..), ValidChild)
+import Data.HTML4.Elements.Internal (Document, HTML, ChildHTML(..))
 
-a :: ValidChild 'TagType.Anchor parent
-  => [Attribute 'TagType.Anchor]
-  -> [ChildHTML 'TagType.Anchor]
+a :: ValidChild Tags.Anchor parent
+  => [Attribute Tags.Anchor]
+  -> [ChildHTML Tags.Anchor]
   -> ChildHTML parent
 a = A
 
-div :: ValidChild 'TagType.Division parent
-    => [Attribute 'TagType.Division]
-    -> [ChildHTML 'TagType.Division]
+div :: ValidChild Tags.Division parent
+    => [Attribute Tags.Division]
+    -> [ChildHTML Tags.Division]
     -> ChildHTML parent
 div = Div
 
-span :: ValidChild 'TagType.Span parent
-     => [Attribute 'TagType.Span]
-     -> [ChildHTML 'TagType.Span]
+span :: ValidChild Tags.Span parent
+     => [Attribute Tags.Span]
+     -> [ChildHTML Tags.Span]
      -> ChildHTML parent
 span = Span
 
-p :: ValidChild 'TagType.Paragraph parent
-  => [Attribute 'TagType.Paragraph]
-  -> [ChildHTML 'TagType.Paragraph]
+p :: ValidChild Tags.Paragraph parent
+  => [Attribute Tags.Paragraph]
+  -> [ChildHTML Tags.Paragraph]
   -> ChildHTML parent
 p = P
 
-h1 :: ValidChild 'TagType.H1 parent
-   => [Attribute 'TagType.H1]
-   -> [ChildHTML 'TagType.H1]
+h1 :: ValidChild Tags.H1 parent
+   => [Attribute Tags.H1]
+   -> [ChildHTML Tags.H1]
    -> ChildHTML parent
 h1 = H1
 
-ul :: ValidChild 'TagType.UnorderedList parent
-   => [Attribute 'TagType.UnorderedList]
-   -> [ChildHTML 'TagType.UnorderedList]
+ul :: ValidChild Tags.UnorderedList parent
+   => [Attribute Tags.UnorderedList]
+   -> [ChildHTML Tags.UnorderedList]
    -> ChildHTML parent
 ul = Ul
 
-li :: ValidChild 'TagType.ListItem parent
-   => [Attribute 'TagType.ListItem]
-   -> [ChildHTML 'TagType.ListItem]
+li :: ValidChild Tags.ListItem parent
+   => [Attribute Tags.ListItem]
+   -> [ChildHTML Tags.ListItem]
    -> ChildHTML parent
 li = Li
 
-img :: ValidChild 'TagType.Image parent
-    => [Attribute 'TagType.Image] -> ChildHTML parent
+img :: ValidChild Tags.Image parent
+    => [Attribute Tags.Image] -> ChildHTML parent
 img = Img
 
-iframe :: ValidChild 'TagType.IFrame parent
-       => [Attribute 'TagType.IFrame] -> ChildHTML parent
+iframe :: ValidChild Tags.IFrame parent
+       => [Attribute Tags.IFrame] -> ChildHTML parent
 iframe = Iframe
 
-html :: ValidChild 'TagType.Html 'TagType.Document
-     => [Attribute 'TagType.Html]
-     -> [ChildHTML 'TagType.Html]
+html :: ValidChild Tags.Html Tags.Document
+     => [Attribute Tags.Html]
+     -> [ChildHTML Tags.Html]
      -> Document
 html = Html
