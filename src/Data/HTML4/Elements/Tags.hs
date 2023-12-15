@@ -1,7 +1,8 @@
 {-# LANGUAGE DataKinds #-}
 
 module Data.HTML4.Elements.Tags
-  ( Comment
+  ( Document
+  , Comment
   , Text
   , Anchor
   , Abbreviation
@@ -118,6 +119,12 @@ module Data.HTML4.Elements.Tags
   ) where
 
 import Data.HTML4.Elements.TagType qualified as TagType
+
+-- This type synonym represents the HTML document itself. It exists so that the
+-- HTML tag can have a parent. It is important that this tag type synonym never
+-- be given a corresponding constructor for `ChildHTML`, and that it never be
+-- exported from `Data.HTML.Elements`.
+type Document = 'TagType.Document
 
 -- | This type synonym represents an HTML comment.
 type Comment = 'TagType.Comment

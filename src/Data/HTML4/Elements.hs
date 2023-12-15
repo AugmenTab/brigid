@@ -131,54 +131,54 @@ a :: ValidChild Tags.Anchor parent
   => [Attribute Tags.Anchor]
   -> [ChildHTML Tags.Anchor]
   -> ChildHTML parent
-a = A
+a = Tag_Anchor
 
 div :: ValidChild Tags.Division parent
     => [Attribute Tags.Division]
     -> [ChildHTML Tags.Division]
     -> ChildHTML parent
-div = Div
-
-span :: ValidChild Tags.Span parent
-     => [Attribute Tags.Span]
-     -> [ChildHTML Tags.Span]
-     -> ChildHTML parent
-span = Span
-
-p :: ValidChild Tags.Paragraph parent
-  => [Attribute Tags.Paragraph]
-  -> [ChildHTML Tags.Paragraph]
-  -> ChildHTML parent
-p = P
+div = Tag_Division
 
 h1 :: ValidChild Tags.H1 parent
    => [Attribute Tags.H1]
    -> [ChildHTML Tags.H1]
    -> ChildHTML parent
-h1 = H1
-
-ul :: ValidChild Tags.UnorderedList parent
-   => [Attribute Tags.UnorderedList]
-   -> [ChildHTML Tags.UnorderedList]
-   -> ChildHTML parent
-ul = Ul
-
-li :: ValidChild Tags.ListItem parent
-   => [Attribute Tags.ListItem]
-   -> [ChildHTML Tags.ListItem]
-   -> ChildHTML parent
-li = Li
-
-img :: ValidChild Tags.Image parent
-    => [Attribute Tags.Image] -> ChildHTML parent
-img = Img
-
-iframe :: ValidChild Tags.IFrame parent
-       => [Attribute Tags.IFrame] -> ChildHTML parent
-iframe = Iframe
+h1 = Tag_H1
 
 html :: ValidChild Tags.Html Tags.Document
      => [Attribute Tags.Html]
      -> [ChildHTML Tags.Html]
      -> Document
-html = Html
+html = Tag_Html
+
+iframe :: ValidChild Tags.IFrame parent
+       => [Attribute Tags.IFrame] -> ChildHTML parent
+iframe = Tag_IFrame
+
+img :: ValidChild Tags.Image parent
+    => [Attribute Tags.Image] -> ChildHTML parent
+img = Tag_Image
+
+li :: ValidChild Tags.ListItem parent
+   => [Attribute Tags.ListItem]
+   -> [ChildHTML Tags.ListItem]
+   -> ChildHTML parent
+li = Tag_ListItem
+
+p :: ValidChild Tags.Paragraph parent
+  => [Attribute Tags.Paragraph]
+  -> [ChildHTML Tags.Paragraph]
+  -> ChildHTML parent
+p = Tag_Paragraph
+
+span :: ValidChild Tags.Span parent
+     => [Attribute Tags.Span]
+     -> [ChildHTML Tags.Span]
+     -> ChildHTML parent
+span = Tag_Span
+
+ul :: ValidChild Tags.UnorderedList parent
+   => [Attribute Tags.UnorderedList]
+   -> [ChildHTML Tags.UnorderedList]
+   -> ChildHTML parent
+ul = Tag_UnorderedList
