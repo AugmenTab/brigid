@@ -5,29 +5,29 @@ module Data.HTML4.Elements.TagType
       , Text
       , Anchor
       , Abbreviation
-      , Address
+      , ContactAddress
       , Area
       , Article
       , Aside
       , Audio
-      , Bold
+      , BringAttentionTo
       , Base
-      , BiDirectionalIsolation
-      , BiDirectionalOverride
+      , BidirectionalIsolation
+      , BidirectionalOverride
       , Blockquote
       , Body
-      , Break
+      , LineBreak
       , Button
       , Canvas
-      , Caption
-      , Cite
+      , TableCaption
+      , Citation
       , Code
-      , Column
-      , ColumnGroup
+      , TableColumn
+      , TableColumnGroup
       , Data
       , DataList
-      , Description
-      , Deletion
+      , DescriptionDetails
+      , DeletedText
       , Details
       , Definition
       , Dialog
@@ -52,11 +52,11 @@ module Data.HTML4.Elements.TagType
       , HeadingGroup
       , HorizontalRule
       , Html
-      , Italic
+      , IdiomaticText
       , IFrame
       , Image
       , Input
-      , Insertion
+      , InsertedText
       , KeyboardInput
       , Label
       , Legend
@@ -83,16 +83,16 @@ module Data.HTML4.Elements.TagType
       , RubyParenthesis
       , RubyText
       , Ruby
+      , Strikethrough
       , Sample
       , Script
       , Search
       , Section
       , Select
       , Slot
-      , Small
+      , SideComment
       , Source
       , Span
-      , Strikethrough
       , Strong
       , Style
       , Subscript
@@ -101,21 +101,21 @@ module Data.HTML4.Elements.TagType
       , Table
       , TableBody
       , TableDataCell
-      , TableFooter
-      , TableHeaderCell
-      , TableHeader
-      , TableRow
-      , Template
+      , ContentTemplate
       , TextArea
+      , TableFoot
+      , TableHeader
+      , TableHead
       , Time
       , Title
+      , TableRow
       , Track
       , Underline
       , UnorderedList
       , Variable
       , Video
       , WordBreakOpportunity
-    )
+      )
   ) where
 
 data TagType
@@ -124,29 +124,29 @@ data TagType
   | Text
   | Anchor
   | Abbreviation
-  | Address
+  | ContactAddress
   | Area
   | Article
   | Aside
   | Audio
-  | Bold
+  | BringAttentionTo
   | Base
-  | BiDirectionalIsolation
-  | BiDirectionalOverride
+  | BidirectionalIsolation
+  | BidirectionalOverride
   | Blockquote
   | Body
-  | Break
+  | LineBreak
   | Button
   | Canvas
-  | Caption
-  | Cite
+  | TableCaption
+  | Citation
   | Code
-  | Column
-  | ColumnGroup
+  | TableColumn
+  | TableColumnGroup
   | Data
   | DataList
-  | Description
-  | Deletion
+  | DescriptionDetails
+  | DeletedText
   | Details
   | Definition
   | Dialog
@@ -171,11 +171,11 @@ data TagType
   | HeadingGroup
   | HorizontalRule
   | Html
-  | Italic
+  | IdiomaticText
   | IFrame
   | Image
   | Input
-  | Insertion
+  | InsertedText
   | KeyboardInput
   | Label
   | Legend
@@ -202,16 +202,16 @@ data TagType
   | RubyParenthesis
   | RubyText
   | Ruby
+  | Strikethrough
   | Sample
   | Script
   | Search
   | Section
   | Select
   | Slot
-  | Small
+  | SideComment
   | Source
   | Span
-  | Strikethrough
   | Strong
   | Style
   | Subscript
@@ -220,14 +220,14 @@ data TagType
   | Table
   | TableBody
   | TableDataCell
-  | TableFooter
-  | TableHeaderCell
-  | TableHeader
-  | TableRow
-  | Template
+  | ContentTemplate
   | TextArea
+  | TableFoot
+  | TableHeader
+  | TableHead
   | Time
   | Title
+  | TableRow
   | Track
   | Underline
   | UnorderedList

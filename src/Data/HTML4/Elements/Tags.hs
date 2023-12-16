@@ -6,29 +6,29 @@ module Data.HTML4.Elements.Tags
   , Text
   , Anchor
   , Abbreviation
-  , Address
+  , ContactAddress
   , Area
   , Article
   , Aside
   , Audio
-  , Bold
+  , BringAttentionTo
   , Base
-  , BiDirectionalIsolation
-  , BiDirectionalOverride
+  , BidirectionalIsolation
+  , BidirectionalOverride
   , Blockquote
   , Body
-  , Break
+  , LineBreak
   , Button
   , Canvas
-  , Caption
-  , Cite
+  , TableCaption
+  , Citation
   , Code
-  , Column
-  , ColumnGroup
+  , TableColumn
+  , TableColumnGroup
   , Data
   , DataList
-  , Description
-  , Deletion
+  , DescriptionDetails
+  , DeletedText
   , Details
   , Definition
   , Dialog
@@ -53,11 +53,11 @@ module Data.HTML4.Elements.Tags
   , HeadingGroup
   , HorizontalRule
   , Html
-  , Italic
+  , IdiomaticText
   , IFrame
   , Image
   , Input
-  , Insertion
+  , InsertedText
   , KeyboardInput
   , Label
   , Legend
@@ -84,16 +84,16 @@ module Data.HTML4.Elements.Tags
   , RubyParenthesis
   , RubyText
   , Ruby
+  , Strikethrough
   , Sample
   , Script
   , Search
   , Section
   , Select
   , Slot
-  , Small
+  , SideComment
   , Source
   , Span
-  , Strikethrough
   , Strong
   , Style
   , Subscript
@@ -102,14 +102,14 @@ module Data.HTML4.Elements.Tags
   , Table
   , TableBody
   , TableDataCell
-  , TableFooter
-  , TableHeaderCell
-  , TableHeader
-  , TableRow
-  , Template
+  , ContentTemplate
   , TextArea
+  , TableFoot
+  , TableHeader
+  , TableHead
   , Time
   , Title
+  , TableRow
   , Track
   , Underline
   , UnorderedList
@@ -139,7 +139,7 @@ type Anchor = 'TagType.Anchor
 type Abbreviation = 'TagType.Abbreviation
 
 -- | This type synonym represents the @\<address>@ element.
-type Address = 'TagType.Address
+type ContactAddress = 'TagType.ContactAddress
 
 -- | This type synonym represents the @\<area>@ element.
 type Area = 'TagType.Area
@@ -154,16 +154,16 @@ type Aside = 'TagType.Aside
 type Audio = 'TagType.Audio
 
 -- | This type synonym represents the @\<b>@ element.
-type Bold = 'TagType.Bold
+type BringAttentionTo = 'TagType.BringAttentionTo
 
 -- | This type synonym represents the @\<base>@ element.
 type Base = 'TagType.Base
 
 -- | This type synonym represents the @\<bdi>@ element.
-type BiDirectionalIsolation = 'TagType.BiDirectionalIsolation
+type BidirectionalIsolation = 'TagType.BidirectionalIsolation
 
 -- | This type synonym represents the @\<bdo>@ element.
-type BiDirectionalOverride = 'TagType.BiDirectionalOverride
+type BidirectionalOverride = 'TagType.BidirectionalOverride
 
 -- | This type synonym represents the @\<blockquote>@ element.
 type Blockquote = 'TagType.Blockquote
@@ -172,7 +172,7 @@ type Blockquote = 'TagType.Blockquote
 type Body = 'TagType.Body
 
 -- | This type synonym represents the @\<br>@ element.
-type Break = 'TagType.Break
+type LineBreak = 'TagType.LineBreak
 
 -- | This type synonym represents the @\<button>@ element.
 type Button = 'TagType.Button
@@ -181,19 +181,19 @@ type Button = 'TagType.Button
 type Canvas = 'TagType.Canvas
 
 -- | This type synonym represents the @\<caption>@ element.
-type Caption = 'TagType.Caption
+type TableCaption = 'TagType.TableCaption
 
 -- | This type synonym represents the @\<cite>@ element.
-type Cite = 'TagType.Cite
+type Citation = 'TagType.Citation
 
 -- | This type synonym represents the @\<code>@ element.
 type Code = 'TagType.Code
 
 -- | This type synonym represents the @\<col>@ element.
-type Column = 'TagType.Column
+type TableColumn = 'TagType.TableColumn
 
 -- | This type synonym represents the @\<colgroup>@ element.
-type ColumnGroup = 'TagType.ColumnGroup
+type TableColumnGroup = 'TagType.TableColumnGroup
 
 -- | This type synonym represents the @\<data>@ element.
 type Data = 'TagType.Data
@@ -202,10 +202,10 @@ type Data = 'TagType.Data
 type DataList = 'TagType.DataList
 
 -- | This type synonym represents the @\<dd>@ element.
-type Description = 'TagType.Description
+type DescriptionDetails = 'TagType.DescriptionDetails
 
 -- | This type synonym represents the @\<del>@ element.
-type Deletion = 'TagType.Deletion
+type DeletedText = 'TagType.DeletedText
 
 -- | This type synonym represents the @\<details>@ element.
 type Details = 'TagType.Details
@@ -282,7 +282,7 @@ type HorizontalRule = 'TagType.HorizontalRule
 type Html = 'TagType.Html
 
 -- | This type synonym represents the @\<i>@ element.
-type Italic = 'TagType.Italic
+type IdiomaticText = 'TagType.IdiomaticText
 
 -- | This type synonym represents the @\<iframe>@ element.
 type IFrame = 'TagType.IFrame
@@ -294,7 +294,7 @@ type Image = 'TagType.Image
 type Input = 'TagType.Input
 
 -- | This type synonym represents the @\<ins>@ element.
-type Insertion = 'TagType.Insertion
+type InsertedText = 'TagType.InsertedText
 
 -- | This type synonym represents the @\<kbd>@ element.
 type KeyboardInput = 'TagType.KeyboardInput
@@ -374,6 +374,9 @@ type RubyText = 'TagType.RubyText
 -- | This type synonym represents the @\<ruby>@ element.
 type Ruby = 'TagType.Ruby
 
+-- | This type synonym represents the @\<s>@ element.
+type Strikethrough = 'TagType.Strikethrough
+
 -- | This type synonym represents the @\<samp>@ element.
 type Sample = 'TagType.Sample
 
@@ -393,16 +396,13 @@ type Select = 'TagType.Select
 type Slot = 'TagType.Slot
 
 -- | This type synonym represents the @\<small>@ element.
-type Small = 'TagType.Small
+type SideComment = 'TagType.SideComment
 
 -- | This type synonym represents the @\<source>@ element.
 type Source = 'TagType.Source
 
 -- | This type synonym represents the @\<span>@ element.
 type Span = 'TagType.Span
-
--- | This type synonym represents the @\<s>@ element.
-type Strikethrough = 'TagType.Strikethrough
 
 -- | This type synonym represents the @\<strong>@ element.
 type Strong = 'TagType.Strong
@@ -428,29 +428,29 @@ type TableBody = 'TagType.TableBody
 -- | This type synonym represents the @\<td>@ element.
 type TableDataCell = 'TagType.TableDataCell
 
--- | This type synonym represents the @\<tfoot>@ element.
-type TableFooter = 'TagType.TableFooter
-
--- | This type synonym represents the @\<th>@ element.
-type TableHeaderCell = 'TagType.TableHeaderCell
-
--- | This type synonym represents the @\<thead>@ element.
-type TableHeader = 'TagType.TableHeader
-
--- | This type synonym represents the @\<tr>@ element.
-type TableRow = 'TagType.TableRow
-
 -- | This type synonym represents the @\<template>@ element.
-type Template = 'TagType.Template
+type ContentTemplate = 'TagType.ContentTemplate
 
 -- | This type synonym represents the @\<textarea>@ element.
 type TextArea = 'TagType.TextArea
+
+-- | This type synonym represents the @\<tfoot>@ element.
+type TableFoot = 'TagType.TableFoot
+
+-- | This type synonym represents the @\<th>@ element.
+type TableHeader = 'TagType.TableHeader
+
+-- | This type synonym represents the @\<thead>@ element.
+type TableHead = 'TagType.TableHead
 
 -- | This type synonym represents the @\<time>@ element.
 type Time = 'TagType.Time
 
 -- | This type synonym represents the @\<title>@ element.
 type Title = 'TagType.Title
+
+-- | This type synonym represents the @\<tr>@ element.
+type TableRow = 'TagType.TableRow
 
 -- | This type synonym represents the @\<track>@ element.
 type Track = 'TagType.Track

@@ -8,29 +8,29 @@ module Data.HTML4.Elements
   , Tags.Text
   , Tags.Anchor, a
   , Tags.Abbreviation
-  , Tags.Address
+  , Tags.ContactAddress
   , Tags.Area
   , Tags.Article
   , Tags.Aside
   , Tags.Audio
-  , Tags.Bold
+  , Tags.BringAttentionTo
   , Tags.Base
-  , Tags.BiDirectionalIsolation
-  , Tags.BiDirectionalOverride
+  , Tags.BidirectionalIsolation
+  , Tags.BidirectionalOverride
   , Tags.Blockquote
-  , Tags.Body
-  , Tags.Break
+  , Tags.Body, body
+  , Tags.LineBreak
   , Tags.Button
   , Tags.Canvas
-  , Tags.Caption
-  , Tags.Cite
+  , Tags.TableCaption
+  , Tags.Citation
   , Tags.Code
-  , Tags.Column
-  , Tags.ColumnGroup
+  , Tags.TableColumn
+  , Tags.TableColumnGroup
   , Tags.Data
   , Tags.DataList
-  , Tags.Description
-  , Tags.Deletion
+  , Tags.DescriptionDetails
+  , Tags.DeletedText
   , Tags.Details
   , Tags.Definition
   , Tags.Dialog
@@ -55,11 +55,11 @@ module Data.HTML4.Elements
   , Tags.HeadingGroup
   , Tags.HorizontalRule
   , Tags.Html, html
-  , Tags.Italic
+  , Tags.IdiomaticText
   , Tags.IFrame, iframe
   , Tags.Image, img
   , Tags.Input
-  , Tags.Insertion
+  , Tags.InsertedText
   , Tags.KeyboardInput
   , Tags.Label
   , Tags.Legend
@@ -86,16 +86,16 @@ module Data.HTML4.Elements
   , Tags.RubyParenthesis
   , Tags.RubyText
   , Tags.Ruby
+  , Tags.Strikethrough
   , Tags.Sample
   , Tags.Script
   , Tags.Search
   , Tags.Section
   , Tags.Select
   , Tags.Slot
-  , Tags.Small
+  , Tags.SideComment
   , Tags.Source
   , Tags.Span, span
-  , Tags.Strikethrough
   , Tags.Strong
   , Tags.Style
   , Tags.Subscript
@@ -104,14 +104,14 @@ module Data.HTML4.Elements
   , Tags.Table
   , Tags.TableBody
   , Tags.TableDataCell
-  , Tags.TableFooter
-  , Tags.TableHeaderCell
-  , Tags.TableHeader
-  , Tags.TableRow
-  , Tags.Template
+  , Tags.ContentTemplate
   , Tags.TextArea
+  , Tags.TableFoot
+  , Tags.TableHeader
+  , Tags.TableHead
   , Tags.Time
   , Tags.Title
+  , Tags.TableRow
   , Tags.Track
   , Tags.Underline
   , Tags.UnorderedList, ul
@@ -132,6 +132,12 @@ a :: ValidChild Tags.Anchor parent
   -> [ChildHTML Tags.Anchor]
   -> ChildHTML parent
 a = Tag_Anchor
+
+body :: ValidChild Tags.Body parent
+     => [Attribute Tags.Body]
+     -> [ChildHTML Tags.Body]
+     -> ChildHTML parent
+body = Tag_Body
 
 div :: ValidChild Tags.Division parent
     => [Attribute Tags.Division]

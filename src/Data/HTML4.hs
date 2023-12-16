@@ -11,7 +11,9 @@ import Data.HTML4.Elements qualified as E
 documentExample :: E.Document
 documentExample =
   E.html []
-    [ example
+    [ E.body []
+        [ example
+        ]
     ]
 
 example :: E.HTML E.Division parent
@@ -19,16 +21,13 @@ example =
   E.div [ A.id "div1", A.class_ "myCoolClass" ]
     [ E.div []
         [ E.p [ A.width 100 ]
-            [ E.a []
-                [ E.ul []
-                    [ E.li []
-                        [ E.div [] $
-                            listExample
-                        ]
-                 -- , E.div [] [] -- This fails, because Div produces Flow, not ListItem.
-                    ]
-             -- , E.a [] []
+            []
+        , E.ul []
+            [ E.li []
+                [ E.div [] $
+                    listExample
                 ]
+         -- , E.div [] [] -- This fails, because Div produces Flow, not ListItem.
             ]
         ]
     ]

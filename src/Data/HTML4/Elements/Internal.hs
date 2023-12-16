@@ -9,29 +9,29 @@ module Data.HTML4.Elements.Internal
       , Tag_Text
       , Tag_Anchor
       , Tag_Abbreviation
-      , Tag_Address
+      , Tag_ContactAddress
       , Tag_Area
       , Tag_Article
       , Tag_Aside
       , Tag_Audio
-      , Tag_Bold
+      , Tag_BringAttentionTo
       , Tag_Base
-      , Tag_BiDirectionalIsolation
-      , Tag_BiDirectionalOverride
+      , Tag_BidirectionalIsolation
+      , Tag_BidirectionalOverride
       , Tag_Blockquote
       , Tag_Body
-      , Tag_Break
+      , Tag_LineBreak
       , Tag_Button
       , Tag_Canvas
-      , Tag_Caption
-      , Tag_Cite
+      , Tag_TableCaption
+      , Tag_Citation
       , Tag_Code
-      , Tag_Column
-      , Tag_ColumnGroup
+      , Tag_TableColumn
+      , Tag_TableColumnGroup
       , Tag_Data
       , Tag_DataList
-      , Tag_Description
-      , Tag_Deletion
+      , Tag_DescriptionDetails
+      , Tag_DeletedText
       , Tag_Details
       , Tag_Definition
       , Tag_Dialog
@@ -56,11 +56,11 @@ module Data.HTML4.Elements.Internal
       , Tag_HeadingGroup
       , Tag_HorizontalRule
       , Tag_Html
-      , Tag_Italic
+      , Tag_IdiomaticText
       , Tag_IFrame
       , Tag_Image
       , Tag_Input
-      , Tag_Insertion
+      , Tag_InsertedText
       , Tag_KeyboardInput
       , Tag_Label
       , Tag_Legend
@@ -93,7 +93,7 @@ module Data.HTML4.Elements.Internal
       , Tag_Section
       , Tag_Select
       , Tag_Slot
-      , Tag_Small
+      , Tag_SideComment
       , Tag_Source
       , Tag_Span
       , Tag_Strikethrough
@@ -105,14 +105,14 @@ module Data.HTML4.Elements.Internal
       , Tag_Table
       , Tag_TableBody
       , Tag_TableDataCell
-      , Tag_TableFooter
-      , Tag_TableHeaderCell
-      , Tag_TableHeader
-      , Tag_TableRow
-      , Tag_Template
+      , Tag_ContentTemplate
       , Tag_TextArea
+      , Tag_TableFoot
+      , Tag_TableHeader
+      , Tag_TableHead
       , Tag_Time
       , Tag_Title
+      , Tag_TableRow
       , Tag_Track
       , Tag_Underline
       , Tag_UnorderedList
@@ -121,6 +121,8 @@ module Data.HTML4.Elements.Internal
       , Tag_WordBreakOpportunity
       )
   ) where
+
+import Data.Text qualified as T
 
 import Data.HTML4.Attributes.Internal (Attribute)
 import Data.HTML4.Elements.Children (ValidChild)
@@ -135,14 +137,12 @@ type Document =
 data ChildHTML (parent :: TagType) where
   Tag_Comment
     :: ValidChild 'Comment parent
-    => [Attribute 'Comment]
-    -> [ChildHTML 'Comment]
+    => T.Text
     -> ChildHTML parent
 
   Tag_Text
     :: ValidChild 'Text parent
-    => [Attribute 'Text]
-    -> [ChildHTML 'Text]
+    => T.Text
     -> ChildHTML parent
 
   Tag_Anchor
@@ -157,16 +157,15 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Abbreviation]
     -> ChildHTML parent
 
-  Tag_Address
-    :: ValidChild 'Address parent
-    => [Attribute 'Address]
-    -> [ChildHTML 'Address]
+  Tag_ContactAddress
+    :: ValidChild 'ContactAddress parent
+    => [Attribute 'ContactAddress]
+    -> [ChildHTML 'ContactAddress]
     -> ChildHTML parent
 
   Tag_Area
     :: ValidChild 'Area parent
     => [Attribute 'Area]
-    -> [ChildHTML 'Area]
     -> ChildHTML parent
 
   Tag_Article
@@ -187,28 +186,27 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Audio]
     -> ChildHTML parent
 
-  Tag_Bold
-    :: ValidChild 'Bold parent
-    => [Attribute 'Bold]
-    -> [ChildHTML 'Bold]
+  Tag_BringAttentionTo
+    :: ValidChild 'BringAttentionTo parent
+    => [Attribute 'BringAttentionTo]
+    -> [ChildHTML 'BringAttentionTo]
     -> ChildHTML parent
 
   Tag_Base
     :: ValidChild 'Base parent
     => [Attribute 'Base]
-    -> [ChildHTML 'Base]
     -> ChildHTML parent
 
-  Tag_BiDirectionalIsolation
-    :: ValidChild 'BiDirectionalIsolation parent
-    => [Attribute 'BiDirectionalIsolation]
-    -> [ChildHTML 'BiDirectionalIsolation]
+  Tag_BidirectionalIsolation
+    :: ValidChild 'BidirectionalIsolation parent
+    => [Attribute 'BidirectionalIsolation]
+    -> [ChildHTML 'BidirectionalIsolation]
     -> ChildHTML parent
 
-  Tag_BiDirectionalOverride
-    :: ValidChild 'BiDirectionalOverride parent
-    => [Attribute 'BiDirectionalOverride]
-    -> [ChildHTML 'BiDirectionalOverride]
+  Tag_BidirectionalOverride
+    :: ValidChild 'BidirectionalOverride parent
+    => [Attribute 'BidirectionalOverride]
+    -> [ChildHTML 'BidirectionalOverride]
     -> ChildHTML parent
 
   Tag_Blockquote
@@ -223,10 +221,9 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Body]
     -> ChildHTML parent
 
-  Tag_Break
-    :: ValidChild 'Break parent
-    => [Attribute 'Break]
-    -> [ChildHTML 'Break]
+  Tag_LineBreak
+    :: ValidChild 'LineBreak parent
+    => [Attribute 'LineBreak]
     -> ChildHTML parent
 
   Tag_Button
@@ -241,16 +238,16 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Canvas]
     -> ChildHTML parent
 
-  Tag_Caption
-    :: ValidChild 'Caption parent
-    => [Attribute 'Caption]
-    -> [ChildHTML 'Caption]
+  Tag_TableCaption
+    :: ValidChild 'TableCaption parent
+    => [Attribute 'TableCaption]
+    -> [ChildHTML 'TableCaption]
     -> ChildHTML parent
 
-  Tag_Cite
-    :: ValidChild 'Cite parent
-    => [Attribute 'Cite]
-    -> [ChildHTML 'Cite]
+  Tag_Citation
+    :: ValidChild 'Citation parent
+    => [Attribute 'Citation]
+    -> [ChildHTML 'Citation]
     -> ChildHTML parent
 
   Tag_Code
@@ -259,16 +256,16 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Code]
     -> ChildHTML parent
 
-  Tag_Column
-    :: ValidChild 'Column parent
-    => [Attribute 'Column]
-    -> [ChildHTML 'Column]
+  Tag_TableColumn
+    :: ValidChild 'TableColumn parent
+    => [Attribute 'TableColumn]
+    -> [ChildHTML 'TableColumn]
     -> ChildHTML parent
 
-  Tag_ColumnGroup
-    :: ValidChild 'ColumnGroup parent
-    => [Attribute 'ColumnGroup]
-    -> [ChildHTML 'ColumnGroup]
+  Tag_TableColumnGroup
+    :: ValidChild 'TableColumnGroup parent
+    => [Attribute 'TableColumnGroup]
+    -> [ChildHTML 'TableColumnGroup]
     -> ChildHTML parent
 
   Tag_Data
@@ -283,16 +280,16 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'DataList]
     -> ChildHTML parent
 
-  Tag_Description
-    :: ValidChild 'Description parent
-    => [Attribute 'Description]
-    -> [ChildHTML 'Description]
+  Tag_DescriptionDetails
+    :: ValidChild 'DescriptionDetails parent
+    => [Attribute 'DescriptionDetails]
+    -> [ChildHTML 'DescriptionDetails]
     -> ChildHTML parent
 
-  Tag_Deletion
-    :: ValidChild 'Deletion parent
-    => [Attribute 'Deletion]
-    -> [ChildHTML 'Deletion]
+  Tag_DeletedText
+    :: ValidChild 'DeletedText parent
+    => [Attribute 'DeletedText]
+    -> [ChildHTML 'DeletedText]
     -> ChildHTML parent
 
   Tag_Details
@@ -340,7 +337,6 @@ data ChildHTML (parent :: TagType) where
   Tag_Embed
     :: ValidChild 'Embed parent
     => [Attribute 'Embed]
-    -> [ChildHTML 'Embed]
     -> ChildHTML parent
 
   Tag_Fieldset
@@ -430,7 +426,6 @@ data ChildHTML (parent :: TagType) where
   Tag_HorizontalRule
     :: ValidChild 'HorizontalRule parent
     => [Attribute 'HorizontalRule]
-    -> [ChildHTML 'HorizontalRule]
     -> ChildHTML parent
 
   Tag_Html
@@ -439,10 +434,10 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Html]
     -> ChildHTML parent
 
-  Tag_Italic
-    :: ValidChild 'Italic parent
-    => [Attribute 'Italic]
-    -> [ChildHTML 'Italic]
+  Tag_IdiomaticText
+    :: ValidChild 'IdiomaticText parent
+    => [Attribute 'IdiomaticText]
+    -> [ChildHTML 'IdiomaticText]
     -> ChildHTML parent
 
   Tag_IFrame
@@ -458,13 +453,12 @@ data ChildHTML (parent :: TagType) where
   Tag_Input
     :: ValidChild 'Input parent
     => [Attribute 'Input]
-    -> [ChildHTML 'Input]
     -> ChildHTML parent
 
-  Tag_Insertion
-    :: ValidChild 'Insertion parent
-    => [Attribute 'Insertion]
-    -> [ChildHTML 'Insertion]
+  Tag_InsertedText
+    :: ValidChild 'InsertedText parent
+    => [Attribute 'InsertedText]
+    -> [ChildHTML 'InsertedText]
     -> ChildHTML parent
 
   Tag_KeyboardInput
@@ -494,7 +488,6 @@ data ChildHTML (parent :: TagType) where
   Tag_Link
     :: ValidChild 'Link parent
     => [Attribute 'Link]
-    -> [ChildHTML 'Link]
     -> ChildHTML parent
 
   Tag_Main
@@ -524,7 +517,6 @@ data ChildHTML (parent :: TagType) where
   Tag_Meta
     :: ValidChild 'Meta parent
     => [Attribute 'Meta]
-    -> [ChildHTML 'Meta]
     -> ChildHTML parent
 
   Tag_Meter
@@ -623,6 +615,12 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Ruby]
     -> ChildHTML parent
 
+  Tag_Strikethrough
+    :: ValidChild 'Strikethrough parent
+    => [Attribute 'Strikethrough]
+    -> [ChildHTML 'Strikethrough]
+    -> ChildHTML parent
+
   Tag_Sample
     :: ValidChild 'Sample parent
     => [Attribute 'Sample]
@@ -659,10 +657,10 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'Slot]
     -> ChildHTML parent
 
-  Tag_Small
-    :: ValidChild 'Small parent
-    => [Attribute 'Small]
-    -> [ChildHTML 'Small]
+  Tag_SideComment
+    :: ValidChild 'SideComment parent
+    => [Attribute 'SideComment]
+    -> [ChildHTML 'SideComment]
     -> ChildHTML parent
 
   Tag_Source
@@ -675,12 +673,6 @@ data ChildHTML (parent :: TagType) where
     :: ValidChild 'Span parent
     => [Attribute 'Span]
     -> [ChildHTML 'Span]
-    -> ChildHTML parent
-
-  Tag_Strikethrough
-    :: ValidChild 'Strikethrough parent
-    => [Attribute 'Strikethrough]
-    -> [ChildHTML 'Strikethrough]
     -> ChildHTML parent
 
   Tag_Strong
@@ -731,16 +723,22 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'TableDataCell]
     -> ChildHTML parent
 
-  Tag_TableFooter
-    :: ValidChild 'TableFooter parent
-    => [Attribute 'TableFooter]
-    -> [ChildHTML 'TableFooter]
+  Tag_ContentTemplate
+    :: ValidChild 'ContentTemplate parent
+    => [Attribute 'ContentTemplate]
+    -> [ChildHTML 'ContentTemplate]
     -> ChildHTML parent
 
-  Tag_TableHeaderCell
-    :: ValidChild 'TableHeaderCell parent
-    => [Attribute 'TableHeaderCell]
-    -> [ChildHTML 'TableHeaderCell]
+  Tag_TextArea
+    :: ValidChild 'TextArea parent
+    => [Attribute 'TextArea]
+    -> [ChildHTML 'TextArea]
+    -> ChildHTML parent
+
+  Tag_TableFoot
+    :: ValidChild 'TableFoot parent
+    => [Attribute 'TableFoot]
+    -> [ChildHTML 'TableFoot]
     -> ChildHTML parent
 
   Tag_TableHeader
@@ -749,22 +747,10 @@ data ChildHTML (parent :: TagType) where
     -> [ChildHTML 'TableHeader]
     -> ChildHTML parent
 
-  Tag_TableRow
-    :: ValidChild 'TableRow parent
-    => [Attribute 'TableRow]
-    -> [ChildHTML 'TableRow]
-    -> ChildHTML parent
-
-  Tag_Template
-    :: ValidChild 'Template parent
-    => [Attribute 'Template]
-    -> [ChildHTML 'Template]
-    -> ChildHTML parent
-
-  Tag_TextArea
-    :: ValidChild 'TextArea parent
-    => [Attribute 'TextArea]
-    -> [ChildHTML 'TextArea]
+  Tag_TableHead
+    :: ValidChild 'TableHead parent
+    => [Attribute 'TableHead]
+    -> [ChildHTML 'TableHead]
     -> ChildHTML parent
 
   Tag_Time
@@ -777,6 +763,12 @@ data ChildHTML (parent :: TagType) where
     :: ValidChild 'Title parent
     => [Attribute 'Title]
     -> [ChildHTML 'Title]
+    -> ChildHTML parent
+
+  Tag_TableRow
+    :: ValidChild 'TableRow parent
+    => [Attribute 'TableRow]
+    -> [ChildHTML 'TableRow]
     -> ChildHTML parent
 
   Tag_Track
