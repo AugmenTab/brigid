@@ -11,6 +11,7 @@ import Data.Text qualified as T
 
 import Data.HTML4.Elements.Internal (ChildHTML(..))
 import Data.HTML4.Attributes.Internal (Attribute(..))
+import Data.HTML4.Types qualified as Types
 
 renderHTML :: ChildHTML parent -> T.Text
 renderHTML html =
@@ -393,7 +394,109 @@ buildTag tag attributes content =
 renderAttribute :: Attribute any -> Maybe T.Text
 renderAttribute attr =
   case attr of
-    Id       _id        -> Just $ "id=\"" <> _id <> "\""
-    Class    _class     -> Just $ "class=\"" <> _class <> "\""
-    Width    width      -> Just $ "width=\"" <> T.pack (show width) <> "\""
-    Disabled isDisabled -> B.bool Nothing (Just "disabled") isDisabled
+    -- Attr_AccessKey
+
+    Attr_Autocapitalize option ->
+      Just
+        . buildAttribute "autocapitalize"
+        $ Types.autocapitalizeOptionToText option
+
+    Attr_Autofocus autofocus ->
+      buildBooleanAttribute "autofocus" autofocus
+
+    Attr_Class _class ->
+      Just $ buildAttribute "class" _class
+
+    Attr_ContentEditable option ->
+      Just
+        . buildAttribute "contenteditable"
+        $ Types.contentEditableOptionToText option
+
+    Attr_Data data_ value ->
+      Just $ buildAttribute ("data-" <> data_) value
+
+    Attr_Dir directionality ->
+      Just
+        . buildAttribute "dir"
+        $ Types.directionalityToText directionality
+
+    Attr_Draggable draggable ->
+      Just . buildAttribute "draggable" $ enumBoolToText draggable
+
+    Attr_EnterKeyHint option ->
+      Just
+        . buildAttribute "enterkeyhint"
+        $ Types.keyHintOptionToText option
+
+    -- Attr_ExportParts
+
+    Attr_Hidden hidden ->
+      buildBooleanAttribute "hidden" hidden
+
+    Attr_Id _id ->
+      Just $ buildAttribute "id" _id
+
+    Attr_Inert inert ->
+      buildBooleanAttribute "inert" inert
+
+    Attr_InputMode mode ->
+      Just
+        . buildAttribute "inputmode"
+        $ Types.inputModeToText mode
+
+    Attr_Is is ->
+      Just $ buildAttribute "is" is
+
+    -- Attr_ItemId
+
+    -- Attr_ItemProp
+
+    -- Attr_ItemRef
+
+    -- Attr_ItemScope
+
+    -- Attr_ItemType
+
+    -- Attr_Lang
+
+    -- Attr_Nonce
+
+    -- Attr_Part
+
+    -- Attr_Popover
+
+    -- Attr_Role
+
+    -- Attr_Slot
+
+    Attr_Spellcheck spellcheck ->
+      Just . buildAttribute "spellcheck" $ enumBoolToText spellcheck
+
+    Attr_Style style ->
+      Just $ buildAttribute "style" style
+
+    Attr_TabIndex tabindex ->
+      Just . buildAttribute "tabindex" . T.pack $ show tabindex
+
+    Attr_Title title ->
+      Just $ buildAttribute "title" title
+
+    Attr_Translate translate ->
+      Just . buildAttribute "translate" $ enumBoolToText translate
+
+    Attr_Width width ->
+      Just . buildAttribute "width" . T.pack $ show width
+
+    Attr_Disabled disabled ->
+      buildBooleanAttribute "disabled" disabled
+
+buildAttribute :: T.Text -> T.Text -> T.Text
+buildAttribute attr value =
+  attr <> "=\"" <> value <> "\""
+
+buildBooleanAttribute :: T.Text -> Bool -> Maybe T.Text
+buildBooleanAttribute attr =
+  B.bool Nothing (Just attr)
+
+enumBoolToText :: Bool -> T.Text
+enumBoolToText = B.bool "false" "true"
