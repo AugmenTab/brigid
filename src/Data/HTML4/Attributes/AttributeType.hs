@@ -1,15 +1,74 @@
 module Data.HTML4.Attributes.AttributeType
   ( AttributeType
-      ( Id
+      ( AccessKey
+      , Autocapitalize
+      , Autofocus
       , Class
+      , ContentEditable
+      , Data
+      , Dir
+      , Draggable
+      , EnterKeyHint
+      , ExportParts
+      , Hidden
+      , Id
+      , Inert
+      , InputMode
+      , Is
+      , ItemId
+      , ItemProp
+      , ItemRef
+      , ItemScope
+      , ItemType
+      , Lang
+      , Nonce
+      , Part
+      , Popover
+      , Role
+      , Slot
+      , Spellcheck
+      , Style
+      , TabIndex
+      , Title
+      , Translate
       , Width
       , Disabled
       )
   ) where
 
--- TODO: Fill out more completely
 data AttributeType
-  = Id
+  -- Global Attributes
+  = AccessKey
+  | Autocapitalize
+  | Autofocus
   | Class
-  | Width
-  | Disabled
+  | ContentEditable
+  | Data
+  | Dir
+  | Draggable
+  | EnterKeyHint
+  | ExportParts
+  | Hidden
+  | Id
+  | Inert
+  | InputMode
+  | Is
+  | ItemId
+  | ItemProp
+  | ItemRef
+  | ItemScope
+  | ItemType
+  | Lang
+  | Nonce
+  | Part
+  | Popover
+  | Role
+  | Slot
+  | Spellcheck
+  | Style
+  | TabIndex
+  | Title
+  | Translate
+  -- Scoped Attributes
+  | Width -- TODO: Placeholder
+  | Disabled -- TODO: Placeholder
