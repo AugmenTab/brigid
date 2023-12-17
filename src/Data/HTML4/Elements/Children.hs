@@ -7,7 +7,7 @@ module Data.HTML4.Elements.Children
 
 import Data.HTML4.Elements.TagGroups qualified as TagGroups
 import Data.HTML4.Elements.TagType (TagType(..))
-import Data.HTML4.Types.Contains (Contains)
+import Data.HTML4.Contains (Contains)
 
 type ValidChild tag parent =
   Contains (ValidChildrenFor parent) tag

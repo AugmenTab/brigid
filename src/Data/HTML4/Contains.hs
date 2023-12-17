@@ -6,7 +6,7 @@
 -- known GHC bug.
 {-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
 
-module Data.HTML4.Types.Contains
+module Data.HTML4.Contains
   ( Contains
   ) where
 

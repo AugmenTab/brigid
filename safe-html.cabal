@@ -44,6 +44,7 @@ library
       Data.HTML4.Attributes
       Data.HTML4.Attributes.AttributeType
       Data.HTML4.Attributes.Internal
+      Data.HTML4.Contains
       Data.HTML4.Elements
       Data.HTML4.Elements.Category
       Data.HTML4.Elements.Children
@@ -52,7 +53,7 @@ library
       Data.HTML4.Elements.Tags
       Data.HTML4.Elements.TagType
       Data.HTML4.Render.Text
-      Data.HTML4.Types.Contains
+      Data.HTML4.Types
   other-modules:
       Paths_safe_html
   autogen-modules:
