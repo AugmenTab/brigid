@@ -4,128 +4,144 @@ module Data.HTML4.Elements
   ( Document
   , HTML
   , ChildHTML
-  , Tags.Comment
-  , Tags.Text
+  , Tags.Comment, comment
+  , Tags.Text, text, texts
   , Tags.Anchor, a
-  , Tags.Abbreviation
-  , Tags.ContactAddress
-  , Tags.Area
-  , Tags.Article
-  , Tags.Aside
-  , Tags.Audio
-  , Tags.BringAttentionTo
-  , Tags.Base
-  , Tags.BidirectionalIsolation
-  , Tags.BidirectionalOverride
-  , Tags.Blockquote
+  , Tags.Abbreviation, abbr
+  , Tags.ContactAddress, address
+  , Tags.Area, area
+  , Tags.Article, article
+  , Tags.Aside, aside
+  , Tags.Audio, audio
+  , Tags.BringAttentionTo, b
+  , Tags.Base, base
+  , Tags.BidirectionalIsolation, bdi
+  , Tags.BidirectionalOverride, bdo
+  , Tags.Blockquote, blockquote
   , Tags.Body, body
-  , Tags.LineBreak
-  , Tags.Button
-  , Tags.Canvas
-  , Tags.TableCaption
-  , Tags.Citation
-  , Tags.Code
-  , Tags.TableColumn
-  , Tags.TableColumnGroup
-  , Tags.Data
-  , Tags.DataList
-  , Tags.DescriptionDetails
-  , Tags.DeletedText
-  , Tags.Details
-  , Tags.Definition
-  , Tags.Dialog
+  , Tags.LineBreak, br
+  , Tags.Button, button
+  , Tags.Canvas, canvas
+  , Tags.TableCaption, caption
+  , Tags.Citation, cite
+  , Tags.Code, code
+  , Tags.TableColumn, col
+  , Tags.TableColumnGroup, colgroup
+  , Tags.Data, data_
+  , Tags.DataList, datalist
+  , Tags.DescriptionDetails, dd
+  , Tags.DeletedText, del
+  , Tags.Details, details
+  , Tags.Definition, dfn
+  , Tags.Dialog, dialog
   , Tags.Division, div
-  , Tags.DescriptionList
-  , Tags.DescriptionTerm
-  , Tags.Emphasis
-  , Tags.Embed
-  , Tags.Fieldset
-  , Tags.FigureCaption
-  , Tags.Figure
-  , Tags.Footer
-  , Tags.Form
+  , Tags.DescriptionList, dl
+  , Tags.DescriptionTerm, dt
+  , Tags.Emphasis, em
+  , Tags.Embed, embed
+  , Tags.Fieldset, fieldset
+  , Tags.FigureCaption, figcaption
+  , Tags.Figure, figure
+  , Tags.Footer, footer
+  , Tags.Form, form
   , Tags.H1, h1
-  , Tags.H2
-  , Tags.H3
-  , Tags.H4
-  , Tags.H5
-  , Tags.H6
-  , Tags.Head
-  , Tags.Header
-  , Tags.HeadingGroup
-  , Tags.HorizontalRule
+  , Tags.H2, h2
+  , Tags.H3, h3
+  , Tags.H4, h4
+  , Tags.H5, h5
+  , Tags.H6, h6
+  , Tags.Head, head
+  , Tags.Header, header
+  , Tags.HeadingGroup, hgroup
+  , Tags.HorizontalRule, hr
   , Tags.Html, html
-  , Tags.IdiomaticText
+  , Tags.IdiomaticText, i
   , Tags.IFrame, iframe
   , Tags.Image, img
-  , Tags.Input
-  , Tags.InsertedText
-  , Tags.KeyboardInput
-  , Tags.Label
-  , Tags.Legend
+  , Tags.Input, input
+  , Tags.InsertedText, ins
+  , Tags.KeyboardInput, kbd
+  , Tags.Label, label
+  , Tags.Legend, legend
   , Tags.ListItem, li
-  , Tags.Link
-  , Tags.Main
-  , Tags.Map
-  , Tags.Mark
-  , Tags.Menu
-  , Tags.Meta
-  , Tags.Meter
-  , Tags.Nav
-  , Tags.NoScript
-  , Tags.Object
-  , Tags.OrderedList
-  , Tags.OptionGroup
-  , Tags.Option
-  , Tags.Output
+  , Tags.Link, link
+  , Tags.Main, main
+  , Tags.Map, map
+  , Tags.Mark, mark
+  , Tags.Menu, menu
+  , Tags.Meta, meta
+  , Tags.Meter, meter
+  , Tags.Nav, nav
+  , Tags.NoScript, noscript
+  , Tags.Object, object
+  , Tags.OrderedList, ol
+  , Tags.OptionGroup, optgroup
+  , Tags.Option, option
+  , Tags.Output, output
   , Tags.Paragraph, p
-  , Tags.Picture
-  , Tags.PreformattedText
-  , Tags.Progress
-  , Tags.Quotation
-  , Tags.RubyParenthesis
-  , Tags.RubyText
-  , Tags.Ruby
-  , Tags.Strikethrough
-  , Tags.Sample
-  , Tags.Script
-  , Tags.Search
-  , Tags.Section
-  , Tags.Select
-  , Tags.Slot
-  , Tags.SideComment
-  , Tags.Source
+  , Tags.Picture, picture
+  , Tags.PreformattedText, pre
+  , Tags.Progress, progress
+  , Tags.Quotation, q
+  , Tags.RubyParenthesis, rp
+  , Tags.RubyText, rt
+  , Tags.Ruby, ruby, rubySymbol
+  , Tags.Strikethrough, s
+  , Tags.Sample, sample
+  , Tags.Script, script
+  , Tags.Search, search
+  , Tags.Section, section
+  , Tags.Select, select
+  , Tags.Slot, slot
+  , Tags.SideComment, small
+  , Tags.Source, source
   , Tags.Span, span
-  , Tags.Strong
-  , Tags.Style
-  , Tags.Subscript
-  , Tags.Summary
-  , Tags.Superscript
-  , Tags.Table
-  , Tags.TableBody
-  , Tags.TableDataCell
-  , Tags.ContentTemplate
-  , Tags.TextArea
-  , Tags.TableFoot
-  , Tags.TableHeader
-  , Tags.TableHead
-  , Tags.Time
-  , Tags.Title
-  , Tags.TableRow
-  , Tags.Track
-  , Tags.Underline
+  , Tags.Strong, strong
+  , Tags.Style, style
+  , Tags.Subscript, sub
+  , Tags.Summary, summary
+  , Tags.Superscript, sup
+  , Tags.Table, table
+  , Tags.TableBody, tbody
+  , Tags.TableDataCell, td
+  , Tags.ContentTemplate, template
+  , Tags.TextArea, textarea
+  , Tags.TableFoot, tfoot
+  , Tags.TableHeader, th
+  , Tags.TableHead, thead
+  , Tags.Time, time
+  , Tags.Title, title
+  , Tags.TableRow, tr
+  , Tags.Track, track
+  , Tags.Underline, u
   , Tags.UnorderedList, ul
-  , Tags.Variable
-  , Tags.Video
-  , Tags.WordBreakOpportunity
+  , Tags.Variable, var
+  , Tags.Video, video
+  , Tags.WordBreakOpportunity, wbr
   ) where
 
-import Prelude hiding (div, span)
+import Prelude hiding (div, head, map, span)
+import Data.Text qualified as T
 
 import Data.HTML4.Attributes.Internal (Attribute(..))
 import Data.HTML4.Elements.Children (ValidChild)
 import Data.HTML4.Elements.Tags qualified as Tags
 import Data.HTML4.Elements.Internal (Document, HTML, ChildHTML(..))
+
+comment :: ValidChild Tags.Comment parent
+        => T.Text
+        -> ChildHTML parent
+comment = Tag_Comment
+
+text :: ValidChild Tags.Text parent
+     => T.Text
+     -> ChildHTML parent
+text = Tag_Text
+
+texts :: ValidChild Tags.Text parent
+      => [T.Text]
+      -> ChildHTML parent
+texts = text . T.unwords
 
 a :: ValidChild Tags.Anchor parent
   => [Attribute Tags.Anchor]
@@ -133,11 +149,163 @@ a :: ValidChild Tags.Anchor parent
   -> ChildHTML parent
 a = Tag_Anchor
 
+abbr :: ValidChild Tags.Abbreviation parent
+     => [Attribute Tags.Abbreviation]
+     -> [ChildHTML Tags.Abbreviation]
+     -> ChildHTML parent
+abbr = Tag_Abbreviation
+
+address :: ValidChild Tags.ContactAddress parent
+        => [Attribute Tags.ContactAddress]
+        -> [ChildHTML Tags.ContactAddress]
+        -> ChildHTML parent
+address = Tag_ContactAddress
+
+area :: ValidChild Tags.Area parent
+     => [Attribute Tags.Area]
+     -> ChildHTML parent
+area = Tag_Area
+
+article :: ValidChild Tags.Article parent
+        => [Attribute Tags.Article]
+        -> [ChildHTML Tags.Article]
+        -> ChildHTML parent
+article = Tag_Article
+
+aside :: ValidChild Tags.Aside parent
+      => [Attribute Tags.Aside]
+      -> [ChildHTML Tags.Aside]
+      -> ChildHTML parent
+aside = Tag_Aside
+
+audio :: ValidChild Tags.Audio parent
+      => [Attribute Tags.Audio]
+      -> [ChildHTML Tags.Audio]
+      -> ChildHTML parent
+audio = Tag_Audio
+
+b :: ValidChild Tags.BringAttentionTo parent
+  => [Attribute Tags.BringAttentionTo]
+  -> [ChildHTML Tags.BringAttentionTo]
+  -> ChildHTML parent
+b = Tag_BringAttentionTo
+
+base :: ValidChild Tags.Base parent
+     => [Attribute Tags.Base]
+     -> ChildHTML parent
+base = Tag_Base
+
+bdi :: ValidChild Tags.BidirectionalIsolation parent
+    => [Attribute Tags.BidirectionalIsolation]
+    -> [ChildHTML Tags.BidirectionalIsolation]
+    -> ChildHTML parent
+bdi = Tag_BidirectionalIsolation
+
+bdo :: ValidChild Tags.BidirectionalOverride parent
+    => [Attribute Tags.BidirectionalOverride]
+    -> [ChildHTML Tags.BidirectionalOverride]
+    -> ChildHTML parent
+bdo = Tag_BidirectionalOverride
+
+blockquote :: ValidChild Tags.Blockquote parent
+           => [Attribute Tags.Blockquote]
+           -> [ChildHTML Tags.Blockquote]
+           -> ChildHTML parent
+blockquote = Tag_Blockquote
+
 body :: ValidChild Tags.Body parent
      => [Attribute Tags.Body]
      -> [ChildHTML Tags.Body]
      -> ChildHTML parent
 body = Tag_Body
+
+br :: ValidChild Tags.LineBreak parent
+   => [Attribute Tags.LineBreak]
+   -> ChildHTML parent
+br = Tag_LineBreak
+
+button :: ValidChild Tags.Button parent
+       => [Attribute Tags.Button]
+       -> [ChildHTML Tags.Button]
+       -> ChildHTML parent
+button = Tag_Button
+
+canvas :: ValidChild Tags.Canvas parent
+       => [Attribute Tags.Canvas]
+       -> [ChildHTML Tags.Canvas]
+       -> ChildHTML parent
+canvas = Tag_Canvas
+
+caption :: ValidChild Tags.TableCaption parent
+        => [Attribute Tags.TableCaption]
+        -> [ChildHTML Tags.TableCaption]
+        -> ChildHTML parent
+caption = Tag_TableCaption
+
+cite :: ValidChild Tags.Citation parent
+     => [Attribute Tags.Citation]
+     -> [ChildHTML Tags.Citation]
+     -> ChildHTML parent
+cite = Tag_Citation
+
+code :: ValidChild Tags.Code parent
+     => [Attribute Tags.Code]
+     -> [ChildHTML Tags.Code]
+     -> ChildHTML parent
+code = Tag_Code
+
+col :: ValidChild Tags.TableColumn parent
+    => [Attribute Tags.TableColumn]
+    -> ChildHTML parent
+col = Tag_TableColumn
+
+colgroup :: ValidChild Tags.TableColumnGroup parent
+         => [Attribute Tags.TableColumnGroup]
+         -> [ChildHTML Tags.TableColumnGroup]
+         -> ChildHTML parent
+colgroup = Tag_TableColumnGroup
+
+data_ :: ValidChild Tags.Data parent
+      => [Attribute Tags.Data]
+      -> [ChildHTML Tags.Data]
+      -> ChildHTML parent
+data_ = Tag_Data
+
+datalist :: ValidChild Tags.DataList parent
+         => [Attribute Tags.DataList]
+         -> [ChildHTML Tags.DataList]
+         -> ChildHTML parent
+datalist = Tag_DataList
+
+dd :: ValidChild Tags.DescriptionDetails parent
+   => [Attribute Tags.DescriptionDetails]
+   -> [ChildHTML Tags.DescriptionDetails]
+   -> ChildHTML parent
+dd = Tag_DescriptionDetails
+
+del :: ValidChild Tags.DeletedText parent
+    => [Attribute Tags.DeletedText]
+    -> [ChildHTML Tags.DeletedText]
+    -> ChildHTML parent
+del = Tag_DeletedText
+
+details :: ValidChild Tags.Details parent
+        => [Attribute Tags.Details]
+        -> [ChildHTML Tags.Details]
+        -> ChildHTML parent
+details = Tag_Details
+
+dfn :: ValidChild Tags.Definition parent
+    => [Attribute Tags.Definition]
+    -> [ChildHTML Tags.Definition]
+    -> ChildHTML parent
+dfn = Tag_Definition
+
+dialog :: ValidChild Tags.Dialog parent
+       => [Attribute Tags.Dialog]
+       -> [ChildHTML Tags.Dialog]
+       -> ChildHTML parent
+dialog = Tag_Dialog
 
 div :: ValidChild Tags.Division parent
     => [Attribute Tags.Division]
@@ -145,25 +313,167 @@ div :: ValidChild Tags.Division parent
     -> ChildHTML parent
 div = Tag_Division
 
+dl :: ValidChild Tags.DescriptionList parent
+   => [Attribute Tags.DescriptionList]
+   -> [ChildHTML Tags.DescriptionList]
+   -> ChildHTML parent
+dl = Tag_DescriptionList
+
+dt :: ValidChild Tags.DescriptionTerm parent
+   => [Attribute Tags.DescriptionTerm]
+   -> [ChildHTML Tags.DescriptionTerm]
+   -> ChildHTML parent
+dt = Tag_DescriptionTerm
+
+em :: ValidChild Tags.Emphasis parent
+   => [Attribute Tags.Emphasis]
+   -> [ChildHTML Tags.Emphasis]
+   -> ChildHTML parent
+em = Tag_Emphasis
+
+embed :: ValidChild Tags.Embed parent
+      => [Attribute Tags.Embed]
+      -> ChildHTML parent
+embed = Tag_Embed
+
+fieldset :: ValidChild Tags.Fieldset parent
+         => [Attribute Tags.Fieldset]
+         -> [ChildHTML Tags.Fieldset]
+         -> ChildHTML parent
+fieldset = Tag_Fieldset
+
+figcaption :: ValidChild Tags.FigureCaption parent
+           => [Attribute Tags.FigureCaption]
+           -> [ChildHTML Tags.FigureCaption]
+           -> ChildHTML parent
+figcaption = Tag_FigureCaption
+
+figure :: ValidChild Tags.Figure parent
+       => [Attribute Tags.Figure]
+       -> [ChildHTML Tags.Figure]
+       -> ChildHTML parent
+figure = Tag_Figure
+
+footer :: ValidChild Tags.Footer parent
+       => [Attribute Tags.Footer]
+       -> [ChildHTML Tags.Footer]
+       -> ChildHTML parent
+footer = Tag_Footer
+
+form :: ValidChild Tags.Form parent
+     => [Attribute Tags.Form]
+     -> [ChildHTML Tags.Form]
+     -> ChildHTML parent
+form = Tag_Form
+
 h1 :: ValidChild Tags.H1 parent
    => [Attribute Tags.H1]
    -> [ChildHTML Tags.H1]
    -> ChildHTML parent
 h1 = Tag_H1
 
-html :: ValidChild Tags.Html Tags.Document
-     => [Attribute Tags.Html]
+h2 :: ValidChild Tags.H2 parent
+   => [Attribute Tags.H2]
+   -> [ChildHTML Tags.H2]
+   -> ChildHTML parent
+h2 = Tag_H2
+
+h3 :: ValidChild Tags.H3 parent
+   => [Attribute Tags.H3]
+   -> [ChildHTML Tags.H3]
+   -> ChildHTML parent
+h3 = Tag_H3
+
+h4 :: ValidChild Tags.H4 parent
+   => [Attribute Tags.H4]
+   -> [ChildHTML Tags.H4]
+   -> ChildHTML parent
+h4 = Tag_H4
+
+h5 :: ValidChild Tags.H5 parent
+   => [Attribute Tags.H5]
+   -> [ChildHTML Tags.H5]
+   -> ChildHTML parent
+h5 = Tag_H5
+
+h6 :: ValidChild Tags.H6 parent
+   => [Attribute Tags.H6]
+   -> [ChildHTML Tags.H6]
+   -> ChildHTML parent
+h6 = Tag_H6
+
+head :: ValidChild Tags.Head parent
+     => [Attribute Tags.Head]
+     -> [ChildHTML Tags.Head]
+     -> ChildHTML parent
+head = Tag_Head
+
+header :: ValidChild Tags.Header parent
+       => [Attribute Tags.Header]
+       -> [ChildHTML Tags.Header]
+       -> ChildHTML parent
+header = Tag_Header
+
+hgroup :: ValidChild Tags.HeadingGroup parent
+       => [Attribute Tags.HeadingGroup]
+       -> [ChildHTML Tags.HeadingGroup]
+       -> ChildHTML parent
+hgroup = Tag_HeadingGroup
+
+hr :: ValidChild Tags.HorizontalRule parent
+   => [Attribute Tags.HorizontalRule]
+   -> ChildHTML parent
+hr = Tag_HorizontalRule
+
+html :: [Attribute Tags.Html]
      -> [ChildHTML Tags.Html]
      -> Document
 html = Tag_Html
 
+i :: ValidChild Tags.IdiomaticText parent
+  => [Attribute Tags.IdiomaticText]
+  -> [ChildHTML Tags.IdiomaticText]
+  -> ChildHTML parent
+i = Tag_IdiomaticText
+
 iframe :: ValidChild Tags.IFrame parent
-       => [Attribute Tags.IFrame] -> ChildHTML parent
+       => [Attribute Tags.IFrame]
+       -> ChildHTML parent
 iframe = Tag_IFrame
 
 img :: ValidChild Tags.Image parent
-    => [Attribute Tags.Image] -> ChildHTML parent
+    => [Attribute Tags.Image]
+    -> ChildHTML parent
 img = Tag_Image
+
+input :: ValidChild Tags.Input parent
+      => [Attribute Tags.Input]
+      -> ChildHTML parent
+input = Tag_Input
+
+ins :: ValidChild Tags.InsertedText parent
+    => [Attribute Tags.InsertedText]
+    -> [ChildHTML Tags.InsertedText]
+    -> ChildHTML parent
+ins = Tag_InsertedText
+
+kbd :: ValidChild Tags.KeyboardInput parent
+    => [Attribute Tags.KeyboardInput]
+    -> [ChildHTML Tags.KeyboardInput]
+    -> ChildHTML parent
+kbd = Tag_KeyboardInput
+
+label :: ValidChild Tags.Label parent
+      => [Attribute Tags.Label]
+      -> [ChildHTML Tags.Label]
+      -> ChildHTML parent
+label = Tag_Label
+
+legend :: ValidChild Tags.Legend parent
+       => [Attribute Tags.Legend]
+       -> [ChildHTML Tags.Legend]
+       -> ChildHTML parent
+legend = Tag_Legend
 
 li :: ValidChild Tags.ListItem parent
    => [Attribute Tags.ListItem]
@@ -171,11 +481,205 @@ li :: ValidChild Tags.ListItem parent
    -> ChildHTML parent
 li = Tag_ListItem
 
+link :: ValidChild Tags.Link parent
+     => [Attribute Tags.Link]
+     -> ChildHTML parent
+link = Tag_Link
+
+main :: ValidChild Tags.Main parent
+     => [Attribute Tags.Main]
+     -> [ChildHTML Tags.Main]
+     -> ChildHTML parent
+main = Tag_Main
+
+map :: ValidChild Tags.Map parent
+    => [Attribute Tags.Map]
+    -> [ChildHTML Tags.Map]
+    -> ChildHTML parent
+map = Tag_Map
+
+mark :: ValidChild Tags.Mark parent
+     => [Attribute Tags.Mark]
+     -> [ChildHTML Tags.Mark]
+     -> ChildHTML parent
+mark = Tag_Mark
+
+menu :: ValidChild Tags.Menu parent
+     => [Attribute Tags.Menu]
+     -> [ChildHTML Tags.Menu]
+     -> ChildHTML parent
+menu = Tag_Menu
+
+meta :: ValidChild Tags.Meta parent
+     => [Attribute Tags.Meta]
+     -> ChildHTML parent
+meta = Tag_Meta
+
+meter :: ValidChild Tags.Meter parent
+      => [Attribute Tags.Meter]
+      -> [ChildHTML Tags.Meter]
+      -> ChildHTML parent
+meter = Tag_Meter
+
+nav :: ValidChild Tags.Nav parent
+    => [Attribute Tags.Nav]
+    -> [ChildHTML Tags.Nav]
+    -> ChildHTML parent
+nav = Tag_Nav
+
+noscript :: ValidChild Tags.NoScript parent
+         => [Attribute Tags.NoScript]
+         -> [ChildHTML Tags.NoScript]
+         -> ChildHTML parent
+noscript = Tag_NoScript
+
+object :: ValidChild Tags.Object parent
+       => [Attribute Tags.Object]
+       -> [ChildHTML Tags.Object]
+       -> ChildHTML parent
+object = Tag_Object
+
+ol :: ValidChild Tags.OrderedList parent
+   => [Attribute Tags.OrderedList]
+   -> [ChildHTML Tags.OrderedList]
+   -> ChildHTML parent
+ol = Tag_OrderedList
+
+optgroup :: ValidChild Tags.OptionGroup parent
+         => [Attribute Tags.OptionGroup]
+         -> [ChildHTML Tags.OptionGroup]
+         -> ChildHTML parent
+optgroup = Tag_OptionGroup
+
+option :: ValidChild Tags.Option parent
+       => [Attribute Tags.Option]
+       -> [ChildHTML Tags.Option]
+       -> ChildHTML parent
+option = Tag_Option
+
+output :: ValidChild Tags.Output parent
+       => [Attribute Tags.Output]
+       -> [ChildHTML Tags.Output]
+       -> ChildHTML parent
+output = Tag_Output
+
 p :: ValidChild Tags.Paragraph parent
   => [Attribute Tags.Paragraph]
   -> [ChildHTML Tags.Paragraph]
   -> ChildHTML parent
 p = Tag_Paragraph
+
+picture :: ValidChild Tags.Picture parent
+        => [Attribute Tags.Picture]
+        -> [ChildHTML Tags.Picture]
+        -> ChildHTML parent
+picture = Tag_Picture
+
+pre :: ValidChild Tags.PreformattedText parent
+    => [Attribute Tags.PreformattedText]
+    -> [ChildHTML Tags.PreformattedText]
+    -> ChildHTML parent
+pre = Tag_PreformattedText
+
+progress :: ValidChild Tags.Progress parent
+         => [Attribute Tags.Progress]
+         -> [ChildHTML Tags.Progress]
+         -> ChildHTML parent
+progress = Tag_Progress
+
+q :: ValidChild Tags.Quotation parent
+  => [Attribute Tags.Quotation]
+  -> [ChildHTML Tags.Quotation]
+  -> ChildHTML parent
+q = Tag_Quotation
+
+rp :: ValidChild Tags.RubyParenthesis parent
+   => [Attribute Tags.RubyParenthesis]
+   -> [ChildHTML Tags.RubyParenthesis]
+   -> ChildHTML parent
+rp = Tag_RubyParenthesis
+
+rt :: ValidChild Tags.RubyText parent
+   => [Attribute Tags.RubyText]
+   -> [ChildHTML Tags.RubyText]
+   -> ChildHTML parent
+rt = Tag_RubyText
+
+ruby :: ValidChild Tags.Ruby parent
+     => [Attribute Tags.Ruby]
+     -> [ChildHTML Tags.Ruby]
+     -> ChildHTML parent
+ruby = Tag_Ruby
+
+-- Represents a complete Ruby symbol. The first argument is the attributes for
+-- the `<rt>` element, the second is the symbol, and the third is the `<rt>`
+-- symbol text (the pronunciation of the symbol argument)`.
+rubySymbol :: [Attribute Tags.RubyText]
+           -> T.Text
+           -> T.Text
+           -> [ChildHTML Tags.Ruby]
+rubySymbol attrs symbol txt =
+  [ Tag_Text symbol
+  , rp []
+      [ Tag_Text "(" ]
+  , rt attrs
+      [ Tag_Text txt ]
+  , rp []
+      [ Tag_Text ")" ]
+  ]
+
+s :: ValidChild Tags.Strikethrough parent
+  => [Attribute Tags.Strikethrough]
+  -> [ChildHTML Tags.Strikethrough]
+  -> ChildHTML parent
+s = Tag_Strikethrough
+
+sample :: ValidChild Tags.Sample parent
+       => [Attribute Tags.Sample]
+       -> [ChildHTML Tags.Sample]
+       -> ChildHTML parent
+sample = Tag_Sample
+
+script :: ValidChild Tags.Script parent
+       => [Attribute Tags.Script]
+       -> [ChildHTML Tags.Script]
+       -> ChildHTML parent
+script = Tag_Script
+
+search :: ValidChild Tags.Search parent
+       => [Attribute Tags.Search]
+       -> [ChildHTML Tags.Search]
+       -> ChildHTML parent
+search = Tag_Search
+
+section :: ValidChild Tags.Section parent
+        => [Attribute Tags.Section]
+        -> [ChildHTML Tags.Section]
+        -> ChildHTML parent
+section = Tag_Section
+
+select :: ValidChild Tags.Select parent
+       => [Attribute Tags.Select]
+       -> [ChildHTML Tags.Select]
+       -> ChildHTML parent
+select = Tag_Select
+
+slot :: ValidChild Tags.Slot parent
+     => [Attribute Tags.Slot]
+     -> [ChildHTML Tags.Slot]
+     -> ChildHTML parent
+slot = Tag_Slot
+
+small :: ValidChild Tags.SideComment parent
+      => [Attribute Tags.SideComment]
+      -> [ChildHTML Tags.SideComment]
+      -> ChildHTML parent
+small = Tag_SideComment
+
+source :: ValidChild Tags.Source parent
+       => [Attribute Tags.Source]
+       -> ChildHTML parent
+source = Tag_Source
 
 span :: ValidChild Tags.Span parent
      => [Attribute Tags.Span]
@@ -183,8 +687,158 @@ span :: ValidChild Tags.Span parent
      -> ChildHTML parent
 span = Tag_Span
 
+strong :: ValidChild Tags.Strong parent
+       => [Attribute Tags.Strong]
+       -> [ChildHTML Tags.Strong]
+       -> ChildHTML parent
+strong = Tag_Strong
+
+style :: ValidChild Tags.Style parent
+      => [Attribute Tags.Style]
+      -> [ChildHTML Tags.Style]
+      -> ChildHTML parent
+style = Tag_Style
+
+sub :: ValidChild Tags.Subscript parent
+    => [Attribute Tags.Subscript]
+    -> [ChildHTML Tags.Subscript]
+    -> ChildHTML parent
+sub = Tag_Subscript
+
+summary :: ValidChild Tags.Summary parent
+        => [Attribute Tags.Summary]
+        -> [ChildHTML Tags.Summary]
+        -> ChildHTML parent
+summary = Tag_Summary
+
+sup :: ValidChild Tags.Superscript parent
+    => [Attribute Tags.Superscript]
+    -> [ChildHTML Tags.Superscript]
+    -> ChildHTML parent
+sup = Tag_Superscript
+
+table :: ValidChild Tags.Table parent
+      => [Attribute Tags.Table]
+      -> [ChildHTML Tags.Table]
+      -> ChildHTML parent
+table = Tag_Table
+
+{-
+-- This builds a table while ensuring the correct number of elements in the
+-- correct order. This needs a better name.
+table' :: ValidChild Tags.Table parent
+       => [Attribute Tags.Table]
+       -> Maybe (HTML Tags.TableCaption Tags.Table)
+       -> [HTML Tags.TableColumnGroup Tags.Table]
+       -> Maybe (HTML Tags.TableHead Tags.Table)
+       -> Either [HTML Tags.TableBody Tags.Table]
+                 [HTML Tags.TableRow  Tags.Table]
+       -> Maybe (HTML Tags.TableFoot Tags.Table)
+       -> ChildHTML parent
+table' attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
+  let pick :: Either [ChildHTML Tags.Table] [ChildHTML Tags.Table]
+           -> [ChildHTML Tags.Table]
+      pick = either id id
+   in table attrs $
+        concat
+          [ maybeToList mbCaption
+          , colgroups
+          , maybeToList head
+          , pick eiBodiesRows
+          , maybeToList mbFoot
+          ]
+-}
+
+tbody :: ValidChild Tags.TableBody parent
+      => [Attribute Tags.TableBody]
+      -> [ChildHTML Tags.TableBody]
+      -> ChildHTML parent
+tbody = Tag_TableBody
+
+td :: ValidChild Tags.TableDataCell parent
+   => [Attribute Tags.TableDataCell]
+   -> [ChildHTML Tags.TableDataCell]
+   -> ChildHTML parent
+td = Tag_TableDataCell
+
+template :: ValidChild Tags.ContentTemplate parent
+         => [Attribute Tags.ContentTemplate]
+         -> [ChildHTML Tags.ContentTemplate]
+         -> ChildHTML parent
+template = Tag_ContentTemplate
+
+textarea :: ValidChild Tags.TextArea parent
+         => [Attribute Tags.TextArea]
+         -> [ChildHTML Tags.TextArea]
+         -> ChildHTML parent
+textarea = Tag_TextArea
+
+tfoot :: ValidChild Tags.TableFoot parent
+      => [Attribute Tags.TableFoot]
+      -> [ChildHTML Tags.TableFoot]
+      -> ChildHTML parent
+tfoot = Tag_TableFoot
+
+th :: ValidChild Tags.TableHeader parent
+   => [Attribute Tags.TableHeader]
+   -> [ChildHTML Tags.TableHeader]
+   -> ChildHTML parent
+th = Tag_TableHeader
+
+thead :: ValidChild Tags.TableHead parent
+      => [Attribute Tags.TableHead]
+      -> [ChildHTML Tags.TableHead]
+      -> ChildHTML parent
+thead = Tag_TableHead
+
+time :: ValidChild Tags.Time parent
+     => [Attribute Tags.Time]
+     -> [ChildHTML Tags.Time]
+     -> ChildHTML parent
+time = Tag_Time
+
+title :: ValidChild Tags.Title parent
+      => [Attribute Tags.Title]
+      -> [ChildHTML Tags.Title]
+      -> ChildHTML parent
+title = Tag_Title
+
+tr :: ValidChild Tags.TableRow parent
+   => [Attribute Tags.TableRow]
+   -> [ChildHTML Tags.TableRow]
+   -> ChildHTML parent
+tr = Tag_TableRow
+
+track :: ValidChild Tags.Track parent
+      => [Attribute Tags.Track]
+      -> ChildHTML parent
+track = Tag_Track
+
+u :: ValidChild Tags.Underline parent
+  => [Attribute Tags.Underline]
+  -> [ChildHTML Tags.Underline]
+  -> ChildHTML parent
+u = Tag_Underline
+
 ul :: ValidChild Tags.UnorderedList parent
    => [Attribute Tags.UnorderedList]
    -> [ChildHTML Tags.UnorderedList]
    -> ChildHTML parent
 ul = Tag_UnorderedList
+
+var :: ValidChild Tags.Variable parent
+    => [Attribute Tags.Variable]
+    -> [ChildHTML Tags.Variable]
+    -> ChildHTML parent
+var = Tag_Variable
+
+video :: ValidChild Tags.Video parent
+      => [Attribute Tags.Video]
+      -> [ChildHTML Tags.Video]
+      -> ChildHTML parent
+video = Tag_Video
+
+wbr :: ValidChild Tags.WordBreakOpportunity parent
+    => [Attribute Tags.WordBreakOpportunity]
+    -> ChildHTML parent
+wbr = Tag_WordBreakOpportunity

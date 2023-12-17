@@ -259,7 +259,6 @@ data ChildHTML (parent :: TagType) where
   Tag_TableColumn
     :: ValidChild 'TableColumn parent
     => [Attribute 'TableColumn]
-    -> [ChildHTML 'TableColumn]
     -> ChildHTML parent
 
   Tag_TableColumnGroup
@@ -666,7 +665,6 @@ data ChildHTML (parent :: TagType) where
   Tag_Source
     :: ValidChild 'Source parent
     => [Attribute 'Source]
-    -> [ChildHTML 'Source]
     -> ChildHTML parent
 
   Tag_Span
@@ -774,7 +772,6 @@ data ChildHTML (parent :: TagType) where
   Tag_Track
     :: ValidChild 'Track parent
     => [Attribute 'Track]
-    -> [ChildHTML 'Track]
     -> ChildHTML parent
 
   Tag_Underline
@@ -804,5 +801,4 @@ data ChildHTML (parent :: TagType) where
   Tag_WordBreakOpportunity
     :: ValidChild 'WordBreakOpportunity parent
     => [Attribute 'WordBreakOpportunity]
-    -> [ChildHTML 'WordBreakOpportunity]
     -> ChildHTML parent
