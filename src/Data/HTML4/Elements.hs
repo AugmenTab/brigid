@@ -723,32 +723,6 @@ table :: ValidChild Tags.Table parent
       -> ChildHTML parent
 table = Tag_Table
 
-{-
--- This builds a table while ensuring the correct number of elements in the
--- correct order. This needs a better name.
-table' :: ValidChild Tags.Table parent
-       => [Attribute Tags.Table]
-       -> Maybe (HTML Tags.TableCaption Tags.Table)
-       -> [HTML Tags.TableColumnGroup Tags.Table]
-       -> Maybe (HTML Tags.TableHead Tags.Table)
-       -> Either [HTML Tags.TableBody Tags.Table]
-                 [HTML Tags.TableRow  Tags.Table]
-       -> Maybe (HTML Tags.TableFoot Tags.Table)
-       -> ChildHTML parent
-table' attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
-  let pick :: Either [ChildHTML Tags.Table] [ChildHTML Tags.Table]
-           -> [ChildHTML Tags.Table]
-      pick = either id id
-   in table attrs $
-        concat
-          [ maybeToList mbCaption
-          , colgroups
-          , maybeToList head
-          , pick eiBodiesRows
-          , maybeToList mbFoot
-          ]
--}
-
 tbody :: ValidChild Tags.TableBody parent
       => [Attribute Tags.TableBody]
       -> [ChildHTML Tags.TableBody]
