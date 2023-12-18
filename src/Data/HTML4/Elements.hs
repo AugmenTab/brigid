@@ -4,6 +4,7 @@ module Data.HTML4.Elements
   ( Document
   , HTML
   , ChildHTML
+  , noElement
   , Tags.Comment, comment
   , Tags.Text, text, texts
   , Tags.Anchor, a
@@ -117,10 +118,11 @@ module Data.HTML4.Elements
   , Tags.UnorderedList, ul
   , Tags.Variable, var
   , Tags.Video, video
-  , Tags.WordBreakOpportunity, wbr
+  , Tags.WordBreakOpportunity, wbr, wbrs
   ) where
 
 import Prelude hiding (div, head, map, span)
+import Data.List qualified as L
 import Data.Text qualified as T
 
 import Data.HTML4.Attributes.Internal (Attribute(..))
@@ -128,8 +130,10 @@ import Data.HTML4.Elements.Children (ValidChild)
 import Data.HTML4.Elements.Tags qualified as Tags
 import Data.HTML4.Elements.Internal (Document, HTML, ChildHTML(..))
 
-comment :: ValidChild Tags.Comment parent
-        => T.Text
+noElement :: ChildHTML parent
+noElement = Tag_NoElement
+
+comment :: T.Text
         -> ChildHTML parent
 comment = Tag_Comment
 
@@ -816,3 +820,12 @@ wbr :: ValidChild Tags.WordBreakOpportunity parent
     => [Attribute Tags.WordBreakOpportunity]
     -> ChildHTML parent
 wbr = Tag_WordBreakOpportunity
+
+wbrs :: ( ValidChild Tags.WordBreakOpportunity parent
+        , ValidChild Tags.Text parent
+        )
+     => [T.Text]
+     -> [ChildHTML parent]
+wbrs = L.intersperse (wbr []) . fmap text
+
+-- wbrURL: Add wbr around a URL.

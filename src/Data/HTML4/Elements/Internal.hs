@@ -5,7 +5,8 @@ module Data.HTML4.Elements.Internal
   ( HTML
   , Document
   , ChildHTML
-      ( Tag_Comment
+      ( Tag_NoElement
+      , Tag_Comment
       , Tag_Text
       , Tag_Anchor
       , Tag_Abbreviation
@@ -135,9 +136,11 @@ type Document =
   ChildHTML 'Document
 
 data ChildHTML (parent :: TagType) where
+  Tag_NoElement
+    :: ChildHTML parent
+
   Tag_Comment
-    :: ValidChild 'Comment parent
-    => T.Text
+    :: T.Text
     -> ChildHTML parent
 
   Tag_Text

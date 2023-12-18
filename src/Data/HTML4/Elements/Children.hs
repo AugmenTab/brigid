@@ -117,7 +117,7 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor ContentTemplate        = '[] -- No restrictions.
   ValidChildrenFor TextArea               = TagGroups.TextOnly
   ValidChildrenFor TableFoot              = TagGroups.TableRowOnly
-  ValidChildrenFor TableHeader            = '[] -- Flow content, but with no header, footer, sectioning content, or heading content descendants.
+  ValidChildrenFor TableHeader            = '[ Text ] -- Currently only `Text` to support testing of `Table` module. Flow content, but with no header, footer, sectioning content, or heading content descendants.
   ValidChildrenFor TableHead              = TagGroups.TableRowOnly
   ValidChildrenFor Time                   = TagGroups.PhrasingContent
   ValidChildrenFor Title                  = TagGroups.TextOnly

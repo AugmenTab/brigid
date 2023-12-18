@@ -16,6 +16,9 @@ import Data.HTML4.Types qualified as Types
 renderHTML :: ChildHTML parent -> T.Text
 renderHTML html =
   case html of
+    Tag_NoElement ->
+      T.empty
+
     Tag_Comment content ->
       "<!-- " <> content <> " -->"
 
