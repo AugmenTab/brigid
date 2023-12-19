@@ -35,7 +35,7 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor TableCaption           = TagGroups.FlowContent
   ValidChildrenFor Citation               = TagGroups.PhrasingContent
   ValidChildrenFor Code                   = TagGroups.PhrasingContent
-  ValidChildrenFor TableColumn            = TagGroups.NoContent
+  ValidChildrenFor TableColumn            = TagGroups.VoidElement
   ValidChildrenFor TableColumnGroup       = '[ TableColumn ]
   ValidChildrenFor Data                   = TagGroups.PhrasingContent
   ValidChildrenFor DataList               = 'Option ': TagGroups.PhrasingContent

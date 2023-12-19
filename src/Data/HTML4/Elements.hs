@@ -86,7 +86,7 @@ module Data.HTML4.Elements
   , Tags.Quotation, q
   , Tags.RubyParenthesis, rp
   , Tags.RubyText, rt
-  , Tags.Ruby, ruby, rubySymbol
+  , Tags.Ruby, ruby
   , Tags.Strikethrough, s
   , Tags.Sample, sample
   , Tags.Script, script
@@ -125,7 +125,7 @@ import Prelude hiding (div, head, map, span)
 import Data.List qualified as L
 import Data.Text qualified as T
 
-import Data.HTML4.Attributes.Internal (Attribute(..))
+import Data.HTML4.Attributes.Internal (Attribute)
 import Data.HTML4.Elements.Children (ValidChild)
 import Data.HTML4.Elements.Tags qualified as Tags
 import Data.HTML4.Elements.Internal (Document, HTML, ChildHTML(..))
@@ -614,23 +614,6 @@ ruby :: ValidChild Tags.Ruby parent
      -> [ChildHTML Tags.Ruby]
      -> ChildHTML parent
 ruby = Tag_Ruby
-
--- Represents a complete Ruby symbol. The first argument is the attributes for
--- the `<rt>` element, the second is the symbol, and the third is the `<rt>`
--- symbol text (the pronunciation of the symbol argument)`.
-rubySymbol :: [Attribute Tags.RubyText]
-           -> T.Text
-           -> T.Text
-           -> [ChildHTML Tags.Ruby]
-rubySymbol attrs symbol txt =
-  [ Tag_Text symbol
-  , rp []
-      [ Tag_Text "(" ]
-  , rt attrs
-      [ Tag_Text txt ]
-  , rp []
-      [ Tag_Text ")" ]
-  ]
 
 s :: ValidChild Tags.Strikethrough parent
   => [Attribute Tags.Strikethrough]

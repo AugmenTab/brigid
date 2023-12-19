@@ -50,6 +50,8 @@ library
       Data.HTML4.Elements.Category
       Data.HTML4.Elements.Children
       Data.HTML4.Elements.Internal
+      Data.HTML4.Elements.Ruby
+      Data.HTML4.Elements.Table
       Data.HTML4.Elements.TagGroups
       Data.HTML4.Elements.Tags
       Data.HTML4.Elements.TagType

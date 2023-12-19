@@ -15,7 +15,7 @@ module Data.HTML4.Elements.Table
 import Prelude hiding (head)
 import Data.Maybe (maybeToList)
 
-import Data.HTML4.Attributes.Internal (Attribute(..))
+import Data.HTML4.Attributes.Internal (Attribute)
 import Data.HTML4.Elements qualified as E
 import Data.HTML4.Elements.Children (ValidChild)
 import Data.HTML4.Elements.Tags qualified as Tags

@@ -83,7 +83,7 @@ renderHTML html =
       buildTag "code" attrs $ Right content
 
     Tag_TableColumn attrs ->
-      buildTag "col" attrs $ Left WithTag
+      buildTag "col" attrs $ Left OmitTag
 
     Tag_TableColumnGroup attrs content ->
       buildTag "colgroup" attrs $ Right content

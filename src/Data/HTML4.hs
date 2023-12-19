@@ -8,6 +8,7 @@ import Data.List qualified as L
 
 import Data.HTML4.Attributes qualified as A
 import Data.HTML4.Elements qualified as E
+import Data.HTML4.Elements.Ruby qualified as Ruby
 import Data.HTML4.Elements.Table qualified as Table
 import Data.HTML4.Types qualified as HTML
 
@@ -32,7 +33,7 @@ example =
             , E.comment "Second comment"
             ]
         , tableWithBodyExample
-        , E.ul [ A.hidden ]
+        , E.ul []
             [ E.li [ A.classes
                        [ "class-1"
                        , "class-2"
@@ -46,6 +47,12 @@ example =
                       : listExample
                 ]
             , E.noElement
+            , E.li []
+                [ Ruby.ruby [] "明日" "Ashita"
+                ]
+            , E.li []
+                [ Ruby.ruby [ A.hidden ] "忍者" "Ninja"
+                ]
             , E.comment "Fourth comment"
          -- , E.div [] [] -- This fails, because div isn't allowed in ul.
             ]
@@ -81,12 +88,12 @@ tableWithRowExample =
     . Right
     . L.replicate 5
     $ Table.row []
-        [ E.th [] [ E.text "1" ]
-        , E.th [] [ E.text "2" ]
-        , E.th [] [ E.text "3" ]
-        , E.th [] [ E.text "4" ]
-        , E.th [] [ E.text "5" ]
-        , E.th [] [ E.text "6" , E.noElement ]
+        [ E.td [] [ E.text "1" ]
+        , E.td [] [ E.text "2" ]
+        , E.td [] [ E.text "3" ]
+        , E.td [] [ E.text "4" ]
+        , E.td [] [ E.text "5" ]
+        , E.td [] [ E.text "6" , E.noElement ]
         ]
 
 tableExample :: Either [Table.Body] [Table.Row E.Table]
