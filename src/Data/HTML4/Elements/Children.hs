@@ -40,7 +40,6 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Data                   = TagGroups.PhrasingContent
   ValidChildrenFor DataList               = 'Option ': TagGroups.PhrasingContent
   ValidChildrenFor DescriptionDetails     = TagGroups.FlowContent
-  ValidChildrenFor DeletedText            = '[] -- Transparent
   ValidChildrenFor Details                = 'Summary ': TagGroups.FlowContent
   ValidChildrenFor Definition             = '[] -- Phrasing content, but no <dfn> element must be a descendant.
   ValidChildrenFor Dialog                 = TagGroups.FlowContent
@@ -69,14 +68,13 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor IFrame                 = TagGroups.NoContent
   ValidChildrenFor Image                  = TagGroups.VoidElement
   ValidChildrenFor Input                  = TagGroups.VoidElement
-  ValidChildrenFor InsertedText           = '[] -- Transparent
   ValidChildrenFor KeyboardInput          = TagGroups.PhrasingContent
   ValidChildrenFor Label                  = '[] -- Phrasing content, but no descendant label elements. No labelable elements other than the labeled control are allowed.
   ValidChildrenFor Legend                 = TagGroups.LegendContent
   ValidChildrenFor ListItem               = TagGroups.FlowContent
   ValidChildrenFor Link                   = TagGroups.VoidElement
   ValidChildrenFor Main                   = TagGroups.FlowContent
-  ValidChildrenFor Map                    = '[] -- Any transparent element.
+  ValidChildrenFor Map                    = TagGroups.TransparentContent
   ValidChildrenFor Mark                   = TagGroups.PhrasingContent
   ValidChildrenFor Menu                   = TagGroups.ListContent
   ValidChildrenFor Meta                   = TagGroups.VoidElement
@@ -102,7 +100,6 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Search                 = TagGroups.FlowContent
   ValidChildrenFor Section                = TagGroups.FlowContent
   ValidChildrenFor Select                 = [ 'Option, OptionGroup ]
-  ValidChildrenFor Slot                   = '[] -- Transparent.
   ValidChildrenFor SideComment            = TagGroups.PhrasingContent
   ValidChildrenFor Source                 = TagGroups.VoidElement
   ValidChildrenFor Span                   = TagGroups.PhrasingContent

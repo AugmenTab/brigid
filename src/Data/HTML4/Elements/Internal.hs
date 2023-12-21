@@ -291,7 +291,7 @@ data ChildHTML (parent :: TagType) where
   Tag_DeletedText
     :: ValidChild 'DeletedText parent
     => [Attribute 'DeletedText]
-    -> [ChildHTML 'DeletedText]
+    -> [ChildHTML parent]
     -> ChildHTML parent
 
   Tag_Details
@@ -460,7 +460,7 @@ data ChildHTML (parent :: TagType) where
   Tag_InsertedText
     :: ValidChild 'InsertedText parent
     => [Attribute 'InsertedText]
-    -> [ChildHTML 'InsertedText]
+    -> [ChildHTML parent]
     -> ChildHTML parent
 
   Tag_KeyboardInput
@@ -656,7 +656,7 @@ data ChildHTML (parent :: TagType) where
   Tag_Slot
     :: ValidChild 'Slot parent
     => [Attribute 'Slot]
-    -> [ChildHTML 'Slot]
+    -> [ChildHTML parent]
     -> ChildHTML parent
 
   Tag_SideComment

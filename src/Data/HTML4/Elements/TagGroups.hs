@@ -21,6 +21,7 @@ module Data.HTML4.Elements.TagGroups
   , SubmittableContent
   , ResettableContent
   , ScriptSupportingContent
+  , TransparentContent
   , LegendContent
   , RubyContent
   , SummaryContent
@@ -349,6 +350,19 @@ type ResettableContent =
 type ScriptSupportingContent =
   [ 'Script
   , 'ContentTemplate
+  ]
+
+type TransparentContent =
+  [ 'Anchor
+  , 'Audio
+  , 'Canvas
+  , 'DeletedText
+  , 'InsertedText
+  , 'Map
+  , 'NoScript
+  , 'Object
+  , 'Slot
+  , 'Video
   ]
 
 -- This list represents all elements that are valid under a `<legend>` tag.
