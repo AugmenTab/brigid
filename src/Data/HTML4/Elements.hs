@@ -182,6 +182,15 @@ aside :: ValidChild Tags.Aside parent
       -> ChildHTML parent
 aside = Tag_Aside
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- If the element has a src attribute: zero or more <track> elements followed
+-- by transparent content that contains no <audio> or <video> media elements.
+--
+-- Else: zero or more <source> elements followed by zero or more <track>
+-- elements followed by transparent content that contains no <audio> or <video>
+-- media elements.
+--
 audio :: ValidChild Tags.Audio parent
       => [Attribute Tags.Audio]
       -> [ChildHTML Tags.Audio]
@@ -263,6 +272,11 @@ col :: ValidChild Tags.TableColumn parent
     -> ChildHTML parent
 col = Tag_TableColumn
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- If the span attribute is present: none.
+-- If the attribute is not present: zero or more <col> element
+--
 colgroup :: ValidChild Tags.TableColumnGroup parent
          => [Attribute Tags.TableColumnGroup]
          -> [ChildHTML Tags.TableColumnGroup]
@@ -275,6 +289,10 @@ data_ :: ValidChild Tags.Data parent
       -> ChildHTML parent
 data_ = Tag_Data
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- Either phrasing content or zero or more <option> elements.
+--
 datalist :: ValidChild Tags.DataList parent
          => [Attribute Tags.DataList]
          -> [ChildHTML Tags.DataList]
@@ -293,6 +311,10 @@ del :: ValidChild Tags.DeletedText parent
     -> ChildHTML parent
 del = Tag_DeletedText
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- One <summary> element followed by flow content.
+--
 details :: ValidChild Tags.Details parent
         => [Attribute Tags.Details]
         -> [ChildHTML Tags.Details]
@@ -311,12 +333,29 @@ dialog :: ValidChild Tags.Dialog parent
        -> ChildHTML parent
 dialog = Tag_Dialog
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- Flow content.
+--
+-- Or (in WHATWG HTML): If the parent is a <dl> element: one or more <dt>
+-- elements followed by one or more <dd> elements, optionally intermixed with
+-- <script> and <template> elements.
+--
 div :: ValidChild Tags.Division parent
     => [Attribute Tags.Division]
     -> [ChildHTML Tags.Division]
     -> ChildHTML parent
 div = Tag_Division
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- Either: Zero or more groups each consisting of one or more <dt> elements
+-- followed by one or more <dd> elements, optionally intermixed with <script>
+-- and <template> elements.
+--
+-- Or: (in WHATWG HTML, W3C HTML 5.2 and later) One or more <div> elements,
+-- optionally intermixed with <script> and <template> elements.
+--
 dl :: ValidChild Tags.DescriptionList parent
    => [Attribute Tags.DescriptionList]
    -> [ChildHTML Tags.DescriptionList]
@@ -340,12 +379,21 @@ embed :: ValidChild Tags.Embed parent
       -> ChildHTML parent
 embed = Tag_Embed
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- An optional <legend> element, followed by flow content.
+--
 fieldset :: ValidChild Tags.Fieldset parent
          => [Attribute Tags.Fieldset]
          -> [ChildHTML Tags.Fieldset]
          -> ChildHTML parent
 fieldset = Tag_Fieldset
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- A <figcaption> element, followed by flow content; or flow content followed
+-- by a <figcaption> element; or flow content.
+--
 figcaption :: ValidChild Tags.FigureCaption parent
            => [Attribute Tags.FigureCaption]
            -> [ChildHTML Tags.FigureCaption]
@@ -364,6 +412,9 @@ footer :: ValidChild Tags.Footer parent
        -> ChildHTML parent
 footer = Tag_Footer
 
+-- This would be a good candidate for a safe constructor, particularly in
+-- relation to <input> elements.
+--
 form :: ValidChild Tags.Form parent
      => [Attribute Tags.Form]
      -> [ChildHTML Tags.Form]
@@ -406,6 +457,15 @@ h6 :: ValidChild Tags.H6 parent
    -> ChildHTML parent
 h6 = Tag_H6
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- If the document is an <iframe> srcdoc document, or if title information is
+-- available from a higher level protocol (like the subject line in HTML
+-- email), zero or more elements of metadata content.
+--
+-- Otherwise, one or more elements of metadata content where exactly one is a
+-- <title> element.
+--
 head :: ValidChild Tags.Head parent
      => [Attribute Tags.Head]
      -> [ChildHTML Tags.Head]
@@ -418,6 +478,11 @@ header :: ValidChild Tags.Header parent
        -> ChildHTML parent
 header = Tag_Header
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- Zero or more <p> elements, followed by one h1, h2, h3, h4, h5, or h6
+-- element, followed by zero or more <p> elements.
+--
 hgroup :: ValidChild Tags.HeadingGroup parent
        => [Attribute Tags.HeadingGroup]
        -> [ChildHTML Tags.HeadingGroup]
@@ -429,6 +494,11 @@ hr :: ValidChild Tags.HorizontalRule parent
    -> ChildHTML parent
 hr = Tag_HorizontalRule
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- Zero or more <p> elements, followed by one h1, h2, h3, h4, h5, or h6
+-- element, followed by zero or more <p> elements.
+--
 html :: [Attribute Tags.Html]
      -> [ChildHTML Tags.Html]
      -> Document
@@ -467,6 +537,19 @@ kbd :: ValidChild Tags.KeyboardInput parent
     -> ChildHTML parent
 kbd = Tag_KeyboardInput
 
+-- Phrasing content, but no descendant label elements. No labelable elements
+-- other than the labeled control are allowed.
+--
+-- labeledInput :: ValidChild Tags.Label parent
+--              => [Attribute Tags.Label]
+--              -> T.Text
+--              -> ChildHTML Tags.Label
+--              -> ChildHTML parent
+-- labeledInput attrs name =
+--   label (A.for name : attrs)
+--     [ addAttribute child $ A.name name
+--     ]
+--
 label :: ValidChild Tags.Label parent
       => [Attribute Tags.Label]
       -> [ChildHTML Tags.Label]
@@ -531,6 +614,18 @@ nav :: ValidChild Tags.Nav parent
     -> ChildHTML parent
 nav = Tag_Nav
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- When scripting is disabled and when it is a descendant of the <head>
+-- element: in any order, zero or more <link> elements, zero or more <style>
+-- elements, and zero or more <meta> elements.
+--
+-- When scripting is disabled and when it isn't a descendant of the <head>
+-- element: any transparent content, but no <noscript> element must be among
+-- its descendants.
+--
+-- Otherwise: flow content or phrasing content.
+--
 noscript :: ValidChild Tags.NoScript parent
          => [Attribute Tags.NoScript]
          -> [ChildHTML Tags.NoScript]
@@ -573,6 +668,11 @@ p :: ValidChild Tags.Paragraph parent
   -> ChildHTML parent
 p = Tag_Paragraph
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- Zero or more <source> elements, followed by one <img> element,
+-- optionally intermixed with script-supporting elements.
+--
 picture :: ValidChild Tags.Picture parent
         => [Attribute Tags.Picture]
         -> [ChildHTML Tags.Picture]
@@ -627,6 +727,8 @@ sample :: ValidChild Tags.Sample parent
        -> ChildHTML parent
 sample = Tag_Sample
 
+-- This should be changed to take script content instead of children.
+--
 script :: ValidChild Tags.Script parent
        => [Attribute Tags.Script]
        -> [ChildHTML Tags.Script]
@@ -680,6 +782,8 @@ strong :: ValidChild Tags.Strong parent
        -> ChildHTML parent
 strong = Tag_Strong
 
+-- This should be changed to take CSS content instead of children.
+--
 style :: ValidChild Tags.Style parent
       => [Attribute Tags.Style]
       -> [ChildHTML Tags.Style]
@@ -692,6 +796,10 @@ sub :: ValidChild Tags.Subscript parent
     -> ChildHTML parent
 sub = Tag_Subscript
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- 	Phrasing content or one element of Heading content
+--
 summary :: ValidChild Tags.Summary parent
         => [Attribute Tags.Summary]
         -> [ChildHTML Tags.Summary]
@@ -722,6 +830,8 @@ td :: ValidChild Tags.TableDataCell parent
    -> ChildHTML parent
 td = Tag_TableDataCell
 
+-- No content restrictions - remove the constraint?
+--
 template :: ValidChild Tags.ContentTemplate parent
          => [Attribute Tags.ContentTemplate]
          -> [ChildHTML Tags.ContentTemplate]
@@ -793,6 +903,16 @@ var :: ValidChild Tags.Variable parent
     -> ChildHTML parent
 var = Tag_Variable
 
+-- This is a candidate to receive safe constructor(s).
+--
+-- If the element has a src attribute: zero or more <track> elements,
+-- followed by transparent content that contains no media
+-- elements–that is no <audio> or <video>.
+--
+-- Else: zero or more <source> elements, followed by zero or more
+-- <track> elements, followed by transparent content that contains no
+-- media elements–that is no <audio> or <video>.
+--
 video :: ValidChild Tags.Video parent
       => [Attribute Tags.Video]
       -> [ChildHTML Tags.Video]
