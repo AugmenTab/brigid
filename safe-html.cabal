@@ -57,6 +57,7 @@ library
       Data.HTML4.Elements.TagType
       Data.HTML4.Render.Text
       Data.HTML4.Types
+      Examples.HTML4
   other-modules:
       Paths_safe_html
   autogen-modules:
