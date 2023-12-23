@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 module Data.HTML4.Attributes.Internal
-  ( ValidAttribute
+  ( Attributes
   , Attribute
       ( Attr_AccessKey
       , Attr_Autocapitalize
@@ -38,14 +38,22 @@ module Data.HTML4.Attributes.Internal
       , Attr_Width
       , Attr_Disabled
       )
+  , attributeText
+  , buildAttrMap
   ) where
 
+import Data.List qualified as L
+import Data.Map (Map)
+import Data.Map qualified as Map
 import Data.Text qualified as T
 
 import Data.HTML4.Attributes.AttributeType (AttributeType(..))
 import Data.HTML4.Attributes.Elements (ValidAttribute)
 import Data.HTML4.Elements.TagType (TagType)
 import Data.HTML4.Types qualified as Types
+
+type Attributes tag =
+  Map T.Text (Attribute tag)
 
 data Attribute (tag :: TagType) where
   -- Global Attributes
@@ -177,3 +185,98 @@ data Attribute (tag :: TagType) where
   -- Scoped Attributes
   Attr_Width    :: ValidAttribute 'Width    tag => Int  -> Attribute tag
   Attr_Disabled :: ValidAttribute 'Disabled tag => Bool -> Attribute tag
+
+attributeText :: Attribute tag -> T.Text
+attributeText attr =
+  case attr of
+    -- Attr_AccessKey
+
+    Attr_Autocapitalize _option ->
+      "autocapitalize"
+
+    Attr_Autofocus _autofocus ->
+      "autofocus"
+
+    Attr_Class _class ->
+      "class"
+
+    Attr_ContentEditable _option ->
+      "contenteditable"
+
+    Attr_Data data_ _value ->
+      "data-" <> data_
+
+    Attr_Dir _directionality ->
+      "dir"
+
+    Attr_Draggable _draggable ->
+      "draggable"
+
+    Attr_EnterKeyHint _option ->
+      "enterkeyhint"
+
+    -- Attr_ExportParts
+
+    Attr_Hidden _hidden ->
+      "hidden"
+
+    Attr_Id _id ->
+      "id"
+
+    Attr_Inert _inert ->
+      "inert"
+
+    Attr_InputMode _mode ->
+      "inputmode"
+
+    Attr_Is _is ->
+      "is"
+
+    -- Attr_ItemId
+
+    -- Attr_ItemProp
+
+    -- Attr_ItemRef
+
+    -- Attr_ItemScope
+
+    -- Attr_ItemType
+
+    -- Attr_Lang
+
+    -- Attr_Nonce
+
+    -- Attr_Part
+
+    -- Attr_Popover
+
+    -- Attr_Role
+
+    -- Attr_Slot
+
+    Attr_Spellcheck _spellcheck ->
+      "spellcheck"
+
+    Attr_Style _style ->
+      "style"
+
+    Attr_TabIndex _tabindex ->
+      "tabindex"
+
+    Attr_Title _title ->
+      "title"
+
+    Attr_Translate _translate ->
+      "translate"
+
+    Attr_Width _width ->
+      "width"
+
+    Attr_Disabled _disabled ->
+      "disabled"
+
+buildAttrMap :: [Attribute tag] -> Attributes tag
+buildAttrMap =
+  L.foldl'
+    (\attrs attr -> Map.insert (attributeText attr) attr attrs)
+    Map.empty

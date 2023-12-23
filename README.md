@@ -16,11 +16,11 @@ attributes:
     3. Modify `ValidElementsFor`.
 6. Add support for the SVG tag.
 7. Add support for MathML.
-8. Change attributes argument in `ChildHTML` constructors to be `Set (Attribute element)` instead of [Attribute element].
-9. Functions to add attributes and child elements to an existing `ChildHTML`.
-10. Support custom attributes.
+8. Functions to add attributes and child elements to an existing `ChildHTML`.
+9. Support custom attributes.
     * Attr_Custom :: T.Text -> T.Text -> Attribute tag
-11. Support custom elements?
+10. Support custom elements?
     * Tag_Custom :: T.Text -> [Attribute 'Custom] -> [ChildHTML 'Custom] -> ChildHTML parent
     * Will have to be added to all lists as as valid child.
+11. Move old libraries out of this library.
 

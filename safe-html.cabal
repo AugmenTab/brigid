@@ -77,6 +77,7 @@ library
       base
     , blaze-html
     , blaze-markup
+    , containers
     , text
   default-language: Haskell2010
 
@@ -102,6 +103,7 @@ test-suite safe-html-test
       base
     , blaze-html
     , blaze-markup
+    , containers
     , safe-html
     , text
   default-language: Haskell2010
