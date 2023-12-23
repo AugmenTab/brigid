@@ -123,10 +123,9 @@ module HTML.Elements.Internal
       )
   ) where
 
-import Data.Map (Map)
 import Data.Text qualified as T
 
-import HTML.Attributes.Internal (Attribute, Attributes)
+import HTML.Attributes.Internal (Attributes)
 import HTML.Elements.Children (ValidChild)
 import HTML.Elements.TagType (TagType(..))
 

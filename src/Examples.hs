@@ -8,6 +8,10 @@ import Data.List qualified as L
 
 import HTML.Attributes qualified as A
 import HTML.Elements qualified as E
+import HTML.Elements.AddAttribute (addDivisionAttribute)
+import HTML.Elements.Append (appendDivision)
+import HTML.Elements.Intersperse (intersperseDivision)
+import HTML.Elements.Prepend (prependDivision)
 import HTML.Elements.Ruby qualified as Ruby
 import HTML.Elements.Table qualified as Table
 import HTML.Types qualified as HTML
@@ -61,10 +65,19 @@ example =
 
 listExample :: [E.ChildHTML E.Division]
 listExample =
-  [ E.div [] []
-  , E.p [] [ E.text "This is some paragraph text." ]
-  , E.img [ A.draggable False ]
-  ]
+  let testDiv =
+        flip addDivisionAttribute (A.id "added-later")
+          . intersperseDivision (E.text " ")
+          . prependDivision (E.text "First text")
+          . appendDivision (E.text "Last text")
+          . E.div []
+          . L.singleton
+          $ E.text "Middle text"
+
+   in [ testDiv
+      , E.p [] [ E.text "This is some paragraph text." ]
+      , E.img [ A.draggable False ]
+      ]
 
 tableWithBodyExample :: E.ChildHTML E.Division
 tableWithBodyExample =
