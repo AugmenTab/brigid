@@ -24,40 +24,24 @@ source-repository head
 
 library
   exposed-modules:
-      Data.HTML
-      Data.HTML.Attributes
-      Data.HTML.Elements
-      Data.HTML.Elements.Children
-      Data.HTML.Elements.TagGroups
-      Data.HTML.Elements.Tags
-      Data.HTML.Elements.TagType
-      Data.HTML.Types
-      Data.HTML1
-      Data.HTML1.Elements.Tags
-      Data.HTML2
-      Data.HTML2.Internal
-      Data.HTML3
-      Data.HTML3.Attributes.AttributeType
-      Data.HTML3.Elements.TagType
-      Data.HTML3.Internal
-      Data.HTML4
-      Data.HTML4.Attributes
-      Data.HTML4.Attributes.AttributeType
-      Data.HTML4.Attributes.Elements
-      Data.HTML4.Attributes.Internal
-      Data.HTML4.Contains
-      Data.HTML4.Elements
-      Data.HTML4.Elements.Category
-      Data.HTML4.Elements.Children
-      Data.HTML4.Elements.Internal
-      Data.HTML4.Elements.Ruby
-      Data.HTML4.Elements.Table
-      Data.HTML4.Elements.TagGroups
-      Data.HTML4.Elements.Tags
-      Data.HTML4.Elements.TagType
-      Data.HTML4.Render.Text
-      Data.HTML4.Types
-      Examples.HTML4
+      Examples
+      HTML
+      HTML.Attributes
+      HTML.Attributes.AttributeType
+      HTML.Attributes.Elements
+      HTML.Attributes.Internal
+      HTML.Contains
+      HTML.Elements
+      HTML.Elements.Category
+      HTML.Elements.Children
+      HTML.Elements.Internal
+      HTML.Elements.Ruby
+      HTML.Elements.Table
+      HTML.Elements.TagGroups
+      HTML.Elements.Tags
+      HTML.Elements.TagType
+      HTML.Render.Text
+      HTML.Types
   other-modules:
       Paths_safe_html
   autogen-modules:
@@ -75,8 +59,6 @@ library
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
   build-depends:
       base
-    , blaze-html
-    , blaze-markup
     , containers
     , text
   default-language: Haskell2010
@@ -101,8 +83,6 @@ test-suite safe-html-test
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base
-    , blaze-html
-    , blaze-markup
     , containers
     , safe-html
     , text

@@ -1,0 +1,74 @@
+module HTML.Attributes.AttributeType
+  ( AttributeType
+      ( AccessKey
+      , Autocapitalize
+      , Autofocus
+      , Class
+      , ContentEditable
+      , Data
+      , Dir
+      , Draggable
+      , EnterKeyHint
+      , ExportParts
+      , Hidden
+      , Id
+      , Inert
+      , InputMode
+      , Is
+      , ItemId
+      , ItemProp
+      , ItemRef
+      , ItemScope
+      , ItemType
+      , Lang
+      , Nonce
+      , Part
+      , Popover
+      , Role
+      , Slot
+      , Spellcheck
+      , Style
+      , TabIndex
+      , Title
+      , Translate
+      , Width
+      , Disabled
+      )
+  ) where
+
+data AttributeType
+  -- Global Attributes
+  = AccessKey
+  | Autocapitalize
+  | Autofocus
+  | Class
+  | ContentEditable
+  | Data
+  | Dir
+  | Draggable
+  | EnterKeyHint
+  | ExportParts
+  | Hidden
+  | Id
+  | Inert
+  | InputMode
+  | Is
+  | ItemId
+  | ItemProp
+  | ItemRef
+  | ItemScope
+  | ItemType
+  | Lang
+  | Nonce
+  | Part
+  | Popover
+  | Role
+  | Slot
+  | Spellcheck
+  | Style
+  | TabIndex
+  | Title
+  | Translate
+  -- Scoped Attributes
+  | Width -- TODO: Placeholder
+  | Disabled -- TODO: Placeholder
