@@ -1,8 +1,9 @@
 {-# LANGUAGE DataKinds #-}
 
 module HTML.Attributes
-  -- ( accesskey
-  ( autocapitalize
+  ( customAttribute
+  -- , accesskey
+  , autocapitalize
   , autofocus
   , class_
   , classes
@@ -50,6 +51,9 @@ import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
 -- Global Attributes
+
+customAttribute :: T.Text -> T.Text -> Attribute tag
+customAttribute = Attr_Custom
 
 -- accesskey
 

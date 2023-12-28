@@ -19,7 +19,9 @@ import HTML.Types qualified as HTML
 documentExample :: E.Document
 documentExample =
   E.html []
-    [ E.body []
+    [ E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
+             , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
+             ]
         [ example
         ]
     ]

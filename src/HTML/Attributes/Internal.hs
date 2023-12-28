@@ -4,7 +4,8 @@
 module HTML.Attributes.Internal
   ( Attributes
   , Attribute
-      ( Attr_AccessKey
+      ( Attr_Custom
+      , Attr_AccessKey
       , Attr_Autocapitalize
       , Attr_Autofocus
       , Attr_Class
@@ -56,6 +57,12 @@ type Attributes tag =
   Map T.Text (Attribute tag)
 
 data Attribute (tag :: TagType) where
+  -- Custom Attribute
+  Attr_Custom
+    :: T.Text
+    -> T.Text
+    -> Attribute tag
+
   -- Global Attributes
   Attr_AccessKey
     :: T.Text -- TODO
@@ -189,6 +196,9 @@ data Attribute (tag :: TagType) where
 attributeText :: Attribute tag -> T.Text
 attributeText attr =
   case attr of
+    Attr_Custom name _value ->
+      name
+
     -- Attr_AccessKey
 
     Attr_Autocapitalize _option ->

@@ -398,6 +398,9 @@ buildTag tag attributes content =
 renderAttribute :: Attribute any -> Maybe T.Text
 renderAttribute attr =
   case attr of
+    Attr_Custom name value ->
+      Just $ buildAttribute name value
+
     -- Attr_AccessKey
 
     Attr_Autocapitalize option ->
