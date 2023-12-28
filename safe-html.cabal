@@ -44,6 +44,7 @@ library
       HTML.Elements.TagGroups
       HTML.Elements.Tags
       HTML.Elements.TagType
+      HTML.Render.ByteString
       HTML.Render.Text
       HTML.Types
   other-modules:
@@ -63,6 +64,7 @@ library
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
   build-depends:
       base
+    , bytestring
     , containers
     , text
   default-language: Haskell2010
@@ -87,6 +89,7 @@ test-suite safe-html-test
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base
+    , bytestring
     , containers
     , safe-html
     , text

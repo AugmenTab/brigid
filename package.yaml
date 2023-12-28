@@ -29,6 +29,7 @@ default-extensions:
 
 dependencies:
 - base
+- bytestring
 - containers
 - text
 
