@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
 
 module HTML.Elements.TagGroups
   ( VoidElement
@@ -43,7 +44,7 @@ type family (xs :: [TagType]) ++ (ys :: [TagType]) :: [TagType] where
 -- would look identical, but are otherwise representing different states of
 -- being.
 --
-type VoidElement = '[]
+type VoidElement = '[] :: [TagType]
 
 -- This list represents elements that cannot contain content - this is
 -- different from a void element in that it MUST have a closing tag, so is not
@@ -53,7 +54,7 @@ type VoidElement = '[]
 -- would look identical, but are otherwise representing different states of
 -- being.
 --
-type NoContent = '[]
+type NoContent = '[] :: [TagType]
 
 -- This list represents non-element entities such as text content and comments.
 --
@@ -61,7 +62,7 @@ type NoContent = '[]
 -- would look identical, but are otherwise representing different states of
 -- being.
 --
-type NonElement = '[]
+type NonElement = '[] :: [TagType]
 
 type TextOnly =
   '[ Text ]

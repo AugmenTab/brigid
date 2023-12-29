@@ -1,11 +1,12 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module HTML.Attributes.Internal
   ( Attributes
   , Attribute
       ( Attr_Custom
-      , Attr_AccessKey
+   -- , Attr_AccessKey
       , Attr_Autocapitalize
       , Attr_Autofocus
       , Attr_Class
@@ -14,23 +15,23 @@ module HTML.Attributes.Internal
       , Attr_Dir
       , Attr_Draggable
       , Attr_EnterKeyHint
-      , Attr_ExportParts
+   -- , Attr_ExportParts
       , Attr_Hidden
       , Attr_Id
       , Attr_Inert
       , Attr_InputMode
       , Attr_Is
-      , Attr_ItemId
-      , Attr_ItemProp
-      , Attr_ItemRef
-      , Attr_ItemScope
-      , Attr_ItemType
-      , Attr_Lang
-      , Attr_Nonce
-      , Attr_Part
-      , Attr_Popover
-      , Attr_Role
-      , Attr_Slot
+   -- , Attr_ItemId
+   -- , Attr_ItemProp
+   -- , Attr_ItemRef
+   -- , Attr_ItemScope
+   -- , Attr_ItemType
+   -- , Attr_Lang
+   -- , Attr_Nonce
+   -- , Attr_Part
+   -- , Attr_Popover
+   -- , Attr_Role
+   -- , Attr_Slot
       , Attr_Spellcheck
       , Attr_Style
       , Attr_TabIndex
@@ -64,9 +65,9 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   -- Global Attributes
-  Attr_AccessKey
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_AccessKey
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
   Attr_Autocapitalize
     :: Types.AutocapitalizeOption
@@ -101,9 +102,9 @@ data Attribute (tag :: TagType) where
     :: Types.KeyHintOption
     -> Attribute tag
 
-  Attr_ExportParts
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_ExportParts
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
   Attr_Hidden
     :: Bool
@@ -125,49 +126,49 @@ data Attribute (tag :: TagType) where
     :: T.Text
     -> Attribute tag
 
-  Attr_ItemId
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_ItemId
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_ItemProp
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_ItemProp
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_ItemRef
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_ItemRef
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_ItemScope
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_ItemScope
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_ItemType
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_ItemType
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_Lang
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_Lang
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_Nonce
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_Nonce
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_Part
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_Part
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_Popover
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_Popover
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_Role
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_Role
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
-  Attr_Slot
-    :: T.Text -- TODO
-    -> Attribute tag
+  -- Attr_Slot
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
 
   Attr_Spellcheck
     :: Bool -- Note: NOT a boolean attribute; prints string true/false

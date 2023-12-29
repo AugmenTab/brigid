@@ -1,4 +1,7 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE TypeOperators #-}
 
 -- This is to prevent warnings for the non-matching case in the third
 -- `Contains` instance. GHC claims that this is a redundant constraint, but
