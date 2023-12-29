@@ -1,33 +1,30 @@
 {-# LANGUAGE GADTs #-}
 
-module HTML.Render.ByteString
+module HTML.Render.String
   ( renderHTML
   ) where
 
 import Data.Bool qualified as B
-import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List qualified as L
 import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 
 import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
-renderHTML :: ChildHTML parent -> LBS.ByteString
+renderHTML :: ChildHTML parent -> String
 renderHTML html =
   case html of
     Tag_NoElement ->
-      LBS.empty
+      ""
 
     Tag_Comment content ->
-      "<!-- " <> toBytes content <> " -->"
+      "<!-- " <> T.unpack content <> " -->"
 
     Tag_Text content ->
-      toBytes content
+      T.unpack content
 
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
@@ -174,7 +171,7 @@ renderHTML html =
       buildTag "hr" (Map.elems attrs) $ Left OmitTag
 
     Tag_Html attrs content ->
-      ("<!DOCTYPE html>" :: LBS.ByteString)
+      ("<!DOCTYPE html>" :: String)
         <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
@@ -376,71 +373,71 @@ data NoContent
   -- able to contain child elements.
   | WithTag
 
-buildTag :: LBS.ByteString
+buildTag :: String
          -> [Attribute attr]
          -> Either NoContent [ChildHTML parent]
-         -> LBS.ByteString
+         -> String
 buildTag tag attributes content =
-  LBS.concat
+  L.concat
     [ "<"
     , tag
-    , B.bool " " LBS.empty $ L.null attributes
-    , LBS8.unwords $ mapMaybe renderAttribute attributes
+    , B.bool " " "" $ L.null attributes
+    , L.unwords $ mapMaybe renderAttribute attributes
     , case content of
         Left  OmitTag   -> "/>"
         Left  WithTag   -> ">"
         Right _children -> ">"
     , case content of
-        Left  _type    -> LBS.empty
+        Left  _type    -> ""
         Right children -> foldMap renderHTML children
     , case content of
-        Left  OmitTag   -> LBS.empty
+        Left  OmitTag   -> ""
         Left  WithTag   -> "</" <> tag <> ">"
         Right _children -> "</" <> tag <> ">"
     ]
 
-renderAttribute :: Attribute any -> Maybe LBS.ByteString
+renderAttribute :: Attribute any -> Maybe String
 renderAttribute attr =
   case attr of
     Attr_Custom name value ->
-      Just $ buildAttribute (toBytes name) (toBytes value)
+      Just . buildAttribute (T.unpack name) $ T.unpack value
 
     -- Attr_AccessKey
 
     Attr_Autocapitalize option ->
       Just
         . buildAttribute "autocapitalize"
-        . toBytes
+        . T.unpack
         $ Types.autocapitalizeOptionToText option
 
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
 
     Attr_Class _class ->
-      Just . buildAttribute "class" $ toBytes _class
+      Just . buildAttribute "class" $ T.unpack _class
 
     Attr_ContentEditable option ->
       Just
         . buildAttribute "contenteditable"
-        . toBytes
+        . T.unpack
         $ Types.contentEditableOptionToText option
 
     Attr_Data data_ value ->
-      Just $ buildAttribute ("data-" <> toBytes data_) (toBytes value)
+      Just . buildAttribute ("data-" <> T.unpack data_) $ T.unpack value
 
     Attr_Dir directionality ->
       Just
         . buildAttribute "dir"
-        . toBytes
+        . T.unpack
         $ Types.directionalityToText directionality
 
     Attr_Draggable draggable ->
-      Just . buildAttribute "draggable" $ enumBoolToBytes draggable
+      Just . buildAttribute "draggable" $ enumBoolToText draggable
 
     Attr_EnterKeyHint option ->
       Just
         . buildAttribute "enterkeyhint"
-        . toBytes
+        . T.unpack
         $ Types.keyHintOptionToText option
 
     -- Attr_ExportParts
@@ -449,7 +446,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id _id ->
-      Just . buildAttribute "id" $ toBytes _id
+      Just . buildAttribute "id" $ T.unpack _id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -457,11 +454,11 @@ renderAttribute attr =
     Attr_InputMode mode ->
       Just
         . buildAttribute "inputmode"
-        . toBytes
+        . T.unpack
         $ Types.inputModeToText mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" $ toBytes is
+      Just . buildAttribute "is" $ T.unpack is
 
     -- Attr_ItemId
 
@@ -486,36 +483,33 @@ renderAttribute attr =
     -- Attr_Slot
 
     Attr_Spellcheck spellcheck ->
-      Just . buildAttribute "spellcheck" $ enumBoolToBytes spellcheck
+      Just . buildAttribute "spellcheck" $ enumBoolToText spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" $ toBytes style
+      Just . buildAttribute "style" $ T.unpack style
 
     Attr_TabIndex tabindex ->
-      Just . buildAttribute "tabindex" . LBS8.pack $ show tabindex
+      Just . buildAttribute "tabindex" $ show tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" $ toBytes title
+      Just . buildAttribute "title" $ T.unpack title
 
     Attr_Translate translate ->
-      Just . buildAttribute "translate" $ enumBoolToBytes translate
+      Just . buildAttribute "translate" $ enumBoolToText translate
 
     Attr_Width width ->
-      Just . buildAttribute "width" . LBS8.pack $ show width
+      Just . buildAttribute "width" $ show width
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
-buildAttribute :: LBS.ByteString -> LBS.ByteString -> LBS.ByteString
+buildAttribute :: String -> String -> String
 buildAttribute attr value =
   attr <> "=\"" <> value <> "\""
 
-buildBooleanAttribute :: LBS.ByteString -> Bool -> Maybe LBS.ByteString
+buildBooleanAttribute :: String -> Bool -> Maybe String
 buildBooleanAttribute attr =
   B.bool Nothing (Just attr)
 
-enumBoolToBytes :: Bool -> LBS.ByteString
-enumBoolToBytes = B.bool "false" "true"
-
-toBytes :: T.Text -> LBS.ByteString
-toBytes = LBS.fromStrict . TE.encodeUtf8
+enumBoolToText :: Bool -> String
+enumBoolToText = B.bool "false" "true"

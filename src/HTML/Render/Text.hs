@@ -384,7 +384,7 @@ buildTag tag attributes content =
     , B.bool " " T.empty $ L.null attributes
     , T.unwords $ mapMaybe renderAttribute attributes
     , case content of
-        Left  OmitTag   -> " />"
+        Left  OmitTag   -> "/>"
         Left  WithTag   -> ">"
         Right _children -> ">"
     , case content of

@@ -45,6 +45,7 @@ library
       HTML.Elements.Tags
       HTML.Elements.TagType
       HTML.Render.ByteString
+      HTML.Render.String
       HTML.Render.Text
       HTML.Types
   other-modules:
