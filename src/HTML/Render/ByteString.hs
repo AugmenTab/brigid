@@ -410,8 +410,7 @@ renderAttribute attr =
     Attr_Autocapitalize option ->
       Just
         . buildAttribute "autocapitalize"
-        . toBytes
-        $ Types.autocapitalizeOptionToText option
+        $ Types.autocapitalizeOptionToBytes option
 
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
@@ -422,8 +421,7 @@ renderAttribute attr =
     Attr_ContentEditable option ->
       Just
         . buildAttribute "contenteditable"
-        . toBytes
-        $ Types.contentEditableOptionToText option
+        $ Types.contentEditableOptionToBytes option
 
     Attr_Data data_ value ->
       Just $ buildAttribute ("data-" <> toBytes data_) (toBytes value)
@@ -431,8 +429,7 @@ renderAttribute attr =
     Attr_Dir directionality ->
       Just
         . buildAttribute "dir"
-        . toBytes
-        $ Types.directionalityToText directionality
+        $ Types.directionalityToBytes directionality
 
     Attr_Draggable draggable ->
       Just . buildAttribute "draggable" $ enumBoolToBytes draggable
@@ -440,8 +437,7 @@ renderAttribute attr =
     Attr_EnterKeyHint option ->
       Just
         . buildAttribute "enterkeyhint"
-        . toBytes
-        $ Types.keyHintOptionToText option
+        $ Types.keyHintOptionToBytes option
 
     -- Attr_ExportParts
 
@@ -457,8 +453,7 @@ renderAttribute attr =
     Attr_InputMode mode ->
       Just
         . buildAttribute "inputmode"
-        . toBytes
-        $ Types.inputModeToText mode
+        $ Types.inputModeToBytes mode
 
     Attr_Is is ->
       Just . buildAttribute "is" $ toBytes is
