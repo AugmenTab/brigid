@@ -9,22 +9,27 @@ import Data.List qualified as L
 import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
+import Data.Text.Lazy (toStrict)
+import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
 import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
 renderHTML :: ChildHTML parent -> T.Text
-renderHTML html =
+renderHTML = toStrict . toLazyText . renderTag
+
+renderTag :: ChildHTML parent -> Builder
+renderTag html =
   case html of
     Tag_NoElement ->
-      T.empty
+      fromText T.empty
 
     Tag_Comment content ->
-      "<!-- " <> content <> " -->"
+      fromText "<!-- " <> fromText content <> fromText " -->"
 
     Tag_Text content ->
-      content
+      fromText content
 
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
@@ -171,7 +176,7 @@ renderHTML html =
       buildTag "hr" (Map.elems attrs) $ Left OmitTag
 
     Tag_Html attrs content ->
-      ("<!DOCTYPE html>" :: T.Text)
+      fromText "<!DOCTYPE html>"
         <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
@@ -376,27 +381,29 @@ data NoContent
 buildTag :: T.Text
          -> [Attribute attr]
          -> Either NoContent [ChildHTML parent]
-         -> T.Text
+         -> Builder
 buildTag tag attributes content =
-  T.concat
-    [ "<"
-    , tag
-    , B.bool " " T.empty $ L.null attributes
-    , T.unwords $ mapMaybe renderAttribute attributes
+  mconcat
+    [ fromText "<"
+    , fromText tag
+    , fromText . B.bool " " T.empty $ L.null attributes
+    , mconcat
+        . L.intersperse (fromText " ")
+        $ mapMaybe renderAttribute attributes
     , case content of
-        Left  OmitTag   -> "/>"
-        Left  WithTag   -> ">"
-        Right _children -> ">"
+        Left  OmitTag   -> fromText "/>"
+        Left  WithTag   -> fromText ">"
+        Right _children -> fromText ">"
     , case content of
-        Left  _type    -> T.empty
-        Right children -> foldMap renderHTML children
+        Left  _type    -> fromText T.empty
+        Right children -> foldMap renderTag children
     , case content of
-        Left  OmitTag   -> T.empty
-        Left  WithTag   -> "</" <> tag <> ">"
-        Right _children -> "</" <> tag <> ">"
+        Left  OmitTag   -> fromText T.empty
+        Left  WithTag   -> fromText "</" <> fromText tag <> fromText ">"
+        Right _children -> fromText "</" <> fromText tag <> fromText ">"
     ]
 
-renderAttribute :: Attribute any -> Maybe T.Text
+renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
     Attr_Custom name value ->
@@ -498,13 +505,13 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
-buildAttribute :: T.Text -> T.Text -> T.Text
+buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
-  attr <> "=\"" <> value <> "\""
+  fromText attr <> fromText "=\"" <> fromText value <> fromText "\""
 
-buildBooleanAttribute :: T.Text -> Bool -> Maybe T.Text
+buildBooleanAttribute :: T.Text -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
-  B.bool Nothing (Just attr)
+  B.bool Nothing (Just $ fromText attr)
 
 enumBoolToText :: Bool -> T.Text
 enumBoolToText = B.bool "false" "true"

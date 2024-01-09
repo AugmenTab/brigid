@@ -5,6 +5,7 @@ module HTML.Render.ByteString
   ) where
 
 import Data.Bool qualified as B
+import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List qualified as L
@@ -18,16 +19,21 @@ import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
 renderHTML :: ChildHTML parent -> LBS.ByteString
-renderHTML html =
+renderHTML = toLazyByteString . renderTag
+
+renderTag :: ChildHTML parent -> Builder
+renderTag html =
   case html of
     Tag_NoElement ->
-      LBS.empty
+      lazyByteString LBS.empty
 
     Tag_Comment content ->
-      "<!-- " <> toBytes content <> " -->"
+      lazyByteString "<!-- "
+        <> lazyByteString (toBytes content)
+        <> lazyByteString " -->"
 
     Tag_Text content ->
-      toBytes content
+      lazyByteString $ toBytes content
 
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
@@ -174,7 +180,7 @@ renderHTML html =
       buildTag "hr" (Map.elems attrs) $ Left OmitTag
 
     Tag_Html attrs content ->
-      ("<!DOCTYPE html>" :: LBS.ByteString)
+      lazyByteString "<!DOCTYPE html>"
         <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
@@ -379,27 +385,34 @@ data NoContent
 buildTag :: LBS.ByteString
          -> [Attribute attr]
          -> Either NoContent [ChildHTML parent]
-         -> LBS.ByteString
+         -> Builder
 buildTag tag attributes content =
-  LBS.concat
-    [ "<"
-    , tag
-    , B.bool " " LBS.empty $ L.null attributes
-    , LBS8.unwords $ mapMaybe renderAttribute attributes
+  mconcat
+    [ lazyByteString "<"
+    , lazyByteString tag
+    , lazyByteString . B.bool " " LBS.empty $ L.null attributes
+    , mconcat
+        . L.intersperse (lazyByteString " ")
+        $ mapMaybe renderAttribute attributes
     , case content of
-        Left  OmitTag   -> "/>"
-        Left  WithTag   -> ">"
-        Right _children -> ">"
+        Left  OmitTag   -> lazyByteString "/>"
+        Left  WithTag   -> lazyByteString ">"
+        Right _children -> lazyByteString ">"
     , case content of
-        Left  _type    -> LBS.empty
-        Right children -> foldMap renderHTML children
+        Left  _type    -> lazyByteString LBS.empty
+        Right children -> foldMap renderTag children
     , case content of
-        Left  OmitTag   -> LBS.empty
-        Left  WithTag   -> "</" <> tag <> ">"
-        Right _children -> "</" <> tag <> ">"
+        Left OmitTag ->
+          lazyByteString LBS.empty
+
+        Left WithTag ->
+          lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
+
+        Right _children ->
+          lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
     ]
 
-renderAttribute :: Attribute any -> Maybe LBS.ByteString
+renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
     Attr_Custom name value ->
@@ -501,13 +514,13 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
-buildAttribute :: LBS.ByteString -> LBS.ByteString -> LBS.ByteString
+buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
-  attr <> "=\"" <> value <> "\""
+  lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""
 
-buildBooleanAttribute :: LBS.ByteString -> Bool -> Maybe LBS.ByteString
+buildBooleanAttribute :: LBS.ByteString -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
-  B.bool Nothing (Just attr)
+  B.bool Nothing (Just $ lazyByteString attr)
 
 enumBoolToBytes :: Bool -> LBS.ByteString
 enumBoolToBytes = B.bool "false" "true"
