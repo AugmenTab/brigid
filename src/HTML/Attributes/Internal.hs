@@ -6,7 +6,7 @@ module HTML.Attributes.Internal
   ( Attributes
   , Attribute
       ( Attr_Custom
-   -- , Attr_AccessKey
+      , Attr_AccessKey
       , Attr_Autocapitalize
       , Attr_Autofocus
       , Attr_Class
@@ -15,7 +15,7 @@ module HTML.Attributes.Internal
       , Attr_Dir
       , Attr_Draggable
       , Attr_EnterKeyHint
-   -- , Attr_ExportParts
+      , Attr_ExportParts
       , Attr_Hidden
       , Attr_Id
       , Attr_Inert
@@ -28,7 +28,7 @@ module HTML.Attributes.Internal
    -- , Attr_ItemType
    -- , Attr_Lang
    -- , Attr_Nonce
-   -- , Attr_Part
+      , Attr_Part
    -- , Attr_Popover
    -- , Attr_Role
    -- , Attr_Slot
@@ -45,6 +45,7 @@ module HTML.Attributes.Internal
   ) where
 
 import Data.List qualified as L
+import Data.List.NonEmpty qualified as NEL
 import Data.Map (Map)
 import Data.Map qualified as Map
 import Data.Text qualified as T
@@ -65,9 +66,9 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   -- Global Attributes
-  -- Attr_AccessKey
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_AccessKey
+    :: Char
+    -> Attribute tag
 
   Attr_Autocapitalize
     :: Types.AutocapitalizeOption
@@ -102,9 +103,9 @@ data Attribute (tag :: TagType) where
     :: Types.KeyHintOption
     -> Attribute tag
 
-  -- Attr_ExportParts
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ExportParts
+    :: NEL.NonEmpty Types.ExportPart
+    -> Attribute tag
 
   Attr_Hidden
     :: Bool
@@ -154,9 +155,9 @@ data Attribute (tag :: TagType) where
   --   :: T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Part
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Part
+    :: NEL.NonEmpty Types.Part
+    -> Attribute tag
 
   -- Attr_Popover
   --   :: T.Text -- TODO
@@ -200,7 +201,8 @@ attributeText attr =
     Attr_Custom name _value ->
       name
 
-    -- Attr_AccessKey
+    Attr_AccessKey _key ->
+      "accesskey"
 
     Attr_Autocapitalize _option ->
       "autocapitalize"
@@ -226,7 +228,8 @@ attributeText attr =
     Attr_EnterKeyHint _option ->
       "enterkeyhint"
 
-    -- Attr_ExportParts
+    Attr_ExportParts _parts ->
+      "exportparts"
 
     Attr_Hidden _hidden ->
       "hidden"
@@ -257,7 +260,8 @@ attributeText attr =
 
     -- Attr_Nonce
 
-    -- Attr_Part
+    Attr_Part _part ->
+      "part"
 
     -- Attr_Popover
 

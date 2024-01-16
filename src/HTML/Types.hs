@@ -21,6 +21,9 @@ module HTML.Types
       )
   , directionalityToBytes
   , directionalityToText
+  , ExportPart (ExportPart)
+  , exportPartToBytes
+  , exportPartToText
   , KeyHintOption
       ( Enter
       , Done
@@ -44,6 +47,9 @@ module HTML.Types
       )
   , inputModeToBytes
   , inputModeToText
+  , Part (Part)
+  , partToBytes
+  , partToText
   , Reachability
       ( Reachable
       , NotReachable
@@ -53,6 +59,7 @@ module HTML.Types
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 
 data AutocapitalizeOption
   = NoAutocapitalization
@@ -113,6 +120,15 @@ directionalityToText option =
     LeftToRight -> "ltr"
     RightToLeft -> "rtl"
     Auto        -> "auto"
+
+data ExportPart = ExportPart Part (Maybe T.Text)
+
+exportPartToBytes :: ExportPart -> LBS.ByteString
+exportPartToBytes = LBS.fromStrict . TE.encodeUtf8 . exportPartToText
+
+exportPartToText :: ExportPart -> T.Text
+exportPartToText (ExportPart part mbExposed) =
+  partToText part <> maybe "" (":" <>) mbExposed
 
 data KeyHintOption
   = Enter
@@ -178,6 +194,14 @@ inputModeToText mode =
     SearchMode    -> "search"
     EmailMode     -> "email"
     URLMode       -> "url"
+
+newtype Part = Part T.Text
+
+partToBytes :: Part -> LBS.ByteString
+partToBytes = LBS.fromStrict . TE.encodeUtf8 . partToText
+
+partToText :: Part -> T.Text
+partToText (Part part) = part
 
 data Reachability
   = Reachable

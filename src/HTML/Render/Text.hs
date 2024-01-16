@@ -6,6 +6,7 @@ module HTML.Render.Text
 
 import Data.Bool qualified as B
 import Data.List qualified as L
+import Data.List.NonEmpty qualified as NEL
 import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
@@ -409,7 +410,8 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute name value
 
-    -- Attr_AccessKey
+    Attr_AccessKey key ->
+      Just . buildAttribute "accesskey" $ T.singleton key
 
     Attr_Autocapitalize option ->
       Just
@@ -443,7 +445,12 @@ renderAttribute attr =
         . buildAttribute "enterkeyhint"
         $ Types.keyHintOptionToText option
 
-    -- Attr_ExportParts
+    Attr_ExportParts parts ->
+      Just
+        . buildAttribute "exportparts"
+        . T.intercalate ", "
+        . fmap Types.exportPartToText
+        $ NEL.toList parts
 
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
@@ -476,7 +483,12 @@ renderAttribute attr =
 
     -- Attr_Nonce
 
-    -- Attr_Part
+    Attr_Part parts ->
+      Just
+        . buildAttribute "part"
+        . T.unwords
+        . fmap Types.partToText
+        $ NEL.toList parts
 
     -- Attr_Popover
 

@@ -9,6 +9,7 @@ import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List qualified as L
+import Data.List.NonEmpty qualified as NEL
 import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
@@ -418,7 +419,8 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute (toBytes name) (toBytes value)
 
-    -- Attr_AccessKey
+    Attr_AccessKey key ->
+      Just . buildAttribute "accesskey" $ LBS8.singleton key
 
     Attr_Autocapitalize option ->
       Just
@@ -452,7 +454,12 @@ renderAttribute attr =
         . buildAttribute "enterkeyhint"
         $ Types.keyHintOptionToBytes option
 
-    -- Attr_ExportParts
+    Attr_ExportParts parts ->
+      Just
+        . buildAttribute "exportparts"
+        . LBS.intercalate ", "
+        . fmap Types.exportPartToBytes
+        $ NEL.toList parts
 
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
@@ -485,7 +492,12 @@ renderAttribute attr =
 
     -- Attr_Nonce
 
-    -- Attr_Part
+    Attr_Part parts ->
+      Just
+        . buildAttribute "part"
+        . LBS.intercalate " "
+        . fmap Types.partToBytes
+        $ NEL.toList parts
 
     -- Attr_Popover
 
