@@ -29,7 +29,7 @@ module HTML.Attributes.Internal
    -- , Attr_Lang
    -- , Attr_Nonce
       , Attr_Part
-   -- , Attr_Popover
+      , Attr_Popover
    -- , Attr_Role
    -- , Attr_Slot
       , Attr_Spellcheck
@@ -159,9 +159,9 @@ data Attribute (tag :: TagType) where
     :: NEL.NonEmpty Types.Part
     -> Attribute tag
 
-  -- Attr_Popover
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Popover
+    :: Types.PopoverState
+    -> Attribute tag
 
   -- Attr_Role
   --   :: T.Text -- TODO
@@ -263,7 +263,8 @@ attributeText attr =
     Attr_Part _part ->
       "part"
 
-    -- Attr_Popover
+    Attr_Popover _state ->
+      "popover"
 
     -- Attr_Role
 

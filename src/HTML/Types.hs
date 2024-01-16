@@ -50,6 +50,12 @@ module HTML.Types
   , Part (Part)
   , partToBytes
   , partToText
+  , PopoverState
+      ( AutoPopover
+      , ManualPopover
+      )
+  , popoverStateToBytes
+  , popoverStateToText
   , Reachability
       ( Reachable
       , NotReachable
@@ -202,6 +208,22 @@ partToBytes = LBS.fromStrict . TE.encodeUtf8 . partToText
 
 partToText :: Part -> T.Text
 partToText (Part part) = part
+
+data PopoverState
+  = AutoPopover
+  | ManualPopover
+
+popoverStateToBytes :: PopoverState -> LBS.ByteString
+popoverStateToBytes pos =
+  case pos of
+    AutoPopover   -> "auto"
+    ManualPopover -> "manual"
+
+popoverStateToText :: PopoverState -> T.Text
+popoverStateToText pos =
+  case pos of
+    AutoPopover   -> "auto"
+    ManualPopover -> "manual"
 
 data Reachability
   = Reachable

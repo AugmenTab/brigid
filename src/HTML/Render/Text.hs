@@ -490,7 +490,10 @@ renderAttribute attr =
         . fmap Types.partToText
         $ NEL.toList parts
 
-    -- Attr_Popover
+    Attr_Popover state ->
+      Just
+        . buildAttribute "popover"
+        $ Types.popoverStateToText state
 
     -- Attr_Role
 

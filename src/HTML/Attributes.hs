@@ -2,7 +2,7 @@
 
 module HTML.Attributes
   ( customAttribute
-  -- , accesskey
+  , accesskey
   , autocapitalize
   , autofocus
   , class_
@@ -12,7 +12,7 @@ module HTML.Attributes
   , dir
   , draggable
   , enterkeyhint
-  -- , exportparts
+  , exportparts
   , hide
   , hidden
   , id
@@ -26,8 +26,8 @@ module HTML.Attributes
   -- , itemtype
   -- , lang
   -- , nonce
-  -- , part
-  -- , popover
+  , part
+  , popover
   -- , role
   -- , slot
   , spellcheck
@@ -43,6 +43,7 @@ module HTML.Attributes
   ) where
 
 import Prelude hiding (id)
+import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 
 import HTML.Attributes.AttributeType (AttributeType(..))
@@ -55,7 +56,8 @@ import HTML.Types qualified as Types
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
 
--- accesskey
+accesskey :: Char -> Attribute tag
+accesskey = Attr_AccessKey
 
 autocapitalize :: Types.AutocapitalizeOption -> Attribute tag
 autocapitalize = Attr_Autocapitalize
@@ -84,7 +86,8 @@ draggable = Attr_Draggable
 enterkeyhint :: Types.KeyHintOption -> Attribute tag
 enterkeyhint = Attr_EnterKeyHint
 
--- exportparts
+exportparts :: NEL.NonEmpty Types.ExportPart -> Attribute tag
+exportparts = Attr_ExportParts
 
 hide :: Bool -> Attribute tag
 hide = Attr_Hidden
@@ -119,20 +122,19 @@ itemscope
 itemtype
 
 lang
-
-nonce
-
--- TODO: Can this be determined programmatically?
---
--- https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/part
-part
-
-popover
-
-role
-
-slot
 -}
+
+-- nonce
+
+part :: NEL.NonEmpty Types.Part -> Attribute tag
+part = Attr_Part
+
+popover :: Types.PopoverState -> Attribute tag
+popover = Attr_Popover
+
+-- role
+
+-- slot
 
 spellcheck :: Bool -> Attribute tag
 spellcheck = Attr_Spellcheck

@@ -499,7 +499,10 @@ renderAttribute attr =
         . fmap Types.partToBytes
         $ NEL.toList parts
 
-    -- Attr_Popover
+    Attr_Popover state ->
+      Just
+        . buildAttribute "popover"
+        $ Types.popoverStateToBytes state
 
     -- Attr_Role
 
