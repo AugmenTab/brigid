@@ -16,7 +16,12 @@ import HTML.Types qualified as HTML
 documentExample :: E.Document
 documentExample =
   E.html []
-    [ E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
+    [ E.head []
+        [ E.script [ A.crossorigin HTML.Anonymous ]
+            [
+            ]
+        ]
+    , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
              ]
         [ example
@@ -73,6 +78,9 @@ listExample =
           $ [ E.text "Middle text" ]
 
    in [ testDiv
+      , E.button [ A.disabled ]
+          [
+          ]
       , E.p [] [ E.text "This is some paragraph text." ]
       , E.img [ A.draggable False ]
       ]

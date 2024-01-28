@@ -29,6 +29,8 @@ module HTML.Elements.TagGroups
   , TableContent
   , TableRowContent
   , TableRowOnly
+  , CrossOriginTags
+  , DisableableTags
   ) where
 
 import HTML.Elements.TagType (TagType(..))
@@ -411,3 +413,24 @@ type TableRowContent =
 
 type TableRowOnly =
   '[ TableRow ]
+
+-- Attribute-Focused Tag Groups
+--
+
+type CrossOriginTags =
+  [ 'Audio
+  , 'Image
+  , 'Link
+  , 'Script
+  , 'Video
+  ]
+
+type DisableableTags =
+  [ 'Button
+  , 'Fieldset
+  , 'Input
+  , 'OptionGroup
+  , 'Option
+  , 'Select
+  , 'TextArea
+  ]

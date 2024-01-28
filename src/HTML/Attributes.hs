@@ -38,6 +38,7 @@ module HTML.Attributes
   , title
   , translate
 
+  , crossorigin
   , disable
   , disabled
   ) where
@@ -162,7 +163,21 @@ title = Attr_Title
 translate :: Bool -> Attribute tag
 translate = Attr_Translate
 
+-- Scoped Attributes
 --
+
+{-|
+   This enumerated attribute indicates whether CORS must be used when fetching
+   the resource. CORS-enabled images can be reused in the @<canvas>@ element
+   without being tainted. If the attribute is not present, the resource is
+   fetched without a CORS request (i.e. without sending the @Origin@ HTTP
+   header), preventing its non-tainted usage. If invalid, it is handled as if
+   the enumerated keyword @anonymous@ was used.
+-}
+crossorigin :: ValidAttribute 'CrossOrigin tag
+            => Types.CrossOriginFetch
+            -> Attribute tag
+crossorigin = Attr_CrossOrigin
 
 disable :: ValidAttribute 'Disabled tag => Bool -> Attribute tag
 disable = Attr_Disabled

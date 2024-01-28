@@ -514,11 +514,20 @@ renderAttribute attr =
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToText translate
 
-    -- Attr_Width width ->
-    --   Just . buildAttribute "width" $ show width
+    -- Scoped Attributes
+    --
+
+    Attr_CrossOrigin crossorigin ->
+      Just
+        . buildAttribute "crossorigin"
+        . T.unpack
+        $ Types.crossoriginFetchToText crossorigin
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
+
+    -- Attr_Width width ->
+    --   Just . buildAttribute "width" $ show width
 
 buildAttribute :: String -> String -> String
 buildAttribute attr value =

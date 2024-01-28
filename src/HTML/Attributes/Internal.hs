@@ -38,6 +38,7 @@ module HTML.Attributes.Internal
       , Attr_Title
       , Attr_Translate
 
+      , Attr_CrossOrigin
       , Attr_Disabled
       )
   , attributeText
@@ -305,10 +306,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_CrossOrigin
-  --   :: ValidAttribute 'CrossOrigin tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_CrossOrigin
+    :: ValidAttribute 'CrossOrigin tag
+    => Types.CrossOriginFetch
+    -> Attribute tag
 
   -- Attr_Data
   --   :: ValidAttribute 'Data tag
@@ -681,6 +682,9 @@ attributeText attr =
     Attr_Custom name _value ->
       name
 
+    -- Global Attributes
+    --
+
     Attr_AccessKey _key ->
       "accesskey"
 
@@ -767,6 +771,10 @@ attributeText attr =
 
     -- Scoped Attributes
     --
+
+    Attr_CrossOrigin _crossorigin ->
+      "crossorigin"
+
     Attr_Disabled _disabled ->
       "disabled"
 

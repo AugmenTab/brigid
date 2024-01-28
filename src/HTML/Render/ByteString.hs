@@ -523,11 +523,19 @@ renderAttribute attr =
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToBytes translate
 
-    -- Attr_Width width ->
-    --   Just . buildAttribute "width" . LBS8.pack $ show width
+    -- Scoped Attributes
+    --
+
+    Attr_CrossOrigin crossorigin ->
+      Just
+        . buildAttribute "crossorigin"
+        $ Types.crossoriginFetchToBytes crossorigin
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
+
+    -- Attr_Width width ->
+    --   Just . buildAttribute "width" . LBS8.pack $ show width
 
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
