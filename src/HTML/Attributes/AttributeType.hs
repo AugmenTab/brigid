@@ -5,7 +5,7 @@ module HTML.Attributes.AttributeType
       , Autofocus
       , Class
       , ContentEditable
-      , Data
+      , CustomData
       , Dir
       , Draggable
       , EnterKeyHint
@@ -31,19 +31,115 @@ module HTML.Attributes.AttributeType
       , TabIndex
       , Title
       , Translate
-      , Width
+
+      , Accept
+      , AcceptCharset
+      , Action
+      , Allow
+      , Alt
+      , Async
+      , Autocomplete
+      , Autoplay
+      , Background
+      , BackgroundColor
+      , Border
+      , Buffered
+      , Capture
+      , Charset
+      , Checked
+      , Cite
+      , Color
+      , Cols
+      , Colspan
+      , Content
+      , Controls
+      , Coords
+      , CrossOrigin
+      , Data
+      , Datetime
+      , Decoding
+      , Default
+      , Defer
+      , Dirname
       , Disabled
+      , Download
+      , Enctype
+      , For
+      , Form
+      , FormAction
+      , FormEnctype
+      , FormMethod
+      , FormOnValidate
+      , FormTarget
+      , Headers
+      , Height
+      , High
+      , Href
+      , HrefLang
+      , HttpEquiv
+      , Integrity
+      , IsMap
+      , Kind
+      , Label
+      , List
+      , Loop
+      , Low
+      , Max
+      , MaxLength
+      , MinLength
+      , Media
+      , Method
+      , Min
+      , Multiple
+      , Muted
+      , Name
+      , NoValidate
+      , Open
+      , Optimum
+      , Pattern
+      , Ping
+      , Placeholder
+      , PlaysInline
+      , Poster
+      , Preload
+      , ReadOnly
+      , ReferrerPolicy
+      , Rel
+      , Required
+      , Reversed
+      , Rows
+      , Rowspan
+      , Sandbox
+      , Scope
+      , Selected
+      , Shape
+      , Size
+      , Sizes
+      , Span
+      , Src
+      , SrcDoc
+      , SrcLang
+      , SrcSet
+      , Start
+      , Step
+      , Target
+      , Type
+      , UseMap
+      , Value
+      , Width
+      , Wrap
       )
   ) where
 
 data AttributeType
   -- Global Attributes
+  --
   = AccessKey
   | Autocapitalize
   | Autofocus
   | Class
   | ContentEditable
-  | Data
+  | CustomData
   | Dir
   | Draggable
   | EnterKeyHint
@@ -69,6 +165,102 @@ data AttributeType
   | TabIndex
   | Title
   | Translate
+
   -- Scoped Attributes
-  | Width -- TODO: Placeholder
-  | Disabled -- TODO: Placeholder
+  --
+  | Accept
+  | AcceptCharset
+  | Action
+  | Allow
+  | Alt
+  | Async
+  | Autocomplete
+  | Autoplay
+  | Background
+  | BackgroundColor
+  | Border
+  | Buffered
+  | Capture
+  | Charset
+  | Checked
+  | Cite
+  | Color
+  | Cols
+  | Colspan
+  | Content
+  | Controls
+  | Coords
+  | CrossOrigin
+  | Data
+  | Datetime
+  | Decoding
+  | Default
+  | Defer
+  | Dirname
+  | Disabled
+  | Download
+  | Enctype
+  | For
+  | Form
+  | FormAction
+  | FormEnctype
+  | FormMethod
+  | FormOnValidate
+  | FormTarget
+  | Headers
+  | Height
+  | High
+  | Href
+  | HrefLang
+  | HttpEquiv
+  | Integrity
+  | IsMap
+  | Kind
+  | Label
+  | List
+  | Loop
+  | Low
+  | Max
+  | MaxLength
+  | MinLength
+  | Media
+  | Method
+  | Min
+  | Multiple
+  | Muted
+  | Name
+  | NoValidate
+  | Open
+  | Optimum
+  | Pattern
+  | Ping
+  | Placeholder
+  | PlaysInline
+  | Poster
+  | Preload
+  | ReadOnly
+  | ReferrerPolicy
+  | Rel
+  | Required
+  | Reversed
+  | Rows
+  | Rowspan
+  | Sandbox
+  | Scope
+  | Selected
+  | Shape
+  | Size
+  | Sizes
+  | Span
+  | Src
+  | SrcDoc
+  | SrcLang
+  | SrcSet
+  | Start
+  | Step
+  | Target
+  | Type
+  | UseMap
+  | Value
+  | Width
+  | Wrap

@@ -429,7 +429,7 @@ renderAttribute attr =
         . buildAttribute "contenteditable"
         $ Types.contentEditableOptionToText option
 
-    Attr_Data data_ value ->
+    Attr_CustomData data_ value ->
       Just $ buildAttribute ("data-" <> data_) value
 
     Attr_Dir directionality ->
@@ -461,10 +461,10 @@ renderAttribute attr =
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
 
-    Attr_InputMode mode ->
-      Just
-        . buildAttribute "inputmode"
-        $ Types.inputModeToText mode
+    -- Attr_InputMode mode ->
+    --   Just
+    --     . buildAttribute "inputmode"
+    --     $ Types.inputModeToText mode
 
     Attr_Is is ->
       Just $ buildAttribute "is" is
@@ -514,8 +514,8 @@ renderAttribute attr =
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToText translate
 
-    Attr_Width width ->
-      Just . buildAttribute "width" . T.pack $ show width
+    -- Attr_Width width ->
+    --   Just . buildAttribute "width" . T.pack $ show width
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled

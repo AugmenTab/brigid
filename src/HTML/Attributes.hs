@@ -8,7 +8,7 @@ module HTML.Attributes
   , class_
   , classes
   , contenteditable
-  , data_
+  , customData
   , dir
   , draggable
   , enterkeyhint
@@ -17,7 +17,7 @@ module HTML.Attributes
   , hidden
   , id
   , inert
-  , inputmode
+  -- , inputmode
   , is
   -- , item
   -- , itemid
@@ -37,7 +37,7 @@ module HTML.Attributes
   , unsafeTabIndex
   , title
   , translate
-  , width
+
   , disable
   , disabled
   ) where
@@ -76,8 +76,8 @@ classes = class_ . T.unwords
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable
 
-data_ :: T.Text -> T.Text -> Attribute tag
-data_ = Attr_Data
+customData :: T.Text -> T.Text -> Attribute tag
+customData = Attr_CustomData
 
 dir :: Types.Directionality -> Attribute tag
 dir = Attr_Dir
@@ -103,8 +103,8 @@ id = Attr_Id
 inert :: Bool -> Attribute tag
 inert = Attr_Inert
 
-inputmode :: Types.InputMode -> Attribute tag
-inputmode = Attr_InputMode
+-- inputmode :: Types.InputMode -> Attribute tag
+-- inputmode = Attr_InputMode
 
 is :: T.Text -> Attribute tag
 is = Attr_Is
@@ -163,9 +163,6 @@ translate :: Bool -> Attribute tag
 translate = Attr_Translate
 
 --
-
-width :: ValidAttribute 'Width tag => Int -> Attribute tag
-width = Attr_Width
 
 disable :: ValidAttribute 'Disabled tag => Bool -> Attribute tag
 disable = Attr_Disabled

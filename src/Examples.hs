@@ -31,7 +31,7 @@ example =
     [ E.noElement
     , E.comment "First comment"
     , E.div [ A.tabindex HTML.NotReachable ]
-        [ E.p [ A.width 100, A.unsafeTabIndex 4 ]
+        [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
             , E.comment "Second comment"
             ]

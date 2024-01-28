@@ -438,7 +438,7 @@ renderAttribute attr =
         . buildAttribute "contenteditable"
         $ Types.contentEditableOptionToBytes option
 
-    Attr_Data data_ value ->
+    Attr_CustomData data_ value ->
       Just $ buildAttribute ("data-" <> toBytes data_) (toBytes value)
 
     Attr_Dir directionality ->
@@ -470,10 +470,10 @@ renderAttribute attr =
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
 
-    Attr_InputMode mode ->
-      Just
-        . buildAttribute "inputmode"
-        $ Types.inputModeToBytes mode
+    -- Attr_InputMode mode ->
+    --   Just
+    --     . buildAttribute "inputmode"
+    --     $ Types.inputModeToBytes mode
 
     Attr_Is is ->
       Just . buildAttribute "is" $ toBytes is
@@ -523,8 +523,8 @@ renderAttribute attr =
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToBytes translate
 
-    Attr_Width width ->
-      Just . buildAttribute "width" . LBS8.pack $ show width
+    -- Attr_Width width ->
+    --   Just . buildAttribute "width" . LBS8.pack $ show width
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
