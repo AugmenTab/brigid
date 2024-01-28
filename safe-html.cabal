@@ -33,12 +33,9 @@ library
       HTML.Contains
       HTML.Elements
       HTML.Elements.AddAttribute
-      HTML.Elements.Append
       HTML.Elements.Category
       HTML.Elements.Children
       HTML.Elements.Internal
-      HTML.Elements.Intersperse
-      HTML.Elements.Prepend
       HTML.Elements.Ruby
       HTML.Elements.Table
       HTML.Elements.TagGroups

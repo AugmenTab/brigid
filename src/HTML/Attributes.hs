@@ -51,10 +51,12 @@ import HTML.Attributes.Elements (ValidAttribute)
 import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
--- Global Attributes
 
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
+
+-- Global Attributes
+--
 
 accesskey :: Char -> Attribute tag
 accesskey = Attr_AccessKey
@@ -120,9 +122,9 @@ itemref
 itemscope
 
 itemtype
-
-lang
 -}
+
+-- lang
 
 -- nonce
 
