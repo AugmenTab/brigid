@@ -21,12 +21,20 @@ module HTML.Elements.TagGroups
   , ResettableContent
   , ScriptSupportingContent
   , TransparentContent
+  , MarginalContent
+
+  , DescriptionTermExcluded
+  , TableHeaderExcluded
+
+  , DescriptionListContent
   , LegendContent
+  , PictureContent
   , RubyContent
   , SummaryContent
   , TableContent
   , TableRowContent
   , TableRowOnly
+
   , CrossOriginTags
   , DisableableTags
   ) where
@@ -192,92 +200,95 @@ type MetadataContent =
 -- This list represents all elements that are considered flow content.
 --
 type FlowContent =
+  'Header
+    ': 'Footer
+    ': FlowContentBase
+
+type FlowContentBase =
   [ 'Text
-  , 'Anchor
-  , 'Abbreviation
-  , 'ContactAddress
-  , 'Article
-  , 'Aside
-  , 'Audio
-  , 'BringAttentionTo
-  , 'BidirectionalIsolation
-  , 'BidirectionalOverride
-  , 'Blockquote
-  , 'LineBreak
-  , 'Button
-  , 'Canvas
-  , 'Citation
-  , 'Code
-  , 'Data
-  , 'DataList
-  , 'DeletedText
-  , 'Details
-  , 'Definition
-  , 'Dialog
-  , 'Division
-  , 'DescriptionList
-  , 'Emphasis
-  , 'Embed
-  , 'Fieldset
-  , 'Figure
-  , 'Footer
-  , 'Form
-  , 'H1
-  , 'H2
-  , 'H3
-  , 'H4
-  , 'H5
-  , 'H6
-  , 'Header
-  , 'HeadingGroup
-  , 'HorizontalRule
-  , 'IdiomaticText
-  , 'IFrame
-  , 'Image
-  , 'Input
-  , 'InsertedText
-  , 'KeyboardInput
-  , 'Label
-  , 'Main
-  , 'Map
-  , 'Mark
-  --' , Math
-  , 'Menu
-  , 'Meter
-  , 'Nav
-  , 'NoScript
-  , 'Object
-  , 'OrderedList
-  , 'Output
-  , 'Paragraph
-  , 'Picture
-  , 'PreformattedText
-  , 'Progress
-  , 'Quotation
-  , 'Ruby
-  , 'Strikethrough
-  , 'Sample
-  , 'Search
-  , 'Script
-  , 'Section
-  , 'Select
-  , 'Slot
-  , 'SideComment
-  , 'Span
-  , 'Strong
-  , 'Subscript
-  , 'Superscript
-  --' , SVG
-  , 'Table
-  , 'ContentTemplate
-  , 'TextArea
-  , 'Time
-  , 'Underline
-  , 'UnorderedList
-  , 'Variable
-  , 'Video
-  , 'WordBreakOpportunity
-  ]
+   , 'Anchor
+   , 'Abbreviation
+   , 'ContactAddress
+   , 'Article
+   , 'Aside
+   , 'Audio
+   , 'BringAttentionTo
+   , 'BidirectionalIsolation
+   , 'BidirectionalOverride
+   , 'Blockquote
+   , 'LineBreak
+   , 'Button
+   , 'Canvas
+   , 'Citation
+   , 'Code
+   , 'Data
+   , 'DataList
+   , 'DeletedText
+   , 'Details
+   , 'Definition
+   , 'Dialog
+   , 'Division
+   , 'DescriptionList
+   , 'Emphasis
+   , 'Embed
+   , 'Fieldset
+   , 'Figure
+   , 'Form
+   , 'H1
+   , 'H2
+   , 'H3
+   , 'H4
+   , 'H5
+   , 'H6
+   , 'HeadingGroup
+   , 'HorizontalRule
+   , 'IdiomaticText
+   , 'IFrame
+   , 'Image
+   , 'Input
+   , 'InsertedText
+   , 'KeyboardInput
+   , 'Label
+   , 'Main
+   , 'Map
+   , 'Mark
+   --' , Math
+   , 'Menu
+   , 'Meter
+   , 'Nav
+   , 'NoScript
+   , 'Object
+   , 'OrderedList
+   , 'Output
+   , 'Paragraph
+   , 'Picture
+   , 'PreformattedText
+   , 'Progress
+   , 'Quotation
+   , 'Ruby
+   , 'Strikethrough
+   , 'Sample
+   , 'Search
+   , 'Script
+   , 'Section
+   , 'Select
+   , 'Slot
+   , 'SideComment
+   , 'Span
+   , 'Strong
+   , 'Subscript
+   , 'Superscript
+   --' , SVG
+   , 'Table
+   , 'ContentTemplate
+   , 'TextArea
+   , 'Time
+   , 'Underline
+   , 'UnorderedList
+   , 'Variable
+   , 'Video
+   , 'WordBreakOpportunity
+   ]
 
 -- This list represents all elements that are considered sectioning content.
 --
@@ -459,6 +470,36 @@ type TransparentContent =
   , 'Video
   ]
 
+type MarginalContent =
+  [ 'Header
+  , 'Footer
+  ]
+
+-- Element Exclusion Tag Groups
+--
+
+type DescriptionTermExcluded =
+  HeadingSectioningAndMarginalsExcluded
+
+type HeadingSectioningAndMarginalsExcluded =
+  SectioningContent
+    ++ HeadingContent
+    ++ MarginalContent
+
+type TableHeaderExcluded =
+  HeadingSectioningAndMarginalsExcluded
+
+-- Element-Focused Tag Groups
+--
+
+-- This list represents all elements that are valid under a `<dlist>` tag.
+type DescriptionListContent =
+  ScriptSupportingContent ++
+    [ 'DescriptionTerm
+    , 'DescriptionDetails
+    , 'Division
+    ]
+
 -- This list represents all elements that are valid under a `<legend>` tag.
 type LegendContent =
   'H1
@@ -468,6 +509,12 @@ type LegendContent =
     ': 'H5
     ': 'H6
     ': PhrasingContent
+
+-- This list represents all elements that are valid under a `<picture>` tag.
+type PictureContent =
+  'Source
+    ': 'Image
+    ': ScriptSupportingContent
 
 -- This list represents all elements that are valid under a `<ruby>` tag.
 type RubyContent =

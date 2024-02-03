@@ -30,7 +30,6 @@ library
       HTML.Attributes.AttributeType
       HTML.Attributes.Elements
       HTML.Attributes.Internal
-      HTML.Contains
       HTML.Elements
       HTML.Elements.AddAttribute
       HTML.Elements.Category
@@ -41,6 +40,7 @@ library
       HTML.Elements.TagGroups
       HTML.Elements.Tags
       HTML.Elements.TagType
+      HTML.Internal.TagOperations
       HTML.Render.ByteString
       HTML.Render.Internal.Escape
       HTML.Render.String

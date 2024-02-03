@@ -9,7 +9,7 @@ module HTML.Attributes.Elements
 import HTML.Attributes.AttributeType (AttributeType(..))
 import HTML.Elements.TagGroups qualified as TagGroups
 import HTML.Elements.TagType (TagType(..))
-import HTML.Contains (Contains)
+import HTML.Internal.TagOperations (Contains)
 
 type ValidAttribute attributeType tag =
   Contains (ValidElementsFor attributeType) tag

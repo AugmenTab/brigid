@@ -24,7 +24,11 @@ documentExample =
     , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
              ]
-        [ example
+        [ E.header []
+            [ E.text "This is the header"
+         -- , E.footer [] [] -- This fails, because marginals are removed from flow content for valid children of footer.
+            ]
+        , example
         ]
     ]
 
@@ -35,6 +39,11 @@ example =
         ]
     [ E.noElement
     , E.comment "First comment"
+    , E.form []
+        [ E.button [] []
+        , E.input []
+     -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
+        ]
     , E.div [ A.tabindex HTML.NotReachable ]
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
