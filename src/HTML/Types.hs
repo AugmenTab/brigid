@@ -1,5 +1,9 @@
 module HTML.Types
-  ( AutocapitalizeOption
+  ( NoContent
+      ( OmitTag
+      , WithTag
+      )
+  , AutocapitalizeOption
       ( NoAutocapitalization
       , Sentences
       , Words
@@ -72,6 +76,15 @@ module HTML.Types
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
+
+-- | This represents an element that, for one reason or another, does not
+-- contain child elements.
+data NoContent
+  -- | OmitTag means the tag is self closing, and thus omits a closing tag.
+  = OmitTag
+  -- | WithTag means the tag requires an explicit closing tag despite not being
+  -- able to contain child elements.
+  | WithTag
 
 data AutocapitalizeOption
   = NoAutocapitalization

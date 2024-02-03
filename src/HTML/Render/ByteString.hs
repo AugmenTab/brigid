@@ -40,6 +40,9 @@ renderTag html =
     Tag_RawHTML content ->
       lazyByteString $ toBytes content
 
+    Tag_CustomHTML elemName attrs eiCloserOrContent ->
+      buildTag (toBytes elemName) (Map.elems attrs) eiCloserOrContent
+
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
 
@@ -50,7 +53,7 @@ renderTag html =
       buildTag "address" (Map.elems attrs) $ Right content
 
     Tag_Area attrs ->
-      buildTag "area" (Map.elems attrs) $ Left OmitTag
+      buildTag "area" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Article attrs content ->
       buildTag "article" (Map.elems attrs) $ Right content
@@ -65,7 +68,7 @@ renderTag html =
       buildTag "b" (Map.elems attrs) $ Right content
 
     Tag_Base attrs ->
-      buildTag "base" (Map.elems attrs) $ Left OmitTag
+      buildTag "base" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_BidirectionalIsolation attrs content ->
       buildTag "bdi" (Map.elems attrs) $ Right content
@@ -80,7 +83,7 @@ renderTag html =
       buildTag "body" (Map.elems attrs) $ Right content
 
     Tag_LineBreak attrs ->
-      buildTag "br" (Map.elems attrs) $ Left OmitTag
+      buildTag "br" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Button attrs content ->
       buildTag "button" (Map.elems attrs) $ Right content
@@ -98,7 +101,7 @@ renderTag html =
       buildTag "code" (Map.elems attrs) $ Right content
 
     Tag_TableColumn attrs ->
-      buildTag "col" (Map.elems attrs) $ Left OmitTag
+      buildTag "col" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_TableColumnGroup attrs content ->
       buildTag "colgroup" (Map.elems attrs) $ Right content
@@ -137,7 +140,7 @@ renderTag html =
       buildTag "em" (Map.elems attrs) $ Right content
 
     Tag_Embed attrs ->
-      buildTag "embed" (Map.elems attrs) $ Left OmitTag
+      buildTag "embed" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Fieldset attrs content ->
       buildTag "fieldset" (Map.elems attrs) $ Right content
@@ -182,7 +185,7 @@ renderTag html =
       buildTag "hgroup" (Map.elems attrs) $ Right content
 
     Tag_HorizontalRule attrs ->
-      buildTag "hr" (Map.elems attrs) $ Left OmitTag
+      buildTag "hr" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Html attrs content ->
       lazyByteString "<!DOCTYPE html>"
@@ -192,13 +195,13 @@ renderTag html =
       buildTag "i" (Map.elems attrs) $ Right content
 
     Tag_IFrame attrs ->
-      buildTag "iframe" (Map.elems attrs) $ Left WithTag
+      buildTag "iframe" (Map.elems attrs) $ Left Types.WithTag
 
     Tag_Image attrs ->
-      buildTag "img" (Map.elems attrs) $ Left OmitTag
+      buildTag "img" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Input attrs ->
-      buildTag "input" (Map.elems attrs) $ Left OmitTag
+      buildTag "input" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_InsertedText attrs content ->
       buildTag "ins" (Map.elems attrs) $ Right content
@@ -216,7 +219,7 @@ renderTag html =
       buildTag "li" (Map.elems attrs) $ Right content
 
     Tag_Link attrs ->
-      buildTag "link" (Map.elems attrs) $ Left OmitTag
+      buildTag "link" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Main attrs content ->
       buildTag "main" (Map.elems attrs) $ Right content
@@ -231,7 +234,7 @@ renderTag html =
       buildTag "menu" (Map.elems attrs) $ Right content
 
     Tag_Meta attrs ->
-      buildTag "meta" (Map.elems attrs) $ Left OmitTag
+      buildTag "meta" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Meter attrs content ->
       buildTag "meter" (Map.elems attrs) $ Right content
@@ -306,7 +309,7 @@ renderTag html =
       buildTag "small" (Map.elems attrs) $ Right content
 
     Tag_Source attrs ->
-      buildTag "source" (Map.elems attrs) $ Left OmitTag
+      buildTag "source" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Span attrs content ->
       buildTag "span" (Map.elems attrs) $ Right content
@@ -360,7 +363,7 @@ renderTag html =
       buildTag "tr" (Map.elems attrs) $ Right content
 
     Tag_Track attrs ->
-      buildTag "track" (Map.elems attrs) $ Left OmitTag
+      buildTag "track" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Underline attrs content ->
       buildTag "u" (Map.elems attrs) $ Right content
@@ -375,21 +378,11 @@ renderTag html =
       buildTag "video" (Map.elems attrs) $ Right content
 
     Tag_WordBreakOpportunity attrs ->
-      buildTag "wbr" (Map.elems attrs) $ Left OmitTag
-
--- This represents an element that, for one reason or another, does not contain
--- child elements.
---
-data NoContent
-  -- OmitTag means the tag is self closing, and thus omits a closing tag.
-  = OmitTag
-  -- WithTag means the tag requires an explicit closing tag despite not being
-  -- able to contain child elements.
-  | WithTag
+      buildTag "wbr" (Map.elems attrs) $ Left Types.OmitTag
 
 buildTag :: LBS.ByteString
          -> [Attribute attr]
-         -> Either NoContent [ChildHTML parent]
+         -> Either Types.NoContent [ChildHTML parent]
          -> Builder
 buildTag tag attributes content =
   mconcat
@@ -400,17 +393,17 @@ buildTag tag attributes content =
         . L.intersperse (lazyByteString " ")
         $ mapMaybe renderAttribute attributes
     , case content of
-        Left  OmitTag   -> lazyByteString "/>"
-        Left  WithTag   -> lazyByteString ">"
-        Right _children -> lazyByteString ">"
+        Left  Types.OmitTag -> lazyByteString "/>"
+        Left  Types.WithTag -> lazyByteString ">"
+        Right _children     -> lazyByteString ">"
     , case content of
         Left  _type    -> lazyByteString LBS.empty
         Right children -> foldMap renderTag children
     , case content of
-        Left OmitTag ->
+        Left Types.OmitTag ->
           lazyByteString LBS.empty
 
-        Left WithTag ->
+        Left Types.WithTag ->
           lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
 
         Right _children ->

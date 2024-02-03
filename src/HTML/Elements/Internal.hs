@@ -11,6 +11,7 @@ module HTML.Elements.Internal
       , Tag_Comment
       , Tag_Text
       , Tag_RawHTML
+      , Tag_CustomHTML
       , Tag_Anchor
       , Tag_Abbreviation
       , Tag_ContactAddress
@@ -131,6 +132,7 @@ import Data.Text qualified as T
 import HTML.Attributes.Internal (Attributes)
 import HTML.Elements.Children (ValidChild)
 import HTML.Elements.TagType (TagType(..))
+import HTML.Types (NoContent)
 
 type HTML tag parent =
   ValidChild tag parent => ChildHTML parent
@@ -153,6 +155,12 @@ data ChildHTML (parent :: TagType) where
 
   Tag_RawHTML
     :: T.Text
+    -> ChildHTML parent
+
+  Tag_CustomHTML
+    :: T.Text
+    -> Attributes 'CustomHTML
+    -> Either NoContent [ChildHTML 'CustomHTML]
     -> ChildHTML parent
 
   Tag_Anchor

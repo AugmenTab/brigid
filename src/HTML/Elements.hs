@@ -8,6 +8,7 @@ module HTML.Elements
   , Tags.Comment, comment
   , Tags.Text, text, texts
   , Tags.RawHTML, rawHTML
+  , Tags.CustomHTML, customHTML
   , Tags.Anchor, a
   , Tags.Abbreviation, abbr
   , Tags.ContactAddress, address
@@ -128,8 +129,9 @@ import Data.Text qualified as T
 
 import HTML.Attributes.Internal (Attribute, buildAttrMap)
 import HTML.Elements.Children (ValidChild)
-import HTML.Elements.Tags qualified as Tags
 import HTML.Elements.Internal (Document, HTML, ChildHTML(..))
+import HTML.Elements.Tags qualified as Tags
+import HTML.Types (NoContent)
 
 noElement :: ChildHTML parent
 noElement = Tag_NoElement
@@ -150,6 +152,13 @@ texts = text . T.unwords
 
 rawHTML :: T.Text -> ChildHTML parent
 rawHTML = Tag_RawHTML
+
+customHTML :: T.Text
+           -> [Attribute Tags.CustomHTML]
+           -> Either NoContent [ChildHTML Tags.CustomHTML]
+           -> ChildHTML parent
+customHTML elemName attrs content =
+  Tag_CustomHTML elemName (buildAttrMap attrs) content
 
 a :: ValidChild Tags.Anchor parent
   => [Attribute Tags.Anchor]

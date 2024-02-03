@@ -4,6 +4,7 @@ module HTML.Elements.TagType
       , Comment
       , Text
       , RawHTML
+      , CustomHTML
       , Anchor
       , Abbreviation
       , ContactAddress
@@ -124,6 +125,7 @@ data TagType
   | Comment
   | Text
   | RawHTML
+  | CustomHTML
   | Anchor
   | Abbreviation
   | ContactAddress

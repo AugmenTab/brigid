@@ -39,6 +39,10 @@ example =
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
             , E.comment "Second comment"
+            , E.customHTML "my-custom-element" [ A.id "my-custom-elem-id" ] $
+                Right
+                  [ E.script [ A.customData "my-custom-elem-attr" "test" ] []
+                  ]
             ]
         , tableWithBodyExample
         , E.ul []

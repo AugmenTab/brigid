@@ -16,8 +16,5 @@ attributes:
     3. Modify `ValidElementsFor`.
 6. Add support for the SVG tag.
 7. Add support for MathML.
-8. Support custom elements?
-    * Tag_Custom :: T.Text -> [Attribute 'Custom] -> [ChildHTML 'Custom] -> ChildHTML parent
-    * Will have to be added to all lists as a valid child.
-9. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
+8. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
 

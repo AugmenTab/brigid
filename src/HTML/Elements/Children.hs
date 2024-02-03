@@ -18,6 +18,7 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Document               = '[ Html ]
   ValidChildrenFor Comment                = TagGroups.NonElement
   ValidChildrenFor Text                   = TagGroups.NonElement
+  ValidChildrenFor CustomHTML             = TagGroups.AllElements
   ValidChildrenFor Anchor                 = '[] -- Transparent, except that no descendant may be interactive content or an a element, and no descendant may have a specified tabindex attribute.
   ValidChildrenFor Abbreviation           = TagGroups.PhrasingContent
   ValidChildrenFor ContactAddress         = '[] -- Flow content, but with no nested <address> element, no heading content (<hgroup>, h1, h2, h3, h4, h5, h6), no sectioning content (<article>, <aside>, <section>, <nav>), and no <header> or <footer> element.

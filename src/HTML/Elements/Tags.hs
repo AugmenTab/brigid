@@ -5,6 +5,7 @@ module HTML.Elements.Tags
   , Comment
   , Text
   , RawHTML
+  , CustomHTML
   , Anchor
   , Abbreviation
   , ContactAddress
@@ -138,6 +139,9 @@ type Text = 'TagType.Text
 -- out-of-spec HTML, inserting templating engine commands, and for writing the
 -- content of @\<script>@ and @\<style>@ tags.
 type RawHTML = 'TagType.RawHTML
+
+-- | This type synonym represents a custom HTML element.
+type CustomHTML = 'TagType.CustomHTML
 
 -- | This type synonym represents the @\<a>@ element.
 type Anchor = 'TagType.Anchor
