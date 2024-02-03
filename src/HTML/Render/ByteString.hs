@@ -37,6 +37,9 @@ renderTag html =
     Tag_Text content ->
       lazyByteString . toBytes $ Escape.html content
 
+    Tag_RawHTML content ->
+      lazyByteString $ toBytes content
+
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
 

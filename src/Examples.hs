@@ -18,7 +18,7 @@ documentExample =
   E.html []
     [ E.head []
         [ E.script [ A.crossorigin HTML.Anonymous ]
-            [
+            [ E.rawHTML "This is a test!"
             ]
         ]
     , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
@@ -79,7 +79,7 @@ listExample =
 
    in [ testDiv
       , E.button [ A.disabled ]
-          [
+          [ E.rawHTML "{{ Fake mustache code here! }}"
           ]
       , E.p [] [ E.text "This is some paragraph text." ]
       , E.img [ A.draggable False ]

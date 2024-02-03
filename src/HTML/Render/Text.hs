@@ -33,6 +33,9 @@ renderTag html =
     Tag_Text content ->
       fromText $ Escape.html content
 
+    Tag_RawHTML content ->
+      fromText content
+
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
 

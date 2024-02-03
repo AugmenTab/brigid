@@ -7,6 +7,7 @@ module HTML.Elements
   , noElement
   , Tags.Comment, comment
   , Tags.Text, text, texts
+  , Tags.RawHTML, rawHTML
   , Tags.Anchor, a
   , Tags.Abbreviation, abbr
   , Tags.ContactAddress, address
@@ -146,6 +147,9 @@ texts :: ValidChild Tags.Text parent
       => [T.Text]
       -> ChildHTML parent
 texts = text . T.unwords
+
+rawHTML :: T.Text -> ChildHTML parent
+rawHTML = Tag_RawHTML
 
 a :: ValidChild Tags.Anchor parent
   => [Attribute Tags.Anchor]

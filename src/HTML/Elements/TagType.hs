@@ -3,6 +3,7 @@ module HTML.Elements.TagType
       ( Document
       , Comment
       , Text
+      , RawHTML
       , Anchor
       , Abbreviation
       , ContactAddress
@@ -122,6 +123,7 @@ data TagType
   = Document
   | Comment
   | Text
+  | RawHTML
   | Anchor
   | Abbreviation
   | ContactAddress

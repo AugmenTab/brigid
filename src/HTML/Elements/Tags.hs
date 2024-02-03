@@ -4,6 +4,7 @@ module HTML.Elements.Tags
   ( Document
   , Comment
   , Text
+  , RawHTML
   , Anchor
   , Abbreviation
   , ContactAddress
@@ -129,8 +130,14 @@ type Document = 'TagType.Document
 -- | This type synonym represents an HTML comment.
 type Comment = 'TagType.Comment
 
--- | This type synonym represents textual content within an element.
+-- | This type synonym represents (escaped) textual content within an element.
 type Text = 'TagType.Text
+
+-- | This type synonym represents raw HTML. This content is unchecked and
+-- should be considered unsafe. Its intended use-case is for: writing
+-- out-of-spec HTML, inserting templating engine commands, and for writing the
+-- content of @\<script>@ and @\<style>@ tags.
+type RawHTML = 'TagType.RawHTML
 
 -- | This type synonym represents the @\<a>@ element.
 type Anchor = 'TagType.Anchor

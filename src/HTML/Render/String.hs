@@ -28,6 +28,9 @@ renderHTML html =
     Tag_Text content ->
       T.unpack $ Escape.html content
 
+    Tag_RawHTML content ->
+      T.unpack content
+
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
 

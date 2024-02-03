@@ -10,6 +10,7 @@ module HTML.Elements.Internal
       ( Tag_NoElement
       , Tag_Comment
       , Tag_Text
+      , Tag_RawHTML
       , Tag_Anchor
       , Tag_Abbreviation
       , Tag_ContactAddress
@@ -148,6 +149,10 @@ data ChildHTML (parent :: TagType) where
   Tag_Text
     :: ValidChild 'Text parent
     => T.Text
+    -> ChildHTML parent
+
+  Tag_RawHTML
+    :: T.Text
     -> ChildHTML parent
 
   Tag_Anchor

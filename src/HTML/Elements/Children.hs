@@ -98,7 +98,7 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Ruby                   = TagGroups.RubyContent
   ValidChildrenFor Strikethrough          = TagGroups.PhrasingContent
   ValidChildrenFor Sample                 = TagGroups.PhrasingContent
-  ValidChildrenFor Script                 = '[] -- Dynamic script such as text/javascript.
+  ValidChildrenFor Script                 = '[ RawHTML ]
   ValidChildrenFor Search                 = TagGroups.FlowContent
   ValidChildrenFor Section                = TagGroups.FlowContent
   ValidChildrenFor Select                 = [ 'Option, OptionGroup ]
@@ -106,7 +106,7 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Source                 = TagGroups.VoidElement
   ValidChildrenFor Span                   = TagGroups.PhrasingContent
   ValidChildrenFor Strong                 = TagGroups.PhrasingContent
-  ValidChildrenFor Style                  = TagGroups.TextOnly
+  ValidChildrenFor Style                  = '[ RawHTML ]
   ValidChildrenFor Subscript              = TagGroups.PhrasingContent
   ValidChildrenFor Summary                = TagGroups.SummaryContent
   ValidChildrenFor Superscript            = TagGroups.PhrasingContent
