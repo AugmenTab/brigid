@@ -4,9 +4,6 @@
 
 module HTML.Elements.TagGroups
   ( AllElements
-  , VoidElement
-  , NoContent
-  , NonElement
   , TextOnly
   , Headings
   , ListContent
@@ -159,33 +156,6 @@ type AllElements =
   , 'Video
   , 'WordBreakOpportunity
   ]
-
--- This list represents void elements - used when defining elements that are
--- self-closing.
---
--- This is provided to give semantic meaning to members of type families that
--- would look identical, but are otherwise representing different states of
--- being.
---
-type VoidElement = '[] :: [TagType]
-
--- This list represents elements that cannot contain content - this is
--- different from a void element in that it MUST have a closing tag, so is not
--- self-closing, but still can contain no child elements.
---
--- This is provided to give semantic meaning to members of type families that
--- would look identical, but are otherwise representing different states of
--- being.
---
-type NoContent = '[] :: [TagType]
-
--- This list represents non-element entities such as text content and comments.
---
--- This is provided to give semantic meaning to members of type families that
--- would look identical, but are otherwise representing different states of
--- being.
---
-type NonElement = '[] :: [TagType]
 
 type TextOnly =
   '[ Text ]
