@@ -15,8 +15,9 @@ import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 
-import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Attributes.Internal (Attribute(..))
+import HTML.Elements.Internal (ChildHTML(..))
+import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
 renderHTML :: ChildHTML parent -> LBS.ByteString
@@ -34,7 +35,7 @@ renderTag html =
         <> lazyByteString " -->"
 
     Tag_Text content ->
-      lazyByteString $ toBytes content
+      lazyByteString . toBytes $ Escape.html content
 
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
@@ -417,10 +418,13 @@ renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
     Attr_Custom name value ->
-      Just $ buildAttribute (toBytes name) (toBytes value)
+      Just $
+        buildAttribute
+          (toBytes name)
+          (toBytes $ Escape.attribute value)
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ LBS8.singleton key
+      Just . buildAttribute "accesskey" . toBytes $ Escape.attributeChar key
 
     Attr_Autocapitalize option ->
       Just
@@ -431,7 +435,7 @@ renderAttribute attr =
       buildBooleanAttribute "autofocus" autofocus
 
     Attr_Class _class ->
-      Just . buildAttribute "class" $ toBytes _class
+      Just . buildAttribute "class" . toBytes $ Escape.attribute _class
 
     Attr_ContentEditable option ->
       Just
@@ -439,7 +443,10 @@ renderAttribute attr =
         $ Types.contentEditableOptionToBytes option
 
     Attr_CustomData data_ value ->
-      Just $ buildAttribute ("data-" <> toBytes data_) (toBytes value)
+      Just $
+        buildAttribute
+          ("data-" <> toBytes data_)
+          (toBytes $ Escape.attribute value)
 
     Attr_Dir directionality ->
       Just
@@ -465,7 +472,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id _id ->
-      Just . buildAttribute "id" $ toBytes _id
+      Just . buildAttribute "id" . toBytes $ Escape.attribute _id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -476,7 +483,7 @@ renderAttribute attr =
     --     $ Types.inputModeToBytes mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" $ toBytes is
+      Just . buildAttribute "is" . toBytes $ Escape.attribute is
 
     -- Attr_ItemId
 
@@ -512,13 +519,13 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ enumBoolToBytes spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" $ toBytes style
+      Just . buildAttribute "style" . toBytes $ Escape.attribute style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" . LBS8.pack $ show tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" $ toBytes title
+      Just . buildAttribute "title" . toBytes $ Escape.attribute title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToBytes translate

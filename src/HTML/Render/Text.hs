@@ -13,8 +13,9 @@ import Data.Text qualified as T
 import Data.Text.Lazy (toStrict)
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
-import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Attributes.Internal (Attribute(..))
+import HTML.Elements.Internal (ChildHTML(..))
+import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
 renderHTML :: ChildHTML parent -> T.Text
@@ -30,7 +31,7 @@ renderTag html =
       fromText "<!-- " <> fromText content <> fromText " -->"
 
     Tag_Text content ->
-      fromText content
+      fromText $ Escape.html content
 
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
@@ -408,10 +409,10 @@ renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
     Attr_Custom name value ->
-      Just $ buildAttribute name value
+      Just . buildAttribute name $ Escape.attribute value
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ T.singleton key
+      Just . buildAttribute "accesskey" $ Escape.attributeChar key
 
     Attr_Autocapitalize option ->
       Just
@@ -422,7 +423,7 @@ renderAttribute attr =
       buildBooleanAttribute "autofocus" autofocus
 
     Attr_Class _class ->
-      Just $ buildAttribute "class" _class
+      Just . buildAttribute "class" $ Escape.attribute _class
 
     Attr_ContentEditable option ->
       Just
@@ -430,7 +431,10 @@ renderAttribute attr =
         $ Types.contentEditableOptionToText option
 
     Attr_CustomData data_ value ->
-      Just $ buildAttribute ("data-" <> data_) value
+      Just $
+        buildAttribute
+          ("data-" <> data_)
+          (Escape.attribute value)
 
     Attr_Dir directionality ->
       Just
@@ -456,7 +460,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id _id ->
-      Just $ buildAttribute "id" _id
+      Just . buildAttribute "id" $ Escape.attribute _id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -467,7 +471,7 @@ renderAttribute attr =
     --     $ Types.inputModeToText mode
 
     Attr_Is is ->
-      Just $ buildAttribute "is" is
+      Just . buildAttribute "is" $ Escape.attribute is
 
     -- Attr_ItemId
 
@@ -503,13 +507,13 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ enumBoolToText spellcheck
 
     Attr_Style style ->
-      Just $ buildAttribute "style" style
+      Just . buildAttribute "style" $ Escape.attribute style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" . T.pack $ show tabindex
 
     Attr_Title title ->
-      Just $ buildAttribute "title" title
+      Just . buildAttribute "title" $ Escape.attribute title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToText translate

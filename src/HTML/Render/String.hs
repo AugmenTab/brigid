@@ -11,8 +11,9 @@ import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 
-import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Attributes.Internal (Attribute(..))
+import HTML.Elements.Internal (ChildHTML(..))
+import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
 renderHTML :: ChildHTML parent -> String
@@ -25,7 +26,7 @@ renderHTML html =
       "<!-- " <> T.unpack content <> " -->"
 
     Tag_Text content ->
-      T.unpack content
+      T.unpack $ Escape.html content
 
     Tag_Anchor attrs content ->
       buildTag "a" (Map.elems attrs) $ Right content
@@ -401,10 +402,13 @@ renderAttribute :: Attribute any -> Maybe String
 renderAttribute attr =
   case attr of
     Attr_Custom name value ->
-      Just . buildAttribute (T.unpack name) $ T.unpack value
+      Just $
+        buildAttribute
+          (T.unpack name)
+          (T.unpack $ Escape.attribute value)
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ L.singleton key
+      Just . buildAttribute "accesskey" . T.unpack $ Escape.attributeChar key
 
     Attr_Autocapitalize option ->
       Just
@@ -416,7 +420,7 @@ renderAttribute attr =
       buildBooleanAttribute "autofocus" autofocus
 
     Attr_Class _class ->
-      Just . buildAttribute "class" $ T.unpack _class
+      Just . buildAttribute "class" . T.unpack $ Escape.attribute _class
 
     Attr_ContentEditable option ->
       Just
@@ -425,7 +429,10 @@ renderAttribute attr =
         $ Types.contentEditableOptionToText option
 
     Attr_CustomData data_ value ->
-      Just . buildAttribute ("data-" <> T.unpack data_) $ T.unpack value
+      Just $
+        buildAttribute
+          ("data-" <> T.unpack data_)
+          (T.unpack $ Escape.attribute value)
 
     Attr_Dir directionality ->
       Just
@@ -453,7 +460,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id _id ->
-      Just . buildAttribute "id" $ T.unpack _id
+      Just . buildAttribute "id" . T.unpack $ Escape.attribute _id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -465,7 +472,7 @@ renderAttribute attr =
     --     $ Types.inputModeToText mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" $ T.unpack is
+      Just . buildAttribute "is" . T.unpack $ Escape.attribute is
 
     -- Attr_ItemId
 
@@ -503,13 +510,13 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ enumBoolToText spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" $ T.unpack style
+      Just . buildAttribute "style" . T.unpack $ Escape.attribute style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" $ show tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" $ T.unpack title
+      Just . buildAttribute "title" . T.unpack $ Escape.attribute title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToText translate
