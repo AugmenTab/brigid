@@ -23,6 +23,7 @@ module HTML.Internal.TagOperations
   ( Contains
   , Filter
   , Remove
+  , Union
   ) where
 
 import HTML.Elements.TagType (TagType)
@@ -32,12 +33,20 @@ class Contains (list :: [TagType]) (eType :: TagType)
 instance Contains (eType ': es) eType
 instance {-# OVERLAPPABLE #-} Contains es eType => Contains (e ': es) eType
 
+type family Add (tag :: TagType) (tags :: [TagType]) :: [TagType] where
+  Add e '[]       = '[e]
+  Add e (e ': ts) = e ': ts
+  Add e (t ': ts) = t ': Add e ts
+
+type family Filter (deletes :: [TagType]) (keeps :: [TagType]) :: [TagType] where
+  Filter '[]       keeps = keeps
+  Filter (d ': ds) keeps = Filter ds (Remove d keeps)
+
 type family Remove (tag :: TagType) (tags :: [TagType]) :: [TagType] where
   Remove d '[]       = '[]
   Remove d (d ': ks) = Remove d ks
   Remove d (k ': ks) = k ': Remove d ks
 
-type family Filter (deletes :: [TagType]) (keeps :: [TagType]) :: [TagType] where
-  Filter '[]      keeps = keeps
-  Filter (d : ds) keeps = Filter ds (Remove d keeps)
-
+type family Union (adds :: [TagType]) (tags :: [TagType]) :: [TagType] where
+  Union '[]       tags = tags
+  Union (a ': as) tags = Union as (Add a tags)

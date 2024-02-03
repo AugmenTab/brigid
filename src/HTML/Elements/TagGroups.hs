@@ -40,10 +40,7 @@ module HTML.Elements.TagGroups
   ) where
 
 import HTML.Elements.TagType (TagType(..))
-
-type family (xs :: [TagType]) ++ (ys :: [TagType]) :: [TagType] where
-  '[]       ++ ys = ys
-  (x ': xs) ++ ys = x ': (xs ++ ys)
+import HTML.Internal.TagOperations (Union)
 
 type AllElements =
   [ 'Document
@@ -482,9 +479,9 @@ type DescriptionTermExcluded =
   HeadingSectioningAndMarginalsExcluded
 
 type HeadingSectioningAndMarginalsExcluded =
-  SectioningContent
-    ++ HeadingContent
-    ++ MarginalContent
+  Union
+    SectioningContent
+    (Union HeadingContent MarginalContent)
 
 type TableHeaderExcluded =
   HeadingSectioningAndMarginalsExcluded
@@ -494,7 +491,8 @@ type TableHeaderExcluded =
 
 -- This list represents all elements that are valid under a `<dlist>` tag.
 type DescriptionListContent =
-  ScriptSupportingContent ++
+  Union
+    ScriptSupportingContent
     [ 'DescriptionTerm
     , 'DescriptionDetails
     , 'Division
