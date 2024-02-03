@@ -744,7 +744,7 @@ sample = Tag_Sample . buildAttrMap
 --
 script :: ValidChild Tags.Script parent
        => [Attribute Tags.Script]
-       -> [ChildHTML Tags.Script]
+       -> T.Text
        -> ChildHTML parent
 script = Tag_Script . buildAttrMap
 
@@ -799,7 +799,7 @@ strong = Tag_Strong . buildAttrMap
 --
 style :: ValidChild Tags.Style parent
       => [Attribute Tags.Style]
-      -> [ChildHTML Tags.Style]
+      -> T.Text
       -> ChildHTML parent
 style = Tag_Style . buildAttrMap
 

@@ -281,8 +281,11 @@ renderHTML html =
     Tag_Sample attrs content ->
       buildTag "sample" (Map.elems attrs) $ Right content
 
-    Tag_Script attrs content ->
-      buildTag "script" (Map.elems attrs) $ Right content
+    Tag_Script attrs script ->
+      buildTag "script" (Map.elems attrs)
+        . Right
+        . L.singleton
+        $ Tag_RawHTML script
 
     Tag_Search attrs content ->
       buildTag "search" (Map.elems attrs) $ Right content
@@ -308,8 +311,11 @@ renderHTML html =
     Tag_Strong attrs content ->
       buildTag "strong" (Map.elems attrs) $ Right content
 
-    Tag_Style attrs content ->
-      buildTag "style" (Map.elems attrs) $ Right content
+    Tag_Style attrs style ->
+      buildTag "style" (Map.elems attrs)
+        . Right
+        . L.singleton
+        $ Tag_RawHTML style
 
     Tag_Subscript attrs content ->
       buildTag "sub" (Map.elems attrs) $ Right content

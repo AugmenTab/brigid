@@ -647,7 +647,7 @@ data ChildHTML (parent :: TagType) where
   Tag_Script
     :: ValidChild 'Script parent
     => Attributes 'Script
-    -> [ChildHTML 'Script]
+    -> T.Text
     -> ChildHTML parent
 
   Tag_Search
@@ -700,7 +700,7 @@ data ChildHTML (parent :: TagType) where
   Tag_Style
     :: ValidChild 'Style parent
     => Attributes 'Style
-    -> [ChildHTML 'Style]
+    -> T.Text
     -> ChildHTML parent
 
   Tag_Subscript

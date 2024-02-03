@@ -135,9 +135,8 @@ type Comment = 'TagType.Comment
 type Text = 'TagType.Text
 
 -- | This type synonym represents raw HTML. This content is unchecked and
--- should be considered unsafe. Its intended use-case is for: writing
--- out-of-spec HTML, inserting templating engine commands, and for writing the
--- content of @\<script>@ and @\<style>@ tags.
+-- should be considered unsafe. Its intended use-case is for writing
+-- out-of-spec HTML and inserting templating engine commands.
 type RawHTML = 'TagType.RawHTML
 
 -- | This type synonym represents a custom HTML element.

@@ -5,6 +5,7 @@ module Examples
 
 import Prelude hiding (head)
 import Data.List qualified as L
+import Data.Text qualified as T
 
 import HTML.Attributes qualified as A
 import HTML.Elements qualified as E
@@ -17,9 +18,7 @@ documentExample :: E.Document
 documentExample =
   E.html []
     [ E.head []
-        [ E.script [ A.crossorigin HTML.Anonymous ]
-            [ E.rawHTML "This is a test!"
-            ]
+        [ E.script [ A.crossorigin HTML.Anonymous ] "This is a test!"
         ]
     , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
@@ -50,7 +49,7 @@ example =
             , E.comment "Second comment"
             , E.customHTML "my-custom-element" [ A.id "my-custom-elem-id" ] $
                 Right
-                  [ E.script [ A.customData "my-custom-elem-attr" "test" ] []
+                  [ E.script [ A.customData "my-custom-elem-attr" "test" ] T.empty
                   ]
             ]
         , tableWithBodyExample
