@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+source scripts/lib/run-in-container.sh
+
+echo "=============================="
+echo "===== Building safe-html ====="
+echo "=============================="
+
+stack build --fast --test "$@"
