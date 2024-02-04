@@ -381,8 +381,8 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_FormOnValidate
-  --   :: ValidAttribute 'FormOnValidate tag
+  -- Attr_FormNoValidate
+  --   :: ValidAttribute 'FormNoValidate tag
   --   => T.Text -- TODO
   --   -> Attribute tag
 

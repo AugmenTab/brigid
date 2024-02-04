@@ -18,10 +18,10 @@ module HTML.Elements.Children
 
 import HTML.Elements.TagGroups qualified as TagGroups
 import HTML.Elements.TagType (TagType(..))
-import HTML.Internal.TagOperations (Contains, Filter, Remove)
+import HTML.Internal.TagOperations (AlertElement, Elem, Filter, Remove)
 
 type ValidChild tag parent =
-  Contains (ValidChildrenFor parent) tag
+  AlertElement (Elem tag (ValidChildrenFor parent)) tag parent 'False ~ 'True
 
 type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Document               = '[ Html ]

@@ -22,6 +22,7 @@ documentExample =
         ]
     , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
+          -- , A.crossorigin HTML.Anonymous -- This fails, because crossorigin is not a valid attribute for body.
              ]
         [ E.header []
             [ E.text "This is the header"

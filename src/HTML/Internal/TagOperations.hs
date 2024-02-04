@@ -13,30 +13,68 @@
 -- opportunity.
 {-# LANGUAGE UndecidableInstances #-}
 
--- This is to prevent warnings for the non-matching case in the third
--- `Contains` instance. GHC claims that this is a redundant constraint, but
--- attributes will fail to compile without it. I believe this is related to a
--- known GHC bug.
-{-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
-
 module HTML.Internal.TagOperations
-  ( Contains
+  ( AlertAttribute
+  , AlertElement
+  , Elem
   , Filter
   , Remove
   , Union
   ) where
 
-import HTML.Elements.TagType (TagType)
+import GHC.TypeLits (ErrorMessage(..), TypeError)
 
-class Contains (list :: [TagType]) (eType :: TagType)
-
-instance Contains (eType ': es) eType
-instance {-# OVERLAPPABLE #-} Contains es eType => Contains (e ': es) eType
+import HTML.Attributes.AttributeType (AttributeErrorMessage, AttributeType)
+import HTML.Elements.TagType (TagErrorMessage, TagType)
 
 type family Add (tag :: TagType) (tags :: [TagType]) :: [TagType] where
   Add e '[]       = '[e]
   Add e (e ': ts) = e ': ts
   Add e (t ': ts) = t ': Add e ts
+
+type family AlertAttribute (member :: Bool) (attr :: AttributeType) (tag :: TagType) :: Bool where
+  AlertAttribute 'True tag parent =
+    'True
+
+  AlertAttribute 'False tag parent =
+    TypeError
+      ( 'Text "The "
+          ':<>: AttributeErrorMessage tag
+          ':<>: 'Text " attribute is not a valid attribute for the "
+          ':<>: TagErrorMessage parent
+          ':<>: 'Text " element."
+      )
+
+type family AlertElement (member :: Bool) (tag :: TagType) (parent :: TagType) (transparent :: Bool) :: Bool where
+  AlertElement 'True tag parent transparent =
+    'True
+
+  AlertElement 'False tag parent 'False =
+    TypeError
+      ( 'Text "The "
+          ':<>: TagErrorMessage tag
+          ':<>: 'Text " element is not a valid child for the "
+          ':<>: TagErrorMessage parent
+          ':<>: 'Text " element."
+      )
+
+  AlertElement 'False tag parent 'True =
+    TypeError
+      ( 'Text "The "
+          ':<>: TagErrorMessage tag
+          ':<>: 'Text " element is not a valid child for the "
+          ':<>: TagErrorMessage parent
+          ':<>: 'Text " element in this context, because "
+          ':<>: TagErrorMessage parent
+          ':<>: 'Text " is a transparent element, and "
+          ':<>: TagErrorMessage tag
+          ':<>: 'Text " is not a valid child for the grandparent element."
+      )
+
+type family Elem (tag :: TagType) (tags :: [TagType]) :: Bool where
+  Elem e '[]       = 'False
+  Elem e (e ': ts) = 'True
+  Elem e (t ': ts) = Elem e ts
 
 type family Filter (deletes :: [TagType]) (keeps :: [TagType]) :: [TagType] where
   Filter '[]       keeps = keeps

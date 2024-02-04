@@ -1,6 +1,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
 
 module HTML.Attributes.Elements
   ( ValidAttribute
@@ -9,12 +10,11 @@ module HTML.Attributes.Elements
 import HTML.Attributes.AttributeType (AttributeType(..))
 import HTML.Elements.TagGroups qualified as TagGroups
 import HTML.Elements.TagType (TagType(..))
-import HTML.Internal.TagOperations (Contains)
+import HTML.Internal.TagOperations (AlertAttribute, Elem)
 
-type ValidAttribute attributeType tag =
-  Contains (ValidElementsFor attributeType) tag
+type ValidAttribute attr tag =
+  AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor CrossOrigin = TagGroups.CrossOriginTags
   ValidElementsFor Disabled    = TagGroups.DisableableTags
-

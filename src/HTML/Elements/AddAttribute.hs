@@ -1,3 +1,5 @@
+{-# LANGUAGE GADTs #-}
+
 module HTML.Elements.AddAttribute
   ( addAnchorAttribute
   , addAbbreviationAttribute
