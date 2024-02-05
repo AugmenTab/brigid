@@ -23,6 +23,7 @@ module HTML.Elements.TagGroups
   , TransparentContent
   , MarginalContent
 
+  , ContactAddressExcluded
   , DescriptionTermExcluded
   , TableHeaderExcluded
 
@@ -43,8 +44,7 @@ import HTML.Elements.TagType (TagType(..))
 import HTML.Internal.TagOperations (Union)
 
 type AllElements =
-  [ 'Document
-  , 'Comment
+  [ 'Comment
   , 'Text
   , 'RawHTML
   , 'CustomHTML
@@ -474,6 +474,9 @@ type MarginalContent =
 
 -- Element Exclusion Tag Groups
 --
+
+type ContactAddressExcluded =
+  ContactAddress ': HeadingSectioningAndMarginalsExcluded
 
 type DescriptionTermExcluded =
   HeadingSectioningAndMarginalsExcluded

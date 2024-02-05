@@ -23,38 +23,56 @@ import HTML.Internal.TagOperations (AlertElement, Elem, Filter, Remove)
 type ValidChild tag parent =
   AlertElement (Elem tag (ValidChildrenFor parent)) tag parent 'False ~ 'True
 
-type family ValidChildrenFor (parent :: TagType) :: [TagType] where
-  ValidChildrenFor Document               = '[ Html ]
-  ValidChildrenFor CustomHTML             = TagGroups.AllElements
-
+-- Anchor
   -- Transparent, except that no descendant may be interactive content or an a
   -- element, and no descendant may have a specified tabindex attribute.
-  ValidChildrenFor Anchor                 = '[]
 
-  ValidChildrenFor Abbreviation           = TagGroups.PhrasingContent
-  ValidChildrenFor ContactAddress         = '[] -- Flow content, but with no nested <address> element, no heading content (<hgroup>, h1, h2, h3, h4, h5, h6), no sectioning content (<article>, <aside>, <section>, <nav>), and no <header> or <footer> element.
-  ValidChildrenFor Article                = TagGroups.FlowContent
-  ValidChildrenFor Aside                  = TagGroups.FlowContent
-
+-- Audio
   -- If the element has a src attribute: zero or more <track> elements followed
   -- by transparent content that contains no <audio> or <video> media elements.
   -- Else: zero or more <source> elements followed by zero or more <track>
   -- elements followed by transparent content that contains no <audio> or
   -- <video> media elements.
-  ValidChildrenFor Audio                  = '[]
 
+-- Canvas
+  -- Transparent but with no interactive content descendants except for <a>
+  -- elements, <button> elements, <input> elements whose type attribute is
+  -- checkbox, radio, or button.
+
+-- NoScript
+  -- When scripting is disabled and when it is a descendant of the <head>
+  -- element: in any order, zero or more <link> elements, zero or more <style>
+  -- elements, and zero or more <meta> elements. When scripting is disabled and
+  -- when it isn't a descendant of the <head> element: any transparent content,
+  -- but no <noscript> element must be among its descendants. Otherwise: flow
+  -- content or phrasing content.
+
+-- Object
+  -- zero or more <param> elements, then transparent.
+
+-- Video
+  -- If the element has a src attribute: zero or more <track> elements,
+  -- followed by transparent content that contains no media elements–that is no
+  -- <audio> or <video>. Else: zero or more <source> elements, followed by zero
+  -- or more <track> elements, followed by transparent content that contains no
+  -- media elements–that is no <audio> or <video>.
+
+type family ValidChildrenFor (parent :: TagType) :: [TagType] where
+  ValidChildrenFor Document               = '[ Html ]
+  ValidChildrenFor CustomHTML             = TagGroups.AllElements
+  ValidChildrenFor Anchor                 = '[]
+  ValidChildrenFor Abbreviation           = TagGroups.PhrasingContent
+  ValidChildrenFor ContactAddress         = Filter TagGroups.ContactAddressExcluded TagGroups.FlowContent
+  ValidChildrenFor Article                = TagGroups.FlowContent
+  ValidChildrenFor Aside                  = TagGroups.FlowContent
+  ValidChildrenFor Audio                  = '[]
   ValidChildrenFor BringAttentionTo       = TagGroups.PhrasingContent
   ValidChildrenFor BidirectionalIsolation = TagGroups.PhrasingContent
   ValidChildrenFor BidirectionalOverride  = TagGroups.PhrasingContent
   ValidChildrenFor Blockquote             = TagGroups.FlowContent
   ValidChildrenFor Body                   = TagGroups.FlowContent
   ValidChildrenFor Button                 = Filter TagGroups.InteractiveContent TagGroups.PhrasingContent
-
-  -- Transparent but with no interactive content descendants except for <a>
-  -- elements, <button> elements, <input> elements whose type attribute is
-  -- checkbox, radio, or button.
   ValidChildrenFor Canvas                 = '[]
-
   ValidChildrenFor TableCaption           = TagGroups.FlowContent
   ValidChildrenFor Citation               = TagGroups.PhrasingContent
   ValidChildrenFor Code                   = TagGroups.PhrasingContent
@@ -95,18 +113,8 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Menu                   = TagGroups.ListContent
   ValidChildrenFor Meter                  = Remove Meter TagGroups.PhrasingContent
   ValidChildrenFor Nav                    = TagGroups.FlowContent
-
-  -- When scripting is disabled and when it is a descendant of the <head>
-  -- element: in any order, zero or more <link> elements, zero or more <style>
-  -- elements, and zero or more <meta> elements. When scripting is disabled and
-  -- when it isn't a descendant of the <head> element: any transparent content,
-  -- but no <noscript> element must be among its descendants. Otherwise: flow
-  -- content or phrasing content.
   ValidChildrenFor NoScript               = '[]
-
-  -- zero or more <param> elements, then transparent.
   ValidChildrenFor Object                 = '[]
-
   ValidChildrenFor OrderedList            = TagGroups.ListContent
   ValidChildrenFor OptionGroup            = '[ Option ]
   ValidChildrenFor Option                 = TagGroups.TextOnly
@@ -144,10 +152,4 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Underline              = TagGroups.PhrasingContent
   ValidChildrenFor UnorderedList          = TagGroups.ListContent
   ValidChildrenFor Variable               = TagGroups.PhrasingContent
-
-  -- If the element has a src attribute: zero or more <track> elements,
-  -- followed by transparent content that contains no media elements–that is no
-  -- <audio> or <video>. Else: zero or more <source> elements, followed by zero
-  -- or more <track> elements, followed by transparent content that contains no
-  -- media elements–that is no <audio> or <video>.
   ValidChildrenFor Video                  = '[]
