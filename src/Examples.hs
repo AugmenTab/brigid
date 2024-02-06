@@ -32,7 +32,7 @@ documentExample =
         ]
     ]
 
-example :: E.HTML E.Division parent
+example :: E.ChildHTML E.Body grandparent
 example =
   E.div [ A.id "div1"
         , A.styles [ "color:blue", "font-size:2em" ]
@@ -80,7 +80,7 @@ example =
         ]
     ]
 
-listExample :: [E.ChildHTML E.Division]
+listExample :: [E.ChildHTML E.Division grandparent]
 listExample =
   let testDiv =
         flip addDivisionAttribute (A.id "added-later")
@@ -98,7 +98,7 @@ listExample =
       , E.img [ A.draggable False ]
       ]
 
-tableWithBodyExample :: E.ChildHTML E.Division
+tableWithBodyExample :: E.ChildHTML E.Division grandparent
 tableWithBodyExample =
   tableExample
     . Left
@@ -114,7 +114,7 @@ tableWithBodyExample =
           ]
       ]
 
-tableWithRowExample :: E.ChildHTML E.Division
+tableWithRowExample :: E.ChildHTML E.Division grandparent
 tableWithRowExample =
   tableExample
     . Right
@@ -128,8 +128,8 @@ tableWithRowExample =
         , E.td [] [ E.text "6" , E.noElement ]
         ]
 
-tableExample :: Either [Table.Body] [Table.Row E.Table]
-             -> E.ChildHTML E.Division
+tableExample :: Either [Table.Body grandparent] [Table.Row E.Table grandparent]
+             -> E.ChildHTML E.Division grandparent
 tableExample content =
   let caption =
         Just $

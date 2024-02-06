@@ -16,14 +16,22 @@ import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 
 import HTML.Attributes.Internal (Attribute(..))
-import HTML.Elements.Internal (ChildHTML(..))
+import HTML.Elements.Internal (ChildHTML(..), Document(..))
 import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
-renderHTML :: ChildHTML parent -> LBS.ByteString
-renderHTML = toLazyByteString . renderTag
+renderHTML :: Document -> LBS.ByteString
+renderHTML = toLazyByteString . renderDocument
 
-renderTag :: ChildHTML parent -> Builder
+renderDocument :: Document -> Builder
+renderDocument doc =
+  case doc of
+    Tag_Html attrs content ->
+      lazyByteString "<!DOCTYPE html>"
+        <> buildTag "html" (Map.elems attrs) (Right content)
+
+
+renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
   case html of
     Tag_NoElement ->
@@ -186,10 +194,6 @@ renderTag html =
 
     Tag_HorizontalRule attrs ->
       buildTag "hr" (Map.elems attrs) $ Left Types.OmitTag
-
-    Tag_Html attrs content ->
-      lazyByteString "<!DOCTYPE html>"
-        <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
       buildTag "i" (Map.elems attrs) $ Right content
@@ -388,7 +392,7 @@ renderTag html =
 
 buildTag :: LBS.ByteString
          -> [Attribute attr]
-         -> Either Types.NoContent [ChildHTML parent]
+         -> Either Types.NoContent [ChildHTML parent grandparent]
          -> Builder
 buildTag tag attributes content =
   mconcat

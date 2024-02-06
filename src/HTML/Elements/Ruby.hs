@@ -17,7 +17,7 @@ ruby :: ValidChild Ruby parent
      => [Attribute Ruby]
      -> T.Text
      -> T.Text
-     -> E.ChildHTML parent
+     -> E.ChildHTML parent grandparent
 ruby attrs symbol txt =
   E.ruby attrs
     [ E.text symbol

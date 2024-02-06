@@ -49,7 +49,6 @@ module HTML.Elements.AddAttribute
   , addHeaderAttribute
   , addHeadingGroupAttribute
   , addHorizontalRuleAttribute
-  , addHtmlAttribute
   , addIdiomaticTextAttribute
   , addIFrameAttribute
   , addImageAttribute
@@ -121,9 +120,9 @@ import HTML.Attributes.Internal (Attribute, attributeText)
 import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Elements.Tags qualified as Tags
 
-addAnchorAttribute :: ChildHTML parent
+addAnchorAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Anchor
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addAnchorAttribute tag attr =
   case tag of
     Tag_Anchor attrs content ->
@@ -132,9 +131,9 @@ addAnchorAttribute tag attr =
     _ ->
       tag
 
-addAbbreviationAttribute :: ChildHTML parent
+addAbbreviationAttribute :: ChildHTML parent grandparent
                          -> Attribute Tags.Abbreviation
-                         -> ChildHTML parent
+                         -> ChildHTML parent grandparent
 addAbbreviationAttribute tag attr =
   case tag of
     Tag_Abbreviation attrs content ->
@@ -143,9 +142,9 @@ addAbbreviationAttribute tag attr =
     _ ->
       tag
 
-addContactAddressAttribute :: ChildHTML parent
+addContactAddressAttribute :: ChildHTML parent grandparent
                            -> Attribute Tags.ContactAddress
-                           -> ChildHTML parent
+                           -> ChildHTML parent grandparent
 addContactAddressAttribute tag attr =
   case tag of
     Tag_ContactAddress attrs content ->
@@ -154,9 +153,9 @@ addContactAddressAttribute tag attr =
     _ ->
       tag
 
-addAreaAttribute :: ChildHTML parent
+addAreaAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Area
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addAreaAttribute tag attr =
   case tag of
     Tag_Area attrs ->
@@ -165,9 +164,9 @@ addAreaAttribute tag attr =
     _ ->
       tag
 
-addArticleAttribute :: ChildHTML parent
+addArticleAttribute :: ChildHTML parent grandparent
                     -> Attribute Tags.Article
-                    -> ChildHTML parent
+                    -> ChildHTML parent grandparent
 addArticleAttribute tag attr =
   case tag of
     Tag_Article attrs content ->
@@ -176,9 +175,9 @@ addArticleAttribute tag attr =
     _ ->
       tag
 
-addAsideAttribute :: ChildHTML parent
+addAsideAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Aside
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addAsideAttribute tag attr =
   case tag of
     Tag_Aside attrs content ->
@@ -187,9 +186,9 @@ addAsideAttribute tag attr =
     _ ->
       tag
 
-addAudioAttribute :: ChildHTML parent
+addAudioAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Audio
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addAudioAttribute tag attr =
   case tag of
     Tag_Audio attrs content ->
@@ -198,9 +197,9 @@ addAudioAttribute tag attr =
     _ ->
       tag
 
-addBringAttentionToAttribute :: ChildHTML parent
+addBringAttentionToAttribute :: ChildHTML parent grandparent
                              -> Attribute Tags.BringAttentionTo
-                             -> ChildHTML parent
+                             -> ChildHTML parent grandparent
 addBringAttentionToAttribute tag attr =
   case tag of
     Tag_BringAttentionTo attrs content ->
@@ -209,9 +208,9 @@ addBringAttentionToAttribute tag attr =
     _ ->
       tag
 
-addBaseAttribute :: ChildHTML parent
+addBaseAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Base
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addBaseAttribute tag attr =
   case tag of
     Tag_Base attrs ->
@@ -220,9 +219,9 @@ addBaseAttribute tag attr =
     _ ->
       tag
 
-addBidirectionalIsolationAttribute :: ChildHTML parent
+addBidirectionalIsolationAttribute :: ChildHTML parent grandparent
                                    -> Attribute Tags.BidirectionalIsolation
-                                   -> ChildHTML parent
+                                   -> ChildHTML parent grandparent
 addBidirectionalIsolationAttribute tag attr =
   case tag of
     Tag_BidirectionalIsolation attrs content ->
@@ -233,9 +232,9 @@ addBidirectionalIsolationAttribute tag attr =
     _ ->
       tag
 
-addBidirectionalOverrideAttribute :: ChildHTML parent
+addBidirectionalOverrideAttribute :: ChildHTML parent grandparent
                                   -> Attribute Tags.BidirectionalOverride
-                                  -> ChildHTML parent
+                                  -> ChildHTML parent grandparent
 addBidirectionalOverrideAttribute tag attr =
   case tag of
     Tag_BidirectionalOverride attrs content ->
@@ -246,9 +245,9 @@ addBidirectionalOverrideAttribute tag attr =
     _ ->
       tag
 
-addBlockquoteAttribute :: ChildHTML parent
+addBlockquoteAttribute :: ChildHTML parent grandparent
                        -> Attribute Tags.Blockquote
-                       -> ChildHTML parent
+                       -> ChildHTML parent grandparent
 addBlockquoteAttribute tag attr =
   case tag of
     Tag_Blockquote attrs content ->
@@ -257,9 +256,9 @@ addBlockquoteAttribute tag attr =
     _ ->
       tag
 
-addBodyAttribute :: ChildHTML parent
+addBodyAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Body
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addBodyAttribute tag attr =
   case tag of
     Tag_Body attrs content ->
@@ -268,9 +267,9 @@ addBodyAttribute tag attr =
     _ ->
       tag
 
-addLineBreakAttribute :: ChildHTML parent
+addLineBreakAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.LineBreak
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addLineBreakAttribute tag attr =
   case tag of
     Tag_LineBreak attrs ->
@@ -279,9 +278,9 @@ addLineBreakAttribute tag attr =
     _ ->
       tag
 
-addButtonAttribute :: ChildHTML parent
+addButtonAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Button
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addButtonAttribute tag attr =
   case tag of
     Tag_Button attrs content ->
@@ -290,9 +289,9 @@ addButtonAttribute tag attr =
     _ ->
       tag
 
-addCanvasAttribute :: ChildHTML parent
+addCanvasAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Canvas
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addCanvasAttribute tag attr =
   case tag of
     Tag_Canvas attrs content ->
@@ -301,9 +300,9 @@ addCanvasAttribute tag attr =
     _ ->
       tag
 
-addTableCaptionAttribute :: ChildHTML parent
+addTableCaptionAttribute :: ChildHTML parent grandparent
                          -> Attribute Tags.TableCaption
-                         -> ChildHTML parent
+                         -> ChildHTML parent grandparent
 addTableCaptionAttribute tag attr =
   case tag of
     Tag_TableCaption attrs content ->
@@ -312,9 +311,9 @@ addTableCaptionAttribute tag attr =
     _ ->
       tag
 
-addCitationAttribute :: ChildHTML parent
+addCitationAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.Citation
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addCitationAttribute tag attr =
   case tag of
     Tag_Citation attrs content ->
@@ -323,9 +322,9 @@ addCitationAttribute tag attr =
     _ ->
       tag
 
-addCodeAttribute :: ChildHTML parent
+addCodeAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Code
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addCodeAttribute tag attr =
   case tag of
     Tag_Code attrs content ->
@@ -334,9 +333,9 @@ addCodeAttribute tag attr =
     _ ->
       tag
 
-addTableColumnAttribute :: ChildHTML parent
+addTableColumnAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.TableColumn
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addTableColumnAttribute tag attr =
   case tag of
     Tag_TableColumn attrs ->
@@ -345,9 +344,9 @@ addTableColumnAttribute tag attr =
     _ ->
       tag
 
-addTableColumnGroupAttribute :: ChildHTML parent
+addTableColumnGroupAttribute :: ChildHTML parent grandparent
                              -> Attribute Tags.TableColumnGroup
-                             -> ChildHTML parent
+                             -> ChildHTML parent grandparent
 addTableColumnGroupAttribute tag attr =
   case tag of
     Tag_TableColumnGroup attrs content ->
@@ -356,9 +355,9 @@ addTableColumnGroupAttribute tag attr =
     _ ->
       tag
 
-addDataAttribute :: ChildHTML parent
+addDataAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Data
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addDataAttribute tag attr =
   case tag of
     Tag_Data attrs content ->
@@ -367,9 +366,9 @@ addDataAttribute tag attr =
     _ ->
       tag
 
-addDataListAttribute :: ChildHTML parent
+addDataListAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.DataList
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addDataListAttribute tag attr =
   case tag of
     Tag_DataList attrs content ->
@@ -378,9 +377,9 @@ addDataListAttribute tag attr =
     _ ->
       tag
 
-addDescriptionDetailsAttribute :: ChildHTML parent
+addDescriptionDetailsAttribute :: ChildHTML parent grandparent
                                -> Attribute Tags.DescriptionDetails
-                               -> ChildHTML parent
+                               -> ChildHTML parent grandparent
 addDescriptionDetailsAttribute tag attr =
   case tag of
     Tag_DescriptionDetails attrs content ->
@@ -391,9 +390,9 @@ addDescriptionDetailsAttribute tag attr =
     _ ->
       tag
 
-addDeletedTextAttribute :: ChildHTML parent
+addDeletedTextAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.DeletedText
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addDeletedTextAttribute tag attr =
   case tag of
     Tag_DeletedText attrs content ->
@@ -402,9 +401,9 @@ addDeletedTextAttribute tag attr =
     _ ->
       tag
 
-addDetailsAttribute :: ChildHTML parent
+addDetailsAttribute :: ChildHTML parent grandparent
                     -> Attribute Tags.Details
-                    -> ChildHTML parent
+                    -> ChildHTML parent grandparent
 addDetailsAttribute tag attr =
   case tag of
     Tag_Details attrs content ->
@@ -413,9 +412,9 @@ addDetailsAttribute tag attr =
     _ ->
       tag
 
-addDefinitionAttribute :: ChildHTML parent
+addDefinitionAttribute :: ChildHTML parent grandparent
                        -> Attribute Tags.Definition
-                       -> ChildHTML parent
+                       -> ChildHTML parent grandparent
 addDefinitionAttribute tag attr =
   case tag of
     Tag_Definition attrs content ->
@@ -424,9 +423,9 @@ addDefinitionAttribute tag attr =
     _ ->
       tag
 
-addDialogAttribute :: ChildHTML parent
+addDialogAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Dialog
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addDialogAttribute tag attr =
   case tag of
     Tag_Dialog attrs content ->
@@ -435,9 +434,9 @@ addDialogAttribute tag attr =
     _ ->
       tag
 
-addDivisionAttribute :: ChildHTML parent
+addDivisionAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.Division
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addDivisionAttribute tag attr =
   case tag of
     Tag_Division attrs content ->
@@ -446,9 +445,9 @@ addDivisionAttribute tag attr =
     _ ->
       tag
 
-addDescriptionListAttribute :: ChildHTML parent
+addDescriptionListAttribute :: ChildHTML parent grandparent
                             -> Attribute Tags.DescriptionList
-                            -> ChildHTML parent
+                            -> ChildHTML parent grandparent
 addDescriptionListAttribute tag attr =
   case tag of
     Tag_DescriptionList attrs content ->
@@ -457,9 +456,9 @@ addDescriptionListAttribute tag attr =
     _ ->
       tag
 
-addDescriptionTermAttribute :: ChildHTML parent
+addDescriptionTermAttribute :: ChildHTML parent grandparent
                             -> Attribute Tags.DescriptionTerm
-                            -> ChildHTML parent
+                            -> ChildHTML parent grandparent
 addDescriptionTermAttribute tag attr =
   case tag of
     Tag_DescriptionTerm attrs content ->
@@ -468,9 +467,9 @@ addDescriptionTermAttribute tag attr =
     _ ->
       tag
 
-addEmphasisAttribute :: ChildHTML parent
+addEmphasisAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.Emphasis
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addEmphasisAttribute tag attr =
   case tag of
     Tag_Emphasis attrs content ->
@@ -479,9 +478,9 @@ addEmphasisAttribute tag attr =
     _ ->
       tag
 
-addEmbedAttribute :: ChildHTML parent
+addEmbedAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Embed
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addEmbedAttribute tag attr =
   case tag of
     Tag_Embed attrs ->
@@ -490,9 +489,9 @@ addEmbedAttribute tag attr =
     _ ->
       tag
 
-addFieldsetAttribute :: ChildHTML parent
+addFieldsetAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.Fieldset
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addFieldsetAttribute tag attr =
   case tag of
     Tag_Fieldset attrs content ->
@@ -501,9 +500,9 @@ addFieldsetAttribute tag attr =
     _ ->
       tag
 
-addFigureCaptionAttribute :: ChildHTML parent
+addFigureCaptionAttribute :: ChildHTML parent grandparent
                           -> Attribute Tags.FigureCaption
-                          -> ChildHTML parent
+                          -> ChildHTML parent grandparent
 addFigureCaptionAttribute tag attr =
   case tag of
     Tag_FigureCaption attrs content ->
@@ -512,9 +511,9 @@ addFigureCaptionAttribute tag attr =
     _ ->
       tag
 
-addFigureAttribute :: ChildHTML parent
+addFigureAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Figure
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addFigureAttribute tag attr =
   case tag of
     Tag_Figure attrs content ->
@@ -523,9 +522,9 @@ addFigureAttribute tag attr =
     _ ->
       tag
 
-addFooterAttribute :: ChildHTML parent
+addFooterAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Footer
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addFooterAttribute tag attr =
   case tag of
     Tag_Footer attrs content ->
@@ -534,9 +533,9 @@ addFooterAttribute tag attr =
     _ ->
       tag
 
-addFormAttribute :: ChildHTML parent
+addFormAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Form
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addFormAttribute tag attr =
   case tag of
     Tag_Form attrs content ->
@@ -545,9 +544,9 @@ addFormAttribute tag attr =
     _ ->
       tag
 
-addH1Attribute :: ChildHTML parent
+addH1Attribute :: ChildHTML parent grandparent
                -> Attribute Tags.H1
-               -> ChildHTML parent
+               -> ChildHTML parent grandparent
 addH1Attribute tag attr =
   case tag of
     Tag_H1 attrs content ->
@@ -556,9 +555,9 @@ addH1Attribute tag attr =
     _ ->
       tag
 
-addH2Attribute :: ChildHTML parent
+addH2Attribute :: ChildHTML parent grandparent
                -> Attribute Tags.H2
-               -> ChildHTML parent
+               -> ChildHTML parent grandparent
 addH2Attribute tag attr =
   case tag of
     Tag_H2 attrs content ->
@@ -567,9 +566,9 @@ addH2Attribute tag attr =
     _ ->
       tag
 
-addH3Attribute :: ChildHTML parent
+addH3Attribute :: ChildHTML parent grandparent
                -> Attribute Tags.H3
-               -> ChildHTML parent
+               -> ChildHTML parent grandparent
 addH3Attribute tag attr =
   case tag of
     Tag_H3 attrs content ->
@@ -578,9 +577,9 @@ addH3Attribute tag attr =
     _ ->
       tag
 
-addH4Attribute :: ChildHTML parent
+addH4Attribute :: ChildHTML parent grandparent
                -> Attribute Tags.H4
-               -> ChildHTML parent
+               -> ChildHTML parent grandparent
 addH4Attribute tag attr =
   case tag of
     Tag_H4 attrs content ->
@@ -589,9 +588,9 @@ addH4Attribute tag attr =
     _ ->
       tag
 
-addH5Attribute :: ChildHTML parent
+addH5Attribute :: ChildHTML parent grandparent
                -> Attribute Tags.H5
-               -> ChildHTML parent
+               -> ChildHTML parent grandparent
 addH5Attribute tag attr =
   case tag of
     Tag_H5 attrs content ->
@@ -600,9 +599,9 @@ addH5Attribute tag attr =
     _ ->
       tag
 
-addH6Attribute :: ChildHTML parent
+addH6Attribute :: ChildHTML parent grandparent
                -> Attribute Tags.H6
-               -> ChildHTML parent
+               -> ChildHTML parent grandparent
 addH6Attribute tag attr =
   case tag of
     Tag_H6 attrs content ->
@@ -611,9 +610,9 @@ addH6Attribute tag attr =
     _ ->
       tag
 
-addHeadAttribute :: ChildHTML parent
+addHeadAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Head
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addHeadAttribute tag attr =
   case tag of
     Tag_Head attrs content ->
@@ -622,9 +621,9 @@ addHeadAttribute tag attr =
     _ ->
       tag
 
-addHeaderAttribute :: ChildHTML parent
+addHeaderAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Header
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addHeaderAttribute tag attr =
   case tag of
     Tag_Header attrs content ->
@@ -633,9 +632,9 @@ addHeaderAttribute tag attr =
     _ ->
       tag
 
-addHeadingGroupAttribute :: ChildHTML parent
+addHeadingGroupAttribute :: ChildHTML parent grandparent
                          -> Attribute Tags.HeadingGroup
-                         -> ChildHTML parent
+                         -> ChildHTML parent grandparent
 addHeadingGroupAttribute tag attr =
   case tag of
     Tag_HeadingGroup attrs content ->
@@ -644,9 +643,9 @@ addHeadingGroupAttribute tag attr =
     _ ->
       tag
 
-addHorizontalRuleAttribute :: ChildHTML parent
+addHorizontalRuleAttribute :: ChildHTML parent grandparent
                            -> Attribute Tags.HorizontalRule
-                           -> ChildHTML parent
+                           -> ChildHTML parent grandparent
 addHorizontalRuleAttribute tag attr =
   case tag of
     Tag_HorizontalRule attrs ->
@@ -655,20 +654,9 @@ addHorizontalRuleAttribute tag attr =
     _ ->
       tag
 
-addHtmlAttribute :: ChildHTML parent
-                 -> Attribute Tags.Html
-                 -> ChildHTML parent
-addHtmlAttribute tag attr =
-  case tag of
-    Tag_Html attrs content ->
-      Tag_Html (Map.insert (attributeText attr) attr attrs) content
-
-    _ ->
-      tag
-
-addIdiomaticTextAttribute :: ChildHTML parent
+addIdiomaticTextAttribute :: ChildHTML parent grandparent
                           -> Attribute Tags.IdiomaticText
-                          -> ChildHTML parent
+                          -> ChildHTML parent grandparent
 addIdiomaticTextAttribute tag attr =
   case tag of
     Tag_IdiomaticText attrs content ->
@@ -677,9 +665,9 @@ addIdiomaticTextAttribute tag attr =
     _ ->
       tag
 
-addIFrameAttribute :: ChildHTML parent
+addIFrameAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.IFrame
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addIFrameAttribute tag attr =
   case tag of
     Tag_IFrame attrs ->
@@ -688,9 +676,9 @@ addIFrameAttribute tag attr =
     _ ->
       tag
 
-addImageAttribute :: ChildHTML parent
+addImageAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Image
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addImageAttribute tag attr =
   case tag of
     Tag_Image attrs ->
@@ -699,9 +687,9 @@ addImageAttribute tag attr =
     _ ->
       tag
 
-addInputAttribute :: ChildHTML parent
+addInputAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Input
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addInputAttribute tag attr =
   case tag of
     Tag_Input attrs ->
@@ -710,9 +698,9 @@ addInputAttribute tag attr =
     _ ->
       tag
 
-addInsertedTextAttribute :: ChildHTML parent
+addInsertedTextAttribute :: ChildHTML parent grandparent
                          -> Attribute Tags.InsertedText
-                         -> ChildHTML parent
+                         -> ChildHTML parent grandparent
 addInsertedTextAttribute tag attr =
   case tag of
     Tag_InsertedText attrs content ->
@@ -721,9 +709,9 @@ addInsertedTextAttribute tag attr =
     _ ->
       tag
 
-addKeyboardInputAttribute :: ChildHTML parent
+addKeyboardInputAttribute :: ChildHTML parent grandparent
                           -> Attribute Tags.KeyboardInput
-                          -> ChildHTML parent
+                          -> ChildHTML parent grandparent
 addKeyboardInputAttribute tag attr =
   case tag of
     Tag_KeyboardInput attrs content ->
@@ -732,9 +720,9 @@ addKeyboardInputAttribute tag attr =
     _ ->
       tag
 
-addLabelAttribute :: ChildHTML parent
+addLabelAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Label
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addLabelAttribute tag attr =
   case tag of
     Tag_Label attrs content ->
@@ -743,9 +731,9 @@ addLabelAttribute tag attr =
     _ ->
       tag
 
-addLegendAttribute :: ChildHTML parent
+addLegendAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Legend
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addLegendAttribute tag attr =
   case tag of
     Tag_Legend attrs content ->
@@ -754,9 +742,9 @@ addLegendAttribute tag attr =
     _ ->
       tag
 
-addListItemAttribute :: ChildHTML parent
+addListItemAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.ListItem
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addListItemAttribute tag attr =
   case tag of
     Tag_ListItem attrs content ->
@@ -765,9 +753,9 @@ addListItemAttribute tag attr =
     _ ->
       tag
 
-addLinkAttribute :: ChildHTML parent
+addLinkAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Link
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addLinkAttribute tag attr =
   case tag of
     Tag_Link attrs ->
@@ -776,9 +764,9 @@ addLinkAttribute tag attr =
     _ ->
       tag
 
-addMainAttribute :: ChildHTML parent
+addMainAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Main
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addMainAttribute tag attr =
   case tag of
     Tag_Main attrs content ->
@@ -787,9 +775,9 @@ addMainAttribute tag attr =
     _ ->
       tag
 
-addMapAttribute :: ChildHTML parent
+addMapAttribute :: ChildHTML parent grandparent
                 -> Attribute Tags.Map
-                -> ChildHTML parent
+                -> ChildHTML parent grandparent
 addMapAttribute tag attr =
   case tag of
     Tag_Map attrs content ->
@@ -798,9 +786,9 @@ addMapAttribute tag attr =
     _ ->
       tag
 
-addMarkAttribute :: ChildHTML parent
+addMarkAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Mark
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addMarkAttribute tag attr =
   case tag of
     Tag_Mark attrs content ->
@@ -809,9 +797,9 @@ addMarkAttribute tag attr =
     _ ->
       tag
 
-addMenuAttribute :: ChildHTML parent
+addMenuAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Menu
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addMenuAttribute tag attr =
   case tag of
     Tag_Menu attrs content ->
@@ -820,9 +808,9 @@ addMenuAttribute tag attr =
     _ ->
       tag
 
-addMetaAttribute :: ChildHTML parent
+addMetaAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Meta
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addMetaAttribute tag attr =
   case tag of
     Tag_Meta attrs ->
@@ -831,9 +819,9 @@ addMetaAttribute tag attr =
     _ ->
       tag
 
-addMeterAttribute :: ChildHTML parent
+addMeterAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Meter
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addMeterAttribute tag attr =
   case tag of
     Tag_Meter attrs content ->
@@ -842,9 +830,9 @@ addMeterAttribute tag attr =
     _ ->
       tag
 
-addNavAttribute :: ChildHTML parent
+addNavAttribute :: ChildHTML parent grandparent
                 -> Attribute Tags.Nav
-                -> ChildHTML parent
+                -> ChildHTML parent grandparent
 addNavAttribute tag attr =
   case tag of
     Tag_Nav attrs content ->
@@ -853,9 +841,9 @@ addNavAttribute tag attr =
     _ ->
       tag
 
-addNoScriptAttribute :: ChildHTML parent
+addNoScriptAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.NoScript
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addNoScriptAttribute tag attr =
   case tag of
     Tag_NoScript attrs content ->
@@ -864,9 +852,9 @@ addNoScriptAttribute tag attr =
     _ ->
       tag
 
-addObjectAttribute :: ChildHTML parent
+addObjectAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Object
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addObjectAttribute tag attr =
   case tag of
     Tag_Object attrs content ->
@@ -875,9 +863,9 @@ addObjectAttribute tag attr =
     _ ->
       tag
 
-addOrderedListAttribute :: ChildHTML parent
+addOrderedListAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.OrderedList
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addOrderedListAttribute tag attr =
   case tag of
     Tag_OrderedList attrs content ->
@@ -886,9 +874,9 @@ addOrderedListAttribute tag attr =
     _ ->
       tag
 
-addOptionGroupAttribute :: ChildHTML parent
+addOptionGroupAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.OptionGroup
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addOptionGroupAttribute tag attr =
   case tag of
     Tag_OptionGroup attrs content ->
@@ -897,9 +885,9 @@ addOptionGroupAttribute tag attr =
     _ ->
       tag
 
-addOptionAttribute :: ChildHTML parent
+addOptionAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Option
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addOptionAttribute tag attr =
   case tag of
     Tag_Option attrs content ->
@@ -908,9 +896,9 @@ addOptionAttribute tag attr =
     _ ->
       tag
 
-addOutputAttribute :: ChildHTML parent
+addOutputAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Output
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addOutputAttribute tag attr =
   case tag of
     Tag_Output attrs content ->
@@ -919,9 +907,9 @@ addOutputAttribute tag attr =
     _ ->
       tag
 
-addParagraphAttribute :: ChildHTML parent
+addParagraphAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.Paragraph
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addParagraphAttribute tag attr =
   case tag of
     Tag_Paragraph attrs content ->
@@ -930,9 +918,9 @@ addParagraphAttribute tag attr =
     _ ->
       tag
 
-addPictureAttribute :: ChildHTML parent
+addPictureAttribute :: ChildHTML parent grandparent
                     -> Attribute Tags.Picture
-                    -> ChildHTML parent
+                    -> ChildHTML parent grandparent
 addPictureAttribute tag attr =
   case tag of
     Tag_Picture attrs content ->
@@ -941,9 +929,9 @@ addPictureAttribute tag attr =
     _ ->
       tag
 
-addPreformattedTextAttribute :: ChildHTML parent
+addPreformattedTextAttribute :: ChildHTML parent grandparent
                              -> Attribute Tags.PreformattedText
-                             -> ChildHTML parent
+                             -> ChildHTML parent grandparent
 addPreformattedTextAttribute tag attr =
   case tag of
     Tag_PreformattedText attrs content ->
@@ -952,9 +940,9 @@ addPreformattedTextAttribute tag attr =
     _ ->
       tag
 
-addProgressAttribute :: ChildHTML parent
+addProgressAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.Progress
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addProgressAttribute tag attr =
   case tag of
     Tag_Progress attrs content ->
@@ -963,9 +951,9 @@ addProgressAttribute tag attr =
     _ ->
       tag
 
-addQuotationAttribute :: ChildHTML parent
+addQuotationAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.Quotation
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addQuotationAttribute tag attr =
   case tag of
     Tag_Quotation attrs content ->
@@ -974,9 +962,9 @@ addQuotationAttribute tag attr =
     _ ->
       tag
 
-addRubyParenthesisAttribute :: ChildHTML parent
+addRubyParenthesisAttribute :: ChildHTML parent grandparent
                             -> Attribute Tags.RubyParenthesis
-                            -> ChildHTML parent
+                            -> ChildHTML parent grandparent
 addRubyParenthesisAttribute tag attr =
   case tag of
     Tag_RubyParenthesis attrs content ->
@@ -985,9 +973,9 @@ addRubyParenthesisAttribute tag attr =
     _ ->
       tag
 
-addRubyTextAttribute :: ChildHTML parent
+addRubyTextAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.RubyText
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addRubyTextAttribute tag attr =
   case tag of
     Tag_RubyText attrs content ->
@@ -996,9 +984,9 @@ addRubyTextAttribute tag attr =
     _ ->
       tag
 
-addRubyAttribute :: ChildHTML parent
+addRubyAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Ruby
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addRubyAttribute tag attr =
   case tag of
     Tag_Ruby attrs content ->
@@ -1007,9 +995,9 @@ addRubyAttribute tag attr =
     _ ->
       tag
 
-addStrikethroughAttribute :: ChildHTML parent
+addStrikethroughAttribute :: ChildHTML parent grandparent
                           -> Attribute Tags.Strikethrough
-                          -> ChildHTML parent
+                          -> ChildHTML parent grandparent
 addStrikethroughAttribute tag attr =
   case tag of
     Tag_Strikethrough attrs content ->
@@ -1018,9 +1006,9 @@ addStrikethroughAttribute tag attr =
     _ ->
       tag
 
-addSampleAttribute :: ChildHTML parent
+addSampleAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Sample
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addSampleAttribute tag attr =
   case tag of
     Tag_Sample attrs content ->
@@ -1029,9 +1017,9 @@ addSampleAttribute tag attr =
     _ ->
       tag
 
-addScriptAttribute :: ChildHTML parent
+addScriptAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Script
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addScriptAttribute tag attr =
   case tag of
     Tag_Script attrs content ->
@@ -1040,9 +1028,9 @@ addScriptAttribute tag attr =
     _ ->
       tag
 
-addSearchAttribute :: ChildHTML parent
+addSearchAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Search
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addSearchAttribute tag attr =
   case tag of
     Tag_Search attrs content ->
@@ -1051,9 +1039,9 @@ addSearchAttribute tag attr =
     _ ->
       tag
 
-addSectionAttribute :: ChildHTML parent
+addSectionAttribute :: ChildHTML parent grandparent
                     -> Attribute Tags.Section
-                    -> ChildHTML parent
+                    -> ChildHTML parent grandparent
 addSectionAttribute tag attr =
   case tag of
     Tag_Section attrs content ->
@@ -1062,9 +1050,9 @@ addSectionAttribute tag attr =
     _ ->
       tag
 
-addSelectAttribute :: ChildHTML parent
+addSelectAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Select
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addSelectAttribute tag attr =
   case tag of
     Tag_Select attrs content ->
@@ -1073,9 +1061,9 @@ addSelectAttribute tag attr =
     _ ->
       tag
 
-addSlotAttribute :: ChildHTML parent
+addSlotAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Slot
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addSlotAttribute tag attr =
   case tag of
     Tag_Slot attrs content ->
@@ -1084,9 +1072,9 @@ addSlotAttribute tag attr =
     _ ->
       tag
 
-addSideCommentAttribute :: ChildHTML parent
+addSideCommentAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.SideComment
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addSideCommentAttribute tag attr =
   case tag of
     Tag_SideComment attrs content ->
@@ -1095,9 +1083,9 @@ addSideCommentAttribute tag attr =
     _ ->
       tag
 
-addSourceAttribute :: ChildHTML parent
+addSourceAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Source
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addSourceAttribute tag attr =
   case tag of
     Tag_Source attrs ->
@@ -1106,9 +1094,9 @@ addSourceAttribute tag attr =
     _ ->
       tag
 
-addSpanAttribute :: ChildHTML parent
+addSpanAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Span
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addSpanAttribute tag attr =
   case tag of
     Tag_Span attrs content ->
@@ -1117,9 +1105,9 @@ addSpanAttribute tag attr =
     _ ->
       tag
 
-addStrongAttribute :: ChildHTML parent
+addStrongAttribute :: ChildHTML parent grandparent
                    -> Attribute Tags.Strong
-                   -> ChildHTML parent
+                   -> ChildHTML parent grandparent
 addStrongAttribute tag attr =
   case tag of
     Tag_Strong attrs content ->
@@ -1128,9 +1116,9 @@ addStrongAttribute tag attr =
     _ ->
       tag
 
-addStyleAttribute :: ChildHTML parent
+addStyleAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Style
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addStyleAttribute tag attr =
   case tag of
     Tag_Style attrs content ->
@@ -1139,9 +1127,9 @@ addStyleAttribute tag attr =
     _ ->
       tag
 
-addSubscriptAttribute :: ChildHTML parent
+addSubscriptAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.Subscript
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addSubscriptAttribute tag attr =
   case tag of
     Tag_Subscript attrs content ->
@@ -1150,9 +1138,9 @@ addSubscriptAttribute tag attr =
     _ ->
       tag
 
-addSummaryAttribute :: ChildHTML parent
+addSummaryAttribute :: ChildHTML parent grandparent
                     -> Attribute Tags.Summary
-                    -> ChildHTML parent
+                    -> ChildHTML parent grandparent
 addSummaryAttribute tag attr =
   case tag of
     Tag_Summary attrs content ->
@@ -1161,9 +1149,9 @@ addSummaryAttribute tag attr =
     _ ->
       tag
 
-addSuperscriptAttribute :: ChildHTML parent
+addSuperscriptAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.Superscript
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addSuperscriptAttribute tag attr =
   case tag of
     Tag_Superscript attrs content ->
@@ -1172,9 +1160,9 @@ addSuperscriptAttribute tag attr =
     _ ->
       tag
 
-addTableAttribute :: ChildHTML parent
+addTableAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Table
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addTableAttribute tag attr =
   case tag of
     Tag_Table attrs content ->
@@ -1183,9 +1171,9 @@ addTableAttribute tag attr =
     _ ->
       tag
 
-addTableBodyAttribute :: ChildHTML parent
+addTableBodyAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.TableBody
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addTableBodyAttribute tag attr =
   case tag of
     Tag_TableBody attrs content ->
@@ -1194,9 +1182,9 @@ addTableBodyAttribute tag attr =
     _ ->
       tag
 
-addTableDataCellAttribute :: ChildHTML parent
+addTableDataCellAttribute :: ChildHTML parent grandparent
                           -> Attribute Tags.TableDataCell
-                          -> ChildHTML parent
+                          -> ChildHTML parent grandparent
 addTableDataCellAttribute tag attr =
   case tag of
     Tag_TableDataCell attrs content ->
@@ -1205,9 +1193,9 @@ addTableDataCellAttribute tag attr =
     _ ->
       tag
 
-addContentTemplateAttribute :: ChildHTML parent
+addContentTemplateAttribute :: ChildHTML parent grandparent
                             -> Attribute Tags.ContentTemplate
-                            -> ChildHTML parent
+                            -> ChildHTML parent grandparent
 addContentTemplateAttribute tag attr =
   case tag of
     Tag_ContentTemplate attrs content ->
@@ -1216,9 +1204,9 @@ addContentTemplateAttribute tag attr =
     _ ->
       tag
 
-addTextAreaAttribute :: ChildHTML parent
+addTextAreaAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.TextArea
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addTextAreaAttribute tag attr =
   case tag of
     Tag_TextArea attrs content ->
@@ -1227,9 +1215,9 @@ addTextAreaAttribute tag attr =
     _ ->
       tag
 
-addTableFootAttribute :: ChildHTML parent
+addTableFootAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.TableFoot
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addTableFootAttribute tag attr =
   case tag of
     Tag_TableFoot attrs content ->
@@ -1238,9 +1226,9 @@ addTableFootAttribute tag attr =
     _ ->
       tag
 
-addTableHeaderAttribute :: ChildHTML parent
+addTableHeaderAttribute :: ChildHTML parent grandparent
                         -> Attribute Tags.TableHeader
-                        -> ChildHTML parent
+                        -> ChildHTML parent grandparent
 addTableHeaderAttribute tag attr =
   case tag of
     Tag_TableHeader attrs content ->
@@ -1249,9 +1237,9 @@ addTableHeaderAttribute tag attr =
     _ ->
       tag
 
-addTableHeadAttribute :: ChildHTML parent
+addTableHeadAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.TableHead
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addTableHeadAttribute tag attr =
   case tag of
     Tag_TableHead attrs content ->
@@ -1260,9 +1248,9 @@ addTableHeadAttribute tag attr =
     _ ->
       tag
 
-addTimeAttribute :: ChildHTML parent
+addTimeAttribute :: ChildHTML parent grandparent
                  -> Attribute Tags.Time
-                 -> ChildHTML parent
+                 -> ChildHTML parent grandparent
 addTimeAttribute tag attr =
   case tag of
     Tag_Time attrs content ->
@@ -1271,9 +1259,9 @@ addTimeAttribute tag attr =
     _ ->
       tag
 
-addTitleAttribute :: ChildHTML parent
+addTitleAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Title
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addTitleAttribute tag attr =
   case tag of
     Tag_Title attrs content ->
@@ -1282,9 +1270,9 @@ addTitleAttribute tag attr =
     _ ->
       tag
 
-addTableRowAttribute :: ChildHTML parent
+addTableRowAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.TableRow
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addTableRowAttribute tag attr =
   case tag of
     Tag_TableRow attrs content ->
@@ -1293,9 +1281,9 @@ addTableRowAttribute tag attr =
     _ ->
       tag
 
-addTrackAttribute :: ChildHTML parent
+addTrackAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Track
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addTrackAttribute tag attr =
   case tag of
     Tag_Track attrs ->
@@ -1304,9 +1292,9 @@ addTrackAttribute tag attr =
     _ ->
       tag
 
-addUnderlineAttribute :: ChildHTML parent
+addUnderlineAttribute :: ChildHTML parent grandparent
                       -> Attribute Tags.Underline
-                      -> ChildHTML parent
+                      -> ChildHTML parent grandparent
 addUnderlineAttribute tag attr =
   case tag of
     Tag_Underline attrs content ->
@@ -1315,9 +1303,9 @@ addUnderlineAttribute tag attr =
     _ ->
       tag
 
-addUnorderedListAttribute :: ChildHTML parent
+addUnorderedListAttribute :: ChildHTML parent grandparent
                           -> Attribute Tags.UnorderedList
-                          -> ChildHTML parent
+                          -> ChildHTML parent grandparent
 addUnorderedListAttribute tag attr =
   case tag of
     Tag_UnorderedList attrs content ->
@@ -1326,9 +1314,9 @@ addUnorderedListAttribute tag attr =
     _ ->
       tag
 
-addVariableAttribute :: ChildHTML parent
+addVariableAttribute :: ChildHTML parent grandparent
                      -> Attribute Tags.Variable
-                     -> ChildHTML parent
+                     -> ChildHTML parent grandparent
 addVariableAttribute tag attr =
   case tag of
     Tag_Variable attrs content ->
@@ -1337,9 +1325,9 @@ addVariableAttribute tag attr =
     _ ->
       tag
 
-addVideoAttribute :: ChildHTML parent
+addVideoAttribute :: ChildHTML parent grandparent
                   -> Attribute Tags.Video
-                  -> ChildHTML parent
+                  -> ChildHTML parent grandparent
 addVideoAttribute tag attr =
   case tag of
     Tag_Video attrs content ->
@@ -1348,9 +1336,9 @@ addVideoAttribute tag attr =
     _ ->
       tag
 
-addWordBreakOpportunityAttribute :: ChildHTML parent
+addWordBreakOpportunityAttribute :: ChildHTML parent grandparent
                                  -> Attribute Tags.WordBreakOpportunity
-                                 -> ChildHTML parent
+                                 -> ChildHTML parent grandparent
 addWordBreakOpportunityAttribute tag attr =
   case tag of
     Tag_WordBreakOpportunity attrs ->

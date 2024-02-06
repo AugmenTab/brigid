@@ -14,14 +14,21 @@ import Data.Text.Lazy (toStrict)
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
 import HTML.Attributes.Internal (Attribute(..))
-import HTML.Elements.Internal (ChildHTML(..))
+import HTML.Elements.Internal (ChildHTML(..), Document(..))
 import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
-renderHTML :: ChildHTML parent -> T.Text
-renderHTML = toStrict . toLazyText . renderTag
+renderHTML :: Document -> T.Text
+renderHTML = toStrict . toLazyText . renderDocument
 
-renderTag :: ChildHTML parent -> Builder
+renderDocument :: Document -> Builder
+renderDocument doc =
+  case doc of
+    Tag_Html attrs content ->
+      fromText "<!DOCTYPE html>"
+        <> buildTag "html" (Map.elems attrs) (Right content)
+
+renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
   case html of
     Tag_NoElement ->
@@ -182,10 +189,6 @@ renderTag html =
 
     Tag_HorizontalRule attrs ->
       buildTag "hr" (Map.elems attrs) $ Left Types.OmitTag
-
-    Tag_Html attrs content ->
-      fromText "<!DOCTYPE html>"
-        <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
       buildTag "i" (Map.elems attrs) $ Right content
@@ -384,7 +387,7 @@ renderTag html =
 
 buildTag :: T.Text
          -> [Attribute attr]
-         -> Either Types.NoContent [ChildHTML parent]
+         -> Either Types.NoContent [ChildHTML parent grandparent]
          -> Builder
 buildTag tag attributes content =
   mconcat

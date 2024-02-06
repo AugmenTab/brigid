@@ -4,8 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 module HTML.Elements.Internal
-  ( HTML
-  , Document
+  ( Document (..)
   , ChildHTML
       ( Tag_NoElement
       , Tag_Comment
@@ -60,7 +59,6 @@ module HTML.Elements.Internal
       , Tag_Header
       , Tag_HeadingGroup
       , Tag_HorizontalRule
-      , Tag_Html
       , Tag_IdiomaticText
       , Tag_IFrame
       , Tag_Image
@@ -134,689 +132,680 @@ import HTML.Elements.Children (ValidChild)
 import HTML.Elements.TagType (TagType(..))
 import HTML.Types (NoContent)
 
-type HTML tag parent =
-  ValidChild tag parent => ChildHTML parent
+data Document
+  = Tag_Html (Attributes 'Html) [ChildHTML 'Html 'Document]
 
-type Document =
-  ChildHTML 'Document
-
-data ChildHTML (parent :: TagType) where
+data ChildHTML (parent :: TagType) (grandparent :: TagType) where
   Tag_NoElement
-    :: ChildHTML parent
+    :: ChildHTML parent grandparent
 
   Tag_Comment
     :: T.Text
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Text
     :: ValidChild 'Text parent
     => T.Text
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_RawHTML
     :: T.Text
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_CustomHTML
     :: T.Text
     -> Attributes 'CustomHTML
-    -> Either NoContent [ChildHTML 'CustomHTML]
-    -> ChildHTML parent
+    -> Either NoContent [ChildHTML 'CustomHTML grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Anchor
     :: ValidChild 'Anchor parent
     => Attributes 'Anchor
-    -> [ChildHTML 'Anchor]
-    -> ChildHTML parent
+    -> [ChildHTML 'Anchor grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Abbreviation
     :: ValidChild 'Abbreviation parent
     => Attributes 'Abbreviation
-    -> [ChildHTML 'Abbreviation]
-    -> ChildHTML parent
+    -> [ChildHTML 'Abbreviation grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_ContactAddress
     :: ValidChild 'ContactAddress parent
     => Attributes 'ContactAddress
-    -> [ChildHTML 'ContactAddress]
-    -> ChildHTML parent
+    -> [ChildHTML 'ContactAddress grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Area
     :: ValidChild 'Area parent
     => Attributes 'Area
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Article
     :: ValidChild 'Article parent
     => Attributes 'Article
-    -> [ChildHTML 'Article]
-    -> ChildHTML parent
+    -> [ChildHTML 'Article grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Aside
     :: ValidChild 'Aside parent
     => Attributes 'Aside
-    -> [ChildHTML 'Aside]
-    -> ChildHTML parent
+    -> [ChildHTML 'Aside grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Audio
     :: ValidChild 'Audio parent
     => Attributes 'Audio
-    -> [ChildHTML 'Audio]
-    -> ChildHTML parent
+    -> [ChildHTML 'Audio grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_BringAttentionTo
     :: ValidChild 'BringAttentionTo parent
     => Attributes 'BringAttentionTo
-    -> [ChildHTML 'BringAttentionTo]
-    -> ChildHTML parent
+    -> [ChildHTML 'BringAttentionTo grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Base
     :: ValidChild 'Base parent
     => Attributes 'Base
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_BidirectionalIsolation
     :: ValidChild 'BidirectionalIsolation parent
     => Attributes 'BidirectionalIsolation
-    -> [ChildHTML 'BidirectionalIsolation]
-    -> ChildHTML parent
+    -> [ChildHTML 'BidirectionalIsolation grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_BidirectionalOverride
     :: ValidChild 'BidirectionalOverride parent
     => Attributes 'BidirectionalOverride
-    -> [ChildHTML 'BidirectionalOverride]
-    -> ChildHTML parent
+    -> [ChildHTML 'BidirectionalOverride grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Blockquote
     :: ValidChild 'Blockquote parent
     => Attributes 'Blockquote
-    -> [ChildHTML 'Blockquote]
-    -> ChildHTML parent
+    -> [ChildHTML 'Blockquote grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Body
     :: ValidChild 'Body parent
     => Attributes 'Body
-    -> [ChildHTML 'Body]
-    -> ChildHTML parent
+    -> [ChildHTML 'Body grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_LineBreak
     :: ValidChild 'LineBreak parent
     => Attributes 'LineBreak
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Button
     :: ValidChild 'Button parent
     => Attributes 'Button
-    -> [ChildHTML 'Button]
-    -> ChildHTML parent
+    -> [ChildHTML 'Button grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Canvas
     :: ValidChild 'Canvas parent
     => Attributes 'Canvas
-    -> [ChildHTML 'Canvas]
-    -> ChildHTML parent
+    -> [ChildHTML 'Canvas grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableCaption
     :: ValidChild 'TableCaption parent
     => Attributes 'TableCaption
-    -> [ChildHTML 'TableCaption]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableCaption grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Citation
     :: ValidChild 'Citation parent
     => Attributes 'Citation
-    -> [ChildHTML 'Citation]
-    -> ChildHTML parent
+    -> [ChildHTML 'Citation grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Code
     :: ValidChild 'Code parent
     => Attributes 'Code
-    -> [ChildHTML 'Code]
-    -> ChildHTML parent
+    -> [ChildHTML 'Code grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableColumn
     :: ValidChild 'TableColumn parent
     => Attributes 'TableColumn
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_TableColumnGroup
     :: ValidChild 'TableColumnGroup parent
     => Attributes 'TableColumnGroup
-    -> [ChildHTML 'TableColumnGroup]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableColumnGroup grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Data
     :: ValidChild 'Data parent
     => Attributes 'Data
-    -> [ChildHTML 'Data]
-    -> ChildHTML parent
+    -> [ChildHTML 'Data grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_DataList
     :: ValidChild 'DataList parent
     => Attributes 'DataList
-    -> [ChildHTML 'DataList]
-    -> ChildHTML parent
+    -> [ChildHTML 'DataList grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_DescriptionDetails
     :: ValidChild 'DescriptionDetails parent
     => Attributes 'DescriptionDetails
-    -> [ChildHTML 'DescriptionDetails]
-    -> ChildHTML parent
+    -> [ChildHTML 'DescriptionDetails grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_DeletedText
     :: ValidChild 'DeletedText parent
     => Attributes 'DeletedText
-    -> [ChildHTML parent]
-    -> ChildHTML parent
+    -> [ChildHTML parent grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Details
     :: ValidChild 'Details parent
     => Attributes 'Details
-    -> [ChildHTML 'Details]
-    -> ChildHTML parent
+    -> [ChildHTML 'Details grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Definition
     :: ValidChild 'Definition parent
     => Attributes 'Definition
-    -> [ChildHTML 'Definition]
-    -> ChildHTML parent
+    -> [ChildHTML 'Definition grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Dialog
     :: ValidChild 'Dialog parent
     => Attributes 'Dialog
-    -> [ChildHTML 'Dialog]
-    -> ChildHTML parent
+    -> [ChildHTML 'Dialog grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Division
     :: ValidChild 'Division parent
     => Attributes 'Division
-    -> [ChildHTML 'Division]
-    -> ChildHTML parent
+    -> [ChildHTML 'Division grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_DescriptionList
     :: ValidChild 'DescriptionList parent
     => Attributes 'DescriptionList
-    -> [ChildHTML 'DescriptionList]
-    -> ChildHTML parent
+    -> [ChildHTML 'DescriptionList grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_DescriptionTerm
     :: ValidChild 'DescriptionTerm parent
     => Attributes 'DescriptionTerm
-    -> [ChildHTML 'DescriptionTerm]
-    -> ChildHTML parent
+    -> [ChildHTML 'DescriptionTerm grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Emphasis
     :: ValidChild 'Emphasis parent
     => Attributes 'Emphasis
-    -> [ChildHTML 'Emphasis]
-    -> ChildHTML parent
+    -> [ChildHTML 'Emphasis grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Embed
     :: ValidChild 'Embed parent
     => Attributes 'Embed
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Fieldset
     :: ValidChild 'Fieldset parent
     => Attributes 'Fieldset
-    -> [ChildHTML 'Fieldset]
-    -> ChildHTML parent
+    -> [ChildHTML 'Fieldset grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_FigureCaption
     :: ValidChild 'FigureCaption parent
     => Attributes 'FigureCaption
-    -> [ChildHTML 'FigureCaption]
-    -> ChildHTML parent
+    -> [ChildHTML 'FigureCaption grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Figure
     :: ValidChild 'Figure parent
     => Attributes 'Figure
-    -> [ChildHTML 'Figure]
-    -> ChildHTML parent
+    -> [ChildHTML 'Figure grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Footer
     :: ValidChild 'Footer parent
     => Attributes 'Footer
-    -> [ChildHTML 'Footer]
-    -> ChildHTML parent
+    -> [ChildHTML 'Footer grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Form
     :: ValidChild 'Form parent
     => Attributes 'Form
-    -> [ChildHTML 'Form]
-    -> ChildHTML parent
+    -> [ChildHTML 'Form grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_H1
     :: ValidChild 'H1 parent
     => Attributes 'H1
-    -> [ChildHTML 'H1]
-    -> ChildHTML parent
+    -> [ChildHTML 'H1 grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_H2
     :: ValidChild 'H2 parent
     => Attributes 'H2
-    -> [ChildHTML 'H2]
-    -> ChildHTML parent
+    -> [ChildHTML 'H2 grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_H3
     :: ValidChild 'H3 parent
     => Attributes 'H3
-    -> [ChildHTML 'H3]
-    -> ChildHTML parent
+    -> [ChildHTML 'H3 grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_H4
     :: ValidChild 'H4 parent
     => Attributes 'H4
-    -> [ChildHTML 'H4]
-    -> ChildHTML parent
+    -> [ChildHTML 'H4 grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_H5
     :: ValidChild 'H5 parent
     => Attributes 'H5
-    -> [ChildHTML 'H5]
-    -> ChildHTML parent
+    -> [ChildHTML 'H5 grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_H6
     :: ValidChild 'H6 parent
     => Attributes 'H6
-    -> [ChildHTML 'H6]
-    -> ChildHTML parent
+    -> [ChildHTML 'H6 grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Head
     :: ValidChild 'Head parent
     => Attributes 'Head
-    -> [ChildHTML 'Head]
-    -> ChildHTML parent
+    -> [ChildHTML 'Head grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Header
     :: ValidChild 'Header parent
     => Attributes 'Header
-    -> [ChildHTML 'Header]
-    -> ChildHTML parent
+    -> [ChildHTML 'Header grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_HeadingGroup
     :: ValidChild 'HeadingGroup parent
     => Attributes 'HeadingGroup
-    -> [ChildHTML 'HeadingGroup]
-    -> ChildHTML parent
+    -> [ChildHTML 'HeadingGroup grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_HorizontalRule
     :: ValidChild 'HorizontalRule parent
     => Attributes 'HorizontalRule
-    -> ChildHTML parent
-
-  Tag_Html
-    :: ValidChild 'Html parent
-    => Attributes 'Html
-    -> [ChildHTML 'Html]
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_IdiomaticText
     :: ValidChild 'IdiomaticText parent
     => Attributes 'IdiomaticText
-    -> [ChildHTML 'IdiomaticText]
-    -> ChildHTML parent
+    -> [ChildHTML 'IdiomaticText grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_IFrame
     :: ValidChild 'IFrame parent
     => Attributes 'IFrame
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Image
     :: ValidChild 'Image parent
     => Attributes 'Image
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Input
     :: ValidChild 'Input parent
     => Attributes 'Input
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_InsertedText
     :: ValidChild 'InsertedText parent
     => Attributes 'InsertedText
-    -> [ChildHTML parent]
-    -> ChildHTML parent
+    -> [ChildHTML parent grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_KeyboardInput
     :: ValidChild 'KeyboardInput parent
     => Attributes 'KeyboardInput
-    -> [ChildHTML 'KeyboardInput]
-    -> ChildHTML parent
+    -> [ChildHTML 'KeyboardInput grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Label
     :: ValidChild 'Label parent
     => Attributes 'Label
-    -> [ChildHTML 'Label]
-    -> ChildHTML parent
+    -> [ChildHTML 'Label grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Legend
     :: ValidChild 'Legend parent
     => Attributes 'Legend
-    -> [ChildHTML 'Legend]
-    -> ChildHTML parent
+    -> [ChildHTML 'Legend grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_ListItem
     :: ValidChild 'ListItem parent
     => Attributes 'ListItem
-    -> [ChildHTML 'ListItem]
-    -> ChildHTML parent
+    -> [ChildHTML 'ListItem grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Link
     :: ValidChild 'Link parent
     => Attributes 'Link
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Main
     :: ValidChild 'Main parent
     => Attributes 'Main
-    -> [ChildHTML 'Main]
-    -> ChildHTML parent
+    -> [ChildHTML 'Main grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Map
     :: ValidChild 'Map parent
     => Attributes 'Map
-    -> [ChildHTML 'Map]
-    -> ChildHTML parent
+    -> [ChildHTML 'Map grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Mark
     :: ValidChild 'Mark parent
     => Attributes 'Mark
-    -> [ChildHTML 'Mark]
-    -> ChildHTML parent
+    -> [ChildHTML 'Mark grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Menu
     :: ValidChild 'Menu parent
     => Attributes 'Menu
-    -> [ChildHTML 'Menu]
-    -> ChildHTML parent
+    -> [ChildHTML 'Menu grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Meta
     :: ValidChild 'Meta parent
     => Attributes 'Meta
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Meter
     :: ValidChild 'Meter parent
     => Attributes 'Meter
-    -> [ChildHTML 'Meter]
-    -> ChildHTML parent
+    -> [ChildHTML 'Meter grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Nav
     :: ValidChild 'Nav parent
     => Attributes 'Nav
-    -> [ChildHTML 'Nav]
-    -> ChildHTML parent
+    -> [ChildHTML 'Nav grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_NoScript
     :: ValidChild 'NoScript parent
     => Attributes 'NoScript
-    -> [ChildHTML 'NoScript]
-    -> ChildHTML parent
+    -> [ChildHTML 'NoScript grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Object
     :: ValidChild 'Object parent
     => Attributes 'Object
-    -> [ChildHTML parent]
-    -> ChildHTML parent
+    -> [ChildHTML parent grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_OrderedList
     :: ValidChild 'OrderedList parent
     => Attributes 'OrderedList
-    -> [ChildHTML 'OrderedList]
-    -> ChildHTML parent
+    -> [ChildHTML 'OrderedList grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_OptionGroup
     :: ValidChild 'OptionGroup parent
     => Attributes 'OptionGroup
-    -> [ChildHTML 'OptionGroup]
-    -> ChildHTML parent
+    -> [ChildHTML 'OptionGroup grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Option
     :: ValidChild 'Option parent
     => Attributes 'Option
-    -> [ChildHTML 'Option]
-    -> ChildHTML parent
+    -> [ChildHTML 'Option grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Output
     :: ValidChild 'Output parent
     => Attributes 'Output
-    -> [ChildHTML 'Output]
-    -> ChildHTML parent
+    -> [ChildHTML 'Output grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Paragraph
     :: ValidChild 'Paragraph parent
     => Attributes 'Paragraph
-    -> [ChildHTML 'Paragraph]
-    -> ChildHTML parent
+    -> [ChildHTML 'Paragraph grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Picture
     :: ValidChild 'Picture parent
     => Attributes 'Picture
-    -> [ChildHTML 'Picture]
-    -> ChildHTML parent
+    -> [ChildHTML 'Picture grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_PreformattedText
     :: ValidChild 'PreformattedText parent
     => Attributes 'PreformattedText
-    -> [ChildHTML 'PreformattedText]
-    -> ChildHTML parent
+    -> [ChildHTML 'PreformattedText grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Progress
     :: ValidChild 'Progress parent
     => Attributes 'Progress
-    -> [ChildHTML 'Progress]
-    -> ChildHTML parent
+    -> [ChildHTML 'Progress grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Quotation
     :: ValidChild 'Quotation parent
     => Attributes 'Quotation
-    -> [ChildHTML 'Quotation]
-    -> ChildHTML parent
+    -> [ChildHTML 'Quotation grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_RubyParenthesis
     :: ValidChild 'RubyParenthesis parent
     => Attributes 'RubyParenthesis
-    -> [ChildHTML 'RubyParenthesis]
-    -> ChildHTML parent
+    -> [ChildHTML 'RubyParenthesis grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_RubyText
     :: ValidChild 'RubyText parent
     => Attributes 'RubyText
-    -> [ChildHTML 'RubyText]
-    -> ChildHTML parent
+    -> [ChildHTML 'RubyText grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Ruby
     :: ValidChild 'Ruby parent
     => Attributes 'Ruby
-    -> [ChildHTML 'Ruby]
-    -> ChildHTML parent
+    -> [ChildHTML 'Ruby grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Strikethrough
     :: ValidChild 'Strikethrough parent
     => Attributes 'Strikethrough
-    -> [ChildHTML 'Strikethrough]
-    -> ChildHTML parent
+    -> [ChildHTML 'Strikethrough grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Sample
     :: ValidChild 'Sample parent
     => Attributes 'Sample
-    -> [ChildHTML 'Sample]
-    -> ChildHTML parent
+    -> [ChildHTML 'Sample grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Script
     :: ValidChild 'Script parent
     => Attributes 'Script
     -> T.Text
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Search
     :: ValidChild 'Search parent
     => Attributes 'Search
-    -> [ChildHTML 'Search]
-    -> ChildHTML parent
+    -> [ChildHTML 'Search grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Section
     :: ValidChild 'Section parent
     => Attributes 'Section
-    -> [ChildHTML 'Section]
-    -> ChildHTML parent
+    -> [ChildHTML 'Section grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Select
     :: ValidChild 'Select parent
     => Attributes 'Select
-    -> [ChildHTML 'Select]
-    -> ChildHTML parent
+    -> [ChildHTML 'Select grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Slot
     :: ValidChild 'Slot parent
     => Attributes 'Slot
-    -> [ChildHTML parent]
-    -> ChildHTML parent
+    -> [ChildHTML parent grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_SideComment
     :: ValidChild 'SideComment parent
     => Attributes 'SideComment
-    -> [ChildHTML 'SideComment]
-    -> ChildHTML parent
+    -> [ChildHTML 'SideComment grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Source
     :: ValidChild 'Source parent
     => Attributes 'Source
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Span
     :: ValidChild 'Span parent
     => Attributes 'Span
-    -> [ChildHTML 'Span]
-    -> ChildHTML parent
+    -> [ChildHTML 'Span grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Strong
     :: ValidChild 'Strong parent
     => Attributes 'Strong
-    -> [ChildHTML 'Strong]
-    -> ChildHTML parent
+    -> [ChildHTML 'Strong grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Style
     :: ValidChild 'Style parent
     => Attributes 'Style
     -> T.Text
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Subscript
     :: ValidChild 'Subscript parent
     => Attributes 'Subscript
-    -> [ChildHTML 'Subscript]
-    -> ChildHTML parent
+    -> [ChildHTML 'Subscript grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Summary
     :: ValidChild 'Summary parent
     => Attributes 'Summary
-    -> [ChildHTML 'Summary]
-    -> ChildHTML parent
+    -> [ChildHTML 'Summary grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Superscript
     :: ValidChild 'Superscript parent
     => Attributes 'Superscript
-    -> [ChildHTML 'Superscript]
-    -> ChildHTML parent
+    -> [ChildHTML 'Superscript grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Table
     :: ValidChild 'Table parent
     => Attributes 'Table
-    -> [ChildHTML 'Table]
-    -> ChildHTML parent
+    -> [ChildHTML 'Table grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableBody
     :: ValidChild 'TableBody parent
     => Attributes 'TableBody
-    -> [ChildHTML 'TableBody]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableBody grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableDataCell
     :: ValidChild 'TableDataCell parent
     => Attributes 'TableDataCell
-    -> [ChildHTML 'TableDataCell]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableDataCell grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_ContentTemplate
     :: ValidChild 'ContentTemplate parent
     => Attributes 'ContentTemplate
-    -> [ChildHTML 'ContentTemplate]
-    -> ChildHTML parent
+    -> [ChildHTML 'ContentTemplate grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TextArea
     :: ValidChild 'TextArea parent
     => Attributes 'TextArea
-    -> [ChildHTML 'TextArea]
-    -> ChildHTML parent
+    -> [ChildHTML 'TextArea grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableFoot
     :: ValidChild 'TableFoot parent
     => Attributes 'TableFoot
-    -> [ChildHTML 'TableFoot]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableFoot grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableHeader
     :: ValidChild 'TableHeader parent
     => Attributes 'TableHeader
-    -> [ChildHTML 'TableHeader]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableHeader grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableHead
     :: ValidChild 'TableHead parent
     => Attributes 'TableHead
-    -> [ChildHTML 'TableHead]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableHead grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Time
     :: ValidChild 'Time parent
     => Attributes 'Time
-    -> [ChildHTML 'Time]
-    -> ChildHTML parent
+    -> [ChildHTML 'Time grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Title
     :: ValidChild 'Title parent
     => Attributes 'Title
-    -> [ChildHTML 'Title]
-    -> ChildHTML parent
+    -> [ChildHTML 'Title grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_TableRow
     :: ValidChild 'TableRow parent
     => Attributes 'TableRow
-    -> [ChildHTML 'TableRow]
-    -> ChildHTML parent
+    -> [ChildHTML 'TableRow grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Track
     :: ValidChild 'Track parent
     => Attributes 'Track
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent
 
   Tag_Underline
     :: ValidChild 'Underline parent
     => Attributes 'Underline
-    -> [ChildHTML 'Underline]
-    -> ChildHTML parent
+    -> [ChildHTML 'Underline grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_UnorderedList
     :: ValidChild 'UnorderedList parent
     => Attributes 'UnorderedList
-    -> [ChildHTML 'UnorderedList]
-    -> ChildHTML parent
+    -> [ChildHTML 'UnorderedList grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Variable
     :: ValidChild 'Variable parent
     => Attributes 'Variable
-    -> [ChildHTML 'Variable]
-    -> ChildHTML parent
+    -> [ChildHTML 'Variable grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_Video
     :: ValidChild 'Video parent
     => Attributes 'Video
-    -> [ChildHTML 'Video]
-    -> ChildHTML parent
+    -> [ChildHTML 'Video grandparent]
+    -> ChildHTML parent grandparent
 
   Tag_WordBreakOpportunity
     :: ValidChild 'WordBreakOpportunity parent
     => Attributes 'WordBreakOpportunity
-    -> ChildHTML parent
+    -> ChildHTML parent grandparent

@@ -12,12 +12,19 @@ import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 
 import HTML.Attributes.Internal (Attribute(..))
-import HTML.Elements.Internal (ChildHTML(..))
+import HTML.Elements.Internal (ChildHTML(..), Document(..))
 import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
-renderHTML :: ChildHTML parent -> String
-renderHTML html =
+renderHTML :: Document -> String
+renderHTML doc =
+  case doc of
+    Tag_Html attrs content ->
+      ("<!DOCTYPE html>" :: String)
+        <> buildTag "html" (Map.elems attrs) (Right content)
+
+renderTag :: ChildHTML parent grandparent -> String
+renderTag html =
   case html of
     Tag_NoElement ->
       ""
@@ -177,10 +184,6 @@ renderHTML html =
 
     Tag_HorizontalRule attrs ->
       buildTag "hr" (Map.elems attrs) $ Left Types.OmitTag
-
-    Tag_Html attrs content ->
-      ("<!DOCTYPE html>" :: String)
-        <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
       buildTag "i" (Map.elems attrs) $ Right content
@@ -382,7 +385,7 @@ renderHTML html =
 --
 buildTag :: String
          -> [Attribute attr]
-         -> Either Types.NoContent [ChildHTML parent]
+         -> Either Types.NoContent [ChildHTML parent grandparent]
          -> String
 buildTag tag attributes content =
   L.concat
@@ -396,7 +399,7 @@ buildTag tag attributes content =
         Right _children     -> ">"
     , case content of
         Left  _type    -> ""
-        Right children -> foldMap renderHTML children
+        Right children -> foldMap renderTag children
     , case content of
         Left  Types.OmitTag -> ""
         Left  Types.WithTag -> "</" <> tag <> ">"

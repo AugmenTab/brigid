@@ -23,12 +23,12 @@ import HTML.Elements.Internal (ChildHTML(..))
 
 table :: ValidChild Tags.Table parent
       => [Attribute Tags.Table]
-      -> Maybe Caption
-      -> [ColumnGroup]
-      -> Maybe Head
-      -> Either [Body] [Row Tags.Table]
-      -> Maybe Foot
-      -> ChildHTML parent
+      -> Maybe (Caption grandparent)
+      -> [ColumnGroup grandparent]
+      -> Maybe (Head grandparent)
+      -> Either [Body grandparent] [Row Tags.Table grandparent]
+      -> Maybe (Foot grandparent)
+      -> ChildHTML parent grandparent
 table attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
   E.table attrs $
     concat
@@ -39,75 +39,78 @@ table attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
       , maybeToList $ unFoot <$> mbFoot
       ]
 
-data Body =
+data Body grandparent =
   Body
     { bodyAttributes :: [Attribute Tags.TableBody]
-    , bodyContent    :: [Row Tags.TableBody]
+    , bodyContent    :: [Row Tags.TableBody grandparent]
     }
 
 body :: [Attribute Tags.TableBody]
-     -> [Row Tags.TableBody]
-     -> Body
+     -> [Row Tags.TableBody grandparent]
+     -> Body grandparent
 body = Body
 
-unBody :: Body -> ChildHTML Tags.Table
+unBody :: Body grandparent -> ChildHTML Tags.Table grandparent
 unBody tbody =
   E.tbody
     (bodyAttributes tbody)
     (unRow <$> bodyContent tbody)
 
-newtype Caption = Caption { unCaption :: ChildHTML Tags.Table }
+newtype Caption grandparent =
+  Caption { unCaption :: ChildHTML Tags.Table grandparent }
 
 caption :: [Attribute Tags.TableCaption]
-        -> [ChildHTML Tags.TableCaption]
-        -> Caption
+        -> [ChildHTML Tags.TableCaption grandparent]
+        -> Caption grandparent
 caption attrs content = Caption $ E.caption attrs content
 
-newtype ColumnGroup = ColumnGroup { unColumnGroup :: ChildHTML Tags.Table }
+newtype ColumnGroup grandparent =
+  ColumnGroup { unColumnGroup :: ChildHTML Tags.Table grandparent }
 
 colgroup :: [Attribute Tags.TableColumnGroup]
-         -> [ChildHTML Tags.TableColumnGroup]
-         -> ColumnGroup
+         -> [ChildHTML Tags.TableColumnGroup grandparent]
+         -> ColumnGroup grandparent
 colgroup attrs content = ColumnGroup $ E.colgroup attrs content
 
-data Foot =
+data Foot grandparent =
   Foot
     { footAttributes :: [Attribute Tags.TableFoot]
-    , footContent    :: [Row Tags.TableFoot]
+    , footContent    :: [Row Tags.TableFoot grandparent]
     }
 
 foot :: [Attribute Tags.TableFoot]
-     -> [Row Tags.TableFoot]
-     -> Foot
+     -> [Row Tags.TableFoot grandparent]
+     -> Foot grandparent
 foot = Foot
 
-unFoot :: Foot -> ChildHTML Tags.Table
+unFoot :: Foot grandparent -> ChildHTML Tags.Table grandparent
 unFoot tfoot =
   E.tfoot
     (footAttributes tfoot)
     (unRow <$> footContent tfoot)
 
-data Head =
+data Head grandparent =
   Head
     { headAttributes :: [Attribute Tags.TableHead]
-    , headContent    :: [Row Tags.TableHead]
+    , headContent    :: [Row Tags.TableHead grandparent]
     }
 
 head :: [Attribute Tags.TableHead]
-     -> [Row Tags.TableHead]
-     -> Head
+     -> [Row Tags.TableHead grandparent]
+     -> Head grandparent
 head = Head
 
-unHead :: Head -> ChildHTML Tags.Table
+unHead :: Head grandparent -> ChildHTML Tags.Table grandparent
 unHead thead =
   E.thead
     (headAttributes thead)
     (unRow <$> headContent thead)
 
-newtype Row parent = Row { unRow :: ChildHTML parent }
+newtype Row parent grandparent =
+  Row { unRow :: ChildHTML parent grandparent }
 
 row :: ValidChild Tags.TableRow parent
     => [Attribute Tags.TableRow]
-    -> [ChildHTML Tags.TableRow]
-    -> Row parent
+    -> [ChildHTML Tags.TableRow grandparent]
+    -> Row parent grandparent
 row attrs content = Row $ E.tr attrs content
