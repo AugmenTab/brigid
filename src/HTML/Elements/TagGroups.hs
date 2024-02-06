@@ -20,6 +20,7 @@ module HTML.Elements.TagGroups
   , SubmittableContent
   , ResettableContent
   , ScriptSupportingContent
+  , MediaContent
   , TransparentContent
   , MarginalContent
 
@@ -197,11 +198,6 @@ type MetadataContent =
 -- This list represents all elements that are considered flow content.
 --
 type FlowContent =
-  'Header
-    ': 'Footer
-    ': FlowContentBase
-
-type FlowContentBase =
   [ 'Text
    , 'Anchor
    , 'Abbreviation
@@ -230,6 +226,7 @@ type FlowContentBase =
    , 'Embed
    , 'Fieldset
    , 'Figure
+   , 'Footer
    , 'Form
    , 'H1
    , 'H2
@@ -237,6 +234,7 @@ type FlowContentBase =
    , 'H4
    , 'H5
    , 'H6
+   , 'Header
    , 'HeadingGroup
    , 'HorizontalRule
    , 'IdiomaticText
@@ -470,6 +468,11 @@ type TransparentContent =
 type MarginalContent =
   [ 'Header
   , 'Footer
+  ]
+
+type MediaContent =
+  [ 'Audio
+  , 'Video
   ]
 
 -- Element Exclusion Tag Groups

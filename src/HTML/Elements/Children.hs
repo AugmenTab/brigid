@@ -47,9 +47,6 @@ type ValidChild tag parent =
   -- but no <noscript> element must be among its descendants. Otherwise: flow
   -- content or phrasing content.
 
--- Object
-  -- zero or more <param> elements, then transparent.
-
 -- Video
   -- If the element has a src attribute: zero or more <track> elements,
   -- followed by transparent content that contains no media elements–that is no
@@ -114,7 +111,6 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor Meter                  = Remove Meter TagGroups.PhrasingContent
   ValidChildrenFor Nav                    = TagGroups.FlowContent
   ValidChildrenFor NoScript               = '[]
-  ValidChildrenFor Object                 = '[]
   ValidChildrenFor OrderedList            = TagGroups.ListContent
   ValidChildrenFor OptionGroup            = '[ Option ]
   ValidChildrenFor Option                 = TagGroups.TextOnly

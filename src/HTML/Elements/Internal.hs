@@ -557,7 +557,7 @@ data ChildHTML (parent :: TagType) where
   Tag_Object
     :: ValidChild 'Object parent
     => Attributes 'Object
-    -> [ChildHTML 'Object]
+    -> [ChildHTML parent]
     -> ChildHTML parent
 
   Tag_OrderedList

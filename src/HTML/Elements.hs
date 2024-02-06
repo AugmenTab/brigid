@@ -647,7 +647,7 @@ noscript = Tag_NoScript . buildAttrMap
 
 object :: ValidChild Tags.Object parent
        => [Attribute Tags.Object]
-       -> [ChildHTML Tags.Object]
+       -> [ChildHTML parent]
        -> ChildHTML parent
 object = Tag_Object . buildAttrMap
 
