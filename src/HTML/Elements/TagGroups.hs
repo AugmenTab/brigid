@@ -34,6 +34,8 @@ module HTML.Elements.TagGroups
   , CanvasContent
   , DescriptionListContent
   , LegendContent
+  , NoScriptBodyContent
+  , NoScriptHeadContent
   , PictureContent
   , RubyContent
   , SummaryContent
@@ -546,6 +548,19 @@ type LegendContent =
     ': 'H5
     ': 'H6
     ': PhrasingContent
+
+-- This list represents all elements that are valid under a `<noscript>` tag
+-- when it is the descendent of a `<body>` tag.
+type NoScriptBodyContent =
+  Union FlowContent PhrasingContent
+
+-- This list represents all elements that are valid under a `<noscript>` tag
+-- when it is the descendent of a `<head>` tag.
+type NoScriptHeadContent =
+  [ 'Link
+  , 'Meta
+  , 'Style
+  ]
 
 -- This list represents all elements that are valid under a `<picture>` tag.
 type PictureContent =

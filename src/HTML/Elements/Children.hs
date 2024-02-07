@@ -80,7 +80,8 @@ type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [Ta
   ValidChildrenFor Menu                   grandparent = TagGroups.ListContent
   ValidChildrenFor Meter                  grandparent = Remove Meter TagGroups.PhrasingContent
   ValidChildrenFor Nav                    grandparent = TagGroups.FlowContent
-  ValidChildrenFor NoScript               grandparent = '[]
+  ValidChildrenFor NoScript               Head        = TagGroups.NoScriptHeadContent
+  ValidChildrenFor NoScript               grandparent = Remove NoScript (Union TagGroups.NoScriptBodyContent (ValidChildrenFor grandparent NoElement))
   ValidChildrenFor OrderedList            grandparent = TagGroups.ListContent
   ValidChildrenFor OptionGroup            grandparent = '[ Option ]
   ValidChildrenFor Option                 grandparent = TagGroups.TextOnly
