@@ -139,12 +139,12 @@ comment :: T.Text
         -> ChildHTML parent grandparent
 comment = Tag_Comment
 
-text :: ValidChild Tags.Text parent
+text :: ValidChild Tags.Text parent grandparent
      => T.Text
      -> ChildHTML parent grandparent
 text = Tag_Text
 
-texts :: ValidChild Tags.Text parent
+texts :: ValidChild Tags.Text parent grandparent
       => [T.Text]
       -> ChildHTML parent grandparent
 texts = text . T.unwords
@@ -154,43 +154,43 @@ rawHTML = Tag_RawHTML
 
 customHTML :: T.Text
            -> [Attribute Tags.CustomHTML]
-           -> Either NoContent [ChildHTML Tags.CustomHTML grandparent]
+           -> Either NoContent [ChildHTML Tags.CustomHTML parent]
            -> ChildHTML parent grandparent
 customHTML elemName attrs content =
   Tag_CustomHTML elemName (buildAttrMap attrs) content
 
-a :: ValidChild Tags.Anchor parent
+a :: ValidChild Tags.Anchor parent grandparent
   => [Attribute Tags.Anchor]
-  -> [ChildHTML Tags.Anchor grandparent]
+  -> [ChildHTML Tags.Anchor parent]
   -> ChildHTML parent grandparent
 a = Tag_Anchor . buildAttrMap
 
-abbr :: ValidChild Tags.Abbreviation parent
+abbr :: ValidChild Tags.Abbreviation parent grandparent
      => [Attribute Tags.Abbreviation]
-     -> [ChildHTML Tags.Abbreviation grandparent]
+     -> [ChildHTML Tags.Abbreviation parent]
      -> ChildHTML parent grandparent
 abbr = Tag_Abbreviation . buildAttrMap
 
-address :: ValidChild Tags.ContactAddress parent
+address :: ValidChild Tags.ContactAddress parent grandparent
         => [Attribute Tags.ContactAddress]
-        -> [ChildHTML Tags.ContactAddress grandparent]
+        -> [ChildHTML Tags.ContactAddress parent]
         -> ChildHTML parent grandparent
 address = Tag_ContactAddress . buildAttrMap
 
-area :: ValidChild Tags.Area parent
+area :: ValidChild Tags.Area parent grandparent
      => [Attribute Tags.Area]
      -> ChildHTML parent grandparent
 area = Tag_Area . buildAttrMap
 
-article :: ValidChild Tags.Article parent
+article :: ValidChild Tags.Article parent grandparent
         => [Attribute Tags.Article]
-        -> [ChildHTML Tags.Article grandparent]
+        -> [ChildHTML Tags.Article parent]
         -> ChildHTML parent grandparent
 article = Tag_Article . buildAttrMap
 
-aside :: ValidChild Tags.Aside parent
+aside :: ValidChild Tags.Aside parent grandparent
       => [Attribute Tags.Aside]
-      -> [ChildHTML Tags.Aside grandparent]
+      -> [ChildHTML Tags.Aside parent]
       -> ChildHTML parent grandparent
 aside = Tag_Aside . buildAttrMap
 
@@ -203,83 +203,83 @@ aside = Tag_Aside . buildAttrMap
 -- elements followed by transparent content that contains no <audio> or <video>
 -- media elements.
 --
-audio :: ValidChild Tags.Audio parent
+audio :: ValidChild Tags.Audio parent grandparent
       => [Attribute Tags.Audio]
-      -> [ChildHTML Tags.Audio grandparent]
+      -> [ChildHTML Tags.Audio parent]
       -> ChildHTML parent grandparent
 audio = Tag_Audio . buildAttrMap
 
-b :: ValidChild Tags.BringAttentionTo parent
+b :: ValidChild Tags.BringAttentionTo parent grandparent
   => [Attribute Tags.BringAttentionTo]
-  -> [ChildHTML Tags.BringAttentionTo grandparent]
+  -> [ChildHTML Tags.BringAttentionTo parent]
   -> ChildHTML parent grandparent
 b = Tag_BringAttentionTo . buildAttrMap
 
-base :: ValidChild Tags.Base parent
+base :: ValidChild Tags.Base parent grandparent
      => [Attribute Tags.Base]
      -> ChildHTML parent grandparent
 base = Tag_Base . buildAttrMap
 
-bdi :: ValidChild Tags.BidirectionalIsolation parent
+bdi :: ValidChild Tags.BidirectionalIsolation parent grandparent
     => [Attribute Tags.BidirectionalIsolation]
-    -> [ChildHTML Tags.BidirectionalIsolation grandparent]
+    -> [ChildHTML Tags.BidirectionalIsolation parent]
     -> ChildHTML parent grandparent
 bdi = Tag_BidirectionalIsolation . buildAttrMap
 
-bdo :: ValidChild Tags.BidirectionalOverride parent
+bdo :: ValidChild Tags.BidirectionalOverride parent grandparent
     => [Attribute Tags.BidirectionalOverride]
-    -> [ChildHTML Tags.BidirectionalOverride grandparent]
+    -> [ChildHTML Tags.BidirectionalOverride parent]
     -> ChildHTML parent grandparent
 bdo = Tag_BidirectionalOverride . buildAttrMap
 
-blockquote :: ValidChild Tags.Blockquote parent
+blockquote :: ValidChild Tags.Blockquote parent grandparent
            => [Attribute Tags.Blockquote]
-           -> [ChildHTML Tags.Blockquote grandparent]
+           -> [ChildHTML Tags.Blockquote parent]
            -> ChildHTML parent grandparent
 blockquote = Tag_Blockquote . buildAttrMap
 
-body :: ValidChild Tags.Body parent
+body :: ValidChild Tags.Body parent grandparent
      => [Attribute Tags.Body]
-     -> [ChildHTML Tags.Body grandparent]
+     -> [ChildHTML Tags.Body parent]
      -> ChildHTML parent grandparent
 body = Tag_Body . buildAttrMap
 
-br :: ValidChild Tags.LineBreak parent
+br :: ValidChild Tags.LineBreak parent grandparent
    => [Attribute Tags.LineBreak]
    -> ChildHTML parent grandparent
 br = Tag_LineBreak . buildAttrMap
 
-button :: ValidChild Tags.Button parent
+button :: ValidChild Tags.Button parent grandparent
        => [Attribute Tags.Button]
-       -> [ChildHTML Tags.Button grandparent]
+       -> [ChildHTML Tags.Button parent]
        -> ChildHTML parent grandparent
 button = Tag_Button . buildAttrMap
 
-canvas :: ValidChild Tags.Canvas parent
+canvas :: ValidChild Tags.Canvas parent grandparent
        => [Attribute Tags.Canvas]
-       -> [ChildHTML Tags.Canvas grandparent]
+       -> [ChildHTML Tags.Canvas parent]
        -> ChildHTML parent grandparent
 canvas = Tag_Canvas . buildAttrMap
 
-caption :: ValidChild Tags.TableCaption parent
+caption :: ValidChild Tags.TableCaption parent grandparent
         => [Attribute Tags.TableCaption]
-        -> [ChildHTML Tags.TableCaption grandparent]
+        -> [ChildHTML Tags.TableCaption parent]
         -> ChildHTML parent grandparent
 caption = Tag_TableCaption . buildAttrMap
 
-cite :: ValidChild Tags.Citation parent
+cite :: ValidChild Tags.Citation parent grandparent
      => [Attribute Tags.Citation]
-     -> [ChildHTML Tags.Citation grandparent]
+     -> [ChildHTML Tags.Citation parent]
      -> ChildHTML parent grandparent
 cite = Tag_Citation . buildAttrMap
 
-code :: ValidChild Tags.Code parent
+code :: ValidChild Tags.Code parent grandparent
      => [Attribute Tags.Code]
-     -> [ChildHTML Tags.Code grandparent]
+     -> [ChildHTML Tags.Code parent]
      -> ChildHTML parent grandparent
 code = Tag_Code . buildAttrMap
 
-col :: ValidChild Tags.TableColumn parent
+col :: ValidChild Tags.TableColumn parent grandparent
     => [Attribute Tags.TableColumn]
     -> ChildHTML parent grandparent
 col = Tag_TableColumn . buildAttrMap
@@ -289,15 +289,15 @@ col = Tag_TableColumn . buildAttrMap
 -- If the span attribute is present: none.
 -- If the attribute is not present: zero or more <col> element
 --
-colgroup :: ValidChild Tags.TableColumnGroup parent
+colgroup :: ValidChild Tags.TableColumnGroup parent grandparent
          => [Attribute Tags.TableColumnGroup]
-         -> [ChildHTML Tags.TableColumnGroup grandparent]
+         -> [ChildHTML Tags.TableColumnGroup parent]
          -> ChildHTML parent grandparent
 colgroup = Tag_TableColumnGroup . buildAttrMap
 
-data_ :: ValidChild Tags.Data parent
+data_ :: ValidChild Tags.Data parent grandparent
       => [Attribute Tags.Data]
-      -> [ChildHTML Tags.Data grandparent]
+      -> [ChildHTML Tags.Data parent]
       -> ChildHTML parent grandparent
 data_ = Tag_Data . buildAttrMap
 
@@ -305,21 +305,21 @@ data_ = Tag_Data . buildAttrMap
 --
 -- Either phrasing content or zero or more <option> elements.
 --
-datalist :: ValidChild Tags.DataList parent
+datalist :: ValidChild Tags.DataList parent grandparent
          => [Attribute Tags.DataList]
-         -> [ChildHTML Tags.DataList grandparent]
+         -> [ChildHTML Tags.DataList parent]
          -> ChildHTML parent grandparent
 datalist = Tag_DataList . buildAttrMap
 
-dd :: ValidChild Tags.DescriptionDetails parent
+dd :: ValidChild Tags.DescriptionDetails parent grandparent
    => [Attribute Tags.DescriptionDetails]
-   -> [ChildHTML Tags.DescriptionDetails grandparent]
+   -> [ChildHTML Tags.DescriptionDetails parent]
    -> ChildHTML parent grandparent
 dd = Tag_DescriptionDetails . buildAttrMap
 
-del :: ValidChild Tags.DeletedText parent
+del :: ValidChild Tags.DeletedText parent grandparent
     => [Attribute Tags.DeletedText]
-    -> [ChildHTML parent grandparent]
+    -> [ChildHTML parent parent]
     -> ChildHTML parent grandparent
 del = Tag_DeletedText . buildAttrMap
 
@@ -327,21 +327,21 @@ del = Tag_DeletedText . buildAttrMap
 --
 -- One <summary> element followed by flow content.
 --
-details :: ValidChild Tags.Details parent
+details :: ValidChild Tags.Details parent grandparent
         => [Attribute Tags.Details]
-        -> [ChildHTML Tags.Details grandparent]
+        -> [ChildHTML Tags.Details parent]
         -> ChildHTML parent grandparent
 details = Tag_Details . buildAttrMap
 
-dfn :: ValidChild Tags.Definition parent
+dfn :: ValidChild Tags.Definition parent grandparent
     => [Attribute Tags.Definition]
-    -> [ChildHTML Tags.Definition grandparent]
+    -> [ChildHTML Tags.Definition parent]
     -> ChildHTML parent grandparent
 dfn = Tag_Definition . buildAttrMap
 
-dialog :: ValidChild Tags.Dialog parent
+dialog :: ValidChild Tags.Dialog parent grandparent
        => [Attribute Tags.Dialog]
-       -> [ChildHTML Tags.Dialog grandparent]
+       -> [ChildHTML Tags.Dialog parent]
        -> ChildHTML parent grandparent
 dialog = Tag_Dialog . buildAttrMap
 
@@ -353,9 +353,9 @@ dialog = Tag_Dialog . buildAttrMap
 -- elements followed by one or more <dd> elements, optionally intermixed with
 -- <script> and <template> elements.
 --
-div :: ValidChild Tags.Division parent
+div :: ValidChild Tags.Division parent grandparent
     => [Attribute Tags.Division]
-    -> [ChildHTML Tags.Division grandparent]
+    -> [ChildHTML Tags.Division parent]
     -> ChildHTML parent grandparent
 div = Tag_Division . buildAttrMap
 
@@ -368,25 +368,25 @@ div = Tag_Division . buildAttrMap
 -- Or: (in WHATWG HTML, W3C HTML 5.2 and later) One or more <div> elements,
 -- optionally intermixed with <script> and <template> elements.
 --
-dl :: ValidChild Tags.DescriptionList parent
+dl :: ValidChild Tags.DescriptionList parent grandparent
    => [Attribute Tags.DescriptionList]
-   -> [ChildHTML Tags.DescriptionList grandparent]
+   -> [ChildHTML Tags.DescriptionList parent]
    -> ChildHTML parent grandparent
 dl = Tag_DescriptionList . buildAttrMap
 
-dt :: ValidChild Tags.DescriptionTerm parent
+dt :: ValidChild Tags.DescriptionTerm parent grandparent
    => [Attribute Tags.DescriptionTerm]
-   -> [ChildHTML Tags.DescriptionTerm grandparent]
+   -> [ChildHTML Tags.DescriptionTerm parent]
    -> ChildHTML parent grandparent
 dt = Tag_DescriptionTerm . buildAttrMap
 
-em :: ValidChild Tags.Emphasis parent
+em :: ValidChild Tags.Emphasis parent grandparent
    => [Attribute Tags.Emphasis]
-   -> [ChildHTML Tags.Emphasis grandparent]
+   -> [ChildHTML Tags.Emphasis parent]
    -> ChildHTML parent grandparent
 em = Tag_Emphasis . buildAttrMap
 
-embed :: ValidChild Tags.Embed parent
+embed :: ValidChild Tags.Embed parent grandparent
       => [Attribute Tags.Embed]
       -> ChildHTML parent grandparent
 embed = Tag_Embed . buildAttrMap
@@ -395,9 +395,9 @@ embed = Tag_Embed . buildAttrMap
 --
 -- An optional <legend> element, followed by flow content.
 --
-fieldset :: ValidChild Tags.Fieldset parent
+fieldset :: ValidChild Tags.Fieldset parent grandparent
          => [Attribute Tags.Fieldset]
-         -> [ChildHTML Tags.Fieldset grandparent]
+         -> [ChildHTML Tags.Fieldset parent]
          -> ChildHTML parent grandparent
 fieldset = Tag_Fieldset . buildAttrMap
 
@@ -406,66 +406,66 @@ fieldset = Tag_Fieldset . buildAttrMap
 -- A <figcaption> element, followed by flow content; or flow content followed
 -- by a <figcaption> element; or flow content.
 --
-figcaption :: ValidChild Tags.FigureCaption parent
+figcaption :: ValidChild Tags.FigureCaption parent grandparent
            => [Attribute Tags.FigureCaption]
-           -> [ChildHTML Tags.FigureCaption grandparent]
+           -> [ChildHTML Tags.FigureCaption parent]
            -> ChildHTML parent grandparent
 figcaption = Tag_FigureCaption . buildAttrMap
 
-figure :: ValidChild Tags.Figure parent
+figure :: ValidChild Tags.Figure parent grandparent
        => [Attribute Tags.Figure]
-       -> [ChildHTML Tags.Figure grandparent]
+       -> [ChildHTML Tags.Figure parent]
        -> ChildHTML parent grandparent
 figure = Tag_Figure . buildAttrMap
 
-footer :: ValidChild Tags.Footer parent
+footer :: ValidChild Tags.Footer parent grandparent
        => [Attribute Tags.Footer]
-       -> [ChildHTML Tags.Footer grandparent]
+       -> [ChildHTML Tags.Footer parent]
        -> ChildHTML parent grandparent
 footer = Tag_Footer . buildAttrMap
 
 -- This would be a good candidate for a safe constructor, particularly in
 -- relation to <input> elements.
 --
-form :: ValidChild Tags.Form parent
+form :: ValidChild Tags.Form parent grandparent
      => [Attribute Tags.Form]
-     -> [ChildHTML Tags.Form grandparent]
+     -> [ChildHTML Tags.Form parent]
      -> ChildHTML parent grandparent
 form = Tag_Form . buildAttrMap
 
-h1 :: ValidChild Tags.H1 parent
+h1 :: ValidChild Tags.H1 parent grandparent
    => [Attribute Tags.H1]
-   -> [ChildHTML Tags.H1 grandparent]
+   -> [ChildHTML Tags.H1 parent]
    -> ChildHTML parent grandparent
 h1 = Tag_H1 . buildAttrMap
 
-h2 :: ValidChild Tags.H2 parent
+h2 :: ValidChild Tags.H2 parent grandparent
    => [Attribute Tags.H2]
-   -> [ChildHTML Tags.H2 grandparent]
+   -> [ChildHTML Tags.H2 parent]
    -> ChildHTML parent grandparent
 h2 = Tag_H2 . buildAttrMap
 
-h3 :: ValidChild Tags.H3 parent
+h3 :: ValidChild Tags.H3 parent grandparent
    => [Attribute Tags.H3]
-   -> [ChildHTML Tags.H3 grandparent]
+   -> [ChildHTML Tags.H3 parent]
    -> ChildHTML parent grandparent
 h3 = Tag_H3 . buildAttrMap
 
-h4 :: ValidChild Tags.H4 parent
+h4 :: ValidChild Tags.H4 parent grandparent
    => [Attribute Tags.H4]
-   -> [ChildHTML Tags.H4 grandparent]
+   -> [ChildHTML Tags.H4 parent]
    -> ChildHTML parent grandparent
 h4 = Tag_H4 . buildAttrMap
 
-h5 :: ValidChild Tags.H5 parent
+h5 :: ValidChild Tags.H5 parent grandparent
    => [Attribute Tags.H5]
-   -> [ChildHTML Tags.H5 grandparent]
+   -> [ChildHTML Tags.H5 parent]
    -> ChildHTML parent grandparent
 h5 = Tag_H5 . buildAttrMap
 
-h6 :: ValidChild Tags.H6 parent
+h6 :: ValidChild Tags.H6 parent grandparent
    => [Attribute Tags.H6]
-   -> [ChildHTML Tags.H6 grandparent]
+   -> [ChildHTML Tags.H6 parent]
    -> ChildHTML parent grandparent
 h6 = Tag_H6 . buildAttrMap
 
@@ -478,15 +478,15 @@ h6 = Tag_H6 . buildAttrMap
 -- Otherwise, one or more elements of metadata content where exactly one is a
 -- <title> element.
 --
-head :: ValidChild Tags.Head parent
+head :: ValidChild Tags.Head parent grandparent
      => [Attribute Tags.Head]
-     -> [ChildHTML Tags.Head grandparent]
+     -> [ChildHTML Tags.Head parent]
      -> ChildHTML parent grandparent
 head = Tag_Head . buildAttrMap
 
-header :: ValidChild Tags.Header parent
+header :: ValidChild Tags.Header parent grandparent
        => [Attribute Tags.Header]
-       -> [ChildHTML Tags.Header grandparent]
+       -> [ChildHTML Tags.Header parent]
        -> ChildHTML parent grandparent
 header = Tag_Header . buildAttrMap
 
@@ -495,13 +495,13 @@ header = Tag_Header . buildAttrMap
 -- Zero or more <p> elements, followed by one h1, h2, h3, h4, h5, or h6
 -- element, followed by zero or more <p> elements.
 --
-hgroup :: ValidChild Tags.HeadingGroup parent
+hgroup :: ValidChild Tags.HeadingGroup parent grandparent
        => [Attribute Tags.HeadingGroup]
-       -> [ChildHTML Tags.HeadingGroup grandparent]
+       -> [ChildHTML Tags.HeadingGroup parent]
        -> ChildHTML parent grandparent
 hgroup = Tag_HeadingGroup . buildAttrMap
 
-hr :: ValidChild Tags.HorizontalRule parent
+hr :: ValidChild Tags.HorizontalRule parent grandparent
    => [Attribute Tags.HorizontalRule]
    -> ChildHTML parent grandparent
 hr = Tag_HorizontalRule . buildAttrMap
@@ -516,43 +516,43 @@ html :: [Attribute Tags.Html]
      -> Document
 html = Tag_Html . buildAttrMap
 
-i :: ValidChild Tags.IdiomaticText parent
+i :: ValidChild Tags.IdiomaticText parent grandparent
   => [Attribute Tags.IdiomaticText]
-  -> [ChildHTML Tags.IdiomaticText grandparent]
+  -> [ChildHTML Tags.IdiomaticText parent]
   -> ChildHTML parent grandparent
 i = Tag_IdiomaticText . buildAttrMap
 
-iframe :: ValidChild Tags.IFrame parent
+iframe :: ValidChild Tags.IFrame parent grandparent
        => [Attribute Tags.IFrame]
        -> ChildHTML parent grandparent
 iframe = Tag_IFrame . buildAttrMap
 
-img :: ValidChild Tags.Image parent
+img :: ValidChild Tags.Image parent grandparent
     => [Attribute Tags.Image]
     -> ChildHTML parent grandparent
 img = Tag_Image . buildAttrMap
 
-input :: ValidChild Tags.Input parent
+input :: ValidChild Tags.Input parent grandparent
       => [Attribute Tags.Input]
       -> ChildHTML parent grandparent
 input = Tag_Input . buildAttrMap
 
-ins :: ValidChild Tags.InsertedText parent
+ins :: ValidChild Tags.InsertedText parent grandparent
     => [Attribute Tags.InsertedText]
-    -> [ChildHTML parent grandparent]
+    -> [ChildHTML parent parent]
     -> ChildHTML parent grandparent
 ins = Tag_InsertedText . buildAttrMap
 
-kbd :: ValidChild Tags.KeyboardInput parent
+kbd :: ValidChild Tags.KeyboardInput parent grandparent
     => [Attribute Tags.KeyboardInput]
-    -> [ChildHTML Tags.KeyboardInput grandparent]
+    -> [ChildHTML Tags.KeyboardInput parent]
     -> ChildHTML parent grandparent
 kbd = Tag_KeyboardInput . buildAttrMap
 
 -- Phrasing content, but no descendant label elements. No labelable elements
 -- other than the labeled control are allowed.
 --
--- labeledInput :: ValidChild Tags.Label parent
+-- labeledInput :: ValidChild Tags.Label parent grandparent
 --              => [Attribute Tags.Label]
 --              -> T.Text
 --              -> ChildHTML Tags.Label
@@ -562,67 +562,67 @@ kbd = Tag_KeyboardInput . buildAttrMap
 --     [ addAttribute child $ A.name name
 --     ]
 --
-label :: ValidChild Tags.Label parent
+label :: ValidChild Tags.Label parent grandparent
       => [Attribute Tags.Label]
-      -> [ChildHTML Tags.Label grandparent]
+      -> [ChildHTML Tags.Label parent]
       -> ChildHTML parent grandparent
 label = Tag_Label . buildAttrMap
 
-legend :: ValidChild Tags.Legend parent
+legend :: ValidChild Tags.Legend parent grandparent
        => [Attribute Tags.Legend]
-       -> [ChildHTML Tags.Legend grandparent]
+       -> [ChildHTML Tags.Legend parent]
        -> ChildHTML parent grandparent
 legend = Tag_Legend . buildAttrMap
 
-li :: ValidChild Tags.ListItem parent
+li :: ValidChild Tags.ListItem parent grandparent
    => [Attribute Tags.ListItem]
-   -> [ChildHTML Tags.ListItem grandparent]
+   -> [ChildHTML Tags.ListItem parent]
    -> ChildHTML parent grandparent
 li = Tag_ListItem . buildAttrMap
 
-link :: ValidChild Tags.Link parent
+link :: ValidChild Tags.Link parent grandparent
      => [Attribute Tags.Link]
      -> ChildHTML parent grandparent
 link = Tag_Link . buildAttrMap
 
-main :: ValidChild Tags.Main parent
+main :: ValidChild Tags.Main parent grandparent
      => [Attribute Tags.Main]
-     -> [ChildHTML Tags.Main grandparent]
+     -> [ChildHTML Tags.Main parent]
      -> ChildHTML parent grandparent
 main = Tag_Main . buildAttrMap
 
-map :: ValidChild Tags.Map parent
+map :: ValidChild Tags.Map parent grandparent
     => [Attribute Tags.Map]
-    -> [ChildHTML Tags.Map grandparent]
+    -> [ChildHTML Tags.Map parent]
     -> ChildHTML parent grandparent
 map = Tag_Map . buildAttrMap
 
-mark :: ValidChild Tags.Mark parent
+mark :: ValidChild Tags.Mark parent grandparent
      => [Attribute Tags.Mark]
-     -> [ChildHTML Tags.Mark grandparent]
+     -> [ChildHTML Tags.Mark parent]
      -> ChildHTML parent grandparent
 mark = Tag_Mark . buildAttrMap
 
-menu :: ValidChild Tags.Menu parent
+menu :: ValidChild Tags.Menu parent grandparent
      => [Attribute Tags.Menu]
-     -> [ChildHTML Tags.Menu grandparent]
+     -> [ChildHTML Tags.Menu parent]
      -> ChildHTML parent grandparent
 menu = Tag_Menu . buildAttrMap
 
-meta :: ValidChild Tags.Meta parent
+meta :: ValidChild Tags.Meta parent grandparent
      => [Attribute Tags.Meta]
      -> ChildHTML parent grandparent
 meta = Tag_Meta . buildAttrMap
 
-meter :: ValidChild Tags.Meter parent
+meter :: ValidChild Tags.Meter parent grandparent
       => [Attribute Tags.Meter]
-      -> [ChildHTML Tags.Meter grandparent]
+      -> [ChildHTML Tags.Meter parent]
       -> ChildHTML parent grandparent
 meter = Tag_Meter . buildAttrMap
 
-nav :: ValidChild Tags.Nav parent
+nav :: ValidChild Tags.Nav parent grandparent
     => [Attribute Tags.Nav]
-    -> [ChildHTML Tags.Nav grandparent]
+    -> [ChildHTML Tags.Nav parent]
     -> ChildHTML parent grandparent
 nav = Tag_Nav . buildAttrMap
 
@@ -638,45 +638,45 @@ nav = Tag_Nav . buildAttrMap
 --
 -- Otherwise: flow content or phrasing content.
 --
-noscript :: ValidChild Tags.NoScript parent
+noscript :: ValidChild Tags.NoScript parent grandparent
          => [Attribute Tags.NoScript]
-         -> [ChildHTML Tags.NoScript grandparent]
+         -> [ChildHTML Tags.NoScript parent]
          -> ChildHTML parent grandparent
 noscript = Tag_NoScript . buildAttrMap
 
-object :: ValidChild Tags.Object parent
+object :: ValidChild Tags.Object parent grandparent
        => [Attribute Tags.Object]
-       -> [ChildHTML parent grandparent]
+       -> [ChildHTML parent parent]
        -> ChildHTML parent grandparent
 object = Tag_Object . buildAttrMap
 
-ol :: ValidChild Tags.OrderedList parent
+ol :: ValidChild Tags.OrderedList parent grandparent
    => [Attribute Tags.OrderedList]
-   -> [ChildHTML Tags.OrderedList grandparent]
+   -> [ChildHTML Tags.OrderedList parent]
    -> ChildHTML parent grandparent
 ol = Tag_OrderedList . buildAttrMap
 
-optgroup :: ValidChild Tags.OptionGroup parent
+optgroup :: ValidChild Tags.OptionGroup parent grandparent
          => [Attribute Tags.OptionGroup]
-         -> [ChildHTML Tags.OptionGroup grandparent]
+         -> [ChildHTML Tags.OptionGroup parent]
          -> ChildHTML parent grandparent
 optgroup = Tag_OptionGroup . buildAttrMap
 
-option :: ValidChild Tags.Option parent
+option :: ValidChild Tags.Option parent grandparent
        => [Attribute Tags.Option]
-       -> [ChildHTML Tags.Option grandparent]
+       -> [ChildHTML Tags.Option parent]
        -> ChildHTML parent grandparent
 option = Tag_Option . buildAttrMap
 
-output :: ValidChild Tags.Output parent
+output :: ValidChild Tags.Output parent grandparent
        => [Attribute Tags.Output]
-       -> [ChildHTML Tags.Output grandparent]
+       -> [ChildHTML Tags.Output parent]
        -> ChildHTML parent grandparent
 output = Tag_Output . buildAttrMap
 
-p :: ValidChild Tags.Paragraph parent
+p :: ValidChild Tags.Paragraph parent grandparent
   => [Attribute Tags.Paragraph]
-  -> [ChildHTML Tags.Paragraph grandparent]
+  -> [ChildHTML Tags.Paragraph parent]
   -> ChildHTML parent grandparent
 p = Tag_Paragraph . buildAttrMap
 
@@ -685,126 +685,126 @@ p = Tag_Paragraph . buildAttrMap
 -- Zero or more <source> elements, followed by one <img> element,
 -- optionally intermixed with script-supporting elements.
 --
-picture :: ValidChild Tags.Picture parent
+picture :: ValidChild Tags.Picture parent grandparent
         => [Attribute Tags.Picture]
-        -> [ChildHTML Tags.Picture grandparent]
+        -> [ChildHTML Tags.Picture parent]
         -> ChildHTML parent grandparent
 picture = Tag_Picture . buildAttrMap
 
-pre :: ValidChild Tags.PreformattedText parent
+pre :: ValidChild Tags.PreformattedText parent grandparent
     => [Attribute Tags.PreformattedText]
-    -> [ChildHTML Tags.PreformattedText grandparent]
+    -> [ChildHTML Tags.PreformattedText parent]
     -> ChildHTML parent grandparent
 pre = Tag_PreformattedText . buildAttrMap
 
-progress :: ValidChild Tags.Progress parent
+progress :: ValidChild Tags.Progress parent grandparent
          => [Attribute Tags.Progress]
-         -> [ChildHTML Tags.Progress grandparent]
+         -> [ChildHTML Tags.Progress parent]
          -> ChildHTML parent grandparent
 progress = Tag_Progress . buildAttrMap
 
-q :: ValidChild Tags.Quotation parent
+q :: ValidChild Tags.Quotation parent grandparent
   => [Attribute Tags.Quotation]
-  -> [ChildHTML Tags.Quotation grandparent]
+  -> [ChildHTML Tags.Quotation parent]
   -> ChildHTML parent grandparent
 q = Tag_Quotation . buildAttrMap
 
-rp :: ValidChild Tags.RubyParenthesis parent
+rp :: ValidChild Tags.RubyParenthesis parent grandparent
    => [Attribute Tags.RubyParenthesis]
-   -> [ChildHTML Tags.RubyParenthesis grandparent]
+   -> [ChildHTML Tags.RubyParenthesis parent]
    -> ChildHTML parent grandparent
 rp = Tag_RubyParenthesis . buildAttrMap
 
-rt :: ValidChild Tags.RubyText parent
+rt :: ValidChild Tags.RubyText parent grandparent
    => [Attribute Tags.RubyText]
-   -> [ChildHTML Tags.RubyText grandparent]
+   -> [ChildHTML Tags.RubyText parent]
    -> ChildHTML parent grandparent
 rt = Tag_RubyText . buildAttrMap
 
-ruby :: ValidChild Tags.Ruby parent
+ruby :: ValidChild Tags.Ruby parent grandparent
      => [Attribute Tags.Ruby]
-     -> [ChildHTML Tags.Ruby grandparent]
+     -> [ChildHTML Tags.Ruby parent]
      -> ChildHTML parent grandparent
 ruby = Tag_Ruby . buildAttrMap
 
-s :: ValidChild Tags.Strikethrough parent
+s :: ValidChild Tags.Strikethrough parent grandparent
   => [Attribute Tags.Strikethrough]
-  -> [ChildHTML Tags.Strikethrough grandparent]
+  -> [ChildHTML Tags.Strikethrough parent]
   -> ChildHTML parent grandparent
 s = Tag_Strikethrough . buildAttrMap
 
-sample :: ValidChild Tags.Sample parent
+sample :: ValidChild Tags.Sample parent grandparent
        => [Attribute Tags.Sample]
-       -> [ChildHTML Tags.Sample grandparent]
+       -> [ChildHTML Tags.Sample parent]
        -> ChildHTML parent grandparent
 sample = Tag_Sample . buildAttrMap
 
 -- This should be changed to take script content instead of children.
 --
-script :: ValidChild Tags.Script parent
+script :: ValidChild Tags.Script parent grandparent
        => [Attribute Tags.Script]
        -> T.Text
        -> ChildHTML parent grandparent
 script = Tag_Script . buildAttrMap
 
-search :: ValidChild Tags.Search parent
+search :: ValidChild Tags.Search parent grandparent
        => [Attribute Tags.Search]
-       -> [ChildHTML Tags.Search grandparent]
+       -> [ChildHTML Tags.Search parent]
        -> ChildHTML parent grandparent
 search = Tag_Search . buildAttrMap
 
-section :: ValidChild Tags.Section parent
+section :: ValidChild Tags.Section parent grandparent
         => [Attribute Tags.Section]
-        -> [ChildHTML Tags.Section grandparent]
+        -> [ChildHTML Tags.Section parent]
         -> ChildHTML parent grandparent
 section = Tag_Section . buildAttrMap
 
-select :: ValidChild Tags.Select parent
+select :: ValidChild Tags.Select parent grandparent
        => [Attribute Tags.Select]
-       -> [ChildHTML Tags.Select grandparent]
+       -> [ChildHTML Tags.Select parent]
        -> ChildHTML parent grandparent
 select = Tag_Select . buildAttrMap
 
-slot :: ValidChild Tags.Slot parent
+slot :: ValidChild Tags.Slot parent grandparent
      => [Attribute Tags.Slot]
-     -> [ChildHTML parent grandparent]
+     -> [ChildHTML parent parent]
      -> ChildHTML parent grandparent
 slot = Tag_Slot . buildAttrMap
 
-small :: ValidChild Tags.SideComment parent
+small :: ValidChild Tags.SideComment parent grandparent
       => [Attribute Tags.SideComment]
-      -> [ChildHTML Tags.SideComment grandparent]
+      -> [ChildHTML Tags.SideComment parent]
       -> ChildHTML parent grandparent
 small = Tag_SideComment . buildAttrMap
 
-source :: ValidChild Tags.Source parent
+source :: ValidChild Tags.Source parent grandparent
        => [Attribute Tags.Source]
        -> ChildHTML parent grandparent
 source = Tag_Source . buildAttrMap
 
-span :: ValidChild Tags.Span parent
+span :: ValidChild Tags.Span parent grandparent
      => [Attribute Tags.Span]
-     -> [ChildHTML Tags.Span grandparent]
+     -> [ChildHTML Tags.Span parent]
      -> ChildHTML parent grandparent
 span = Tag_Span . buildAttrMap
 
-strong :: ValidChild Tags.Strong parent
+strong :: ValidChild Tags.Strong parent grandparent
        => [Attribute Tags.Strong]
-       -> [ChildHTML Tags.Strong grandparent]
+       -> [ChildHTML Tags.Strong parent]
        -> ChildHTML parent grandparent
 strong = Tag_Strong . buildAttrMap
 
 -- This should be changed to take CSS content instead of children.
 --
-style :: ValidChild Tags.Style parent
+style :: ValidChild Tags.Style parent grandparent
       => [Attribute Tags.Style]
       -> T.Text
       -> ChildHTML parent grandparent
 style = Tag_Style . buildAttrMap
 
-sub :: ValidChild Tags.Subscript parent
+sub :: ValidChild Tags.Subscript parent grandparent
     => [Attribute Tags.Subscript]
-    -> [ChildHTML Tags.Subscript grandparent]
+    -> [ChildHTML Tags.Subscript parent]
     -> ChildHTML parent grandparent
 sub = Tag_Subscript . buildAttrMap
 
@@ -812,106 +812,106 @@ sub = Tag_Subscript . buildAttrMap
 --
 -- 	Phrasing content or one element of Heading content
 --
-summary :: ValidChild Tags.Summary parent
+summary :: ValidChild Tags.Summary parent grandparent
         => [Attribute Tags.Summary]
-        -> [ChildHTML Tags.Summary grandparent]
+        -> [ChildHTML Tags.Summary parent]
         -> ChildHTML parent grandparent
 summary = Tag_Summary . buildAttrMap
 
-sup :: ValidChild Tags.Superscript parent
+sup :: ValidChild Tags.Superscript parent grandparent
     => [Attribute Tags.Superscript]
-    -> [ChildHTML Tags.Superscript grandparent]
+    -> [ChildHTML Tags.Superscript parent]
     -> ChildHTML parent grandparent
 sup = Tag_Superscript . buildAttrMap
 
-table :: ValidChild Tags.Table parent
+table :: ValidChild Tags.Table parent grandparent
       => [Attribute Tags.Table]
-      -> [ChildHTML Tags.Table grandparent]
+      -> [ChildHTML Tags.Table parent]
       -> ChildHTML parent grandparent
 table = Tag_Table . buildAttrMap
 
-tbody :: ValidChild Tags.TableBody parent
+tbody :: ValidChild Tags.TableBody parent grandparent
       => [Attribute Tags.TableBody]
-      -> [ChildHTML Tags.TableBody grandparent]
+      -> [ChildHTML Tags.TableBody parent]
       -> ChildHTML parent grandparent
 tbody = Tag_TableBody . buildAttrMap
 
-td :: ValidChild Tags.TableDataCell parent
+td :: ValidChild Tags.TableDataCell parent grandparent
    => [Attribute Tags.TableDataCell]
-   -> [ChildHTML Tags.TableDataCell grandparent]
+   -> [ChildHTML Tags.TableDataCell parent]
    -> ChildHTML parent grandparent
 td = Tag_TableDataCell . buildAttrMap
 
 -- No content restrictions - remove the constraint?
 --
-template :: ValidChild Tags.ContentTemplate parent
+template :: ValidChild Tags.ContentTemplate parent grandparent
          => [Attribute Tags.ContentTemplate]
-         -> [ChildHTML Tags.ContentTemplate grandparent]
+         -> [ChildHTML Tags.ContentTemplate parent]
          -> ChildHTML parent grandparent
 template = Tag_ContentTemplate . buildAttrMap
 
-textarea :: ValidChild Tags.TextArea parent
+textarea :: ValidChild Tags.TextArea parent grandparent
          => [Attribute Tags.TextArea]
-         -> [ChildHTML Tags.TextArea grandparent]
+         -> [ChildHTML Tags.TextArea parent]
          -> ChildHTML parent grandparent
 textarea = Tag_TextArea . buildAttrMap
 
-tfoot :: ValidChild Tags.TableFoot parent
+tfoot :: ValidChild Tags.TableFoot parent grandparent
       => [Attribute Tags.TableFoot]
-      -> [ChildHTML Tags.TableFoot grandparent]
+      -> [ChildHTML Tags.TableFoot parent]
       -> ChildHTML parent grandparent
 tfoot = Tag_TableFoot . buildAttrMap
 
-th :: ValidChild Tags.TableHeader parent
+th :: ValidChild Tags.TableHeader parent grandparent
    => [Attribute Tags.TableHeader]
-   -> [ChildHTML Tags.TableHeader grandparent]
+   -> [ChildHTML Tags.TableHeader parent]
    -> ChildHTML parent grandparent
 th = Tag_TableHeader . buildAttrMap
 
-thead :: ValidChild Tags.TableHead parent
+thead :: ValidChild Tags.TableHead parent grandparent
       => [Attribute Tags.TableHead]
-      -> [ChildHTML Tags.TableHead grandparent]
+      -> [ChildHTML Tags.TableHead parent]
       -> ChildHTML parent grandparent
 thead = Tag_TableHead . buildAttrMap
 
-time :: ValidChild Tags.Time parent
+time :: ValidChild Tags.Time parent grandparent
      => [Attribute Tags.Time]
-     -> [ChildHTML Tags.Time grandparent]
+     -> [ChildHTML Tags.Time parent]
      -> ChildHTML parent grandparent
 time = Tag_Time . buildAttrMap
 
-title :: ValidChild Tags.Title parent
+title :: ValidChild Tags.Title parent grandparent
       => [Attribute Tags.Title]
-      -> [ChildHTML Tags.Title grandparent]
+      -> [ChildHTML Tags.Title parent]
       -> ChildHTML parent grandparent
 title = Tag_Title . buildAttrMap
 
-tr :: ValidChild Tags.TableRow parent
+tr :: ValidChild Tags.TableRow parent grandparent
    => [Attribute Tags.TableRow]
-   -> [ChildHTML Tags.TableRow grandparent]
+   -> [ChildHTML Tags.TableRow parent]
    -> ChildHTML parent grandparent
 tr = Tag_TableRow . buildAttrMap
 
-track :: ValidChild Tags.Track parent
+track :: ValidChild Tags.Track parent grandparent
       => [Attribute Tags.Track]
       -> ChildHTML parent grandparent
 track = Tag_Track . buildAttrMap
 
-u :: ValidChild Tags.Underline parent
+u :: ValidChild Tags.Underline parent grandparent
   => [Attribute Tags.Underline]
-  -> [ChildHTML Tags.Underline grandparent]
+  -> [ChildHTML Tags.Underline parent]
   -> ChildHTML parent grandparent
 u = Tag_Underline . buildAttrMap
 
-ul :: ValidChild Tags.UnorderedList parent
+ul :: ValidChild Tags.UnorderedList parent grandparent
    => [Attribute Tags.UnorderedList]
-   -> [ChildHTML Tags.UnorderedList grandparent]
+   -> [ChildHTML Tags.UnorderedList parent]
    -> ChildHTML parent grandparent
 ul = Tag_UnorderedList . buildAttrMap
 
-var :: ValidChild Tags.Variable parent
+var :: ValidChild Tags.Variable parent grandparent
     => [Attribute Tags.Variable]
-    -> [ChildHTML Tags.Variable grandparent]
+    -> [ChildHTML Tags.Variable parent]
     -> ChildHTML parent grandparent
 var = Tag_Variable . buildAttrMap
 
@@ -925,19 +925,19 @@ var = Tag_Variable . buildAttrMap
 -- <track> elements, followed by transparent content that contains no
 -- media elements–that is no <audio> or <video>.
 --
-video :: ValidChild Tags.Video parent
+video :: ValidChild Tags.Video parent grandparent
       => [Attribute Tags.Video]
-      -> [ChildHTML Tags.Video grandparent]
+      -> [ChildHTML Tags.Video parent]
       -> ChildHTML parent grandparent
 video = Tag_Video . buildAttrMap
 
-wbr :: ValidChild Tags.WordBreakOpportunity parent
+wbr :: ValidChild Tags.WordBreakOpportunity parent grandparent
     => [Attribute Tags.WordBreakOpportunity]
     -> ChildHTML parent grandparent
 wbr = Tag_WordBreakOpportunity . buildAttrMap
 
-wbrs :: ( ValidChild Tags.WordBreakOpportunity parent
-        , ValidChild Tags.Text parent
+wbrs :: ( ValidChild Tags.WordBreakOpportunity parent grandparent
+        , ValidChild Tags.Text parent grandparent
         )
      => [T.Text]
      -> [ChildHTML parent grandparent]

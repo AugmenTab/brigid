@@ -20,14 +20,18 @@ module HTML.Elements.TagGroups
   , SubmittableContent
   , ResettableContent
   , ScriptSupportingContent
-  , MediaContent
   , TransparentContent
   , MarginalContent
+  , MediaContent
 
+  , AnchorExcluded
+  , CanvasExcluded
   , ContactAddressExcluded
   , DescriptionTermExcluded
   , TableHeaderExcluded
 
+  , AudioVideoContent
+  , CanvasContent
   , DescriptionListContent
   , LegendContent
   , PictureContent
@@ -452,6 +456,9 @@ type ScriptSupportingContent =
   , 'ContentTemplate
   ]
 
+-- This list represents all elements that are considered transparent to some
+-- degree.
+--
 type TransparentContent =
   [ 'Anchor
   , 'Audio
@@ -478,8 +485,20 @@ type MediaContent =
 -- Element Exclusion Tag Groups
 --
 
+type AnchorExcluded =
+  'Anchor ': InteractiveContent
+
+type CanvasExcluded =
+  [ 'Details
+  , 'Embed
+  , 'IFrame
+  , 'Label
+  , 'Select
+  , 'TextArea
+  ]
+
 type ContactAddressExcluded =
-  ContactAddress ': HeadingSectioningAndMarginalsExcluded
+  'ContactAddress ': HeadingSectioningAndMarginalsExcluded
 
 type DescriptionTermExcluded =
   HeadingSectioningAndMarginalsExcluded
@@ -494,6 +513,20 @@ type TableHeaderExcluded =
 
 -- Element-Focused Tag Groups
 --
+
+-- This list represents all elements that are valid under an `<audio>` or
+-- `<video>` tag.
+type AudioVideoContent =
+  [ 'Source
+  , 'Track
+  ]
+
+-- This list represents all elements that are valid under a `<canvas>` tag.
+type CanvasContent =
+  [ 'Anchor
+  , 'Button
+  , 'Input
+  ]
 
 -- This list represents all elements that are valid under a `<dlist>` tag.
 type DescriptionListContent =

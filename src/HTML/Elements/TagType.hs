@@ -4,7 +4,8 @@
 module HTML.Elements.TagType
   ( TagErrorMessage
   , TagType
-      ( Document
+      ( NoElement
+      , Document
       , Comment
       , Text
       , RawHTML
@@ -127,7 +128,8 @@ module HTML.Elements.TagType
 import GHC.TypeLits qualified as TypeLits
 
 data TagType
-  = Document
+  = NoElement
+  | Document
   | Comment
   | Text
   | RawHTML

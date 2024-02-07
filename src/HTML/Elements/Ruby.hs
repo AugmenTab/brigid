@@ -13,7 +13,7 @@ import HTML.Elements qualified as E
 import HTML.Elements.Children (ValidChild)
 import HTML.Elements.Tags (Ruby)
 
-ruby :: ValidChild Ruby parent
+ruby :: ValidChild Ruby parent grandparent
      => [Attribute Ruby]
      -> T.Text
      -> T.Text

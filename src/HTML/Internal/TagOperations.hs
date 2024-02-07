@@ -45,30 +45,17 @@ type family AlertAttribute (member :: Bool) (attr :: AttributeType) (tag :: TagT
           ':<>: 'Text " element."
       )
 
-type family AlertElement (member :: Bool) (tag :: TagType) (parent :: TagType) (transparent :: Bool) :: Bool where
-  AlertElement 'True tag parent transparent =
+type family AlertElement (member :: Bool) (tag :: TagType) (parent :: TagType) :: Bool where
+  AlertElement 'True tag parent =
     'True
 
-  AlertElement 'False tag parent 'False =
+  AlertElement 'False tag parent =
     TypeError
       ( 'Text "The "
           ':<>: TagErrorMessage tag
           ':<>: 'Text " element is not a valid child for the "
           ':<>: TagErrorMessage parent
           ':<>: 'Text " element."
-      )
-
-  AlertElement 'False tag parent 'True =
-    TypeError
-      ( 'Text "The "
-          ':<>: TagErrorMessage tag
-          ':<>: 'Text " element is not a valid child for the "
-          ':<>: TagErrorMessage parent
-          ':<>: 'Text " element in this context, because "
-          ':<>: TagErrorMessage parent
-          ':<>: 'Text " is a transparent element, and "
-          ':<>: TagErrorMessage tag
-          ':<>: 'Text " is not a valid child for the grandparent element."
       )
 
 type family Elem (tag :: TagType) (tags :: [TagType]) :: Bool where

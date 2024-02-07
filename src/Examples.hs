@@ -53,6 +53,7 @@ example =
                   [ E.script [ A.customData "my-custom-elem-attr" "test" ] T.empty
                   ]
             ]
+        , transparencyExample
         , tableWithBodyExample
         , E.ul []
             [ E.li [ A.classes
@@ -98,6 +99,16 @@ listExample =
       , E.img [ A.draggable False ]
       ]
 
+transparencyExample :: E.ChildHTML E.Division grandparent
+transparencyExample =
+  E.a []
+    [ E.img []
+ -- , E.a [] [] -- This fails, because a is excluded from the transparent content that a holds.
+ -- , E.li [] [] -- This fails, because li isn't a valid child for the grandparent div, and a is transparent.
+    , E.div [] []
+    , E.audio [] []
+    ]
+
 tableWithBodyExample :: E.ChildHTML E.Division grandparent
 tableWithBodyExample =
   tableExample
@@ -128,7 +139,7 @@ tableWithRowExample =
         , E.td [] [ E.text "6" , E.noElement ]
         ]
 
-tableExample :: Either [Table.Body grandparent] [Table.Row E.Table grandparent]
+tableExample :: Either [Table.Body] [Table.Row E.Table E.Division]
              -> E.ChildHTML E.Division grandparent
 tableExample content =
   let caption =

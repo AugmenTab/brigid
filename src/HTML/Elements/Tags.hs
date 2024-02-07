@@ -1,7 +1,8 @@
 {-# LANGUAGE DataKinds #-}
 
 module HTML.Elements.Tags
-  ( Document
+  ( NoElement
+  , Document
   , Comment
   , Text
   , RawHTML
@@ -121,6 +122,8 @@ module HTML.Elements.Tags
   ) where
 
 import HTML.Elements.TagType qualified as TagType
+
+type NoElement = 'TagType.NoElement
 
 -- This type synonym represents the HTML document itself. It exists so that the
 -- HTML tag can have a parent. It is important that this tag type synonym never
