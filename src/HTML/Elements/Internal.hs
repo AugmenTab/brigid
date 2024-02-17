@@ -4,8 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 module HTML.Elements.Internal
-  ( Document (..)
-  , ChildHTML
+  ( ChildHTML
       ( Tag_NoElement
       , Tag_Comment
       , Tag_Text
@@ -59,6 +58,7 @@ module HTML.Elements.Internal
       , Tag_Header
       , Tag_HeadingGroup
       , Tag_HorizontalRule
+      , Tag_Html
       , Tag_IdiomaticText
       , Tag_IFrame
       , Tag_Image
@@ -131,9 +131,6 @@ import HTML.Attributes.Internal (Attributes)
 import HTML.Elements.Children (ValidChild)
 import HTML.Elements.TagType (TagType(..))
 import HTML.Types (NoContent)
-
-data Document
-  = Tag_Html (Attributes 'Html) [ChildHTML 'Html 'Document]
 
 data ChildHTML (parent :: TagType) (grandparent :: TagType) where
   Tag_NoElement
@@ -439,6 +436,11 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
     :: ValidChild 'HorizontalRule parent grandparent
     => Attributes 'HorizontalRule
     -> ChildHTML parent grandparent
+
+  Tag_Html
+    :: Attributes 'Html
+    -> [ChildHTML 'Html 'Document]
+    -> ChildHTML 'Document 'NoElement
 
   Tag_IdiomaticText
     :: ValidChild 'IdiomaticText parent grandparent

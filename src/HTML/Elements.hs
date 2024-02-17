@@ -128,9 +128,11 @@ import Data.Text qualified as T
 
 import HTML.Attributes.Internal (Attribute, buildAttrMap)
 import HTML.Elements.Children (ValidChild)
-import HTML.Elements.Internal (ChildHTML(..), Document(..))
+import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Elements.Tags qualified as Tags
 import HTML.Types (NoContent)
+
+type Document = ChildHTML Tags.Document Tags.NoElement
 
 noElement :: ChildHTML parent grandparent
 noElement = Tag_NoElement
@@ -513,7 +515,7 @@ hr = Tag_HorizontalRule . buildAttrMap
 --
 html :: [Attribute Tags.Html]
      -> [ChildHTML Tags.Html Tags.Document]
-     -> Document
+     -> ChildHTML Tags.Document Tags.NoElement
 html = Tag_Html . buildAttrMap
 
 i :: ValidChild Tags.IdiomaticText parent grandparent

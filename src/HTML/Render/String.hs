@@ -12,16 +12,12 @@ import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 
 import HTML.Attributes.Internal (Attribute(..))
-import HTML.Elements.Internal (ChildHTML(..), Document(..))
+import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 
-renderHTML :: Document -> String
-renderHTML doc =
-  case doc of
-    Tag_Html attrs content ->
-      ("<!DOCTYPE html>" :: String)
-        <> buildTag "html" (Map.elems attrs) (Right content)
+renderHTML :: ChildHTML parent grandparent -> String
+renderHTML = renderTag
 
 renderTag :: ChildHTML parent grandparent -> String
 renderTag html =
@@ -184,6 +180,10 @@ renderTag html =
 
     Tag_HorizontalRule attrs ->
       buildTag "hr" (Map.elems attrs) $ Left Types.OmitTag
+
+    Tag_Html attrs content ->
+      ("<!DOCTYPE html>" :: String)
+        <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
       buildTag "i" (Map.elems attrs) $ Right content
