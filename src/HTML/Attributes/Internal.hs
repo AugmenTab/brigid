@@ -40,6 +40,7 @@ module HTML.Attributes.Internal
 
       , Attr_CrossOrigin
       , Attr_Disabled
+      , Attr_Href
       )
   , attributeText
   , buildAttrMap
@@ -406,10 +407,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Href
-  --   :: ValidAttribute 'Href tag
-  --   => Types.Href
-  --   -> Attribute tag
+  Attr_Href
+    :: ValidAttribute 'Href tag
+    => Types.Href
+    -> Attribute tag
 
   -- Attr_HrefLang
   --   :: ValidAttribute 'HrefLang tag
@@ -777,6 +778,9 @@ attributeText attr =
 
     Attr_Disabled _disabled ->
       "disabled"
+
+    Attr_Href _href ->
+      "href"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

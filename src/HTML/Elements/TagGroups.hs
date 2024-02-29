@@ -45,6 +45,7 @@ module HTML.Elements.TagGroups
 
   , CrossOriginTags
   , DisableableTags
+  , HrefTags
   ) where
 
 import HTML.Elements.TagType (TagType(..))
@@ -625,4 +626,11 @@ type DisableableTags =
   , 'Option
   , 'Select
   , 'TextArea
+  ]
+
+type HrefTags =
+  [ 'Anchor
+  , 'Area
+  , 'Base
+  , 'Link
   ]

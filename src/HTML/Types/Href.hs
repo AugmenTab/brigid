@@ -4,6 +4,7 @@
 
 module HTML.Types.Href
   ( Href
+  , HrefTypes
   , mkHref
   , hrefToText
   ) where

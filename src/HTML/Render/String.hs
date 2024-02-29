@@ -545,6 +545,9 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_Href href ->
+      Just . buildAttribute "href" . T.unpack $ Types.hrefToText href
+
     -- Attr_Width width ->
     --   Just . buildAttribute "width" $ show width
 

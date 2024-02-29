@@ -547,6 +547,9 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_Href href ->
+      Just . buildAttribute "href" . toBytes $ Types.hrefToText href
+
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . LBS8.pack $ show width
 

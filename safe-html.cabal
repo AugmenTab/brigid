@@ -29,6 +29,7 @@ library
       HTML.Attributes
       HTML.Attributes.AttributeType
       HTML.Attributes.Elements
+      HTML.Attributes.Href
       HTML.Attributes.Internal
       HTML.Elements
       HTML.Elements.AddAttribute

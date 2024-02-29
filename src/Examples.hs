@@ -4,6 +4,8 @@ module Examples
   ) where
 
 import Prelude hiding (head)
+import Beeline.Routing ((/-), (/+))
+import Beeline.Routing qualified as R
 import Data.List qualified as L
 import Data.Text qualified as T
 
@@ -19,6 +21,10 @@ documentExample =
   E.html []
     [ E.head []
         [ E.script [ A.crossorigin HTML.Anonymous ] "This is a test!"
+        , E.link
+            [ A.href . HTML.relativeURLFromRoute exampleRoute $ GetCustomer 1
+            ]
+     -- , E.link [ A.href $ HTML.idFromText "bad-link" ] -- This fails, because Id is not a valid href type for link.
         ]
     , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
@@ -31,6 +37,18 @@ documentExample =
         , example
         ]
     ]
+
+newtype GetCustomer =
+  GetCustomer
+    { getCustomerId :: Int
+    }
+
+exampleRoute :: R.Router r => r GetCustomer
+exampleRoute =
+  R.get $
+    R.make GetCustomer
+      /- "customers"
+      /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
 
 example :: E.ChildHTML E.Body grandparent
 example =

@@ -33,15 +33,15 @@ type family Add (tag :: TagType) (tags :: [TagType]) :: [TagType] where
   Add e (t ': ts) = t ': Add e ts
 
 type family AlertAttribute (member :: Bool) (attr :: AttributeType) (tag :: TagType) :: Bool where
-  AlertAttribute 'True tag parent =
+  AlertAttribute 'True attr tag =
     'True
 
-  AlertAttribute 'False tag parent =
+  AlertAttribute 'False attr tag =
     TypeError
       ( 'Text "The "
-          ':<>: AttributeErrorMessage tag
+          ':<>: AttributeErrorMessage attr
           ':<>: 'Text " attribute is not a valid attribute for the "
-          ':<>: TagErrorMessage parent
+          ':<>: TagErrorMessage tag
           ':<>: 'Text " element."
       )
 

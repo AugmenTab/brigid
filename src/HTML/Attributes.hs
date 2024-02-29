@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
 
 module HTML.Attributes
   ( customAttribute
@@ -41,14 +42,18 @@ module HTML.Attributes
   , crossorigin
   , disable
   , disabled
+  , href
   ) where
 
 import Prelude hiding (id)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
+import GHC.TypeLits (KnownNat)
+import Shrubbery.TypeList (FirstIndexOf)
 
 import HTML.Attributes.AttributeType (AttributeType(..))
 import HTML.Attributes.Elements (ValidAttribute)
+import HTML.Attributes.Href (ValidHref)
 import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
@@ -97,6 +102,16 @@ hide = Attr_Hidden
 
 hidden :: Attribute tag
 hidden = hide True
+
+href :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf a Types.HrefTypes
+        , ValidHref a tag
+        , ValidAttribute 'Href tag
+        )
+     => a
+     -> Attribute tag
+href =
+  Attr_Href . Types.mkHref
 
 id :: Types.Id -> Attribute tag
 id = Attr_Id

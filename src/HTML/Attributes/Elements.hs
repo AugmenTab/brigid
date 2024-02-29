@@ -18,3 +18,4 @@ type ValidAttribute attr tag =
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor CrossOrigin = TagGroups.CrossOriginTags
   ValidElementsFor Disabled    = TagGroups.DisableableTags
+  ValidElementsFor Href        = TagGroups.HrefTags
