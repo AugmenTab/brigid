@@ -6,6 +6,9 @@ module HTML.Types.URL
   , relativeURLFromRoute
   , relativeURLToText
   , relativeURLMethod
+  , RawURL (..)
+  , rawURLFromText
+  , rawURLToText
   ) where
 
 import Beeline.HTTP.Client qualified as B
@@ -36,3 +39,13 @@ relativeURLFromRoute generator =
 relativeURLToText :: RelativeURL -> T.Text
 relativeURLToText =
   relativeURLPath
+
+-- | This is a basic wrapper around 'T.Text'. It provides an unsafe constructor
+-- for URLs; it should be handled with care and used only when necessary.
+newtype RawURL = RawURL T.Text
+
+rawURLFromText :: T.Text -> RawURL
+rawURLFromText = RawURL
+
+rawURLToText :: RawURL -> T.Text
+rawURLToText (RawURL url) = url
