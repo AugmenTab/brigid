@@ -1,6 +1,6 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.35.2.
+-- This file has been generated from package.yaml by hpack version 0.36.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -46,6 +46,16 @@ library
       HTML.Render.String
       HTML.Render.Text
       HTML.Types
+      HTML.Types.Autocapitalize
+      HTML.Types.ContentEditable
+      HTML.Types.CrossOrigin
+      HTML.Types.Directionality
+      HTML.Types.InputMode
+      HTML.Types.KeyHint
+      HTML.Types.NoContent
+      HTML.Types.Part
+      HTML.Types.PopoverState
+      HTML.Types.Reachability
   other-modules:
       Paths_safe_html
   autogen-modules:
