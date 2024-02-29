@@ -408,7 +408,7 @@ data Attribute (tag :: TagType) where
 
   -- Attr_Href
   --   :: ValidAttribute 'Href tag
-  --   => T.Text -- TODO
+  --   => Types.Href
   --   -> Attribute tag
 
   -- Attr_HrefLang
