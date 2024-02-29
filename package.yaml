@@ -29,9 +29,12 @@ default-extensions:
 
 dependencies:
 - base
+- beeline-http-client
+- beeline-routing
 - bytestring
 - containers
 - html-email-validate
+- shrubbery
 - text
 
 ghc-options:

@@ -5,16 +5,42 @@
 
 packages:
 - completed:
-    name: blaze-html
+    name: beeline-http-client
     pantry-tree:
-      sha256: e960e95ee68d9b23f2cd1ef069dd93bf6c685b64e6e1934868376d2dd22ad485
-      size: 3669
-    sha256: c1fbb8e68cea702a8fa60138bc00499cc3dff9844402990530d68a45d3043cfb
-    size: 129723
-    url: https://github.com/AugmenTab/blaze-html/archive/5f8df2cf72091d6082737c1f579bd69094f51fa0.tar.gz
-    version: 0.9.2.0
+      sha256: 003653d3a0cfe9ead5e3e98ef277d32e9ac2000b4079069820b1d6cb597b9790
+      size: 718
+    sha256: 968e332bb9c2acad7a7fb3b6037b03a52d9d5dc96147f66690d3f8ebea1cdc0f
+    size: 24548
+    subdir: beeline-http-client
+    url: https://github.com/flipstone/beeline/archive/5545ee24e04cebd2182a924033fa174381591107.tar.gz
+    version: 0.8.0.0
   original:
-    url: https://github.com/AugmenTab/blaze-html/archive/5f8df2cf72091d6082737c1f579bd69094f51fa0.tar.gz
+    subdir: beeline-http-client
+    url: https://github.com/flipstone/beeline/archive/5545ee24e04cebd2182a924033fa174381591107.tar.gz
+- completed:
+    name: beeline-routing
+    pantry-tree:
+      sha256: f79fc2e97dfa9147e44cbc6dedb2f9c024e1c2856a0b5a07facfdaa7cd0fd6c6
+      size: 1174
+    sha256: 968e332bb9c2acad7a7fb3b6037b03a52d9d5dc96147f66690d3f8ebea1cdc0f
+    size: 24548
+    subdir: beeline-routing
+    url: https://github.com/flipstone/beeline/archive/5545ee24e04cebd2182a924033fa174381591107.tar.gz
+    version: 0.2.4.0
+  original:
+    subdir: beeline-routing
+    url: https://github.com/flipstone/beeline/archive/5545ee24e04cebd2182a924033fa174381591107.tar.gz
+- completed:
+    name: shrubbery
+    pantry-tree:
+      sha256: b3c533a32106f822be41996bcd00c6b1993ad6c95f0ad830c48ac39059a291be
+      size: 1737
+    sha256: 42d9b913b858b7ecd580b4fb9d3dba20e72c4520627b79120014e7310d0a84da
+    size: 24020
+    url: https://github.com/flipstone/shrubbery/archive/629750cccdf9ac2110eab8ee52218b1e62032ef7.tar.gz
+    version: 0.2.0.0
+  original:
+    url: https://github.com/flipstone/shrubbery/archive/629750cccdf9ac2110eab8ee52218b1e62032ef7.tar.gz
 snapshots:
 - completed:
     sha256: fb482b8e2d5d061cdda4ba1da2957c012740c893a5ee1c1b99001adae7b1fbe7

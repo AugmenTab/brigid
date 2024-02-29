@@ -14,3 +14,4 @@ import HTML.Types.NoContent as Export
 import HTML.Types.Part as Export
 import HTML.Types.PopoverState as Export
 import HTML.Types.Reachability as Export
+import HTML.Types.URL as Export

@@ -58,6 +58,7 @@ library
       HTML.Types.Part
       HTML.Types.PopoverState
       HTML.Types.Reachability
+      HTML.Types.URL
   other-modules:
       Paths_safe_html
   autogen-modules:
@@ -75,9 +76,12 @@ library
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
   build-depends:
       base
+    , beeline-http-client
+    , beeline-routing
     , bytestring
     , containers
     , html-email-validate
+    , shrubbery
     , text
   default-language: Haskell2010
 
@@ -101,9 +105,12 @@ test-suite safe-html-test
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base
+    , beeline-http-client
+    , beeline-routing
     , bytestring
     , containers
     , html-email-validate
     , safe-html
+    , shrubbery
     , text
   default-language: Haskell2010
