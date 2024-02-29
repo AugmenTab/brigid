@@ -98,7 +98,7 @@ hide = Attr_Hidden
 hidden :: Attribute tag
 hidden = hide True
 
-id :: T.Text -> Attribute tag
+id :: Types.Id -> Attribute tag
 id = Attr_Id
 
 inert :: Bool -> Attribute tag

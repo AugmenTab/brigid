@@ -115,7 +115,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_Id
-    :: T.Text
+    :: Types.Id
     -> Attribute tag
 
   Attr_Inert

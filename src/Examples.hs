@@ -34,7 +34,7 @@ documentExample =
 
 example :: E.ChildHTML E.Body grandparent
 example =
-  E.div [ A.id "div1"
+  E.div [ A.id $ HTML.idFromText "div1"
         , A.styles [ "color:blue", "font-size:2em" ]
         ]
     [ E.noElement
@@ -48,10 +48,15 @@ example =
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
             , E.comment "Second comment"
-            , E.customHTML "my-custom-element" [ A.id "my-custom-elem-id" ] $
-                Right
-                  [ E.script [ A.customData "my-custom-elem-attr" "test" ] T.empty
-                  ]
+            , E.customHTML
+                "my-custom-element"
+                [ A.id $ HTML.idFromText "my-custom-elem-id" ]
+                  ( Right
+                      [ E.script
+                          [ A.customData "my-custom-elem-attr" "test" ]
+                          T.empty
+                      ]
+                  )
             ]
         , transparencyExample
         , tableWithBodyExample
@@ -84,7 +89,7 @@ example =
 listExample :: [E.ChildHTML E.Division grandparent]
 listExample =
   let testDiv =
-        flip addDivisionAttribute (A.id "added-later")
+        flip addDivisionAttribute (A.id $ HTML.idFromText "added-later")
           . E.div []
           . L.intersperse (E.text " ")
           . (E.text "First text" :)
@@ -181,7 +186,7 @@ tableExample content =
             ]
 
    in Table.table
-        [ A.id "body-table" ]
+        [ A.id $ HTML.idFromText "body-table" ]
         caption
         colgroups
         head

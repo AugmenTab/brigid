@@ -462,7 +462,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id _id ->
-      Just . buildAttribute "id" $ Escape.attribute _id
+      Just . buildAttribute "id" . Escape.attribute $ Types.idToText _id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert

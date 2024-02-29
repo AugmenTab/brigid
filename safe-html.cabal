@@ -51,6 +51,7 @@ library
       HTML.Types.CrossOrigin
       HTML.Types.Directionality
       HTML.Types.Email
+      HTML.Types.Id
       HTML.Types.InputMode
       HTML.Types.KeyHint
       HTML.Types.NoContent

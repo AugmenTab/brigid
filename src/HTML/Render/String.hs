@@ -468,7 +468,11 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id _id ->
-      Just . buildAttribute "id" . T.unpack $ Escape.attribute _id
+      Just
+        . buildAttribute "id"
+        . T.unpack
+        . Escape.attribute
+        $ Types.idToText _id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert

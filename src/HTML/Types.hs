@@ -7,6 +7,7 @@ import HTML.Types.ContentEditable as Export
 import HTML.Types.CrossOrigin as Export
 import HTML.Types.Directionality as Export
 import HTML.Types.Email as Export
+import HTML.Types.Id as Export
 import HTML.Types.InputMode as Export
 import HTML.Types.KeyHint as Export
 import HTML.Types.NoContent as Export
