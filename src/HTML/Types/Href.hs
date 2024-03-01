@@ -4,6 +4,7 @@
 
 module HTML.Types.Href
   ( Href
+  , unHref
   , HrefTypes
   , mkHref
   , hrefToText
@@ -19,7 +20,9 @@ import HTML.Types.Id (Id, idToText)
 import HTML.Types.URL qualified as URL
 
 newtype Href =
-  Href (Shrubbery.Union HrefTypes)
+  Href
+    { unHref :: Shrubbery.Union HrefTypes
+    }
 
 type HrefTypes =
   [ URL.AbsoluteURL
@@ -27,7 +30,7 @@ type HrefTypes =
   , Id
   , Email
   -- TODO: PhoneNumber
-  -- TODO: SMS
+  -- TODO: SMS; will require escaping the text portion during rendering
   , URL.RawURL
   ]
 

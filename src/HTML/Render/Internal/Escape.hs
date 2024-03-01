@@ -2,9 +2,15 @@ module HTML.Render.Internal.Escape
   ( attribute
   , attributeChar
   , html
+  , urlByteString
+  , urlText
   ) where
 
+import Data.ByteString qualified as BS
+import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
+import Network.HTTP.Types.URI (urlEncode)
 
 attribute :: T.Text -> T.Text
 attribute =
@@ -26,3 +32,15 @@ html =
         '<' -> "&lt;"
         '>' -> "&gt;"
         _   -> T.singleton c
+
+urlByteString :: T.Text -> LBS.ByteString
+urlByteString =
+  LBS.fromStrict . encodeBS
+
+urlText :: T.Text -> T.Text
+urlText =
+  TE.decodeUtf8 . encodeBS
+
+encodeBS :: T.Text -> BS.ByteString
+encodeBS =
+  urlEncode False . TE.encodeUtf8

@@ -1,4 +1,5 @@
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE TypeApplications #-}
 
 module HTML.Render.Text
   ( renderHTML
@@ -12,6 +13,7 @@ import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 import Data.Text.Lazy (toStrict)
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
+import Shrubbery qualified
 
 import HTML.Attributes.Internal (Attribute(..))
 import HTML.Elements.Internal (ChildHTML(..))
@@ -532,7 +534,19 @@ renderAttribute attr =
       buildBooleanAttribute "disabled" disabled
 
     Attr_Href href ->
-      Just . buildAttribute "href" $ Types.hrefToText href
+      Just
+        . buildAttribute "href"
+        . ( Shrubbery.dissect
+              . Shrubbery.branchBuild
+              . Shrubbery.branch @Types.AbsoluteURL (Escape.urlText . Types.absoluteURLToText)
+              . Shrubbery.branch @Types.RelativeURL (Escape.urlText . Types.relativeURLToText)
+              . Shrubbery.branch @Types.Id (T.cons '#' . Types.idToText)
+              . Shrubbery.branch @Types.Email (("mailto:" <>) . Types.emailToText)
+              . Shrubbery.branch @Types.RawURL Types.rawURLToText
+              $ Shrubbery.branchEnd
+          )
+        . Types.unHref
+        $ href
 
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . T.pack $ show width
