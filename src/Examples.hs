@@ -22,7 +22,7 @@ documentExample =
     [ E.head []
         [ E.script [ A.crossorigin HTML.Anonymous ] "This is a test!"
         , E.link
-            [ A.href . HTML.relativeURLFromRoute exampleRoute $ GetCustomer 1
+            [ A.href . exampleURL $ GetCustomer 1
             ]
      -- , E.link [ A.href $ HTML.idFromText "bad-link" ] -- This fails, because Id is not a valid href type for link.
         ]
@@ -43,16 +43,19 @@ newtype GetCustomer =
     { getCustomerId :: Int
     }
 
-exampleRoute :: R.Router r => r GetCustomer
-exampleRoute =
-  R.get $
+exampleURL :: GetCustomer -> HTML.RelativeURL HTML.Get
+exampleURL route =
+  HTML.get route $
     R.make GetCustomer
       /- "customers"
       /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
 
+divId :: HTML.Id
+divId = HTML.idFromText "div1"
+
 example :: E.ChildHTML E.Body grandparent
 example =
-  E.div [ A.id $ HTML.idFromText "div1"
+  E.div [ A.id divId
         , A.styles [ "color:blue", "font-size:2em" ]
         ]
     [ E.noElement
@@ -62,7 +65,7 @@ example =
         , E.input []
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]
-    , E.div [ A.tabindex HTML.NotReachable ]
+    , E.div [ A.id divId, A.tabindex HTML.NotReachable ]
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
             , E.comment "Second comment"
@@ -97,6 +100,11 @@ example =
                 ]
             , E.li []
                 [ Ruby.ruby [ A.hidden ] "忍者" "Ninja"
+                ]
+            , E.li []
+                [ E.a [ A.href divId ]
+                    [ E.text "Back to top"
+                    ]
                 ]
             , E.comment "Fourth comment"
          -- , E.div [] [] -- This fails, because div isn't allowed in ul.

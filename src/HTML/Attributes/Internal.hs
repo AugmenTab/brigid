@@ -409,7 +409,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Href
     :: ValidAttribute 'Href tag
-    => Types.Href
+    => Types.Href Types.Get
     -> Attribute tag
 
   -- Attr_HrefLang

@@ -1,11 +1,23 @@
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE KindSignatures #-}
+
 module HTML.Types.URL
   ( AbsoluteURL
   , absoluteURLFromText
   , absoluteURLToText
   , RelativeURL
-  , relativeURLFromRoute
+      ( Relative_Get
+      , Relative_Post
+      , Relative_Delete
+      , Relative_Put
+      , Relative_Patch
+      )
+  , get
+  , post
+  , delete
+  , put
+  , patch
   , relativeURLToText
-  , relativeURLMethod
   , RawURL (..)
   , rawURLFromText
   , rawURLToText
@@ -14,7 +26,8 @@ module HTML.Types.URL
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing qualified as R
 import Data.Text qualified as T
-import Network.HTTP.Types qualified as HTTP
+
+import HTML.Types.Method (Method, Get, Post, Delete, Put, Patch)
 
 newtype AbsoluteURL = AbsoluteURL B.BaseURI
 
@@ -26,19 +39,41 @@ absoluteURLToText :: AbsoluteURL -> T.Text
 absoluteURLToText (AbsoluteURL url) =
   T.pack $ B.renderBaseURI url
 
-data RelativeURL =
-  RelativeURL
-    { relativeURLMethod :: HTTP.StdMethod
-    , relativeURLPath   :: T.Text
-    }
+data RelativeURL (method :: Method) where
+  Relative_Get    :: T.Text -> RelativeURL Get
+  Relative_Post   :: T.Text -> RelativeURL Post
+  Relative_Delete :: T.Text -> RelativeURL Delete
+  Relative_Put    :: T.Text -> RelativeURL Put
+  Relative_Patch  :: T.Text -> RelativeURL Patch
 
-relativeURLFromRoute :: R.RouteGenerator route -> route -> RelativeURL
-relativeURLFromRoute generator =
-  uncurry RelativeURL . R.generateRoute generator
+get :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Get
+get route =
+  Relative_Get . snd . flip R.generateRoute route . R.get
 
-relativeURLToText :: RelativeURL -> T.Text
-relativeURLToText =
-  relativeURLPath
+post :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Post
+post route =
+  Relative_Post . snd . flip R.generateRoute route . R.post
+
+delete :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Delete
+delete route =
+  Relative_Delete . snd . flip R.generateRoute route . R.delete
+
+put :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Put
+put route =
+  Relative_Put . snd . flip R.generateRoute route . R.put
+
+patch :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Patch
+patch route =
+  Relative_Patch . snd . flip R.generateRoute route . R.patch
+
+relativeURLToText :: RelativeURL method -> T.Text
+relativeURLToText url =
+  case url of
+    Relative_Get    path -> path
+    Relative_Post   path -> path
+    Relative_Delete path -> path
+    Relative_Put    path -> path
+    Relative_Patch  path -> path
 
 -- | This is a basic wrapper around 'T.Text'. It assumes that anything it
 -- contains is encoded as appropriate for whatever use case it finds itself in.

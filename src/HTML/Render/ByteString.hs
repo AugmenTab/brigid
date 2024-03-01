@@ -555,7 +555,7 @@ renderAttribute attr =
         . ( Shrubbery.dissect
               . Shrubbery.branchBuild
               . Shrubbery.branch @Types.AbsoluteURL (Escape.urlByteString . Types.absoluteURLToText)
-              . Shrubbery.branch @Types.RelativeURL (Escape.urlByteString . Types.relativeURLToText)
+              . Shrubbery.branch @(Types.RelativeURL _) (Escape.urlByteString . Types.relativeURLToText)
               . Shrubbery.branch @Types.Id (toBytes . T.cons '#' . Types.idToText)
               . Shrubbery.branch @Types.Email (toBytes . ("mailto:" <>) . Types.emailToText)
               . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)

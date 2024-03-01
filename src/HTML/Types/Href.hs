@@ -19,14 +19,14 @@ import HTML.Types.Email (Email, emailToText)
 import HTML.Types.Id (Id, idToText)
 import HTML.Types.URL qualified as URL
 
-newtype Href =
+newtype Href method =
   Href
-    { unHref :: Shrubbery.Union HrefTypes
+    { unHref :: Shrubbery.Union (HrefTypes method)
     }
 
-type HrefTypes =
+type HrefTypes method =
   [ URL.AbsoluteURL
-  , URL.RelativeURL
+  , URL.RelativeURL method
   , Id
   , Email
   -- TODO: PhoneNumber
@@ -34,18 +34,20 @@ type HrefTypes =
   , URL.RawURL
   ]
 
-mkHref :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf a HrefTypes)
+mkHref :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf a (HrefTypes method)
+          )
        => a
-       -> Href
+       -> Href method
 mkHref =
   Href . Shrubbery.unify
 
-hrefToText :: Href -> T.Text
+hrefToText :: Href method -> T.Text
 hrefToText (Href href) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @URL.AbsoluteURL URL.absoluteURLToText
-      . Shrubbery.branch @URL.RelativeURL URL.relativeURLToText
+      . Shrubbery.branch @(URL.RelativeURL _) URL.relativeURLToText
       . Shrubbery.branch @Id (T.cons '#' . idToText)
       . Shrubbery.branch @Email (("mailto:" <>) . emailToText)
       . Shrubbery.branch @URL.RawURL URL.rawURLToText
