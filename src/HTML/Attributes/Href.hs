@@ -12,7 +12,8 @@ module HTML.Attributes.Href
 import Data.Kind (Type)
 import GHC.TypeLits (ErrorMessage(..), TypeError)
 
-import HTML.Elements.TagType (TagErrorMessage, TagType(Anchor, Area, Base, Link))
+import HTML.Elements.TagGroups qualified as TagGroups
+import HTML.Elements.TagType (TagErrorMessage, TagType)
 import HTML.Internal.TagOperations (Elem)
 import HTML.Types qualified as Types
 
@@ -20,11 +21,11 @@ type ValidHref href tag =
   AlertHref (Elem tag (ValidHrefsFor href)) href tag ~ 'True
 
 type family ValidHrefsFor (href :: Type) :: [TagType] where
-  ValidHrefsFor Types.AbsoluteURL = [ 'Anchor, 'Area, 'Base, 'Link ]
-  ValidHrefsFor Types.RelativeURL = [ 'Anchor, 'Area, 'Base, 'Link ]
-  ValidHrefsFor Types.Id          = [ 'Anchor, 'Area ]
-  ValidHrefsFor Types.Email       = [ 'Anchor, 'Area ]
-  ValidHrefsFor Types.RawURL      = [ 'Anchor, 'Area, 'Base, 'Link ]
+  ValidHrefsFor Types.AbsoluteURL = TagGroups.HrefTags
+  ValidHrefsFor Types.RelativeURL = TagGroups.HrefTags
+  ValidHrefsFor Types.Id          = TagGroups.URLTags
+  ValidHrefsFor Types.Email       = TagGroups.URLTags
+  ValidHrefsFor Types.RawURL      = TagGroups.HrefTags
 
 type family AlertHref (member :: Bool) (href :: Type) (tag :: TagType) :: Bool where
   AlertHref 'True href tag =

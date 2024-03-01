@@ -46,6 +46,7 @@ module HTML.Elements.TagGroups
   , CrossOriginTags
   , DisableableTags
   , HrefTags
+  , URLTags
   ) where
 
 import HTML.Elements.TagType (TagType(..))
@@ -629,8 +630,11 @@ type DisableableTags =
   ]
 
 type HrefTags =
+  'Base
+    ': 'Link
+    ': URLTags
+
+type URLTags =
   [ 'Anchor
   , 'Area
-  , 'Base
-  , 'Link
   ]

@@ -40,8 +40,10 @@ relativeURLToText :: RelativeURL -> T.Text
 relativeURLToText =
   relativeURLPath
 
--- | This is a basic wrapper around 'T.Text'. It provides an unsafe constructor
--- for URLs; it should be handled with care and used only when necessary.
+-- | This is a basic wrapper around 'T.Text'. It assumes that anything it
+-- contains is encoded as appropriate for whatever use case it finds itself in.
+-- It provides an unsafe constructor for URLs; it should be handled with care
+-- and used only when necessary.
 newtype RawURL = RawURL T.Text
 
 rawURLFromText :: T.Text -> RawURL
