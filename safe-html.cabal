@@ -60,6 +60,7 @@ library
       HTML.Types.NoContent
       HTML.Types.Part
       HTML.Types.PopoverState
+      HTML.Types.PushURL
       HTML.Types.Reachability
       HTML.Types.URL
   other-modules:

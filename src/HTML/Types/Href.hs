@@ -4,9 +4,9 @@
 
 module HTML.Types.Href
   ( Href
+  , mkHref
   , unHref
   , HrefTypes
-  , mkHref
   , hrefToText
   ) where
 
@@ -37,8 +37,7 @@ type HrefTypes method =
 mkHref :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf a (HrefTypes method)
           )
-       => a
-       -> Href method
+       => a -> Href method
 mkHref =
   Href . Shrubbery.unify
 

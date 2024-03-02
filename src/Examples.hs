@@ -4,6 +4,7 @@ module Examples
   ) where
 
 import Prelude hiding (head)
+import Beeline.HTTP.Client qualified as B
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
 import Data.List qualified as L
@@ -26,7 +27,8 @@ documentExample =
             ]
      -- , E.link [ A.href $ HTML.idFromText "bad-link" ] -- This fails, because Id is not a valid href type for link.
         ]
-    , E.body [ A.customAttribute "myCoolAttribute" "myCoolValue"
+    , E.body [ A.hxBoost True
+             , A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
           -- , A.crossorigin HTML.Anonymous -- This fails, because crossorigin is not a valid attribute for body.
              ]
@@ -66,7 +68,7 @@ example =
         , E.input []
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]
-    , E.div [ A.id divId, A.tabindex HTML.NotReachable ]
+    , E.div [ A.tabindex HTML.NotReachable ]
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
             , E.comment "Second comment"
@@ -224,10 +226,17 @@ tableExample content =
 htmxExample :: E.ChildHTML E.Body grandparent
 htmxExample =
   E.div []
-    [ E.button [ A.htmx . exampleURL $ GetCustomer 2 ]
+    [ E.button [ A.htmx . exampleURL $ GetCustomer 2
+               , A.hxPushURL True
+               ]
         [ E.text "Implicit Get"
         ]
-    , E.button [ A.hxGet . exampleURL $ GetCustomer 3 ]
+    , E.button [ A.hxGet . exampleURL $ GetCustomer 3
+               , A.hxBoost False
+               , A.hxPushURL
+                   . HTML.get B.NoPathParams
+                   $ R.make B.NoPathParams /- "home"
+               ]
         [ E.text "Explicit Get"
         ]
     ]

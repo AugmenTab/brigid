@@ -51,6 +51,7 @@ module HTML.Attributes
   , hxPut
   , hxPatch
   , hxBoost
+  , hxPushURL
   ) where
 
 import Prelude hiding (id)
@@ -231,3 +232,10 @@ hxPatch = Attr_Htmx
 
 hxBoost :: Bool -> Attribute tag
 hxBoost = Attr_HxBoost
+
+hxPushURL :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf pushURL Types.PushURLTypes
+             )
+          => pushURL -> Attribute tag
+hxPushURL =
+  Attr_HxPushURL . Types.mkPushURL

@@ -44,6 +44,7 @@ module HTML.Attributes.Internal
 
       , Attr_Htmx
       , Attr_HxBoost
+      , Attr_HxPushURL
       )
   , attributeText
   , buildAttrMap
@@ -690,6 +691,10 @@ data Attribute (tag :: TagType) where
     :: Bool -- Note: NOT a boolean attribute; prints string true/false
     -> Attribute tag
 
+  Attr_HxPushURL
+    :: Types.PushURL
+    -> Attribute tag
+
   -- Attr_HxTrigger
   --   :: T.Text -- TODO
   --   -> Attribute tag
@@ -810,6 +815,9 @@ attributeText attr =
 
     Attr_HxBoost _boosted ->
       "hx-boost"
+
+    Attr_HxPushURL _url ->
+      "hx-push-url"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

@@ -586,6 +586,20 @@ renderAttribute attr =
     Attr_HxBoost boosted ->
       Just . buildAttribute "hx-boost" $ enumBoolToBytes boosted
 
+    Attr_HxPushURL url ->
+      Just
+        . buildAttribute "hx-push-url"
+        . ( Shrubbery.dissect
+              . Shrubbery.branchBuild
+              . Shrubbery.branch @Types.AbsoluteURL (Escape.urlByteString . Types.absoluteURLToText)
+              . Shrubbery.branch @(Types.RelativeURL _) (Escape.urlByteString . Types.relativeURLToText)
+              . Shrubbery.branch @Bool enumBoolToBytes
+              . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)
+              $ Shrubbery.branchEnd
+          )
+        . Types.unPushURL
+        $ url
+
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
   lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""
