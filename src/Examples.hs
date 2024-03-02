@@ -35,6 +35,7 @@ documentExample =
          -- , E.footer [] [] -- This fails, because marginals are removed from flow content for valid children of footer.
             ]
         , example
+        , htmxExample
         ]
     ]
 
@@ -218,3 +219,15 @@ tableExample content =
         head
         content
         foot
+
+-- This example demonstrates HTMX content.
+htmxExample :: E.ChildHTML E.Body grandparent
+htmxExample =
+  E.div []
+    [ E.button [ A.htmx . exampleURL $ GetCustomer 2 ]
+        [ E.text "Implicit Get"
+        ]
+    , E.button [ A.hxGet . exampleURL $ GetCustomer 3 ]
+        [ E.text "Explicit Get"
+        ]
+    ]

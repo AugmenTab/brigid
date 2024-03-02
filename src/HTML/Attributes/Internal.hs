@@ -41,6 +41,8 @@ module HTML.Attributes.Internal
       , Attr_CrossOrigin
       , Attr_Disabled
       , Attr_Href
+
+      , Attr_Htmx
       )
   , attributeText
   , buildAttrMap
@@ -56,6 +58,7 @@ import HTML.Attributes.AttributeType (AttributeType(..))
 import HTML.Attributes.Elements (ValidAttribute)
 import HTML.Elements.TagType (TagType)
 import HTML.Types qualified as Types
+import HTML.Types.URL (RelativeURL(..))
 
 type Attributes tag =
   Map T.Text (Attribute tag)
@@ -677,6 +680,20 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
+  -- HTMX Attributes
+  --
+  Attr_Htmx
+    :: Types.RelativeURL method
+    -> Attribute tag
+
+  -- Attr_HxTrigger
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
+
+  -- Attr_HxSwap
+  --   :: T.Text -- TODO
+  --   -> Attribute tag
+
 attributeText :: Attribute tag -> T.Text
 attributeText attr =
   case attr of
@@ -781,6 +798,16 @@ attributeText attr =
 
     Attr_Href _href ->
       "href"
+
+    -- HTMX Attributes
+    --
+    Attr_Htmx url ->
+      case url of
+        Relative_Get    _path -> "hx-get"
+        Relative_Post   _path -> "hx-post"
+        Relative_Delete _path -> "hx-delete"
+        Relative_Put    _path -> "hx-put"
+        Relative_Patch  _path -> "hx-patch"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

@@ -17,6 +17,7 @@ import HTML.Attributes.Internal (Attribute(..))
 import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
+import HTML.Types.URL (RelativeURL(..))
 
 renderHTML :: ChildHTML parent grandparent -> String
 renderHTML = renderTag
@@ -411,6 +412,8 @@ buildTag tag attributes content =
 renderAttribute :: Attribute any -> Maybe String
 renderAttribute attr =
   case attr of
+    -- Global Attributes
+    --
     Attr_Custom name value ->
       Just $
         buildAttribute
@@ -537,7 +540,6 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
-
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"
@@ -565,6 +567,19 @@ renderAttribute attr =
 
     -- Attr_Width width ->
     --   Just . buildAttribute "width" $ show width
+
+    -- HTMX Attributes
+    --
+    Attr_Htmx url ->
+      let (hxAttr, hxPath) =
+            case url of
+              Relative_Get    path -> ("hx-get", path)
+              Relative_Post   path -> ("hx-post", path)
+              Relative_Delete path -> ("hx-delete", path)
+              Relative_Put    path -> ("hx-put", path)
+              Relative_Patch  path -> ("hx-patch", path)
+
+       in Just . buildAttribute hxAttr . T.unpack $ Escape.urlText hxPath
 
 buildAttribute :: String -> String -> String
 buildAttribute attr value =

@@ -43,6 +43,13 @@ module HTML.Attributes
   , disable
   , disabled
   , href
+
+  , htmx
+  , hxGet
+  , hxPost
+  , hxDelete
+  , hxPut
+  , hxPatch
   ) where
 
 import Prelude hiding (id)
@@ -199,3 +206,24 @@ href :: ( KnownNat branchIndex
      -> Attribute tag
 href =
   Attr_Href . Types.mkHref
+
+-- HTMX Attributes
+--
+
+htmx :: Types.RelativeURL method -> Attribute tag
+htmx = Attr_Htmx
+
+hxGet :: Types.RelativeURL Types.Get -> Attribute tag
+hxGet = Attr_Htmx
+
+hxPost :: Types.RelativeURL Types.Post -> Attribute tag
+hxPost = Attr_Htmx
+
+hxDelete :: Types.RelativeURL Types.Delete -> Attribute tag
+hxDelete = Attr_Htmx
+
+hxPut :: Types.RelativeURL Types.Put -> Attribute tag
+hxPut = Attr_Htmx
+
+hxPatch :: Types.RelativeURL Types.Patch -> Attribute tag
+hxPatch = Attr_Htmx

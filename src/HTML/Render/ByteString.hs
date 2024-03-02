@@ -21,6 +21,7 @@ import HTML.Attributes.Internal (Attribute(..))
 import HTML.Elements.Internal (ChildHTML(..))
 import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
+import HTML.Types.URL (RelativeURL(..))
 
 renderHTML :: ChildHTML parent grandparent -> LBS.ByteString
 renderHTML = toLazyByteString . renderTag
@@ -28,6 +29,8 @@ renderHTML = toLazyByteString . renderTag
 renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
   case html of
+    -- Global Attributes
+    --
     Tag_NoElement ->
       lazyByteString LBS.empty
 
@@ -566,6 +569,19 @@ renderAttribute attr =
 
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . LBS8.pack $ show width
+
+    -- HTMX Attributes
+    --
+    Attr_Htmx url ->
+      let (hxAttr, hxPath) =
+            case url of
+              Relative_Get    path -> ("hx-get", path)
+              Relative_Post   path -> ("hx-post", path)
+              Relative_Delete path -> ("hx-delete", path)
+              Relative_Put    path -> ("hx-put", path)
+              Relative_Patch  path -> ("hx-patch", path)
+
+       in Just . buildAttribute hxAttr $ Escape.urlByteString hxPath
 
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
