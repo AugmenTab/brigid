@@ -599,6 +599,9 @@ renderAttribute attr =
         . Types.unPushURL
         $ url
 
+    Attr_HxPrompt prompt ->
+      Just . buildAttribute "hx-prompt" . T.unpack $ Escape.attribute prompt
+
 buildAttribute :: String -> String -> String
 buildAttribute attr value =
   attr <> "=\"" <> value <> "\""

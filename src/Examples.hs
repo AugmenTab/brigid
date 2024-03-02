@@ -239,4 +239,9 @@ htmxExample =
                ]
         [ E.text "Explicit Get"
         ]
+    , E.button [ A.hxGet . exampleURL $ GetCustomer 4
+               , A.hxPrompt "Are you sure you want to do this?"
+               ]
+        [ E.text "Customer 4"
+        ]
     ]

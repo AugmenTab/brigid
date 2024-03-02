@@ -600,6 +600,9 @@ renderAttribute attr =
         . Types.unPushURL
         $ url
 
+    Attr_HxPrompt prompt ->
+      Just . buildAttribute "hx-prompt" . toBytes $ Escape.attribute prompt
+
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
   lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""

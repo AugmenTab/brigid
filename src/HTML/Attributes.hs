@@ -52,6 +52,7 @@ module HTML.Attributes
   , hxPatch
   , hxBoost
   , hxPushURL
+  , hxPrompt
   ) where
 
 import Prelude hiding (id)
@@ -239,3 +240,6 @@ hxPushURL :: ( KnownNat branchIndex
           => pushURL -> Attribute tag
 hxPushURL =
   Attr_HxPushURL . Types.mkPushURL
+
+hxPrompt :: T.Text -> Attribute tag
+hxPrompt = Attr_HxPrompt
