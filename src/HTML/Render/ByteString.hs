@@ -583,6 +583,9 @@ renderAttribute attr =
 
        in Just . buildAttribute hxAttr $ Escape.urlByteString hxPath
 
+    Attr_HxBoost boosted ->
+      Just . buildAttribute "hx-boost" $ enumBoolToBytes boosted
+
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
   lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""

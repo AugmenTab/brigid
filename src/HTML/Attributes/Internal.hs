@@ -43,6 +43,7 @@ module HTML.Attributes.Internal
       , Attr_Href
 
       , Attr_Htmx
+      , Attr_HxBoost
       )
   , attributeText
   , buildAttrMap
@@ -58,7 +59,6 @@ import HTML.Attributes.AttributeType (AttributeType(..))
 import HTML.Attributes.Elements (ValidAttribute)
 import HTML.Elements.TagType (TagType)
 import HTML.Types qualified as Types
-import HTML.Types.URL (RelativeURL(..))
 
 type Attributes tag =
   Map T.Text (Attribute tag)
@@ -686,6 +686,10 @@ data Attribute (tag :: TagType) where
     :: Types.RelativeURL method
     -> Attribute tag
 
+  Attr_HxBoost
+    :: Bool -- Note: NOT a boolean attribute; prints string true/false
+    -> Attribute tag
+
   -- Attr_HxTrigger
   --   :: T.Text -- TODO
   --   -> Attribute tag
@@ -801,13 +805,11 @@ attributeText attr =
 
     -- HTMX Attributes
     --
-    Attr_Htmx url ->
-      case url of
-        Relative_Get    _path -> "hx-get"
-        Relative_Post   _path -> "hx-post"
-        Relative_Delete _path -> "hx-delete"
-        Relative_Put    _path -> "hx-put"
-        Relative_Patch  _path -> "hx-patch"
+    Attr_Htmx _url ->
+      "htmx"
+
+    Attr_HxBoost _boosted ->
+      "hx-boost"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

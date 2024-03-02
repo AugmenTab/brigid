@@ -566,6 +566,9 @@ renderAttribute attr =
 
        in Just . buildAttribute hxAttr $ Escape.urlText hxPath
 
+    Attr_HxBoost boosted ->
+      Just . buildAttribute "hx-boost" $ enumBoolToText boosted
+
 buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
   fromText attr <> fromText "=\"" <> fromText value <> fromText "\""

@@ -50,6 +50,7 @@ module HTML.Attributes
   , hxDelete
   , hxPut
   , hxPatch
+  , hxBoost
   ) where
 
 import Prelude hiding (id)
@@ -227,3 +228,6 @@ hxPut = Attr_Htmx
 
 hxPatch :: Types.RelativeURL Types.Patch -> Attribute tag
 hxPatch = Attr_Htmx
+
+hxBoost :: Bool -> Attribute tag
+hxBoost = Attr_HxBoost
