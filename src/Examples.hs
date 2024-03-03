@@ -222,6 +222,18 @@ tableExample content =
         content
         foot
 
+newtype DeleteCustomer =
+  DeleteCustomer
+    { deleteCustomerId :: Int
+    }
+
+deleteCustomer :: DeleteCustomer -> HTML.RelativeURL HTML.Delete
+deleteCustomer route =
+  HTML.delete route $
+    R.make DeleteCustomer
+      /- "customers"
+      /+ R.Param (R.coerceParam $ R.intParam "customerId") deleteCustomerId
+
 -- This example demonstrates HTMX content.
 htmxExample :: E.ChildHTML E.Body grandparent
 htmxExample =
@@ -239,9 +251,14 @@ htmxExample =
                ]
         [ E.text "Explicit Get"
         ]
-    , E.button [ A.hxGet . exampleURL $ GetCustomer 4
-               , A.hxPrompt "Are you sure you want to do this?"
+    , E.button [ A.hxDelete . deleteCustomer $ DeleteCustomer 4
+               , A.hxPrompt $
+                   "Customer 4 is essential to our future."
+                     <> " Are you sure you want to do this?"
+               , A.hxReplaceURL
+                   . HTML.get B.NoPathParams
+                   $ R.make B.NoPathParams /- "doom_page"
                ]
-        [ E.text "Customer 4"
+        [ E.text "Delete Customer 4"
         ]
     ]

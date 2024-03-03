@@ -585,22 +585,13 @@ renderAttribute attr =
       Just . buildAttribute "hx-boost" $ enumBoolToText boosted
 
     Attr_HxPushURL url ->
-      Just
-        . buildAttribute "hx-push-url"
-        . T.unpack
-        . ( Shrubbery.dissect
-              . Shrubbery.branchBuild
-              . Shrubbery.branch @Types.AbsoluteURL (Escape.urlText . Types.absoluteURLToText)
-              . Shrubbery.branch @(Types.RelativeURL _) (Escape.urlText . Types.relativeURLToText)
-              . Shrubbery.branch @Bool (B.bool "false" "true")
-              . Shrubbery.branch @Types.RawURL Types.rawURLToText
-              $ Shrubbery.branchEnd
-          )
-        . Types.unPushURL
-        $ url
+      Just . buildAttribute "hx-push-url" $ renderPushURL url
 
     Attr_HxPrompt prompt ->
       Just . buildAttribute "hx-prompt" . T.unpack $ Escape.attribute prompt
+
+    Attr_HxReplaceURL url ->
+      Just . buildAttribute "hx-replace-url" $ renderPushURL url
 
 buildAttribute :: String -> String -> String
 buildAttribute attr value =
@@ -612,3 +603,14 @@ buildBooleanAttribute attr =
 
 enumBoolToText :: Bool -> String
 enumBoolToText = B.bool "false" "true"
+
+renderPushURL :: Types.PushURL -> String
+renderPushURL =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Types.AbsoluteURL (T.unpack . Escape.urlText . Types.absoluteURLToText)
+      . Shrubbery.branch @(Types.RelativeURL _) (T.unpack . Escape.urlText . Types.relativeURLToText)
+      . Shrubbery.branch @Bool enumBoolToText
+      . Shrubbery.branch @Types.RawURL (T.unpack . Types.rawURLToText)
+      $ Shrubbery.branchEnd
+  ) . Types.unPushURL

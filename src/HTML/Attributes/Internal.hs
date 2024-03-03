@@ -46,6 +46,7 @@ module HTML.Attributes.Internal
       , Attr_HxBoost
       , Attr_HxPushURL
       , Attr_HxPrompt
+      , Attr_HxReplaceURL
       )
   , attributeText
   , buildAttrMap
@@ -700,6 +701,10 @@ data Attribute (tag :: TagType) where
     :: T.Text
     -> Attribute tag
 
+  Attr_HxReplaceURL
+    :: Types.PushURL
+    -> Attribute tag
+
   -- Attr_HxTrigger
   --   :: T.Text -- TODO
   --   -> Attribute tag
@@ -826,6 +831,9 @@ attributeText attr =
 
     Attr_HxPrompt _prompt ->
       "hx-prompt"
+
+    Attr_HxReplaceURL _url ->
+      "hx-replace-url"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =
