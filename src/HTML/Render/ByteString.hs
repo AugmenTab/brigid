@@ -586,6 +586,12 @@ renderAttribute attr =
     Attr_HxBoost boosted ->
       Just . buildAttribute "hx-boost" $ enumBoolToBytes boosted
 
+    Attr_HxConfirm confirmation ->
+      Just
+        . buildAttribute "hx-confirm"
+        . toBytes
+        $ Escape.attribute confirmation
+
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
 

@@ -44,6 +44,7 @@ module HTML.Attributes.Internal
 
       , Attr_Htmx
       , Attr_HxBoost
+      , Attr_HxConfirm
       , Attr_HxPushURL
       , Attr_HxPrompt
       , Attr_HxReplaceURL
@@ -693,6 +694,10 @@ data Attribute (tag :: TagType) where
     :: Bool -- Note: NOT a boolean attribute; prints string true/false
     -> Attribute tag
 
+  Attr_HxConfirm
+    :: T.Text
+    -> Attribute tag
+
   Attr_HxPushURL
     :: Types.PushURL
     -> Attribute tag
@@ -825,6 +830,9 @@ attributeText attr =
 
     Attr_HxBoost _boosted ->
       "hx-boost"
+
+    Attr_HxConfirm _confirmation ->
+      "hx-confirm"
 
     Attr_HxPushURL _url ->
       "hx-push-url"

@@ -245,14 +245,17 @@ htmxExample =
         ]
     , E.button [ A.hxGet . exampleURL $ GetCustomer 3
                , A.hxBoost False
+               , A.hxPrompt $
+                   "Customer 3 doesn't like to be disturbed."
+                     <> " Really think about what you're doing here."
                , A.hxPushURL
                    . HTML.get B.NoPathParams
-                   $ R.make B.NoPathParams /- "home"
+                   $ R.make B.NoPathParams /- "time_out"
                ]
         [ E.text "Explicit Get"
         ]
     , E.button [ A.hxDelete . deleteCustomer $ DeleteCustomer 4
-               , A.hxPrompt $
+               , A.hxConfirm $
                    "Customer 4 is essential to our future."
                      <> " Are you sure you want to do this?"
                , A.hxReplaceURL

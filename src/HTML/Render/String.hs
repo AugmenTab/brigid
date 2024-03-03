@@ -584,6 +584,12 @@ renderAttribute attr =
     Attr_HxBoost boosted ->
       Just . buildAttribute "hx-boost" $ enumBoolToText boosted
 
+    Attr_HxConfirm confirmation ->
+      Just
+        . buildAttribute "hx-confirm"
+        . T.unpack
+        $ Escape.attribute confirmation
+
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
 

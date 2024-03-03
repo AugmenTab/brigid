@@ -51,6 +51,7 @@ module HTML.Attributes
   , hxPatch
   , hxPut
   , hxBoost
+  , hxConfirm
   , hxPushURL
   , hxPrompt
   , hxReplaceURL
@@ -234,6 +235,9 @@ hxPut = Attr_Htmx
 
 hxBoost :: Bool -> Attribute tag
 hxBoost = Attr_HxBoost
+
+hxConfirm :: T.Text -> Attribute tag
+hxConfirm = Attr_HxConfirm
 
 hxPushURL :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf url Types.PushURLTypes
