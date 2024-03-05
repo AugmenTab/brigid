@@ -595,6 +595,9 @@ renderAttribute attr =
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
 
+    Attr_HxHistory ->
+      Just $ buildAttribute "hx-history" "false"
+
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
 
