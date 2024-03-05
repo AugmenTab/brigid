@@ -45,6 +45,7 @@ module HTML.Attributes.Internal
       , Attr_Htmx
       , Attr_HxBoost
       , Attr_HxConfirm
+      , Attr_HxEncoding
       , Attr_HxPushURL
       , Attr_HxPrompt
       , Attr_HxReplaceURL
@@ -698,6 +699,9 @@ data Attribute (tag :: TagType) where
     :: T.Text
     -> Attribute tag
 
+  Attr_HxEncoding
+    :: Attribute tag
+
   Attr_HxPushURL
     :: Types.PushURL
     -> Attribute tag
@@ -833,6 +837,9 @@ attributeText attr =
 
     Attr_HxConfirm _confirmation ->
       "hx-confirm"
+
+    Attr_HxEncoding ->
+      "hx-encoding"
 
     Attr_HxPushURL _url ->
       "hx-push-url"

@@ -592,6 +592,9 @@ renderAttribute attr =
         . toBytes
         $ Escape.attribute confirmation
 
+    Attr_HxEncoding ->
+      Just $ buildAttribute "hx-encoding" "multipart/form-data"
+
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
 
