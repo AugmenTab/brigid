@@ -596,6 +596,9 @@ renderAttribute attr =
     Attr_HxHistory ->
       Just $ buildAttribute "hx-history" "false"
 
+    Attr_HxHistoryElt ->
+      buildBooleanAttribute "hx-history" True
+
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
 

@@ -12,6 +12,7 @@ module HTML.Attributes.HTMX
   , hxConfirm
   , hxEncoding
   , hxHistory
+  , hxHistoryElt
   , hxPushURL
   , hxPrompt
   , hxReplaceURL
@@ -92,6 +93,9 @@ hxEncoding = Attr_HxEncoding
 
 hxHistory :: Attribute tag
 hxHistory = Attr_HxHistory
+
+hxHistoryElt :: Attribute tag
+hxHistoryElt = Attr_HxHistoryElt
 
 -- hx-history-elt
 

@@ -47,6 +47,7 @@ module HTML.Attributes.Internal
       , Attr_HxConfirm
       , Attr_HxEncoding
       , Attr_HxHistory
+      , Attr_HxHistoryElt
       , Attr_HxPushURL
       , Attr_HxPrompt
       , Attr_HxReplaceURL
@@ -706,6 +707,9 @@ data Attribute (tag :: TagType) where
   Attr_HxHistory
     :: Attribute tag
 
+  Attr_HxHistoryElt
+    :: Attribute tag
+
   Attr_HxPushURL
     :: Types.PushURL
     -> Attribute tag
@@ -847,6 +851,9 @@ attributeText attr =
 
     Attr_HxHistory ->
       "hx-history"
+
+    Attr_HxHistoryElt ->
+      "hx-history-elt"
 
     Attr_HxPushURL _url ->
       "hx-push-url"
