@@ -29,8 +29,11 @@ library
       HTML.Attributes
       HTML.Attributes.AttributeType
       HTML.Attributes.Elements
+      HTML.Attributes.Global
       HTML.Attributes.Href
+      HTML.Attributes.HTMX
       HTML.Attributes.Internal
+      HTML.Attributes.Scoped
       HTML.Elements
       HTML.Elements.AddAttribute
       HTML.Elements.Category
