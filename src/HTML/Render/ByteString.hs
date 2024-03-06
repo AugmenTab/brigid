@@ -595,6 +595,13 @@ renderAttribute attr =
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
 
+    Attr_HxExt exts ->
+      Just
+        . buildAttribute "hx-ext"
+        . LBS.intercalate ","
+        . fmap (toBytes . Types.extensionToText)
+        $ NEL.toList exts
+
     Attr_HxHistory ->
       Just $ buildAttribute "hx-history" "false"
 

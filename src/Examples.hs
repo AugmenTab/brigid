@@ -8,6 +8,7 @@ import Beeline.HTTP.Client qualified as B
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
 import Data.List qualified as L
+import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Text qualified as T
 
 import HTML.Attributes qualified as A
@@ -240,6 +241,7 @@ htmxExample =
   E.div []
     [ E.button [ A.htmx . exampleURL $ GetCustomer 2
                , A.hxPushURL True
+               , A.hxExt $ HTML.jsonEnc :| [ HTML.ignore HTML.ajaxHeader ]
                ]
         [ E.text "Implicit Get"
         ]

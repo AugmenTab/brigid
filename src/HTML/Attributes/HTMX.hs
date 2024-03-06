@@ -11,6 +11,7 @@ module HTML.Attributes.HTMX
   , hxBoost
   , hxConfirm
   , hxEncoding
+  , hxExt
   , hxHistory
   , hxHistoryElt
   , hxPushURL
@@ -18,6 +19,7 @@ module HTML.Attributes.HTMX
   , hxReplaceURL
   ) where
 
+import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
@@ -78,6 +80,7 @@ hxBoost = Attr_HxBoost
 hxConfirm :: T.Text -> Attribute tag
 hxConfirm = Attr_HxConfirm
 
+-- TODO: Is this a boolean attribute?
 -- hx-disable
 
 -- hx-disabled-elt
@@ -87,7 +90,8 @@ hxConfirm = Attr_HxConfirm
 hxEncoding :: Attribute tag
 hxEncoding = Attr_HxEncoding
 
--- hx-ext
+hxExt :: NEL.NonEmpty Types.Extension -> Attribute tag
+hxExt = Attr_HxExt
 
 -- hx-headers
 
@@ -121,4 +125,5 @@ hxReplaceURL =
 
 -- hx-sync
 
--- hx-validate
+-- TODO: Does this require `="true"`, or can it be treated as a boolean attribute?
+-- hxValidate :: ValidAttribute 'HxValidate tag => Attribute tag

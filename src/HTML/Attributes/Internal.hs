@@ -46,6 +46,7 @@ module HTML.Attributes.Internal
       , Attr_HxBoost
       , Attr_HxConfirm
       , Attr_HxEncoding
+      , Attr_HxExt
       , Attr_HxHistory
       , Attr_HxHistoryElt
       , Attr_HxPushURL
@@ -704,6 +705,10 @@ data Attribute (tag :: TagType) where
   Attr_HxEncoding
     :: Attribute tag
 
+  Attr_HxExt
+    :: NEL.NonEmpty Types.Extension
+    -> Attribute tag
+
   Attr_HxHistory
     :: Attribute tag
 
@@ -848,6 +853,9 @@ attributeText attr =
 
     Attr_HxEncoding ->
       "hx-encoding"
+
+    Attr_HxExt _exts ->
+      "hx-ext"
 
     Attr_HxHistory ->
       "hx-history"
