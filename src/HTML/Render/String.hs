@@ -563,6 +563,7 @@ renderAttribute attr =
               . Shrubbery.branch @(Types.RelativeURL _) (Escape.urlText . Types.relativeURLToText)
               . Shrubbery.branch @Types.Id (T.cons '#' . Types.idToText)
               . Shrubbery.branch @Types.Email (("mailto:" <>) . Types.emailToText)
+              . Shrubbery.branch @Types.BlankHref (const "#")
               . Shrubbery.branch @Types.RawURL Types.rawURLToText
               $ Shrubbery.branchEnd
           )

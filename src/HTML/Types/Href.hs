@@ -8,6 +8,7 @@ module HTML.Types.Href
   , unHref
   , HrefTypes
   , hrefToText
+  , BlankHref (BlankHref)
   ) where
 
 import Data.Text qualified as T
@@ -31,6 +32,7 @@ type HrefTypes method =
   , Email
   -- TODO: PhoneNumber
   -- TODO: SMS; will require escaping the text portion during rendering
+  , BlankHref
   , URL.RawURL
   ]
 
@@ -49,6 +51,9 @@ hrefToText (Href href) =
       . Shrubbery.branch @(URL.RelativeURL _) URL.relativeURLToText
       . Shrubbery.branch @Id (T.cons '#' . idToText)
       . Shrubbery.branch @Email (("mailto:" <>) . emailToText)
+      . Shrubbery.branch @BlankHref (const "#")
       . Shrubbery.branch @URL.RawURL URL.rawURLToText
       $ Shrubbery.branchEnd
   ) href
+
+data BlankHref = BlankHref
