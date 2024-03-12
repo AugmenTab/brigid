@@ -55,11 +55,11 @@ autocapitalize = Attr_Autocapitalize
 autofocus :: Bool -> Attribute tag
 autofocus = Attr_Autofocus
 
-class_ :: T.Text -> Attribute tag
+class_ :: Types.Class -> Attribute tag
 class_ = Attr_Class
 
 classes :: [T.Text] -> Attribute tag
-classes = class_ . T.unwords
+classes = class_ . Types.Class . T.unwords
 
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable

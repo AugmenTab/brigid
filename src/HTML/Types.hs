@@ -16,6 +16,7 @@ module HTML.Types
   ) where
 
 import HTML.Types.Autocapitalize as Export
+import HTML.Types.Class as Export
 import HTML.Types.ContentEditable as Export
 import HTML.Types.CrossOrigin as Export
 import HTML.Types.Directionality as Export

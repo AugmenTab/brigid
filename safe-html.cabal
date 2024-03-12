@@ -51,6 +51,7 @@ library
       HTML.Render.Text
       HTML.Types
       HTML.Types.Autocapitalize
+      HTML.Types.Class
       HTML.Types.ContentEditable
       HTML.Types.CrossOrigin
       HTML.Types.Directionality

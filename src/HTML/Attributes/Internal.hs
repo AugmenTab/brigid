@@ -94,7 +94,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_Class
-    :: T.Text
+    :: Types.Class
     -> Attribute tag
 
   Attr_ContentEditable

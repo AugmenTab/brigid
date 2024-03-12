@@ -430,7 +430,10 @@ renderAttribute attr =
       buildBooleanAttribute "autofocus" autofocus
 
     Attr_Class _class ->
-      Just . buildAttribute "class" $ Escape.attribute _class
+      Just
+        . buildAttribute "class"
+        . Escape.attribute
+        $ Types.classToText _class
 
     Attr_ContentEditable option ->
       Just

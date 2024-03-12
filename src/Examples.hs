@@ -55,7 +55,7 @@ exampleURL route =
       /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
 
 divId :: HTML.Id
-divId = HTML.idFromText "div1"
+divId = HTML.Id "div1"
 
 example :: E.ChildHTML E.Body grandparent
 example =
@@ -75,7 +75,7 @@ example =
             , E.comment "Second comment"
             , E.customHTML
                 "my-custom-element"
-                [ A.id $ HTML.idFromText "my-custom-elem-id" ]
+                [ A.id $ HTML.Id "my-custom-elem-id" ]
                   ( Right
                       [ E.script
                           [ A.customData "my-custom-elem-attr" "test" ]
@@ -119,7 +119,7 @@ example =
 listExample :: [E.ChildHTML E.Division grandparent]
 listExample =
   let testDiv =
-        flip addDivisionAttribute (A.id $ HTML.idFromText "added-later")
+        flip addDivisionAttribute (A.id $ HTML.Id "added-later")
           . E.div []
           . L.intersperse (E.text " ")
           . (E.text "First text" :)
@@ -216,7 +216,7 @@ tableExample content =
             ]
 
    in Table.table
-        [ A.id $ HTML.idFromText "body-table" ]
+        [ A.id $ HTML.Id "body-table" ]
         caption
         colgroups
         head
