@@ -575,6 +575,9 @@ renderAttribute attr =
     Attr_HxConfirm confirmation ->
       Just . buildAttribute "hx-confirm" $ Escape.attribute confirmation
 
+    Attr_HxDisable disabled ->
+      buildBooleanAttribute "hx-disable" disabled
+
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
 

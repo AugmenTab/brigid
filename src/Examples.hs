@@ -263,7 +263,13 @@ htmxExample =
                , A.hxReplaceURL
                    . HTML.get B.NoPathParams
                    $ R.make B.NoPathParams /- "doom_page"
+               , A.hxDisable $ 'a' < 'T'
                ]
         [ E.text "Delete Customer 4"
+        ]
+    , E.button [ A.id $ HTML.Id "worthless"
+               , A.hxDisabled
+               ]
+        [ E.text "I Do Nothing"
         ]
     ]

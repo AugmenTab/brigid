@@ -10,6 +10,8 @@ module HTML.Attributes.HTMX
   , hxPut
   , hxBoost
   , hxConfirm
+  , hxDisable
+  , hxDisabled
   , hxEncoding
   , hxExt
   , hxHistory
@@ -80,8 +82,11 @@ hxBoost = Attr_HxBoost
 hxConfirm :: T.Text -> Attribute tag
 hxConfirm = Attr_HxConfirm
 
--- TODO: Is this a boolean attribute?
--- hx-disable
+hxDisable :: Bool -> Attribute tag
+hxDisable = Attr_HxDisable
+
+hxDisabled :: Attribute tag
+hxDisabled = hxDisable True
 
 -- hx-disabled-elt
 

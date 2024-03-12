@@ -45,6 +45,7 @@ module HTML.Attributes.Internal
       , Attr_Htmx
       , Attr_HxBoost
       , Attr_HxConfirm
+      , Attr_HxDisable
       , Attr_HxEncoding
       , Attr_HxExt
       , Attr_HxHistory
@@ -702,6 +703,10 @@ data Attribute (tag :: TagType) where
     :: T.Text
     -> Attribute tag
 
+  Attr_HxDisable
+    :: Bool
+    -> Attribute tag
+
   Attr_HxEncoding
     :: Attribute tag
 
@@ -850,6 +855,9 @@ attributeText attr =
 
     Attr_HxConfirm _confirmation ->
       "hx-confirm"
+
+    Attr_HxDisable _disabled ->
+      "hx-disable"
 
     Attr_HxEncoding ->
       "hx-encoding"
