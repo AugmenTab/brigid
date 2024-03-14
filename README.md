@@ -15,3 +15,7 @@ attributes:
 5. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
 6. Consider adding support for an `XML` constructor for `ChildHTML`. It would take only custom elements and attributes.
 
+### Possible optimizations
+
+1. Change all `ToText` and `ToBytes` functions to use builders; export them for use in render, but not from `HTML.Types`.
+

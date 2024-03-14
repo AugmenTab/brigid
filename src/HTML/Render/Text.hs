@@ -3,6 +3,7 @@
 
 module HTML.Render.Text
   ( renderHTML
+  , renderLazyHTML
   ) where
 
 import Data.Bool qualified as B
@@ -11,7 +12,7 @@ import Data.List.NonEmpty qualified as NEL
 import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
-import Data.Text.Lazy (toStrict)
+import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 import Shrubbery qualified
 
@@ -22,7 +23,10 @@ import HTML.Types qualified as Types
 import HTML.Types.URL (RelativeURL(..))
 
 renderHTML :: ChildHTML parent grandparent -> T.Text
-renderHTML = toStrict . toLazyText . renderTag
+renderHTML = TL.toStrict . renderLazyHTML
+
+renderLazyHTML :: ChildHTML parent grandparent -> TL.Text
+renderLazyHTML = toLazyText . renderTag
 
 renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =

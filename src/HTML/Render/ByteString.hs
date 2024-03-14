@@ -3,9 +3,11 @@
 
 module HTML.Render.ByteString
   ( renderHTML
+  , renderLazyHTML
   ) where
 
 import Data.Bool qualified as B
+import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
@@ -23,8 +25,11 @@ import HTML.Render.Internal.Escape qualified as Escape
 import HTML.Types qualified as Types
 import HTML.Types.URL (RelativeURL(..))
 
-renderHTML :: ChildHTML parent grandparent -> LBS.ByteString
-renderHTML = toLazyByteString . renderTag
+renderHTML :: ChildHTML parent grandparent -> BS.ByteString
+renderHTML = LBS.toStrict . renderLazyHTML
+
+renderLazyHTML :: ChildHTML parent grandparent -> LBS.ByteString
+renderLazyHTML = toLazyByteString . renderTag
 
 renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
