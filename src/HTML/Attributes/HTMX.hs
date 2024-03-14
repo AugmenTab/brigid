@@ -12,6 +12,7 @@ module HTML.Attributes.HTMX
   , hxConfirm
   , hxDisable
   , hxDisabled
+  , hxDisinherit
   , hxEncoding
   , hxExt
   , hxHistory
@@ -93,7 +94,11 @@ hxDisabled = hxDisable True
 
 -- hx-disabled-elt
 
--- hx-disinherit
+hxDisinherit :: ( KnownNat branchIndex
+                , branchIndex ~ FirstIndexOf disinherit Types.DisinheritTypes
+                )
+             => disinherit -> Attribute tag
+hxDisinherit = Attr_HxDisinherit . Types.mkDisinherit
 
 hxEncoding :: Attribute tag
 hxEncoding = Attr_HxEncoding

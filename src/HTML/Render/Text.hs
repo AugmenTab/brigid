@@ -583,6 +583,9 @@ renderAttribute attr =
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
 
+    Attr_HxDisinherit disinherit ->
+      Just . buildAttribute "hx-disinherit" $ Types.disinheritToText disinherit
+
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
 

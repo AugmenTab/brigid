@@ -245,6 +245,9 @@ htmxExample =
                , A.hxExt $ HTML.jsonEnc :| [ HTML.ignore HTML.ajaxHeader ]
                ]
         [ E.text "Implicit Get"
+        , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [] ]
+            [ E.comment "Disinherit one"
+            ]
         ]
     , E.button [ A.hxGet . exampleURL $ GetCustomer 3
                , A.hxBoost False
@@ -256,6 +259,9 @@ htmxExample =
                    $ R.make B.NoPathParams /- "time_out"
                ]
         [ E.text "Explicit Get"
+        , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [ HTML.HxPrompt ] ]
+            [ E.comment "Disinherit two"
+            ]
         ]
     , E.button [ A.hxDelete . deleteCustomer $ DeleteCustomer 4
                , A.hxConfirm $
@@ -267,6 +273,9 @@ htmxExample =
                , A.hxDisable $ 'a' < 'T'
                ]
         [ E.text "Delete Customer 4"
+        , E.span [ A.hxDisinherit HTML.DisinheritAll ]
+            [ E.comment "Disinherit all"
+            ]
         ]
     , E.button [ A.id $ HTML.Id "worthless"
                , A.hxDisabled

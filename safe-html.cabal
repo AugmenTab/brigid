@@ -55,6 +55,7 @@ library
       HTML.Types.ContentEditable
       HTML.Types.CrossOrigin
       HTML.Types.Directionality
+      HTML.Types.Disinherit
       HTML.Types.Email
       HTML.Types.Extension
       HTML.Types.Href
@@ -67,6 +68,7 @@ library
       HTML.Types.PopoverState
       HTML.Types.PushURL
       HTML.Types.Reachability
+      HTML.Types.This
       HTML.Types.URL
   other-modules:
       Paths_safe_html
