@@ -64,9 +64,10 @@ example =
         ]
     [ E.noElement
     , E.comment "First comment"
-    , E.form []
+    , E.form [ A.hxValidate ]
         [ E.button [] []
         , E.input []
+     -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]
     , E.div [ A.tabindex HTML.NotReachable ]

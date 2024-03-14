@@ -608,6 +608,9 @@ renderAttribute attr =
     Attr_HxReplaceURL url ->
       Just . buildAttribute "hx-replace-url" $ renderPushURL url
 
+    Attr_HxValidate ->
+      buildBooleanAttribute "hx-validate" True
+
 buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
   fromText attr <> fromText "=\"" <> fromText value <> fromText "\""

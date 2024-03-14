@@ -53,6 +53,7 @@ module HTML.Attributes.Internal
       , Attr_HxPushURL
       , Attr_HxPrompt
       , Attr_HxReplaceURL
+      , Attr_HxValidate
       )
   , attributeText
   , buildAttrMap
@@ -732,13 +733,9 @@ data Attribute (tag :: TagType) where
     :: Types.PushURL
     -> Attribute tag
 
-  -- Attr_HxTrigger
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
-
-  -- Attr_HxSwap
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_HxValidate
+    :: ValidAttribute 'HxValidate tag
+    => Attribute tag
 
 attributeText :: Attribute tag -> T.Text
 attributeText attr =
@@ -879,6 +876,9 @@ attributeText attr =
 
     Attr_HxReplaceURL _url ->
       "hx-replace-url"
+
+    Attr_HxValidate ->
+      "hx-validate"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

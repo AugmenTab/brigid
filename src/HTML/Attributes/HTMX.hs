@@ -19,6 +19,7 @@ module HTML.Attributes.HTMX
   , hxPushURL
   , hxPrompt
   , hxReplaceURL
+  , hxValidate
   ) where
 
 import Data.List.NonEmpty qualified as NEL
@@ -26,6 +27,8 @@ import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
+import HTML.Attributes.AttributeType (AttributeType(..))
+import HTML.Attributes.Elements (ValidAttribute)
 import HTML.Attributes.Internal (Attribute(..))
 import HTML.Types qualified as Types
 
@@ -130,5 +133,5 @@ hxReplaceURL =
 
 -- hx-sync
 
--- TODO: Does this require `="true"`, or can it be treated as a boolean attribute?
--- hxValidate :: ValidAttribute 'HxValidate tag => Attribute tag
+hxValidate :: ValidAttribute 'HxValidate tag => Attribute tag
+hxValidate = Attr_HxValidate

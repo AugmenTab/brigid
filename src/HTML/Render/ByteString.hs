@@ -630,6 +630,9 @@ renderAttribute attr =
     Attr_HxReplaceURL url ->
       Just . buildAttribute "hx-replace-url" $ renderPushURL url
 
+    Attr_HxValidate ->
+      buildBooleanAttribute "hx-validate" True
+
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
   lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""

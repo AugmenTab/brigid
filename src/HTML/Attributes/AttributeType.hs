@@ -132,6 +132,8 @@ module HTML.Attributes.AttributeType
       , Value
       , Width
       , Wrap
+
+      , HxValidate
       )
   ) where
 
@@ -271,6 +273,10 @@ data AttributeType
   | Width
   | Wrap
 
+  -- HTMX Attributes
+  --
+  | HxValidate
+
 type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage AccessKey       = 'Text "AccessKey (accesskey)"
   AttributeErrorMessage Autocapitalize  = 'Text "Autocapitalize (autocapitalize)"
@@ -303,6 +309,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage TabIndex        = 'Text "TabIndex (tabindex)"
   AttributeErrorMessage Title           = 'Text "Title (title)"
   AttributeErrorMessage Translate       = 'Text "Translate (translate)"
+
   AttributeErrorMessage Accept          = 'Text "Accept (accept)"
   AttributeErrorMessage AcceptCharset   = 'Text "AcceptCharset (accept-charset)"
   AttributeErrorMessage Action          = 'Text "Action (action)"
@@ -399,3 +406,5 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Value           = 'Text "Value (value)"
   AttributeErrorMessage Width           = 'Text "Width (width)"
   AttributeErrorMessage Wrap            = 'Text "Wrap (wrap)"
+
+  AttributeErrorMessage HxValidate      = 'Text "HTMX Validate (hx-validate)"
