@@ -941,8 +941,8 @@ wbr = Tag_WordBreakOpportunity . buildAttrMap
 wbrs :: ( ValidChild Tags.WordBreakOpportunity parent grandparent
         , ValidChild Tags.Text parent grandparent
         )
-     => [T.Text]
+     => T.Text
      -> [ChildHTML parent grandparent]
-wbrs = L.intersperse (wbr []) . fmap text
+wbrs = L.intersperse (wbr []) . fmap text . T.words
 
 -- wbrURL: Add wbr around a URL.

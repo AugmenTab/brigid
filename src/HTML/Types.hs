@@ -23,6 +23,7 @@ import HTML.Types.ContentEditable as Export
 import HTML.Types.CrossOrigin as Export
 import HTML.Types.Directionality as Export
 import HTML.Types.Disinherit as Export
+import HTML.Types.ElementSelector as Export
 import HTML.Types.Email as Export
 import HTML.Types.Extension as Export
 import HTML.Types.Href as Export

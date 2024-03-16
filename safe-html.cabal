@@ -58,6 +58,7 @@ library
       HTML.Types.CrossOrigin
       HTML.Types.Directionality
       HTML.Types.Disinherit
+      HTML.Types.ElementSelector
       HTML.Types.Email
       HTML.Types.Extension
       HTML.Types.Href
