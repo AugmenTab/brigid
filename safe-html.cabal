@@ -52,6 +52,7 @@ library
       HTML.Types
       HTML.Types.Autocapitalize
       HTML.Types.Class
+      HTML.Types.ClassSelector
       HTML.Types.ContentEditable
       HTML.Types.CrossOrigin
       HTML.Types.Directionality
@@ -63,6 +64,7 @@ library
       HTML.Types.InputMode
       HTML.Types.KeyHint
       HTML.Types.Method
+      HTML.Types.Negatable
       HTML.Types.NoContent
       HTML.Types.Part
       HTML.Types.PopoverState
