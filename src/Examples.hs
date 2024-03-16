@@ -242,7 +242,7 @@ htmxExample =
   E.div []
     [ E.button [ A.htmx . exampleURL $ GetCustomer 2
                , A.hxPushURL True
-               , A.hxExt $ HTML.jsonEnc :| [ HTML.ignore HTML.ajaxHeader ]
+               , A.hxExt $ HTML.extJsonEnc :| [ HTML.ignore HTML.extAjaxHeader ]
                ]
         [ E.text "Implicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [] ]

@@ -15,6 +15,7 @@ module HTML.Types
   , rawURLToText
   ) where
 
+import HTML.Types.AttributeSelector as Export
 import HTML.Types.Autocapitalize as Export
 import HTML.Types.Class as Export
 import HTML.Types.ClassSelector as Export

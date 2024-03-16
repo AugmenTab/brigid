@@ -603,7 +603,7 @@ renderAttribute attr =
       buildBooleanAttribute "hx-history" True
 
     Attr_HxPushURL url ->
-      Just . buildAttribute "hx-replace-url" $ renderPushURL url
+      Just . buildAttribute "hx-push-url" $ renderPushURL url
 
     Attr_HxPrompt prompt ->
       Just . buildAttribute "hx-prompt" $ Escape.attribute prompt

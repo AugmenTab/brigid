@@ -47,7 +47,6 @@ module HTML.Attributes.AttributeType
       , Background
       , BackgroundColor
       , Border
-      , Buffered
       , Capture
       , Charset
       , Checked
@@ -187,7 +186,6 @@ data AttributeType
   | Background
   | BackgroundColor
   | Border
-  | Buffered
   | Capture
   | Charset
   | Checked
@@ -321,7 +319,6 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Background      = 'Text "Background (background)"
   AttributeErrorMessage BackgroundColor = 'Text "BackgroundColor (bgcolor)"
   AttributeErrorMessage Border          = 'Text "Border (border)"
-  AttributeErrorMessage Buffered        = 'Text "Buffered (buffered)"
   AttributeErrorMessage Capture         = 'Text "Capture (capture)"
   AttributeErrorMessage Charset         = 'Text "Charset (charset)"
   AttributeErrorMessage Checked         = 'Text "Checked (checked)"

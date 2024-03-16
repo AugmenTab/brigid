@@ -50,6 +50,7 @@ library
       HTML.Render.String
       HTML.Render.Text
       HTML.Types
+      HTML.Types.AttributeSelector
       HTML.Types.Autocapitalize
       HTML.Types.Class
       HTML.Types.ClassSelector

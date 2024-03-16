@@ -1,29 +1,29 @@
 module HTML.Types.Extension
   ( Extension
   , ignore
-  , ajaxHeader
-  , alpineMorph
-  , classTools
-  , clientSideTemplates
-  , debug
-  , eventHeader
-  , headSupport
-  , includeVals
-  , jsonEnc
-  , idiomorph
-  , loadingStates
-  , methodOverride
-  , morphdomSwap
-  , multiSwap
-  , pathDeps
-  , pathParams
-  , preload
-  , removeMe
-  , responseTargets
-  , restored
-  , serverSentEvents
-  , webSockets
-  , customExtension
+  , extAjaxHeader
+  , extAlpineMorph
+  , extClassTools
+  , extClientSideTemplates
+  , extDebug
+  , extEventHeader
+  , extHeadSupport
+  , extIncludeVals
+  , extJsonEnc
+  , extIdiomorph
+  , extLoadingStates
+  , extMethodOverride
+  , extMorphdomSwap
+  , extMultiSwap
+  , extPathDeps
+  , extPathParams
+  , extPreload
+  , extRemoveMe
+  , extResponseTargets
+  , extRestored
+  , extServerSentEvents
+  , extWebSockets
+  , extCustomExtension
   , extensionToText
   ) where
 
@@ -47,74 +47,74 @@ ignore :: Extension -> Extension
 ignore ext =
   ext { extensionIgnored = True }
 
-ajaxHeader :: Extension
-ajaxHeader = mkExtension AjaxHeader
+extAjaxHeader :: Extension
+extAjaxHeader = mkExtension AjaxHeader
 
-alpineMorph :: Extension
-alpineMorph = mkExtension AlpineMorph
+extAlpineMorph :: Extension
+extAlpineMorph = mkExtension AlpineMorph
 
-classTools :: Extension
-classTools = mkExtension ClassTools
+extClassTools :: Extension
+extClassTools = mkExtension ClassTools
 
-clientSideTemplates :: Extension
-clientSideTemplates = mkExtension ClientSideTemplates
+extClientSideTemplates :: Extension
+extClientSideTemplates = mkExtension ClientSideTemplates
 
-debug :: Extension
-debug = mkExtension Debug
+extDebug :: Extension
+extDebug = mkExtension Debug
 
-eventHeader :: Extension
-eventHeader = mkExtension EventHeader
+extEventHeader :: Extension
+extEventHeader = mkExtension EventHeader
 
-headSupport :: Extension
-headSupport = mkExtension HeadSupport
+extHeadSupport :: Extension
+extHeadSupport = mkExtension HeadSupport
 
-includeVals :: Extension
-includeVals = mkExtension IncludeVals
+extIncludeVals :: Extension
+extIncludeVals = mkExtension IncludeVals
 
-jsonEnc :: Extension
-jsonEnc = mkExtension JsonEnc
+extJsonEnc :: Extension
+extJsonEnc = mkExtension JsonEnc
 
-idiomorph :: Extension
-idiomorph = mkExtension Idiomorph
+extIdiomorph :: Extension
+extIdiomorph = mkExtension Idiomorph
 
-loadingStates :: Extension
-loadingStates = mkExtension LoadingStates
+extLoadingStates :: Extension
+extLoadingStates = mkExtension LoadingStates
 
-methodOverride :: Extension
-methodOverride = mkExtension MethodOverride
+extMethodOverride :: Extension
+extMethodOverride = mkExtension MethodOverride
 
-morphdomSwap :: Extension
-morphdomSwap = mkExtension MorphdomSwap
+extMorphdomSwap :: Extension
+extMorphdomSwap = mkExtension MorphdomSwap
 
-multiSwap :: Extension
-multiSwap = mkExtension MultiSwap
+extMultiSwap :: Extension
+extMultiSwap = mkExtension MultiSwap
 
-pathDeps :: Extension
-pathDeps = mkExtension PathDeps
+extPathDeps :: Extension
+extPathDeps = mkExtension PathDeps
 
-pathParams :: Extension
-pathParams = mkExtension PathParams
+extPathParams :: Extension
+extPathParams = mkExtension PathParams
 
-preload :: Extension
-preload = mkExtension Preload
+extPreload :: Extension
+extPreload = mkExtension Preload
 
-removeMe :: Extension
-removeMe = mkExtension RemoveMe
+extRemoveMe :: Extension
+extRemoveMe = mkExtension RemoveMe
 
-responseTargets :: Extension
-responseTargets = mkExtension ResponseTargets
+extResponseTargets :: Extension
+extResponseTargets = mkExtension ResponseTargets
 
-restored :: Extension
-restored = mkExtension Restored
+extRestored :: Extension
+extRestored = mkExtension Restored
 
-serverSentEvents :: Extension
-serverSentEvents = mkExtension ServerSentEvents
+extServerSentEvents :: Extension
+extServerSentEvents = mkExtension ServerSentEvents
 
-webSockets :: Extension
-webSockets = mkExtension WebSockets
+extWebSockets :: Extension
+extWebSockets = mkExtension WebSockets
 
-customExtension :: T.Text -> Extension
-customExtension = mkExtension . CustomExtension
+extCustomExtension :: T.Text -> Extension
+extCustomExtension = mkExtension . CustomExtension
 
 extensionToText :: Extension -> T.Text
 extensionToText ext =

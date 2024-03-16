@@ -114,8 +114,6 @@ hxHistory = Attr_HxHistory
 hxHistoryElt :: Attribute tag
 hxHistoryElt = Attr_HxHistoryElt
 
--- hx-history-elt
-
 -- hx-include
 
 -- hx-indicator

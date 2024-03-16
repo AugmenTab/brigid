@@ -266,11 +266,6 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Buffered
-  --   :: ValidAttribute 'Buffered tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
-
   -- Attr_Capture
   --   :: ValidAttribute 'Capture tag
   --   => T.Text -- TODO
