@@ -37,5 +37,5 @@ classSelectorToBytes selector =
 classSelectorToText :: ClassSelector -> T.Text
 classSelectorToText selector =
   if classSelectorExcluded selector
-     then ":not(." <> classToText (classSelectorClass selector) <> ")"
-     else T.cons '.' . classToText $ classSelectorClass selector
+     then T.cons '.' . classToText $ classSelectorClass selector
+     else ":not(." <> classToText (classSelectorClass selector) <> ")"

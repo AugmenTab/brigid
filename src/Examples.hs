@@ -1,6 +1,9 @@
 module Examples
   ( documentExample
   , example
+  , idQuerySelectorExample
+  , classQuerySelectorExample
+  , elementQuerySelectorExample
   ) where
 
 import Prelude hiding (head)
@@ -283,3 +286,32 @@ htmxExample =
         [ E.text "I Do Nothing"
         ]
     ]
+
+myClass :: HTML.Class
+myClass = HTML.Class "myClass"
+
+idQuerySelectorExample :: HTML.QuerySelector
+idQuerySelectorExample =
+  HTML.mkQuerySelector $ HTML.Id "myId"
+
+classQuerySelectorExample :: HTML.QuerySelector
+classQuerySelectorExample =
+  HTML.mkQuerySelector myClass
+
+elementQuerySelectorExample :: HTML.QuerySelector
+elementQuerySelectorExample =
+  HTML.mkQuerySelector $
+    HTML.table
+      Nothing
+      [ HTML.toClassSelector myClass ]
+      ( Just $
+          HTML.tbody
+            Nothing
+            []
+            ( Just $
+                HTML.td
+                  (Just $ HTML.id "cellA3")
+                  [ HTML.not . HTML.toClassSelector $ HTML.Class "main" ]
+                  Nothing
+            )
+      )

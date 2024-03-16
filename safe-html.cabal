@@ -71,6 +71,7 @@ library
       HTML.Types.Part
       HTML.Types.PopoverState
       HTML.Types.PushURL
+      HTML.Types.QuerySelector
       HTML.Types.Reachability
       HTML.Types.This
       HTML.Types.URL
