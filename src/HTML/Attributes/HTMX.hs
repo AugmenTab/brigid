@@ -17,6 +17,7 @@ module HTML.Attributes.HTMX
   , hxExt
   , hxHistory
   , hxHistoryElt
+  , hxOn
   , hxParams
   , hxPatch
   , hxPreserve
@@ -58,7 +59,11 @@ hxPatch = Attr_Htmx
 hxPut :: Types.RelativeURL Types.Put -> Attribute tag
 hxPut = Attr_Htmx
 
--- hxOn
+hxOn :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf eventType Types.EventTypes
+        )
+     => eventType -> T.Text -> Attribute tag
+hxOn = Attr_HxOn . Types.mkEvent
 
 hxPushURL :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf url Types.PushURLTypes

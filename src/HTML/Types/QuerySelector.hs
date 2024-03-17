@@ -475,6 +475,7 @@ import HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionT
 import HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
 import HTML.Types.Directionality (Directionality, directionalityToText)
 import HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
+import HTML.Types.Event qualified as Event
 import HTML.Types.Extension (Extension, extensionToText)
 import HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import HTML.Types.Id qualified as Id
@@ -1707,7 +1708,7 @@ data AttributeType
   --
   | Attr_HxGet
   | Attr_HxPost
-  | Attr_HxOn
+  | Attr_HxOn T.Text
   | Attr_HxPushURL
   | Attr_HxSelect
   | Attr_HxSelectOOB
@@ -1881,7 +1882,7 @@ attributeTypeToBytes attr =
     --
     Attr_HxGet         -> "hx-get"
     Attr_HxPost        -> "hx-post"
-    Attr_HxOn          -> "hx-on" -- TODO
+    Attr_HxOn event    -> "hx-on" <> LBS8.pack (T.unpack event)
     Attr_HxPushURL     -> "hx-push-url"
     Attr_HxSelect      -> "hx-select"
     Attr_HxSelectOOB   -> "hx-select-oob"
@@ -1914,215 +1915,192 @@ attributeTypeToBytes attr =
     Attr_HxValidate    -> "hx-validate"
 
 -- The default case here is to treat it as a `CustomAttribute`.
-attributeTypeFromText :: T.Text -> AttributeType
+attributeTypeFromText :: T.Text -> Either String AttributeType
 attributeTypeFromText attr =
   case attr of
     -- Global Attributes
     --
-    "accesskey"       -> Attr_AccessKey
-    "autocapitalize"  -> Attr_Autocapitalize
-    "autofocus"       -> Attr_Autofocus
-    "class"           -> Attr_Class
-    "contenteditable" -> Attr_ContentEditable
-    "dir"             -> Attr_Dir
-    "draggable"       -> Attr_Draggable
-    "enterkeyhint"    -> Attr_EnterKeyHint
-    "exportparts"     -> Attr_ExportParts
-    "hidden"          -> Attr_Hidden
-    "id"              -> Attr_Id
-    "inert"           -> Attr_Inert
-    "inputmode"       -> Attr_InputMode
-    "is"              -> Attr_Is
-    "itemid"          -> Attr_ItemId
-    "itemprop"        -> Attr_ItemProp
-    "itemref"         -> Attr_ItemRef
-    "itemscope"       -> Attr_ItemScope
-    "itemtype"        -> Attr_ItemType
-    "lang"            -> Attr_Lang
-    "nonce"           -> Attr_Nonce
-    "part"            -> Attr_Part
-    "popover"         -> Attr_Popover
-    "role"            -> Attr_Role
-    "slot"            -> Attr_Slot
-    "spellcheck"      -> Attr_Spellcheck
-    "style"           -> Attr_Style
-    "tabindex"        -> Attr_TabIndex
-    "title"           -> Attr_Title
-    "translate"       -> Attr_Translate
+    "accesskey"       -> Right Attr_AccessKey
+    "autocapitalize"  -> Right Attr_Autocapitalize
+    "autofocus"       -> Right Attr_Autofocus
+    "class"           -> Right Attr_Class
+    "contenteditable" -> Right Attr_ContentEditable
+    "dir"             -> Right Attr_Dir
+    "draggable"       -> Right Attr_Draggable
+    "enterkeyhint"    -> Right Attr_EnterKeyHint
+    "exportparts"     -> Right Attr_ExportParts
+    "hidden"          -> Right Attr_Hidden
+    "id"              -> Right Attr_Id
+    "inert"           -> Right Attr_Inert
+    "inputmode"       -> Right Attr_InputMode
+    "is"              -> Right Attr_Is
+    "itemid"          -> Right Attr_ItemId
+    "itemprop"        -> Right Attr_ItemProp
+    "itemref"         -> Right Attr_ItemRef
+    "itemscope"       -> Right Attr_ItemScope
+    "itemtype"        -> Right Attr_ItemType
+    "lang"            -> Right Attr_Lang
+    "nonce"           -> Right Attr_Nonce
+    "part"            -> Right Attr_Part
+    "popover"         -> Right Attr_Popover
+    "role"            -> Right Attr_Role
+    "slot"            -> Right Attr_Slot
+    "spellcheck"      -> Right Attr_Spellcheck
+    "style"           -> Right Attr_Style
+    "tabindex"        -> Right Attr_TabIndex
+    "title"           -> Right Attr_Title
+    "translate"       -> Right Attr_Translate
 
     -- Scoped Attributes
     --
-    "accept"         -> Attr_Accept
-    "accept-charset" -> Attr_AcceptCharset
-    "action"         -> Attr_Action
-    "allow"          -> Attr_Allow
-    "alt"            -> Attr_Alt
-    "async"          -> Attr_Async
-    "autocomplete"   -> Attr_Autocomplete
-    "autoplay"       -> Attr_Autoplay
-    "background"     -> Attr_Background
-    "bgcolor"        -> Attr_BackgroundColor
-    "border"         -> Attr_Border
-    "capture"        -> Attr_Capture
-    "charset"        -> Attr_Charset
-    "checked"        -> Attr_Checked
-    "cite"           -> Attr_Cite
-    "color"          -> Attr_Color
-    "cols"           -> Attr_Cols
-    "colspan"        -> Attr_Colspan
-    "content"        -> Attr_Content
-    "controls"       -> Attr_Controls
-    "coords"         -> Attr_Coords
-    "crossorigin"    -> Attr_CrossOrigin
-    "data"           -> Attr_Data
-    "datetime"       -> Attr_Datetime
-    "decoding"       -> Attr_Decoding
-    "default"        -> Attr_Default
-    "defer"          -> Attr_Defer
-    "dirname"        -> Attr_Dirname
-    "disabled"       -> Attr_Disabled
-    "download"       -> Attr_Download
-    "enctype"        -> Attr_Enctype
-    "for"            -> Attr_For
-    "form"           -> Attr_Form
-    "formaction"     -> Attr_FormAction
-    "formenctype"    -> Attr_FormEnctype
-    "formmethod"     -> Attr_FormMethod
-    "formnovalidate" -> Attr_FormNoValidate
-    "formtarget"     -> Attr_FormTarget
-    "headers"        -> Attr_Headers
-    "height"         -> Attr_Height
-    "high"           -> Attr_High
-    "href"           -> Attr_Href
-    "hreflang"       -> Attr_HrefLang
-    "http-equiv"     -> Attr_HttpEquiv
-    "integrity"      -> Attr_Integrity
-    "ismap"          -> Attr_IsMap
-    "kind"           -> Attr_Kind
-    "label"          -> Attr_Label
-    "list"           -> Attr_List
-    "loop"           -> Attr_Loop
-    "low"            -> Attr_Low
-    "max"            -> Attr_Max
-    "maxlength"      -> Attr_MaxLength
-    "minlength"      -> Attr_MinLength
-    "media"          -> Attr_Media
-    "method"         -> Attr_Method
-    "min"            -> Attr_Min
-    "multiple"       -> Attr_Multiple
-    "muted"          -> Attr_Muted
-    "name"           -> Attr_Name
-    "novalidate"     -> Attr_NoValidate
-    "open"           -> Attr_Open
-    "optimum"        -> Attr_Optimum
-    "pattern"        -> Attr_Pattern
-    "ping"           -> Attr_Ping
-    "placeholder"    -> Attr_Placeholder
-    "playsinline"    -> Attr_PlaysInline
-    "poster"         -> Attr_Poster
-    "preload"        -> Attr_Preload
-    "readonly"       -> Attr_ReadOnly
-    "referrerpolicy" -> Attr_ReferrerPolicy
-    "rel"            -> Attr_Rel
-    "required"       -> Attr_Required
-    "reversed"       -> Attr_Reversed
-    "rows"           -> Attr_Rows
-    "rowspan"        -> Attr_Rowspan
-    "sandbox"        -> Attr_Sandbox
-    "scope"          -> Attr_Scope
-    "selected"       -> Attr_Selected
-    "shape"          -> Attr_Shape
-    "size"           -> Attr_Size
-    "sizes"          -> Attr_Sizes
-    "span"           -> Attr_Span
-    "src"            -> Attr_Src
-    "srcdoc"         -> Attr_SrcDoc
-    "srclang"        -> Attr_SrcLang
-    "srcset"         -> Attr_SrcSet
-    "start"          -> Attr_Start
-    "step"           -> Attr_Step
-    "target"         -> Attr_Target
-    "type"           -> Attr_Type
-    "usemap"         -> Attr_UseMap
-    "value"          -> Attr_Value
-    "width"          -> Attr_Width
-    "wrap"           -> Attr_Wrap
+    "accept"         -> Right Attr_Accept
+    "accept-charset" -> Right Attr_AcceptCharset
+    "action"         -> Right Attr_Action
+    "allow"          -> Right Attr_Allow
+    "alt"            -> Right Attr_Alt
+    "async"          -> Right Attr_Async
+    "autocomplete"   -> Right Attr_Autocomplete
+    "autoplay"       -> Right Attr_Autoplay
+    "background"     -> Right Attr_Background
+    "bgcolor"        -> Right Attr_BackgroundColor
+    "border"         -> Right Attr_Border
+    "capture"        -> Right Attr_Capture
+    "charset"        -> Right Attr_Charset
+    "checked"        -> Right Attr_Checked
+    "cite"           -> Right Attr_Cite
+    "color"          -> Right Attr_Color
+    "cols"           -> Right Attr_Cols
+    "colspan"        -> Right Attr_Colspan
+    "content"        -> Right Attr_Content
+    "controls"       -> Right Attr_Controls
+    "coords"         -> Right Attr_Coords
+    "crossorigin"    -> Right Attr_CrossOrigin
+    "data"           -> Right Attr_Data
+    "datetime"       -> Right Attr_Datetime
+    "decoding"       -> Right Attr_Decoding
+    "default"        -> Right Attr_Default
+    "defer"          -> Right Attr_Defer
+    "dirname"        -> Right Attr_Dirname
+    "disabled"       -> Right Attr_Disabled
+    "download"       -> Right Attr_Download
+    "enctype"        -> Right Attr_Enctype
+    "for"            -> Right Attr_For
+    "form"           -> Right Attr_Form
+    "formaction"     -> Right Attr_FormAction
+    "formenctype"    -> Right Attr_FormEnctype
+    "formmethod"     -> Right Attr_FormMethod
+    "formnovalidate" -> Right Attr_FormNoValidate
+    "formtarget"     -> Right Attr_FormTarget
+    "headers"        -> Right Attr_Headers
+    "height"         -> Right Attr_Height
+    "high"           -> Right Attr_High
+    "href"           -> Right Attr_Href
+    "hreflang"       -> Right Attr_HrefLang
+    "http-equiv"     -> Right Attr_HttpEquiv
+    "integrity"      -> Right Attr_Integrity
+    "ismap"          -> Right Attr_IsMap
+    "kind"           -> Right Attr_Kind
+    "label"          -> Right Attr_Label
+    "list"           -> Right Attr_List
+    "loop"           -> Right Attr_Loop
+    "low"            -> Right Attr_Low
+    "max"            -> Right Attr_Max
+    "maxlength"      -> Right Attr_MaxLength
+    "minlength"      -> Right Attr_MinLength
+    "media"          -> Right Attr_Media
+    "method"         -> Right Attr_Method
+    "min"            -> Right Attr_Min
+    "multiple"       -> Right Attr_Multiple
+    "muted"          -> Right Attr_Muted
+    "name"           -> Right Attr_Name
+    "novalidate"     -> Right Attr_NoValidate
+    "open"           -> Right Attr_Open
+    "optimum"        -> Right Attr_Optimum
+    "pattern"        -> Right Attr_Pattern
+    "ping"           -> Right Attr_Ping
+    "placeholder"    -> Right Attr_Placeholder
+    "playsinline"    -> Right Attr_PlaysInline
+    "poster"         -> Right Attr_Poster
+    "preload"        -> Right Attr_Preload
+    "readonly"       -> Right Attr_ReadOnly
+    "referrerpolicy" -> Right Attr_ReferrerPolicy
+    "rel"            -> Right Attr_Rel
+    "required"       -> Right Attr_Required
+    "reversed"       -> Right Attr_Reversed
+    "rows"           -> Right Attr_Rows
+    "rowspan"        -> Right Attr_Rowspan
+    "sandbox"        -> Right Attr_Sandbox
+    "scope"          -> Right Attr_Scope
+    "selected"       -> Right Attr_Selected
+    "shape"          -> Right Attr_Shape
+    "size"           -> Right Attr_Size
+    "sizes"          -> Right Attr_Sizes
+    "span"           -> Right Attr_Span
+    "src"            -> Right Attr_Src
+    "srcdoc"         -> Right Attr_SrcDoc
+    "srclang"        -> Right Attr_SrcLang
+    "srcset"         -> Right Attr_SrcSet
+    "start"          -> Right Attr_Start
+    "step"           -> Right Attr_Step
+    "target"         -> Right Attr_Target
+    "type"           -> Right Attr_Type
+    "usemap"         -> Right Attr_UseMap
+    "value"          -> Right Attr_Value
+    "width"          -> Right Attr_Width
+    "wrap"           -> Right Attr_Wrap
 
     -- HTMX Attributes
     --
-    "hx-get"          -> Attr_HxGet
-    "hx-post"         -> Attr_HxPost
-    "hx-push-url"     -> Attr_HxPushURL
-    "hx-select"       -> Attr_HxSelect
-    "hx-select-oob"   -> Attr_HxSelectOOB
-    "hx-swap"         -> Attr_HxSwap
-    "hx-swap-oob"     -> Attr_HxSwapOOB
-    "hx-target"       -> Attr_HxTarget
-    "hx-trigger"      -> Attr_HxTrigger
-    "hx-vals"         -> Attr_HxVals
-    "hx-boost"        -> Attr_HxBoost
-    "hx-confirm"      -> Attr_HxConfirm
-    "hx-delete"       -> Attr_HxDelete
-    "hx-disable"      -> Attr_HxDisable
-    "hx-disabled-elt" -> Attr_HxDisabledElt
-    "hx-disinherit"   -> Attr_HxDisinherit
-    "hx-encoding"     -> Attr_HxEncoding
-    "hx-ext"          -> Attr_HxExt
-    "hx-headers"      -> Attr_HxHeaders
-    "hx-history"      -> Attr_HxHistory
-    "hx-historyElt"   -> Attr_HxHistoryElt
-    "hx-include"      -> Attr_HxInclude
-    "hx-indicator"    -> Attr_HxIndicator
-    "hx-params"       -> Attr_HxParams
-    "hx-patch"        -> Attr_HxPatch
-    "hx-preserve"     -> Attr_HxPreserve
-    "hx-prompt"       -> Attr_HxPrompt
-    "hx-put"          -> Attr_HxPut
-    "hx-replace-url"  -> Attr_HxReplaceURL
-    "hx-request"      -> Attr_HxRequest
-    "hx-sync"         -> Attr_HxSync
-    "hx-validate"     -> Attr_HxValidate
+    "hx-get"          -> Right Attr_HxGet
+    "hx-post"         -> Right Attr_HxPost
+    "hx-push-url"     -> Right Attr_HxPushURL
+    "hx-select"       -> Right Attr_HxSelect
+    "hx-select-oob"   -> Right Attr_HxSelectOOB
+    "hx-swap"         -> Right Attr_HxSwap
+    "hx-swap-oob"     -> Right Attr_HxSwapOOB
+    "hx-target"       -> Right Attr_HxTarget
+    "hx-trigger"      -> Right Attr_HxTrigger
+    "hx-vals"         -> Right Attr_HxVals
+    "hx-boost"        -> Right Attr_HxBoost
+    "hx-confirm"      -> Right Attr_HxConfirm
+    "hx-delete"       -> Right Attr_HxDelete
+    "hx-disable"      -> Right Attr_HxDisable
+    "hx-disabled-elt" -> Right Attr_HxDisabledElt
+    "hx-disinherit"   -> Right Attr_HxDisinherit
+    "hx-encoding"     -> Right Attr_HxEncoding
+    "hx-ext"          -> Right Attr_HxExt
+    "hx-headers"      -> Right Attr_HxHeaders
+    "hx-history"      -> Right Attr_HxHistory
+    "hx-historyElt"   -> Right Attr_HxHistoryElt
+    "hx-include"      -> Right Attr_HxInclude
+    "hx-indicator"    -> Right Attr_HxIndicator
+    "hx-params"       -> Right Attr_HxParams
+    "hx-patch"        -> Right Attr_HxPatch
+    "hx-preserve"     -> Right Attr_HxPreserve
+    "hx-prompt"       -> Right Attr_HxPrompt
+    "hx-put"          -> Right Attr_HxPut
+    "hx-replace-url"  -> Right Attr_HxReplaceURL
+    "hx-request"      -> Right Attr_HxRequest
+    "hx-sync"         -> Right Attr_HxSync
+    "hx-validate"     -> Right Attr_HxValidate
 
     -- Edge cases
     txt
       | T.isPrefixOf "data-" txt ->
-          maybe (Attr_CustomAttribute txt) Attr_CustomData
+          Right
+            . maybe (Attr_CustomAttribute txt) Attr_CustomData
             . tryParseFreeAttribute
             $ T.drop 5 txt
 
-   -- TODO
-   -- | T.isPrefixOf "hx-on:htmx:" txt ->
-   --     maybe (CustomAttribute txt) HxOn
-   --       . tryParseFreeAttribute
-   --       $ T.drop 11 txt
-
-   -- | T.isPrefixOf "hx-on::" txt ->
-   --     maybe (CustomAttribute txt) HxOn
-   --       . tryParseFreeAttribute
-   --       $ T.drop 7 txt
-
-   -- | T.isPrefixOf "hx-on:" txt ->
-   --     maybe (CustomAttribute txt) HxOn
-   --       . tryParseFreeAttribute
-   --       $ T.drop 6 txt
-
-   -- | T.isPrefixOf "hx-on-html-" txt ->
-   --     maybe (CustomAttribute txt) HxOn
-   --       . tryParseFreeAttribute
-   --       $ T.drop 11 txt
-
-   -- | T.isPrefixOf "hx-on--" txt ->
-   --     maybe (CustomAttribute txt) HxOn
-   --       . tryParseFreeAttribute
-   --       $ T.drop 7 txt
-
-   -- | T.isPrefixOf "hx-on-" txt ->
-   --     maybe (CustomAttribute txt) HxOn
-   --       . tryParseFreeAttribute
-   --       $ T.drop 6 txt
-
+      -- This is stupid, but there's no way around it - some events share a
+      -- namespace in the HTML events list and there's no way to differentiate
+      -- between the two during parsing. So, our only option here is to always
+      -- fail to parse event-based attributes, but since this is just for
+      -- encoding the HTMX Config, this is an acceptable loss.
+      | T.isPrefixOf "hx-on" txt ->
+          Left $ "hx-on attributes cannot be parsed."
       | otherwise ->
-          Attr_CustomAttribute txt
+          Right $ Attr_CustomAttribute txt
 
 tryParseFreeAttribute :: T.Text -> Maybe T.Text
 tryParseFreeAttribute txt =
@@ -2272,7 +2250,7 @@ attributeTypeToText attr =
     --
     Attr_HxGet         -> "hx-get"
     Attr_HxPost        -> "hx-post"
-    Attr_HxOn          -> "hx-on" -- TODO
+    Attr_HxOn event    -> "hx-on" <> event
     Attr_HxPushURL     -> "hx-push-url"
     Attr_HxSelect      -> "hx-select"
     Attr_HxSelectOOB   -> "hx-select-oob"
@@ -2811,9 +2789,14 @@ hxGet = (,) Attr_HxGet . Just . relativeURLToText
 hxPost :: RelativeURL Post -> AttributeSelector
 hxPost = (,) Attr_HxPost . Just . relativeURLToText
 
--- TODO
-hxOn :: T.Text -> AttributeSelector
-hxOn = (,) Attr_HxOn . Just
+hxOn :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf eventType Event.EventTypes
+        )
+     => eventType -> T.Text -> AttributeSelector
+hxOn eventType eventAction =
+  ( Attr_HxOn . Event.hxOnEventText $ Event.mkEvent eventType
+  , Just eventAction
+  )
 
 hxPushURL :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf url PushURLTypes

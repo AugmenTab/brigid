@@ -1,5 +1,17 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeOperators #-}
+
 module HTML.Types.Event
-  ( HTMLEvent
+  ( Event
+  , mkEvent
+  , unEvent
+  , EventTypes
+  , eventToBytes
+  , eventToText
+  , hxOnEventBytes
+  , hxOnEventText
+  , HTMLEvent
       ( Click
       , DblClick
       , MouseDown
@@ -59,14 +71,116 @@ module HTML.Types.Event
   , touchEventToBytes
   , touchEventToText
   , HtmxEvent
-      (
+      ( HtmxAbort
+      ,  HtmxAfterOnLoad
+      ,  HtmxAfterProcessNode
+      ,  HtmxAfterRequest
+      ,  HtmxAfterSettle
+      ,  HtmxAfterSwap
+      ,  HtmxBeforeCleanupElement
+      ,  HtmxBeforeOnLoad
+      ,  HtmxBeforeProcessNode
+      ,  HtmxBeforeRequest
+      ,  HtmxBeforeSwap
+      ,  HtmxBeforeSend
+      ,  HtmxConfigRequest
+      ,  HtmxConfirm
+      ,  HtmxHistoryCacheError
+      ,  HtmxHistoryCacheMiss
+      ,  HtmxHistoryCacheMissError
+      ,  HtmxHistoryCacheMissLoad
+      ,  HtmxHistoryRestore
+      ,  HtmxBeforeHistorySave
+      ,  HtmxLoad
+      ,  HtmxNoSSESourceError
+      ,  HtmxOnLoadError
+      ,  HtmxOOBAfterSwap
+      ,  HtmxOOBBeforeSwap
+      ,  HtmxOOBErrorNoTarget
+      ,  HtmxPrompt
+      ,  HtmxPushedIntoHistory
+      ,  HtmxResponseError
+      ,  HtmxSendError
+      ,  HtmxSSEError
+      ,  HtmxSSEOpen
+      ,  HtmxSwapError
+      ,  HtmxTargetError
+      ,  HtmxTimeout
+      ,  HtmxValidate
+      ,  HtmxValidationFailed
+      ,  HtmxValidationHalted
+      ,  HtmxXHRAbort
+      ,  HtmxXHRLoadEnd
+      ,  HtmxXHRLoadStart
+      ,  HtmxXHRProgress
       )
   , htmxEventToBytes
   , htmxEventToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import GHC.TypeLits (KnownNat)
+import Shrubbery qualified
+import Shrubbery.TypeList (FirstIndexOf)
+
+newtype Event =
+  Event
+    { unEvent :: Shrubbery.Union EventTypes
+    }
+
+type EventTypes =
+  [ HTMLEvent
+  , TouchEvent
+  , HtmxEvent
+  ]
+
+mkEvent :: ( KnownNat branchIndex
+           , branchIndex ~ FirstIndexOf eventType EventTypes
+           )
+        => eventType -> Event
+mkEvent = Event . Shrubbery.unify
+
+eventToBytes :: Event -> LBS.ByteString
+eventToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HTMLEvent htmlEventToBytes
+      . Shrubbery.branch @TouchEvent touchEventToBytes
+      . Shrubbery.branch @HtmxEvent htmxEventToBytes
+      $ Shrubbery.branchEnd
+  ) . unEvent
+
+eventToText :: Event -> T.Text
+eventToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HTMLEvent htmlEventToText
+      . Shrubbery.branch @TouchEvent touchEventToText
+      . Shrubbery.branch @HtmxEvent htmxEventToText
+      $ Shrubbery.branchEnd
+  ) . unEvent
+
+hxOnEventBytes :: Event -> LBS.ByteString
+hxOnEventBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HTMLEvent (LBS8.cons '-' . htmlEventToBytes)
+      . Shrubbery.branch @TouchEvent (LBS8.cons '-' . touchEventToBytes)
+      . Shrubbery.branch @HtmxEvent (("--" <>) . htmxEventToBytes)
+      $ Shrubbery.branchEnd
+  ) . unEvent
+
+hxOnEventText :: Event -> T.Text
+hxOnEventText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HTMLEvent (T.cons '-' . htmlEventToText)
+      . Shrubbery.branch @TouchEvent (T.cons '-' . touchEventToText)
+      . Shrubbery.branch @HtmxEvent (("--" <>) . htmxEventToText)
+      $ Shrubbery.branchEnd
+  ) . unEvent
 
 data HTMLEvent
   = Click
@@ -289,90 +403,90 @@ htmxEventToBytes :: HtmxEvent -> LBS.ByteString
 htmxEventToBytes event =
   case event of
     HtmxAbort                 -> "abort"
-    HtmxAfterOnLoad           -> "afterOnLoad"
-    HtmxAfterProcessNode      -> "afterProcessNode"
-    HtmxAfterRequest          -> "afterRequest"
-    HtmxAfterSettle           -> "afterSettle"
-    HtmxAfterSwap             -> "afterSwap"
-    HtmxBeforeCleanupElement  -> "beforeCleanupElement"
-    HtmxBeforeOnLoad          -> "beforeOnLoad"
-    HtmxBeforeProcessNode     -> "beforeProcessNode"
-    HtmxBeforeRequest         -> "beforeRequest"
-    HtmxBeforeSwap            -> "beforeSwap"
-    HtmxBeforeSend            -> "beforeSend"
-    HtmxConfigRequest         -> "configRequest"
+    HtmxAfterOnLoad           -> "after-on-load"
+    HtmxAfterProcessNode      -> "after-process-node"
+    HtmxAfterRequest          -> "after-request"
+    HtmxAfterSettle           -> "after-settle"
+    HtmxAfterSwap             -> "after-swap"
+    HtmxBeforeCleanupElement  -> "before-cleanup-element"
+    HtmxBeforeOnLoad          -> "before-on-load"
+    HtmxBeforeProcessNode     -> "before-process-node"
+    HtmxBeforeRequest         -> "before-request"
+    HtmxBeforeSwap            -> "before-swap"
+    HtmxBeforeSend            -> "before-send"
+    HtmxConfigRequest         -> "config-request"
     HtmxConfirm               -> "confirm"
-    HtmxHistoryCacheError     -> "historyCacheError"
-    HtmxHistoryCacheMiss      -> "historyCacheMiss"
-    HtmxHistoryCacheMissError -> "historyCacheMissError"
-    HtmxHistoryCacheMissLoad  -> "historyCacheMissLoad"
-    HtmxHistoryRestore        -> "historyRestore"
-    HtmxBeforeHistorySave     -> "beforeHistorySave"
+    HtmxHistoryCacheError     -> "history-cache-error"
+    HtmxHistoryCacheMiss      -> "history-cache-miss"
+    HtmxHistoryCacheMissError -> "history-cache-miss-error"
+    HtmxHistoryCacheMissLoad  -> "history-cache-miss-load"
+    HtmxHistoryRestore        -> "history-restore"
+    HtmxBeforeHistorySave     -> "before-history-save"
     HtmxLoad                  -> "load"
-    HtmxNoSSESourceError      -> "noSSESourceError"
-    HtmxOnLoadError           -> "onLoadError"
-    HtmxOOBAfterSwap          -> "oobAfterSwap"
-    HtmxOOBBeforeSwap         -> "oobBeforeSwap"
-    HtmxOOBErrorNoTarget      -> "oobErrorNoTarget"
+    HtmxNoSSESourceError      -> "no-sse-source-error"
+    HtmxOnLoadError           -> "on-load-error"
+    HtmxOOBAfterSwap          -> "oob-after-swap"
+    HtmxOOBBeforeSwap         -> "oob-before-swap"
+    HtmxOOBErrorNoTarget      -> "oob-error-no-target"
     HtmxPrompt                -> "prompt"
-    HtmxPushedIntoHistory     -> "pushedIntoHistory"
-    HtmxResponseError         -> "responseError"
-    HtmxSendError             -> "sendError"
-    HtmxSSEError              -> "sseError"
-    HtmxSSEOpen               -> "sseOpen"
-    HtmxSwapError             -> "swapError"
-    HtmxTargetError           -> "targetError"
+    HtmxPushedIntoHistory     -> "pushed-into-history"
+    HtmxResponseError         -> "response-error"
+    HtmxSendError             -> "send-error"
+    HtmxSSEError              -> "sse-error"
+    HtmxSSEOpen               -> "sse-open"
+    HtmxSwapError             -> "swap-error"
+    HtmxTargetError           -> "target-error"
     HtmxTimeout               -> "timeout"
-    HtmxValidate              -> "validation:validate"
-    HtmxValidationFailed      -> "validation:failed"
-    HtmxValidationHalted      -> "validation:halted"
-    HtmxXHRAbort              -> "xhr:abort"
-    HtmxXHRLoadEnd            -> "xhr:loadend"
-    HtmxXHRLoadStart          -> "xhr:loadstart"
-    HtmxXHRProgress           -> "xhr:progress"
+    HtmxValidate              -> "validation-validate"
+    HtmxValidationFailed      -> "validation-failed"
+    HtmxValidationHalted      -> "validation-halted"
+    HtmxXHRAbort              -> "xhr-abort"
+    HtmxXHRLoadEnd            -> "xhr-loadend"
+    HtmxXHRLoadStart          -> "xhr-loadstart"
+    HtmxXHRProgress           -> "xhr-progress"
 
 htmxEventToText :: HtmxEvent -> T.Text
 htmxEventToText event =
   case event of
     HtmxAbort                 -> "abort"
-    HtmxAfterOnLoad           -> "afterOnLoad"
-    HtmxAfterProcessNode      -> "afterProcessNode"
-    HtmxAfterRequest          -> "afterRequest"
-    HtmxAfterSettle           -> "afterSettle"
-    HtmxAfterSwap             -> "afterSwap"
-    HtmxBeforeCleanupElement  -> "beforeCleanupElement"
-    HtmxBeforeOnLoad          -> "beforeOnLoad"
-    HtmxBeforeProcessNode     -> "beforeProcessNode"
-    HtmxBeforeRequest         -> "beforeRequest"
-    HtmxBeforeSwap            -> "beforeSwap"
-    HtmxBeforeSend            -> "beforeSend"
-    HtmxConfigRequest         -> "configRequest"
+    HtmxAfterOnLoad           -> "after-on-load"
+    HtmxAfterProcessNode      -> "after-process-node"
+    HtmxAfterRequest          -> "after-request"
+    HtmxAfterSettle           -> "after-settle"
+    HtmxAfterSwap             -> "after-swap"
+    HtmxBeforeCleanupElement  -> "before-cleanup-element"
+    HtmxBeforeOnLoad          -> "before-on-load"
+    HtmxBeforeProcessNode     -> "before-process-node"
+    HtmxBeforeRequest         -> "before-request"
+    HtmxBeforeSwap            -> "before-swap"
+    HtmxBeforeSend            -> "before-send"
+    HtmxConfigRequest         -> "config-request"
     HtmxConfirm               -> "confirm"
-    HtmxHistoryCacheError     -> "historyCacheError"
-    HtmxHistoryCacheMiss      -> "historyCacheMiss"
-    HtmxHistoryCacheMissError -> "historyCacheMissError"
-    HtmxHistoryCacheMissLoad  -> "historyCacheMissLoad"
-    HtmxHistoryRestore        -> "historyRestore"
-    HtmxBeforeHistorySave     -> "beforeHistorySave"
+    HtmxHistoryCacheError     -> "history-cache-error"
+    HtmxHistoryCacheMiss      -> "history-cache-miss"
+    HtmxHistoryCacheMissError -> "history-cache-miss-error"
+    HtmxHistoryCacheMissLoad  -> "history-cache-miss-load"
+    HtmxHistoryRestore        -> "history-restore"
+    HtmxBeforeHistorySave     -> "before-history-save"
     HtmxLoad                  -> "load"
-    HtmxNoSSESourceError      -> "noSSESourceError"
-    HtmxOnLoadError           -> "onLoadError"
-    HtmxOOBAfterSwap          -> "oobAfterSwap"
-    HtmxOOBBeforeSwap         -> "oobBeforeSwap"
-    HtmxOOBErrorNoTarget      -> "oobErrorNoTarget"
+    HtmxNoSSESourceError      -> "no-sse-source-error"
+    HtmxOnLoadError           -> "on-load-error"
+    HtmxOOBAfterSwap          -> "oob-after-swap"
+    HtmxOOBBeforeSwap         -> "oob-before-swap"
+    HtmxOOBErrorNoTarget      -> "oob-error-no-target"
     HtmxPrompt                -> "prompt"
-    HtmxPushedIntoHistory     -> "pushedIntoHistory"
-    HtmxResponseError         -> "responseError"
-    HtmxSendError             -> "sendError"
-    HtmxSSEError              -> "sseError"
-    HtmxSSEOpen               -> "sseOpen"
-    HtmxSwapError             -> "swapError"
-    HtmxTargetError           -> "targetError"
+    HtmxPushedIntoHistory     -> "pushed-into-history"
+    HtmxResponseError         -> "response-error"
+    HtmxSendError             -> "send-error"
+    HtmxSSEError              -> "sse-error"
+    HtmxSSEOpen               -> "sse-open"
+    HtmxSwapError             -> "swap-error"
+    HtmxTargetError           -> "target-error"
     HtmxTimeout               -> "timeout"
-    HtmxValidate              -> "validation:validate"
-    HtmxValidationFailed      -> "validation:failed"
-    HtmxValidationHalted      -> "validation:halted"
-    HtmxXHRAbort              -> "xhr:abort"
-    HtmxXHRLoadEnd            -> "xhr:loadend"
-    HtmxXHRLoadStart          -> "xhr:loadstart"
-    HtmxXHRProgress           -> "xhr:progress"
+    HtmxValidate              -> "validation-validate"
+    HtmxValidationFailed      -> "validation-failed"
+    HtmxValidationHalted      -> "validation-halted"
+    HtmxXHRAbort              -> "xhr-abort"
+    HtmxXHRLoadEnd            -> "xhr-loadend"
+    HtmxXHRLoadStart          -> "xhr-loadstart"
+    HtmxXHRProgress           -> "xhr-progress"

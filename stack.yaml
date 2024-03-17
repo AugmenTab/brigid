@@ -34,6 +34,7 @@ extra-deps:
 - git: https://github.com/flipstone/json-fleece.git
   commit: 1bf8a291f003d997f7f06044ddd72e20f3842e14
   subdirs:
+    - json-fleece-aeson
     - json-fleece-core
 # Non-Empty Text
 - non-empty-text-0.2.0@sha256:7d1c1f9a11c78c00c656269f940d2fcccd3c2eaf6b619f66bb83a9ea72decc1f,2438

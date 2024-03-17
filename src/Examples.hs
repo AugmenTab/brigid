@@ -252,6 +252,7 @@ htmxExample =
                , A.hxExt $ HTML.extJsonEnc :| [ HTML.ignore HTML.extAjaxHeader ]
                , A.hxSelect divId
                , A.hxParams HTML.AllParams
+               , A.hxOn HTML.Click "alert(\"Hello!\")"
                ]
         [ E.text "Implicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [] ]
@@ -267,6 +268,7 @@ htmxExample =
                    . HTML.get B.NoPathParams
                    $ R.make B.NoPathParams /- "time_out"
                , A.hxParams $ HTML.Not [ customerIdParam ]
+               , A.hxOn HTML.HtmxLoad "alert(\"Loaded!\")"
                ]
         [ E.text "Explicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [ HTML.HxPrompt ] ]

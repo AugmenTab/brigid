@@ -5,6 +5,7 @@ module HTML.HTMX.Config
   ) where
 
 import Data.List.NonEmpty qualified as NEL
+import Fleece.Aeson qualified as FA
 import Fleece.Core ((#+))
 import Fleece.Core qualified as FC
 import Numeric.Natural (Natural)
@@ -49,7 +50,7 @@ data Config =
  -- , triggerSpecsCache       :: Maybe _
     }
 
-configSchema :: FC.Fleece schema => schema Config
+configSchema :: FA.Encoder Config
 configSchema =
   FC.object $
     FC.constructor Config
@@ -123,7 +124,7 @@ defaultConfig =
 
 attributeTypeSchema :: FC.Fleece schema => schema QS.AttributeType
 attributeTypeSchema =
-  FC.transform QS.attributeTypeToText QS.attributeTypeFromText FC.text
+  FC.validate QS.attributeTypeToText QS.attributeTypeFromText FC.text
 
 methodSchema :: FC.Fleece schema => schema Method
 methodSchema =

@@ -33,6 +33,19 @@ packages:
 - completed:
     commit: 1bf8a291f003d997f7f06044ddd72e20f3842e14
     git: https://github.com/flipstone/json-fleece.git
+    name: json-fleece-aeson
+    pantry-tree:
+      sha256: b55c6bc0c17b197442c7010d63d6e212a6be61f1dc03700332985d0d9dfd7301
+      size: 513
+    subdir: json-fleece-aeson
+    version: 0.3.4.0
+  original:
+    commit: 1bf8a291f003d997f7f06044ddd72e20f3842e14
+    git: https://github.com/flipstone/json-fleece.git
+    subdir: json-fleece-aeson
+- completed:
+    commit: 1bf8a291f003d997f7f06044ddd72e20f3842e14
+    git: https://github.com/flipstone/json-fleece.git
     name: json-fleece-core
     pantry-tree:
       sha256: c07c87f6d7fe693922d632b2ec25e95ed3eec1262e8bc9c2f38204bb8ecf5548

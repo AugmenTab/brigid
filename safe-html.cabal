@@ -99,6 +99,7 @@ library
     , containers
     , html-email-validate
     , http-types
+    , json-fleece-aeson
     , json-fleece-core
     , non-empty-text
     , shrubbery
@@ -131,6 +132,7 @@ test-suite safe-html-test
     , containers
     , html-email-validate
     , http-types
+    , json-fleece-aeson
     , json-fleece-core
     , non-empty-text
     , safe-html

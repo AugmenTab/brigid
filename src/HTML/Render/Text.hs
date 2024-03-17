@@ -602,6 +602,11 @@ renderAttribute attr =
     Attr_HxHistoryElt ->
       buildBooleanAttribute "hx-history" True
 
+    Attr_HxOn event action ->
+      Just
+        . buildAttribute ("hx-on" <> Types.hxOnEventText event)
+        $ Escape.attribute action
+
     Attr_HxParams params ->
       Just
         . buildAttribute "hx-params"
