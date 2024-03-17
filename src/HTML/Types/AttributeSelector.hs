@@ -1,3 +1,7 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
+
 module HTML.Types.AttributeSelector
   ( AttributeSelector
   , attributeSelectorToBytes
@@ -159,25 +163,44 @@ module HTML.Types.AttributeSelector
   ) where
 
 import Prelude hiding (id, max, min, span)
+import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
+import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
+import GHC.TypeLits (KnownNat)
+import Shrubbery.TypeList (FirstIndexOf)
 
-type AttributeSelector = (AttributeType, T.Text)
+import HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
+import HTML.Types.Class qualified as C
+import HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
+import HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
+import HTML.Types.Directionality (Directionality, directionalityToText)
+import HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
+import HTML.Types.Extension (Extension, extensionToText)
+import HTML.Types.Id qualified as Id
+import HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
+import HTML.Types.Method (Get, Post, Delete, Put, Patch)
+import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
+import HTML.Types.PopoverState (PopoverState, popoverStateToText)
+import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
+import HTML.Types.URL (RelativeURL, relativeURLToText)
+
+type AttributeSelector = (AttributeType, Maybe T.Text)
 
 attributeSelectorToBytes :: AttributeSelector -> LBS.ByteString
-attributeSelectorToBytes (attr, val) =
+attributeSelectorToBytes (attr, mbVal) =
   LBS.concat
     [ "["
     , attributeTypeToBytes attr
-    , "='"
-    , LBS.fromStrict (TE.encodeUtf8 val)
-    , "']"
+    , maybe "" (\v -> "='" <> LBS.fromStrict (TE.encodeUtf8 v) <> "'") mbVal
+    , "]"
     ]
 
 attributeSelectorToText :: AttributeSelector -> T.Text
-attributeSelectorToText (attr, val) =
-  "[" <> attributeTypeToText attr <> "='" <> val <> "']"
+attributeSelectorToText (attr, mbVal) =
+  let attrVal = maybe "" (\v -> "='" <> v <> "'") mbVal
+   in "[" <> attributeTypeToText attr <> attrVal <> "]"
 
 data AttributeType
   -- Custom Attribute
@@ -679,460 +702,608 @@ attributeTypeToText attr =
     Htmx_HxValidate    -> "hx-validate"
 
 customAttribute :: T.Text -> T.Text -> AttributeSelector
-customAttribute = (,) . CustomAttribute
+customAttribute attrName val = (CustomAttribute attrName, Just val)
 
-accesskey :: T.Text -> AttributeSelector
-accesskey = (,) AccessKey
+-- Global Attributes
+--
 
-autocapitalize :: T.Text -> AttributeSelector
-autocapitalize = (,) Autocapitalize
+accesskey :: Char -> AttributeSelector
+accesskey = (,) AccessKey . Just . T.singleton
+
+autocapitalize :: AutocapitalizeOption -> AttributeSelector
+autocapitalize = (,) Autocapitalize . Just . autocapitalizeOptionToText
 
 autofocus :: T.Text -> AttributeSelector
-autofocus = (,) Autofocus
+autofocus = (,) Autofocus . Just
 
-class_ :: T.Text -> AttributeSelector
-class_ = (,) Class
+class_ :: C.Class -> AttributeSelector
+class_ = (,) Class . Just . C.classToText
 
-contenteditable :: T.Text -> AttributeSelector
-contenteditable = (,) ContentEditable
+contenteditable :: ContentEditableOption -> AttributeSelector
+contenteditable = (,) ContentEditable . Just . contentEditableOptionToText
 
 customData :: T.Text -> T.Text -> AttributeSelector
-customData = (,) . CustomData
+customData dataName val = (CustomData dataName, Just val)
 
-dir :: T.Text -> AttributeSelector
-dir = (,) Dir
+dir :: Directionality -> AttributeSelector
+dir = (,) Dir . Just . directionalityToText
 
-draggable :: T.Text -> AttributeSelector
-draggable = (,) Draggable
+draggable :: Bool -> AttributeSelector
+draggable = (,) Draggable . Just . enumBoolToText
 
-enterkeyhint :: T.Text -> AttributeSelector
-enterkeyhint = (,) EnterKeyHint
+enterkeyhint :: KeyHintOption -> AttributeSelector
+enterkeyhint = (,) EnterKeyHint . Just . keyHintOptionToText
 
-exportparts :: T.Text -> AttributeSelector
-exportparts = (,) ExportParts
+exportparts :: NEL.NonEmpty ExportPart -> AttributeSelector
+exportparts =
+  (,) ExportParts
+    . Just
+    . T.intercalate ", "
+    . fmap exportPartToText
+    . NEL.toList
 
-hidden :: T.Text -> AttributeSelector
-hidden = (,) Hidden
+hidden :: AttributeSelector
+hidden = (Hidden, Nothing)
 
-id :: T.Text -> AttributeSelector
-id = (,) Id
+id :: Id.Id -> AttributeSelector
+id = (,) Id . Just . Id.idToText
 
-inert :: T.Text -> AttributeSelector
-inert = (,) Inert
+inert :: AttributeSelector
+inert = (Inert, Nothing)
 
+-- TODO
 inputmode :: T.Text -> AttributeSelector
-inputmode = (,) InputMode
+inputmode = (,) InputMode . Just
 
 is :: T.Text -> AttributeSelector
-is = (,) Is
+is = (,) Is . Just
 
+-- TODO
 itemid :: T.Text -> AttributeSelector
-itemid = (,) ItemId
+itemid = (,) ItemId . Just
 
+-- TODO
 itemprop :: T.Text -> AttributeSelector
-itemprop = (,) ItemProp
+itemprop = (,) ItemProp . Just
 
+-- TODO
 itemref :: T.Text -> AttributeSelector
-itemref = (,) ItemRef
+itemref = (,) ItemRef . Just
 
+-- TODO
 itemscope :: T.Text -> AttributeSelector
-itemscope = (,) ItemScope
+itemscope = (,) ItemScope . Just
 
+-- TODO
 itemtype :: T.Text -> AttributeSelector
-itemtype = (,) ItemType
+itemtype = (,) ItemType . Just
 
+-- TODO
 lang :: T.Text -> AttributeSelector
-lang = (,) Lang
+lang = (,) Lang . Just
 
+-- TODO
 nonce :: T.Text -> AttributeSelector
-nonce = (,) Nonce
+nonce = (,) Nonce . Just
 
-part :: T.Text -> AttributeSelector
-part = (,) Part
+part :: NEL.NonEmpty Part -> AttributeSelector
+part = (,) Part . Just . T.unwords . fmap partToText . NEL.toList
 
-popover :: T.Text -> AttributeSelector
-popover = (,) Popover
+popover :: PopoverState -> AttributeSelector
+popover = (,) Popover . Just . popoverStateToText
 
+-- TODO
 role :: T.Text -> AttributeSelector
-role = (,) Role
+role = (,) Role . Just
 
+-- TODO
 slot :: T.Text -> AttributeSelector
-slot = (,) Slot
+slot = (,) Slot . Just
 
-spellcheck :: T.Text -> AttributeSelector
-spellcheck = (,) Spellcheck
+spellcheck :: Bool -> AttributeSelector
+spellcheck = (,) Spellcheck . Just . enumBoolToText
 
 style :: T.Text -> AttributeSelector
-style = (,) Style
+style = (,) Style . Just
 
-tabindex :: T.Text -> AttributeSelector
-tabindex = (,) TabIndex
+tabindex :: Int -> AttributeSelector
+tabindex = (,) TabIndex . Just . showText
 
 title :: T.Text -> AttributeSelector
-title = (,) Title
+title = (,) Title . Just
 
-translate :: T.Text -> AttributeSelector
-translate = (,) Translate
+translate :: Bool -> AttributeSelector
+translate = (,) Translate . Just . enumBoolToText
 
+-- Scoped Attributes
+--
+
+-- TODO
 accept :: T.Text -> AttributeSelector
-accept = (,) Accept
+accept = (,) Accept . Just
 
+-- TODO
 acceptCharset :: T.Text -> AttributeSelector
-acceptCharset = (,) AcceptCharset
+acceptCharset = (,) AcceptCharset . Just
 
+-- TODO
 action :: T.Text -> AttributeSelector
-action = (,) Action
+action = (,) Action . Just
 
+-- TODO
 allow :: T.Text -> AttributeSelector
-allow = (,) Allow
+allow = (,) Allow . Just
 
+-- TODO
 alt :: T.Text -> AttributeSelector
-alt = (,) Alt
+alt = (,) Alt . Just
 
+-- TODO
 async :: T.Text -> AttributeSelector
-async = (,) Async
+async = (,) Async . Just
 
+-- TODO
 autocomplete :: T.Text -> AttributeSelector
-autocomplete = (,) Autocomplete
+autocomplete = (,) Autocomplete . Just
 
+-- TODO
 autoplay :: T.Text -> AttributeSelector
-autoplay = (,) Autoplay
+autoplay = (,) Autoplay . Just
 
+-- TODO
 background :: T.Text -> AttributeSelector
-background = (,) Background
+background = (,) Background . Just
 
+-- TODO
 bgcolor :: T.Text -> AttributeSelector
-bgcolor = (,) BackgroundColor
+bgcolor = (,) BackgroundColor . Just
 
+-- TODO
 border :: T.Text -> AttributeSelector
-border = (,) Border
+border = (,) Border . Just
 
+-- TODO
 capture :: T.Text -> AttributeSelector
-capture = (,) Capture
+capture = (,) Capture . Just
 
+-- TODO
 charset :: T.Text -> AttributeSelector
-charset = (,) Charset
+charset = (,) Charset . Just
 
+-- TODO
 checked :: T.Text -> AttributeSelector
-checked = (,) Checked
+checked = (,) Checked . Just
 
+-- TODO
 cite :: T.Text -> AttributeSelector
-cite = (,) Cite
+cite = (,) Cite . Just
 
+-- TODO
 color :: T.Text -> AttributeSelector
-color = (,) Color
+color = (,) Color . Just
 
+-- TODO
 cols :: T.Text -> AttributeSelector
-cols = (,) Cols
+cols = (,) Cols . Just
 
+-- TODO
 colspan :: T.Text -> AttributeSelector
-colspan = (,) Colspan
+colspan = (,) Colspan . Just
 
+-- TODO
 content :: T.Text -> AttributeSelector
-content = (,) Content
+content = (,) Content . Just
 
+-- TODO
 controls :: T.Text -> AttributeSelector
-controls = (,) Controls
+controls = (,) Controls . Just
 
+-- TODO
 coords :: T.Text -> AttributeSelector
-coords = (,) Coords
+coords = (,) Coords . Just
 
-crossorigin :: T.Text -> AttributeSelector
-crossorigin = (,) CrossOrigin
+crossorigin :: CrossOriginFetch -> AttributeSelector
+crossorigin = (,) CrossOrigin . Just . crossoriginFetchToText
 
+-- TODO
 data_ :: T.Text -> AttributeSelector
-data_ = (,) Data
+data_ = (,) Data . Just
 
+-- TODO
 datetime :: T.Text -> AttributeSelector
-datetime = (,) Datetime
+datetime = (,) Datetime . Just
 
+-- TODO
 decoding :: T.Text -> AttributeSelector
-decoding = (,) Decoding
+decoding = (,) Decoding . Just
 
+-- TODO
 default_ :: T.Text -> AttributeSelector
-default_ = (,) Default
+default_ = (,) Default . Just
 
+-- TODO
 defer :: T.Text -> AttributeSelector
-defer = (,) Defer
+defer = (,) Defer . Just
 
+-- TODO
 dirname :: T.Text -> AttributeSelector
-dirname = (,) Dirname
+dirname = (,) Dirname . Just
 
-disabled :: T.Text -> AttributeSelector
-disabled = (,) Disabled
+disabled :: AttributeSelector
+disabled = (Disabled, Nothing)
 
+-- TODO
 download :: T.Text -> AttributeSelector
-download = (,) Download
+download = (,) Download . Just
 
+-- TODO
 enctype :: T.Text -> AttributeSelector
-enctype = (,) Enctype
+enctype = (,) Enctype . Just
 
+-- TODO
 for :: T.Text -> AttributeSelector
-for = (,) For
+for = (,) For . Just
 
+-- TODO
 form :: T.Text -> AttributeSelector
-form = (,) Form
+form = (,) Form . Just
 
+-- TODO
 formaction :: T.Text -> AttributeSelector
-formaction = (,) FormAction
+formaction = (,) FormAction . Just
 
+-- TODO
 formenctype :: T.Text -> AttributeSelector
-formenctype = (,) FormEnctype
+formenctype = (,) FormEnctype . Just
 
+-- TODO
 formmethod :: T.Text -> AttributeSelector
-formmethod = (,) FormMethod
+formmethod = (,) FormMethod . Just
 
+-- TODO
 formnovalidate :: T.Text -> AttributeSelector
-formnovalidate = (,) FormNoValidate
+formnovalidate = (,) FormNoValidate . Just
 
+-- TODO
 formtarget :: T.Text -> AttributeSelector
-formtarget = (,) FormTarget
+formtarget = (,) FormTarget . Just
 
+-- TODO
 headers :: T.Text -> AttributeSelector
-headers = (,) Headers
+headers = (,) Headers . Just
 
+-- TODO
 height :: T.Text -> AttributeSelector
-height = (,) Height
+height = (,) Height . Just
 
+-- TODO
 high :: T.Text -> AttributeSelector
-high = (,) High
+high = (,) High . Just
 
+-- TODO
 href :: T.Text -> AttributeSelector
-href = (,) Href
+href = (,) Href . Just
 
+-- TODO
 hreflang :: T.Text -> AttributeSelector
-hreflang = (,) HrefLang
+hreflang = (,) HrefLang . Just
 
+-- TODO
 httpEquiv :: T.Text -> AttributeSelector
-httpEquiv = (,) HttpEquiv
+httpEquiv = (,) HttpEquiv . Just
 
+-- TODO
 integrity :: T.Text -> AttributeSelector
-integrity = (,) Integrity
+integrity = (,) Integrity . Just
 
+-- TODO
 ismap :: T.Text -> AttributeSelector
-ismap = (,) IsMap
+ismap = (,) IsMap . Just
 
+-- TODO
 kind :: T.Text -> AttributeSelector
-kind = (,) Kind
+kind = (,) Kind . Just
 
+-- TODO
 label :: T.Text -> AttributeSelector
-label = (,) Label
+label = (,) Label . Just
 
+-- TODO
 list :: T.Text -> AttributeSelector
-list = (,) List
+list = (,) List . Just
 
+-- TODO
 loop :: T.Text -> AttributeSelector
-loop = (,) Loop
+loop = (,) Loop . Just
 
+-- TODO
 low :: T.Text -> AttributeSelector
-low = (,) Low
+low = (,) Low . Just
 
+-- TODO
 max :: T.Text -> AttributeSelector
-max = (,) Max
+max = (,) Max . Just
 
+-- TODO
 maxlength :: T.Text -> AttributeSelector
-maxlength = (,) MaxLength
+maxlength = (,) MaxLength . Just
 
+-- TODO
 minlength :: T.Text -> AttributeSelector
-minlength = (,) MinLength
+minlength = (,) MinLength . Just
 
+-- TODO
 media :: T.Text -> AttributeSelector
-media = (,) Media
+media = (,) Media . Just
 
+-- TODO
 method :: T.Text -> AttributeSelector
-method = (,) Method
+method = (,) Method . Just
 
+-- TODO
 min :: T.Text -> AttributeSelector
-min = (,) Min
+min = (,) Min . Just
 
+-- TODO
 multiple :: T.Text -> AttributeSelector
-multiple = (,) Multiple
+multiple = (,) Multiple . Just
 
+-- TODO
 muted :: T.Text -> AttributeSelector
-muted = (,) Muted
+muted = (,) Muted . Just
 
+-- TODO
 name :: T.Text -> AttributeSelector
-name = (,) Name
+name = (,) Name . Just
 
+-- TODO
 novalidate :: T.Text -> AttributeSelector
-novalidate = (,) NoValidate
+novalidate = (,) NoValidate . Just
 
+-- TODO
 open :: T.Text -> AttributeSelector
-open = (,) Open
+open = (,) Open . Just
 
+-- TODO
 optimum :: T.Text -> AttributeSelector
-optimum = (,) Optimum
+optimum = (,) Optimum . Just
 
+-- TODO
 pattern :: T.Text -> AttributeSelector
-pattern = (,) Pattern
+pattern = (,) Pattern . Just
 
+-- TODO
 ping :: T.Text -> AttributeSelector
-ping = (,) Ping
+ping = (,) Ping . Just
 
+-- TODO
 placeholder :: T.Text -> AttributeSelector
-placeholder = (,) Placeholder
+placeholder = (,) Placeholder . Just
 
+-- TODO
 playsinline :: T.Text -> AttributeSelector
-playsinline = (,) PlaysInline
+playsinline = (,) PlaysInline . Just
 
+-- TODO
 poster :: T.Text -> AttributeSelector
-poster = (,) Poster
+poster = (,) Poster . Just
 
+-- TODO
 preload :: T.Text -> AttributeSelector
-preload = (,) Preload
+preload = (,) Preload . Just
 
+-- TODO
 readonly :: T.Text -> AttributeSelector
-readonly = (,) ReadOnly
+readonly = (,) ReadOnly . Just
 
+-- TODO
 referrerpolicy :: T.Text -> AttributeSelector
-referrerpolicy = (,) ReferrerPolicy
+referrerpolicy = (,) ReferrerPolicy . Just
 
+-- TODO
 rel :: T.Text -> AttributeSelector
-rel = (,) Rel
+rel = (,) Rel . Just
 
+-- TODO
 required :: T.Text -> AttributeSelector
-required = (,) Required
+required = (,) Required . Just
 
+-- TODO
 reversed :: T.Text -> AttributeSelector
-reversed = (,) Reversed
+reversed = (,) Reversed . Just
 
+-- TODO
 rows :: T.Text -> AttributeSelector
-rows = (,) Rows
+rows = (,) Rows . Just
 
+-- TODO
 rowspan :: T.Text -> AttributeSelector
-rowspan = (,) Rowspan
+rowspan = (,) Rowspan . Just
 
+-- TODO
 sandbox :: T.Text -> AttributeSelector
-sandbox = (,) Sandbox
+sandbox = (,) Sandbox . Just
 
+-- TODO
 scope :: T.Text -> AttributeSelector
-scope = (,) Scope
+scope = (,) Scope . Just
 
+-- TODO
 selected :: T.Text -> AttributeSelector
-selected = (,) Selected
+selected = (,) Selected . Just
 
+-- TODO
 shape :: T.Text -> AttributeSelector
-shape = (,) Shape
+shape = (,) Shape . Just
 
+-- TODO
 size :: T.Text -> AttributeSelector
-size = (,) Size
+size = (,) Size . Just
 
+-- TODO
 sizes :: T.Text -> AttributeSelector
-sizes = (,) Sizes
+sizes = (,) Sizes . Just
 
+-- TODO
 span :: T.Text -> AttributeSelector
-span = (,) Span
+span = (,) Span . Just
 
+-- TODO
 src :: T.Text -> AttributeSelector
-src = (,) Src
+src = (,) Src . Just
 
+-- TODO
 srcdoc :: T.Text -> AttributeSelector
-srcdoc = (,) SrcDoc
+srcdoc = (,) SrcDoc . Just
 
+-- TODO
 srclang :: T.Text -> AttributeSelector
-srclang = (,) SrcLang
+srclang = (,) SrcLang . Just
 
+-- TODO
 srcset :: T.Text -> AttributeSelector
-srcset = (,) SrcSet
+srcset = (,) SrcSet . Just
 
+-- TODO
 start :: T.Text -> AttributeSelector
-start = (,) Start
+start = (,) Start . Just
 
+-- TODO
 step :: T.Text -> AttributeSelector
-step = (,) Step
+step = (,) Step . Just
 
+-- TODO
 target :: T.Text -> AttributeSelector
-target = (,) Target
+target = (,) Target . Just
 
+-- TODO
 type_ :: T.Text -> AttributeSelector
-type_ = (,) Type
+type_ = (,) Type . Just
 
+-- TODO
 usemap :: T.Text -> AttributeSelector
-usemap = (,) UseMap
+usemap = (,) UseMap . Just
 
+-- TODO
 value :: T.Text -> AttributeSelector
-value = (,) Value
+value = (,) Value . Just
 
+-- TODO
 width :: T.Text -> AttributeSelector
-width = (,) Width
+width = (,) Width . Just
 
+-- TODO
 wrap :: T.Text -> AttributeSelector
-wrap = (,) Wrap
+wrap = (,) Wrap . Just
 
-hxGet :: T.Text -> AttributeSelector
-hxGet = (,) Htmx_HxGet
+-- HTMX Attributes
+--
 
-hxPost :: T.Text -> AttributeSelector
-hxPost = (,) Htmx_HxPost
+hxGet :: RelativeURL Get -> AttributeSelector
+hxGet = (,) Htmx_HxGet . Just . relativeURLToText
 
-hxDelete :: T.Text -> AttributeSelector
-hxDelete = (,) Htmx_HxDelete
+hxPost :: RelativeURL Post -> AttributeSelector
+hxPost = (,) Htmx_HxPost . Just . relativeURLToText
 
-hxPatch :: T.Text -> AttributeSelector
-hxPatch = (,) Htmx_HxPatch
+hxDelete :: RelativeURL Delete -> AttributeSelector
+hxDelete = (,) Htmx_HxDelete . Just . relativeURLToText
 
-hxPut :: T.Text -> AttributeSelector
-hxPut = (,) Htmx_HxPut
+hxPatch :: RelativeURL Patch -> AttributeSelector
+hxPatch = (,) Htmx_HxPatch . Just . relativeURLToText
 
+hxPut :: RelativeURL Put -> AttributeSelector
+hxPut = (,) Htmx_HxPut . Just . relativeURLToText
+
+-- TODO
 hxOn :: T.Text -> AttributeSelector
-hxOn = (,) Htmx_HxOn
+hxOn = (,) Htmx_HxOn . Just
 
-hxPushURL :: T.Text -> AttributeSelector
-hxPushURL = (,) Htmx_HxPushURL
+hxPushURL :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf url PushURLTypes
+             )
+          => url -> AttributeSelector
+hxPushURL = (,) Htmx_HxPushURL . Just . pushURLToText . mkPushURL
 
-hxBoost :: T.Text -> AttributeSelector
-hxBoost = (,) Htmx_HxBoost
+hxBoost :: Bool -> AttributeSelector
+hxBoost = (,) Htmx_HxBoost . Just . enumBoolToText
 
 hxConfirm :: T.Text -> AttributeSelector
-hxConfirm = (,) Htmx_HxConfirm
+hxConfirm = (,) Htmx_HxConfirm . Just
 
-hxDisable :: T.Text -> AttributeSelector
-hxDisable = (,) Htmx_HxDisable
+hxDisable :: AttributeSelector
+hxDisable = (Htmx_HxDisable, Nothing)
 
+-- TODO
 hxDisabledElt :: T.Text -> AttributeSelector
-hxDisabledElt = (,) Htmx_HxDisabledElt
+hxDisabledElt = (,) Htmx_HxDisabledElt . Just
 
-hxDisinherit :: T.Text -> AttributeSelector
-hxDisinherit = (,) Htmx_HxDisinherit
+hxDisinherit :: ( KnownNat branchIndex
+                , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
+                )
+             => disinherit -> AttributeSelector
+hxDisinherit = (,) Htmx_HxDisinherit . Just . disinheritToText . mkDisinherit
 
-hxEncoding :: T.Text -> AttributeSelector
-hxEncoding = (,) Htmx_HxEncoding
+hxEncoding :: AttributeSelector
+hxEncoding = (Htmx_HxEncoding, Just "multipart/form-data")
 
-hxExt :: T.Text -> AttributeSelector
-hxExt = (,) Htmx_HxExt
+hxExt :: NEL.NonEmpty Extension -> AttributeSelector
+hxExt =
+  (,) Htmx_HxExt
+    . Just
+    . T.intercalate ","
+    . fmap extensionToText
+    . NEL.toList
 
+-- TODO
 hxHeaders :: T.Text -> AttributeSelector
-hxHeaders = (,) Htmx_HxHeaders
+hxHeaders = (,) Htmx_HxHeaders . Just
 
-hxHistory :: T.Text -> AttributeSelector
-hxHistory = (,) Htmx_HxHistory
+hxHistory :: AttributeSelector
+hxHistory = (Htmx_HxHistory, Just "false")
 
-hxHistoryElt :: T.Text -> AttributeSelector
-hxHistoryElt = (,) Htmx_HxHistoryElt
+hxHistoryElt :: AttributeSelector
+hxHistoryElt = (Htmx_HxHistoryElt, Nothing)
 
+-- TODO
 hxInclude :: T.Text -> AttributeSelector
-hxInclude = (,) Htmx_HxInclude
+hxInclude = (,) Htmx_HxInclude . Just
 
+-- TODO
 hxIndicator :: T.Text -> AttributeSelector
-hxIndicator = (,) Htmx_HxIndicator
+hxIndicator = (,) Htmx_HxIndicator . Just
 
+-- TODO
 hxParams :: T.Text -> AttributeSelector
-hxParams = (,) Htmx_HxParams
+hxParams = (,) Htmx_HxParams . Just
 
+-- TODO
 hxPreserve :: T.Text -> AttributeSelector
-hxPreserve = (,) Htmx_HxPreserve
+hxPreserve = (,) Htmx_HxPreserve . Just
 
 hxPrompt :: T.Text -> AttributeSelector
-hxPrompt = (,) Htmx_HxPrompt
+hxPrompt = (,) Htmx_HxPrompt . Just
 
-hxReplaceURL :: T.Text -> AttributeSelector
-hxReplaceURL = (,) Htmx_HxReplaceURL
+hxReplaceURL :: ( KnownNat branchIndex
+                , branchIndex ~ FirstIndexOf url PushURLTypes
+                )
+             => url -> AttributeSelector
+hxReplaceURL = (,) Htmx_HxReplaceURL . Just . pushURLToText . mkPushURL
 
+-- TODO
 hxRequest :: T.Text -> AttributeSelector
-hxRequest = (,) Htmx_HxRequest
+hxRequest = (,) Htmx_HxRequest . Just
 
+-- TODO
 hxSync :: T.Text -> AttributeSelector
-hxSync = (,) Htmx_HxSync
+hxSync = (,) Htmx_HxSync . Just
 
-hxValidate :: T.Text -> AttributeSelector
-hxValidate = (,) Htmx_HxValidate
+hxValidate :: AttributeSelector
+hxValidate = (Htmx_HxValidate, Nothing)
+
+-- Helpers
+--
+enumBoolToText :: Bool -> T.Text
+enumBoolToText = B.bool "false" "true"
+
+showText :: Show s => s -> T.Text
+showText = T.pack . show

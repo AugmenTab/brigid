@@ -40,11 +40,10 @@ disabled :: ValidAttribute 'Disabled tag => Attribute tag
 disabled = disable True
 
 href :: ( KnownNat branchIndex
-        , branchIndex ~ FirstIndexOf a (Types.HrefTypes Types.Get)
-        , ValidHref a tag
+        , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
+        , ValidHref href tag
         , ValidAttribute 'Href tag
         )
-     => a
-     -> Attribute tag
+     => href -> Attribute tag
 href =
   Attr_Href . Types.mkHref

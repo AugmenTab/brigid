@@ -310,7 +310,7 @@ elementQuerySelectorExample =
             []
             ( Just $
                 HTML.td
-                  (Just $ HTML.id "cellA3")
+                  (Just $ HTML.disabled)
                   [ HTML.not . HTML.toClassSelector $ HTML.Class "main" ]
                   Nothing
             )
