@@ -58,6 +58,7 @@ library
       HTML.Types.Directionality
       HTML.Types.Disinherit
       HTML.Types.Email
+      HTML.Types.Event
       HTML.Types.Extension
       HTML.Types.Href
       HTML.Types.Id
