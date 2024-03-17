@@ -51,6 +51,7 @@ module HTML.Attributes.Internal
       , Attr_HxExt
       , Attr_HxHistory
       , Attr_HxHistoryElt
+      , Attr_HxParams
       , Attr_HxPreserve
       , Attr_HxPrompt
       , Attr_HxPushURL
@@ -723,6 +724,10 @@ data Attribute (tag :: TagType) where
   Attr_HxHistoryElt
     :: Attribute tag
 
+  Attr_HxParams
+    :: Types.RequestParams
+    -> Attribute tag
+
   Attr_HxPreserve
     :: Bool
     -> Attribute tag
@@ -880,6 +885,9 @@ attributeText attr =
 
     Attr_HxHistoryElt ->
       "hx-history-elt"
+
+    Attr_HxParams _params ->
+      "hx-params"
 
     Attr_HxPreserve _preserved ->
       "hx-preserve"

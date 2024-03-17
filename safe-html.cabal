@@ -71,6 +71,7 @@ library
       HTML.Types.PushURL
       HTML.Types.QuerySelector
       HTML.Types.Reachability
+      HTML.Types.RequestParams
       HTML.Types.This
       HTML.Types.URL
   other-modules:

@@ -602,6 +602,12 @@ renderAttribute attr =
     Attr_HxHistoryElt ->
       buildBooleanAttribute "hx-history" True
 
+    Attr_HxParams params ->
+      Just
+        . buildAttribute "hx-params"
+        . Escape.attribute
+        $ Types.requestParamsToText params
+
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
 

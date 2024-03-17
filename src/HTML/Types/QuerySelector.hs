@@ -320,6 +320,7 @@ import HTML.Types.NoContent (NoContent)
 import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
+import HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
 
 newtype QuerySelector =
@@ -2519,9 +2520,8 @@ hxInclude = (,) Htmx_HxInclude . Just
 hxIndicator :: T.Text -> AttributeSelector
 hxIndicator = (,) Htmx_HxIndicator . Just
 
--- TODO
-hxParams :: T.Text -> AttributeSelector
-hxParams = (,) Htmx_HxParams . Just
+hxParams :: RequestParams -> AttributeSelector
+hxParams = (,) Htmx_HxParams . Just . requestParamsToText
 
 hxPatch :: RelativeURL Patch -> AttributeSelector
 hxPatch = (,) Htmx_HxPatch . Just . relativeURLToText

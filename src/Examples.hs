@@ -1,6 +1,7 @@
 module Examples
   ( documentExample
   , example
+  , htmxExample
   , idQuerySelectorExample
   , classQuerySelectorExample
   , elementQuerySelectorExample
@@ -237,7 +238,10 @@ deleteCustomer route =
   HTML.delete route $
     R.make DeleteCustomer
       /- "customers"
-      /+ R.Param (R.coerceParam $ R.intParam "customerId") deleteCustomerId
+      /+ R.Param (R.coerceParam $ R.intParam customerIdParam) deleteCustomerId
+
+customerIdParam :: T.Text
+customerIdParam = "customerId"
 
 -- This example demonstrates HTMX content.
 htmxExample :: E.ChildHTML E.Body grandparent
@@ -247,6 +251,7 @@ htmxExample =
                , A.hxPushURL True
                , A.hxExt $ HTML.extJsonEnc :| [ HTML.ignore HTML.extAjaxHeader ]
                , A.hxSelect divId
+               , A.hxParams HTML.AllParams
                ]
         [ E.text "Implicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [] ]
@@ -261,6 +266,7 @@ htmxExample =
                , A.hxPushURL
                    . HTML.get B.NoPathParams
                    $ R.make B.NoPathParams /- "time_out"
+               , A.hxParams $ HTML.Not [ customerIdParam ]
                ]
         [ E.text "Explicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [ HTML.HxPrompt ] ]

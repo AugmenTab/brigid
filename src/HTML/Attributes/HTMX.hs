@@ -17,6 +17,7 @@ module HTML.Attributes.HTMX
   , hxExt
   , hxHistory
   , hxHistoryElt
+  , hxParams
   , hxPatch
   , hxPreserve
   , hxPreserved
@@ -125,7 +126,8 @@ hxHistoryElt = Attr_HxHistoryElt
 
 -- hx-indicator
 
--- hx-params
+hxParams :: Types.RequestParams -> Attribute tag
+hxParams = Attr_HxParams
 
 hxPreserve :: Bool -> Attribute tag
 hxPreserve = Attr_HxPreserve
