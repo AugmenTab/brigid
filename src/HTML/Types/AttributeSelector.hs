@@ -178,6 +178,7 @@ import HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
 import HTML.Types.Directionality (Directionality, directionalityToText)
 import HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
 import HTML.Types.Extension (Extension, extensionToText)
+import HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import HTML.Types.Id qualified as Id
 import HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import HTML.Types.Method (Get, Post, Delete, Put, Patch)
@@ -980,9 +981,11 @@ height = (,) Height . Just
 high :: T.Text -> AttributeSelector
 high = (,) High . Just
 
--- TODO
-href :: T.Text -> AttributeSelector
-href = (,) Href . Just
+href :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf href HrefSelectorTypes
+        )
+     => href -> AttributeSelector
+href = (,) Href . Just . hrefSelectorToText . mkHrefSelector
 
 -- TODO
 hreflang :: T.Text -> AttributeSelector

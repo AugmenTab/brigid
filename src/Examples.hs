@@ -312,6 +312,11 @@ elementQuerySelectorExample =
                 HTML.td
                   (Just $ HTML.disabled)
                   [ HTML.not . HTML.toClassSelector $ HTML.Class "main" ]
-                  Nothing
+                  ( Just $
+                      HTML.a
+                        (Just . HTML.href . exampleURL $ GetCustomer 1)
+                        []
+                        Nothing
+                  )
             )
       )
