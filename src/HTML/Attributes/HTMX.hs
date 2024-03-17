@@ -18,6 +18,8 @@ module HTML.Attributes.HTMX
   , hxHistory
   , hxHistoryElt
   , hxPatch
+  , hxPreserve
+  , hxPreserved
   , hxPrompt
   , hxPut
   , hxReplaceURL
@@ -125,7 +127,11 @@ hxHistoryElt = Attr_HxHistoryElt
 
 -- hx-params
 
--- hx-preserve
+hxPreserve :: Bool -> Attribute tag
+hxPreserve = Attr_HxPreserve
+
+hxPreserved :: Attribute tag
+hxPreserved = hxPreserve True
 
 hxPrompt :: T.Text -> Attribute tag
 hxPrompt = Attr_HxPrompt

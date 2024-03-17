@@ -2526,9 +2526,8 @@ hxParams = (,) Htmx_HxParams . Just
 hxPatch :: RelativeURL Patch -> AttributeSelector
 hxPatch = (,) Htmx_HxPatch . Just . relativeURLToText
 
--- TODO
-hxPreserve :: T.Text -> AttributeSelector
-hxPreserve = (,) Htmx_HxPreserve . Just
+hxPreserve :: AttributeSelector
+hxPreserve = (Htmx_HxPreserve, Nothing)
 
 hxPrompt :: T.Text -> AttributeSelector
 hxPrompt = (,) Htmx_HxPrompt . Just

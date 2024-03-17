@@ -51,8 +51,9 @@ module HTML.Attributes.Internal
       , Attr_HxExt
       , Attr_HxHistory
       , Attr_HxHistoryElt
-      , Attr_HxPushURL
+      , Attr_HxPreserve
       , Attr_HxPrompt
+      , Attr_HxPushURL
       , Attr_HxReplaceURL
       , Attr_HxSelect
       , Attr_HxValidate
@@ -722,12 +723,16 @@ data Attribute (tag :: TagType) where
   Attr_HxHistoryElt
     :: Attribute tag
 
-  Attr_HxPushURL
-    :: Types.PushURL
+  Attr_HxPreserve
+    :: Bool
     -> Attribute tag
 
   Attr_HxPrompt
     :: T.Text
+    -> Attribute tag
+
+  Attr_HxPushURL
+    :: Types.PushURL
     -> Attribute tag
 
   Attr_HxReplaceURL
@@ -876,11 +881,14 @@ attributeText attr =
     Attr_HxHistoryElt ->
       "hx-history-elt"
 
-    Attr_HxPushURL _url ->
-      "hx-push-url"
+    Attr_HxPreserve _preserved ->
+      "hx-preserve"
 
     Attr_HxPrompt _prompt ->
       "hx-prompt"
+
+    Attr_HxPushURL _url ->
+      "hx-push-url"
 
     Attr_HxReplaceURL _url ->
       "hx-replace-url"
