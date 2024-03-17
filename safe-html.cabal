@@ -44,6 +44,7 @@ library
       HTML.Elements.TagGroups
       HTML.Elements.Tags
       HTML.Elements.TagType
+      HTML.HTMX.Config
       HTML.Internal.TagOperations
       HTML.Render.ByteString
       HTML.Render.Internal.Escape
@@ -97,6 +98,8 @@ library
     , containers
     , html-email-validate
     , http-types
+    , json-fleece-core
+    , non-empty-text
     , shrubbery
     , text
   default-language: Haskell2010
@@ -127,6 +130,8 @@ test-suite safe-html-test
     , containers
     , html-email-validate
     , http-types
+    , json-fleece-core
+    , non-empty-text
     , safe-html
     , shrubbery
     , text

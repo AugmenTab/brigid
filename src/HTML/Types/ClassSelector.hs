@@ -14,7 +14,7 @@ import HTML.Types.Negatable (Negatable(not))
 
 data ClassSelector =
   ClassSelector
-    { classSelectorClass :: Class
+    { classSelectorClass    :: Class
     , classSelectorExcluded :: Bool
     }
 

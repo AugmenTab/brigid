@@ -291,6 +291,170 @@ module HTML.Types.QuerySelector
   , hxRequest
   , hxSync
   , hxValidate
+  , AttributeType
+      ( Attr_CustomAttribute
+      , Attr_AccessKey
+      , Attr_Autocapitalize
+      , Attr_Autofocus
+      , Attr_Class
+      , Attr_ContentEditable
+      , Attr_CustomData
+      , Attr_Dir
+      , Attr_Draggable
+      , Attr_EnterKeyHint
+      , Attr_ExportParts
+      , Attr_Hidden
+      , Attr_Id
+      , Attr_Inert
+      , Attr_InputMode
+      , Attr_Is
+      , Attr_ItemId
+      , Attr_ItemProp
+      , Attr_ItemRef
+      , Attr_ItemScope
+      , Attr_ItemType
+      , Attr_Lang
+      , Attr_Nonce
+      , Attr_Part
+      , Attr_Popover
+      , Attr_Role
+      , Attr_Slot
+      , Attr_Spellcheck
+      , Attr_Style
+      , Attr_TabIndex
+      , Attr_Title
+      , Attr_Translate
+      , Attr_Accept
+      , Attr_AcceptCharset
+      , Attr_Action
+      , Attr_Allow
+      , Attr_Alt
+      , Attr_Async
+      , Attr_Autocomplete
+      , Attr_Autoplay
+      , Attr_Background
+      , Attr_BackgroundColor
+      , Attr_Border
+      , Attr_Capture
+      , Attr_Charset
+      , Attr_Checked
+      , Attr_Cite
+      , Attr_Color
+      , Attr_Cols
+      , Attr_Colspan
+      , Attr_Content
+      , Attr_Controls
+      , Attr_Coords
+      , Attr_CrossOrigin
+      , Attr_Data
+      , Attr_Datetime
+      , Attr_Decoding
+      , Attr_Default
+      , Attr_Defer
+      , Attr_Dirname
+      , Attr_Disabled
+      , Attr_Download
+      , Attr_Enctype
+      , Attr_For
+      , Attr_Form
+      , Attr_FormAction
+      , Attr_FormEnctype
+      , Attr_FormMethod
+      , Attr_FormNoValidate
+      , Attr_FormTarget
+      , Attr_Headers
+      , Attr_Height
+      , Attr_High
+      , Attr_Href
+      , Attr_HrefLang
+      , Attr_HttpEquiv
+      , Attr_Integrity
+      , Attr_IsMap
+      , Attr_Kind
+      , Attr_Label
+      , Attr_List
+      , Attr_Loop
+      , Attr_Low
+      , Attr_Max
+      , Attr_MaxLength
+      , Attr_MinLength
+      , Attr_Media
+      , Attr_Method
+      , Attr_Min
+      , Attr_Multiple
+      , Attr_Muted
+      , Attr_Name
+      , Attr_NoValidate
+      , Attr_Open
+      , Attr_Optimum
+      , Attr_Pattern
+      , Attr_Ping
+      , Attr_Placeholder
+      , Attr_PlaysInline
+      , Attr_Poster
+      , Attr_Preload
+      , Attr_ReadOnly
+      , Attr_ReferrerPolicy
+      , Attr_Rel
+      , Attr_Required
+      , Attr_Reversed
+      , Attr_Rows
+      , Attr_Rowspan
+      , Attr_Sandbox
+      , Attr_Scope
+      , Attr_Selected
+      , Attr_Shape
+      , Attr_Size
+      , Attr_Sizes
+      , Attr_Span
+      , Attr_Src
+      , Attr_SrcDoc
+      , Attr_SrcLang
+      , Attr_SrcSet
+      , Attr_Start
+      , Attr_Step
+      , Attr_Target
+      , Attr_Type
+      , Attr_UseMap
+      , Attr_Value
+      , Attr_Width
+      , Attr_Wrap
+      , Attr_HxGet
+      , Attr_HxPost
+      , Attr_HxOn
+      , Attr_HxPushURL
+      , Attr_HxSelect
+      , Attr_HxSelectOOB
+      , Attr_HxSwap
+      , Attr_HxSwapOOB
+      , Attr_HxTarget
+      , Attr_HxTrigger
+      , Attr_HxVals
+      , Attr_HxBoost
+      , Attr_HxConfirm
+      , Attr_HxDelete
+      , Attr_HxDisable
+      , Attr_HxDisabledElt
+      , Attr_HxDisinherit
+      , Attr_HxEncoding
+      , Attr_HxExt
+      , Attr_HxHeaders
+      , Attr_HxHistory
+      , Attr_HxHistoryElt
+      , Attr_HxInclude
+      , Attr_HxIndicator
+      , Attr_HxParams
+      , Attr_HxPatch
+      , Attr_HxPreserve
+      , Attr_HxPrompt
+      , Attr_HxPut
+      , Attr_HxReplaceURL
+      , Attr_HxRequest
+      , Attr_HxSync
+      , Attr_HxValidate
+      )
+  , attributeTypeFromText
+  , attributeTypeToText
   ) where
 
 import Prelude hiding (div, head, id, map, max, min, span)
@@ -1405,1098 +1569,1316 @@ attributeSelectorToText (attr, mbVal) =
 
 data AttributeType
   -- Custom Attribute
-  = CustomAttribute T.Text
+  = Attr_CustomAttribute T.Text
 
   -- Global Attributes
   --
-  | AccessKey
-  | Autocapitalize
-  | Autofocus
-  | Class
-  | ContentEditable
-  | CustomData T.Text
-  | Dir
-  | Draggable
-  | EnterKeyHint
-  | ExportParts
-  | Hidden
-  | Id
-  | Inert
-  | InputMode
-  | Is
-  | ItemId
-  | ItemProp
-  | ItemRef
-  | ItemScope
-  | ItemType
-  | Lang
-  | Nonce
-  | Part
-  | Popover
-  | Role
-  | Slot
-  | Spellcheck
-  | Style
-  | TabIndex
-  | Title
-  | Translate
+  | Attr_AccessKey
+  | Attr_Autocapitalize
+  | Attr_Autofocus
+  | Attr_Class
+  | Attr_ContentEditable
+  | Attr_CustomData T.Text
+  | Attr_Dir
+  | Attr_Draggable
+  | Attr_EnterKeyHint
+  | Attr_ExportParts
+  | Attr_Hidden
+  | Attr_Id
+  | Attr_Inert
+  | Attr_InputMode
+  | Attr_Is
+  | Attr_ItemId
+  | Attr_ItemProp
+  | Attr_ItemRef
+  | Attr_ItemScope
+  | Attr_ItemType
+  | Attr_Lang
+  | Attr_Nonce
+  | Attr_Part
+  | Attr_Popover
+  | Attr_Role
+  | Attr_Slot
+  | Attr_Spellcheck
+  | Attr_Style
+  | Attr_TabIndex
+  | Attr_Title
+  | Attr_Translate
 
   -- Scoped Attributes
   --
-  | Accept
-  | AcceptCharset
-  | Action
-  | Allow
-  | Alt
-  | Async
-  | Autocomplete
-  | Autoplay
-  | Background
-  | BackgroundColor
-  | Border
-  | Capture
-  | Charset
-  | Checked
-  | Cite
-  | Color
-  | Cols
-  | Colspan
-  | Content
-  | Controls
-  | Coords
-  | CrossOrigin
-  | Data
-  | Datetime
-  | Decoding
-  | Default
-  | Defer
-  | Dirname
-  | Disabled
-  | Download
-  | Enctype
-  | For
-  | Form
-  | FormAction
-  | FormEnctype
-  | FormMethod
-  | FormNoValidate
-  | FormTarget
-  | Headers
-  | Height
-  | High
-  | Href
-  | HrefLang
-  | HttpEquiv
-  | Integrity
-  | IsMap
-  | Kind
-  | Label
-  | List
-  | Loop
-  | Low
-  | Max
-  | MaxLength
-  | MinLength
-  | Media
-  | Method
-  | Min
-  | Multiple
-  | Muted
-  | Name
-  | NoValidate
-  | Open
-  | Optimum
-  | Pattern
-  | Ping
-  | Placeholder
-  | PlaysInline
-  | Poster
-  | Preload
-  | ReadOnly
-  | ReferrerPolicy
-  | Rel
-  | Required
-  | Reversed
-  | Rows
-  | Rowspan
-  | Sandbox
-  | Scope
-  | Selected
-  | Shape
-  | Size
-  | Sizes
-  | Span
-  | Src
-  | SrcDoc
-  | SrcLang
-  | SrcSet
-  | Start
-  | Step
-  | Target
-  | Type
-  | UseMap
-  | Value
-  | Width
-  | Wrap
+  | Attr_Accept
+  | Attr_AcceptCharset
+  | Attr_Action
+  | Attr_Allow
+  | Attr_Alt
+  | Attr_Async
+  | Attr_Autocomplete
+  | Attr_Autoplay
+  | Attr_Background
+  | Attr_BackgroundColor
+  | Attr_Border
+  | Attr_Capture
+  | Attr_Charset
+  | Attr_Checked
+  | Attr_Cite
+  | Attr_Color
+  | Attr_Cols
+  | Attr_Colspan
+  | Attr_Content
+  | Attr_Controls
+  | Attr_Coords
+  | Attr_CrossOrigin
+  | Attr_Data
+  | Attr_Datetime
+  | Attr_Decoding
+  | Attr_Default
+  | Attr_Defer
+  | Attr_Dirname
+  | Attr_Disabled
+  | Attr_Download
+  | Attr_Enctype
+  | Attr_For
+  | Attr_Form
+  | Attr_FormAction
+  | Attr_FormEnctype
+  | Attr_FormMethod
+  | Attr_FormNoValidate
+  | Attr_FormTarget
+  | Attr_Headers
+  | Attr_Height
+  | Attr_High
+  | Attr_Href
+  | Attr_HrefLang
+  | Attr_HttpEquiv
+  | Attr_Integrity
+  | Attr_IsMap
+  | Attr_Kind
+  | Attr_Label
+  | Attr_List
+  | Attr_Loop
+  | Attr_Low
+  | Attr_Max
+  | Attr_MaxLength
+  | Attr_MinLength
+  | Attr_Media
+  | Attr_Method
+  | Attr_Min
+  | Attr_Multiple
+  | Attr_Muted
+  | Attr_Name
+  | Attr_NoValidate
+  | Attr_Open
+  | Attr_Optimum
+  | Attr_Pattern
+  | Attr_Ping
+  | Attr_Placeholder
+  | Attr_PlaysInline
+  | Attr_Poster
+  | Attr_Preload
+  | Attr_ReadOnly
+  | Attr_ReferrerPolicy
+  | Attr_Rel
+  | Attr_Required
+  | Attr_Reversed
+  | Attr_Rows
+  | Attr_Rowspan
+  | Attr_Sandbox
+  | Attr_Scope
+  | Attr_Selected
+  | Attr_Shape
+  | Attr_Size
+  | Attr_Sizes
+  | Attr_Span
+  | Attr_Src
+  | Attr_SrcDoc
+  | Attr_SrcLang
+  | Attr_SrcSet
+  | Attr_Start
+  | Attr_Step
+  | Attr_Target
+  | Attr_Type
+  | Attr_UseMap
+  | Attr_Value
+  | Attr_Width
+  | Attr_Wrap
 
   -- HTMX Attributes
   --
-  | Htmx_HxGet
-  | Htmx_HxPost
-  | Htmx_HxOn
-  | Htmx_HxPushURL
-  | Htmx_HxSelect
-  | Htmx_HxSelectOOB
-  | Htmx_HxSwap
-  | Htmx_HxSwapOOB
-  | Htmx_HxTarget
-  | Htmx_HxTrigger
-  | Htmx_HxVals
-  | Htmx_HxBoost
-  | Htmx_HxConfirm
-  | Htmx_HxDelete
-  | Htmx_HxDisable
-  | Htmx_HxDisabledElt
-  | Htmx_HxDisinherit
-  | Htmx_HxEncoding
-  | Htmx_HxExt
-  | Htmx_HxHeaders
-  | Htmx_HxHistory
-  | Htmx_HxHistoryElt
-  | Htmx_HxInclude
-  | Htmx_HxIndicator
-  | Htmx_HxParams
-  | Htmx_HxPatch
-  | Htmx_HxPreserve
-  | Htmx_HxPrompt
-  | Htmx_HxPut
-  | Htmx_HxReplaceURL
-  | Htmx_HxRequest
-  | Htmx_HxSync
-  | Htmx_HxValidate
+  | Attr_HxGet
+  | Attr_HxPost
+  | Attr_HxOn
+  | Attr_HxPushURL
+  | Attr_HxSelect
+  | Attr_HxSelectOOB
+  | Attr_HxSwap
+  | Attr_HxSwapOOB
+  | Attr_HxTarget
+  | Attr_HxTrigger
+  | Attr_HxVals
+  | Attr_HxBoost
+  | Attr_HxConfirm
+  | Attr_HxDelete
+  | Attr_HxDisable
+  | Attr_HxDisabledElt
+  | Attr_HxDisinherit
+  | Attr_HxEncoding
+  | Attr_HxExt
+  | Attr_HxHeaders
+  | Attr_HxHistory
+  | Attr_HxHistoryElt
+  | Attr_HxInclude
+  | Attr_HxIndicator
+  | Attr_HxParams
+  | Attr_HxPatch
+  | Attr_HxPreserve
+  | Attr_HxPrompt
+  | Attr_HxPut
+  | Attr_HxReplaceURL
+  | Attr_HxRequest
+  | Attr_HxSync
+  | Attr_HxValidate
 
 attributeTypeToBytes :: AttributeType -> LBS.ByteString
 attributeTypeToBytes attr =
   case attr of
     -- Custom Attribute
-    CustomAttribute attrName -> LBS.fromStrict $ TE.encodeUtf8 attrName
+    Attr_CustomAttribute attrName -> LBS.fromStrict $ TE.encodeUtf8 attrName
 
     -- Global Attributes
     --
-    AccessKey           -> "accesskey"
-    Autocapitalize      -> "autocapitalize"
-    Autofocus           -> "autofocus"
-    Class               -> "class"
-    ContentEditable     -> "contenteditable"
-    CustomData attrName -> "data-" <> LBS.fromStrict (TE.encodeUtf8 attrName)
-    Dir                 -> "dir"
-    Draggable           -> "draggable"
-    EnterKeyHint        -> "enterkeyhint"
-    ExportParts         -> "exportparts"
-    Hidden              -> "hidden"
-    Id                  -> "id"
-    Inert               -> "inert"
-    InputMode           -> "inputmode"
-    Is                  -> "is"
-    ItemId              -> "itemid"
-    ItemProp            -> "itemprop"
-    ItemRef             -> "itemref"
-    ItemScope           -> "itemscope"
-    ItemType            -> "itemtype"
-    Lang                -> "lang"
-    Nonce               -> "nonce"
-    Part                -> "part"
-    Popover             -> "popover"
-    Role                -> "role"
-    Slot                -> "slot"
-    Spellcheck          -> "spellcheck"
-    Style               -> "style"
-    TabIndex            -> "tabindex"
-    Title               -> "title"
-    Translate           -> "translate"
+    Attr_AccessKey           -> "accesskey"
+    Attr_Autocapitalize      -> "autocapitalize"
+    Attr_Autofocus           -> "autofocus"
+    Attr_Class               -> "class"
+    Attr_ContentEditable     -> "contenteditable"
+    Attr_CustomData attrName -> "data-" <> LBS.fromStrict (TE.encodeUtf8 attrName)
+    Attr_Dir                 -> "dir"
+    Attr_Draggable           -> "draggable"
+    Attr_EnterKeyHint        -> "enterkeyhint"
+    Attr_ExportParts         -> "exportparts"
+    Attr_Hidden              -> "hidden"
+    Attr_Id                  -> "id"
+    Attr_Inert               -> "inert"
+    Attr_InputMode           -> "inputmode"
+    Attr_Is                  -> "is"
+    Attr_ItemId              -> "itemid"
+    Attr_ItemProp            -> "itemprop"
+    Attr_ItemRef             -> "itemref"
+    Attr_ItemScope           -> "itemscope"
+    Attr_ItemType            -> "itemtype"
+    Attr_Lang                -> "lang"
+    Attr_Nonce               -> "nonce"
+    Attr_Part                -> "part"
+    Attr_Popover             -> "popover"
+    Attr_Role                -> "role"
+    Attr_Slot                -> "slot"
+    Attr_Spellcheck          -> "spellcheck"
+    Attr_Style               -> "style"
+    Attr_TabIndex            -> "tabindex"
+    Attr_Title               -> "title"
+    Attr_Translate           -> "translate"
 
     -- Scoped Attributes
     --
-    Accept          -> "accept"
-    AcceptCharset   -> "accept-charset"
-    Action          -> "action"
-    Allow           -> "allow"
-    Alt             -> "alt"
-    Async           -> "async"
-    Autocomplete    -> "autocomplete"
-    Autoplay        -> "autoplay"
-    Background      -> "background"
-    BackgroundColor -> "bgcolor"
-    Border          -> "border"
-    Capture         -> "capture"
-    Charset         -> "charset"
-    Checked         -> "checked"
-    Cite            -> "cite"
-    Color           -> "color"
-    Cols            -> "cols"
-    Colspan         -> "colspan"
-    Content         -> "content"
-    Controls        -> "controls"
-    Coords          -> "coords"
-    CrossOrigin     -> "crossorigin"
-    Data            -> "data"
-    Datetime        -> "datetime"
-    Decoding        -> "decoding"
-    Default         -> "default"
-    Defer           -> "defer"
-    Dirname         -> "dirname"
-    Disabled        -> "disabled"
-    Download        -> "download"
-    Enctype         -> "enctype"
-    For             -> "for"
-    Form            -> "form"
-    FormAction      -> "formaction"
-    FormEnctype     -> "formenctype"
-    FormMethod      -> "formmethod"
-    FormNoValidate  -> "formnovalidate"
-    FormTarget      -> "formtarget"
-    Headers         -> "headers"
-    Height          -> "height"
-    High            -> "high"
-    Href            -> "href"
-    HrefLang        -> "hreflang"
-    HttpEquiv       -> "http-equiv"
-    Integrity       -> "integrity"
-    IsMap           -> "ismap"
-    Kind            -> "kind"
-    Label           -> "label"
-    List            -> "list"
-    Loop            -> "loop"
-    Low             -> "low"
-    Max             -> "max"
-    MaxLength       -> "maxlength"
-    MinLength       -> "minlength"
-    Media           -> "media"
-    Method          -> "method"
-    Min             -> "min"
-    Multiple        -> "multiple"
-    Muted           -> "muted"
-    Name            -> "name"
-    NoValidate      -> "novalidate"
-    Open            -> "open"
-    Optimum         -> "optimum"
-    Pattern         -> "pattern"
-    Ping            -> "ping"
-    Placeholder     -> "placeholder"
-    PlaysInline     -> "playsinline"
-    Poster          -> "poster"
-    Preload         -> "preload"
-    ReadOnly        -> "readonly"
-    ReferrerPolicy  -> "referrerpolicy"
-    Rel             -> "rel"
-    Required        -> "required"
-    Reversed        -> "reversed"
-    Rows            -> "rows"
-    Rowspan         -> "rowspan"
-    Sandbox         -> "sandbox"
-    Scope           -> "scope"
-    Selected        -> "selected"
-    Shape           -> "shape"
-    Size            -> "size"
-    Sizes           -> "sizes"
-    Span            -> "span"
-    Src             -> "src"
-    SrcDoc          -> "srcdoc"
-    SrcLang         -> "srclang"
-    SrcSet          -> "srcset"
-    Start           -> "start"
-    Step            -> "step"
-    Target          -> "target"
-    Type            -> "type"
-    UseMap          -> "usemap"
-    Value           -> "value"
-    Width           -> "width"
-    Wrap            -> "wrap"
+    Attr_Accept          -> "accept"
+    Attr_AcceptCharset   -> "accept-charset"
+    Attr_Action          -> "action"
+    Attr_Allow           -> "allow"
+    Attr_Alt             -> "alt"
+    Attr_Async           -> "async"
+    Attr_Autocomplete    -> "autocomplete"
+    Attr_Autoplay        -> "autoplay"
+    Attr_Background      -> "background"
+    Attr_BackgroundColor -> "bgcolor"
+    Attr_Border          -> "border"
+    Attr_Capture         -> "capture"
+    Attr_Charset         -> "charset"
+    Attr_Checked         -> "checked"
+    Attr_Cite            -> "cite"
+    Attr_Color           -> "color"
+    Attr_Cols            -> "cols"
+    Attr_Colspan         -> "colspan"
+    Attr_Content         -> "content"
+    Attr_Controls        -> "controls"
+    Attr_Coords          -> "coords"
+    Attr_CrossOrigin     -> "crossorigin"
+    Attr_Data            -> "data"
+    Attr_Datetime        -> "datetime"
+    Attr_Decoding        -> "decoding"
+    Attr_Default         -> "default"
+    Attr_Defer           -> "defer"
+    Attr_Dirname         -> "dirname"
+    Attr_Disabled        -> "disabled"
+    Attr_Download        -> "download"
+    Attr_Enctype         -> "enctype"
+    Attr_For             -> "for"
+    Attr_Form            -> "form"
+    Attr_FormAction      -> "formaction"
+    Attr_FormEnctype     -> "formenctype"
+    Attr_FormMethod      -> "formmethod"
+    Attr_FormNoValidate  -> "formnovalidate"
+    Attr_FormTarget      -> "formtarget"
+    Attr_Headers         -> "headers"
+    Attr_Height          -> "height"
+    Attr_High            -> "high"
+    Attr_Href            -> "href"
+    Attr_HrefLang        -> "hreflang"
+    Attr_HttpEquiv       -> "http-equiv"
+    Attr_Integrity       -> "integrity"
+    Attr_IsMap           -> "ismap"
+    Attr_Kind            -> "kind"
+    Attr_Label           -> "label"
+    Attr_List            -> "list"
+    Attr_Loop            -> "loop"
+    Attr_Low             -> "low"
+    Attr_Max             -> "max"
+    Attr_MaxLength       -> "maxlength"
+    Attr_MinLength       -> "minlength"
+    Attr_Media           -> "media"
+    Attr_Method          -> "method"
+    Attr_Min             -> "min"
+    Attr_Multiple        -> "multiple"
+    Attr_Muted           -> "muted"
+    Attr_Name            -> "name"
+    Attr_NoValidate      -> "novalidate"
+    Attr_Open            -> "open"
+    Attr_Optimum         -> "optimum"
+    Attr_Pattern         -> "pattern"
+    Attr_Ping            -> "ping"
+    Attr_Placeholder     -> "placeholder"
+    Attr_PlaysInline     -> "playsinline"
+    Attr_Poster          -> "poster"
+    Attr_Preload         -> "preload"
+    Attr_ReadOnly        -> "readonly"
+    Attr_ReferrerPolicy  -> "referrerpolicy"
+    Attr_Rel             -> "rel"
+    Attr_Required        -> "required"
+    Attr_Reversed        -> "reversed"
+    Attr_Rows            -> "rows"
+    Attr_Rowspan         -> "rowspan"
+    Attr_Sandbox         -> "sandbox"
+    Attr_Scope           -> "scope"
+    Attr_Selected        -> "selected"
+    Attr_Shape           -> "shape"
+    Attr_Size            -> "size"
+    Attr_Sizes           -> "sizes"
+    Attr_Span            -> "span"
+    Attr_Src             -> "src"
+    Attr_SrcDoc          -> "srcdoc"
+    Attr_SrcLang         -> "srclang"
+    Attr_SrcSet          -> "srcset"
+    Attr_Start           -> "start"
+    Attr_Step            -> "step"
+    Attr_Target          -> "target"
+    Attr_Type            -> "type"
+    Attr_UseMap          -> "usemap"
+    Attr_Value           -> "value"
+    Attr_Width           -> "width"
+    Attr_Wrap            -> "wrap"
 
     -- HTMX Attributes
     --
-    Htmx_HxGet         -> "hx-get"
-    Htmx_HxPost        -> "hx-post"
-    Htmx_HxOn          -> "hx-on" -- TODO
-    Htmx_HxPushURL     -> "hx-push-url"
-    Htmx_HxSelect      -> "hx-select"
-    Htmx_HxSelectOOB   -> "hx-select-oob"
-    Htmx_HxSwap        -> "hx-swap"
-    Htmx_HxSwapOOB     -> "hx-swap-oob"
-    Htmx_HxTarget      -> "hx-target"
-    Htmx_HxTrigger     -> "hx-trigger"
-    Htmx_HxVals        -> "hx-vals"
-    Htmx_HxBoost       -> "hx-boost"
-    Htmx_HxConfirm     -> "hx-confirm"
-    Htmx_HxDelete      -> "hx-delete"
-    Htmx_HxDisable     -> "hx-disable"
-    Htmx_HxDisabledElt -> "hx-disabled-elt"
-    Htmx_HxDisinherit  -> "hx-disinherit"
-    Htmx_HxEncoding    -> "hx-encoding"
-    Htmx_HxExt         -> "hx-ext"
-    Htmx_HxHeaders     -> "hx-headers"
-    Htmx_HxHistory     -> "hx-history"
-    Htmx_HxHistoryElt  -> "hx-historyElt"
-    Htmx_HxInclude     -> "hx-include"
-    Htmx_HxIndicator   -> "hx-indicator"
-    Htmx_HxParams      -> "hx-params"
-    Htmx_HxPatch       -> "hx-patch"
-    Htmx_HxPreserve    -> "hx-preserve"
-    Htmx_HxPrompt      -> "hx-prompt"
-    Htmx_HxPut         -> "hx-put"
-    Htmx_HxReplaceURL  -> "hx-replace-url"
-    Htmx_HxRequest     -> "hx-request"
-    Htmx_HxSync        -> "hx-sync"
-    Htmx_HxValidate    -> "hx-validate"
+    Attr_HxGet         -> "hx-get"
+    Attr_HxPost        -> "hx-post"
+    Attr_HxOn          -> "hx-on" -- TODO
+    Attr_HxPushURL     -> "hx-push-url"
+    Attr_HxSelect      -> "hx-select"
+    Attr_HxSelectOOB   -> "hx-select-oob"
+    Attr_HxSwap        -> "hx-swap"
+    Attr_HxSwapOOB     -> "hx-swap-oob"
+    Attr_HxTarget      -> "hx-target"
+    Attr_HxTrigger     -> "hx-trigger"
+    Attr_HxVals        -> "hx-vals"
+    Attr_HxBoost       -> "hx-boost"
+    Attr_HxConfirm     -> "hx-confirm"
+    Attr_HxDelete      -> "hx-delete"
+    Attr_HxDisable     -> "hx-disable"
+    Attr_HxDisabledElt -> "hx-disabled-elt"
+    Attr_HxDisinherit  -> "hx-disinherit"
+    Attr_HxEncoding    -> "hx-encoding"
+    Attr_HxExt         -> "hx-ext"
+    Attr_HxHeaders     -> "hx-headers"
+    Attr_HxHistory     -> "hx-history"
+    Attr_HxHistoryElt  -> "hx-historyElt"
+    Attr_HxInclude     -> "hx-include"
+    Attr_HxIndicator   -> "hx-indicator"
+    Attr_HxParams      -> "hx-params"
+    Attr_HxPatch       -> "hx-patch"
+    Attr_HxPreserve    -> "hx-preserve"
+    Attr_HxPrompt      -> "hx-prompt"
+    Attr_HxPut         -> "hx-put"
+    Attr_HxReplaceURL  -> "hx-replace-url"
+    Attr_HxRequest     -> "hx-request"
+    Attr_HxSync        -> "hx-sync"
+    Attr_HxValidate    -> "hx-validate"
+
+-- The default case here is to treat it as a `CustomAttribute`.
+attributeTypeFromText :: T.Text -> AttributeType
+attributeTypeFromText attr =
+  case attr of
+    -- Global Attributes
+    --
+    "accesskey"       -> Attr_AccessKey
+    "autocapitalize"  -> Attr_Autocapitalize
+    "autofocus"       -> Attr_Autofocus
+    "class"           -> Attr_Class
+    "contenteditable" -> Attr_ContentEditable
+    "dir"             -> Attr_Dir
+    "draggable"       -> Attr_Draggable
+    "enterkeyhint"    -> Attr_EnterKeyHint
+    "exportparts"     -> Attr_ExportParts
+    "hidden"          -> Attr_Hidden
+    "id"              -> Attr_Id
+    "inert"           -> Attr_Inert
+    "inputmode"       -> Attr_InputMode
+    "is"              -> Attr_Is
+    "itemid"          -> Attr_ItemId
+    "itemprop"        -> Attr_ItemProp
+    "itemref"         -> Attr_ItemRef
+    "itemscope"       -> Attr_ItemScope
+    "itemtype"        -> Attr_ItemType
+    "lang"            -> Attr_Lang
+    "nonce"           -> Attr_Nonce
+    "part"            -> Attr_Part
+    "popover"         -> Attr_Popover
+    "role"            -> Attr_Role
+    "slot"            -> Attr_Slot
+    "spellcheck"      -> Attr_Spellcheck
+    "style"           -> Attr_Style
+    "tabindex"        -> Attr_TabIndex
+    "title"           -> Attr_Title
+    "translate"       -> Attr_Translate
+
+    -- Scoped Attributes
+    --
+    "accept"         -> Attr_Accept
+    "accept-charset" -> Attr_AcceptCharset
+    "action"         -> Attr_Action
+    "allow"          -> Attr_Allow
+    "alt"            -> Attr_Alt
+    "async"          -> Attr_Async
+    "autocomplete"   -> Attr_Autocomplete
+    "autoplay"       -> Attr_Autoplay
+    "background"     -> Attr_Background
+    "bgcolor"        -> Attr_BackgroundColor
+    "border"         -> Attr_Border
+    "capture"        -> Attr_Capture
+    "charset"        -> Attr_Charset
+    "checked"        -> Attr_Checked
+    "cite"           -> Attr_Cite
+    "color"          -> Attr_Color
+    "cols"           -> Attr_Cols
+    "colspan"        -> Attr_Colspan
+    "content"        -> Attr_Content
+    "controls"       -> Attr_Controls
+    "coords"         -> Attr_Coords
+    "crossorigin"    -> Attr_CrossOrigin
+    "data"           -> Attr_Data
+    "datetime"       -> Attr_Datetime
+    "decoding"       -> Attr_Decoding
+    "default"        -> Attr_Default
+    "defer"          -> Attr_Defer
+    "dirname"        -> Attr_Dirname
+    "disabled"       -> Attr_Disabled
+    "download"       -> Attr_Download
+    "enctype"        -> Attr_Enctype
+    "for"            -> Attr_For
+    "form"           -> Attr_Form
+    "formaction"     -> Attr_FormAction
+    "formenctype"    -> Attr_FormEnctype
+    "formmethod"     -> Attr_FormMethod
+    "formnovalidate" -> Attr_FormNoValidate
+    "formtarget"     -> Attr_FormTarget
+    "headers"        -> Attr_Headers
+    "height"         -> Attr_Height
+    "high"           -> Attr_High
+    "href"           -> Attr_Href
+    "hreflang"       -> Attr_HrefLang
+    "http-equiv"     -> Attr_HttpEquiv
+    "integrity"      -> Attr_Integrity
+    "ismap"          -> Attr_IsMap
+    "kind"           -> Attr_Kind
+    "label"          -> Attr_Label
+    "list"           -> Attr_List
+    "loop"           -> Attr_Loop
+    "low"            -> Attr_Low
+    "max"            -> Attr_Max
+    "maxlength"      -> Attr_MaxLength
+    "minlength"      -> Attr_MinLength
+    "media"          -> Attr_Media
+    "method"         -> Attr_Method
+    "min"            -> Attr_Min
+    "multiple"       -> Attr_Multiple
+    "muted"          -> Attr_Muted
+    "name"           -> Attr_Name
+    "novalidate"     -> Attr_NoValidate
+    "open"           -> Attr_Open
+    "optimum"        -> Attr_Optimum
+    "pattern"        -> Attr_Pattern
+    "ping"           -> Attr_Ping
+    "placeholder"    -> Attr_Placeholder
+    "playsinline"    -> Attr_PlaysInline
+    "poster"         -> Attr_Poster
+    "preload"        -> Attr_Preload
+    "readonly"       -> Attr_ReadOnly
+    "referrerpolicy" -> Attr_ReferrerPolicy
+    "rel"            -> Attr_Rel
+    "required"       -> Attr_Required
+    "reversed"       -> Attr_Reversed
+    "rows"           -> Attr_Rows
+    "rowspan"        -> Attr_Rowspan
+    "sandbox"        -> Attr_Sandbox
+    "scope"          -> Attr_Scope
+    "selected"       -> Attr_Selected
+    "shape"          -> Attr_Shape
+    "size"           -> Attr_Size
+    "sizes"          -> Attr_Sizes
+    "span"           -> Attr_Span
+    "src"            -> Attr_Src
+    "srcdoc"         -> Attr_SrcDoc
+    "srclang"        -> Attr_SrcLang
+    "srcset"         -> Attr_SrcSet
+    "start"          -> Attr_Start
+    "step"           -> Attr_Step
+    "target"         -> Attr_Target
+    "type"           -> Attr_Type
+    "usemap"         -> Attr_UseMap
+    "value"          -> Attr_Value
+    "width"          -> Attr_Width
+    "wrap"           -> Attr_Wrap
+
+    -- HTMX Attributes
+    --
+    "hx-get"          -> Attr_HxGet
+    "hx-post"         -> Attr_HxPost
+    "hx-push-url"     -> Attr_HxPushURL
+    "hx-select"       -> Attr_HxSelect
+    "hx-select-oob"   -> Attr_HxSelectOOB
+    "hx-swap"         -> Attr_HxSwap
+    "hx-swap-oob"     -> Attr_HxSwapOOB
+    "hx-target"       -> Attr_HxTarget
+    "hx-trigger"      -> Attr_HxTrigger
+    "hx-vals"         -> Attr_HxVals
+    "hx-boost"        -> Attr_HxBoost
+    "hx-confirm"      -> Attr_HxConfirm
+    "hx-delete"       -> Attr_HxDelete
+    "hx-disable"      -> Attr_HxDisable
+    "hx-disabled-elt" -> Attr_HxDisabledElt
+    "hx-disinherit"   -> Attr_HxDisinherit
+    "hx-encoding"     -> Attr_HxEncoding
+    "hx-ext"          -> Attr_HxExt
+    "hx-headers"      -> Attr_HxHeaders
+    "hx-history"      -> Attr_HxHistory
+    "hx-historyElt"   -> Attr_HxHistoryElt
+    "hx-include"      -> Attr_HxInclude
+    "hx-indicator"    -> Attr_HxIndicator
+    "hx-params"       -> Attr_HxParams
+    "hx-patch"        -> Attr_HxPatch
+    "hx-preserve"     -> Attr_HxPreserve
+    "hx-prompt"       -> Attr_HxPrompt
+    "hx-put"          -> Attr_HxPut
+    "hx-replace-url"  -> Attr_HxReplaceURL
+    "hx-request"      -> Attr_HxRequest
+    "hx-sync"         -> Attr_HxSync
+    "hx-validate"     -> Attr_HxValidate
+
+    -- Edge cases
+    txt
+      | T.isPrefixOf "data-" txt ->
+          maybe (Attr_CustomAttribute txt) Attr_CustomData
+            . tryParseFreeAttribute
+            $ T.drop 5 txt
+
+   -- TODO
+   -- | T.isPrefixOf "hx-on:htmx:" txt ->
+   --     maybe (CustomAttribute txt) HxOn
+   --       . tryParseFreeAttribute
+   --       $ T.drop 11 txt
+
+   -- | T.isPrefixOf "hx-on::" txt ->
+   --     maybe (CustomAttribute txt) HxOn
+   --       . tryParseFreeAttribute
+   --       $ T.drop 7 txt
+
+   -- | T.isPrefixOf "hx-on:" txt ->
+   --     maybe (CustomAttribute txt) HxOn
+   --       . tryParseFreeAttribute
+   --       $ T.drop 6 txt
+
+   -- | T.isPrefixOf "hx-on-html-" txt ->
+   --     maybe (CustomAttribute txt) HxOn
+   --       . tryParseFreeAttribute
+   --       $ T.drop 11 txt
+
+   -- | T.isPrefixOf "hx-on--" txt ->
+   --     maybe (CustomAttribute txt) HxOn
+   --       . tryParseFreeAttribute
+   --       $ T.drop 7 txt
+
+   -- | T.isPrefixOf "hx-on-" txt ->
+   --     maybe (CustomAttribute txt) HxOn
+   --       . tryParseFreeAttribute
+   --       $ T.drop 6 txt
+
+      | otherwise ->
+          Attr_CustomAttribute txt
+
+tryParseFreeAttribute :: T.Text -> Maybe T.Text
+tryParseFreeAttribute txt =
+  if T.all (\c -> c == '-' || c `elem` [ 'a'..'z' ]) txt
+     then Just txt
+     else Nothing
 
 attributeTypeToText :: AttributeType -> T.Text
 attributeTypeToText attr =
   case attr of
     -- Custom Attribute
-    CustomAttribute attrName -> attrName
+    Attr_CustomAttribute attrName -> attrName
 
     -- Global Attributes
     --
-    AccessKey           -> "accesskey"
-    Autocapitalize      -> "autocapitalize"
-    Autofocus           -> "autofocus"
-    Class               -> "class"
-    ContentEditable     -> "contenteditable"
-    CustomData attrName -> "data-" <> attrName
-    Dir                 -> "dir"
-    Draggable           -> "draggable"
-    EnterKeyHint        -> "enterkeyhint"
-    ExportParts         -> "exportparts"
-    Hidden              -> "hidden"
-    Id                  -> "id"
-    Inert               -> "inert"
-    InputMode           -> "inputmode"
-    Is                  -> "is"
-    ItemId              -> "itemid"
-    ItemProp            -> "itemprop"
-    ItemRef             -> "itemref"
-    ItemScope           -> "itemscope"
-    ItemType            -> "itemtype"
-    Lang                -> "lang"
-    Nonce               -> "nonce"
-    Part                -> "part"
-    Popover             -> "popover"
-    Role                -> "role"
-    Slot                -> "slot"
-    Spellcheck          -> "spellcheck"
-    Style               -> "style"
-    TabIndex            -> "tabindex"
-    Title               -> "title"
-    Translate           -> "translate"
+    Attr_AccessKey           -> "accesskey"
+    Attr_Autocapitalize      -> "autocapitalize"
+    Attr_Autofocus           -> "autofocus"
+    Attr_Class               -> "class"
+    Attr_ContentEditable     -> "contenteditable"
+    Attr_CustomData attrName -> "data-" <> attrName
+    Attr_Dir                 -> "dir"
+    Attr_Draggable           -> "draggable"
+    Attr_EnterKeyHint        -> "enterkeyhint"
+    Attr_ExportParts         -> "exportparts"
+    Attr_Hidden              -> "hidden"
+    Attr_Id                  -> "id"
+    Attr_Inert               -> "inert"
+    Attr_InputMode           -> "inputmode"
+    Attr_Is                  -> "is"
+    Attr_ItemId              -> "itemid"
+    Attr_ItemProp            -> "itemprop"
+    Attr_ItemRef             -> "itemref"
+    Attr_ItemScope           -> "itemscope"
+    Attr_ItemType            -> "itemtype"
+    Attr_Lang                -> "lang"
+    Attr_Nonce               -> "nonce"
+    Attr_Part                -> "part"
+    Attr_Popover             -> "popover"
+    Attr_Role                -> "role"
+    Attr_Slot                -> "slot"
+    Attr_Spellcheck          -> "spellcheck"
+    Attr_Style               -> "style"
+    Attr_TabIndex            -> "tabindex"
+    Attr_Title               -> "title"
+    Attr_Translate           -> "translate"
 
     -- Scoped Attributes
     --
-    Accept          -> "accept"
-    AcceptCharset   -> "accept-charset"
-    Action          -> "action"
-    Allow           -> "allow"
-    Alt             -> "alt"
-    Async           -> "async"
-    Autocomplete    -> "autocomplete"
-    Autoplay        -> "autoplay"
-    Background      -> "background"
-    BackgroundColor -> "bgcolor"
-    Border          -> "border"
-    Capture         -> "capture"
-    Charset         -> "charset"
-    Checked         -> "checked"
-    Cite            -> "cite"
-    Color           -> "color"
-    Cols            -> "cols"
-    Colspan         -> "colspan"
-    Content         -> "content"
-    Controls        -> "controls"
-    Coords          -> "coords"
-    CrossOrigin     -> "crossorigin"
-    Data            -> "data"
-    Datetime        -> "datetime"
-    Decoding        -> "decoding"
-    Default         -> "default"
-    Defer           -> "defer"
-    Dirname         -> "dirname"
-    Disabled        -> "disabled"
-    Download        -> "download"
-    Enctype         -> "enctype"
-    For             -> "for"
-    Form            -> "form"
-    FormAction      -> "formaction"
-    FormEnctype     -> "formenctype"
-    FormMethod      -> "formmethod"
-    FormNoValidate  -> "formnovalidate"
-    FormTarget      -> "formtarget"
-    Headers         -> "headers"
-    Height          -> "height"
-    High            -> "high"
-    Href            -> "href"
-    HrefLang        -> "hreflang"
-    HttpEquiv       -> "http-equiv"
-    Integrity       -> "integrity"
-    IsMap           -> "ismap"
-    Kind            -> "kind"
-    Label           -> "label"
-    List            -> "list"
-    Loop            -> "loop"
-    Low             -> "low"
-    Max             -> "max"
-    MaxLength       -> "maxlength"
-    MinLength       -> "minlength"
-    Media           -> "media"
-    Method          -> "method"
-    Min             -> "min"
-    Multiple        -> "multiple"
-    Muted           -> "muted"
-    Name            -> "name"
-    NoValidate      -> "novalidate"
-    Open            -> "open"
-    Optimum         -> "optimum"
-    Pattern         -> "pattern"
-    Ping            -> "ping"
-    Placeholder     -> "placeholder"
-    PlaysInline     -> "playsinline"
-    Poster          -> "poster"
-    Preload         -> "preload"
-    ReadOnly        -> "readonly"
-    ReferrerPolicy  -> "referrerpolicy"
-    Rel             -> "rel"
-    Required        -> "required"
-    Reversed        -> "reversed"
-    Rows            -> "rows"
-    Rowspan         -> "rowspan"
-    Sandbox         -> "sandbox"
-    Scope           -> "scope"
-    Selected        -> "selected"
-    Shape           -> "shape"
-    Size            -> "size"
-    Sizes           -> "sizes"
-    Span            -> "span"
-    Src             -> "src"
-    SrcDoc          -> "srcdoc"
-    SrcLang         -> "srclang"
-    SrcSet          -> "srcset"
-    Start           -> "start"
-    Step            -> "step"
-    Target          -> "target"
-    Type            -> "type"
-    UseMap          -> "usemap"
-    Value           -> "value"
-    Width           -> "width"
-    Wrap            -> "wrap"
+    Attr_Accept          -> "accept"
+    Attr_AcceptCharset   -> "accept-charset"
+    Attr_Action          -> "action"
+    Attr_Allow           -> "allow"
+    Attr_Alt             -> "alt"
+    Attr_Async           -> "async"
+    Attr_Autocomplete    -> "autocomplete"
+    Attr_Autoplay        -> "autoplay"
+    Attr_Background      -> "background"
+    Attr_BackgroundColor -> "bgcolor"
+    Attr_Border          -> "border"
+    Attr_Capture         -> "capture"
+    Attr_Charset         -> "charset"
+    Attr_Checked         -> "checked"
+    Attr_Cite            -> "cite"
+    Attr_Color           -> "color"
+    Attr_Cols            -> "cols"
+    Attr_Colspan         -> "colspan"
+    Attr_Content         -> "content"
+    Attr_Controls        -> "controls"
+    Attr_Coords          -> "coords"
+    Attr_CrossOrigin     -> "crossorigin"
+    Attr_Data            -> "data"
+    Attr_Datetime        -> "datetime"
+    Attr_Decoding        -> "decoding"
+    Attr_Default         -> "default"
+    Attr_Defer           -> "defer"
+    Attr_Dirname         -> "dirname"
+    Attr_Disabled        -> "disabled"
+    Attr_Download        -> "download"
+    Attr_Enctype         -> "enctype"
+    Attr_For             -> "for"
+    Attr_Form            -> "form"
+    Attr_FormAction      -> "formaction"
+    Attr_FormEnctype     -> "formenctype"
+    Attr_FormMethod      -> "formmethod"
+    Attr_FormNoValidate  -> "formnovalidate"
+    Attr_FormTarget      -> "formtarget"
+    Attr_Headers         -> "headers"
+    Attr_Height          -> "height"
+    Attr_High            -> "high"
+    Attr_Href            -> "href"
+    Attr_HrefLang        -> "hreflang"
+    Attr_HttpEquiv       -> "http-equiv"
+    Attr_Integrity       -> "integrity"
+    Attr_IsMap           -> "ismap"
+    Attr_Kind            -> "kind"
+    Attr_Label           -> "label"
+    Attr_List            -> "list"
+    Attr_Loop            -> "loop"
+    Attr_Low             -> "low"
+    Attr_Max             -> "max"
+    Attr_MaxLength       -> "maxlength"
+    Attr_MinLength       -> "minlength"
+    Attr_Media           -> "media"
+    Attr_Method          -> "method"
+    Attr_Min             -> "min"
+    Attr_Multiple        -> "multiple"
+    Attr_Muted           -> "muted"
+    Attr_Name            -> "name"
+    Attr_NoValidate      -> "novalidate"
+    Attr_Open            -> "open"
+    Attr_Optimum         -> "optimum"
+    Attr_Pattern         -> "pattern"
+    Attr_Ping            -> "ping"
+    Attr_Placeholder     -> "placeholder"
+    Attr_PlaysInline     -> "playsinline"
+    Attr_Poster          -> "poster"
+    Attr_Preload         -> "preload"
+    Attr_ReadOnly        -> "readonly"
+    Attr_ReferrerPolicy  -> "referrerpolicy"
+    Attr_Rel             -> "rel"
+    Attr_Required        -> "required"
+    Attr_Reversed        -> "reversed"
+    Attr_Rows            -> "rows"
+    Attr_Rowspan         -> "rowspan"
+    Attr_Sandbox         -> "sandbox"
+    Attr_Scope           -> "scope"
+    Attr_Selected        -> "selected"
+    Attr_Shape           -> "shape"
+    Attr_Size            -> "size"
+    Attr_Sizes           -> "sizes"
+    Attr_Span            -> "span"
+    Attr_Src             -> "src"
+    Attr_SrcDoc          -> "srcdoc"
+    Attr_SrcLang         -> "srclang"
+    Attr_SrcSet          -> "srcset"
+    Attr_Start           -> "start"
+    Attr_Step            -> "step"
+    Attr_Target          -> "target"
+    Attr_Type            -> "type"
+    Attr_UseMap          -> "usemap"
+    Attr_Value           -> "value"
+    Attr_Width           -> "width"
+    Attr_Wrap            -> "wrap"
 
     -- HTMX Attributes
     --
-    Htmx_HxGet         -> "hx-get"
-    Htmx_HxPost        -> "hx-post"
-    Htmx_HxOn          -> "hx-on" -- TODO
-    Htmx_HxPushURL     -> "hx-push-url"
-    Htmx_HxSelect      -> "hx-select"
-    Htmx_HxSelectOOB   -> "hx-select-oob"
-    Htmx_HxSwap        -> "hx-swap"
-    Htmx_HxSwapOOB     -> "hx-swap-oob"
-    Htmx_HxTarget      -> "hx-target"
-    Htmx_HxTrigger     -> "hx-trigger"
-    Htmx_HxVals        -> "hx-vals"
-    Htmx_HxBoost       -> "hx-boost"
-    Htmx_HxConfirm     -> "hx-confirm"
-    Htmx_HxDelete      -> "hx-delete"
-    Htmx_HxDisable     -> "hx-disable"
-    Htmx_HxDisabledElt -> "hx-disabled-elt"
-    Htmx_HxDisinherit  -> "hx-disinherit"
-    Htmx_HxEncoding    -> "hx-encoding"
-    Htmx_HxExt         -> "hx-ext"
-    Htmx_HxHeaders     -> "hx-headers"
-    Htmx_HxHistory     -> "hx-history"
-    Htmx_HxHistoryElt  -> "hx-historyElt"
-    Htmx_HxInclude     -> "hx-include"
-    Htmx_HxIndicator   -> "hx-indicator"
-    Htmx_HxParams      -> "hx-params"
-    Htmx_HxPatch       -> "hx-patch"
-    Htmx_HxPreserve    -> "hx-preserve"
-    Htmx_HxPrompt      -> "hx-prompt"
-    Htmx_HxPut         -> "hx-put"
-    Htmx_HxReplaceURL  -> "hx-replace-url"
-    Htmx_HxRequest     -> "hx-request"
-    Htmx_HxSync        -> "hx-sync"
-    Htmx_HxValidate    -> "hx-validate"
+    Attr_HxGet         -> "hx-get"
+    Attr_HxPost        -> "hx-post"
+    Attr_HxOn          -> "hx-on" -- TODO
+    Attr_HxPushURL     -> "hx-push-url"
+    Attr_HxSelect      -> "hx-select"
+    Attr_HxSelectOOB   -> "hx-select-oob"
+    Attr_HxSwap        -> "hx-swap"
+    Attr_HxSwapOOB     -> "hx-swap-oob"
+    Attr_HxTarget      -> "hx-target"
+    Attr_HxTrigger     -> "hx-trigger"
+    Attr_HxVals        -> "hx-vals"
+    Attr_HxBoost       -> "hx-boost"
+    Attr_HxConfirm     -> "hx-confirm"
+    Attr_HxDelete      -> "hx-delete"
+    Attr_HxDisable     -> "hx-disable"
+    Attr_HxDisabledElt -> "hx-disabled-elt"
+    Attr_HxDisinherit  -> "hx-disinherit"
+    Attr_HxEncoding    -> "hx-encoding"
+    Attr_HxExt         -> "hx-ext"
+    Attr_HxHeaders     -> "hx-headers"
+    Attr_HxHistory     -> "hx-history"
+    Attr_HxHistoryElt  -> "hx-historyElt"
+    Attr_HxInclude     -> "hx-include"
+    Attr_HxIndicator   -> "hx-indicator"
+    Attr_HxParams      -> "hx-params"
+    Attr_HxPatch       -> "hx-patch"
+    Attr_HxPreserve    -> "hx-preserve"
+    Attr_HxPrompt      -> "hx-prompt"
+    Attr_HxPut         -> "hx-put"
+    Attr_HxReplaceURL  -> "hx-replace-url"
+    Attr_HxRequest     -> "hx-request"
+    Attr_HxSync        -> "hx-sync"
+    Attr_HxValidate    -> "hx-validate"
 
 customAttribute :: T.Text -> T.Text -> AttributeSelector
-customAttribute attrName val = (CustomAttribute attrName, Just val)
+customAttribute attrName val =
+  (Attr_CustomAttribute attrName, Just val)
 
 -- Global Attributes
 --
 
 accesskey :: Char -> AttributeSelector
-accesskey = (,) AccessKey . Just . T.singleton
+accesskey = (,) Attr_AccessKey . Just . T.singleton
 
 autocapitalize :: AutocapitalizeOption -> AttributeSelector
-autocapitalize = (,) Autocapitalize . Just . autocapitalizeOptionToText
+autocapitalize = (,) Attr_Autocapitalize . Just . autocapitalizeOptionToText
 
 autofocus :: T.Text -> AttributeSelector
-autofocus = (,) Autofocus . Just
+autofocus = (,) Attr_Autofocus . Just
 
 class_ :: Class.Class -> AttributeSelector
-class_ = (,) Class . Just . Class.classToText
+class_ = (,) Attr_Class . Just . Class.classToText
 
 contenteditable :: ContentEditableOption -> AttributeSelector
-contenteditable = (,) ContentEditable . Just . contentEditableOptionToText
+contenteditable = (,) Attr_ContentEditable . Just . contentEditableOptionToText
 
 customData :: T.Text -> T.Text -> AttributeSelector
-customData dataName val = (CustomData dataName, Just val)
+customData dataName val = (Attr_CustomData dataName, Just val)
 
 dir :: Directionality -> AttributeSelector
-dir = (,) Dir . Just . directionalityToText
+dir = (,) Attr_Dir . Just . directionalityToText
 
 draggable :: Bool -> AttributeSelector
-draggable = (,) Draggable . Just . enumBoolToText
+draggable = (,) Attr_Draggable . Just . enumBoolToText
 
 enterkeyhint :: KeyHintOption -> AttributeSelector
-enterkeyhint = (,) EnterKeyHint . Just . keyHintOptionToText
+enterkeyhint = (,) Attr_EnterKeyHint . Just . keyHintOptionToText
 
 exportparts :: NEL.NonEmpty ExportPart -> AttributeSelector
 exportparts =
-  (,) ExportParts
+  (,) Attr_ExportParts
     . Just
     . T.intercalate ", "
     . fmap exportPartToText
     . NEL.toList
 
 hidden :: AttributeSelector
-hidden = (Hidden, Nothing)
+hidden = (Attr_Hidden, Nothing)
 
 id :: Id.Id -> AttributeSelector
-id = (,) Id . Just . Id.idToText
+id = (,) Attr_Id . Just . Id.idToText
 
 inert :: AttributeSelector
-inert = (Inert, Nothing)
+inert = (Attr_Inert, Nothing)
 
 -- TODO
 inputmode :: T.Text -> AttributeSelector
-inputmode = (,) InputMode . Just
+inputmode = (,) Attr_InputMode . Just
 
 is :: T.Text -> AttributeSelector
-is = (,) Is . Just
+is = (,) Attr_Is . Just
 
 -- TODO
 itemid :: T.Text -> AttributeSelector
-itemid = (,) ItemId . Just
+itemid = (,) Attr_ItemId . Just
 
 -- TODO
 itemprop :: T.Text -> AttributeSelector
-itemprop = (,) ItemProp . Just
+itemprop = (,) Attr_ItemProp . Just
 
 -- TODO
 itemref :: T.Text -> AttributeSelector
-itemref = (,) ItemRef . Just
+itemref = (,) Attr_ItemRef . Just
 
 -- TODO
 itemscope :: T.Text -> AttributeSelector
-itemscope = (,) ItemScope . Just
+itemscope = (,) Attr_ItemScope . Just
 
 -- TODO
 itemtype :: T.Text -> AttributeSelector
-itemtype = (,) ItemType . Just
+itemtype = (,) Attr_ItemType . Just
 
 -- TODO
 lang :: T.Text -> AttributeSelector
-lang = (,) Lang . Just
+lang = (,) Attr_Lang . Just
 
 -- TODO
 nonce :: T.Text -> AttributeSelector
-nonce = (,) Nonce . Just
+nonce = (,) Attr_Nonce . Just
 
 part :: NEL.NonEmpty Part -> AttributeSelector
-part = (,) Part . Just . T.unwords . fmap partToText . NEL.toList
+part = (,) Attr_Part . Just . T.unwords . fmap partToText . NEL.toList
 
 popover :: PopoverState -> AttributeSelector
-popover = (,) Popover . Just . popoverStateToText
+popover = (,) Attr_Popover . Just . popoverStateToText
 
 -- TODO
 role :: T.Text -> AttributeSelector
-role = (,) Role . Just
+role = (,) Attr_Role . Just
 
 -- TODO
 slot :: T.Text -> AttributeSelector
-slot = (,) Slot . Just
+slot = (,) Attr_Slot . Just
 
 spellcheck :: Bool -> AttributeSelector
-spellcheck = (,) Spellcheck . Just . enumBoolToText
+spellcheck = (,) Attr_Spellcheck . Just . enumBoolToText
 
 style :: T.Text -> AttributeSelector
-style = (,) Style . Just
+style = (,) Attr_Style . Just
 
 tabindex :: Int -> AttributeSelector
-tabindex = (,) TabIndex . Just . showText
+tabindex = (,) Attr_TabIndex . Just . showText
 
 title :: T.Text -> AttributeSelector
-title = (,) Title . Just
+title = (,) Attr_Title . Just
 
 translate :: Bool -> AttributeSelector
-translate = (,) Translate . Just . enumBoolToText
+translate = (,) Attr_Translate . Just . enumBoolToText
 
 -- Scoped Attributes
 --
 
 -- TODO
 accept :: T.Text -> AttributeSelector
-accept = (,) Accept . Just
+accept = (,) Attr_Accept . Just
 
 -- TODO
 acceptCharset :: T.Text -> AttributeSelector
-acceptCharset = (,) AcceptCharset . Just
+acceptCharset = (,) Attr_AcceptCharset . Just
 
 -- TODO
 action :: T.Text -> AttributeSelector
-action = (,) Action . Just
+action = (,) Attr_Action . Just
 
 -- TODO
 allow :: T.Text -> AttributeSelector
-allow = (,) Allow . Just
+allow = (,) Attr_Allow . Just
 
 -- TODO
 alt :: T.Text -> AttributeSelector
-alt = (,) Alt . Just
+alt = (,) Attr_Alt . Just
 
 -- TODO
 async :: T.Text -> AttributeSelector
-async = (,) Async . Just
+async = (,) Attr_Async . Just
 
 -- TODO
 autocomplete :: T.Text -> AttributeSelector
-autocomplete = (,) Autocomplete . Just
+autocomplete = (,) Attr_Autocomplete . Just
 
 -- TODO
 autoplay :: T.Text -> AttributeSelector
-autoplay = (,) Autoplay . Just
+autoplay = (,) Attr_Autoplay . Just
 
 -- TODO
 background :: T.Text -> AttributeSelector
-background = (,) Background . Just
+background = (,) Attr_Background . Just
 
 -- TODO
 bgcolor :: T.Text -> AttributeSelector
-bgcolor = (,) BackgroundColor . Just
+bgcolor = (,) Attr_BackgroundColor . Just
 
 -- TODO
 border :: T.Text -> AttributeSelector
-border = (,) Border . Just
+border = (,) Attr_Border . Just
 
 -- TODO
 capture :: T.Text -> AttributeSelector
-capture = (,) Capture . Just
+capture = (,) Attr_Capture . Just
 
 -- TODO
 charset :: T.Text -> AttributeSelector
-charset = (,) Charset . Just
+charset = (,) Attr_Charset . Just
 
 -- TODO
 checked :: T.Text -> AttributeSelector
-checked = (,) Checked . Just
+checked = (,) Attr_Checked . Just
 
 -- TODO
 cite :: T.Text -> AttributeSelector
-cite = (,) Cite . Just
+cite = (,) Attr_Cite . Just
 
 -- TODO
 color :: T.Text -> AttributeSelector
-color = (,) Color . Just
+color = (,) Attr_Color . Just
 
 -- TODO
 cols :: T.Text -> AttributeSelector
-cols = (,) Cols . Just
+cols = (,) Attr_Cols . Just
 
 -- TODO
 colspan :: T.Text -> AttributeSelector
-colspan = (,) Colspan . Just
+colspan = (,) Attr_Colspan . Just
 
 -- TODO
 content :: T.Text -> AttributeSelector
-content = (,) Content . Just
+content = (,) Attr_Content . Just
 
 -- TODO
 controls :: T.Text -> AttributeSelector
-controls = (,) Controls . Just
+controls = (,) Attr_Controls . Just
 
 -- TODO
 coords :: T.Text -> AttributeSelector
-coords = (,) Coords . Just
+coords = (,) Attr_Coords . Just
 
 crossorigin :: CrossOriginFetch -> AttributeSelector
-crossorigin = (,) CrossOrigin . Just . crossoriginFetchToText
+crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
 
 -- TODO
 data_ :: T.Text -> AttributeSelector
-data_ = (,) Data . Just
+data_ = (,) Attr_Data . Just
 
 -- TODO
 datetime :: T.Text -> AttributeSelector
-datetime = (,) Datetime . Just
+datetime = (,) Attr_Datetime . Just
 
 -- TODO
 decoding :: T.Text -> AttributeSelector
-decoding = (,) Decoding . Just
+decoding = (,) Attr_Decoding . Just
 
 -- TODO
 default_ :: T.Text -> AttributeSelector
-default_ = (,) Default . Just
+default_ = (,) Attr_Default . Just
 
 -- TODO
 defer :: T.Text -> AttributeSelector
-defer = (,) Defer . Just
+defer = (,) Attr_Defer . Just
 
 -- TODO
 dirname :: T.Text -> AttributeSelector
-dirname = (,) Dirname . Just
+dirname = (,) Attr_Dirname . Just
 
 disabled :: AttributeSelector
-disabled = (Disabled, Nothing)
+disabled = (Attr_Disabled, Nothing)
 
 -- TODO
 download :: T.Text -> AttributeSelector
-download = (,) Download . Just
+download = (,) Attr_Download . Just
 
 -- TODO
 enctype :: T.Text -> AttributeSelector
-enctype = (,) Enctype . Just
+enctype = (,) Attr_Enctype . Just
 
 -- TODO
 for :: T.Text -> AttributeSelector
-for = (,) For . Just
+for = (,) Attr_For . Just
 
 -- TODO
 form :: T.Text -> AttributeSelector
-form = (,) Form . Just
+form = (,) Attr_Form . Just
 
 -- TODO
 formaction :: T.Text -> AttributeSelector
-formaction = (,) FormAction . Just
+formaction = (,) Attr_FormAction . Just
 
 -- TODO
 formenctype :: T.Text -> AttributeSelector
-formenctype = (,) FormEnctype . Just
+formenctype = (,) Attr_FormEnctype . Just
 
 -- TODO
 formmethod :: T.Text -> AttributeSelector
-formmethod = (,) FormMethod . Just
+formmethod = (,) Attr_FormMethod . Just
 
 -- TODO
 formnovalidate :: T.Text -> AttributeSelector
-formnovalidate = (,) FormNoValidate . Just
+formnovalidate = (,) Attr_FormNoValidate . Just
 
 -- TODO
 formtarget :: T.Text -> AttributeSelector
-formtarget = (,) FormTarget . Just
+formtarget = (,) Attr_FormTarget . Just
 
 -- TODO
 headers :: T.Text -> AttributeSelector
-headers = (,) Headers . Just
+headers = (,) Attr_Headers . Just
 
 -- TODO
 height :: T.Text -> AttributeSelector
-height = (,) Height . Just
+height = (,) Attr_Height . Just
 
 -- TODO
 high :: T.Text -> AttributeSelector
-high = (,) High . Just
+high = (,) Attr_High . Just
 
 href :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf href HrefSelectorTypes
         )
      => href -> AttributeSelector
-href = (,) Href . Just . hrefSelectorToText . mkHrefSelector
+href = (,) Attr_Href . Just . hrefSelectorToText . mkHrefSelector
 
 -- TODO
 hreflang :: T.Text -> AttributeSelector
-hreflang = (,) HrefLang . Just
+hreflang = (,) Attr_HrefLang . Just
 
 -- TODO
 httpEquiv :: T.Text -> AttributeSelector
-httpEquiv = (,) HttpEquiv . Just
+httpEquiv = (,) Attr_HttpEquiv . Just
 
 -- TODO
 integrity :: T.Text -> AttributeSelector
-integrity = (,) Integrity . Just
+integrity = (,) Attr_Integrity . Just
 
 -- TODO
 ismap :: T.Text -> AttributeSelector
-ismap = (,) IsMap . Just
+ismap = (,) Attr_IsMap . Just
 
 -- TODO
 kind :: T.Text -> AttributeSelector
-kind = (,) Kind . Just
+kind = (,) Attr_Kind . Just
 
 -- TODO
 label :: T.Text -> AttributeSelector
-label = (,) Label . Just
+label = (,) Attr_Label . Just
 
 -- TODO
 list :: T.Text -> AttributeSelector
-list = (,) List . Just
+list = (,) Attr_List . Just
 
 -- TODO
 loop :: T.Text -> AttributeSelector
-loop = (,) Loop . Just
+loop = (,) Attr_Loop . Just
 
 -- TODO
 low :: T.Text -> AttributeSelector
-low = (,) Low . Just
+low = (,) Attr_Low . Just
 
 -- TODO
 max :: T.Text -> AttributeSelector
-max = (,) Max . Just
+max = (,) Attr_Max . Just
 
 -- TODO
 maxlength :: T.Text -> AttributeSelector
-maxlength = (,) MaxLength . Just
+maxlength = (,) Attr_MaxLength . Just
 
 -- TODO
 minlength :: T.Text -> AttributeSelector
-minlength = (,) MinLength . Just
+minlength = (,) Attr_MinLength . Just
 
 -- TODO
 media :: T.Text -> AttributeSelector
-media = (,) Media . Just
+media = (,) Attr_Media . Just
 
 -- TODO
 method :: T.Text -> AttributeSelector
-method = (,) Method . Just
+method = (,) Attr_Method . Just
 
 -- TODO
 min :: T.Text -> AttributeSelector
-min = (,) Min . Just
+min = (,) Attr_Min . Just
 
 -- TODO
 multiple :: T.Text -> AttributeSelector
-multiple = (,) Multiple . Just
+multiple = (,) Attr_Multiple . Just
 
 -- TODO
 muted :: T.Text -> AttributeSelector
-muted = (,) Muted . Just
+muted = (,) Attr_Muted . Just
 
 -- TODO
 name :: T.Text -> AttributeSelector
-name = (,) Name . Just
+name = (,) Attr_Name . Just
 
 -- TODO
 novalidate :: T.Text -> AttributeSelector
-novalidate = (,) NoValidate . Just
+novalidate = (,) Attr_NoValidate . Just
 
 -- TODO
 open :: T.Text -> AttributeSelector
-open = (,) Open . Just
+open = (,) Attr_Open . Just
 
 -- TODO
 optimum :: T.Text -> AttributeSelector
-optimum = (,) Optimum . Just
+optimum = (,) Attr_Optimum . Just
 
 -- TODO
 pattern :: T.Text -> AttributeSelector
-pattern = (,) Pattern . Just
+pattern = (,) Attr_Pattern . Just
 
 -- TODO
 ping :: T.Text -> AttributeSelector
-ping = (,) Ping . Just
+ping = (,) Attr_Ping . Just
 
 -- TODO
 placeholder :: T.Text -> AttributeSelector
-placeholder = (,) Placeholder . Just
+placeholder = (,) Attr_Placeholder . Just
 
 -- TODO
 playsinline :: T.Text -> AttributeSelector
-playsinline = (,) PlaysInline . Just
+playsinline = (,) Attr_PlaysInline . Just
 
 -- TODO
 poster :: T.Text -> AttributeSelector
-poster = (,) Poster . Just
+poster = (,) Attr_Poster . Just
 
 -- TODO
 preload :: T.Text -> AttributeSelector
-preload = (,) Preload . Just
+preload = (,) Attr_Preload . Just
 
 -- TODO
 readonly :: T.Text -> AttributeSelector
-readonly = (,) ReadOnly . Just
+readonly = (,) Attr_ReadOnly . Just
 
 -- TODO
 referrerpolicy :: T.Text -> AttributeSelector
-referrerpolicy = (,) ReferrerPolicy . Just
+referrerpolicy = (,) Attr_ReferrerPolicy . Just
 
 -- TODO
 rel :: T.Text -> AttributeSelector
-rel = (,) Rel . Just
+rel = (,) Attr_Rel . Just
 
 -- TODO
 required :: T.Text -> AttributeSelector
-required = (,) Required . Just
+required = (,) Attr_Required . Just
 
 -- TODO
 reversed :: T.Text -> AttributeSelector
-reversed = (,) Reversed . Just
+reversed = (,) Attr_Reversed . Just
 
 -- TODO
 rows :: T.Text -> AttributeSelector
-rows = (,) Rows . Just
+rows = (,) Attr_Rows . Just
 
 -- TODO
 rowspan :: T.Text -> AttributeSelector
-rowspan = (,) Rowspan . Just
+rowspan = (,) Attr_Rowspan . Just
 
 -- TODO
 sandbox :: T.Text -> AttributeSelector
-sandbox = (,) Sandbox . Just
+sandbox = (,) Attr_Sandbox . Just
 
 -- TODO
 scope :: T.Text -> AttributeSelector
-scope = (,) Scope . Just
+scope = (,) Attr_Scope . Just
 
 -- TODO
 selected :: T.Text -> AttributeSelector
-selected = (,) Selected . Just
+selected = (,) Attr_Selected . Just
 
 -- TODO
 shape :: T.Text -> AttributeSelector
-shape = (,) Shape . Just
+shape = (,) Attr_Shape . Just
 
 -- TODO
 size :: T.Text -> AttributeSelector
-size = (,) Size . Just
+size = (,) Attr_Size . Just
 
 -- TODO
 sizes :: T.Text -> AttributeSelector
-sizes = (,) Sizes . Just
+sizes = (,) Attr_Sizes . Just
 
 -- TODO
 span :: T.Text -> AttributeSelector
-span = (,) Span . Just
+span = (,) Attr_Span . Just
 
 -- TODO
 src :: T.Text -> AttributeSelector
-src = (,) Src . Just
+src = (,) Attr_Src . Just
 
 -- TODO
 srcdoc :: T.Text -> AttributeSelector
-srcdoc = (,) SrcDoc . Just
+srcdoc = (,) Attr_SrcDoc . Just
 
 -- TODO
 srclang :: T.Text -> AttributeSelector
-srclang = (,) SrcLang . Just
+srclang = (,) Attr_SrcLang . Just
 
 -- TODO
 srcset :: T.Text -> AttributeSelector
-srcset = (,) SrcSet . Just
+srcset = (,) Attr_SrcSet . Just
 
 -- TODO
 start :: T.Text -> AttributeSelector
-start = (,) Start . Just
+start = (,) Attr_Start . Just
 
 -- TODO
 step :: T.Text -> AttributeSelector
-step = (,) Step . Just
+step = (,) Attr_Step . Just
 
 -- TODO
 target :: T.Text -> AttributeSelector
-target = (,) Target . Just
+target = (,) Attr_Target . Just
 
 -- TODO
 type_ :: T.Text -> AttributeSelector
-type_ = (,) Type . Just
+type_ = (,) Attr_Type . Just
 
 -- TODO
 usemap :: T.Text -> AttributeSelector
-usemap = (,) UseMap . Just
+usemap = (,) Attr_UseMap . Just
 
 -- TODO
 value :: T.Text -> AttributeSelector
-value = (,) Value . Just
+value = (,) Attr_Value . Just
 
 -- TODO
 width :: T.Text -> AttributeSelector
-width = (,) Width . Just
+width = (,) Attr_Width . Just
 
 -- TODO
 wrap :: T.Text -> AttributeSelector
-wrap = (,) Wrap . Just
+wrap = (,) Attr_Wrap . Just
 
 -- HTMX Attributes
 --
 
 hxGet :: RelativeURL Get -> AttributeSelector
-hxGet = (,) Htmx_HxGet . Just . relativeURLToText
+hxGet = (,) Attr_HxGet . Just . relativeURLToText
 
 hxPost :: RelativeURL Post -> AttributeSelector
-hxPost = (,) Htmx_HxPost . Just . relativeURLToText
+hxPost = (,) Attr_HxPost . Just . relativeURLToText
 
 -- TODO
 hxOn :: T.Text -> AttributeSelector
-hxOn = (,) Htmx_HxOn . Just
+hxOn = (,) Attr_HxOn . Just
 
 hxPushURL :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf url PushURLTypes
              )
           => url -> AttributeSelector
-hxPushURL = (,) Htmx_HxPushURL . Just . pushURLToText . mkPushURL
+hxPushURL = (,) Attr_HxPushURL . Just . pushURLToText . mkPushURL
 
 hxSelect :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
             )
          => querySelector -> AttributeSelector
-hxSelect = (,) Htmx_HxSelect . Just . querySelectorToText . mkQuerySelector
+hxSelect = (,) Attr_HxSelect . Just . querySelectorToText . mkQuerySelector
 
 -- TODO
 hxSelectOOB :: T.Text -> AttributeSelector
-hxSelectOOB = (,) Htmx_HxSelectOOB . Just
+hxSelectOOB = (,) Attr_HxSelectOOB . Just
 
 -- TODO
 hxSwap :: T.Text -> AttributeSelector
-hxSwap = (,) Htmx_HxSwap . Just
+hxSwap = (,) Attr_HxSwap . Just
 
 -- TODO
 hxSwapOOB :: T.Text -> AttributeSelector
-hxSwapOOB = (,) Htmx_HxSwapOOB . Just
+hxSwapOOB = (,) Attr_HxSwapOOB . Just
 
 -- TODO
 hxTarget :: T.Text -> AttributeSelector
-hxTarget = (,) Htmx_HxTarget . Just
+hxTarget = (,) Attr_HxTarget . Just
 
 -- TODO
 hxTrigger :: T.Text -> AttributeSelector
-hxTrigger = (,) Htmx_HxTrigger . Just
+hxTrigger = (,) Attr_HxTrigger . Just
 
 -- TODO
 hxVals :: T.Text -> AttributeSelector
-hxVals = (,) Htmx_HxVals . Just
+hxVals = (,) Attr_HxVals . Just
 
 hxBoost :: Bool -> AttributeSelector
-hxBoost = (,) Htmx_HxBoost . Just . enumBoolToText
+hxBoost = (,) Attr_HxBoost . Just . enumBoolToText
 
 hxConfirm :: T.Text -> AttributeSelector
-hxConfirm = (,) Htmx_HxConfirm . Just
+hxConfirm = (,) Attr_HxConfirm . Just
 
 hxDelete :: RelativeURL Delete -> AttributeSelector
-hxDelete = (,) Htmx_HxDelete . Just . relativeURLToText
+hxDelete = (,) Attr_HxDelete . Just . relativeURLToText
 
 hxDisable :: AttributeSelector
-hxDisable = (Htmx_HxDisable, Nothing)
+hxDisable = (Attr_HxDisable, Nothing)
 
 -- TODO
 hxDisabledElt :: T.Text -> AttributeSelector
-hxDisabledElt = (,) Htmx_HxDisabledElt . Just
+hxDisabledElt = (,) Attr_HxDisabledElt . Just
 
 hxDisinherit :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
                 )
              => disinherit -> AttributeSelector
-hxDisinherit = (,) Htmx_HxDisinherit . Just . disinheritToText . mkDisinherit
+hxDisinherit = (,) Attr_HxDisinherit . Just . disinheritToText . mkDisinherit
 
 hxEncoding :: AttributeSelector
-hxEncoding = (Htmx_HxEncoding, Just "multipart/form-data")
+hxEncoding = (Attr_HxEncoding, Just "multipart/form-data")
 
 hxExt :: NEL.NonEmpty Extension -> AttributeSelector
 hxExt =
-  (,) Htmx_HxExt
+  (,) Attr_HxExt
     . Just
     . T.intercalate ","
     . fmap extensionToText
@@ -2504,53 +2886,53 @@ hxExt =
 
 -- TODO
 hxHeaders :: T.Text -> AttributeSelector
-hxHeaders = (,) Htmx_HxHeaders . Just
+hxHeaders = (,) Attr_HxHeaders . Just
 
 hxHistory :: AttributeSelector
-hxHistory = (Htmx_HxHistory, Just "false")
+hxHistory = (Attr_HxHistory, Just "false")
 
 hxHistoryElt :: AttributeSelector
-hxHistoryElt = (Htmx_HxHistoryElt, Nothing)
+hxHistoryElt = (Attr_HxHistoryElt, Nothing)
 
 -- TODO
 hxInclude :: T.Text -> AttributeSelector
-hxInclude = (,) Htmx_HxInclude . Just
+hxInclude = (,) Attr_HxInclude . Just
 
 -- TODO
 hxIndicator :: T.Text -> AttributeSelector
-hxIndicator = (,) Htmx_HxIndicator . Just
+hxIndicator = (,) Attr_HxIndicator . Just
 
 hxParams :: RequestParams -> AttributeSelector
-hxParams = (,) Htmx_HxParams . Just . requestParamsToText
+hxParams = (,) Attr_HxParams . Just . requestParamsToText
 
 hxPatch :: RelativeURL Patch -> AttributeSelector
-hxPatch = (,) Htmx_HxPatch . Just . relativeURLToText
+hxPatch = (,) Attr_HxPatch . Just . relativeURLToText
 
 hxPreserve :: AttributeSelector
-hxPreserve = (Htmx_HxPreserve, Nothing)
+hxPreserve = (Attr_HxPreserve, Nothing)
 
 hxPrompt :: T.Text -> AttributeSelector
-hxPrompt = (,) Htmx_HxPrompt . Just
+hxPrompt = (,) Attr_HxPrompt . Just
 
 hxPut :: RelativeURL Put -> AttributeSelector
-hxPut = (,) Htmx_HxPut . Just . relativeURLToText
+hxPut = (,) Attr_HxPut . Just . relativeURLToText
 
 hxReplaceURL :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf url PushURLTypes
                 )
              => url -> AttributeSelector
-hxReplaceURL = (,) Htmx_HxReplaceURL . Just . pushURLToText . mkPushURL
+hxReplaceURL = (,) Attr_HxReplaceURL . Just . pushURLToText . mkPushURL
 
 -- TODO
 hxRequest :: T.Text -> AttributeSelector
-hxRequest = (,) Htmx_HxRequest . Just
+hxRequest = (,) Attr_HxRequest . Just
 
 -- TODO
 hxSync :: T.Text -> AttributeSelector
-hxSync = (,) Htmx_HxSync . Just
+hxSync = (,) Attr_HxSync . Just
 
 hxValidate :: AttributeSelector
-hxValidate = (Htmx_HxValidate, Nothing)
+hxValidate = (Attr_HxValidate, Nothing)
 
 -- Helpers
 --

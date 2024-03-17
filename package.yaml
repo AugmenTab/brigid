@@ -35,6 +35,8 @@ dependencies:
 - containers
 - html-email-validate
 - http-types
+- json-fleece-core
+- non-empty-text
 - shrubbery
 - text
 
