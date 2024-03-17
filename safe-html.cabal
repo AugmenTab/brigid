@@ -25,7 +25,6 @@ source-repository head
 library
   exposed-modules:
       Examples
-      HTML
       HTML.Attributes
       HTML.Attributes.AttributeType
       HTML.Attributes.Elements
@@ -73,6 +72,7 @@ library
       HTML.Types.QuerySelector
       HTML.Types.Reachability
       HTML.Types.RequestParams
+      HTML.Types.Swap
       HTML.Types.This
       HTML.Types.URL
   other-modules:

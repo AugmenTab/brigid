@@ -37,6 +37,7 @@ import HTML.Types.PushURL as Export
 import HTML.Types.QuerySelector as Export
 import HTML.Types.Reachability as Export
 import HTML.Types.RequestParams as Export
+import HTML.Types.Swap as Export
 import HTML.Types.This as Export
 import HTML.Types.URL ( AbsoluteURL
                       , absoluteURLFromText

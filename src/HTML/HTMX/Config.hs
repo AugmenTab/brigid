@@ -12,13 +12,14 @@ import Numeric.Natural (Natural)
 import HTML.Types.Class (Class(Class))
 import HTML.Types.Method (Method, methodFromText, methodToText)
 import HTML.Types.QuerySelector qualified as QS
+import HTML.Types.Swap (SwapStyle, swapStyleFromText, swapStyleToText)
 
 data Config =
   Config
     { historyEnabled          :: Maybe Bool
     , historyCacheSize        :: Maybe Natural
     , refreshOnHistoryMiss    :: Maybe Bool
- -- , defaultSwapStyle        :: Maybe _
+    , defaultSwapStyle        :: Maybe SwapStyle
     , defaultSwapDelay        :: Maybe Natural
     , defaultSettleDelay      :: Maybe Natural
     , includeIndicatorStyles  :: Maybe Bool
@@ -55,7 +56,7 @@ configSchema =
       #+ FC.optional "historyEnabled"          historyEnabled          FC.boolean
       #+ FC.optional "historyCacheSize"        historyCacheSize        naturalSchema
       #+ FC.optional "refreshOnHistoryMiss"    refreshOnHistoryMiss    FC.boolean
- --   #+ FC.optional "defaultSwapStyle"        defaultSwapStyle        :: Maybe _
+      #+ FC.optional "defaultSwapStyle"        defaultSwapStyle        swapStyleSchema
       #+ FC.optional "defaultSwapDelay"        defaultSwapDelay        naturalSchema
       #+ FC.optional "defaultSettleDelay"      defaultSettleDelay      naturalSchema
       #+ FC.optional "includeIndicatorStyles"  includeIndicatorStyles  FC.boolean
@@ -90,7 +91,7 @@ defaultConfig =
     { historyEnabled          = Nothing
     , historyCacheSize        = Nothing
     , refreshOnHistoryMiss    = Nothing
- -- , defaultSwapStyle        = Nothing
+    , defaultSwapStyle        = Nothing
     , defaultSwapDelay        = Nothing
     , defaultSettleDelay      = Nothing
     , includeIndicatorStyles  = Nothing
@@ -134,6 +135,10 @@ naturalSchema =
         | int < 0   = Left $ "Invalid Natural " <> show int
         | otherwise = Right $ fromIntegral int
    in FC.validate fromIntegral check FC.integer
+
+swapStyleSchema :: FC.Fleece schema => schema SwapStyle
+swapStyleSchema =
+  FC.validate swapStyleToText swapStyleFromText FC.text
 
 -- TODO
 -- setConfig :: Config -> ChildHTML parent grandparent
