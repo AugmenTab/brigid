@@ -246,6 +246,7 @@ htmxExample =
     [ E.button [ A.htmx . exampleURL $ GetCustomer 2
                , A.hxPushURL True
                , A.hxExt $ HTML.extJsonEnc :| [ HTML.ignore HTML.extAjaxHeader ]
+               , A.hxSelect divId
                ]
         [ E.text "Implicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [] ]

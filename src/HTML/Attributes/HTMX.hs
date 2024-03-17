@@ -5,11 +5,11 @@ module HTML.Attributes.HTMX
   ( htmx
   , hxGet
   , hxPost
-  , hxDelete
-  , hxPatch
-  , hxPut
+  , hxPushURL
+  , hxSelect
   , hxBoost
   , hxConfirm
+  , hxDelete
   , hxDisable
   , hxDisabled
   , hxDisinherit
@@ -17,8 +17,9 @@ module HTML.Attributes.HTMX
   , hxExt
   , hxHistory
   , hxHistoryElt
-  , hxPushURL
+  , hxPatch
   , hxPrompt
+  , hxPut
   , hxReplaceURL
   , hxValidate
   ) where
@@ -63,7 +64,11 @@ hxPushURL :: ( KnownNat branchIndex
 hxPushURL =
   Attr_HxPushURL . Types.mkPushURL
 
--- hx-select
+hxSelect :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf querySelector Types.QuerySelectorTypes
+            )
+         => querySelector -> Attribute tag
+hxSelect = Attr_HxSelect . Types.mkQuerySelector
 
 -- hx-select-oob
 

@@ -2438,9 +2438,11 @@ hxPushURL :: ( KnownNat branchIndex
           => url -> AttributeSelector
 hxPushURL = (,) Htmx_HxPushURL . Just . pushURLToText . mkPushURL
 
--- TODO
-hxSelect :: T.Text -> AttributeSelector
-hxSelect = (,) Htmx_HxSelect . Just
+hxSelect :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+            )
+         => querySelector -> AttributeSelector
+hxSelect = (,) Htmx_HxSelect . Just . querySelectorToText . mkQuerySelector
 
 -- TODO
 hxSelectOOB :: T.Text -> AttributeSelector

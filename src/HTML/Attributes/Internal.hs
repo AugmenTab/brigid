@@ -54,6 +54,7 @@ module HTML.Attributes.Internal
       , Attr_HxPushURL
       , Attr_HxPrompt
       , Attr_HxReplaceURL
+      , Attr_HxSelect
       , Attr_HxValidate
       )
   , attributeText
@@ -733,6 +734,10 @@ data Attribute (tag :: TagType) where
     :: Types.PushURL
     -> Attribute tag
 
+  Attr_HxSelect
+    :: Types.QuerySelector
+    -> Attribute tag
+
   Attr_HxValidate
     :: ValidAttribute 'HxValidate tag
     => Attribute tag
@@ -879,6 +884,9 @@ attributeText attr =
 
     Attr_HxReplaceURL _url ->
       "hx-replace-url"
+
+    Attr_HxSelect _selector ->
+      "hx-select"
 
     Attr_HxValidate ->
       "hx-validate"

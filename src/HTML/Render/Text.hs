@@ -611,6 +611,12 @@ renderAttribute attr =
     Attr_HxReplaceURL url ->
       Just . buildAttribute "hx-replace-url" $ renderPushURL url
 
+    Attr_HxSelect selector ->
+      Just
+        . buildAttribute "hx-select"
+        . Escape.attribute
+        $ Types.querySelectorToText selector
+
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 
