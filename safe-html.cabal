@@ -60,6 +60,7 @@ library
       HTML.Types.Email
       HTML.Types.Event
       HTML.Types.Extension
+      HTML.Types.Headers
       HTML.Types.Href
       HTML.Types.Id
       HTML.Types.InputMode
