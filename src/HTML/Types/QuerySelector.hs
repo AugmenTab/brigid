@@ -487,6 +487,7 @@ import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
+import HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 
 newtype QuerySelector =
   QuerySelector
@@ -2833,9 +2834,9 @@ hxTarget = (,) Attr_HxTarget . Just
 hxTrigger :: T.Text -> AttributeSelector
 hxTrigger = (,) Attr_HxTrigger . Just
 
--- TODO
-hxVals :: T.Text -> AttributeSelector
-hxVals = (,) Attr_HxVals . Just
+hxVals :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf vals HtmxValsTypes)
+       => vals -> AttributeSelector
+hxVals = (,) Attr_HxVals . Just . htmxValsToText . mkHtmxVals
 
 hxBoost :: Bool -> AttributeSelector
 hxBoost = (,) Attr_HxBoost . Just . enumBoolToText

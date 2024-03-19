@@ -634,6 +634,9 @@ renderAttribute attr =
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 
+    Attr_HxVals vals ->
+      Just . buildAttribute "hx-vals" $ Types.htmxValsToText vals
+
 buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
   fromText attr <> fromText "=\"" <> fromText value <> fromText "\""

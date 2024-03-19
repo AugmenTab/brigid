@@ -7,6 +7,7 @@ module HTML.Attributes.HTMX
   , hxPost
   , hxPushURL
   , hxSelect
+  , hxVals
   , hxBoost
   , hxConfirm
   , hxDelete
@@ -69,8 +70,7 @@ hxPushURL :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf url Types.PushURLTypes
              )
           => url -> Attribute tag
-hxPushURL =
-  Attr_HxPushURL . Types.mkPushURL
+hxPushURL = Attr_HxPushURL . Types.mkPushURL
 
 hxSelect :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf querySelector Types.QuerySelectorTypes
@@ -88,7 +88,11 @@ hxSelect = Attr_HxSelect . Types.mkQuerySelector
 
 -- hx-trigger
 
--- hx-vals
+hxVals :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf vals Types.HtmxValsTypes
+          )
+       => vals -> Attribute tag
+hxVals = Attr_HxVals . Types.mkHtmxVals
 
 -- Additional Attributes
 --

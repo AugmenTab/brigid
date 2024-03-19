@@ -661,6 +661,9 @@ renderAttribute attr =
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 
+    Attr_HxVals vals ->
+      Just . buildAttribute "hx-vals" $ Types.htmxValsToBytes vals
+
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
   lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""

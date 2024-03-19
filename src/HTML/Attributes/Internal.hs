@@ -59,6 +59,7 @@ module HTML.Attributes.Internal
       , Attr_HxReplaceURL
       , Attr_HxSelect
       , Attr_HxValidate
+      , Attr_HxVals
       )
   , attributeText
   , buildAttrMap
@@ -758,6 +759,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'HxValidate tag
     => Attribute tag
 
+  Attr_HxVals
+    :: Types.HtmxVals
+    -> Attribute tag
+
 attributeText :: Attribute tag -> T.Text
 attributeText attr =
   case attr of
@@ -915,6 +920,9 @@ attributeText attr =
 
     Attr_HxValidate ->
       "hx-validate"
+
+    Attr_HxVals _vals ->
+      "hx-vals"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

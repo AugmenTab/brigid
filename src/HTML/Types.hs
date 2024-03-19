@@ -28,6 +28,7 @@ import HTML.Types.Extension as Export
 import HTML.Types.Headers as Export
 import HTML.Types.Href as Export
 import HTML.Types.Id as Export
+import HTML.Types.InlineJSON as Export
 import HTML.Types.InputMode as Export
 import HTML.Types.KeyHint as Export
 import HTML.Types.Method as Export
@@ -37,6 +38,7 @@ import HTML.Types.Part as Export
 import HTML.Types.PopoverState as Export
 import HTML.Types.PushURL as Export
 import HTML.Types.QuerySelector as Export
+import HTML.Types.RawJavaScript as Export
 import HTML.Types.Reachability as Export
 import HTML.Types.RequestParams as Export
 import HTML.Types.Swap as Export
@@ -55,3 +57,4 @@ import HTML.Types.URL ( AbsoluteURL
                       , rawURLFromText
                       , rawURLToText
                       )
+import HTML.Types.Vals as Export
