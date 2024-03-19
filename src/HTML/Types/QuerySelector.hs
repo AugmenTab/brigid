@@ -497,6 +497,7 @@ type QuerySelectorTypes =
   [ Id.Id
   , Class.Class
   , ElementSelector
+  , AttributeSelector
   , RawQuerySelector
   ]
 
@@ -514,6 +515,7 @@ querySelectorToBytes =
       . Shrubbery.branch @Id.Id Id.idToBytes
       . Shrubbery.branch @Class.Class Class.classToBytes
       . Shrubbery.branch @ElementSelector elementSelectorToBytes
+      . Shrubbery.branch @AttributeSelector attributeSelectorToBytes
       . Shrubbery.branch @RawQuerySelector rawQuerySelectorToBytes
       $ Shrubbery.branchEnd
   ) . unQuerySelector
@@ -525,6 +527,7 @@ querySelectorToText =
       . Shrubbery.branch @Id.Id Id.idToText
       . Shrubbery.branch @Class.Class Class.classToText
       . Shrubbery.branch @ElementSelector elementSelectorToText
+      . Shrubbery.branch @AttributeSelector attributeSelectorToText
       . Shrubbery.branch @RawQuerySelector rawQuerySelectorToText
       $ Shrubbery.branchEnd
   ) . unQuerySelector
