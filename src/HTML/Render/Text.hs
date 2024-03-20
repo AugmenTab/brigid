@@ -631,6 +631,11 @@ renderAttribute attr =
         . Escape.attribute
         $ Types.querySelectorToText selector
 
+    Attr_HxSwapOOB mbSwap ->
+      Just
+        . buildAttribute "hx-swap-oob"
+        $ maybe "true" Types.outOfBandSwapToText mbSwap
+
     Attr_HxTarget target ->
       Just . buildAttribute "hx-target" $ Types.targetToText target
 

@@ -7,6 +7,7 @@ module HTML.Attributes.HTMX
   , hxPost
   , hxPushURL
   , hxSelect
+  , hxSwapOOB
   , hxTarget
   , hxVals
   , hxBoost
@@ -83,7 +84,11 @@ hxSelect = Attr_HxSelect . Types.mkQuerySelector
 
 -- hx-swap
 
--- hx-swap-oob
+hxSwapOOB :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf swap Types.OutOfBandSwapTypes
+             )
+          => Maybe swap -> Attribute tag
+hxSwapOOB = Attr_HxSwapOOB . fmap Types.mkOutOfBandSwap
 
 hxTarget :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf target Types.TargetTypes

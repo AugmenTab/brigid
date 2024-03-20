@@ -461,6 +461,25 @@ module HTML.Types.QuerySelector
   , unTarget
   , targetToBytes
   , targetToText
+  , SwapSelector
+  , swapSelectorToBytes
+  , swapSelectorToText
+  , selectSwapToBytes
+  , selectSwapToText
+  , swapInnerHTML
+  , swapOuterHTML
+  , swapBeforebegin
+  , swapAfterbegin
+  , swapBeforeend
+  , swapAfterend
+  , swapDelete
+  , swapNone
+  , OutOfBandSwap
+  , OutOfBandSwapTypes
+  , mkOutOfBandSwap
+  , unOutOfBandSwap
+  , outOfBandSwapToBytes
+  , outOfBandSwapToText
   , TargetSelector
   , closest
   , find
@@ -499,6 +518,7 @@ import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import HTML.Types.RequestParams (RequestParams, requestParamsToText)
+import HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
 import HTML.Types.This (This, thisToBytes, thisToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
@@ -2837,9 +2857,14 @@ hxSelectOOB = (,) Attr_HxSelectOOB . Just
 hxSwap :: T.Text -> AttributeSelector
 hxSwap = (,) Attr_HxSwap . Just
 
--- TODO
-hxSwapOOB :: T.Text -> AttributeSelector
-hxSwapOOB = (,) Attr_HxSwapOOB . Just
+hxSwapOOB :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf swap OutOfBandSwapTypes
+             )
+          => Maybe swap -> AttributeSelector
+hxSwapOOB =
+  (,) Attr_HxSwapOOB
+    . Just
+    . maybe "true" (outOfBandSwapToText . mkOutOfBandSwap)
 
 hxTarget :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf target TargetTypes
@@ -2937,6 +2962,112 @@ hxSync = (,) Attr_HxSync . Just
 
 hxValidate :: AttributeSelector
 hxValidate = (Attr_HxValidate, Nothing)
+
+-- Swap Selector
+--
+data SwapSelector =
+  SwapSelector
+    { swapSelectorStrategy :: SwapStyle
+    , swapSelectorQuery    :: QuerySelector
+    }
+
+-- <swap strategy>:<query selector>
+swapSelectorToBytes :: SwapSelector -> LBS.ByteString
+swapSelectorToBytes swap =
+  LBS.concat
+    [ swapStyleToBytes $ swapSelectorStrategy swap
+    , LBS8.singleton ':'
+    , querySelectorToBytes $ swapSelectorQuery swap
+    ]
+
+swapSelectorToText :: SwapSelector -> T.Text
+swapSelectorToText swap =
+  T.concat
+    [ swapStyleToText $ swapSelectorStrategy swap
+    , T.singleton ':'
+    , querySelectorToText $ swapSelectorQuery swap
+    ]
+
+-- <query selector>:<swap style>
+selectSwapToBytes :: SwapSelector -> LBS.ByteString
+selectSwapToBytes swap =
+  LBS.concat
+    [ querySelectorToBytes $ swapSelectorQuery swap
+    , LBS8.singleton ':'
+    , swapStyleToBytes $ swapSelectorStrategy swap
+    ]
+
+selectSwapToText :: SwapSelector -> T.Text
+selectSwapToText swap =
+  T.concat
+    [ querySelectorToText $ swapSelectorQuery swap
+    , T.singleton ':'
+    , swapStyleToText $ swapSelectorStrategy swap
+    ]
+
+swapInnerHTML :: QuerySelector -> SwapSelector
+swapInnerHTML = SwapSelector InnerHTML
+
+swapOuterHTML :: QuerySelector -> SwapSelector
+swapOuterHTML = SwapSelector OuterHTML
+
+swapBeforebegin :: QuerySelector -> SwapSelector
+swapBeforebegin = SwapSelector BeforeBegin
+
+swapAfterbegin :: QuerySelector -> SwapSelector
+swapAfterbegin = SwapSelector AfterBegin
+
+swapBeforeend :: QuerySelector -> SwapSelector
+swapBeforeend = SwapSelector BeforeEnd
+
+swapAfterend :: QuerySelector -> SwapSelector
+swapAfterend = SwapSelector AfterEnd
+
+swapDelete :: QuerySelector -> SwapSelector
+swapDelete = SwapSelector SwapDelete
+
+swapNone :: QuerySelector -> SwapSelector
+swapNone = SwapSelector SwapNone
+
+-- Out of band Swap
+--
+newtype OutOfBandSwap =
+  OutOfBandSwap
+    { unOutOfBandSwap :: Shrubbery.Union OutOfBandSwapTypes
+    }
+
+type OutOfBandSwapTypes =
+  [ SwapStyle
+  , SwapSelector
+  , RawSelector
+  ]
+
+mkOutOfBandSwap :: ( KnownNat branchIndex
+                   , branchIndex ~ FirstIndexOf swap OutOfBandSwapTypes
+                   )
+                => swap -> OutOfBandSwap
+mkOutOfBandSwap =
+  OutOfBandSwap . Shrubbery.unify
+
+outOfBandSwapToBytes :: OutOfBandSwap -> LBS.ByteString
+outOfBandSwapToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @SwapStyle swapStyleToBytes
+      . Shrubbery.branch @SwapSelector swapSelectorToBytes
+      . Shrubbery.branch @RawSelector rawSelectorToBytes
+      $ Shrubbery.branchEnd
+  ) . unOutOfBandSwap
+
+outOfBandSwapToText :: OutOfBandSwap -> T.Text
+outOfBandSwapToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @SwapStyle swapStyleToText
+      . Shrubbery.branch @SwapSelector swapSelectorToText
+      . Shrubbery.branch @RawSelector rawSelectorToText
+      $ Shrubbery.branchEnd
+  ) . unOutOfBandSwap
 
 -- Target and TargetSelector
 --

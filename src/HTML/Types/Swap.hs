@@ -6,7 +6,7 @@ module HTML.Types.Swap
       , AfterBegin
       , BeforeEnd
       , AfterEnd
-      , Delete
+      , SwapDelete
       , SwapNone
       )
   , swapStyleToBytes
@@ -24,7 +24,7 @@ data SwapStyle
   | AfterBegin
   | BeforeEnd
   | AfterEnd
-  | Delete
+  | SwapDelete
   | SwapNone
 
 swapStyleToBytes :: SwapStyle -> LBS.ByteString
@@ -36,7 +36,7 @@ swapStyleToBytes style =
     AfterBegin  -> "afterbegin"
     BeforeEnd   -> "beforeend"
     AfterEnd    -> "afterend"
-    Delete      -> "delete"
+    SwapDelete  -> "delete"
     SwapNone    -> "none"
 
 swapStyleFromText :: T.Text -> Either String SwapStyle
@@ -48,7 +48,7 @@ swapStyleFromText txt =
     "afterbegin"  -> Right AfterBegin
     "beforeend"   -> Right BeforeEnd
     "afterend"    -> Right AfterEnd
-    "delete"      -> Right Delete
+    "delete"      -> Right SwapDelete
     "none"        -> Right SwapNone
     _             -> Left $ "Unknown SwapStyle: " <> T.unpack txt
 
@@ -61,5 +61,5 @@ swapStyleToText style =
     AfterBegin  -> "afterbegin"
     BeforeEnd   -> "beforeend"
     AfterEnd    -> "afterend"
-    Delete      -> "delete"
+    SwapDelete  -> "delete"
     SwapNone    -> "none"

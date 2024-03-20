@@ -58,6 +58,7 @@ module HTML.Attributes.Internal
       , Attr_HxPushURL
       , Attr_HxReplaceURL
       , Attr_HxSelect
+      , Attr_HxSwapOOB
       , Attr_HxTarget
       , Attr_HxValidate
       , Attr_HxVals
@@ -756,6 +757,10 @@ data Attribute (tag :: TagType) where
     :: Types.QuerySelector
     -> Attribute tag
 
+  Attr_HxSwapOOB
+    :: Maybe Types.OutOfBandSwap
+    -> Attribute tag
+
   Attr_HxTarget
     :: Types.Target
     -> Attribute tag
@@ -922,6 +927,9 @@ attributeText attr =
 
     Attr_HxSelect _selector ->
       "hx-select"
+
+    Attr_HxSwapOOB _mbSwap ->
+      "hx-swap-oob"
 
     Attr_HxTarget _target ->
       "hx-target"
