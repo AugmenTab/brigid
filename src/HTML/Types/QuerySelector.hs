@@ -461,10 +461,6 @@ module HTML.Types.QuerySelector
   , unTarget
   , targetToBytes
   , targetToText
-  , TargetType
-      ( TargetNext
-      , TargetPrevious
-      )
   , TargetSelector
   , closest
   , find
@@ -506,6 +502,7 @@ import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import HTML.Types.RequestParams (RequestParams, requestParamsToText)
+import HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
 import HTML.Types.This (This, thisToBytes, thisToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
 import HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
@@ -2989,22 +2986,6 @@ targetToText =
       . Shrubbery.branch @RawTarget rawTargetToText
       $ Shrubbery.branchEnd
   ) . unTarget
-
-data TargetType
-  = TargetNext
-  | TargetPrevious
-
-targetTypeToBytes :: TargetType -> LBS.ByteString
-targetTypeToBytes targetType =
-  case targetType of
-    TargetNext     -> "next"
-    TargetPrevious -> "previous"
-
-targetTypeToText :: TargetType -> T.Text
-targetTypeToText targetType =
-  case targetType of
-    TargetNext     -> "next"
-    TargetPrevious -> "previous"
 
 data TargetSelectorType
   = TargetSelector_Closest

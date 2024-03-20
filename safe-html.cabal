@@ -76,6 +76,7 @@ library
       HTML.Types.Reachability
       HTML.Types.RequestParams
       HTML.Types.Swap
+      HTML.Types.Target
       HTML.Types.This
       HTML.Types.URL
       HTML.Types.Vals
