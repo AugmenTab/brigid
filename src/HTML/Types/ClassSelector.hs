@@ -1,32 +1,29 @@
 module HTML.Types.ClassSelector
   ( ClassSelector
   , toClassSelector
+  , not
   , classSelectorToBytes
   , classSelectorToText
   ) where
 
+import Prelude hiding (not)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 
 import HTML.Types.Class (Class, classToBytes, classToText)
-import HTML.Types.Negatable (Negatable(not))
 
 data ClassSelector =
   ClassSelector
-    { classSelectorClass    :: Class
-    , classSelectorExcluded :: Bool
+    { classSelectorExcluded :: Bool
+    , classSelectorClass    :: Class
     }
-
-instance Negatable ClassSelector where
-  not cs = cs { classSelectorExcluded = False }
 
 toClassSelector :: Class -> ClassSelector
-toClassSelector class_ =
-  ClassSelector
-    { classSelectorClass = class_
-    , classSelectorExcluded = True
-    }
+toClassSelector = ClassSelector True
+
+not :: ClassSelector -> ClassSelector
+not cs = cs { classSelectorExcluded = False }
 
 classSelectorToBytes :: ClassSelector -> LBS.ByteString
 classSelectorToBytes selector =

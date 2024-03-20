@@ -67,7 +67,6 @@ library
       HTML.Types.InputMode
       HTML.Types.KeyHint
       HTML.Types.Method
-      HTML.Types.Negatable
       HTML.Types.NoContent
       HTML.Types.Part
       HTML.Types.PopoverState
