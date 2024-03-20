@@ -33,6 +33,7 @@ import HTML.Types.InputMode as Export
 import HTML.Types.KeyHint as Export
 import HTML.Types.Method as Export
 import HTML.Types.NoContent as Export
+import HTML.Types.None as Export
 import HTML.Types.Part as Export
 import HTML.Types.PopoverState as Export
 import HTML.Types.PushURL as Export

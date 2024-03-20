@@ -9,9 +9,9 @@ module HTML.Types.QuerySelector
   , unQuerySelector
   , querySelectorToBytes
   , querySelectorToText
-  , RawQuerySelector (RawQuerySelector)
-  , rawQuerySelectorToBytes
-  , rawQuerySelectorToText
+  , RawSelector (RawSelector)
+  , rawSelectorToBytes
+  , rawSelectorToText
   , ElementSelector
   , elementSelectorToBytes
   , elementSelectorToText
@@ -468,9 +468,6 @@ module HTML.Types.QuerySelector
   , previous
   , targetSelectorToBytes
   , targetSelectorToText
-  , RawTarget (RawTarget)
-  , rawTargetToBytes
-  , rawTargetToText
   ) where
 
 import Prelude hiding (div, head, id, map, max, min, span)
@@ -517,7 +514,7 @@ type QuerySelectorTypes =
   , Class.Class
   , ElementSelector
   , AttributeSelector
-  , RawQuerySelector
+  , RawSelector
   ]
 
 mkQuerySelector :: ( KnownNat branchIndex
@@ -535,7 +532,7 @@ querySelectorToBytes =
       . Shrubbery.branch @Class.Class (("." <>) . Class.classToBytes)
       . Shrubbery.branch @ElementSelector elementSelectorToBytes
       . Shrubbery.branch @AttributeSelector attributeSelectorToBytes
-      . Shrubbery.branch @RawQuerySelector rawQuerySelectorToBytes
+      . Shrubbery.branch @RawSelector rawSelectorToBytes
       $ Shrubbery.branchEnd
   ) . unQuerySelector
 
@@ -547,18 +544,18 @@ querySelectorToText =
       . Shrubbery.branch @Class.Class (T.cons '.' . Class.classToText)
       . Shrubbery.branch @ElementSelector elementSelectorToText
       . Shrubbery.branch @AttributeSelector attributeSelectorToText
-      . Shrubbery.branch @RawQuerySelector rawQuerySelectorToText
+      . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
   ) . unQuerySelector
 
-newtype RawQuerySelector =
-  RawQuerySelector
-    { rawQuerySelectorToText :: T.Text
+newtype RawSelector =
+  RawSelector
+    { rawSelectorToText :: T.Text
     }
 
-rawQuerySelectorToBytes :: RawQuerySelector -> LBS.ByteString
-rawQuerySelectorToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . rawQuerySelectorToText
+rawSelectorToBytes :: RawSelector -> LBS.ByteString
+rawSelectorToBytes =
+  LBS.fromStrict . TE.encodeUtf8 . rawSelectorToText
 
 data ElementSelector =
   ElementSelector
@@ -2953,7 +2950,7 @@ type TargetTypes =
   , TargetSelector
   , TargetType
   , This
-  , RawTarget
+  , RawSelector
   ]
 
 mkTarget :: ( KnownNat branchIndex
@@ -2971,7 +2968,7 @@ targetToBytes =
       . Shrubbery.branch @TargetSelector targetSelectorToBytes
       . Shrubbery.branch @TargetType targetTypeToBytes
       . Shrubbery.branch @This thisToBytes
-      . Shrubbery.branch @RawTarget rawTargetToBytes
+      . Shrubbery.branch @RawSelector rawSelectorToBytes
       $ Shrubbery.branchEnd
   ) . unTarget
 
@@ -2983,7 +2980,7 @@ targetToText =
       . Shrubbery.branch @TargetSelector targetSelectorToText
       . Shrubbery.branch @TargetType targetTypeToText
       . Shrubbery.branch @This thisToText
-      . Shrubbery.branch @RawTarget rawTargetToText
+      . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
   ) . unTarget
 
@@ -3056,14 +3053,6 @@ targetSelectorToText selector =
     , querySelectorToText $ targetSelectorQuery selector
     ]
 
-newtype RawTarget =
-  RawTarget
-    { rawTargetToText :: T.Text
-    }
-
-rawTargetToBytes :: RawTarget -> LBS.ByteString
-rawTargetToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . rawTargetToText
 -- Helpers
 --
 enumBoolToText :: Bool -> T.Text

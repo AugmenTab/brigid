@@ -1,7 +1,7 @@
 module HTML.Types.RequestParams
   ( RequestParams
       ( AllParams
-      , None
+      , NoParams
       , Not
       , Params
       )
@@ -12,7 +12,7 @@ import Data.Text qualified as T
 
 data RequestParams
   = AllParams
-  | None
+  | NoParams
   | Not [T.Text]
   | Params [T.Text]
 
@@ -20,6 +20,6 @@ requestParamsToText :: RequestParams -> T.Text
 requestParamsToText requestParams =
   case requestParams of
     AllParams     -> "*"
-    None          -> "none"
+    NoParams      -> "none"
     Not    params -> "not " <> T.intercalate "," params
     Params params -> T.intercalate "," params

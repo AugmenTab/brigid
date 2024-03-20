@@ -68,6 +68,7 @@ library
       HTML.Types.KeyHint
       HTML.Types.Method
       HTML.Types.NoContent
+      HTML.Types.None
       HTML.Types.Part
       HTML.Types.PopoverState
       HTML.Types.PushURL
