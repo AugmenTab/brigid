@@ -271,6 +271,7 @@ htmxExample =
                    $ R.make B.NoPathParams /- "time_out"
                , A.hxParams $ HTML.Not [ customerIdParam ]
                , A.hxOn HTML.HtmxLoad "alert(\"Loaded!\")"
+               , A.hxTarget idQuerySelectorExample
                ]
         [ E.text "Explicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [ HTML.HxPrompt ] ]
@@ -298,6 +299,7 @@ htmxExample =
         ]
     , E.button [ A.htmx . exampleURL $ GetCustomer 5
                , A.hxVals $ HTML.mkInlineJSON thingSchema exampleThing
+               , A.hxTarget $ HTML.closest myClass
                ]
         [ E.text "Vals Test"
         ]

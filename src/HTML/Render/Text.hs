@@ -631,6 +631,9 @@ renderAttribute attr =
         . Escape.attribute
         $ Types.querySelectorToText selector
 
+    Attr_HxTarget target ->
+      Just . buildAttribute "hx-target" $ Types.targetToText target
+
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 

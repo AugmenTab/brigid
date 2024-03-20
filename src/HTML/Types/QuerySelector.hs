@@ -455,6 +455,26 @@ module HTML.Types.QuerySelector
       )
   , attributeTypeFromText
   , attributeTypeToText
+  , Target
+  , TargetTypes
+  , mkTarget
+  , unTarget
+  , targetToBytes
+  , targetToText
+  , TargetType
+      ( TargetNext
+      , TargetPrevious
+      )
+  , TargetSelector
+  , closest
+  , find
+  , next
+  , previous
+  , targetSelectorToBytes
+  , targetSelectorToText
+  , RawTarget (RawTarget)
+  , rawTargetToBytes
+  , rawTargetToText
   ) where
 
 import Prelude hiding (div, head, id, map, max, min, span)
@@ -486,6 +506,7 @@ import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import HTML.Types.RequestParams (RequestParams, requestParamsToText)
+import HTML.Types.This (This, thisToBytes, thisToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
 import HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 
@@ -513,8 +534,8 @@ querySelectorToBytes :: QuerySelector -> LBS.ByteString
 querySelectorToBytes =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Id.Id Id.idToBytes
-      . Shrubbery.branch @Class.Class Class.classToBytes
+      . Shrubbery.branch @Id.Id (("#" <>) . Id.idToBytes)
+      . Shrubbery.branch @Class.Class (("." <>) . Class.classToBytes)
       . Shrubbery.branch @ElementSelector elementSelectorToBytes
       . Shrubbery.branch @AttributeSelector attributeSelectorToBytes
       . Shrubbery.branch @RawQuerySelector rawQuerySelectorToBytes
@@ -525,8 +546,8 @@ querySelectorToText :: QuerySelector -> T.Text
 querySelectorToText =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Id.Id Id.idToText
-      . Shrubbery.branch @Class.Class Class.classToText
+      . Shrubbery.branch @Id.Id (T.cons '#' . Id.idToText)
+      . Shrubbery.branch @Class.Class (T.cons '.' . Class.classToText)
       . Shrubbery.branch @ElementSelector elementSelectorToText
       . Shrubbery.branch @AttributeSelector attributeSelectorToText
       . Shrubbery.branch @RawQuerySelector rawQuerySelectorToText
@@ -2826,9 +2847,11 @@ hxSwap = (,) Attr_HxSwap . Just
 hxSwapOOB :: T.Text -> AttributeSelector
 hxSwapOOB = (,) Attr_HxSwapOOB . Just
 
--- TODO
-hxTarget :: T.Text -> AttributeSelector
-hxTarget = (,) Attr_HxTarget . Just
+hxTarget :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf target TargetTypes
+            )
+         => target -> AttributeSelector
+hxTarget = (,) Attr_HxTarget . Just . targetToText . mkTarget
 
 -- TODO
 hxTrigger :: T.Text -> AttributeSelector
@@ -2921,6 +2944,145 @@ hxSync = (,) Attr_HxSync . Just
 hxValidate :: AttributeSelector
 hxValidate = (Attr_HxValidate, Nothing)
 
+-- Target and TargetSelector
+--
+newtype Target =
+  Target
+    { unTarget :: Shrubbery.Union TargetTypes
+    }
+
+type TargetTypes =
+  [ QuerySelector
+  , TargetSelector
+  , TargetType
+  , This
+  , RawTarget
+  ]
+
+mkTarget :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf target TargetTypes
+            )
+         => target -> Target
+mkTarget =
+  Target . Shrubbery.unify
+
+targetToBytes :: Target -> LBS.ByteString
+targetToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @QuerySelector querySelectorToBytes
+      . Shrubbery.branch @TargetSelector targetSelectorToBytes
+      . Shrubbery.branch @TargetType targetTypeToBytes
+      . Shrubbery.branch @This thisToBytes
+      . Shrubbery.branch @RawTarget rawTargetToBytes
+      $ Shrubbery.branchEnd
+  ) . unTarget
+
+targetToText :: Target -> T.Text
+targetToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @QuerySelector querySelectorToText
+      . Shrubbery.branch @TargetSelector targetSelectorToText
+      . Shrubbery.branch @TargetType targetTypeToText
+      . Shrubbery.branch @This thisToText
+      . Shrubbery.branch @RawTarget rawTargetToText
+      $ Shrubbery.branchEnd
+  ) . unTarget
+
+data TargetType
+  = TargetNext
+  | TargetPrevious
+
+targetTypeToBytes :: TargetType -> LBS.ByteString
+targetTypeToBytes targetType =
+  case targetType of
+    TargetNext     -> "next"
+    TargetPrevious -> "previous"
+
+targetTypeToText :: TargetType -> T.Text
+targetTypeToText targetType =
+  case targetType of
+    TargetNext     -> "next"
+    TargetPrevious -> "previous"
+
+data TargetSelectorType
+  = TargetSelector_Closest
+  | TargetSelector_Find
+  | TargetSelector_Next
+  | TargetSelector_Previous
+
+targetSelectorTypeToBytes :: TargetSelectorType -> LBS.ByteString
+targetSelectorTypeToBytes selectorType =
+  case selectorType of
+    TargetSelector_Closest  -> "closest"
+    TargetSelector_Find     -> "find"
+    TargetSelector_Next     -> "next"
+    TargetSelector_Previous -> "previous"
+
+targetSelectorTypeToText :: TargetSelectorType -> T.Text
+targetSelectorTypeToText selectorType =
+  case selectorType of
+    TargetSelector_Closest  -> "closest"
+    TargetSelector_Find     -> "find"
+    TargetSelector_Next     -> "next"
+    TargetSelector_Previous -> "previous"
+
+data TargetSelector =
+  TargetSelector
+    { targetSelectorType  :: TargetSelectorType
+    , targetSelectorQuery :: QuerySelector
+    }
+
+closest :: ( KnownNat branchIndex
+           , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+           )
+        => querySelector -> TargetSelector
+closest =
+  TargetSelector TargetSelector_Closest . mkQuerySelector
+
+find :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+        )
+     => querySelector -> TargetSelector
+find =
+  TargetSelector TargetSelector_Find . mkQuerySelector
+
+next :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+        )
+     => querySelector -> TargetSelector
+next =
+  TargetSelector TargetSelector_Next . mkQuerySelector
+
+previous :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+            )
+         => querySelector -> TargetSelector
+previous =
+  TargetSelector TargetSelector_Previous . mkQuerySelector
+
+targetSelectorToBytes :: TargetSelector -> LBS.ByteString
+targetSelectorToBytes selector =
+  targetSelectorTypeToBytes (targetSelectorType selector)
+    <> " "
+    <> querySelectorToBytes (targetSelectorQuery selector)
+
+targetSelectorToText :: TargetSelector -> T.Text
+targetSelectorToText selector =
+  T.unwords
+    [ targetSelectorTypeToText $ targetSelectorType selector
+    , querySelectorToText $ targetSelectorQuery selector
+    ]
+
+newtype RawTarget =
+  RawTarget
+    { rawTargetToText :: T.Text
+    }
+
+rawTargetToBytes :: RawTarget -> LBS.ByteString
+rawTargetToBytes =
+  LBS.fromStrict . TE.encodeUtf8 . rawTargetToText
 -- Helpers
 --
 enumBoolToText :: Bool -> T.Text

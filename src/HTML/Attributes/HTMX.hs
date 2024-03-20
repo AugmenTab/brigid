@@ -7,6 +7,7 @@ module HTML.Attributes.HTMX
   , hxPost
   , hxPushURL
   , hxSelect
+  , hxTarget
   , hxVals
   , hxBoost
   , hxConfirm
@@ -84,7 +85,11 @@ hxSelect = Attr_HxSelect . Types.mkQuerySelector
 
 -- hx-swap-oob
 
--- hx-target
+hxTarget :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf target Types.TargetTypes
+            )
+         => target -> Attribute tag
+hxTarget = Attr_HxTarget . Types.mkTarget
 
 -- hx-trigger
 

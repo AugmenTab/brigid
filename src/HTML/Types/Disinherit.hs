@@ -55,9 +55,9 @@ type DisinheritTypes =
   ]
 
 mkDisinherit :: ( KnownNat branchIndex
-                , branchIndex ~ FirstIndexOf a DisinheritTypes
+                , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
                 )
-             => a -> Disinherit
+             => disinherit -> Disinherit
 mkDisinherit =
   Disinherit . Shrubbery.unify
 
