@@ -631,6 +631,13 @@ renderAttribute attr =
         . Escape.attribute
         $ Types.querySelectorToText selector
 
+    Attr_HxSelectOOB selects ->
+      Just
+        . buildAttribute "hx-select-oob"
+        . T.intercalate ", "
+        . fmap Types.outOfBandSelectToText
+        $ NEL.toList selects
+
     Attr_HxSwapOOB mbSwap ->
       Just
         . buildAttribute "hx-swap-oob"

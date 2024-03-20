@@ -7,6 +7,7 @@ module HTML.Attributes.HTMX
   , hxPost
   , hxPushURL
   , hxSelect
+  , hxSelectOOB
   , hxSwapOOB
   , hxTarget
   , hxVals
@@ -80,7 +81,8 @@ hxSelect :: ( KnownNat branchIndex
          => querySelector -> Attribute tag
 hxSelect = Attr_HxSelect . Types.mkQuerySelector
 
--- hx-select-oob
+hxSelectOOB :: NEL.NonEmpty Types.OutOfBandSelect -> Attribute tag
+hxSelectOOB = Attr_HxSelectOOB
 
 -- hx-swap
 

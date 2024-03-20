@@ -474,6 +474,12 @@ module HTML.Types.QuerySelector
   , swapAfterend
   , swapDelete
   , swapNone
+  , OutOfBandSelect
+  , OutOfBandSelectTypes
+  , mkOutOfBandSelect
+  , unOutOfBandSelect
+  , outOfBandSelectToBytes
+  , outOfBandSelectToText
   , OutOfBandSwap
   , OutOfBandSwapTypes
   , mkOutOfBandSwap
@@ -2849,9 +2855,13 @@ hxSelect :: ( KnownNat branchIndex
          => querySelector -> AttributeSelector
 hxSelect = (,) Attr_HxSelect . Just . querySelectorToText . mkQuerySelector
 
--- TODO
-hxSelectOOB :: T.Text -> AttributeSelector
-hxSelectOOB = (,) Attr_HxSelectOOB . Just
+hxSelectOOB :: NEL.NonEmpty OutOfBandSelect -> AttributeSelector
+hxSelectOOB =
+  (,) Attr_HxSelectOOB
+    . Just
+    . T.intercalate ", "
+    . fmap outOfBandSelectToText
+    . NEL.toList
 
 -- TODO
 hxSwap :: T.Text -> AttributeSelector
@@ -3028,6 +3038,46 @@ swapDelete = SwapSelector SwapDelete
 
 swapNone :: QuerySelector -> SwapSelector
 swapNone = SwapSelector SwapNone
+
+-- Out of band Select
+--
+newtype OutOfBandSelect =
+  OutOfBandSelect
+    { unOutOfBandSelect :: Shrubbery.Union OutOfBandSelectTypes
+    }
+
+type OutOfBandSelectTypes =
+  [ QuerySelector
+  , SwapSelector
+  , RawSelector
+  ]
+
+mkOutOfBandSelect :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf select OutOfBandSelectTypes
+                     )
+                => select -> OutOfBandSelect
+mkOutOfBandSelect =
+  OutOfBandSelect . Shrubbery.unify
+
+outOfBandSelectToBytes :: OutOfBandSelect -> LBS.ByteString
+outOfBandSelectToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @QuerySelector querySelectorToBytes
+      . Shrubbery.branch @SwapSelector swapSelectorToBytes
+      . Shrubbery.branch @RawSelector rawSelectorToBytes
+      $ Shrubbery.branchEnd
+  ) . unOutOfBandSelect
+
+outOfBandSelectToText :: OutOfBandSelect -> T.Text
+outOfBandSelectToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @QuerySelector querySelectorToText
+      . Shrubbery.branch @SwapSelector swapSelectorToText
+      . Shrubbery.branch @RawSelector rawSelectorToText
+      $ Shrubbery.branchEnd
+  ) . unOutOfBandSelect
 
 -- Out of band Swap
 --

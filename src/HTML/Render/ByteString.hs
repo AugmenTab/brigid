@@ -658,6 +658,13 @@ renderAttribute attr =
         . Escape.attribute
         $ Types.querySelectorToText selector
 
+    Attr_HxSelectOOB selects ->
+      Just
+        . buildAttribute "hx-select-oob"
+        . LBS8.intercalate (LBS8.pack ", ")
+        . fmap Types.outOfBandSelectToBytes
+        $ NEL.toList selects
+
     Attr_HxSwapOOB mbSwap ->
       Just
         . buildAttribute "hx-swap-oob"
