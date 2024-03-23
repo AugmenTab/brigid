@@ -60,9 +60,11 @@ library
       HTML.Types.Email
       HTML.Types.Event
       HTML.Types.Extension
+      HTML.Types.FocusScroll
       HTML.Types.Headers
       HTML.Types.Href
       HTML.Types.Id
+      HTML.Types.IgnoreTitle
       HTML.Types.InlineJSON
       HTML.Types.InputMode
       HTML.Types.KeyHint
@@ -77,6 +79,8 @@ library
       HTML.Types.Reachability
       HTML.Types.RequestParams
       HTML.Types.Swap
+      HTML.Types.SwapTiming
+      HTML.Types.SwapTransition
       HTML.Types.Target
       HTML.Types.This
       HTML.Types.URL

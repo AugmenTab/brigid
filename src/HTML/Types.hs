@@ -25,9 +25,11 @@ import HTML.Types.Disinherit as Export
 import HTML.Types.Email as Export
 import HTML.Types.Event as Export
 import HTML.Types.Extension as Export
+import HTML.Types.FocusScroll as Export
 import HTML.Types.Headers as Export
 import HTML.Types.Href as Export
 import HTML.Types.Id as Export
+import HTML.Types.IgnoreTitle as Export
 import HTML.Types.InlineJSON as Export
 import HTML.Types.InputMode as Export
 import HTML.Types.KeyHint as Export
@@ -42,6 +44,8 @@ import HTML.Types.RawJavaScript as Export
 import HTML.Types.Reachability as Export
 import HTML.Types.RequestParams as Export
 import HTML.Types.Swap as Export
+import HTML.Types.SwapTiming as Export
+import HTML.Types.SwapTransition as Export
 import HTML.Types.Target as Export
 import HTML.Types.This as Export
 import HTML.Types.URL ( AbsoluteURL

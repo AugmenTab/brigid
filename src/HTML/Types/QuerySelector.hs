@@ -461,11 +461,12 @@ module HTML.Types.QuerySelector
   , unTarget
   , targetToBytes
   , targetToText
-  , SwapSelector
-  , swapSelectorToBytes
-  , swapSelectorToText
-  , selectSwapToBytes
-  , selectSwapToText
+  , Swap
+  , SwapTypes
+  , mkSwap
+  , unSwap
+  , swapToBytes
+  , swapToText
   , swapInnerHTML
   , swapOuterHTML
   , swapBeforebegin
@@ -473,7 +474,22 @@ module HTML.Types.QuerySelector
   , swapBeforeend
   , swapAfterend
   , swapDelete
-  , swapNone
+  , RawSwap (RawSwap)
+  , rawSwapToBytes
+  , rawSwapToText
+  , SwapSelector
+  , swapSelectorToBytes
+  , swapSelectorToText
+  , selectSwapToBytes
+  , selectSwapToText
+  , swapSelectInnerHTML
+  , swapSelectOuterHTML
+  , swapSelectBeforebegin
+  , swapSelectAfterbegin
+  , swapSelectBeforeend
+  , swapSelectAfterend
+  , swapSelectDelete
+  , swapSelectNone
   , OutOfBandSelect
   , OutOfBandSelectTypes
   , mkOutOfBandSelect
@@ -500,6 +516,7 @@ import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
+import Data.Maybe (catMaybes)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
@@ -515,16 +532,21 @@ import HTML.Types.Directionality (Directionality, directionalityToText)
 import HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
 import HTML.Types.Event qualified as Event
 import HTML.Types.Extension (Extension, extensionToText)
+import HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
 import HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import HTML.Types.Id qualified as Id
+import HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import HTML.Types.Method (Get, Post, Delete, Put, Patch)
 import HTML.Types.NoContent (NoContent)
+import HTML.Types.None (None, noneToBytes, noneToText)
 import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
+import HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
+import HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
 import HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
 import HTML.Types.This (This, thisToBytes, thisToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
@@ -2973,6 +2995,167 @@ hxSync = (,) Attr_HxSync . Just
 hxValidate :: AttributeSelector
 hxValidate = (Attr_HxValidate, Nothing)
 
+-- Swap
+--
+newtype Swap =
+  Swap
+    { unSwap :: Shrubbery.Union SwapTypes
+    }
+
+type SwapTypes =
+  [ SwapModifier
+  , None
+  , RawSwap
+  ]
+
+mkSwap :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf swap SwapTypes)
+       => swap -> Swap
+mkSwap = Swap . Shrubbery.unify
+
+swapToBytes :: Swap -> LBS.ByteString
+swapToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @SwapModifier swapModifierToBytes
+      . Shrubbery.branch @None (("show:" <>) . noneToBytes)
+      . Shrubbery.branch @RawSwap rawSwapToBytes
+      $ Shrubbery.branchEnd
+  ) . unSwap
+
+swapToText :: Swap -> T.Text
+swapToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @SwapModifier swapModifierToText
+      . Shrubbery.branch @None (("show:" <>) . noneToText)
+      . Shrubbery.branch @RawSwap rawSwapToText
+      $ Shrubbery.branchEnd
+  ) . unSwap
+
+data SwapModifier =
+  SwapModifier
+    { swapModifierStrategy :: SwapStyle
+    , swapModifierModifier :: Maybe (Shrubbery.Union SwapModifierTypes)
+    }
+
+type SwapModifierTypes =
+  [ SwapTransition
+  , SwapTiming
+  , IgnoreTitle
+  , FocusScroll
+  ]
+
+swapModifierToBytes :: SwapModifier -> LBS.ByteString
+swapModifierToBytes swapModifier =
+  LBS.concat
+    . catMaybes
+    $ [ Just . swapStyleToBytes $ swapModifierStrategy swapModifier
+      , Just ":"
+      , ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @SwapTransition swapTransitionToBytes
+            . Shrubbery.branch @SwapTiming swapTimingToBytes
+            . Shrubbery.branch @IgnoreTitle ignoreTitleToBytes
+            . Shrubbery.branch @FocusScroll focusScrollToBytes
+            $ Shrubbery.branchEnd
+        ) <$> swapModifierModifier swapModifier
+      ]
+
+swapModifierToText :: SwapModifier -> T.Text
+swapModifierToText swapModifier =
+  T.concat
+    . catMaybes
+    $ [ Just . swapStyleToText $ swapModifierStrategy swapModifier
+      , Just ":"
+      , ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @SwapTransition swapTransitionToText
+            . Shrubbery.branch @SwapTiming swapTimingToText
+            . Shrubbery.branch @IgnoreTitle ignoreTitleToText
+            . Shrubbery.branch @FocusScroll focusScrollToText
+            $ Shrubbery.branchEnd
+        ) <$> swapModifierModifier swapModifier
+      ]
+
+
+swapInnerHTML :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+                 )
+              => Maybe swap -> SwapModifier
+swapInnerHTML swap =
+  SwapModifier
+    { swapModifierStrategy = InnerHTML
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+swapOuterHTML :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+                 )
+              => Maybe swap -> SwapModifier
+swapOuterHTML swap =
+  SwapModifier
+    { swapModifierStrategy = OuterHTML
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+swapBeforebegin :: ( KnownNat branchIndex
+                   , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+                   )
+                => Maybe swap -> SwapModifier
+swapBeforebegin swap =
+  SwapModifier
+    { swapModifierStrategy = BeforeBegin
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+swapAfterbegin :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+                  )
+               => Maybe swap -> SwapModifier
+swapAfterbegin swap =
+  SwapModifier
+    { swapModifierStrategy = AfterBegin
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+swapBeforeend :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+                 )
+              => Maybe swap -> SwapModifier
+swapBeforeend swap =
+  SwapModifier
+    { swapModifierStrategy = BeforeEnd
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+swapAfterend :: ( KnownNat branchIndex
+                , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+                )
+             => Maybe swap -> SwapModifier
+swapAfterend swap =
+  SwapModifier
+    { swapModifierStrategy = AfterEnd
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+swapDelete :: ( KnownNat branchIndex
+              , branchIndex ~ FirstIndexOf swap SwapModifierTypes
+              )
+           => Maybe swap -> SwapModifier
+swapDelete swap =
+  SwapModifier
+    { swapModifierStrategy = SwapDelete
+    , swapModifierModifier = Shrubbery.unify <$> swap
+    }
+
+newtype RawSwap =
+  RawSwap
+    { rawSwapToText :: T.Text
+    }
+
+rawSwapToBytes :: RawSwap -> LBS.ByteString
+rawSwapToBytes = LBS.fromStrict . TE.encodeUtf8 . rawSwapToText
+
 -- Swap Selector
 --
 data SwapSelector =
@@ -3015,29 +3198,29 @@ selectSwapToText swap =
     , swapStyleToText $ swapSelectorStrategy swap
     ]
 
-swapInnerHTML :: QuerySelector -> SwapSelector
-swapInnerHTML = SwapSelector InnerHTML
+swapSelectInnerHTML :: QuerySelector -> SwapSelector
+swapSelectInnerHTML = SwapSelector InnerHTML
 
-swapOuterHTML :: QuerySelector -> SwapSelector
-swapOuterHTML = SwapSelector OuterHTML
+swapSelectOuterHTML :: QuerySelector -> SwapSelector
+swapSelectOuterHTML = SwapSelector OuterHTML
 
-swapBeforebegin :: QuerySelector -> SwapSelector
-swapBeforebegin = SwapSelector BeforeBegin
+swapSelectBeforebegin :: QuerySelector -> SwapSelector
+swapSelectBeforebegin = SwapSelector BeforeBegin
 
-swapAfterbegin :: QuerySelector -> SwapSelector
-swapAfterbegin = SwapSelector AfterBegin
+swapSelectAfterbegin :: QuerySelector -> SwapSelector
+swapSelectAfterbegin = SwapSelector AfterBegin
 
-swapBeforeend :: QuerySelector -> SwapSelector
-swapBeforeend = SwapSelector BeforeEnd
+swapSelectBeforeend :: QuerySelector -> SwapSelector
+swapSelectBeforeend = SwapSelector BeforeEnd
 
-swapAfterend :: QuerySelector -> SwapSelector
-swapAfterend = SwapSelector AfterEnd
+swapSelectAfterend :: QuerySelector -> SwapSelector
+swapSelectAfterend = SwapSelector AfterEnd
 
-swapDelete :: QuerySelector -> SwapSelector
-swapDelete = SwapSelector SwapDelete
+swapSelectDelete :: QuerySelector -> SwapSelector
+swapSelectDelete = SwapSelector SwapDelete
 
-swapNone :: QuerySelector -> SwapSelector
-swapNone = SwapSelector SwapNone
+swapSelectNone :: QuerySelector -> SwapSelector
+swapSelectNone = SwapSelector SwapNone
 
 -- Out of band Select
 --
