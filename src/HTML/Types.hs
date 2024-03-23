@@ -63,3 +63,4 @@ import HTML.Types.URL ( AbsoluteURL
                       , rawURLToText
                       )
 import HTML.Types.Vals as Export
+import HTML.Types.Window as Export

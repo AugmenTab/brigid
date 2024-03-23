@@ -85,6 +85,7 @@ library
       HTML.Types.This
       HTML.Types.URL
       HTML.Types.Vals
+      HTML.Types.Window
   other-modules:
       Paths_safe_html
   autogen-modules:

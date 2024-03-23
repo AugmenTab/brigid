@@ -474,6 +474,24 @@ module HTML.Types.QuerySelector
   , swapBeforeend
   , swapAfterend
   , swapDelete
+  , SwapDisplay
+  , SwapDisplayTargetTypes
+  , swapDisplayToBytes
+  , swapDisplayToText
+  , scroll
+  , show
+  , SwapDisplayType
+      ( ScrollTo
+      , Show
+      )
+  , swapDisplayTypeToBytes
+  , swapDisplayTypeToText
+  , SwapDisplayView
+      ( Top
+      , Bottom
+      )
+  , swapDisplayViewToBytes
+  , swapDisplayViewToText
   , RawSwap (RawSwap)
   , rawSwapToBytes
   , rawSwapToText
@@ -511,7 +529,7 @@ module HTML.Types.QuerySelector
   , targetSelectorToText
   ) where
 
-import Prelude hiding (div, head, id, map, max, min, span)
+import Prelude hiding (Show, div, head, id, map, max, min, show, span)
 import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
@@ -522,6 +540,7 @@ import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
+import Text.Show qualified as Show
 
 import HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import HTML.Types.Class qualified as Class
@@ -551,6 +570,7 @@ import HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
 import HTML.Types.This (This, thisToBytes, thisToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
 import HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
+import HTML.Types.Window (Window, windowToBytes, windowToText)
 
 newtype QuerySelector =
   QuerySelector
@@ -3042,20 +3062,21 @@ type SwapModifierTypes =
   [ SwapTransition
   , SwapTiming
   , IgnoreTitle
+  , SwapDisplay
   , FocusScroll
   ]
 
 swapModifierToBytes :: SwapModifier -> LBS.ByteString
 swapModifierToBytes swapModifier =
-  LBS.concat
+  LBS8.unwords
     . catMaybes
     $ [ Just . swapStyleToBytes $ swapModifierStrategy swapModifier
-      , Just ":"
       , ( Shrubbery.dissect
             . Shrubbery.branchBuild
             . Shrubbery.branch @SwapTransition swapTransitionToBytes
             . Shrubbery.branch @SwapTiming swapTimingToBytes
             . Shrubbery.branch @IgnoreTitle ignoreTitleToBytes
+            . Shrubbery.branch @SwapDisplay swapDisplayToBytes
             . Shrubbery.branch @FocusScroll focusScrollToBytes
             $ Shrubbery.branchEnd
         ) <$> swapModifierModifier swapModifier
@@ -3063,15 +3084,15 @@ swapModifierToBytes swapModifier =
 
 swapModifierToText :: SwapModifier -> T.Text
 swapModifierToText swapModifier =
-  T.concat
+  T.unwords
     . catMaybes
     $ [ Just . swapStyleToText $ swapModifierStrategy swapModifier
-      , Just ":"
       , ( Shrubbery.dissect
             . Shrubbery.branchBuild
             . Shrubbery.branch @SwapTransition swapTransitionToText
             . Shrubbery.branch @SwapTiming swapTimingToText
             . Shrubbery.branch @IgnoreTitle ignoreTitleToText
+            . Shrubbery.branch @SwapDisplay swapDisplayToText
             . Shrubbery.branch @FocusScroll focusScrollToText
             $ Shrubbery.branchEnd
         ) <$> swapModifierModifier swapModifier
@@ -3147,6 +3168,102 @@ swapDelete swap =
     { swapModifierStrategy = SwapDelete
     , swapModifierModifier = Shrubbery.unify <$> swap
     }
+
+-- Swap Display
+--
+data SwapDisplay =
+  SwapDisplay
+    { swapDisplayType   :: SwapDisplayType
+    , swapDisplayView   :: SwapDisplayView
+    , swapDisplayTarget :: Maybe (Shrubbery.Union SwapDisplayTargetTypes)
+    }
+
+type SwapDisplayTargetTypes =
+  [ QuerySelector
+  , Window
+  ]
+
+swapDisplayToBytes :: SwapDisplay -> LBS.ByteString
+swapDisplayToBytes display =
+  LBS.intercalate (LBS8.pack ":")
+    . catMaybes
+    $ [ Just . swapDisplayTypeToBytes $ swapDisplayType display
+      , ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @QuerySelector querySelectorToBytes
+            . Shrubbery.branch @Window windowToBytes
+            $ Shrubbery.branchEnd
+        ) <$> swapDisplayTarget display
+      , Just . swapDisplayViewToBytes $ swapDisplayView display
+      ]
+
+swapDisplayToText :: SwapDisplay -> T.Text
+swapDisplayToText display =
+  T.intercalate ":"
+    . catMaybes
+    $ [ Just . swapDisplayTypeToText $ swapDisplayType display
+      , ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @QuerySelector querySelectorToText
+            . Shrubbery.branch @Window windowToText
+            $ Shrubbery.branchEnd
+        ) <$> swapDisplayTarget display
+      , Just . swapDisplayViewToText $ swapDisplayView display
+      ]
+
+scroll :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf display SwapDisplayTargetTypes
+          )
+       => SwapDisplayView -> Maybe display -> SwapDisplay
+scroll displayTo mbDisplayTarget =
+  SwapDisplay
+    { swapDisplayType   = ScrollTo
+    , swapDisplayView   = displayTo
+    , swapDisplayTarget = Shrubbery.unify <$> mbDisplayTarget
+    }
+
+show :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf display SwapDisplayTargetTypes
+        )
+     => SwapDisplayView -> Maybe display -> SwapDisplay
+show displayTo mbDisplayTarget =
+  SwapDisplay
+    { swapDisplayType   = Show
+    , swapDisplayView   = displayTo
+    , swapDisplayTarget = Shrubbery.unify <$> mbDisplayTarget
+    }
+
+data SwapDisplayType
+  = ScrollTo
+  | Show
+
+swapDisplayTypeToBytes :: SwapDisplayType -> LBS.ByteString
+swapDisplayTypeToBytes displayType =
+  case displayType of
+    ScrollTo -> "scroll"
+    Show     -> "show"
+
+swapDisplayTypeToText :: SwapDisplayType -> T.Text
+swapDisplayTypeToText displayType =
+  case displayType of
+    ScrollTo -> "scroll"
+    Show     -> "show"
+
+data SwapDisplayView
+  = Top
+  | Bottom
+
+swapDisplayViewToBytes :: SwapDisplayView -> LBS.ByteString
+swapDisplayViewToBytes view =
+  case view of
+    Top    -> "top"
+    Bottom -> "bottom"
+
+swapDisplayViewToText :: SwapDisplayView -> T.Text
+swapDisplayViewToText view =
+  case view of
+    Top    -> "top"
+    Bottom -> "bottom"
 
 newtype RawSwap =
   RawSwap
@@ -3422,5 +3539,5 @@ targetSelectorToText selector =
 enumBoolToText :: Bool -> T.Text
 enumBoolToText = B.bool "false" "true"
 
-showText :: Show s => s -> T.Text
-showText = T.pack . show
+showText :: Show.Show s => s -> T.Text
+showText = T.pack . Show.show
