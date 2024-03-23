@@ -2905,9 +2905,9 @@ hxSelectOOB =
     . fmap outOfBandSelectToText
     . NEL.toList
 
--- TODO
-hxSwap :: T.Text -> AttributeSelector
-hxSwap = (,) Attr_HxSwap . Just
+hxSwap :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf swap SwapTypes)
+       => swap -> AttributeSelector
+hxSwap = (,) Attr_HxSwap . Just . swapToText . mkSwap
 
 hxSwapOOB :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf swap OutOfBandSwapTypes

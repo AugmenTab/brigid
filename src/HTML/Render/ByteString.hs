@@ -665,6 +665,9 @@ renderAttribute attr =
         . fmap Types.outOfBandSelectToBytes
         $ NEL.toList selects
 
+    Attr_HxSwap swap ->
+      Just . buildAttribute "hx-swap" $ Types.swapToBytes swap
+
     Attr_HxSwapOOB mbSwap ->
       Just
         . buildAttribute "hx-swap-oob"

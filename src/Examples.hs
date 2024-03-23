@@ -300,6 +300,11 @@ htmxExample =
     , E.button [ A.htmx . exampleURL $ GetCustomer 5
                , A.hxVals $ HTML.mkInlineJSON thingSchema exampleThing
                , A.hxTarget $ HTML.closest myClass
+               , A.hxSwap
+                   . HTML.swapAfterbegin
+                   . Just
+                   . HTML.scroll HTML.Top
+                   $ Just idQuerySelectorExample
                ]
         [ E.text "Vals Test"
         ]
