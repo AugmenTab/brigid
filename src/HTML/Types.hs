@@ -16,8 +16,10 @@ module HTML.Types
   ) where
 
 import HTML.Types.Autocapitalize as Export
+import HTML.Types.Changed as Export
 import HTML.Types.Class as Export
 import HTML.Types.ClassSelector as Export
+import HTML.Types.Consume as Export
 import HTML.Types.ContentEditable as Export
 import HTML.Types.CrossOrigin as Export
 import HTML.Types.Directionality as Export
@@ -37,10 +39,12 @@ import HTML.Types.KeyHint as Export
 import HTML.Types.Method as Export
 import HTML.Types.NoContent as Export
 import HTML.Types.None as Export
+import HTML.Types.Once as Export
 import HTML.Types.Part as Export
 import HTML.Types.PopoverState as Export
 import HTML.Types.PushURL as Export
 import HTML.Types.QuerySelector as Export
+import HTML.Types.QueueOption as Export
 import HTML.Types.RawJavaScript as Export
 import HTML.Types.Reachability as Export
 import HTML.Types.RequestParams as Export

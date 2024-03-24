@@ -532,6 +532,18 @@ module HTML.Types.QuerySelector
   , mkTrigger
   , triggerToBytes
   , triggerToText
+  -- , TriggerEvent
+  , TriggerModifier
+  , triggerModifierToBytes
+  , triggerModifierToText
+  , once
+  , changed
+  -- , delay
+  -- , throttle
+  -- , from
+  -- , target
+  , consume
+  , queue
   , RawTrigger (RawTrigger)
   , rawTriggerToBytes
   , rawTriggerToText
@@ -551,8 +563,10 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
 
 import HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
+import HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import HTML.Types.Class qualified as Class
 import HTML.Types.ClassSelector qualified as CS
+import HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToText)
 import HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
 import HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
 import HTML.Types.Directionality (Directionality, directionalityToText)
@@ -568,9 +582,11 @@ import HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import HTML.Types.Method (Get, Post, Delete, Put, Patch)
 import HTML.Types.NoContent (NoContent)
 import HTML.Types.None (None, noneToBytes, noneToText)
+import HTML.Types.Once (Once (Once), onceToBytes, onceToText)
 import HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
+import HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
 import HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
@@ -3547,6 +3563,8 @@ targetSelectorToText selector =
     , querySelectorToText $ targetSelectorQuery selector
     ]
 
+-- Trigger
+--
 newtype Trigger =
   Trigger
     { unTrigger :: Shrubbery.Union TriggerTypes
@@ -3582,6 +3600,131 @@ triggerToText =
       $ Shrubbery.branchEnd
   ) . unTrigger
 
+-- TriggerEvent
+--
+-- data TriggerEvent =
+--   TriggerEvent
+--     { triggerEventType      :: Shrubbery.Union TriggerEventTypes
+--     , triggerEventFilter    :: Maybe TriggerFilter
+--     , triggerEventModifiers :: [TriggerEventModifier]
+--     }
+
+-- type TriggerEventTypes =
+--   [
+--   ]
+
+-- mkTriggerEvent :: ( KnownNat branchIndex
+--                   , branchIndex ~ FirstIndexOf triggerEvent TriggerEventTypes
+--                   )
+--                => triggerEvent
+--                -> Maybe TriggerFilter
+--                -> [TriggerEventModifier]
+--                -> TriggerEvent
+-- mkTriggerEvent eventType mbFilter modifiers =
+--   TriggerEvent
+--     { triggerEventType      = Shrubbery.unify eventType
+--     , triggerEventFilter    = mbFilter
+--     , triggerEventModifiers = modifiers
+--     }
+
+-- triggerEventToBytes :: TriggerEvent -> LBS.ByteString
+-- triggerEventToBytes event =
+--   lbsUnwords
+--     . catMaybes
+--     $ [ ( Shrubbery.dissect
+--             . Shrubbery.branchBuild
+--             . Shrubbery.branch @_ _
+--             $ Shrubbery.branchEnd
+--         ) <$> Just (triggerEventType event)
+--       , triggerFilterToBytes <$> triggerEventFilter event
+--       , fmap (lbsUnwords . fmap triggerModifierToBytes . NEL.toList)
+--           . NEL.nonEmpty
+--           $ triggerEventModifiers event
+--       ]
+
+-- triggerEventToText :: TriggerEvent -> T.Text
+-- triggerEventToText event =
+--   T.unwords
+--     . catMaybes
+--     $ [ ( Shrubbery.dissect
+--             . Shrubbery.branchBuild
+--             . Shrubbery.branch @_ _
+--             $ Shrubbery.branchEnd
+--         ) <$> Just (triggerEventType event)
+--       , triggerFilterToText <$> triggerEventFilter event
+--       , fmap (T.unwords . fmap triggerModifierToText . NEL.toList)
+--           . NEL.nonEmpty
+--           $ triggerEventModifiers event
+--       ]
+
+newtype TriggerModifier =
+  TriggerModifier
+    { unTriggerModifier :: Shrubbery.Union TriggerModifierTypes
+    }
+
+type TriggerModifierTypes =
+  [ Once
+  , Changed
+  -- , Delay
+  -- , Throttle
+  -- , From
+  -- , Target
+  , Consume
+  , QueueOption
+  ]
+
+triggerModifierToBytes :: TriggerModifier -> LBS.ByteString
+triggerModifierToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Once onceToBytes
+      . Shrubbery.branch @Changed changedToBytes
+   -- . Shrubbery.branch @_ _
+   -- . Shrubbery.branch @_ _
+   -- . Shrubbery.branch @_ _
+   -- . Shrubbery.branch @_ _
+      . Shrubbery.branch @Consume consumeToBytes
+      . Shrubbery.branch @QueueOption queueOptionToBytes
+      $ Shrubbery.branchEnd
+  ) . unTriggerModifier
+
+triggerModifierToText :: TriggerModifier -> T.Text
+triggerModifierToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Once onceToText
+      . Shrubbery.branch @Changed changedToText
+   -- . Shrubbery.branch @_ _
+   -- . Shrubbery.branch @_ _
+   -- . Shrubbery.branch @_ _
+   -- . Shrubbery.branch @_ _
+      . Shrubbery.branch @Consume consumeToText
+      . Shrubbery.branch @QueueOption queueOptionToText
+      $ Shrubbery.branchEnd
+  ) . unTriggerModifier
+
+once :: TriggerModifier
+once = TriggerModifier $ Shrubbery.unify Once
+
+changed :: TriggerModifier
+changed = TriggerModifier $ Shrubbery.unify Changed
+
+-- delay
+
+-- throttle
+
+-- from
+
+-- target
+
+consume :: TriggerModifier
+consume = TriggerModifier $ Shrubbery.unify Consume
+
+queue :: QueueOption -> TriggerModifier
+queue = TriggerModifier . Shrubbery.unify
+
+-- RawTrigger
+--
 newtype RawTrigger =
   RawTrigger
     { rawTriggerToText :: T.Text
@@ -3595,6 +3738,9 @@ rawTriggerToBytes =
 --
 enumBoolToText :: Bool -> T.Text
 enumBoolToText = B.bool "false" "true"
+
+_lbsUnwords :: [LBS.ByteString] -> LBS.ByteString
+_lbsUnwords = LBS.intercalate (LBS8.pack " ")
 
 showText :: Show.Show s => s -> T.Text
 showText = T.pack . Show.show
