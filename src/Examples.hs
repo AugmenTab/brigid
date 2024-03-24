@@ -13,6 +13,7 @@ import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
+import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 import Fleece.Core ((#+))
 import Fleece.Core qualified as FC
@@ -272,6 +273,12 @@ htmxExample =
                , A.hxParams $ HTML.Not [ customerIdParam ]
                , A.hxOn HTML.HtmxLoad "alert(\"Loaded!\")"
                , A.hxTarget idQuerySelectorExample
+               , A.hxTrigger
+                   . NEL.singleton
+                   . HTML.mkTrigger
+                   . HTML.every 2
+                   . Just
+                   $ HTML.TriggerFilter "someConditional"
                ]
         [ E.text "Explicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [ HTML.HxPrompt ] ]

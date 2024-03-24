@@ -59,6 +59,7 @@ library
       HTML.Types.Disinherit
       HTML.Types.Email
       HTML.Types.Event
+      HTML.Types.Every
       HTML.Types.Extension
       HTML.Types.FocusScroll
       HTML.Types.Headers
@@ -83,6 +84,7 @@ library
       HTML.Types.SwapTransition
       HTML.Types.Target
       HTML.Types.This
+      HTML.Types.TriggerFilter
       HTML.Types.URL
       HTML.Types.Vals
       HTML.Types.Window

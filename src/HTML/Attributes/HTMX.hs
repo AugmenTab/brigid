@@ -11,6 +11,7 @@ module HTML.Attributes.HTMX
   , hxSwap
   , hxSwapOOB
   , hxTarget
+  , hxTrigger
   , hxVals
   , hxBoost
   , hxConfirm
@@ -103,7 +104,8 @@ hxTarget :: ( KnownNat branchIndex
          => target -> Attribute tag
 hxTarget = Attr_HxTarget . Types.mkTarget
 
--- hx-trigger
+hxTrigger :: NEL.NonEmpty Types.Trigger -> Attribute tag
+hxTrigger = Attr_HxTrigger
 
 hxVals :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf vals Types.HtmxValsTypes

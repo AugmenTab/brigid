@@ -527,6 +527,14 @@ module HTML.Types.QuerySelector
   , previous
   , targetSelectorToBytes
   , targetSelectorToText
+  , Trigger
+  , TriggerTypes
+  , mkTrigger
+  , triggerToBytes
+  , triggerToText
+  , RawTrigger (RawTrigger)
+  , rawTriggerToBytes
+  , rawTriggerToText
   ) where
 
 import Prelude hiding (Show, div, head, id, map, max, min, show, span)
@@ -550,6 +558,7 @@ import HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
 import HTML.Types.Directionality (Directionality, directionalityToText)
 import HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
 import HTML.Types.Event qualified as Event
+import HTML.Types.Every (Every, everyToBytes, everyToText)
 import HTML.Types.Extension (Extension, extensionToText)
 import HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
 import HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
@@ -2924,9 +2933,13 @@ hxTarget :: ( KnownNat branchIndex
          => target -> AttributeSelector
 hxTarget = (,) Attr_HxTarget . Just . targetToText . mkTarget
 
--- TODO
-hxTrigger :: T.Text -> AttributeSelector
-hxTrigger = (,) Attr_HxTrigger . Just
+hxTrigger :: NEL.NonEmpty Trigger -> AttributeSelector
+hxTrigger =
+  (,) Attr_HxTrigger
+    . Just
+    . T.intercalate ", "
+    . fmap triggerToText
+    . NEL.toList
 
 hxVals :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf vals HtmxValsTypes)
        => vals -> AttributeSelector
@@ -3533,6 +3546,50 @@ targetSelectorToText selector =
     [ targetSelectorTypeToText $ targetSelectorType selector
     , querySelectorToText $ targetSelectorQuery selector
     ]
+
+newtype Trigger =
+  Trigger
+    { unTrigger :: Shrubbery.Union TriggerTypes
+    }
+
+type TriggerTypes =
+  [ Every
+  -- , Event
+  , RawTrigger
+  ]
+
+mkTrigger :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf trigger TriggerTypes
+             )
+          => trigger -> Trigger
+mkTrigger = Trigger . Shrubbery.unify
+
+triggerToBytes :: Trigger -> LBS.ByteString
+triggerToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Every everyToBytes
+      . Shrubbery.branch @RawTrigger rawTriggerToBytes
+      $ Shrubbery.branchEnd
+  ) . unTrigger
+
+triggerToText :: Trigger -> T.Text
+triggerToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Every everyToText
+      . Shrubbery.branch @RawTrigger rawTriggerToText
+      $ Shrubbery.branchEnd
+  ) . unTrigger
+
+newtype RawTrigger =
+  RawTrigger
+    { rawTriggerToText :: T.Text
+    }
+
+rawTriggerToBytes :: RawTrigger -> LBS.ByteString
+rawTriggerToBytes =
+  LBS.fromStrict . TE.encodeUtf8 . rawTriggerToText
 
 -- Helpers
 --

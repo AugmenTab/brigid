@@ -62,6 +62,7 @@ module HTML.Attributes.Internal
       , Attr_HxSwap
       , Attr_HxSwapOOB
       , Attr_HxTarget
+      , Attr_HxTrigger
       , Attr_HxValidate
       , Attr_HxVals
       )
@@ -775,6 +776,10 @@ data Attribute (tag :: TagType) where
     :: Types.Target
     -> Attribute tag
 
+  Attr_HxTrigger
+    :: NEL.NonEmpty Types.Trigger
+    -> Attribute tag
+
   Attr_HxValidate
     :: ValidAttribute 'HxValidate tag
     => Attribute tag
@@ -949,6 +954,9 @@ attributeText attr =
 
     Attr_HxTarget _target ->
       "hx-target"
+
+    Attr_HxTrigger _triggers ->
+      "hx-trigger"
 
     Attr_HxValidate ->
       "hx-validate"

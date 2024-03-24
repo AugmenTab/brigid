@@ -649,6 +649,13 @@ renderAttribute attr =
     Attr_HxTarget target ->
       Just . buildAttribute "hx-target" $ Types.targetToText target
 
+    Attr_HxTrigger triggers ->
+      Just
+        . buildAttribute "hx-trigger"
+        . T.intercalate ", "
+        . fmap Types.triggerToText
+        $ NEL.toList triggers
+
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 

@@ -24,6 +24,7 @@ import HTML.Types.Directionality as Export
 import HTML.Types.Disinherit as Export
 import HTML.Types.Email as Export
 import HTML.Types.Event as Export
+import HTML.Types.Every as Export
 import HTML.Types.Extension as Export
 import HTML.Types.FocusScroll as Export
 import HTML.Types.Headers as Export
@@ -48,6 +49,7 @@ import HTML.Types.SwapTiming as Export
 import HTML.Types.SwapTransition as Export
 import HTML.Types.Target as Export
 import HTML.Types.This as Export
+import HTML.Types.TriggerFilter as Export
 import HTML.Types.URL ( AbsoluteURL
                       , absoluteURLFromText
                       , absoluteURLToText

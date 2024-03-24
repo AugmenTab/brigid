@@ -676,6 +676,13 @@ renderAttribute attr =
     Attr_HxTarget target ->
       Just . buildAttribute "hx-target" $ Types.targetToBytes target
 
+    Attr_HxTrigger triggers ->
+      Just
+        . buildAttribute "hx-trigger"
+        . LBS.intercalate (LBS8.pack ", ")
+        . fmap Types.triggerToBytes
+        $ NEL.toList triggers
+
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 
