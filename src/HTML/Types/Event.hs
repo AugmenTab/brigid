@@ -116,6 +116,12 @@ module HTML.Types.Event
       )
   , htmxEventToBytes
   , htmxEventToText
+  , TriggerLoad (TriggerLoad)
+  , triggerLoadToBytes
+  , triggerLoadToText
+  , TriggerRevealed (TriggerRevealed)
+  , triggerRevealedToBytes
+  , triggerRevealedToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -490,3 +496,19 @@ htmxEventToText event =
     HtmxXHRLoadEnd            -> "xhr-loadend"
     HtmxXHRLoadStart          -> "xhr-loadstart"
     HtmxXHRProgress           -> "xhr-progress"
+
+data TriggerLoad = TriggerLoad
+
+triggerLoadToBytes :: TriggerLoad -> LBS.ByteString
+triggerLoadToBytes = const "load"
+
+triggerLoadToText :: TriggerLoad -> T.Text
+triggerLoadToText = const "load"
+
+data TriggerRevealed = TriggerRevealed
+
+triggerRevealedToBytes :: TriggerRevealed -> LBS.ByteString
+triggerRevealedToBytes = const "revealed"
+
+triggerRevealedToText :: TriggerRevealed -> T.Text
+triggerRevealedToText = const "revealed"

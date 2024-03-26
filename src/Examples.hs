@@ -256,6 +256,13 @@ htmxExample =
                , A.hxSelect divId
                , A.hxParams HTML.AllParams
                , A.hxOn HTML.Click "alert(\"Hello!\")"
+               , A.hxTrigger
+                   . NEL.singleton
+                   . HTML.mkTrigger
+                   . HTML.mkTriggerEvent (HTML.mkEvent HTML.KeyUp) Nothing
+                   $ [ HTML.triggerChanged
+                     , HTML.triggerDelay 1
+                     ]
                ]
         [ E.text "Implicit Get"
         , E.span [ A.hxDisinherit $ HTML.HxPushURL :| [] ]
@@ -312,6 +319,17 @@ htmxExample =
                    . Just
                    . HTML.scroll HTML.Top
                    $ Just idQuerySelectorExample
+               , A.hxTrigger $
+                   HTML.mkTrigger (HTML.every 1 Nothing)
+                     :| [ HTML.mkTrigger $
+                            HTML.mkTriggerEvent
+                              (HTML.intersectRoot myClass)
+                              (Nothing)
+                              [ HTML.triggerThrottle 1
+                              , HTML.triggerQueue HTML.QueueAll
+                              ]
+                        , HTML.customTrigger "my-custom-event"
+                        ]
                ]
         [ E.text "Vals Test"
         ]

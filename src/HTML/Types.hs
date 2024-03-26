@@ -22,8 +22,10 @@ import HTML.Types.ClassSelector as Export
 import HTML.Types.Consume as Export
 import HTML.Types.ContentEditable as Export
 import HTML.Types.CrossOrigin as Export
+import HTML.Types.Delay as Export
 import HTML.Types.Directionality as Export
 import HTML.Types.Disinherit as Export
+import HTML.Types.Document as Export
 import HTML.Types.Email as Export
 import HTML.Types.Event as Export
 import HTML.Types.Every as Export
@@ -53,6 +55,8 @@ import HTML.Types.SwapTiming as Export
 import HTML.Types.SwapTransition as Export
 import HTML.Types.Target as Export
 import HTML.Types.This as Export
+import HTML.Types.Threshold as Export
+import HTML.Types.Throttle as Export
 import HTML.Types.TriggerFilter as Export
 import HTML.Types.URL ( AbsoluteURL
                       , absoluteURLFromText

@@ -57,8 +57,10 @@ library
       HTML.Types.Consume
       HTML.Types.ContentEditable
       HTML.Types.CrossOrigin
+      HTML.Types.Delay
       HTML.Types.Directionality
       HTML.Types.Disinherit
+      HTML.Types.Document
       HTML.Types.Email
       HTML.Types.Event
       HTML.Types.Every
@@ -88,6 +90,8 @@ library
       HTML.Types.SwapTransition
       HTML.Types.Target
       HTML.Types.This
+      HTML.Types.Threshold
+      HTML.Types.Throttle
       HTML.Types.TriggerFilter
       HTML.Types.URL
       HTML.Types.Vals

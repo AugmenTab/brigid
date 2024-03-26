@@ -532,18 +532,43 @@ module HTML.Types.QuerySelector
   , mkTrigger
   , triggerToBytes
   , triggerToText
-  -- , TriggerEvent
+  , TriggerEvent
+  , TriggerEventTypes
+  , mkTriggerEvent
+  , triggerEventToBytes
+  , triggerEventToText
+  , Intersect
+  , IntersectTypes
+  , intersectRoot
+  , intersectThreshold
+  , intersectToBytes
+  , intersectToText
+  , Root (Root)
+  , rootToBytes
+  , rootToText
   , TriggerModifier
   , triggerModifierToBytes
   , triggerModifierToText
-  , once
-  , changed
-  -- , delay
-  -- , throttle
-  -- , from
-  -- , target
-  , consume
-  , queue
+  , triggerOnce
+  , triggerChanged
+  , triggerDelay
+  , triggerThrottle
+  , triggerFrom
+  , triggerTarget
+  , triggerConsume
+  , triggerQueue
+  , TriggerFrom
+  , TriggerFromTypes
+  , mkTriggerFrom
+  , triggerFromToBytes
+  , triggerFromToText
+  , TriggerTarget (TriggerTarget)
+  , triggerTargetToBytes
+  , triggerTargetToText
+  , CustomTrigger
+  , customTrigger
+  , customTriggerToBytes
+  , customTriggerToText
   , RawTrigger (RawTrigger)
   , rawTriggerToBytes
   , rawTriggerToText
@@ -558,6 +583,7 @@ import Data.Maybe (catMaybes)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
+import Numeric.Natural (Natural)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
@@ -569,8 +595,10 @@ import HTML.Types.ClassSelector qualified as CS
 import HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToText)
 import HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
 import HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
+import HTML.Types.Delay (Delay, delay, delayToBytes, delayToText)
 import HTML.Types.Directionality (Directionality, directionalityToText)
 import HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
+import HTML.Types.Document (Document, documentToBytes, documentToText)
 import HTML.Types.Event qualified as Event
 import HTML.Types.Every (Every, everyToBytes, everyToText)
 import HTML.Types.Extension (Extension, extensionToText)
@@ -593,6 +621,9 @@ import HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
 import HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
 import HTML.Types.This (This, thisToBytes, thisToText)
+import HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
+import HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
+import HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
 import HTML.Types.URL (RelativeURL, relativeURLToText)
 import HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import HTML.Types.Window (Window, windowToBytes, windowToText)
@@ -628,6 +659,14 @@ querySelectorToBytes =
       . Shrubbery.branch @RawSelector rawSelectorToBytes
       $ Shrubbery.branchEnd
   ) . unQuerySelector
+
+querySelectorToWrappedBytes :: QuerySelector -> LBS.ByteString
+querySelectorToWrappedBytes selector =
+  "(" <> querySelectorToBytes selector <> ")"
+
+querySelectorToWrappedText :: QuerySelector -> T.Text
+querySelectorToWrappedText selector =
+  "(" <> querySelectorToText selector <> ")"
 
 querySelectorToText :: QuerySelector -> T.Text
 querySelectorToText =
@@ -3552,15 +3591,35 @@ previous =
 
 targetSelectorToBytes :: TargetSelector -> LBS.ByteString
 targetSelectorToBytes selector =
-  targetSelectorTypeToBytes (targetSelectorType selector)
-    <> " "
-    <> querySelectorToBytes (targetSelectorQuery selector)
+  LBS.concat
+    [ targetSelectorTypeToBytes $ targetSelectorType selector
+    , " "
+    , querySelectorToBytes $ targetSelectorQuery selector
+    ]
+
+targetSelectorToWrappedBytes :: TargetSelector -> LBS.ByteString
+targetSelectorToWrappedBytes selector =
+  LBS.concat
+    [ targetSelectorTypeToBytes $ targetSelectorType selector
+    , " ("
+    , querySelectorToBytes $ targetSelectorQuery selector
+    , ")"
+    ]
 
 targetSelectorToText :: TargetSelector -> T.Text
 targetSelectorToText selector =
   T.unwords
     [ targetSelectorTypeToText $ targetSelectorType selector
     , querySelectorToText $ targetSelectorQuery selector
+    ]
+
+targetSelectorToWrappedText :: TargetSelector -> T.Text
+targetSelectorToWrappedText selector =
+  T.concat
+    [ targetSelectorTypeToText $ targetSelectorType selector
+    , " ("
+    , querySelectorToText $ targetSelectorQuery selector
+    , ")"
     ]
 
 -- Trigger
@@ -3572,7 +3631,8 @@ newtype Trigger =
 
 type TriggerTypes =
   [ Every
-  -- , Event
+  , TriggerEvent
+  , CustomTrigger
   , RawTrigger
   ]
 
@@ -3587,6 +3647,8 @@ triggerToBytes =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @Every everyToBytes
+      . Shrubbery.branch @TriggerEvent triggerEventToBytes
+      . Shrubbery.branch @CustomTrigger customTriggerToBytes
       . Shrubbery.branch @RawTrigger rawTriggerToBytes
       $ Shrubbery.branchEnd
   ) . unTrigger
@@ -3596,66 +3658,137 @@ triggerToText =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @Every everyToText
+      . Shrubbery.branch @TriggerEvent triggerEventToText
+      . Shrubbery.branch @CustomTrigger customTriggerToText
       . Shrubbery.branch @RawTrigger rawTriggerToText
       $ Shrubbery.branchEnd
   ) . unTrigger
 
 -- TriggerEvent
 --
--- data TriggerEvent =
---   TriggerEvent
---     { triggerEventType      :: Shrubbery.Union TriggerEventTypes
---     , triggerEventFilter    :: Maybe TriggerFilter
---     , triggerEventModifiers :: [TriggerEventModifier]
---     }
+data TriggerEvent =
+  TriggerEvent
+    { triggerEventType      :: Shrubbery.Union TriggerEventTypes
+    , triggerEventFilter    :: Maybe TriggerFilter
+    , triggerEventModifiers :: [TriggerModifier]
+    }
 
--- type TriggerEventTypes =
---   [
---   ]
+type TriggerEventTypes =
+  [ Event.Event
+  , Event.TriggerLoad
+  , Event.TriggerRevealed
+  , Intersect
+  ]
 
--- mkTriggerEvent :: ( KnownNat branchIndex
---                   , branchIndex ~ FirstIndexOf triggerEvent TriggerEventTypes
---                   )
---                => triggerEvent
---                -> Maybe TriggerFilter
---                -> [TriggerEventModifier]
---                -> TriggerEvent
--- mkTriggerEvent eventType mbFilter modifiers =
---   TriggerEvent
---     { triggerEventType      = Shrubbery.unify eventType
---     , triggerEventFilter    = mbFilter
---     , triggerEventModifiers = modifiers
---     }
+mkTriggerEvent :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf triggerEvent TriggerEventTypes
+                  )
+               => triggerEvent
+               -> Maybe TriggerFilter
+               -> [TriggerModifier]
+               -> TriggerEvent
+mkTriggerEvent eventType mbFilter modifiers =
+  TriggerEvent
+    { triggerEventType      = Shrubbery.unify eventType
+    , triggerEventFilter    = mbFilter
+    , triggerEventModifiers = modifiers
+    }
 
--- triggerEventToBytes :: TriggerEvent -> LBS.ByteString
--- triggerEventToBytes event =
---   lbsUnwords
---     . catMaybes
---     $ [ ( Shrubbery.dissect
---             . Shrubbery.branchBuild
---             . Shrubbery.branch @_ _
---             $ Shrubbery.branchEnd
---         ) <$> Just (triggerEventType event)
---       , triggerFilterToBytes <$> triggerEventFilter event
---       , fmap (lbsUnwords . fmap triggerModifierToBytes . NEL.toList)
---           . NEL.nonEmpty
---           $ triggerEventModifiers event
---       ]
+triggerEventToBytes :: TriggerEvent -> LBS.ByteString
+triggerEventToBytes event =
+  lbsUnwords
+    . catMaybes
+    $ [ ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @Event.Event Event.eventToBytes
+            . Shrubbery.branch @Event.TriggerLoad Event.triggerLoadToBytes
+            . Shrubbery.branch @Event.TriggerRevealed Event.triggerRevealedToBytes
+            . Shrubbery.branch @Intersect intersectToBytes
+            $ Shrubbery.branchEnd
+        ) <$> Just (triggerEventType event)
+      , triggerFilterToBytes <$> triggerEventFilter event
+      , fmap (lbsUnwords . fmap triggerModifierToBytes . NEL.toList)
+          . NEL.nonEmpty
+          $ triggerEventModifiers event
+      ]
 
--- triggerEventToText :: TriggerEvent -> T.Text
--- triggerEventToText event =
---   T.unwords
---     . catMaybes
---     $ [ ( Shrubbery.dissect
---             . Shrubbery.branchBuild
---             . Shrubbery.branch @_ _
---             $ Shrubbery.branchEnd
---         ) <$> Just (triggerEventType event)
---       , triggerFilterToText <$> triggerEventFilter event
---       , fmap (T.unwords . fmap triggerModifierToText . NEL.toList)
---           . NEL.nonEmpty
---           $ triggerEventModifiers event
---       ]
+triggerEventToText :: TriggerEvent -> T.Text
+triggerEventToText event =
+  T.unwords
+    . catMaybes
+    $ [ ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @Event.Event Event.eventToText
+            . Shrubbery.branch @Event.TriggerLoad Event.triggerLoadToText
+            . Shrubbery.branch @Event.TriggerRevealed Event.triggerRevealedToText
+            . Shrubbery.branch @Intersect intersectToText
+            $ Shrubbery.branchEnd
+        ) <$> Just (triggerEventType event)
+      , triggerFilterToText <$> triggerEventFilter event
+      , fmap (T.unwords . fmap triggerModifierToText . NEL.toList)
+          . NEL.nonEmpty
+          $ triggerEventModifiers event
+      ]
+
+newtype Intersect =
+  Intersect
+    { unIntersect :: Shrubbery.Union IntersectTypes
+    }
+
+type IntersectTypes =
+  [ Root
+  , Threshold
+  ]
+
+mkIntersect :: ( KnownNat branchIndex
+               , branchIndex ~ FirstIndexOf intersect IntersectTypes
+               )
+            => intersect -> Intersect
+mkIntersect = Intersect . Shrubbery.unify
+
+intersectRoot :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                 )
+              => querySelector -> Intersect
+intersectRoot = mkIntersect . Root . mkQuerySelector
+
+intersectThreshold :: Threshold -> Intersect
+intersectThreshold = mkIntersect
+
+intersectToBytes :: Intersect -> LBS.ByteString
+intersectToBytes =
+  ("intersect " <>)
+    . ( Shrubbery.dissect
+          . Shrubbery.branchBuild
+          . Shrubbery.branch @Root rootToBytes
+          . Shrubbery.branch @Threshold thresholdToBytes
+          $ Shrubbery.branchEnd
+      )
+    . unIntersect
+
+intersectToText :: Intersect -> T.Text
+intersectToText =
+  ("intersect " <>)
+    . ( Shrubbery.dissect
+          . Shrubbery.branchBuild
+          . Shrubbery.branch @Root rootToText
+          . Shrubbery.branch @Threshold thresholdToText
+          $ Shrubbery.branchEnd
+      )
+    . unIntersect
+
+newtype Root =
+  Root
+    { unRoot :: QuerySelector
+    }
+
+rootToBytes :: Root -> LBS.ByteString
+rootToBytes =
+  ("root:" <>) . querySelectorToWrappedBytes . unRoot
+
+rootToText :: Root -> T.Text
+rootToText =
+  ("root:" <>) . querySelectorToWrappedText . unRoot
 
 newtype TriggerModifier =
   TriggerModifier
@@ -3665,10 +3798,10 @@ newtype TriggerModifier =
 type TriggerModifierTypes =
   [ Once
   , Changed
-  -- , Delay
-  -- , Throttle
-  -- , From
-  -- , Target
+  , Delay
+  , Throttle
+  , TriggerFrom
+  , TriggerTarget
   , Consume
   , QueueOption
   ]
@@ -3679,10 +3812,10 @@ triggerModifierToBytes =
       . Shrubbery.branchBuild
       . Shrubbery.branch @Once onceToBytes
       . Shrubbery.branch @Changed changedToBytes
-   -- . Shrubbery.branch @_ _
-   -- . Shrubbery.branch @_ _
-   -- . Shrubbery.branch @_ _
-   -- . Shrubbery.branch @_ _
+      . Shrubbery.branch @Delay delayToBytes
+      . Shrubbery.branch @Throttle throttleToBytes
+      . Shrubbery.branch @TriggerFrom triggerFromToBytes
+      . Shrubbery.branch @TriggerTarget triggerTargetToBytes
       . Shrubbery.branch @Consume consumeToBytes
       . Shrubbery.branch @QueueOption queueOptionToBytes
       $ Shrubbery.branchEnd
@@ -3694,34 +3827,121 @@ triggerModifierToText =
       . Shrubbery.branchBuild
       . Shrubbery.branch @Once onceToText
       . Shrubbery.branch @Changed changedToText
-   -- . Shrubbery.branch @_ _
-   -- . Shrubbery.branch @_ _
-   -- . Shrubbery.branch @_ _
-   -- . Shrubbery.branch @_ _
+      . Shrubbery.branch @Delay delayToText
+      . Shrubbery.branch @Throttle throttleToText
+      . Shrubbery.branch @TriggerFrom triggerFromToText
+      . Shrubbery.branch @TriggerTarget triggerTargetToText
       . Shrubbery.branch @Consume consumeToText
       . Shrubbery.branch @QueueOption queueOptionToText
       $ Shrubbery.branchEnd
   ) . unTriggerModifier
 
-once :: TriggerModifier
-once = TriggerModifier $ Shrubbery.unify Once
+triggerOnce :: TriggerModifier
+triggerOnce = TriggerModifier $ Shrubbery.unify Once
 
-changed :: TriggerModifier
-changed = TriggerModifier $ Shrubbery.unify Changed
+triggerChanged :: TriggerModifier
+triggerChanged = TriggerModifier $ Shrubbery.unify Changed
 
--- delay
+triggerDelay :: Natural -> TriggerModifier
+triggerDelay = TriggerModifier . Shrubbery.unify . delay
 
--- throttle
+triggerThrottle :: Natural -> TriggerModifier
+triggerThrottle = TriggerModifier . Shrubbery.unify . throttle
 
--- from
+triggerFrom :: ( KnownNat branchIndex
+               , branchIndex ~ FirstIndexOf triggerFrom TriggerFromTypes
+               )
+            => triggerFrom -> TriggerModifier
+triggerFrom = TriggerModifier . Shrubbery.unify . mkTriggerFrom
 
--- target
+triggerTarget :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                 )
+              => querySelector -> TriggerModifier
+triggerTarget =
+  TriggerModifier . Shrubbery.unify . TriggerTarget . mkQuerySelector
 
-consume :: TriggerModifier
-consume = TriggerModifier $ Shrubbery.unify Consume
+triggerConsume :: TriggerModifier
+triggerConsume = TriggerModifier $ Shrubbery.unify Consume
 
-queue :: QueueOption -> TriggerModifier
-queue = TriggerModifier . Shrubbery.unify
+triggerQueue :: QueueOption -> TriggerModifier
+triggerQueue = TriggerModifier . Shrubbery.unify
+
+-- Trigger From
+--
+newtype TriggerFrom =
+  TriggerFrom
+    { unTriggerFrom :: Shrubbery.Union TriggerFromTypes
+    }
+
+type TriggerFromTypes =
+  [ QuerySelector
+  , Document
+  , Window
+  , TargetSelector
+  ]
+
+mkTriggerFrom :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf triggerFrom TriggerFromTypes
+                 )
+              => triggerFrom -> TriggerFrom
+mkTriggerFrom = TriggerFrom . Shrubbery.unify
+
+triggerFromToBytes :: TriggerFrom -> LBS.ByteString
+triggerFromToBytes =
+  ("from:" <>)
+    . ( Shrubbery.dissect
+          . Shrubbery.branchBuild
+          . Shrubbery.branch @QuerySelector querySelectorToWrappedBytes
+          . Shrubbery.branch @Document documentToBytes
+          . Shrubbery.branch @Window windowToBytes
+          . Shrubbery.branch @TargetSelector targetSelectorToWrappedBytes
+          $ Shrubbery.branchEnd
+      )
+    . unTriggerFrom
+
+triggerFromToText :: TriggerFrom -> T.Text
+triggerFromToText =
+  ("from:" <>)
+    . ( Shrubbery.dissect
+          . Shrubbery.branchBuild
+          . Shrubbery.branch @QuerySelector querySelectorToWrappedText
+          . Shrubbery.branch @Document documentToText
+          . Shrubbery.branch @Window windowToText
+          . Shrubbery.branch @TargetSelector targetSelectorToWrappedText
+          $ Shrubbery.branchEnd
+      )
+    . unTriggerFrom
+
+-- Trigger Target
+--
+newtype TriggerTarget =
+  TriggerTarget
+    { unTriggerTarget :: QuerySelector
+    }
+
+triggerTargetToBytes :: TriggerTarget -> LBS.ByteString
+triggerTargetToBytes =
+  ("target:" <>) .  querySelectorToWrappedBytes . unTriggerTarget
+
+triggerTargetToText :: TriggerTarget -> T.Text
+triggerTargetToText =
+  ("target:" <>) . querySelectorToWrappedText . unTriggerTarget
+
+-- CustomTrigger
+--
+newtype CustomTrigger = CustomTrigger T.Text
+
+customTrigger :: T.Text -> Trigger
+customTrigger = mkTrigger . CustomTrigger
+
+customTriggerToBytes :: CustomTrigger -> LBS.ByteString
+customTriggerToBytes (CustomTrigger trigger) =
+  LBS.fromStrict (TE.encodeUtf8 trigger) <> " from:body"
+
+customTriggerToText :: CustomTrigger -> T.Text
+customTriggerToText (CustomTrigger trigger) =
+  trigger <> " from:body"
 
 -- RawTrigger
 --
@@ -3739,8 +3959,8 @@ rawTriggerToBytes =
 enumBoolToText :: Bool -> T.Text
 enumBoolToText = B.bool "false" "true"
 
-_lbsUnwords :: [LBS.ByteString] -> LBS.ByteString
-_lbsUnwords = LBS.intercalate (LBS8.pack " ")
+lbsUnwords :: [LBS.ByteString] -> LBS.ByteString
+lbsUnwords = LBS.intercalate (LBS8.pack " ")
 
 showText :: Show.Show s => s -> T.Text
 showText = T.pack . Show.show
