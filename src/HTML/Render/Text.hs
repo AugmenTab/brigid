@@ -583,6 +583,13 @@ renderAttribute attr =
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
 
+    Attr_HxDisabledElt disabled ->
+      Just
+        . buildAttribute "hx-disabled-elt"
+        . T.intercalate ", "
+        . fmap Types.disabledSelectorToText
+        $ NEL.toList disabled
+
     Attr_HxDisinherit disinherit ->
       Just . buildAttribute "hx-disinherit" $ Types.disinheritToText disinherit
 

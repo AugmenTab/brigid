@@ -455,6 +455,13 @@ module HTML.Types.QuerySelector
       )
   , attributeTypeFromText
   , attributeTypeToText
+  , DisabledSelector
+  , DisabledSelectorTypes
+  , disableThis
+  , disableClosest
+  , disabledSelector
+  , disabledSelectorToBytes
+  , disabledSelectorToText
   , Target
   , TargetTypes
   , mkTarget
@@ -620,7 +627,7 @@ import HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
 import HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
-import HTML.Types.This (This, thisToBytes, thisToText)
+import HTML.Types.This (This (This), thisToBytes, thisToText)
 import HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
 import HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
 import HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
@@ -3012,9 +3019,13 @@ hxDelete = (,) Attr_HxDelete . Just . relativeURLToText
 hxDisable :: AttributeSelector
 hxDisable = (Attr_HxDisable, Nothing)
 
--- TODO
-hxDisabledElt :: T.Text -> AttributeSelector
-hxDisabledElt = (,) Attr_HxDisabledElt . Just
+hxDisabledElt :: NEL.NonEmpty DisabledSelector -> AttributeSelector
+hxDisabledElt =
+  (,) Attr_HxDisabledElt
+    . Just
+    . T.intercalate ", "
+    . fmap disabledSelectorToText
+    . NEL.toList
 
 hxDisinherit :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
@@ -3486,6 +3497,54 @@ outOfBandSwapToText =
       . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
   ) . unOutOfBandSwap
+
+-- Disabled Selector
+--
+newtype DisabledSelector =
+  DisabledSelector
+    { unDisabledSelector :: Shrubbery.Union DisabledSelectorTypes
+    }
+
+type DisabledSelectorTypes =
+  [ This
+  , QuerySelector
+  , TargetSelector
+  ]
+
+disableThis :: DisabledSelector
+disableThis = DisabledSelector $ Shrubbery.unify This
+
+disableClosest :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                  )
+               => querySelector -> DisabledSelector
+disableClosest = DisabledSelector . Shrubbery.unify . closest
+
+disabledSelector :: ( KnownNat branchIndex
+                    , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                    )
+                 => querySelector -> DisabledSelector
+disabledSelector = DisabledSelector . Shrubbery.unify . mkQuerySelector
+
+disabledSelectorToBytes :: DisabledSelector -> LBS.ByteString
+disabledSelectorToBytes =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @This thisToBytes
+     . Shrubbery.branch @QuerySelector querySelectorToBytes
+     . Shrubbery.branch @TargetSelector targetSelectorToBytes
+     $ Shrubbery.branchEnd
+  ) . unDisabledSelector
+
+disabledSelectorToText :: DisabledSelector -> T.Text
+disabledSelectorToText =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @This thisToText
+     . Shrubbery.branch @QuerySelector querySelectorToText
+     . Shrubbery.branch @TargetSelector targetSelectorToText
+     $ Shrubbery.branchEnd
+  ) . unDisabledSelector
 
 -- Target and TargetSelector
 --

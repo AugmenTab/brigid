@@ -605,6 +605,13 @@ renderAttribute attr =
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
 
+    Attr_HxDisabledElt disabled ->
+      Just
+        . buildAttribute "hx-disabled-elt"
+        . LBS.intercalate (LBS8.pack ", ")
+        . fmap Types.disabledSelectorToBytes
+        $ NEL.toList disabled
+
     Attr_HxDisinherit disinherit ->
       Just
         . buildAttribute "hx-disinherit"

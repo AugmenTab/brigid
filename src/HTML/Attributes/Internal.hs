@@ -46,6 +46,7 @@ module HTML.Attributes.Internal
       , Attr_HxBoost
       , Attr_HxConfirm
       , Attr_HxDisable
+      , Attr_HxDisabledElt
       , Attr_HxDisinherit
       , Attr_HxEncoding
       , Attr_HxExt
@@ -714,6 +715,10 @@ data Attribute (tag :: TagType) where
     :: Bool
     -> Attribute tag
 
+  Attr_HxDisabledElt
+    :: NEL.NonEmpty Types.DisabledSelector
+    -> Attribute tag
+
   Attr_HxDisinherit
     :: Types.Disinherit
     -> Attribute tag
@@ -906,6 +911,9 @@ attributeText attr =
 
     Attr_HxDisable _disabled ->
       "hx-disable"
+
+    Attr_HxDisabledElt _disabled ->
+      "hx-disabled-elt"
 
     Attr_HxDisinherit _disinherit ->
       "hx-disinherit"

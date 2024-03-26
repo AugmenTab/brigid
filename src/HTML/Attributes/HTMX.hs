@@ -18,6 +18,7 @@ module HTML.Attributes.HTMX
   , hxDelete
   , hxDisable
   , hxDisabled
+  , hxDisabledElt
   , hxDisinherit
   , hxEncoding
   , hxExt
@@ -128,7 +129,8 @@ hxDisable = Attr_HxDisable
 hxDisabled :: Attribute tag
 hxDisabled = hxDisable True
 
--- hx-disabled-elt
+hxDisabledElt :: NEL.NonEmpty Types.DisabledSelector -> Attribute tag
+hxDisabledElt = Attr_HxDisabledElt
 
 hxDisinherit :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf disinherit Types.DisinheritTypes
