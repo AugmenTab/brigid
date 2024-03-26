@@ -2,18 +2,27 @@ module HTML.HTMX.Config
   ( Config (..)
   , configSchema
   , defaultConfig
+  , setConfig
   ) where
 
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
+import Data.Text qualified as T
 import Fleece.Aeson qualified as FA
 import Fleece.Core ((#+))
 import Fleece.Core qualified as FC
 import Numeric.Natural (Natural)
 
+import HTML.Attributes qualified as A
+import HTML.Elements.Children (ValidChild)
+import HTML.Elements.Tags qualified as Tags
+import HTML.Elements qualified as E
 import HTML.Types.Class (Class(Class))
 import HTML.Types.Method (Method, methodFromText, methodToText)
 import HTML.Types.QuerySelector qualified as QS
+import HTML.Types.ScrollBehavior qualified as SB
 import HTML.Types.Swap (SwapStyle, swapStyleFromText, swapStyleToText)
+import HTML.Types.WebsocketBinaryType qualified as WBT
 
 data Config =
   Config
@@ -35,11 +44,11 @@ data Config =
     , attributesToSettle      :: Maybe (NEL.NonEmpty QS.AttributeType)
     , useTemplateFragments    :: Maybe Bool
  -- , wsReconnectDelay        :: Maybe _
- -- , wsBinaryType            :: Maybe _
+    , wsBinaryType            :: Maybe WBT.WebsocketBinaryType
     , disableSelector         :: Maybe (NEL.NonEmpty QS.AttributeType)
     , withCredentials         :: Maybe Bool
     , timeout                 :: Maybe Natural
- -- , scrollBehavior          :: Maybe _
+    , scrollBehavior          :: Maybe SB.ScrollBehavior
  -- , defaultFocusScroll      :: Maybe _
     , getCacheBusterParam     :: Maybe Bool
     , globalViewTransitions   :: Maybe Bool
@@ -72,11 +81,11 @@ configSchema =
       #+ FC.optional "attributesToSettle"      attributesToSettle      (FC.nonEmpty attributeTypeSchema)
       #+ FC.optional "useTemplateFragments"    useTemplateFragments    FC.boolean
  --   #+ FC.optional "wsReconnectDelay"        wsReconnectDelay        :: Maybe _
- --   #+ FC.optional "wsBinaryType"            wsBinaryType            :: Maybe _
+      #+ FC.optional "wsBinaryType"            wsBinaryType            websocketBinaryTypeSchema
       #+ FC.optional "disableSelector"         disableSelector         (FC.nonEmpty attributeTypeSchema)
       #+ FC.optional "withCredentials"         withCredentials         FC.boolean
       #+ FC.optional "timeout"                 timeout                 naturalSchema
- --   #+ FC.optional "scrollBehavior"          scrollBehavior          :: Maybe _
+      #+ FC.optional "scrollBehavior"          scrollBehavior          scrollBehaviorSchema
  --   #+ FC.optional "defaultFocusScroll"      defaultFocusScroll      :: Maybe _
       #+ FC.optional "getCacheBusterParam"     getCacheBusterParam     FC.boolean
       #+ FC.optional "globalViewTransitions"   globalViewTransitions   FC.boolean
@@ -107,11 +116,11 @@ defaultConfig =
     , attributesToSettle      = Nothing
     , useTemplateFragments    = Nothing
  -- , wsReconnectDelay        = Nothing
- -- , wsBinaryType            = Nothing
+    , wsBinaryType            = Nothing
     , disableSelector         = Nothing
     , withCredentials         = Nothing
     , timeout                 = Nothing
- -- , scrollBehavior          = Nothing
+    , scrollBehavior          = Nothing
  -- , defaultFocusScroll      = Nothing
     , getCacheBusterParam     = Nothing
     , globalViewTransitions   = Nothing
@@ -121,6 +130,13 @@ defaultConfig =
     , scrollIntoViewOnBoost   = Nothing
  -- , triggerSpecsCache       = Nothing
     }
+
+setConfig :: ValidChild Tags.Meta parent grandparent
+          => Config -> E.ChildHTML parent grandparent
+setConfig config =
+  E.meta [ A.customAttribute "name" "htmx-config" -- TODO
+         , A.customAttribute "content" . T.pack . LBS8.unpack $ FA.encode configSchema config -- TODO
+         ]
 
 attributeTypeSchema :: FC.Fleece schema => schema QS.AttributeType
 attributeTypeSchema =
@@ -137,13 +153,17 @@ naturalSchema =
         | otherwise = Right $ fromIntegral int
    in FC.validate fromIntegral check FC.integer
 
+scrollBehaviorSchema :: FC.Fleece schema => schema SB.ScrollBehavior
+scrollBehaviorSchema =
+  FC.validate SB.scrollBehaviorToText SB.scrollBehaviorFromText FC.text
+
 swapStyleSchema :: FC.Fleece schema => schema SwapStyle
 swapStyleSchema =
   FC.validate swapStyleToText swapStyleFromText FC.text
 
--- TODO
--- setConfig :: Config -> ChildHTML parent grandparent
--- setConfig config =
---   meta [ name "htmx-config"
---        , content . T.pack . LBS8.unpack $ FA.encode configSchema config
---        ]
+websocketBinaryTypeSchema :: FC.Fleece schema => schema WBT.WebsocketBinaryType
+websocketBinaryTypeSchema =
+  FC.validate
+    WBT.websocketBinaryTypeToText
+    WBT.websocketBinaryTypeFromText
+    FC.text

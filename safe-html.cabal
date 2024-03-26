@@ -85,6 +85,7 @@ library
       HTML.Types.RawJavaScript
       HTML.Types.Reachability
       HTML.Types.RequestParams
+      HTML.Types.ScrollBehavior
       HTML.Types.Swap
       HTML.Types.SwapTiming
       HTML.Types.SwapTransition
@@ -95,6 +96,7 @@ library
       HTML.Types.TriggerFilter
       HTML.Types.URL
       HTML.Types.Vals
+      HTML.Types.WebsocketBinaryType
       HTML.Types.Window
   other-modules:
       Paths_safe_html

@@ -23,6 +23,7 @@ import HTML.Elements qualified as E
 import HTML.Elements.AddAttribute (addDivisionAttribute)
 import HTML.Elements.Ruby qualified as Ruby
 import HTML.Elements.Table qualified as Table
+import HTML.HTMX.Config qualified as HTMX
 import HTML.Types qualified as HTML
 
 documentExample :: E.Document
@@ -33,6 +34,10 @@ documentExample =
         , E.link
             [ A.href . exampleURL $ GetCustomer 1
             ]
+        , HTMX.setConfig $
+            HTMX.defaultConfig
+              { HTMX.refreshOnHistoryMiss = Just True
+              }
      -- , E.link [ A.href $ HTML.idFromText "bad-link" ] -- This fails, because Id is not a valid href type for link.
         ]
     , E.body [ A.hxBoost True

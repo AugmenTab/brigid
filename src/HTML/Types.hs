@@ -50,6 +50,7 @@ import HTML.Types.QueueOption as Export
 import HTML.Types.RawJavaScript as Export
 import HTML.Types.Reachability as Export
 import HTML.Types.RequestParams as Export
+import HTML.Types.ScrollBehavior as Export
 import HTML.Types.Swap as Export
 import HTML.Types.SwapTiming as Export
 import HTML.Types.SwapTransition as Export
@@ -73,4 +74,5 @@ import HTML.Types.URL ( AbsoluteURL
                       , rawURLToText
                       )
 import HTML.Types.Vals as Export
+import HTML.Types.WebsocketBinaryType as Export
 import HTML.Types.Window as Export
