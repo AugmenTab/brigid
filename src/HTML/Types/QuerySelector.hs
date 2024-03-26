@@ -456,12 +456,17 @@ module HTML.Types.QuerySelector
   , attributeTypeFromText
   , attributeTypeToText
   , DisabledSelector
-  , DisabledSelectorTypes
   , disableThis
   , disableClosest
   , disabledSelector
   , disabledSelectorToBytes
   , disabledSelectorToText
+  , IncludeSelector
+  , includeThis
+  , includeTarget
+  , includeSelector
+  , includeSelectorToBytes
+  , includeSelectorToText
   , Target
   , TargetTypes
   , mkTarget
@@ -3054,9 +3059,8 @@ hxHistory = (Attr_HxHistory, Just "false")
 hxHistoryElt :: AttributeSelector
 hxHistoryElt = (Attr_HxHistoryElt, Nothing)
 
--- TODO
-hxInclude :: T.Text -> AttributeSelector
-hxInclude = (,) Attr_HxInclude . Just
+hxInclude :: IncludeSelector -> AttributeSelector
+hxInclude = (,) Attr_HxInclude . Just . includeSelectorToText
 
 -- TODO
 hxIndicator :: T.Text -> AttributeSelector
@@ -3545,6 +3549,51 @@ disabledSelectorToText =
      . Shrubbery.branch @TargetSelector targetSelectorToText
      $ Shrubbery.branchEnd
   ) . unDisabledSelector
+
+-- Include Selector
+--
+newtype IncludeSelector =
+  IncludeSelector
+    { unIncludeSelector :: Shrubbery.Union IncludeSelectorTypes
+    }
+
+type IncludeSelectorTypes =
+  [ This
+  , QuerySelector
+  , TargetSelector
+  ]
+
+includeThis :: IncludeSelector
+includeThis = IncludeSelector $ Shrubbery.unify This
+
+includeSelector :: ( KnownNat branchIndex
+                   , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                   )
+                => querySelector -> IncludeSelector
+includeSelector = IncludeSelector . Shrubbery.unify . mkQuerySelector
+
+includeTarget :: TargetSelector -> IncludeSelector
+includeTarget = IncludeSelector . Shrubbery.unify
+
+includeSelectorToBytes :: IncludeSelector -> LBS.ByteString
+includeSelectorToBytes =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @This thisToBytes
+     . Shrubbery.branch @QuerySelector querySelectorToBytes
+     . Shrubbery.branch @TargetSelector targetSelectorToBytes
+     $ Shrubbery.branchEnd
+  ) . unIncludeSelector
+
+includeSelectorToText :: IncludeSelector -> T.Text
+includeSelectorToText =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @This thisToText
+     . Shrubbery.branch @QuerySelector querySelectorToText
+     . Shrubbery.branch @TargetSelector targetSelectorToText
+     $ Shrubbery.branchEnd
+  ) . unIncludeSelector
 
 -- Target and TargetSelector
 --

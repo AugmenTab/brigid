@@ -633,6 +633,9 @@ renderAttribute attr =
     Attr_HxHistoryElt ->
       buildBooleanAttribute "hx-history" True
 
+    Attr_HxInclude include ->
+      Just . buildAttribute "hx-include" $ Types.includeSelectorToBytes include
+
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventBytes event)

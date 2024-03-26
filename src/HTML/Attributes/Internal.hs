@@ -52,6 +52,7 @@ module HTML.Attributes.Internal
       , Attr_HxExt
       , Attr_HxHistory
       , Attr_HxHistoryElt
+      , Attr_HxInclude
       , Attr_HxOn
       , Attr_HxParams
       , Attr_HxPreserve
@@ -736,6 +737,10 @@ data Attribute (tag :: TagType) where
   Attr_HxHistoryElt
     :: Attribute tag
 
+  Attr_HxInclude
+    :: Types.IncludeSelector
+    -> Attribute tag
+
   Attr_HxOn
     :: Types.Event
     -> T.Text
@@ -929,6 +934,9 @@ attributeText attr =
 
     Attr_HxHistoryElt ->
       "hx-history-elt"
+
+    Attr_HxInclude _include ->
+      "hx-include"
 
     Attr_HxOn event _action ->
       "hx-on" <> Types.hxOnEventText event
