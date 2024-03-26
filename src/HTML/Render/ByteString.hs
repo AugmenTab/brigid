@@ -636,6 +636,9 @@ renderAttribute attr =
     Attr_HxInclude include ->
       Just . buildAttribute "hx-include" $ Types.includeSelectorToBytes include
 
+    Attr_HxIndicator indicator ->
+      Just . buildAttribute "hx-indicator" $ Types.indicatorToBytes indicator
+
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventBytes event)

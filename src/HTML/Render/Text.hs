@@ -612,6 +612,9 @@ renderAttribute attr =
     Attr_HxInclude include ->
       Just . buildAttribute "hx-include" $ Types.includeSelectorToText include
 
+    Attr_HxIndicator indicator ->
+      Just . buildAttribute "hx-indicator" $ Types.indicatorToText indicator
+
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventText event)

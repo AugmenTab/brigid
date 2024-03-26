@@ -25,6 +25,7 @@ module HTML.Attributes.HTMX
   , hxHistory
   , hxHistoryElt
   , hxInclude
+  , hxIndicator
   , hxOn
   , hxParams
   , hxPatch
@@ -156,7 +157,8 @@ hxHistoryElt = Attr_HxHistoryElt
 hxInclude :: Types.IncludeSelector -> Attribute tag
 hxInclude = Attr_HxInclude
 
--- hx-indicator
+hxIndicator :: Types.Indicator -> Attribute tag
+hxIndicator = Attr_HxIndicator
 
 hxParams :: Types.RequestParams -> Attribute tag
 hxParams = Attr_HxParams

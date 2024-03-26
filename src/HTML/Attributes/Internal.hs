@@ -53,6 +53,7 @@ module HTML.Attributes.Internal
       , Attr_HxHistory
       , Attr_HxHistoryElt
       , Attr_HxInclude
+      , Attr_HxIndicator
       , Attr_HxOn
       , Attr_HxParams
       , Attr_HxPreserve
@@ -741,6 +742,10 @@ data Attribute (tag :: TagType) where
     :: Types.IncludeSelector
     -> Attribute tag
 
+  Attr_HxIndicator
+    :: Types.Indicator
+    -> Attribute tag
+
   Attr_HxOn
     :: Types.Event
     -> T.Text
@@ -937,6 +942,9 @@ attributeText attr =
 
     Attr_HxInclude _include ->
       "hx-include"
+
+    Attr_HxIndicator _indicator ->
+      "hx-indicator"
 
     Attr_HxOn event _action ->
       "hx-on" <> Types.hxOnEventText event

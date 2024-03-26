@@ -467,6 +467,11 @@ module HTML.Types.QuerySelector
   , includeSelector
   , includeSelectorToBytes
   , includeSelectorToText
+  , Indicator
+  , indicateClosest
+  , indicateSelector
+  , indicatorToBytes
+  , indicatorToText
   , Target
   , TargetTypes
   , mkTarget
@@ -3062,9 +3067,8 @@ hxHistoryElt = (Attr_HxHistoryElt, Nothing)
 hxInclude :: IncludeSelector -> AttributeSelector
 hxInclude = (,) Attr_HxInclude . Just . includeSelectorToText
 
--- TODO
-hxIndicator :: T.Text -> AttributeSelector
-hxIndicator = (,) Attr_HxIndicator . Just
+hxIndicator :: Indicator -> AttributeSelector
+hxIndicator = (,) Attr_HxIndicator . Just . indicatorToText
 
 hxParams :: RequestParams -> AttributeSelector
 hxParams = (,) Attr_HxParams . Just . requestParamsToText
@@ -3594,6 +3598,48 @@ includeSelectorToText =
      . Shrubbery.branch @TargetSelector targetSelectorToText
      $ Shrubbery.branchEnd
   ) . unIncludeSelector
+
+-- Indicator
+--
+newtype Indicator =
+  Indicator
+    { unIndicator :: Shrubbery.Union IndicatorTypes
+    }
+
+type IndicatorTypes =
+  [ QuerySelector
+  , TargetSelector
+  ]
+
+indicateClosest :: ( KnownNat branchIndex
+                   , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                   )
+                => querySelector -> Indicator
+indicateClosest = Indicator . Shrubbery.unify . closest
+
+indicateSelector :: ( KnownNat branchIndex
+                   , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                   )
+                => querySelector -> Indicator
+indicateSelector = Indicator . Shrubbery.unify . mkQuerySelector
+
+indicatorToBytes :: Indicator -> LBS.ByteString
+indicatorToBytes =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @QuerySelector querySelectorToBytes
+     . Shrubbery.branch @TargetSelector targetSelectorToBytes
+     $ Shrubbery.branchEnd
+  ) . unIndicator
+
+indicatorToText :: Indicator -> T.Text
+indicatorToText =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @QuerySelector querySelectorToText
+     . Shrubbery.branch @TargetSelector targetSelectorToText
+     $ Shrubbery.branchEnd
+  ) . unIndicator
 
 -- Target and TargetSelector
 --
