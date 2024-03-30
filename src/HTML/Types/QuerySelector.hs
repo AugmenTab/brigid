@@ -621,6 +621,7 @@ import HTML.Types.Event qualified as Event
 import HTML.Types.Every (Every, everyToBytes, everyToText)
 import HTML.Types.Extension (Extension, extensionToText)
 import HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
+import HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
 import HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import HTML.Types.Id qualified as Id
 import HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
@@ -3068,9 +3069,11 @@ hxExt =
     . fmap extensionToText
     . NEL.toList
 
--- TODO
-hxHeaders :: T.Text -> AttributeSelector
-hxHeaders = (,) Attr_HxHeaders . Just
+hxHeaders :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf headers HtmxHeadersTypes
+             )
+          => headers -> AttributeSelector
+hxHeaders = (,) Attr_HxHeaders . Just . htmxHeadersToText . mkHtmxHeaders
 
 hxHistory :: AttributeSelector
 hxHistory = (Attr_HxHistory, Just "false")

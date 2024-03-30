@@ -1,5 +1,14 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeOperators #-}
+
 module HTML.Types.Headers
-  ( RequestHeaders (..)
+  ( HtmxHeaders
+  , HtmxHeadersTypes
+  , mkHtmxHeaders
+  , htmxHeadersToBytes
+  , htmxHeadersToText
+  , RequestHeaders (..)
   , emptyRequestHeaders
   , requestHeadersToBytes
   , requestHeadersToText
@@ -15,6 +24,45 @@ import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder qualified as TLB
+import GHC.TypeLits (KnownNat)
+import Shrubbery qualified
+import Shrubbery.TypeList (FirstIndexOf)
+
+import HTML.Types.RawJavaScript qualified as JS
+
+newtype HtmxHeaders =
+  HtmxHeaders
+    { unHtmxHeaders :: Shrubbery.Union HtmxHeadersTypes
+    }
+
+type HtmxHeadersTypes =
+  [ RequestHeaders
+  , JS.RawJavaScript
+  ]
+
+mkHtmxHeaders :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf headers HtmxHeadersTypes
+                 )
+              => headers -> HtmxHeaders
+mkHtmxHeaders = HtmxHeaders . Shrubbery.unify
+
+htmxHeadersToBytes :: HtmxHeaders -> LBS.ByteString
+htmxHeadersToBytes =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @RequestHeaders requestHeadersToBytes
+      . Shrubbery.branch @JS.RawJavaScript JS.rawJavaScriptToBytes
+      $ Shrubbery.branchEnd
+  ) . unHtmxHeaders
+
+htmxHeadersToText :: HtmxHeaders -> T.Text
+htmxHeadersToText =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @RequestHeaders requestHeadersToText
+      . Shrubbery.branch @JS.RawJavaScript JS.rawJavaScriptToText
+      $ Shrubbery.branchEnd
+  ) . unHtmxHeaders
 
 data RequestHeaders =
   RequestHeaders

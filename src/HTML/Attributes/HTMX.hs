@@ -22,6 +22,7 @@ module HTML.Attributes.HTMX
   , hxDisinherit
   , hxEncoding
   , hxExt
+  , hxHeaders
   , hxHistory
   , hxHistoryElt
   , hxInclude
@@ -146,7 +147,11 @@ hxEncoding = Attr_HxEncoding
 hxExt :: NEL.NonEmpty Types.Extension -> Attribute tag
 hxExt = Attr_HxExt
 
--- hx-headers
+hxHeaders :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf headers Types.HtmxHeadersTypes
+             )
+          => headers -> Attribute tag
+hxHeaders = Attr_HxHeaders . Types.mkHtmxHeaders
 
 hxHistory :: Attribute tag
 hxHistory = Attr_HxHistory

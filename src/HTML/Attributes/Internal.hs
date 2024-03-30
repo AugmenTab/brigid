@@ -50,6 +50,7 @@ module HTML.Attributes.Internal
       , Attr_HxDisinherit
       , Attr_HxEncoding
       , Attr_HxExt
+      , Attr_HxHeaders
       , Attr_HxHistory
       , Attr_HxHistoryElt
       , Attr_HxInclude
@@ -734,6 +735,10 @@ data Attribute (tag :: TagType) where
     :: NEL.NonEmpty Types.Extension
     -> Attribute tag
 
+  Attr_HxHeaders
+    :: Types.HtmxHeaders
+    -> Attribute tag
+
   Attr_HxHistory
     :: Attribute tag
 
@@ -941,6 +946,9 @@ attributeText attr =
 
     Attr_HxExt _exts ->
       "hx-ext"
+
+    Attr_HxHeaders _headers ->
+      "hx-headers"
 
     Attr_HxHistory ->
       "hx-history"

@@ -603,6 +603,9 @@ renderAttribute attr =
         . fmap Types.extensionToText
         $ NEL.toList exts
 
+    Attr_HxHeaders headers ->
+      Just . buildAttribute "hx-headers" $ Types.htmxHeadersToText headers
+
     Attr_HxHistory ->
       Just $ buildAttribute "hx-history" "false"
 
