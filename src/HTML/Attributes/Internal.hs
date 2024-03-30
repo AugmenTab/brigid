@@ -68,6 +68,8 @@ module HTML.Attributes.Internal
       , Attr_HxTrigger
       , Attr_HxValidate
       , Attr_HxVals
+
+      , Attr_HyperScript
       )
   , attributeText
   , buildAttrMap
@@ -803,6 +805,12 @@ data Attribute (tag :: TagType) where
     :: Types.HtmxVals
     -> Attribute tag
 
+  -- Other
+  --
+  Attr_HyperScript
+    :: Types.HyperScript
+    -> Attribute tag
+
 attributeText :: Attribute tag -> T.Text
 attributeText attr =
   case attr of
@@ -987,6 +995,11 @@ attributeText attr =
 
     Attr_HxVals _vals ->
       "hx-vals"
+
+    -- Other
+    --
+    Attr_HyperScript _hyperscript ->
+      "_hyperscript"
 
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =

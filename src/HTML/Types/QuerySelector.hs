@@ -452,6 +452,7 @@ module HTML.Types.QuerySelector
       , Attr_HxRequest
       , Attr_HxSync
       , Attr_HxValidate
+      , Attr_HyperScript
       )
   , attributeTypeFromText
   , attributeTypeToText
@@ -1907,6 +1908,7 @@ data AttributeType
   | Attr_HxRequest
   | Attr_HxSync
   | Attr_HxValidate
+  | Attr_HyperScript
 
 attributeTypeToBytes :: AttributeType -> LBS.ByteString
 attributeTypeToBytes attr =
@@ -2082,6 +2084,10 @@ attributeTypeToBytes attr =
     Attr_HxSync        -> "hx-sync"
     Attr_HxValidate    -> "hx-validate"
 
+    -- Other Attributes
+    --
+    Attr_HyperScript -> "_"
+
 -- The default case here is to treat it as a `CustomAttribute`.
 attributeTypeFromText :: T.Text -> Either String AttributeType
 attributeTypeFromText attr =
@@ -2251,6 +2257,10 @@ attributeTypeFromText attr =
     "hx-request"      -> Right Attr_HxRequest
     "hx-sync"         -> Right Attr_HxSync
     "hx-validate"     -> Right Attr_HxValidate
+
+    -- Other Attributes
+    --
+    "_" -> Right Attr_HyperScript
 
     -- Edge cases
     txt
@@ -2449,6 +2459,10 @@ attributeTypeToText attr =
     Attr_HxRequest     -> "hx-request"
     Attr_HxSync        -> "hx-sync"
     Attr_HxValidate    -> "hx-validate"
+
+    -- Other Attributes
+    --
+    Attr_HyperScript -> "_"
 
 customAttribute :: T.Text -> T.Text -> AttributeSelector
 customAttribute attrName val =

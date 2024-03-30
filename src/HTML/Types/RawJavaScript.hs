@@ -10,9 +10,13 @@ import Data.Text.Encoding qualified as TE
 
 newtype RawJavaScript =
   RawJavaScript
-    { rawJavaScriptToText :: T.Text
+    { unRawJavaScript :: T.Text
     }
 
 rawJavaScriptToBytes :: RawJavaScript -> LBS.ByteString
 rawJavaScriptToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . rawJavaScriptToText
+  ("js:" <>) . LBS.fromStrict . TE.encodeUtf8 . unRawJavaScript
+
+rawJavaScriptToText :: RawJavaScript -> T.Text
+rawJavaScriptToText =
+  ("js:" <>) . unRawJavaScript

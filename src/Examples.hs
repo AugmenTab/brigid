@@ -77,7 +77,9 @@ example =
     [ E.noElement
     , E.comment "First comment"
     , E.form [ A.hxValidate ]
-        [ E.button [] []
+        [ E.button [ A.hyperscript sampleHyperScript ]
+            [ E.text "Do HyperScript" ]
+        , E.div [] []
         , E.input []
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
@@ -128,6 +130,16 @@ example =
             ]
         ]
     ]
+
+sampleHyperScript :: HTML.HyperScript
+sampleHyperScript =
+  HTML.HyperScript
+    . T.unwords
+    $ [ "on"
+      , HTML.eventToText $ HTML.mkEvent HTML.Click
+      , "put 'hello' into the"
+      , HTML.querySelectorToText idQuerySelectorExample
+      ]
 
 listExample :: [E.ChildHTML E.Division grandparent]
 listExample =

@@ -675,6 +675,11 @@ renderAttribute attr =
     Attr_HxVals vals ->
       Just . buildAttribute "hx-vals" $ Types.htmxValsToText vals
 
+    -- Other
+    --
+    Attr_HyperScript hyperscript ->
+      Just . buildAttribute "_" $ Types.hyperScriptToText hyperscript
+
 buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
   fromText attr <> fromText "=\"" <> fromText value <> fromText "\""

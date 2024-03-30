@@ -32,6 +32,7 @@ library
       HTML.Attributes.Href
       HTML.Attributes.HTMX
       HTML.Attributes.Internal
+      HTML.Attributes.Other
       HTML.Attributes.Scoped
       HTML.Elements
       HTML.Elements.AddAttribute
@@ -68,6 +69,7 @@ library
       HTML.Types.FocusScroll
       HTML.Types.Headers
       HTML.Types.Href
+      HTML.Types.HyperScript
       HTML.Types.Id
       HTML.Types.IgnoreTitle
       HTML.Types.InlineJSON

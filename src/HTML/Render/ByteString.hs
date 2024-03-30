@@ -702,6 +702,11 @@ renderAttribute attr =
     Attr_HxVals vals ->
       Just . buildAttribute "hx-vals" $ Types.htmxValsToBytes vals
 
+    -- Other
+    --
+    Attr_HyperScript hyperscript ->
+      Just . buildAttribute "_" $ Types.hyperScriptToBytes hyperscript
+
 buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
 buildAttribute attr value =
   lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""

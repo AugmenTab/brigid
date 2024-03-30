@@ -33,6 +33,7 @@ import HTML.Types.Extension as Export
 import HTML.Types.FocusScroll as Export
 import HTML.Types.Headers as Export
 import HTML.Types.Href as Export
+import HTML.Types.HyperScript as Export
 import HTML.Types.Id as Export
 import HTML.Types.IgnoreTitle as Export
 import HTML.Types.InlineJSON as Export
