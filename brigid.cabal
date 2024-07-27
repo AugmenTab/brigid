@@ -1,0 +1,164 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.36.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           brigid
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
+homepage:       https://github.com/AugmenTab/brigid#readme
+bug-reports:    https://github.com/AugmenTab/brigid/issues
+author:         Tyler Baum
+maintainer:     tyler.baum@protonmail.com
+copyright:      2023 Tyler Baum
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/AugmenTab/brigid
+
+library
+  exposed-modules:
+      Brigid.HTML.Attributes
+      Brigid.HTML.Attributes.AttributeType
+      Brigid.HTML.Attributes.Elements
+      Brigid.HTML.Attributes.Global
+      Brigid.HTML.Attributes.Href
+      Brigid.HTML.Attributes.HTMX
+      Brigid.HTML.Attributes.Internal
+      Brigid.HTML.Attributes.Other
+      Brigid.HTML.Attributes.Scoped
+      Brigid.HTML.Elements
+      Brigid.HTML.Elements.AddAttribute
+      Brigid.HTML.Elements.Category
+      Brigid.HTML.Elements.Children
+      Brigid.HTML.Elements.Internal
+      Brigid.HTML.Elements.Ruby
+      Brigid.HTML.Elements.Table
+      Brigid.HTML.Elements.TagGroups
+      Brigid.HTML.Elements.Tags
+      Brigid.HTML.Elements.TagType
+      Brigid.HTML.HTMX.Config
+      Brigid.HTML.Internal.TagOperations
+      Brigid.HTML.Render.ByteString
+      Brigid.HTML.Render.Internal.Escape
+      Brigid.HTML.Render.String
+      Brigid.HTML.Render.Text
+      Brigid.HTML.Types
+      Brigid.HTML.Types.Autocapitalize
+      Brigid.HTML.Types.Changed
+      Brigid.HTML.Types.Class
+      Brigid.HTML.Types.ClassSelector
+      Brigid.HTML.Types.Consume
+      Brigid.HTML.Types.ContentEditable
+      Brigid.HTML.Types.CrossOrigin
+      Brigid.HTML.Types.Delay
+      Brigid.HTML.Types.Directionality
+      Brigid.HTML.Types.Disinherit
+      Brigid.HTML.Types.Document
+      Brigid.HTML.Types.Email
+      Brigid.HTML.Types.Event
+      Brigid.HTML.Types.Every
+      Brigid.HTML.Types.Extension
+      Brigid.HTML.Types.FocusScroll
+      Brigid.HTML.Types.Headers
+      Brigid.HTML.Types.Href
+      Brigid.HTML.Types.HyperScript
+      Brigid.HTML.Types.Id
+      Brigid.HTML.Types.IgnoreTitle
+      Brigid.HTML.Types.InlineJSON
+      Brigid.HTML.Types.InputMode
+      Brigid.HTML.Types.KeyHint
+      Brigid.HTML.Types.Method
+      Brigid.HTML.Types.NoContent
+      Brigid.HTML.Types.None
+      Brigid.HTML.Types.Once
+      Brigid.HTML.Types.Part
+      Brigid.HTML.Types.PopoverState
+      Brigid.HTML.Types.PushURL
+      Brigid.HTML.Types.QuerySelector
+      Brigid.HTML.Types.QueueOption
+      Brigid.HTML.Types.RawJavaScript
+      Brigid.HTML.Types.Reachability
+      Brigid.HTML.Types.RequestParams
+      Brigid.HTML.Types.ScrollBehavior
+      Brigid.HTML.Types.Swap
+      Brigid.HTML.Types.SwapTiming
+      Brigid.HTML.Types.SwapTransition
+      Brigid.HTML.Types.Target
+      Brigid.HTML.Types.This
+      Brigid.HTML.Types.Threshold
+      Brigid.HTML.Types.Throttle
+      Brigid.HTML.Types.TriggerFilter
+      Brigid.HTML.Types.URL
+      Brigid.HTML.Types.Vals
+      Brigid.HTML.Types.WebsocketBinaryType
+      Brigid.HTML.Types.Window
+  other-modules:
+      Paths_brigid
+  autogen-modules:
+      Paths_brigid
+  hs-source-dirs:
+      src
+  default-extensions:
+      DeriveDataTypeable
+      DerivingStrategies
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      MultiParamTypeClasses
+      OverloadedStrings
+  ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
+  build-depends:
+      base
+    , beeline-http-client
+    , beeline-routing
+    , bytestring
+    , containers
+    , html-email-validate
+    , http-types
+    , json-fleece-aeson
+    , json-fleece-core
+    , non-empty-text
+    , shrubbery
+    , text
+  default-language: Haskell2010
+
+test-suite brigid-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_brigid
+  autogen-modules:
+      Paths_brigid
+  hs-source-dirs:
+      test
+  default-extensions:
+      DeriveDataTypeable
+      DerivingStrategies
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      MultiParamTypeClasses
+      OverloadedStrings
+  ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base
+    , beeline-http-client
+    , beeline-routing
+    , brigid
+    , bytestring
+    , containers
+    , html-email-validate
+    , http-types
+    , json-fleece-aeson
+    , json-fleece-core
+    , non-empty-text
+    , shrubbery
+    , text
+  default-language: Haskell2010

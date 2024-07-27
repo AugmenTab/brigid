@@ -1,8 +1,8 @@
-# safe-html
+# brigid
 
 A library for constructing type-safe and (mostly) spec-compliant HTML.
 
-### TODO
+### TODO (HTML)
 
 1. Consider adding safer builder functions for any HTML elements with complex conditions for its permitted content, such as what was done with <del>`table`</del> <ins>`HTML.Elements.Table`</ins>. Go through the entire list of elements again to determine what qualifies for this.
 2. For each of global, HTMX, event listeners, arias, and scoped
