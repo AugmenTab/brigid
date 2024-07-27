@@ -5,12 +5,13 @@ module Brigid.HXML.Elements.TagType
   ( TagErrorMessage
   , TagType
       ( NoElement
-      , Document
+      , HXML
       , Comment
       , RawHXML
       , CustomHXML
       , Body
       , DateField
+      , Document
       , Form
       , Header
       , Image
@@ -45,13 +46,14 @@ import GHC.TypeLits qualified as TypeLits
 
 data TagType
   = NoElement
-  | Document
+  | HXML
   | Comment
   | RawHXML
   | CustomHXML
   | Behavior
   | Body
   | DateField
+  | Document
   | Form
   | Header
   | Image
@@ -81,13 +83,14 @@ data TagType
   | WebView
 
 type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
-  TagErrorMessage Document       = 'TypeLits.Text "Document"
+  TagErrorMessage HXML           = 'TypeLits.Text "HXML Document"
   TagErrorMessage Comment        = 'TypeLits.Text "Comment"
   TagErrorMessage RawHXML        = 'TypeLits.Text "RawHXML"
   TagErrorMessage CustomHXML     = 'TypeLits.Text "CustomHXML"
   TagErrorMessage Behavior       = 'TypeLits.Text "Behavior <behavior>"
   TagErrorMessage Body           = 'TypeLits.Text "Body <body>"
   TagErrorMessage DateField      = 'TypeLits.Text "DateField <date-field>"
+  TagErrorMessage Document       = 'TypeLits.Text "Document <doc>"
   TagErrorMessage Form           = 'TypeLits.Text "Form <form>"
   TagErrorMessage Header         = 'TypeLits.Text "Header <header>"
   TagErrorMessage Image          = 'TypeLits.Text "Image <image>"
