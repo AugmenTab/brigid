@@ -99,6 +99,7 @@ library
       Brigid.HTML.Types.Vals
       Brigid.HTML.Types.WebsocketBinaryType
       Brigid.HTML.Types.Window
+      Brigid.HXML.Elements.Internal
       Brigid.HXML.Elements.Tags
       Brigid.HXML.Elements.TagType
   other-modules:
