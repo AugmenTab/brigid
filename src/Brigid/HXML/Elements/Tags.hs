@@ -6,6 +6,7 @@ module Brigid.HXML.Elements.Tags
   , Comment
   , RawHXML
   , CustomHXML
+  , Behavior
   , Body
   , DateField
   , Document
@@ -58,6 +59,9 @@ type RawHXML = 'TagType.RawHXML
 
 -- | This type synonym represents a custom HXML element.
 type CustomHXML = 'TagType.CustomHXML
+
+-- | This type synonym represents the @\<behavior>@ element.
+type Behavior = 'TagType.Behavior
 
 -- | This type synonym represents the @\<body>@ element.
 type Body = 'TagType.Body

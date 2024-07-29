@@ -9,6 +9,7 @@ module Brigid.HXML.Elements.TagType
       , Comment
       , RawHXML
       , CustomHXML
+      , Behavior
       , Body
       , DateField
       , Document
