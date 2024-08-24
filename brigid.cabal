@@ -24,6 +24,7 @@ source-repository head
 
 library
   exposed-modules:
+      Brigid.Examples.HTML
       Brigid.HTML.Attributes
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Elements

@@ -1,4 +1,4 @@
-Examples.HTML
+module Brigid.Examples.HTML
   ( documentExample
   , example
   , htmxExample
@@ -38,7 +38,7 @@ documentExample =
             HTMX.defaultConfig
               { HTMX.refreshOnHistoryMiss = Just True
               }
-     -- , E.link [ A.href $ HTML.idFromText "bad-link" ] -- This fails, because Id is not a valid href type for link.
+        -- , E.link [ A.href $ HTML.Id "bad-link" ] -- This fails, because Id is not a valid href type for link.
         ]
     , E.body [ A.hxBoost True
              , A.customAttribute "myCoolAttribute" "myCoolValue"
