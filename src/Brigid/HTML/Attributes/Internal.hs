@@ -5,7 +5,8 @@
 module Brigid.HTML.Attributes.Internal
   ( Attributes
   , Attribute
-      ( Attr_Custom
+      ( Attr_NoAttribute
+      , Attr_Custom
       , Attr_AccessKey
       , Attr_Autocapitalize
       , Attr_Autofocus
@@ -91,6 +92,11 @@ type Attributes tag =
   Map T.Text (Attribute tag)
 
 data Attribute (tag :: TagType) where
+  -- No Attribute
+  --
+  Attr_NoAttribute
+    :: Attribute tag
+
   -- Custom Attribute
   --
   Attr_Custom
@@ -819,6 +825,9 @@ data Attribute (tag :: TagType) where
 attributeText :: Attribute tag -> T.Text
 attributeText attr =
   case attr of
+    Attr_NoAttribute ->
+      "no_attribute"
+
     Attr_Custom name _value ->
       name
 

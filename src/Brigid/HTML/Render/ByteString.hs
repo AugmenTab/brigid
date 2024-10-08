@@ -429,6 +429,9 @@ buildTag tag attributes content =
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
+    Attr_NoAttribute ->
+      Just $ lazyByteString LBS.empty
+
     Attr_Custom name value ->
       Just $
         buildAttribute

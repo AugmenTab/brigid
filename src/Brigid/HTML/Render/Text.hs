@@ -419,6 +419,9 @@ renderAttribute attr =
   case attr of
     -- Global Attributes
     --
+    Attr_NoAttribute ->
+      Just $ fromText T.empty
+
     Attr_Custom name value ->
       Just . buildAttribute name $ Escape.attribute value
 
