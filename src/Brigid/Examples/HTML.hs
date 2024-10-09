@@ -330,7 +330,7 @@ htmxExample =
         ]
     , E.button [ A.htmx . exampleURL $ GetCustomer 5
                , A.hxVals $ HTML.mkInlineJSON thingSchema exampleThing
-               , A.hxTarget $ HTML.closest myClass
+               , A.hxTarget $ HTML.htmx_closest myClass
                , A.hxSwap
                    . HTML.swapAfterbegin
                    . Just
@@ -366,20 +366,20 @@ classQuerySelectorExample =
 elementQuerySelectorExample :: HTML.QuerySelector
 elementQuerySelectorExample =
   HTML.mkQuerySelector $
-    HTML.table
+    HTML.tag_table
       Nothing
       [ HTML.toClassSelector myClass ]
       ( Just $
-          HTML.tbody
+          HTML.tag_tbody
             Nothing
             []
             ( Just $
-                HTML.td
-                  (Just $ HTML.disabled)
+                HTML.tag_td
+                  (Just $ HTML.attr_disabled)
                   [ HTML.not . HTML.toClassSelector $ HTML.Class "main" ]
                   ( Just $
-                      HTML.a
-                        (Just . HTML.href . exampleURL $ GetCustomer 1)
+                      HTML.tag_a
+                        (Just . HTML.attr_href . exampleURL $ GetCustomer 1)
                         []
                         Nothing
                   )

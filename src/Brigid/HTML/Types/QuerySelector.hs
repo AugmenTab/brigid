@@ -15,282 +15,282 @@ module Brigid.HTML.Types.QuerySelector
   , ElementSelector
   , elementSelectorToBytes
   , elementSelectorToText
-  , customTag
-  , a
-  , abbr
-  , address
-  , area
-  , article
-  , aside
-  , audio
-  , b
-  , base
-  , bdi
-  , bdo
-  , blockquote
-  , body
-  , br
-  , button
-  , canvas
-  , caption
-  , citeTag
-  , code
-  , col
-  , colgroup
-  , dataTag
-  , datalist
-  , dd
-  , del
-  , details
-  , dfn
-  , dialog
-  , div
-  , dl
-  , dt
-  , em
-  , embed
-  , fieldset
-  , figcaption
-  , figure
-  , footer
-  , formTag
-  , h1
-  , h2
-  , h3
-  , h4
-  , h5
-  , h6
-  , head
-  , header
-  , hgroup
-  , hr
-  , html
-  , i
-  , iframe
-  , img
-  , input
-  , ins
-  , kbd
-  , labelTag
-  , legend
-  , li
-  , link
-  , main
-  , map
-  , mark
-  , menu
-  , meta
-  , meter
-  , nav
-  , noscript
-  , object
-  , ol
-  , optgroup
-  , option
-  , output
-  , p
-  , picture
-  , pre
-  , progress
-  , q
-  , rp
-  , rt
-  , ruby
-  , s
-  , sample
-  , script
-  , search
-  , section
-  , select
-  , slotTag
-  , small
-  , source
-  , spanTag
-  , strong
-  , styleTag
-  , sub
-  , summary
-  , sup
-  , table
-  , tbody
-  , td
-  , template
-  , textarea
-  , tfoot
-  , th
-  , thead
-  , time
-  , titleTag
-  , tr
-  , track
-  , u
-  , ul
-  , var
-  , video
-  , wbr
+  , tag_custom
+  , tag_a
+  , tag_abbr
+  , tag_address
+  , tag_area
+  , tag_article
+  , tag_aside
+  , tag_audio
+  , tag_b
+  , tag_base
+  , tag_bdi
+  , tag_bdo
+  , tag_blockquote
+  , tag_body
+  , tag_br
+  , tag_button
+  , tag_canvas
+  , tag_caption
+  , tag_cite
+  , tag_code
+  , tag_col
+  , tag_colgroup
+  , tag_data
+  , tag_datalist
+  , tag_dd
+  , tag_del
+  , tag_details
+  , tag_dfn
+  , tag_dialog
+  , tag_div
+  , tag_dl
+  , tag_dt
+  , tag_em
+  , tag_embed
+  , tag_fieldset
+  , tag_figcaption
+  , tag_figure
+  , tag_footer
+  , tag_form
+  , tag_h1
+  , tag_h2
+  , tag_h3
+  , tag_h4
+  , tag_h5
+  , tag_h6
+  , tag_head
+  , tag_header
+  , tag_hgroup
+  , tag_hr
+  , tag_html
+  , tag_i
+  , tag_iframe
+  , tag_img
+  , tag_input
+  , tag_ins
+  , tag_kbd
+  , tag_label
+  , tag_legend
+  , tag_li
+  , tag_link
+  , tag_main
+  , tag_map
+  , tag_mark
+  , tag_menu
+  , tag_meta
+  , tag_meter
+  , tag_nav
+  , tag_noscript
+  , tag_object
+  , tag_ol
+  , tag_optgroup
+  , tag_option
+  , tag_output
+  , tag_p
+  , tag_picture
+  , tag_pre
+  , tag_progress
+  , tag_q
+  , tag_rp
+  , tag_rt
+  , tag_ruby
+  , tag_s
+  , tag_sample
+  , tag_script
+  , tag_search
+  , tag_section
+  , tag_select
+  , tag_slot
+  , tag_small
+  , tag_source
+  , tag_span
+  , tag_strong
+  , tag_style
+  , tag_sub
+  , tag_summary
+  , tag_sup
+  , tag_table
+  , tag_tbody
+  , tag_td
+  , tag_template
+  , tag_textarea
+  , tag_tfoot
+  , tag_th
+  , tag_thead
+  , tag_time
+  , tag_title
+  , tag_tr
+  , tag_track
+  , tag_u
+  , tag_ul
+  , tag_var
+  , tag_video
+  , tag_wbr
   , AttributeSelector
   , attributeSelectorToBytes
   , attributeSelectorToText
-  , customAttribute
-  , accesskey
-  , autocapitalize
-  , autofocus
-  , class_
-  , contenteditable
-  , customData
-  , dir
-  , draggable
-  , enterkeyhint
-  , exportparts
-  , hidden
-  , id
-  , inert
-  , inputmode
-  , is
-  , itemid
-  , itemprop
-  , itemref
-  , itemscope
-  , itemtype
-  , lang
-  , nonce
-  , part
-  , popover
-  , role
-  , slot
-  , spellcheck
-  , style
-  , tabindex
-  , title
-  , translate
-  , accept
-  , acceptCharset
-  , action
-  , allow
-  , alt
-  , async
-  , autocomplete
-  , autoplay
-  , background
-  , bgcolor
-  , border
-  , capture
-  , charset
-  , checked
-  , cite
-  , color
-  , cols
-  , colspan
-  , content
-  , controls
-  , coords
-  , crossorigin
-  , data_
-  , datetime
-  , decoding
-  , default_
-  , defer
-  , dirname
-  , disabled
-  , download
-  , enctype
-  , for
-  , form
-  , formaction
-  , formenctype
-  , formmethod
-  , formnovalidate
-  , formtarget
-  , headers
-  , height
-  , high
-  , href
-  , hreflang
-  , httpEquiv
-  , integrity
-  , ismap
-  , kind
-  , label
-  , list
-  , loop
-  , low
-  , max
-  , maxlength
-  , minlength
-  , media
-  , method
-  , min
-  , multiple
-  , muted
-  , name
-  , novalidate
-  , open
-  , optimum
-  , pattern
-  , ping
-  , placeholder
-  , playsinline
-  , poster
-  , preload
-  , readonly
-  , referrerpolicy
-  , rel
-  , required
-  , reversed
-  , rows
-  , rowspan
-  , sandbox
-  , scope
-  , selected
-  , shape
-  , size
-  , sizes
-  , span
-  , src
-  , srcdoc
-  , srclang
-  , srcset
-  , start
-  , step
-  , target
-  , type_
-  , usemap
-  , value
-  , width
-  , wrap
-  , hxGet
-  , hxPost
-  , hxOn
-  , hxPushURL
-  , hxSelect
-  , hxSelectOOB
-  , hxSwap
-  , hxSwapOOB
-  , hxTarget
-  , hxTrigger
-  , hxVals
-  , hxBoost
-  , hxConfirm
-  , hxDelete
-  , hxDisable
-  , hxDisabledElt
-  , hxDisinherit
-  , hxEncoding
-  , hxExt
-  , hxHeaders
-  , hxHistory
-  , hxHistoryElt
-  , hxInclude
-  , hxIndicator
-  , hxParams
-  , hxPatch
-  , hxPreserve
-  , hxPrompt
-  , hxPut
-  , hxReplaceURL
-  , hxRequest
-  , hxSync
-  , hxValidate
+  , attr_custom
+  , attr_accesskey
+  , attr_autocapitalize
+  , attr_autofocus
+  , attr_class_
+  , attr_contenteditable
+  , attr_customData
+  , attr_dir
+  , attr_draggable
+  , attr_enterkeyhint
+  , attr_exportparts
+  , attr_hidden
+  , attr_id
+  , attr_inert
+  , attr_inputmode
+  , attr_is
+  , attr_itemid
+  , attr_itemprop
+  , attr_itemref
+  , attr_itemscope
+  , attr_itemtype
+  , attr_lang
+  , attr_nonce
+  , attr_part
+  , attr_popover
+  , attr_role
+  , attr_slot
+  , attr_spellcheck
+  , attr_style
+  , attr_tabindex
+  , attr_title
+  , attr_translate
+  , attr_accept
+  , attr_acceptCharset
+  , attr_action
+  , attr_allow
+  , attr_alt
+  , attr_async
+  , attr_autocomplete
+  , attr_autoplay
+  , attr_background
+  , attr_bgcolor
+  , attr_border
+  , attr_capture
+  , attr_charset
+  , attr_checked
+  , attr_cite
+  , attr_color
+  , attr_cols
+  , attr_colspan
+  , attr_content
+  , attr_controls
+  , attr_coords
+  , attr_crossorigin
+  , attr_data_
+  , attr_datetime
+  , attr_decoding
+  , attr_default_
+  , attr_defer
+  , attr_dirname
+  , attr_disabled
+  , attr_download
+  , attr_enctype
+  , attr_for
+  , attr_form
+  , attr_formaction
+  , attr_formenctype
+  , attr_formmethod
+  , attr_formnovalidate
+  , attr_formtarget
+  , attr_headers
+  , attr_height
+  , attr_high
+  , attr_href
+  , attr_hreflang
+  , attr_httpEquiv
+  , attr_integrity
+  , attr_ismap
+  , attr_kind
+  , attr_label
+  , attr_list
+  , attr_loop
+  , attr_low
+  , attr_max
+  , attr_maxlength
+  , attr_minlength
+  , attr_media
+  , attr_method
+  , attr_min
+  , attr_multiple
+  , attr_muted
+  , attr_name
+  , attr_novalidate
+  , attr_open
+  , attr_optimum
+  , attr_pattern
+  , attr_ping
+  , attr_placeholder
+  , attr_playsinline
+  , attr_poster
+  , attr_preload
+  , attr_readonly
+  , attr_referrerpolicy
+  , attr_rel
+  , attr_required
+  , attr_reversed
+  , attr_rows
+  , attr_rowspan
+  , attr_sandbox
+  , attr_scope
+  , attr_selected
+  , attr_shape
+  , attr_size
+  , attr_sizes
+  , attr_span
+  , attr_src
+  , attr_srcdoc
+  , attr_srclang
+  , attr_srcset
+  , attr_start
+  , attr_step
+  , attr_target
+  , attr_type_
+  , attr_usemap
+  , attr_value
+  , attr_width
+  , attr_wrap
+  , attr_hxGet
+  , attr_hxPost
+  , attr_hxOn
+  , attr_hxPushURL
+  , attr_hxSelect
+  , attr_hxSelectOOB
+  , attr_hxSwap
+  , attr_hxSwapOOB
+  , attr_hxTarget
+  , attr_hxTrigger
+  , attr_hxVals
+  , attr_hxBoost
+  , attr_hxConfirm
+  , attr_hxDelete
+  , attr_hxDisable
+  , attr_hxDisabledElt
+  , attr_hxDisinherit
+  , attr_hxEncoding
+  , attr_hxExt
+  , attr_hxHeaders
+  , attr_hxHistory
+  , attr_hxHistoryElt
+  , attr_hxInclude
+  , attr_hxIndicator
+  , attr_hxParams
+  , attr_hxPatch
+  , attr_hxPreserve
+  , attr_hxPrompt
+  , attr_hxPut
+  , attr_hxReplaceURL
+  , attr_hxRequest
+  , attr_hxSync
+  , attr_hxValidate
   , AttributeType
       ( Attr_CustomAttribute
       , Attr_AccessKey
@@ -539,10 +539,10 @@ module Brigid.HTML.Types.QuerySelector
   , outOfBandSwapToBytes
   , outOfBandSwapToText
   , TargetSelector
-  , closest
-  , find
-  , next
-  , previous
+  , htmx_closest
+  , htmx_find
+  , htmx_next
+  , htmx_previous
   , targetSelectorToBytes
   , targetSelectorToText
   , Trigger
@@ -740,637 +740,640 @@ elementSelectorToText element =
         (elementSelectorChild element)
     ]
 
-customTag :: T.Text
-          -> Maybe AttributeSelector
-          -> [CS.ClassSelector]
-          -> Either NoContent ElementSelector
-          -> ElementSelector
-customTag elementName mbAttr classes eiNoContentOrElement =
+tag_custom :: T.Text
+           -> Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Either NoContent ElementSelector
+           -> ElementSelector
+tag_custom elementName mbAttr classes eiNoContentOrElement =
   ElementSelector
     (Tag_CustomElement elementName)
     mbAttr
     classes
     (either (const Nothing) Just eiNoContentOrElement)
 
-a :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-a = ElementSelector Tag_Anchor
-
-abbr :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-abbr = ElementSelector Tag_Abbreviation
-
-address :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-address = ElementSelector Tag_ContactAddress
-
-area :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-area mbAttr classes = ElementSelector Tag_Area mbAttr classes Nothing
-
-article :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-article = ElementSelector Tag_Article
-
-aside :: Maybe AttributeSelector
+tag_a :: Maybe AttributeSelector
       -> [CS.ClassSelector]
       -> Maybe ElementSelector
       -> ElementSelector
-aside = ElementSelector Tag_Aside
+tag_a = ElementSelector Tag_Anchor
 
-audio :: Maybe AttributeSelector
+tag_abbr :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_abbr = ElementSelector Tag_Abbreviation
+
+tag_address :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_address = ElementSelector Tag_ContactAddress
+
+tag_area :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_area mbAttr classes = ElementSelector Tag_Area mbAttr classes Nothing
+
+tag_article :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_article = ElementSelector Tag_Article
+
+tag_aside :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_aside = ElementSelector Tag_Aside
+
+tag_audio :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_audio = ElementSelector Tag_Audio
+
+tag_b :: Maybe AttributeSelector
       -> [CS.ClassSelector]
       -> Maybe ElementSelector
       -> ElementSelector
-audio = ElementSelector Tag_Audio
+tag_b = ElementSelector Tag_BringAttentionTo
 
-b :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-b = ElementSelector Tag_BringAttentionTo
+tag_base :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_base mbAttr classes = ElementSelector Tag_Base mbAttr classes Nothing
 
-base :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-base mbAttr classes = ElementSelector Tag_Base mbAttr classes Nothing
+tag_bdi :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_bdi = ElementSelector Tag_BidirectionalIsolation
 
-bdi :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-bdi = ElementSelector Tag_BidirectionalIsolation
+tag_bdo :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_bdo = ElementSelector Tag_BidirectionalOverride
 
-bdo :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-bdo = ElementSelector Tag_BidirectionalOverride
+tag_blockquote :: Maybe AttributeSelector
+               -> [CS.ClassSelector]
+               -> Maybe ElementSelector
+               -> ElementSelector
+tag_blockquote = ElementSelector Tag_Blockquote
 
-blockquote :: Maybe AttributeSelector
+tag_body :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_body = ElementSelector Tag_Body
+
+tag_br :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_br mbAttr classes = ElementSelector Tag_LineBreak mbAttr classes Nothing
+
+tag_button :: Maybe AttributeSelector
            -> [CS.ClassSelector]
            -> Maybe ElementSelector
            -> ElementSelector
-blockquote = ElementSelector Tag_Blockquote
+tag_button = ElementSelector Tag_Button
 
-body :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-body = ElementSelector Tag_Body
-
-br :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-br mbAttr classes = ElementSelector Tag_LineBreak mbAttr classes Nothing
-
-button :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-button = ElementSelector Tag_Button
-
-canvas :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-canvas = ElementSelector Tag_Canvas
-
-caption :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-caption = ElementSelector Tag_TableCaption
-
-citeTag :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-citeTag = ElementSelector Tag_Citation
-
-code :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-code = ElementSelector Tag_Code
-
-col :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-col mbAttr classes = ElementSelector Tag_TableColumn mbAttr classes Nothing
-
-colgroup :: Maybe AttributeSelector
-         -> [CS.ClassSelector]
-         -> Maybe ElementSelector
-         -> ElementSelector
-colgroup = ElementSelector Tag_TableColumnGroup
-
-dataTag :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-dataTag = ElementSelector Tag_Data
-
-datalist :: Maybe AttributeSelector
-         -> [CS.ClassSelector]
-         -> Maybe ElementSelector
-         -> ElementSelector
-datalist = ElementSelector Tag_DataList
-
-dd :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-dd = ElementSelector Tag_DescriptionDetails
-
-del :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-del = ElementSelector Tag_DeletedText
-
-details :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-details = ElementSelector Tag_Details
-
-dfn :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-dfn = ElementSelector Tag_Definition
-
-dialog :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-dialog = ElementSelector Tag_Dialog
-
-div :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-div = ElementSelector Tag_Division
-
-dl :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-dl = ElementSelector Tag_DescriptionList
-
-dt :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-dt = ElementSelector Tag_DescriptionTerm
-
-em :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-em = ElementSelector Tag_Emphasis
-
-embed :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-embed mbAttr classes = ElementSelector Tag_Embed mbAttr classes Nothing
-
-fieldset :: Maybe AttributeSelector
-         -> [CS.ClassSelector]
-         -> Maybe ElementSelector
-         -> ElementSelector
-fieldset = ElementSelector Tag_Fieldset
-
-figcaption :: Maybe AttributeSelector
+tag_canvas :: Maybe AttributeSelector
            -> [CS.ClassSelector]
            -> Maybe ElementSelector
            -> ElementSelector
-figcaption = ElementSelector Tag_FigureCaption
+tag_canvas = ElementSelector Tag_Canvas
 
-figure :: Maybe AttributeSelector
+tag_caption :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_caption = ElementSelector Tag_TableCaption
+
+tag_cite :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_cite = ElementSelector Tag_Citation
+
+tag_code :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_code = ElementSelector Tag_Code
+
+tag_col :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_col mbAttr classes = ElementSelector Tag_TableColumn mbAttr classes Nothing
+
+tag_colgroup :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_colgroup = ElementSelector Tag_TableColumnGroup
+
+tag_data :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_data = ElementSelector Tag_Data
+
+tag_datalist :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_datalist = ElementSelector Tag_DataList
+
+tag_dd :: Maybe AttributeSelector
        -> [CS.ClassSelector]
        -> Maybe ElementSelector
        -> ElementSelector
-figure = ElementSelector Tag_Figure
+tag_dd = ElementSelector Tag_DescriptionDetails
 
-footer :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-footer = ElementSelector Tag_Footer
-
-formTag :: Maybe AttributeSelector
+tag_del :: Maybe AttributeSelector
         -> [CS.ClassSelector]
         -> Maybe ElementSelector
         -> ElementSelector
-formTag = ElementSelector Tag_Form
+tag_del = ElementSelector Tag_DeletedText
 
-h1 :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-h1 = ElementSelector Tag_H1
+tag_details :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_details = ElementSelector Tag_Details
 
-h2 :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-h2 = ElementSelector Tag_H1
+tag_dfn :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_dfn = ElementSelector Tag_Definition
 
-h3 :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-h3 = ElementSelector Tag_H3
+tag_dialog :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_dialog = ElementSelector Tag_Dialog
 
-h4 :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-h4 = ElementSelector Tag_H4
+tag_div :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_div = ElementSelector Tag_Division
 
-h5 :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-h5 = ElementSelector Tag_H5
-
-h6 :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-h6 = ElementSelector Tag_H6
-
-head :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-head = ElementSelector Tag_Head
-
-header :: Maybe AttributeSelector
+tag_dl :: Maybe AttributeSelector
        -> [CS.ClassSelector]
        -> Maybe ElementSelector
        -> ElementSelector
-header = ElementSelector Tag_Header
+tag_dl = ElementSelector Tag_DescriptionList
 
-hgroup :: Maybe AttributeSelector
+tag_dt :: Maybe AttributeSelector
        -> [CS.ClassSelector]
        -> Maybe ElementSelector
        -> ElementSelector
-hgroup = ElementSelector Tag_HeadingGroup
+tag_dt = ElementSelector Tag_DescriptionTerm
 
-hr :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-hr mbAttr classes = ElementSelector Tag_HorizontalRule mbAttr classes Nothing
+tag_em :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_em = ElementSelector Tag_Emphasis
 
-html :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-html = ElementSelector Tag_Html
+tag_embed :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_embed mbAttr classes = ElementSelector Tag_Embed mbAttr classes Nothing
 
-i :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-i = ElementSelector Tag_IdiomaticText
+tag_fieldset :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_fieldset = ElementSelector Tag_Fieldset
 
-iframe :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-iframe mbAttr classes = ElementSelector Tag_IFrame mbAttr classes Nothing
+tag_figcaption :: Maybe AttributeSelector
+               -> [CS.ClassSelector]
+               -> Maybe ElementSelector
+               -> ElementSelector
+tag_figcaption = ElementSelector Tag_FigureCaption
 
-img :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-img mbAttr classes = ElementSelector Tag_Image mbAttr classes Nothing
+tag_figure :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_figure = ElementSelector Tag_Figure
 
-input :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-input mbAttr classes = ElementSelector Tag_Input mbAttr classes Nothing
+tag_footer :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_footer = ElementSelector Tag_Footer
 
-ins :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-ins = ElementSelector Tag_InsertedText
-
-kbd :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-kbd = ElementSelector Tag_KeyboardInput
-
-labelTag :: Maybe AttributeSelector
+tag_form :: Maybe AttributeSelector
          -> [CS.ClassSelector]
          -> Maybe ElementSelector
          -> ElementSelector
-labelTag = ElementSelector Tag_Label
+tag_form = ElementSelector Tag_Form
 
-legend :: Maybe AttributeSelector
+tag_h1 :: Maybe AttributeSelector
        -> [CS.ClassSelector]
        -> Maybe ElementSelector
        -> ElementSelector
-legend = ElementSelector Tag_Legend
+tag_h1 = ElementSelector Tag_H1
 
-li :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-li = ElementSelector Tag_ListItem
+tag_h2 :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_h2 = ElementSelector Tag_H1
 
-link :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-link mbAttr classes = ElementSelector Tag_Link mbAttr classes Nothing
+tag_h3 :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_h3 = ElementSelector Tag_H3
 
-main :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-main = ElementSelector Tag_Main
+tag_h4 :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_h4 = ElementSelector Tag_H4
 
-map :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-map = ElementSelector Tag_Map
+tag_h5 :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_h5 = ElementSelector Tag_H5
 
-mark :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-mark = ElementSelector Tag_Mark
+tag_h6 :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_h6 = ElementSelector Tag_H6
 
-menu :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-menu = ElementSelector Tag_Menu
+tag_head :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_head = ElementSelector Tag_Head
 
-meta :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-meta mbAttr classes = ElementSelector Tag_Meta mbAttr classes Nothing
+tag_header :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_header = ElementSelector Tag_Header
 
-meter :: Maybe AttributeSelector
+tag_hgroup :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_hgroup = ElementSelector Tag_HeadingGroup
+
+tag_hr :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_hr mbAttr classes =
+  ElementSelector Tag_HorizontalRule mbAttr classes Nothing
+
+tag_html :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_html = ElementSelector Tag_Html
+
+tag_i :: Maybe AttributeSelector
       -> [CS.ClassSelector]
       -> Maybe ElementSelector
       -> ElementSelector
-meter = ElementSelector Tag_Meter
+tag_i = ElementSelector Tag_IdiomaticText
 
-nav :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-nav = ElementSelector Tag_Nav
+tag_iframe :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_iframe mbAttr classes = ElementSelector Tag_IFrame mbAttr classes Nothing
 
-noscript :: Maybe AttributeSelector
-         -> [CS.ClassSelector]
-         -> Maybe ElementSelector
-         -> ElementSelector
-noscript = ElementSelector Tag_NoScript
+tag_img :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_img mbAttr classes = ElementSelector Tag_Image mbAttr classes Nothing
 
-object :: Maybe AttributeSelector
+tag_input :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_input mbAttr classes = ElementSelector Tag_Input mbAttr classes Nothing
+
+tag_ins :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_ins = ElementSelector Tag_InsertedText
+
+tag_kbd :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_kbd = ElementSelector Tag_KeyboardInput
+
+tag_label :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_label = ElementSelector Tag_Label
+
+tag_legend :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_legend = ElementSelector Tag_Legend
+
+tag_li :: Maybe AttributeSelector
        -> [CS.ClassSelector]
        -> Maybe ElementSelector
        -> ElementSelector
-object = ElementSelector Tag_Object
+tag_li = ElementSelector Tag_ListItem
 
-ol :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-ol = ElementSelector Tag_OrderedList
+tag_link :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_link mbAttr classes = ElementSelector Tag_Link mbAttr classes Nothing
 
-optgroup :: Maybe AttributeSelector
+tag_main :: Maybe AttributeSelector
          -> [CS.ClassSelector]
          -> Maybe ElementSelector
          -> ElementSelector
-optgroup = ElementSelector Tag_OptionGroup
+tag_main = ElementSelector Tag_Main
+
+tag_map :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_map = ElementSelector Tag_Map
+
+tag_mark :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_mark = ElementSelector Tag_Mark
+
+tag_menu :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_menu = ElementSelector Tag_Menu
+
+tag_meta :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_meta mbAttr classes = ElementSelector Tag_Meta mbAttr classes Nothing
+
+tag_meter :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_meter = ElementSelector Tag_Meter
+
+tag_nav :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_nav = ElementSelector Tag_Nav
+
+tag_noscript :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_noscript = ElementSelector Tag_NoScript
+
+tag_object :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_object = ElementSelector Tag_Object
+
+tag_ol :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_ol = ElementSelector Tag_OrderedList
+
+tag_optgroup :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_optgroup = ElementSelector Tag_OptionGroup
 
 -- option does not take a child argument, since it only holds text values,
 -- which cannot be targeted as part of a CSS query.
-option :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-option mbAttr classes = ElementSelector Tag_Option mbAttr classes Nothing
+tag_option :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_option mbAttr classes = ElementSelector Tag_Option mbAttr classes Nothing
 
-output :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-output = ElementSelector Tag_Output
+tag_output :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_output = ElementSelector Tag_Output
 
-p :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-p = ElementSelector Tag_Paragraph
+tag_p :: Maybe AttributeSelector
+      -> [CS.ClassSelector]
+      -> Maybe ElementSelector
+      -> ElementSelector
+tag_p = ElementSelector Tag_Paragraph
 
-picture :: Maybe AttributeSelector
+tag_picture :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_picture = ElementSelector Tag_Picture
+
+tag_pre :: Maybe AttributeSelector
         -> [CS.ClassSelector]
         -> Maybe ElementSelector
         -> ElementSelector
-picture = ElementSelector Tag_Picture
+tag_pre = ElementSelector Tag_PreformattedText
 
-pre :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-pre = ElementSelector Tag_PreformattedText
+tag_progress :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_progress = ElementSelector Tag_Progress
 
-progress :: Maybe AttributeSelector
-         -> [CS.ClassSelector]
-         -> Maybe ElementSelector
-         -> ElementSelector
-progress = ElementSelector Tag_Progress
-
-q :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-q = ElementSelector Tag_Quotation
+tag_q :: Maybe AttributeSelector
+      -> [CS.ClassSelector]
+      -> Maybe ElementSelector
+      -> ElementSelector
+tag_q = ElementSelector Tag_Quotation
 
 -- rp does not take a child argument, since it only holds text values, which
 -- cannot be targeted as part of a CSS query.
-rp :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-rp mbAttr classes = ElementSelector Tag_RubyParenthesis mbAttr classes Nothing
+tag_rp :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_rp mbAttr classes =
+  ElementSelector Tag_RubyParenthesis mbAttr classes Nothing
 
-rt :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-rt = ElementSelector Tag_RubyText
-
-ruby :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-ruby = ElementSelector Tag_Ruby
-
-s :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-s = ElementSelector Tag_Strikethrough
-
-sample :: Maybe AttributeSelector
+tag_rt :: Maybe AttributeSelector
        -> [CS.ClassSelector]
        -> Maybe ElementSelector
        -> ElementSelector
-sample = ElementSelector Tag_Sample
+tag_rt = ElementSelector Tag_RubyText
 
-script :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-script mbAttr classes = ElementSelector Tag_Script mbAttr classes Nothing
-
-search :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-search = ElementSelector Tag_Search
-
-section :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-section = ElementSelector Tag_Section
-
-select :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-select = ElementSelector Tag_Select
-
-slotTag :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-slotTag = ElementSelector Tag_Slot
-
-small :: Maybe AttributeSelector
-      -> [CS.ClassSelector]
-      -> Maybe ElementSelector
-      -> ElementSelector
-small = ElementSelector Tag_SideComment
-
-source :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-source mbAttr classes = ElementSelector Tag_Source mbAttr classes Nothing
-
-spanTag :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-spanTag = ElementSelector Tag_Span
-
-strong :: Maybe AttributeSelector
-       -> [CS.ClassSelector]
-       -> Maybe ElementSelector
-       -> ElementSelector
-strong = ElementSelector Tag_Strong
-
-styleTag :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-styleTag mbAttr classes = ElementSelector Tag_Style mbAttr classes Nothing
-
-sub :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-sub = ElementSelector Tag_Subscript
-
-summary :: Maybe AttributeSelector
-        -> [CS.ClassSelector]
-        -> Maybe ElementSelector
-        -> ElementSelector
-summary = ElementSelector Tag_Summary
-
-sup :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-sup = ElementSelector Tag_Superscript
-
-table :: Maybe AttributeSelector
-      -> [CS.ClassSelector]
-      -> Maybe ElementSelector
-      -> ElementSelector
-table = ElementSelector Tag_Table
-
-tbody :: Maybe AttributeSelector
-      -> [CS.ClassSelector]
-      -> Maybe ElementSelector
-      -> ElementSelector
-tbody = ElementSelector Tag_TableBody
-
-td :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-td = ElementSelector Tag_TableDataCell
-
-template :: Maybe AttributeSelector
+tag_ruby :: Maybe AttributeSelector
          -> [CS.ClassSelector]
          -> Maybe ElementSelector
          -> ElementSelector
-template = ElementSelector Tag_ContentTemplate
+tag_ruby = ElementSelector Tag_Ruby
+
+tag_s :: Maybe AttributeSelector
+      -> [CS.ClassSelector]
+      -> Maybe ElementSelector
+      -> ElementSelector
+tag_s = ElementSelector Tag_Strikethrough
+
+tag_sample :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_sample = ElementSelector Tag_Sample
+
+tag_script :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_script mbAttr classes = ElementSelector Tag_Script mbAttr classes Nothing
+
+tag_search :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_search = ElementSelector Tag_Search
+
+tag_section :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_section = ElementSelector Tag_Section
+
+tag_select :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_select = ElementSelector Tag_Select
+
+tag_slot :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_slot = ElementSelector Tag_Slot
+
+tag_small :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_small = ElementSelector Tag_SideComment
+
+tag_source :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_source mbAttr classes = ElementSelector Tag_Source mbAttr classes Nothing
+
+tag_span :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_span = ElementSelector Tag_Span
+
+tag_strong :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_strong = ElementSelector Tag_Strong
+
+tag_style :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_style mbAttr classes = ElementSelector Tag_Style mbAttr classes Nothing
+
+tag_sub :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_sub = ElementSelector Tag_Subscript
+
+tag_summary :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_summary = ElementSelector Tag_Summary
+
+tag_sup :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_sup = ElementSelector Tag_Superscript
+
+tag_table :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_table = ElementSelector Tag_Table
+
+tag_tbody :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_tbody = ElementSelector Tag_TableBody
+
+tag_td :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_td = ElementSelector Tag_TableDataCell
+
+tag_template :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_template = ElementSelector Tag_ContentTemplate
 
 -- textarea does not take a child argument, since it only holds text values,
 -- which cannot be targeted as part of a CSS query.
-textarea :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-textarea mbAttr classes = ElementSelector Tag_TextArea mbAttr classes Nothing
+tag_textarea :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_textarea mbAttr classes =
+  ElementSelector Tag_TextArea mbAttr classes Nothing
 
-tfoot :: Maybe AttributeSelector
-      -> [CS.ClassSelector]
-      -> Maybe ElementSelector
-      -> ElementSelector
-tfoot = ElementSelector Tag_TableFoot
+tag_tfoot :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_tfoot = ElementSelector Tag_TableFoot
 
-th :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-th = ElementSelector Tag_TableHeader
+tag_th :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_th = ElementSelector Tag_TableHeader
 
-thead :: Maybe AttributeSelector
-      -> [CS.ClassSelector]
-      -> Maybe ElementSelector
-      -> ElementSelector
-thead = ElementSelector Tag_TableHead
+tag_thead :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_thead = ElementSelector Tag_TableHead
 
-time :: Maybe AttributeSelector
-     -> [CS.ClassSelector]
-     -> Maybe ElementSelector
-     -> ElementSelector
-time = ElementSelector Tag_Time
+tag_time :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_time = ElementSelector Tag_Time
 
 -- title does not take a child argument, since it only holds text values, which
 -- cannot be targeted as part of a CSS query.
-titleTag :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-titleTag mbAttr classes = ElementSelector Tag_Title mbAttr classes Nothing
+tag_title :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_title mbAttr classes = ElementSelector Tag_Title mbAttr classes Nothing
 
-tr :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-tr = ElementSelector Tag_TableRow
+tag_tr :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_tr = ElementSelector Tag_TableRow
 
-track :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-track mbAttr classes = ElementSelector Tag_Track mbAttr classes Nothing
+tag_track :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_track mbAttr classes = ElementSelector Tag_Track mbAttr classes Nothing
 
-u :: Maybe AttributeSelector
-  -> [CS.ClassSelector]
-  -> Maybe ElementSelector
-  -> ElementSelector
-u = ElementSelector Tag_Underline
-
-ul :: Maybe AttributeSelector
-   -> [CS.ClassSelector]
-   -> Maybe ElementSelector
-   -> ElementSelector
-ul = ElementSelector Tag_UnorderedList
-
-var :: Maybe AttributeSelector
-    -> [CS.ClassSelector]
-    -> Maybe ElementSelector
-    -> ElementSelector
-var = ElementSelector Tag_Variable
-
-video :: Maybe AttributeSelector
+tag_u :: Maybe AttributeSelector
       -> [CS.ClassSelector]
       -> Maybe ElementSelector
       -> ElementSelector
-video = ElementSelector Tag_Video
+tag_u = ElementSelector Tag_Underline
 
-wbr :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-wbr mbAttr classes =
+tag_ul :: Maybe AttributeSelector
+       -> [CS.ClassSelector]
+       -> Maybe ElementSelector
+       -> ElementSelector
+tag_ul = ElementSelector Tag_UnorderedList
+
+tag_var :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_var = ElementSelector Tag_Variable
+
+tag_video :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_video = ElementSelector Tag_Video
+
+tag_wbr :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_wbr mbAttr classes =
   ElementSelector Tag_WordBreakOpportunity mbAttr classes Nothing
 
 data ElementType
@@ -2465,659 +2468,665 @@ attributeTypeToText attr =
     --
     Attr_HyperScript -> "_"
 
-customAttribute :: T.Text -> T.Text -> AttributeSelector
-customAttribute attrName val =
+attr_custom :: T.Text -> T.Text -> AttributeSelector
+attr_custom attrName val =
   (Attr_CustomAttribute attrName, Just val)
 
 -- Global Attributes
 --
 
-accesskey :: Char -> AttributeSelector
-accesskey = (,) Attr_AccessKey . Just . T.singleton
+attr_accesskey :: Char -> AttributeSelector
+attr_accesskey = (,) Attr_AccessKey . Just . T.singleton
 
-autocapitalize :: AutocapitalizeOption -> AttributeSelector
-autocapitalize = (,) Attr_Autocapitalize . Just . autocapitalizeOptionToText
+attr_autocapitalize :: AutocapitalizeOption -> AttributeSelector
+attr_autocapitalize =
+  (,) Attr_Autocapitalize . Just . autocapitalizeOptionToText
 
-autofocus :: T.Text -> AttributeSelector
-autofocus = (,) Attr_Autofocus . Just
+attr_autofocus :: T.Text -> AttributeSelector
+attr_autofocus = (,) Attr_Autofocus . Just
 
-class_ :: Class.Class -> AttributeSelector
-class_ = (,) Attr_Class . Just . Class.classToText
+attr_class_ :: Class.Class -> AttributeSelector
+attr_class_ = (,) Attr_Class . Just . Class.classToText
 
-contenteditable :: ContentEditableOption -> AttributeSelector
-contenteditable = (,) Attr_ContentEditable . Just . contentEditableOptionToText
+attr_contenteditable :: ContentEditableOption -> AttributeSelector
+attr_contenteditable =
+  (,) Attr_ContentEditable . Just . contentEditableOptionToText
 
-customData :: T.Text -> T.Text -> AttributeSelector
-customData dataName val = (Attr_CustomData dataName, Just val)
+attr_customData :: T.Text -> T.Text -> AttributeSelector
+attr_customData dataName val = (Attr_CustomData dataName, Just val)
 
-dir :: Directionality -> AttributeSelector
-dir = (,) Attr_Dir . Just . directionalityToText
+attr_dir :: Directionality -> AttributeSelector
+attr_dir = (,) Attr_Dir . Just . directionalityToText
 
-draggable :: Bool -> AttributeSelector
-draggable = (,) Attr_Draggable . Just . enumBoolToText
+attr_draggable :: Bool -> AttributeSelector
+attr_draggable = (,) Attr_Draggable . Just . enumBoolToText
 
-enterkeyhint :: KeyHintOption -> AttributeSelector
-enterkeyhint = (,) Attr_EnterKeyHint . Just . keyHintOptionToText
+attr_enterkeyhint :: KeyHintOption -> AttributeSelector
+attr_enterkeyhint = (,) Attr_EnterKeyHint . Just . keyHintOptionToText
 
-exportparts :: NEL.NonEmpty ExportPart -> AttributeSelector
-exportparts =
+attr_exportparts :: NEL.NonEmpty ExportPart -> AttributeSelector
+attr_exportparts =
   (,) Attr_ExportParts
     . Just
     . T.intercalate ", "
     . fmap exportPartToText
     . NEL.toList
 
-hidden :: AttributeSelector
-hidden = (Attr_Hidden, Nothing)
+attr_hidden :: AttributeSelector
+attr_hidden = (Attr_Hidden, Nothing)
 
-id :: Id.Id -> AttributeSelector
-id = (,) Attr_Id . Just . Id.idToText
+attr_id :: Id.Id -> AttributeSelector
+attr_id = (,) Attr_Id . Just . Id.idToText
 
-inert :: AttributeSelector
-inert = (Attr_Inert, Nothing)
-
--- TODO
-inputmode :: T.Text -> AttributeSelector
-inputmode = (,) Attr_InputMode . Just
-
-is :: T.Text -> AttributeSelector
-is = (,) Attr_Is . Just
+attr_inert :: AttributeSelector
+attr_inert = (Attr_Inert, Nothing)
 
 -- TODO
-itemid :: T.Text -> AttributeSelector
-itemid = (,) Attr_ItemId . Just
+attr_inputmode :: T.Text -> AttributeSelector
+attr_inputmode = (,) Attr_InputMode . Just
+
+attr_is :: T.Text -> AttributeSelector
+attr_is = (,) Attr_Is . Just
 
 -- TODO
-itemprop :: T.Text -> AttributeSelector
-itemprop = (,) Attr_ItemProp . Just
+attr_itemid :: T.Text -> AttributeSelector
+attr_itemid = (,) Attr_ItemId . Just
 
 -- TODO
-itemref :: T.Text -> AttributeSelector
-itemref = (,) Attr_ItemRef . Just
+attr_itemprop :: T.Text -> AttributeSelector
+attr_itemprop = (,) Attr_ItemProp . Just
 
 -- TODO
-itemscope :: T.Text -> AttributeSelector
-itemscope = (,) Attr_ItemScope . Just
+attr_itemref :: T.Text -> AttributeSelector
+attr_itemref = (,) Attr_ItemRef . Just
 
 -- TODO
-itemtype :: T.Text -> AttributeSelector
-itemtype = (,) Attr_ItemType . Just
+attr_itemscope :: T.Text -> AttributeSelector
+attr_itemscope = (,) Attr_ItemScope . Just
 
 -- TODO
-lang :: T.Text -> AttributeSelector
-lang = (,) Attr_Lang . Just
+attr_itemtype :: T.Text -> AttributeSelector
+attr_itemtype = (,) Attr_ItemType . Just
 
 -- TODO
-nonce :: T.Text -> AttributeSelector
-nonce = (,) Attr_Nonce . Just
-
-part :: NEL.NonEmpty Part -> AttributeSelector
-part = (,) Attr_Part . Just . T.unwords . fmap partToText . NEL.toList
-
-popover :: PopoverState -> AttributeSelector
-popover = (,) Attr_Popover . Just . popoverStateToText
+attr_lang :: T.Text -> AttributeSelector
+attr_lang = (,) Attr_Lang . Just
 
 -- TODO
-role :: T.Text -> AttributeSelector
-role = (,) Attr_Role . Just
+attr_nonce :: T.Text -> AttributeSelector
+attr_nonce = (,) Attr_Nonce . Just
+
+attr_part :: NEL.NonEmpty Part -> AttributeSelector
+attr_part = (,) Attr_Part . Just . T.unwords . fmap partToText . NEL.toList
+
+attr_popover :: PopoverState -> AttributeSelector
+attr_popover = (,) Attr_Popover . Just . popoverStateToText
 
 -- TODO
-slot :: T.Text -> AttributeSelector
-slot = (,) Attr_Slot . Just
+attr_role :: T.Text -> AttributeSelector
+attr_role = (,) Attr_Role . Just
 
-spellcheck :: Bool -> AttributeSelector
-spellcheck = (,) Attr_Spellcheck . Just . enumBoolToText
+-- TODO
+attr_slot :: T.Text -> AttributeSelector
+attr_slot = (,) Attr_Slot . Just
 
-style :: T.Text -> AttributeSelector
-style = (,) Attr_Style . Just
+attr_spellcheck :: Bool -> AttributeSelector
+attr_spellcheck = (,) Attr_Spellcheck . Just . enumBoolToText
 
-tabindex :: Int -> AttributeSelector
-tabindex = (,) Attr_TabIndex . Just . showText
+attr_style :: T.Text -> AttributeSelector
+attr_style = (,) Attr_Style . Just
 
-title :: T.Text -> AttributeSelector
-title = (,) Attr_Title . Just
+attr_tabindex :: Int -> AttributeSelector
+attr_tabindex = (,) Attr_TabIndex . Just . showText
 
-translate :: Bool -> AttributeSelector
-translate = (,) Attr_Translate . Just . enumBoolToText
+attr_title :: T.Text -> AttributeSelector
+attr_title = (,) Attr_Title . Just
+
+attr_translate :: Bool -> AttributeSelector
+attr_translate = (,) Attr_Translate . Just . enumBoolToText
 
 -- Scoped Attributes
 --
 
 -- TODO
-accept :: T.Text -> AttributeSelector
-accept = (,) Attr_Accept . Just
+attr_accept :: T.Text -> AttributeSelector
+attr_accept = (,) Attr_Accept . Just
 
 -- TODO
-acceptCharset :: T.Text -> AttributeSelector
-acceptCharset = (,) Attr_AcceptCharset . Just
+attr_acceptCharset :: T.Text -> AttributeSelector
+attr_acceptCharset = (,) Attr_AcceptCharset . Just
 
 -- TODO
-action :: T.Text -> AttributeSelector
-action = (,) Attr_Action . Just
+attr_action :: T.Text -> AttributeSelector
+attr_action = (,) Attr_Action . Just
 
 -- TODO
-allow :: T.Text -> AttributeSelector
-allow = (,) Attr_Allow . Just
+attr_allow :: T.Text -> AttributeSelector
+attr_allow = (,) Attr_Allow . Just
 
 -- TODO
-alt :: T.Text -> AttributeSelector
-alt = (,) Attr_Alt . Just
+attr_alt :: T.Text -> AttributeSelector
+attr_alt = (,) Attr_Alt . Just
 
 -- TODO
-async :: T.Text -> AttributeSelector
-async = (,) Attr_Async . Just
+attr_async :: T.Text -> AttributeSelector
+attr_async = (,) Attr_Async . Just
 
 -- TODO
-autocomplete :: T.Text -> AttributeSelector
-autocomplete = (,) Attr_Autocomplete . Just
+attr_autocomplete :: T.Text -> AttributeSelector
+attr_autocomplete = (,) Attr_Autocomplete . Just
 
 -- TODO
-autoplay :: T.Text -> AttributeSelector
-autoplay = (,) Attr_Autoplay . Just
+attr_autoplay :: T.Text -> AttributeSelector
+attr_autoplay = (,) Attr_Autoplay . Just
 
 -- TODO
-background :: T.Text -> AttributeSelector
-background = (,) Attr_Background . Just
+attr_background :: T.Text -> AttributeSelector
+attr_background = (,) Attr_Background . Just
 
 -- TODO
-bgcolor :: T.Text -> AttributeSelector
-bgcolor = (,) Attr_BackgroundColor . Just
+attr_bgcolor :: T.Text -> AttributeSelector
+attr_bgcolor = (,) Attr_BackgroundColor . Just
 
 -- TODO
-border :: T.Text -> AttributeSelector
-border = (,) Attr_Border . Just
+attr_border :: T.Text -> AttributeSelector
+attr_border = (,) Attr_Border . Just
 
 -- TODO
-capture :: T.Text -> AttributeSelector
-capture = (,) Attr_Capture . Just
+attr_capture :: T.Text -> AttributeSelector
+attr_capture = (,) Attr_Capture . Just
 
 -- TODO
-charset :: T.Text -> AttributeSelector
-charset = (,) Attr_Charset . Just
+attr_charset :: T.Text -> AttributeSelector
+attr_charset = (,) Attr_Charset . Just
 
 -- TODO
-checked :: T.Text -> AttributeSelector
-checked = (,) Attr_Checked . Just
+attr_checked :: T.Text -> AttributeSelector
+attr_checked = (,) Attr_Checked . Just
 
 -- TODO
-cite :: T.Text -> AttributeSelector
-cite = (,) Attr_Cite . Just
+attr_cite :: T.Text -> AttributeSelector
+attr_cite = (,) Attr_Cite . Just
 
 -- TODO
-color :: T.Text -> AttributeSelector
-color = (,) Attr_Color . Just
+attr_color :: T.Text -> AttributeSelector
+attr_color = (,) Attr_Color . Just
 
 -- TODO
-cols :: T.Text -> AttributeSelector
-cols = (,) Attr_Cols . Just
+attr_cols :: T.Text -> AttributeSelector
+attr_cols = (,) Attr_Cols . Just
 
 -- TODO
-colspan :: T.Text -> AttributeSelector
-colspan = (,) Attr_Colspan . Just
+attr_colspan :: T.Text -> AttributeSelector
+attr_colspan = (,) Attr_Colspan . Just
 
 -- TODO
-content :: T.Text -> AttributeSelector
-content = (,) Attr_Content . Just
+attr_content :: T.Text -> AttributeSelector
+attr_content = (,) Attr_Content . Just
 
 -- TODO
-controls :: T.Text -> AttributeSelector
-controls = (,) Attr_Controls . Just
+attr_controls :: T.Text -> AttributeSelector
+attr_controls = (,) Attr_Controls . Just
 
 -- TODO
-coords :: T.Text -> AttributeSelector
-coords = (,) Attr_Coords . Just
+attr_coords :: T.Text -> AttributeSelector
+attr_coords = (,) Attr_Coords . Just
 
-crossorigin :: CrossOriginFetch -> AttributeSelector
-crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
+attr_crossorigin :: CrossOriginFetch -> AttributeSelector
+attr_crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
 
 -- TODO
-data_ :: T.Text -> AttributeSelector
-data_ = (,) Attr_Data . Just
+attr_data_ :: T.Text -> AttributeSelector
+attr_data_ = (,) Attr_Data . Just
 
 -- TODO
-datetime :: T.Text -> AttributeSelector
-datetime = (,) Attr_Datetime . Just
+attr_datetime :: T.Text -> AttributeSelector
+attr_datetime = (,) Attr_Datetime . Just
 
 -- TODO
-decoding :: T.Text -> AttributeSelector
-decoding = (,) Attr_Decoding . Just
+attr_decoding :: T.Text -> AttributeSelector
+attr_decoding = (,) Attr_Decoding . Just
 
 -- TODO
-default_ :: T.Text -> AttributeSelector
-default_ = (,) Attr_Default . Just
+attr_default_ :: T.Text -> AttributeSelector
+attr_default_ = (,) Attr_Default . Just
 
 -- TODO
-defer :: T.Text -> AttributeSelector
-defer = (,) Attr_Defer . Just
+attr_defer :: T.Text -> AttributeSelector
+attr_defer = (,) Attr_Defer . Just
 
 -- TODO
-dirname :: T.Text -> AttributeSelector
-dirname = (,) Attr_Dirname . Just
+attr_dirname :: T.Text -> AttributeSelector
+attr_dirname = (,) Attr_Dirname . Just
 
-disabled :: AttributeSelector
-disabled = (Attr_Disabled, Nothing)
+attr_disabled :: AttributeSelector
+attr_disabled = (Attr_Disabled, Nothing)
 
 -- TODO
-download :: T.Text -> AttributeSelector
-download = (,) Attr_Download . Just
+attr_download :: T.Text -> AttributeSelector
+attr_download = (,) Attr_Download . Just
 
 -- TODO
-enctype :: T.Text -> AttributeSelector
-enctype = (,) Attr_Enctype . Just
+attr_enctype :: T.Text -> AttributeSelector
+attr_enctype = (,) Attr_Enctype . Just
 
 -- TODO
-for :: T.Text -> AttributeSelector
-for = (,) Attr_For . Just
+attr_for :: T.Text -> AttributeSelector
+attr_for = (,) Attr_For . Just
 
 -- TODO
-form :: T.Text -> AttributeSelector
-form = (,) Attr_Form . Just
+attr_form :: T.Text -> AttributeSelector
+attr_form = (,) Attr_Form . Just
 
 -- TODO
-formaction :: T.Text -> AttributeSelector
-formaction = (,) Attr_FormAction . Just
+attr_formaction :: T.Text -> AttributeSelector
+attr_formaction = (,) Attr_FormAction . Just
 
 -- TODO
-formenctype :: T.Text -> AttributeSelector
-formenctype = (,) Attr_FormEnctype . Just
+attr_formenctype :: T.Text -> AttributeSelector
+attr_formenctype = (,) Attr_FormEnctype . Just
 
 -- TODO
-formmethod :: T.Text -> AttributeSelector
-formmethod = (,) Attr_FormMethod . Just
+attr_formmethod :: T.Text -> AttributeSelector
+attr_formmethod = (,) Attr_FormMethod . Just
 
 -- TODO
-formnovalidate :: T.Text -> AttributeSelector
-formnovalidate = (,) Attr_FormNoValidate . Just
+attr_formnovalidate :: T.Text -> AttributeSelector
+attr_formnovalidate = (,) Attr_FormNoValidate . Just
 
 -- TODO
-formtarget :: T.Text -> AttributeSelector
-formtarget = (,) Attr_FormTarget . Just
+attr_formtarget :: T.Text -> AttributeSelector
+attr_formtarget = (,) Attr_FormTarget . Just
 
 -- TODO
-headers :: T.Text -> AttributeSelector
-headers = (,) Attr_Headers . Just
+attr_headers :: T.Text -> AttributeSelector
+attr_headers = (,) Attr_Headers . Just
 
 -- TODO
-height :: T.Text -> AttributeSelector
-height = (,) Attr_Height . Just
+attr_height :: T.Text -> AttributeSelector
+attr_height = (,) Attr_Height . Just
 
 -- TODO
-high :: T.Text -> AttributeSelector
-high = (,) Attr_High . Just
+attr_high :: T.Text -> AttributeSelector
+attr_high = (,) Attr_High . Just
 
-href :: ( KnownNat branchIndex
-        , branchIndex ~ FirstIndexOf href HrefSelectorTypes
-        )
-     => href -> AttributeSelector
-href = (,) Attr_Href . Just . hrefSelectorToText . mkHrefSelector
+attr_href :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf href HrefSelectorTypes
+             )
+          => href -> AttributeSelector
+attr_href = (,) Attr_Href . Just . hrefSelectorToText . mkHrefSelector
 
 -- TODO
-hreflang :: T.Text -> AttributeSelector
-hreflang = (,) Attr_HrefLang . Just
+attr_hreflang :: T.Text -> AttributeSelector
+attr_hreflang = (,) Attr_HrefLang . Just
 
 -- TODO
-httpEquiv :: T.Text -> AttributeSelector
-httpEquiv = (,) Attr_HttpEquiv . Just
+attr_httpEquiv :: T.Text -> AttributeSelector
+attr_httpEquiv = (,) Attr_HttpEquiv . Just
 
 -- TODO
-integrity :: T.Text -> AttributeSelector
-integrity = (,) Attr_Integrity . Just
+attr_integrity :: T.Text -> AttributeSelector
+attr_integrity = (,) Attr_Integrity . Just
 
 -- TODO
-ismap :: T.Text -> AttributeSelector
-ismap = (,) Attr_IsMap . Just
+attr_ismap :: T.Text -> AttributeSelector
+attr_ismap = (,) Attr_IsMap . Just
 
 -- TODO
-kind :: T.Text -> AttributeSelector
-kind = (,) Attr_Kind . Just
+attr_kind :: T.Text -> AttributeSelector
+attr_kind = (,) Attr_Kind . Just
 
 -- TODO
-label :: T.Text -> AttributeSelector
-label = (,) Attr_Label . Just
+attr_label :: T.Text -> AttributeSelector
+attr_label = (,) Attr_Label . Just
 
 -- TODO
-list :: T.Text -> AttributeSelector
-list = (,) Attr_List . Just
+attr_list :: T.Text -> AttributeSelector
+attr_list = (,) Attr_List . Just
 
 -- TODO
-loop :: T.Text -> AttributeSelector
-loop = (,) Attr_Loop . Just
+attr_loop :: T.Text -> AttributeSelector
+attr_loop = (,) Attr_Loop . Just
 
 -- TODO
-low :: T.Text -> AttributeSelector
-low = (,) Attr_Low . Just
+attr_low :: T.Text -> AttributeSelector
+attr_low = (,) Attr_Low . Just
 
 -- TODO
-max :: T.Text -> AttributeSelector
-max = (,) Attr_Max . Just
+attr_max :: T.Text -> AttributeSelector
+attr_max = (,) Attr_Max . Just
 
 -- TODO
-maxlength :: T.Text -> AttributeSelector
-maxlength = (,) Attr_MaxLength . Just
+attr_maxlength :: T.Text -> AttributeSelector
+attr_maxlength = (,) Attr_MaxLength . Just
 
 -- TODO
-minlength :: T.Text -> AttributeSelector
-minlength = (,) Attr_MinLength . Just
+attr_minlength :: T.Text -> AttributeSelector
+attr_minlength = (,) Attr_MinLength . Just
 
 -- TODO
-media :: T.Text -> AttributeSelector
-media = (,) Attr_Media . Just
+attr_media :: T.Text -> AttributeSelector
+attr_media = (,) Attr_Media . Just
 
 -- TODO
-method :: T.Text -> AttributeSelector
-method = (,) Attr_Method . Just
+attr_method :: T.Text -> AttributeSelector
+attr_method = (,) Attr_Method . Just
 
 -- TODO
-min :: T.Text -> AttributeSelector
-min = (,) Attr_Min . Just
+attr_min :: T.Text -> AttributeSelector
+attr_min = (,) Attr_Min . Just
 
 -- TODO
-multiple :: T.Text -> AttributeSelector
-multiple = (,) Attr_Multiple . Just
+attr_multiple :: T.Text -> AttributeSelector
+attr_multiple = (,) Attr_Multiple . Just
 
 -- TODO
-muted :: T.Text -> AttributeSelector
-muted = (,) Attr_Muted . Just
+attr_muted :: T.Text -> AttributeSelector
+attr_muted = (,) Attr_Muted . Just
 
 -- TODO
-name :: T.Text -> AttributeSelector
-name = (,) Attr_Name . Just
+attr_name :: T.Text -> AttributeSelector
+attr_name = (,) Attr_Name . Just
 
 -- TODO
-novalidate :: T.Text -> AttributeSelector
-novalidate = (,) Attr_NoValidate . Just
+attr_novalidate :: T.Text -> AttributeSelector
+attr_novalidate = (,) Attr_NoValidate . Just
 
 -- TODO
-open :: T.Text -> AttributeSelector
-open = (,) Attr_Open . Just
+attr_open :: T.Text -> AttributeSelector
+attr_open = (,) Attr_Open . Just
 
 -- TODO
-optimum :: T.Text -> AttributeSelector
-optimum = (,) Attr_Optimum . Just
+attr_optimum :: T.Text -> AttributeSelector
+attr_optimum = (,) Attr_Optimum . Just
 
 -- TODO
-pattern :: T.Text -> AttributeSelector
-pattern = (,) Attr_Pattern . Just
+attr_pattern :: T.Text -> AttributeSelector
+attr_pattern = (,) Attr_Pattern . Just
 
 -- TODO
-ping :: T.Text -> AttributeSelector
-ping = (,) Attr_Ping . Just
+attr_ping :: T.Text -> AttributeSelector
+attr_ping = (,) Attr_Ping . Just
 
 -- TODO
-placeholder :: T.Text -> AttributeSelector
-placeholder = (,) Attr_Placeholder . Just
+attr_placeholder :: T.Text -> AttributeSelector
+attr_placeholder = (,) Attr_Placeholder . Just
 
 -- TODO
-playsinline :: T.Text -> AttributeSelector
-playsinline = (,) Attr_PlaysInline . Just
+attr_playsinline :: T.Text -> AttributeSelector
+attr_playsinline = (,) Attr_PlaysInline . Just
 
 -- TODO
-poster :: T.Text -> AttributeSelector
-poster = (,) Attr_Poster . Just
+attr_poster :: T.Text -> AttributeSelector
+attr_poster = (,) Attr_Poster . Just
 
 -- TODO
-preload :: T.Text -> AttributeSelector
-preload = (,) Attr_Preload . Just
+attr_preload :: T.Text -> AttributeSelector
+attr_preload = (,) Attr_Preload . Just
 
 -- TODO
-readonly :: T.Text -> AttributeSelector
-readonly = (,) Attr_ReadOnly . Just
+attr_readonly :: T.Text -> AttributeSelector
+attr_readonly = (,) Attr_ReadOnly . Just
 
 -- TODO
-referrerpolicy :: T.Text -> AttributeSelector
-referrerpolicy = (,) Attr_ReferrerPolicy . Just
+attr_referrerpolicy :: T.Text -> AttributeSelector
+attr_referrerpolicy = (,) Attr_ReferrerPolicy . Just
 
 -- TODO
-rel :: T.Text -> AttributeSelector
-rel = (,) Attr_Rel . Just
+attr_rel :: T.Text -> AttributeSelector
+attr_rel = (,) Attr_Rel . Just
 
 -- TODO
-required :: T.Text -> AttributeSelector
-required = (,) Attr_Required . Just
+attr_required :: T.Text -> AttributeSelector
+attr_required = (,) Attr_Required . Just
 
 -- TODO
-reversed :: T.Text -> AttributeSelector
-reversed = (,) Attr_Reversed . Just
+attr_reversed :: T.Text -> AttributeSelector
+attr_reversed = (,) Attr_Reversed . Just
 
 -- TODO
-rows :: T.Text -> AttributeSelector
-rows = (,) Attr_Rows . Just
+attr_rows :: T.Text -> AttributeSelector
+attr_rows = (,) Attr_Rows . Just
 
 -- TODO
-rowspan :: T.Text -> AttributeSelector
-rowspan = (,) Attr_Rowspan . Just
+attr_rowspan :: T.Text -> AttributeSelector
+attr_rowspan = (,) Attr_Rowspan . Just
 
 -- TODO
-sandbox :: T.Text -> AttributeSelector
-sandbox = (,) Attr_Sandbox . Just
+attr_sandbox :: T.Text -> AttributeSelector
+attr_sandbox = (,) Attr_Sandbox . Just
 
 -- TODO
-scope :: T.Text -> AttributeSelector
-scope = (,) Attr_Scope . Just
+attr_scope :: T.Text -> AttributeSelector
+attr_scope = (,) Attr_Scope . Just
 
 -- TODO
-selected :: T.Text -> AttributeSelector
-selected = (,) Attr_Selected . Just
+attr_selected :: T.Text -> AttributeSelector
+attr_selected = (,) Attr_Selected . Just
 
 -- TODO
-shape :: T.Text -> AttributeSelector
-shape = (,) Attr_Shape . Just
+attr_shape :: T.Text -> AttributeSelector
+attr_shape = (,) Attr_Shape . Just
 
 -- TODO
-size :: T.Text -> AttributeSelector
-size = (,) Attr_Size . Just
+attr_size :: T.Text -> AttributeSelector
+attr_size = (,) Attr_Size . Just
 
 -- TODO
-sizes :: T.Text -> AttributeSelector
-sizes = (,) Attr_Sizes . Just
+attr_sizes :: T.Text -> AttributeSelector
+attr_sizes = (,) Attr_Sizes . Just
 
 -- TODO
-span :: T.Text -> AttributeSelector
-span = (,) Attr_Span . Just
+attr_span :: T.Text -> AttributeSelector
+attr_span = (,) Attr_Span . Just
 
 -- TODO
-src :: T.Text -> AttributeSelector
-src = (,) Attr_Src . Just
+attr_src :: T.Text -> AttributeSelector
+attr_src = (,) Attr_Src . Just
 
 -- TODO
-srcdoc :: T.Text -> AttributeSelector
-srcdoc = (,) Attr_SrcDoc . Just
+attr_srcdoc :: T.Text -> AttributeSelector
+attr_srcdoc = (,) Attr_SrcDoc . Just
 
 -- TODO
-srclang :: T.Text -> AttributeSelector
-srclang = (,) Attr_SrcLang . Just
+attr_srclang :: T.Text -> AttributeSelector
+attr_srclang = (,) Attr_SrcLang . Just
 
 -- TODO
-srcset :: T.Text -> AttributeSelector
-srcset = (,) Attr_SrcSet . Just
+attr_srcset :: T.Text -> AttributeSelector
+attr_srcset = (,) Attr_SrcSet . Just
 
 -- TODO
-start :: T.Text -> AttributeSelector
-start = (,) Attr_Start . Just
+attr_start :: T.Text -> AttributeSelector
+attr_start = (,) Attr_Start . Just
 
 -- TODO
-step :: T.Text -> AttributeSelector
-step = (,) Attr_Step . Just
+attr_step :: T.Text -> AttributeSelector
+attr_step = (,) Attr_Step . Just
 
 -- TODO
-target :: T.Text -> AttributeSelector
-target = (,) Attr_Target . Just
+attr_target :: T.Text -> AttributeSelector
+attr_target = (,) Attr_Target . Just
 
 -- TODO
-type_ :: T.Text -> AttributeSelector
-type_ = (,) Attr_Type . Just
+attr_type_ :: T.Text -> AttributeSelector
+attr_type_ = (,) Attr_Type . Just
 
 -- TODO
-usemap :: T.Text -> AttributeSelector
-usemap = (,) Attr_UseMap . Just
+attr_usemap :: T.Text -> AttributeSelector
+attr_usemap = (,) Attr_UseMap . Just
 
 -- TODO
-value :: T.Text -> AttributeSelector
-value = (,) Attr_Value . Just
+attr_value :: T.Text -> AttributeSelector
+attr_value = (,) Attr_Value . Just
 
 -- TODO
-width :: T.Text -> AttributeSelector
-width = (,) Attr_Width . Just
+attr_width :: T.Text -> AttributeSelector
+attr_width = (,) Attr_Width . Just
 
 -- TODO
-wrap :: T.Text -> AttributeSelector
-wrap = (,) Attr_Wrap . Just
+attr_wrap :: T.Text -> AttributeSelector
+attr_wrap = (,) Attr_Wrap . Just
 
 -- HTMX Attributes
 --
 
-hxGet :: RelativeURL Get -> AttributeSelector
-hxGet = (,) Attr_HxGet . Just . relativeURLToText
+attr_hxGet :: RelativeURL Get -> AttributeSelector
+attr_hxGet = (,) Attr_HxGet . Just . relativeURLToText
 
-hxPost :: RelativeURL Post -> AttributeSelector
-hxPost = (,) Attr_HxPost . Just . relativeURLToText
+attr_hxPost :: RelativeURL Post -> AttributeSelector
+attr_hxPost = (,) Attr_HxPost . Just . relativeURLToText
 
-hxOn :: ( KnownNat branchIndex
-        , branchIndex ~ FirstIndexOf eventType Event.EventTypes
-        )
-     => eventType -> T.Text -> AttributeSelector
-hxOn eventType eventAction =
+attr_hxOn :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf eventType Event.EventTypes
+             )
+          => eventType -> T.Text -> AttributeSelector
+attr_hxOn eventType eventAction =
   ( Attr_HxOn . Event.hxOnEventText $ Event.mkEvent eventType
   , Just eventAction
   )
 
-hxPushURL :: ( KnownNat branchIndex
-             , branchIndex ~ FirstIndexOf url PushURLTypes
-             )
-          => url -> AttributeSelector
-hxPushURL = (,) Attr_HxPushURL . Just . pushURLToText . mkPushURL
+attr_hxPushURL :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf url PushURLTypes
+                  )
+               => url -> AttributeSelector
+attr_hxPushURL = (,) Attr_HxPushURL . Just . pushURLToText . mkPushURL
 
-hxSelect :: ( KnownNat branchIndex
-            , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
-            )
-         => querySelector -> AttributeSelector
-hxSelect = (,) Attr_HxSelect . Just . querySelectorToText . mkQuerySelector
+attr_hxSelect :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                 )
+              => querySelector -> AttributeSelector
+attr_hxSelect =
+  (,) Attr_HxSelect . Just . querySelectorToText . mkQuerySelector
 
-hxSelectOOB :: NEL.NonEmpty OutOfBandSelect -> AttributeSelector
-hxSelectOOB =
+attr_hxSelectOOB :: NEL.NonEmpty OutOfBandSelect -> AttributeSelector
+attr_hxSelectOOB =
   (,) Attr_HxSelectOOB
     . Just
     . T.intercalate ", "
     . fmap outOfBandSelectToText
     . NEL.toList
 
-hxSwap :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf swap SwapTypes)
-       => swap -> AttributeSelector
-hxSwap = (,) Attr_HxSwap . Just . swapToText . mkSwap
+attr_hxSwap :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf swap SwapTypes)
+            => swap -> AttributeSelector
+attr_hxSwap = (,) Attr_HxSwap . Just . swapToText . mkSwap
 
-hxSwapOOB :: ( KnownNat branchIndex
-             , branchIndex ~ FirstIndexOf swap OutOfBandSwapTypes
-             )
-          => Maybe swap -> AttributeSelector
-hxSwapOOB =
+attr_hxSwapOOB :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf swap OutOfBandSwapTypes
+                  )
+               => Maybe swap -> AttributeSelector
+attr_hxSwapOOB =
   (,) Attr_HxSwapOOB
     . Just
     . maybe "true" (outOfBandSwapToText . mkOutOfBandSwap)
 
-hxTarget :: ( KnownNat branchIndex
-            , branchIndex ~ FirstIndexOf target TargetTypes
-            )
-         => target -> AttributeSelector
-hxTarget = (,) Attr_HxTarget . Just . targetToText . mkTarget
+attr_hxTarget :: ( KnownNat branchIndex
+                 , branchIndex ~ FirstIndexOf target TargetTypes
+                 )
+              => target -> AttributeSelector
+attr_hxTarget = (,) Attr_HxTarget . Just . targetToText . mkTarget
 
-hxTrigger :: NEL.NonEmpty Trigger -> AttributeSelector
-hxTrigger =
+attr_hxTrigger :: NEL.NonEmpty Trigger -> AttributeSelector
+attr_hxTrigger =
   (,) Attr_HxTrigger
     . Just
     . T.intercalate ", "
     . fmap triggerToText
     . NEL.toList
 
-hxVals :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf vals HtmxValsTypes)
-       => vals -> AttributeSelector
-hxVals = (,) Attr_HxVals . Just . htmxValsToText . mkHtmxVals
+attr_hxVals :: ( KnownNat branchIndex
+               , branchIndex ~ FirstIndexOf vals HtmxValsTypes
+               )
+            => vals -> AttributeSelector
+attr_hxVals = (,) Attr_HxVals . Just . htmxValsToText . mkHtmxVals
 
-hxBoost :: Bool -> AttributeSelector
-hxBoost = (,) Attr_HxBoost . Just . enumBoolToText
+attr_hxBoost :: Bool -> AttributeSelector
+attr_hxBoost = (,) Attr_HxBoost . Just . enumBoolToText
 
-hxConfirm :: T.Text -> AttributeSelector
-hxConfirm = (,) Attr_HxConfirm . Just
+attr_hxConfirm :: T.Text -> AttributeSelector
+attr_hxConfirm = (,) Attr_HxConfirm . Just
 
-hxDelete :: RelativeURL Delete -> AttributeSelector
-hxDelete = (,) Attr_HxDelete . Just . relativeURLToText
+attr_hxDelete :: RelativeURL Delete -> AttributeSelector
+attr_hxDelete = (,) Attr_HxDelete . Just . relativeURLToText
 
-hxDisable :: AttributeSelector
-hxDisable = (Attr_HxDisable, Nothing)
+attr_hxDisable :: AttributeSelector
+attr_hxDisable = (Attr_HxDisable, Nothing)
 
-hxDisabledElt :: NEL.NonEmpty DisabledSelector -> AttributeSelector
-hxDisabledElt =
+attr_hxDisabledElt :: NEL.NonEmpty DisabledSelector -> AttributeSelector
+attr_hxDisabledElt =
   (,) Attr_HxDisabledElt
     . Just
     . T.intercalate ", "
     . fmap disabledSelectorToText
     . NEL.toList
 
-hxDisinherit :: ( KnownNat branchIndex
-                , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
-                )
-             => disinherit -> AttributeSelector
-hxDisinherit = (,) Attr_HxDisinherit . Just . disinheritToText . mkDisinherit
+attr_hxDisinherit :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
+                     )
+                  => disinherit -> AttributeSelector
+attr_hxDisinherit =
+  (,) Attr_HxDisinherit . Just . disinheritToText . mkDisinherit
 
-hxEncoding :: AttributeSelector
-hxEncoding = (Attr_HxEncoding, Just "multipart/form-data")
+attr_hxEncoding :: AttributeSelector
+attr_hxEncoding = (Attr_HxEncoding, Just "multipart/form-data")
 
-hxExt :: NEL.NonEmpty Extension -> AttributeSelector
-hxExt =
+attr_hxExt :: NEL.NonEmpty Extension -> AttributeSelector
+attr_hxExt =
   (,) Attr_HxExt
     . Just
     . T.intercalate ","
     . fmap extensionToText
     . NEL.toList
 
-hxHeaders :: ( KnownNat branchIndex
-             , branchIndex ~ FirstIndexOf headers HtmxHeadersTypes
-             )
-          => headers -> AttributeSelector
-hxHeaders = (,) Attr_HxHeaders . Just . htmxHeadersToText . mkHtmxHeaders
+attr_hxHeaders :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf headers HtmxHeadersTypes
+                  )
+               => headers -> AttributeSelector
+attr_hxHeaders = (,) Attr_HxHeaders . Just . htmxHeadersToText . mkHtmxHeaders
 
-hxHistory :: AttributeSelector
-hxHistory = (Attr_HxHistory, Just "false")
+attr_hxHistory :: AttributeSelector
+attr_hxHistory = (Attr_HxHistory, Just "false")
 
-hxHistoryElt :: AttributeSelector
-hxHistoryElt = (Attr_HxHistoryElt, Nothing)
+attr_hxHistoryElt :: AttributeSelector
+attr_hxHistoryElt = (Attr_HxHistoryElt, Nothing)
 
-hxInclude :: IncludeSelector -> AttributeSelector
-hxInclude = (,) Attr_HxInclude . Just . includeSelectorToText
+attr_hxInclude :: IncludeSelector -> AttributeSelector
+attr_hxInclude = (,) Attr_HxInclude . Just . includeSelectorToText
 
-hxIndicator :: Indicator -> AttributeSelector
-hxIndicator = (,) Attr_HxIndicator . Just . indicatorToText
+attr_hxIndicator :: Indicator -> AttributeSelector
+attr_hxIndicator = (,) Attr_HxIndicator . Just . indicatorToText
 
-hxParams :: RequestParams -> AttributeSelector
-hxParams = (,) Attr_HxParams . Just . requestParamsToText
+attr_hxParams :: RequestParams -> AttributeSelector
+attr_hxParams = (,) Attr_HxParams . Just . requestParamsToText
 
-hxPatch :: RelativeURL Patch -> AttributeSelector
-hxPatch = (,) Attr_HxPatch . Just . relativeURLToText
+attr_hxPatch :: RelativeURL Patch -> AttributeSelector
+attr_hxPatch = (,) Attr_HxPatch . Just . relativeURLToText
 
-hxPreserve :: AttributeSelector
-hxPreserve = (Attr_HxPreserve, Nothing)
+attr_hxPreserve :: AttributeSelector
+attr_hxPreserve = (Attr_HxPreserve, Nothing)
 
-hxPrompt :: T.Text -> AttributeSelector
-hxPrompt = (,) Attr_HxPrompt . Just
+attr_hxPrompt :: T.Text -> AttributeSelector
+attr_hxPrompt = (,) Attr_HxPrompt . Just
 
-hxPut :: RelativeURL Put -> AttributeSelector
-hxPut = (,) Attr_HxPut . Just . relativeURLToText
+attr_hxPut :: RelativeURL Put -> AttributeSelector
+attr_hxPut = (,) Attr_HxPut . Just . relativeURLToText
 
-hxReplaceURL :: ( KnownNat branchIndex
-                , branchIndex ~ FirstIndexOf url PushURLTypes
-                )
-             => url -> AttributeSelector
-hxReplaceURL = (,) Attr_HxReplaceURL . Just . pushURLToText . mkPushURL
-
--- TODO
-hxRequest :: T.Text -> AttributeSelector
-hxRequest = (,) Attr_HxRequest . Just
+attr_hxReplaceURL :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf url PushURLTypes
+                     )
+                  => url -> AttributeSelector
+attr_hxReplaceURL = (,) Attr_HxReplaceURL . Just . pushURLToText . mkPushURL
 
 -- TODO
-hxSync :: T.Text -> AttributeSelector
-hxSync = (,) Attr_HxSync . Just
+attr_hxRequest :: T.Text -> AttributeSelector
+attr_hxRequest = (,) Attr_HxRequest . Just
 
-hxValidate :: AttributeSelector
-hxValidate = (Attr_HxValidate, Nothing)
+-- TODO
+attr_hxSync :: T.Text -> AttributeSelector
+attr_hxSync = (,) Attr_HxSync . Just
+
+attr_hxValidate :: AttributeSelector
+attr_hxValidate = (Attr_HxValidate, Nothing)
 
 -- Swap
 --
@@ -3543,7 +3552,7 @@ disableClosest :: ( KnownNat branchIndex
                   , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
                   )
                => querySelector -> DisabledSelector
-disableClosest = DisabledSelector . Shrubbery.unify . closest
+disableClosest = DisabledSelector . Shrubbery.unify . htmx_closest
 
 disabledSelector :: ( KnownNat branchIndex
                     , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
@@ -3632,7 +3641,7 @@ indicateClosest :: ( KnownNat branchIndex
                    , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
                    )
                 => querySelector -> Indicator
-indicateClosest = Indicator . Shrubbery.unify . closest
+indicateClosest = Indicator . Shrubbery.unify . htmx_closest
 
 indicateSelector :: ( KnownNat branchIndex
                    , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
@@ -3732,32 +3741,32 @@ data TargetSelector =
     , targetSelectorQuery :: QuerySelector
     }
 
-closest :: ( KnownNat branchIndex
+htmx_closest :: ( KnownNat branchIndex
            , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
            )
         => querySelector -> TargetSelector
-closest =
+htmx_closest =
   TargetSelector TargetSelector_Closest . mkQuerySelector
 
-find :: ( KnownNat branchIndex
+htmx_find :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
         )
      => querySelector -> TargetSelector
-find =
+htmx_find =
   TargetSelector TargetSelector_Find . mkQuerySelector
 
-next :: ( KnownNat branchIndex
+htmx_next :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
         )
      => querySelector -> TargetSelector
-next =
+htmx_next =
   TargetSelector TargetSelector_Next . mkQuerySelector
 
-previous :: ( KnownNat branchIndex
+htmx_previous :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
             )
          => querySelector -> TargetSelector
-previous =
+htmx_previous =
   TargetSelector TargetSelector_Previous . mkQuerySelector
 
 targetSelectorToBytes :: TargetSelector -> LBS.ByteString
