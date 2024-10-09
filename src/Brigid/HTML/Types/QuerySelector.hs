@@ -635,6 +635,7 @@ import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import Brigid.HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
+import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
@@ -2872,9 +2873,11 @@ attr_readonly = (,) Attr_ReadOnly . Just
 attr_referrerpolicy :: T.Text -> AttributeSelector
 attr_referrerpolicy = (,) Attr_ReferrerPolicy . Just
 
--- TODO
-attr_rel :: T.Text -> AttributeSelector
-attr_rel = (,) Attr_Rel . Just
+attr_rel :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf rel RelationshipTypes
+            )
+         => rel -> AttributeSelector
+attr_rel = (,) Attr_Rel . Just . relationshipToText . mkRelationship
 
 -- TODO
 attr_required :: T.Text -> AttributeSelector

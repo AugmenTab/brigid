@@ -33,6 +33,7 @@ library
       Brigid.HTML.Attributes.HTMX
       Brigid.HTML.Attributes.Internal
       Brigid.HTML.Attributes.Other
+      Brigid.HTML.Attributes.Relationship
       Brigid.HTML.Attributes.Scoped
       Brigid.HTML.Elements
       Brigid.HTML.Elements.AddAttribute
@@ -86,6 +87,7 @@ library
       Brigid.HTML.Types.QueueOption
       Brigid.HTML.Types.RawJavaScript
       Brigid.HTML.Types.Reachability
+      Brigid.HTML.Types.Relationship
       Brigid.HTML.Types.RequestParams
       Brigid.HTML.Types.ScrollBehavior
       Brigid.HTML.Types.Swap

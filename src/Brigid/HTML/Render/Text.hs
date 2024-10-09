@@ -561,6 +561,9 @@ renderAttribute attr =
         . Types.unHref
         $ href
 
+    Attr_Rel rel ->
+      Just . buildAttribute "rel" $ Types.relationshipToText rel
+
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . T.pack $ show width
 

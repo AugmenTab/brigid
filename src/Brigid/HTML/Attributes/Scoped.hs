@@ -6,6 +6,7 @@ module Brigid.HTML.Attributes.Scoped
   , disable
   , disabled
   , href
+  , rel
   ) where
 
 import GHC.TypeLits (KnownNat)
@@ -15,6 +16,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Attributes.Internal (Attribute(..))
+import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
@@ -47,3 +49,12 @@ href :: ( KnownNat branchIndex
      => href -> Attribute tag
 href =
   Attr_Href . Types.mkHref
+
+rel :: ( KnownNat branchIndex
+       , branchIndex ~ FirstIndexOf rel Types.RelationshipTypes
+       , ValidRelationship rel tag
+       , ValidAttribute 'Rel tag
+       )
+    => rel -> Attribute tag
+rel =
+  Attr_Rel . Types.mkRelationship

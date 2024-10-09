@@ -580,6 +580,9 @@ renderAttribute attr =
         . Types.unHref
         $ href
 
+    Attr_Rel rel ->
+      Just . buildAttribute "rel" $ Types.relationshipToBytes rel
+
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . LBS8.pack $ show width
 

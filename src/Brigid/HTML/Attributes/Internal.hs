@@ -31,6 +31,7 @@ module Brigid.HTML.Attributes.Internal
    -- , Attr_Nonce
       , Attr_Part
       , Attr_Popover
+      , Attr_Rel
    -- , Attr_Role
    -- , Attr_Slot
       , Attr_Spellcheck
@@ -588,10 +589,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Rel
-  --   :: ValidAttribute 'Rel tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Rel
+    :: ValidAttribute 'Rel tag
+    => Types.Relationship
+    -> Attribute tag
 
   -- Attr_Required
   --   :: ValidAttribute 'Required tag
@@ -929,6 +930,9 @@ attributeText attr =
 
     Attr_Href _href ->
       "href"
+
+    Attr_Rel _rel ->
+      "rel"
 
     -- HTMX Attributes
     --
