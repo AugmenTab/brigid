@@ -11,30 +11,31 @@ module Brigid.HTML.Attributes.Relationship
 import Data.Kind (Type)
 import GHC.TypeLits (ErrorMessage(..), TypeError)
 
+import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
-import Brigid.HTML.Internal.TagOperations (Elem)
+import Brigid.HTML.Internal.TagOperations (Elem, Remove)
 import Brigid.HTML.Types qualified as Types
 
 type ValidRelationship rel tag =
   AlertRelationship (Elem tag (ValidRelationshipsFor rel)) rel tag ~ 'True
 
 type family ValidRelationshipsFor (rel :: Type) :: [TagType] where
-  ValidRelationshipsFor Types.Rel_Alternate        = [ Tags.Anchor, Tags.Area, Tags.Link ]
-  ValidRelationshipsFor Types.Rel_Author           = [ Tags.Anchor, Tags.Area, Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Alternate        = Remove Tags.Form TagGroups.RelTags
+  ValidRelationshipsFor Types.Rel_Author           = Remove Tags.Form TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_Bookmark         = [ Tags.Anchor, Tags.Area ]
   ValidRelationshipsFor Types.Rel_Canonical        = '[ Tags.Link ]
   -- TODO: Valid for link only in body and head.
   ValidRelationshipsFor Types.Rel_DNS_Prefetch     = '[]
 
-  ValidRelationshipsFor Types.Rel_External         = [ Tags.Anchor, Tags.Area, Tags.Form ]
+  ValidRelationshipsFor Types.Rel_External         = Remove Tags.Link TagGroups.RelTags
 
   -- TODO: Unsure which elements can accept this.
   ValidRelationshipsFor Types.Rel_Expect           = '[]
 
-  ValidRelationshipsFor Types.Rel_Help             = [ Tags.Anchor, Tags.Area, Tags.Form, Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Help             = TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_Icon             = '[ Tags.Link ]
-  ValidRelationshipsFor Types.Rel_License          = [ Tags.Anchor, Tags.Area, Tags.Form, Tags.Link ]
+  ValidRelationshipsFor Types.Rel_License          = TagGroups.RelTags
 
   -- TODO: Unsure which elements can accept this.
   ValidRelationshipsFor Types.Rel_Manifest         = '[]
@@ -43,10 +44,10 @@ type family ValidRelationshipsFor (rel :: Type) :: [TagType] where
   ValidRelationshipsFor Types.Rel_Me               = '[]
 
   ValidRelationshipsFor Types.Rel_ModulePreload    = '[ Tags.Link ]
-  ValidRelationshipsFor Types.Rel_Next             = [ Tags.Anchor, Tags.Area, Tags.Form, Tags.Link ]
-  ValidRelationshipsFor Types.Rel_NoFollow         = [ Tags.Anchor, Tags.Area, Tags.Form ]
-  ValidRelationshipsFor Types.Rel_NoOpener         = [ Tags.Anchor, Tags.Area, Tags.Form ]
-  ValidRelationshipsFor Types.Rel_NoReferrer       = [ Tags.Anchor, Tags.Area, Tags.Form ]
+  ValidRelationshipsFor Types.Rel_Next             = TagGroups.RelTags
+  ValidRelationshipsFor Types.Rel_NoFollow         = Remove Tags.Link TagGroups.RelTags
+  ValidRelationshipsFor Types.Rel_NoOpener         = Remove Tags.Link TagGroups.RelTags
+  ValidRelationshipsFor Types.Rel_NoReferrer       = Remove Tags.Link TagGroups.RelTags
 
   -- TODO: Unsure which elements can accept the following.
   ValidRelationshipsFor Types.Rel_Opener           = '[]
@@ -56,12 +57,12 @@ type family ValidRelationshipsFor (rel :: Type) :: [TagType] where
   ValidRelationshipsFor Types.Rel_Preload          = '[]
   ValidRelationshipsFor Types.Rel_Prerender        = '[]
 
-  ValidRelationshipsFor Types.Rel_Prev             = [ Tags.Anchor, Tags.Area, Tags.Form, Tags.Link ]
-  ValidRelationshipsFor Types.Rel_Privacy_Policy   = [ Tags.Anchor, Tags.Area, Tags.Link ]
-  ValidRelationshipsFor Types.Rel_Search           = [ Tags.Anchor, Tags.Area, Tags.Form, Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Prev             = TagGroups.RelTags
+  ValidRelationshipsFor Types.Rel_Privacy_Policy   = Remove Tags.Form TagGroups.RelTags
+  ValidRelationshipsFor Types.Rel_Search           = TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_Stylesheet       = '[ Tags.Link ]
   ValidRelationshipsFor Types.Rel_Tag              = [ Tags.Anchor, Tags.Area ]
-  ValidRelationshipsFor Types.Rel_Terms_Of_Service = [ Tags.Anchor, Tags.Area, Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Terms_Of_Service = Remove Tags.Form TagGroups.RelTags
 
 type family AlertRelationship (member :: Bool) (rel :: Type) (tag :: TagType) :: Bool where
   AlertRelationship 'True rel tag =

@@ -47,6 +47,7 @@ module Brigid.HTML.Elements.TagGroups
   , DisableableTags
   , HrefTags
   , URLTags
+  , RelTags
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
@@ -638,3 +639,10 @@ type URLTags =
   [ 'Anchor
   , 'Area
   ]
+
+type RelTags =
+  '[ 'Anchor
+   , 'Area
+   , 'Form
+   , 'Link
+   ]

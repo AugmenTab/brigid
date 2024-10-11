@@ -19,5 +19,6 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor CrossOrigin = TagGroups.CrossOriginTags
   ValidElementsFor Disabled    = TagGroups.DisableableTags
   ValidElementsFor Href        = TagGroups.HrefTags
+  ValidElementsFor Rel         = TagGroups.RelTags
 
   ValidElementsFor HxValidate  = '[ TagType.Form ]

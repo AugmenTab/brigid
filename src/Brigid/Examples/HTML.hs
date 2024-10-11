@@ -32,7 +32,8 @@ documentExample =
     [ E.head []
         [ E.script [ A.crossorigin HTML.Anonymous ] "This is a test!"
         , E.link
-            [ A.href . exampleURL $ GetCustomer 1
+            [ A.rel HTML.Rel_Stylesheet
+            , A.href . exampleURL $ GetCustomer 1
             ]
         , HTMX.setConfig $
             HTMX.defaultConfig
