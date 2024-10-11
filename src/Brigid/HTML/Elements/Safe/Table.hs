@@ -1,15 +1,15 @@
 -- This module is designed to make building tables safer by restricting the
 -- arguments based on the permitted content for a table as per the HTML
--- documentation. It is intended that the user imports it qualified, optimally
--- as `Table`.
-module Brigid.HTML.Elements.Table
+-- documentation.
+--
+module Brigid.HTML.Elements.Safe.Table
   ( table
-  , Body, body
+  , TableBody, tbody
   , Caption, caption
   , ColumnGroup, colgroup
-  , Foot, foot
-  , Head, head
-  , Row, row
+  , TableFoot, tfoot
+  , TableHead, thead
+  , TableRow, tr
   ) where
 
 import Prelude hiding (head)
@@ -25,9 +25,9 @@ table :: ValidChild Tags.Table parent grandparent
       => [Attribute Tags.Table]
       -> Maybe (Caption parent)
       -> [ColumnGroup parent]
-      -> Maybe Head
-      -> Either [Body] [Row Tags.Table parent]
-      -> Maybe Foot
+      -> Maybe TableHead
+      -> Either [TableBody] [TableRow Tags.Table parent]
+      -> Maybe TableFoot
       -> ChildHTML parent grandparent
 table attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
   E.table attrs $
@@ -39,22 +39,22 @@ table attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
       , maybeToList $ unFoot <$> mbFoot
       ]
 
-data Body =
-  Body
+data TableBody =
+  TableBody
     { bodyAttributes :: [Attribute Tags.TableBody]
-    , bodyContent    :: [Row Tags.TableBody Tags.Table]
+    , bodyContent    :: [TableRow Tags.TableBody Tags.Table]
     }
 
-body :: [Attribute Tags.TableBody]
-     -> [Row Tags.TableBody Tags.Table]
-     -> Body
-body = Body
+tbody :: [Attribute Tags.TableBody]
+      -> [TableRow Tags.TableBody Tags.Table]
+      -> TableBody
+tbody = TableBody
 
-unBody :: Body -> ChildHTML Tags.Table grandparent
-unBody tbody =
+unBody :: TableBody -> ChildHTML Tags.Table grandparent
+unBody body =
   E.tbody
-    (bodyAttributes tbody)
-    (unRow <$> bodyContent tbody)
+    (bodyAttributes body)
+    (unRow <$> bodyContent body)
 
 newtype Caption grandparent =
   Caption { unCaption :: ChildHTML Tags.Table grandparent }
@@ -72,45 +72,45 @@ colgroup :: [Attribute Tags.TableColumnGroup]
          -> ColumnGroup grandparent
 colgroup attrs content = ColumnGroup $ E.colgroup attrs content
 
-data Foot =
-  Foot
+data TableFoot =
+  TableFoot
     { footAttributes :: [Attribute Tags.TableFoot]
-    , footContent    :: [Row Tags.TableFoot Tags.Table]
+    , footContent    :: [TableRow Tags.TableFoot Tags.Table]
     }
 
-foot :: [Attribute Tags.TableFoot]
-     -> [Row Tags.TableFoot Tags.Table]
-     -> Foot
-foot = Foot
+tfoot :: [Attribute Tags.TableFoot]
+      -> [TableRow Tags.TableFoot Tags.Table]
+      -> TableFoot
+tfoot = TableFoot
 
-unFoot :: Foot -> ChildHTML Tags.Table grandparent
-unFoot tfoot =
+unFoot :: TableFoot -> ChildHTML Tags.Table grandparent
+unFoot foot =
   E.tfoot
-    (footAttributes tfoot)
-    (unRow <$> footContent tfoot)
+    (footAttributes foot)
+    (unRow <$> footContent foot)
 
-data Head =
-  Head
+data TableHead =
+  TableHead
     { headAttributes :: [Attribute Tags.TableHead]
-    , headContent    :: [Row Tags.TableHead Tags.Table]
+    , headContent    :: [TableRow Tags.TableHead Tags.Table]
     }
 
-head :: [Attribute Tags.TableHead]
-     -> [Row Tags.TableHead Tags.Table]
-     -> Head
-head = Head
+thead :: [Attribute Tags.TableHead]
+      -> [TableRow Tags.TableHead Tags.Table]
+      -> TableHead
+thead = TableHead
 
-unHead :: Head -> ChildHTML Tags.Table grandparent
-unHead thead =
+unHead :: TableHead -> ChildHTML Tags.Table grandparent
+unHead head =
   E.thead
-    (headAttributes thead)
-    (unRow <$> headContent thead)
+    (headAttributes head)
+    (unRow <$> headContent head)
 
-newtype Row parent grandparent =
-  Row { unRow :: ChildHTML parent grandparent }
+newtype TableRow parent grandparent =
+  TableRow { unRow :: ChildHTML parent grandparent }
 
-row :: ValidChild Tags.TableRow parent grandparent
-    => [Attribute Tags.TableRow]
-    -> [ChildHTML Tags.TableRow parent]
-    -> Row parent grandparent
-row attrs content = Row $ E.tr attrs content
+tr :: ValidChild Tags.TableRow parent grandparent
+   => [Attribute Tags.TableRow]
+   -> [ChildHTML Tags.TableRow parent]
+   -> TableRow parent grandparent
+tr attrs content = TableRow $ E.tr attrs content

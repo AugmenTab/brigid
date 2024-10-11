@@ -21,8 +21,7 @@ import Fleece.Core qualified as FC
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.AddAttribute (addDivisionAttribute)
-import Brigid.HTML.Elements.Ruby qualified as Ruby
-import Brigid.HTML.Elements.Table qualified as Table
+import Brigid.HTML.Elements.Safe qualified as Safe
 import Brigid.HTML.HTMX.Config qualified as HTMX
 import Brigid.HTML.Types qualified as HTML
 
@@ -116,10 +115,10 @@ example =
                 ]
             , E.noElement
             , E.li []
-                [ Ruby.ruby [] "明日" "Ashita"
+                [ Safe.ruby [] "明日" "Ashita"
                 ]
             , E.li []
-                [ Ruby.ruby [ A.hidden ] "忍者" "Ninja"
+                [ Safe.ruby [ A.hidden ] "忍者" "Ninja"
                 ]
             , E.li []
                 [ E.a [ A.href divId ]
@@ -174,8 +173,8 @@ tableWithBodyExample :: E.ChildHTML E.Division grandparent
 tableWithBodyExample =
   tableExample
     . Left
-    $ [ Table.body []
-          [ Table.row []
+    $ [ Safe.tbody []
+          [ Safe.tr []
               [ E.td [] [ E.text "1" ]
               , E.td [] [ E.text "2" ]
               , E.td [] [ E.text "3" , E.noElement ]
@@ -191,7 +190,7 @@ tableWithRowExample =
   tableExample
     . Right
     . L.replicate 5
-    $ Table.row []
+    $ Safe.tr []
         [ E.td [] [ E.text "1" ]
         , E.td [] [ E.text "2" ]
         , E.td [] [ E.text "3" ]
@@ -200,25 +199,25 @@ tableWithRowExample =
         , E.td [] [ E.text "6" , E.noElement ]
         ]
 
-tableExample :: Either [Table.Body] [Table.Row E.Table E.Division]
+tableExample :: Either [Safe.TableBody] [Safe.TableRow E.Table E.Division]
              -> E.ChildHTML E.Division grandparent
 tableExample content =
   let caption =
         Just $
-          Table.caption []
+          Safe.caption []
             [ E.text "This is the table caption."
             ]
 
       colgroups =
         L.replicate 2
-          . Table.colgroup []
+          . Safe.colgroup []
           . L.replicate 3
           $ E.col []
 
       head =
         Just $
-          Table.head []
-            [ Table.row []
+          Safe.thead []
+            [ Safe.tr []
                 [ E.th [] [ E.text "1" ]
                 , E.th [] [ E.text "2" , E.noElement ]
                 , E.th [] [ E.text "3" ]
@@ -230,8 +229,8 @@ tableExample content =
 
       foot =
         Just $
-          Table.foot []
-            [ Table.row []
+          Safe.tfoot []
+            [ Safe.tr []
                 [ E.td [] [ E.comment "Sixth comment", E.text "1" ]
                 , E.td [] [ E.text "2" ]
                 , E.td [] [ E.text "3" ]
@@ -241,7 +240,7 @@ tableExample content =
                 ]
             ]
 
-   in Table.table
+   in Safe.table
         [ A.id $ HTML.Id "body-table" ]
         caption
         colgroups

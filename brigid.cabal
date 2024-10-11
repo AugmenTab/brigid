@@ -40,8 +40,10 @@ library
       Brigid.HTML.Elements.Category
       Brigid.HTML.Elements.Children
       Brigid.HTML.Elements.Internal
-      Brigid.HTML.Elements.Ruby
-      Brigid.HTML.Elements.Table
+      Brigid.HTML.Elements.Safe
+      Brigid.HTML.Elements.Safe.Meta
+      Brigid.HTML.Elements.Safe.Ruby
+      Brigid.HTML.Elements.Safe.Table
       Brigid.HTML.Elements.TagGroups
       Brigid.HTML.Elements.Tags
       Brigid.HTML.Elements.TagType
