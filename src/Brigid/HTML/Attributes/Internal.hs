@@ -31,7 +31,6 @@ module Brigid.HTML.Attributes.Internal
    -- , Attr_Nonce
       , Attr_Part
       , Attr_Popover
-      , Attr_Rel
    -- , Attr_Role
    -- , Attr_Slot
       , Attr_Spellcheck
@@ -40,9 +39,13 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Title
       , Attr_Translate
 
+      , Attr_Charset
+      , Attr_Content
       , Attr_CrossOrigin
       , Attr_Disabled
       , Attr_Href
+      , Attr_Name
+      , Attr_Rel
 
       , Attr_Htmx
       , Attr_HxBoost
@@ -295,10 +298,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Charset
-  --   :: ValidAttribute 'Charset tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Charset
+    :: ValidAttribute 'Charset tag
+    => Attribute tag
 
   -- Attr_Checked
   --   :: ValidAttribute 'Checked tag
@@ -325,10 +327,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Content
-  --   :: ValidAttribute 'Content tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Content
+    :: ValidAttribute 'Content tag
+    => T.Text
+    -> Attribute tag
 
   -- Attr_Controls
   --   :: ValidAttribute 'Controls tag
@@ -530,10 +532,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Name
-  --   :: ValidAttribute 'Name tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Name
+    :: ValidAttribute 'Name tag
+    => T.Text
+    -> Attribute tag
 
   -- Attr_NoValidate
   --   :: ValidAttribute 'NoValidate tag
@@ -926,6 +928,11 @@ attributeText attr =
 
     -- Scoped Attributes
     --
+    Attr_Charset ->
+      "charset"
+
+    Attr_Content _content ->
+      "content"
 
     Attr_CrossOrigin _crossorigin ->
       "crossorigin"
@@ -935,6 +942,9 @@ attributeText attr =
 
     Attr_Href _href ->
       "href"
+
+    Attr_Name _name ->
+      "name"
 
     Attr_Rel _rel ->
       "rel"

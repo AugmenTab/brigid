@@ -48,6 +48,7 @@ module Brigid.HTML.Elements.TagGroups
   , HrefTags
   , URLTags
   , RelTags
+  , NameTags
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
@@ -641,8 +642,22 @@ type URLTags =
   ]
 
 type RelTags =
-  '[ 'Anchor
-   , 'Area
-   , 'Form
-   , 'Link
-   ]
+  [ 'Anchor
+  , 'Area
+  , 'Form
+  , 'Link
+  ]
+
+type NameTags =
+  [ 'Button
+  , 'Fieldset
+  , 'Form
+  , 'IFrame
+  , 'Input
+  , 'Map
+  , 'Meta
+  , 'Object
+  , 'Output
+  , 'Select
+  , 'TextArea
+  ]

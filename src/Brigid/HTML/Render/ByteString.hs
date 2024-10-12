@@ -561,6 +561,11 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Charset ->
+      Just $ buildAttribute "charset" "utf-8"
+
+    Attr_Content content ->
+      Just . buildAttribute "content" $ toBytes content
 
     Attr_CrossOrigin crossorigin ->
       Just
@@ -585,6 +590,9 @@ renderAttribute attr =
           )
         . Types.unHref
         $ href
+
+    Attr_Name name ->
+      Just . buildAttribute "name" $ toBytes name
 
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToBytes rel

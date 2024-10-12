@@ -543,6 +543,12 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Charset ->
+      Just $ buildAttribute "charset" "utf-8"
+
+    Attr_Content content ->
+      Just $ buildAttribute "content" content
+
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"
@@ -566,6 +572,9 @@ renderAttribute attr =
           )
         . Types.unHref
         $ href
+
+    Attr_Name name ->
+      Just $ buildAttribute "name" name
 
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToText rel

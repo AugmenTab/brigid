@@ -30,6 +30,16 @@ documentExample =
   E.html []
     [ E.head []
         [ E.script [ A.crossorigin HTML.Anonymous ] "This is a test!"
+        , Safe.meta Safe.Charset
+        , Safe.meta
+            . Safe.Name
+            . Safe.ColorScheme
+            . Safe.Palettes
+            $ NEL.singleton Safe.Dark
+        , Safe.meta . Safe.Name $ Safe.Referrer Safe.NoReferrer
+        , E.meta [ A.name "viewport"
+                 , A.content "width=device-width, initial-scale=1"
+                 ]
         , E.link
             [ A.rel HTML.Rel_Stylesheet
             , A.href . exampleURL $ GetCustomer 1

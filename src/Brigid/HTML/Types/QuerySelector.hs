@@ -2642,9 +2642,8 @@ attr_border = (,) Attr_Border . Just
 attr_capture :: T.Text -> AttributeSelector
 attr_capture = (,) Attr_Capture . Just
 
--- TODO
-attr_charset :: T.Text -> AttributeSelector
-attr_charset = (,) Attr_Charset . Just
+attr_charset :: AttributeSelector
+attr_charset = (Attr_Charset, Just "utf-8")
 
 -- TODO
 attr_checked :: T.Text -> AttributeSelector
@@ -2666,7 +2665,6 @@ attr_cols = (,) Attr_Cols . Just
 attr_colspan :: T.Text -> AttributeSelector
 attr_colspan = (,) Attr_Colspan . Just
 
--- TODO
 attr_content :: T.Text -> AttributeSelector
 attr_content = (,) Attr_Content . Just
 
@@ -2830,7 +2828,6 @@ attr_multiple = (,) Attr_Multiple . Just
 attr_muted :: T.Text -> AttributeSelector
 attr_muted = (,) Attr_Muted . Just
 
--- TODO
 attr_name :: T.Text -> AttributeSelector
 attr_name = (,) Attr_Name . Just
 

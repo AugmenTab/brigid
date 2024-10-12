@@ -2,25 +2,44 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.Scoped
-  ( crossorigin
+  ( charset
+  , content
+  , crossorigin
   , disable
   , disabled
   , href
+  , name
   , rel
   ) where
 
+import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
+import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Href (ValidHref)
-import Brigid.HTML.Attributes.Internal (Attribute(..))
+import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
 --
+
+-- | Limited to UTF-8, since that is the only valid option for HTML5.
+--
+charset :: ValidAttribute 'Charset tag => Attribute tag
+charset = Attr_Charset
+
+-- | The `content` attribute is left as simple 'T.Text' because its value is
+-- dependent on the `name` or `http-equiv` attributes, and managing the
+-- inter-dependency across multiple attributes in the `meta` tag is too complex
+-- to reconcile here, For safe construction of the `content` attributes
+-- together with its dependencies on a `meta` tag, use
+-- 'Brigid.HTML.Elements.Safe.Meta'.
+--
+content :: ValidAttribute 'Content tag => T.Text -> Attribute tag
+content = Attr_Content
 
 {-|
    This enumerated attribute indicates whether CORS must be used when fetching
@@ -49,6 +68,15 @@ href :: ( KnownNat branchIndex
      => href -> Attribute tag
 href =
   Attr_Href . Types.mkHref
+
+-- | The `name` attribute is left as simple 'T.Text' because its dependency on
+-- the `content` attribute in the `meta` tag is too complex to reconcile here,
+-- and is not a concern on other tags that use this attribute. For safe
+-- construction of the `name` and `content` attributes together on a `meta`
+-- tag, use 'Brigid.HTML.Elements.Safe.Meta'.
+--
+name :: ValidAttribute 'Name tag => T.Text -> Attribute tag
+name = Attr_Name
 
 rel :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf rel Types.RelationshipTypes
