@@ -11,6 +11,7 @@ import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.LanguageCodes (toChars)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Map qualified as Map
@@ -518,7 +519,12 @@ renderAttribute attr =
 
     -- Attr_ItemType
 
-    -- Attr_Lang
+    Attr_Lang lang ->
+      Just
+        . buildAttribute "lang"
+        . LBS8.pack
+        . maybe "" (\(c1, c2) -> [ c1, c2 ])
+        $ toChars <$> lang
 
     -- Attr_Nonce
 

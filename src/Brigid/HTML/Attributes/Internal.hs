@@ -27,7 +27,7 @@ module Brigid.HTML.Attributes.Internal
    -- , Attr_ItemRef
    -- , Attr_ItemScope
    -- , Attr_ItemType
-   -- , Attr_Lang
+      , Attr_Lang
    -- , Attr_Nonce
       , Attr_Part
       , Attr_Popover
@@ -78,6 +78,7 @@ module Brigid.HTML.Attributes.Internal
   , buildAttrMap
   ) where
 
+import Data.LanguageCodes (ISO639_1)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Map (Map)
@@ -188,9 +189,9 @@ data Attribute (tag :: TagType) where
   --   :: T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Lang
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Lang
+    :: Maybe ISO639_1
+    -> Attribute tag
 
   -- Attr_Nonce
   --   :: T.Text -- TODO
@@ -890,7 +891,11 @@ attributeText attr =
 
     -- Attr_ItemType
 
-    -- Attr_Lang
+    -- TODO: This is a minimal definition. Proper representation of BCP-47
+    -- language codes will require A LOT more work.
+    --
+    Attr_Lang _lang ->
+      "lang"
 
     -- Attr_Nonce
 

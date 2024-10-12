@@ -7,6 +7,7 @@ module Brigid.HTML.Render.Text
   ) where
 
 import Data.Bool qualified as B
+import Data.LanguageCodes (toChars)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Map qualified as Map
@@ -500,7 +501,12 @@ renderAttribute attr =
 
     -- Attr_ItemType
 
-    -- Attr_Lang
+    Attr_Lang lang ->
+      Just
+        . buildAttribute "lang"
+        . T.pack
+        . maybe "" (\(c1, c2) -> [ c1, c2 ])
+        $ toChars <$> lang
 
     -- Attr_Nonce
 

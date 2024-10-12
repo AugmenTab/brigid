@@ -596,6 +596,7 @@ import Prelude hiding (Show, div, head, id, map, max, min, show, span)
 import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.LanguageCodes (ISO639_1, toChars)
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
@@ -2549,9 +2550,13 @@ attr_itemscope = (,) Attr_ItemScope . Just
 attr_itemtype :: T.Text -> AttributeSelector
 attr_itemtype = (,) Attr_ItemType . Just
 
--- TODO
-attr_lang :: T.Text -> AttributeSelector
-attr_lang = (,) Attr_Lang . Just
+attr_lang :: Maybe ISO639_1 -> AttributeSelector
+attr_lang =
+  (,) Attr_Lang
+    . Just
+    . T.pack
+    . maybe "" (\(c1, c2) -> [ c1, c2 ])
+    . fmap toChars
 
 -- TODO
 attr_nonce :: T.Text -> AttributeSelector

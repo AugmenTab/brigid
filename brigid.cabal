@@ -130,6 +130,7 @@ library
     , containers
     , html-email-validate
     , http-types
+    , iso639
     , json-fleece-aeson
     , json-fleece-core
     , non-empty-text
@@ -164,6 +165,7 @@ test-suite brigid-test
     , containers
     , html-email-validate
     , http-types
+    , iso639
     , json-fleece-aeson
     , json-fleece-core
     , non-empty-text
