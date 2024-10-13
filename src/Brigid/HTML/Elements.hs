@@ -124,6 +124,7 @@ module Brigid.HTML.Elements
 
 import Prelude hiding (div, head, map, span)
 import Data.List qualified as L
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.Internal (Attribute)
@@ -745,7 +746,7 @@ sample = Tag_Sample
 --
 script :: ValidChild Tags.Script parent grandparent
        => [Attribute Tags.Script]
-       -> T.Text
+       -> Maybe NET.NonEmptyText
        -> ChildHTML parent grandparent
 script = Tag_Script
 

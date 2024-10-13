@@ -125,11 +125,12 @@ module Brigid.HTML.Elements.Internal
       )
   ) where
 
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.Internal (Attributes)
 import Brigid.HTML.Elements.Children (ValidChild)
-import Brigid.HTML.Elements.TagType (TagType(..))
+import Brigid.HTML.Elements.TagType (TagType (..))
 import Brigid.HTML.Types (NoContent)
 
 data ChildHTML (parent :: TagType) (grandparent :: TagType) where
@@ -638,7 +639,7 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
   Tag_Script
     :: ValidChild 'Script parent grandparent
     => Attributes 'Script
-    -> T.Text
+    -> Maybe NET.NonEmptyText
     -> ChildHTML parent grandparent
 
   Tag_Search

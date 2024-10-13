@@ -14,6 +14,7 @@ import Beeline.Routing qualified as R
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Fleece.Core ((#+))
 import Fleece.Core qualified as FC
@@ -28,7 +29,8 @@ documentExample :: E.Document
 documentExample =
   E.html []
     [ E.head []
-        [ E.script [ A.crossorigin HTML.Anonymous ] "This is a test!"
+        [ E.script [ A.crossorigin HTML.Anonymous ] $
+            NET.fromText "This is a test!"
         , Safe.meta Safe.Charset
         , Safe.meta
             . Safe.Name
@@ -103,7 +105,7 @@ example =
                   ( Right
                       [ E.script
                           [ A.customData "my-custom-elem-attr" "test" ]
-                          T.empty
+                          Nothing
                       ]
                   )
             ]
