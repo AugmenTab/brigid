@@ -41,6 +41,7 @@ library
       Brigid.HTML.Elements.Safe
       Brigid.HTML.Elements.Safe.Meta
       Brigid.HTML.Elements.Safe.Ruby
+      Brigid.HTML.Elements.Safe.Script
       Brigid.HTML.Elements.Safe.Table
       Brigid.HTML.Elements.TagGroups
       Brigid.HTML.Elements.Tags
@@ -87,6 +88,7 @@ library
       Brigid.HTML.Types.QueueOption
       Brigid.HTML.Types.RawJavaScript
       Brigid.HTML.Types.Reachability
+      Brigid.HTML.Types.ReferrerPolicy
       Brigid.HTML.Types.Relationship
       Brigid.HTML.Types.RequestParams
       Brigid.HTML.Types.ScrollBehavior

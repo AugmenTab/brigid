@@ -37,7 +37,7 @@ documentExample =
             . Safe.ColorScheme
             . Safe.Palettes
             $ NEL.singleton Safe.Dark
-        , Safe.meta . Safe.Name $ Safe.Referrer Safe.NoReferrer
+        , Safe.meta . Safe.Name $ Safe.Referrer HTML.NoReferrer
         , E.meta [ A.name "viewport"
                  , A.content "width=device-width, initial-scale=1"
                  ]

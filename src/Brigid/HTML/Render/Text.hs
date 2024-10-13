@@ -544,6 +544,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Async ->
+      buildBooleanAttribute "async" True
+
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 
@@ -554,6 +557,9 @@ renderAttribute attr =
       Just
         . buildAttribute "crossorigin"
         $ Types.crossoriginFetchToText crossorigin
+
+    Attr_Defer ->
+      buildBooleanAttribute "defer" True
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
@@ -576,6 +582,11 @@ renderAttribute attr =
 
     Attr_Name name ->
       Just $ buildAttribute "name" name
+
+    Attr_ReferrerPolicy referrerpolicy ->
+      Just
+        . buildAttribute "referrerpolicy"
+        $ Types.referrerPolicyToText referrerpolicy
 
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToText rel

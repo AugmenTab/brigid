@@ -17,12 +17,15 @@ type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
-  ValidElementsFor Charset     = [ Tags.Meta, Tags.Script ]
-  ValidElementsFor Content     = '[ Tags.Meta ]
-  ValidElementsFor CrossOrigin = TagGroups.CrossOriginTags
-  ValidElementsFor Disabled    = TagGroups.DisableableTags
-  ValidElementsFor Href        = TagGroups.HrefTags
-  ValidElementsFor Name        = TagGroups.NameTags
-  ValidElementsFor Rel         = TagGroups.RelTags
+  ValidElementsFor Async          = '[ Tags.Script ]
+  ValidElementsFor Charset        = [ Tags.Meta, Tags.Script ]
+  ValidElementsFor Content        = '[ Tags.Meta ]
+  ValidElementsFor CrossOrigin    = TagGroups.CrossOriginTags
+  ValidElementsFor Defer          = '[ Tags.Script ]
+  ValidElementsFor Disabled       = TagGroups.DisableableTags
+  ValidElementsFor Href           = TagGroups.HrefTags
+  ValidElementsFor Name           = TagGroups.NameTags
+  ValidElementsFor ReferrerPolicy = '[ Tags.Script ]
+  ValidElementsFor Rel            = TagGroups.RelTags
 
-  ValidElementsFor HxValidate  = '[ TagType.Form ]
+  ValidElementsFor HxValidate     = '[ TagType.Form ]

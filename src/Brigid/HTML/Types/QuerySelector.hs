@@ -635,6 +635,7 @@ import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import Brigid.HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
+import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
@@ -2614,9 +2615,8 @@ attr_allow = (,) Attr_Allow . Just
 attr_alt :: T.Text -> AttributeSelector
 attr_alt = (,) Attr_Alt . Just
 
--- TODO
-attr_async :: T.Text -> AttributeSelector
-attr_async = (,) Attr_Async . Just
+attr_async :: AttributeSelector
+attr_async = (Attr_Async, Nothing)
 
 -- TODO
 attr_autocomplete :: T.Text -> AttributeSelector
@@ -2695,9 +2695,8 @@ attr_decoding = (,) Attr_Decoding . Just
 attr_default_ :: T.Text -> AttributeSelector
 attr_default_ = (,) Attr_Default . Just
 
--- TODO
-attr_defer :: T.Text -> AttributeSelector
-attr_defer = (,) Attr_Defer . Just
+attr_defer :: AttributeSelector
+attr_defer = (Attr_Defer, Nothing)
 
 -- TODO
 attr_dirname :: T.Text -> AttributeSelector
@@ -2871,9 +2870,8 @@ attr_preload = (,) Attr_Preload . Just
 attr_readonly :: T.Text -> AttributeSelector
 attr_readonly = (,) Attr_ReadOnly . Just
 
--- TODO
-attr_referrerpolicy :: T.Text -> AttributeSelector
-attr_referrerpolicy = (,) Attr_ReferrerPolicy . Just
+attr_referrerpolicy :: ReferrerPolicy -> AttributeSelector
+attr_referrerpolicy = (,) Attr_ReferrerPolicy . Just . referrerPolicyToText
 
 attr_rel :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf rel RelationshipTypes

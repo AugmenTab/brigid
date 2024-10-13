@@ -22,16 +22,6 @@ module Brigid.HTML.Elements.Safe.Meta
       , ThemeColor
       , Viewport
       )
-  , ReferrerContent
-      ( NoReferrer
-      , Origin
-      , NoReferrerWhenDowngrade
-      , OriginWhenCrossOrigin
-      , SameOrigin
-      , StrictOrigin
-      , StrictOriginWhenCrossOrigin
-      , UnsafeURL
-      )
   , ColorSchemeOption
       ( Normal
       , Palettes
@@ -51,7 +41,8 @@ import Data.Text qualified as T
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements qualified as E
-import Brigid.HTML.Elements.Tags qualified as Tags
+import Brigid.HTML.Elements.Tags (Meta)
+import Brigid.HTML.Types (ReferrerPolicy, referrerPolicyToText)
 
 data Metadata
      = Charset
@@ -74,7 +65,7 @@ data MetadataName
   | Description
   | Generator
   | Keywords
-  | Referrer ReferrerContent
+  | Referrer ReferrerPolicy
   | ColorScheme ColorSchemeOption
   | ThemeColor
   | Viewport
@@ -92,7 +83,7 @@ metadataNameToText metadata =
     ThemeColor               -> "theme-color"
     Viewport                 -> "viewport"
 
-nameAttributes :: MetadataName -> [Attribute Tags.Meta]
+nameAttributes :: MetadataName -> [Attribute Meta]
 nameAttributes name =
   [ A.name $ metadataNameToText name
   , A.content $
@@ -102,33 +93,11 @@ nameAttributes name =
         Description             -> "" -- TODO
         Generator               -> "" -- TODO
         Keywords                -> "" -- TODO
-        Referrer        content -> referrerContentToText content
+        Referrer        content -> referrerPolicyToText content
         ColorScheme     content -> colorSchemeOptionToText content
         ThemeColor              -> "" -- TODO
         Viewport                -> "" -- TODO
   ]
-
-data ReferrerContent
-  = NoReferrer
-  | Origin
-  | NoReferrerWhenDowngrade
-  | OriginWhenCrossOrigin
-  | SameOrigin
-  | StrictOrigin
-  | StrictOriginWhenCrossOrigin
-  | UnsafeURL
-
-referrerContentToText :: ReferrerContent -> T.Text
-referrerContentToText referrer =
-  case referrer of
-    NoReferrer                  -> "no-referrer"
-    Origin                      -> "origin"
-    NoReferrerWhenDowngrade     -> "no-referrer-when-downgrade"
-    OriginWhenCrossOrigin       -> "origin-when-cross-origin"
-    SameOrigin                  -> "same-origin"
-    StrictOrigin                -> "strict-origin"
-    StrictOriginWhenCrossOrigin -> "strict-origin-when-cross-origin"
-    UnsafeURL                   -> "unsafe-url"
 
 data ColorSchemeOption
   = Normal

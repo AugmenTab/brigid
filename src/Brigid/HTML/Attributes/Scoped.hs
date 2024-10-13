@@ -2,13 +2,16 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.Scoped
-  ( charset
+  ( async
+  , charset
   , content
   , crossorigin
+  , defer
   , disable
   , disabled
   , href
   , name
+  , referrerpolicy
   , rel
   ) where
 
@@ -25,6 +28,8 @@ import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
 --
+async :: ValidAttribute 'Async tag => Attribute tag
+async = Attr_Async
 
 -- | Limited to UTF-8, since that is the only valid option for HTML5.
 --
@@ -54,6 +59,9 @@ crossorigin :: ValidAttribute 'CrossOrigin tag
             -> Attribute tag
 crossorigin = Attr_CrossOrigin
 
+defer :: ValidAttribute 'Defer tag => Attribute tag
+defer = Attr_Defer
+
 disable :: ValidAttribute 'Disabled tag => Bool -> Attribute tag
 disable = Attr_Disabled
 
@@ -77,6 +85,10 @@ href =
 --
 name :: ValidAttribute 'Name tag => T.Text -> Attribute tag
 name = Attr_Name
+
+referrerpolicy :: ValidAttribute 'ReferrerPolicy tag
+               => Types.ReferrerPolicy -> Attribute tag
+referrerpolicy = Attr_ReferrerPolicy
 
 rel :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf rel Types.RelationshipTypes

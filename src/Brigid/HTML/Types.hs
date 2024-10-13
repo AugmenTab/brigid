@@ -50,6 +50,7 @@ import Brigid.HTML.Types.QuerySelector as Export
 import Brigid.HTML.Types.QueueOption as Export
 import Brigid.HTML.Types.RawJavaScript as Export
 import Brigid.HTML.Types.Reachability as Export
+import Brigid.HTML.Types.ReferrerPolicy as Export
 import Brigid.HTML.Types.Relationship as Export
 import Brigid.HTML.Types.RequestParams as Export
 import Brigid.HTML.Types.ScrollBehavior as Export

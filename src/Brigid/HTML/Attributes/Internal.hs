@@ -39,12 +39,15 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Title
       , Attr_Translate
 
+      , Attr_Async
       , Attr_Charset
       , Attr_Content
       , Attr_CrossOrigin
+      , Attr_Defer
       , Attr_Disabled
       , Attr_Href
       , Attr_Name
+      , Attr_ReferrerPolicy
       , Attr_Rel
 
       , Attr_Htmx
@@ -260,10 +263,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Async
-  --   :: ValidAttribute 'Async tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Async
+    :: ValidAttribute 'Async tag
+    => Attribute tag
 
   -- Attr_Autocomplete
   --   :: ValidAttribute 'Autocomplete tag
@@ -364,10 +366,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Defer
-  --   :: ValidAttribute 'Defer tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Defer
+    :: ValidAttribute 'Defer tag
+    => Attribute tag
 
   -- Attr_Dirname
   --   :: ValidAttribute 'Dirname tag
@@ -584,10 +585,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_ReferrerPolicy
-  --   :: ValidAttribute 'ReferrerPolicy tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ReferrerPolicy
+    :: ValidAttribute 'ReferrerPolicy tag
+    => Types.ReferrerPolicy
+    -> Attribute tag
 
   Attr_Rel
     :: ValidAttribute 'Rel tag
