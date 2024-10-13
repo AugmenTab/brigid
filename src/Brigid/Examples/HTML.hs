@@ -1,6 +1,7 @@
 module Brigid.Examples.HTML
   ( documentExample
   , example
+  , safeScriptExample
   , htmxExample
   , idQuerySelectorExample
   , classQuerySelectorExample
@@ -80,6 +81,10 @@ exampleURL route =
 divId :: HTML.Id
 divId = HTML.Id "div1"
 
+fakeJavaScriptLink :: HTML.RawURL
+fakeJavaScriptLink =
+  HTML.RawURL "my/endpoint/file.js"
+
 example :: E.ChildHTML E.Body grandparent
 example =
   E.div [ A.id divId
@@ -103,12 +108,14 @@ example =
                 "my-custom-element"
                 [ A.id $ HTML.Id "my-custom-elem-id" ]
                   ( Right
-                      [ E.script
-                          [ A.customData "my-custom-elem-attr" "test" ]
+                      [ E.script [ A.src fakeJavaScriptLink
+                                 , A.customData "my-custom-elem-attr" "test"
+                                 ]
                           Nothing
                       ]
                   )
             ]
+        , safeScriptExample
         , transparencyExample
         , tableWithBodyExample
         , E.ul []
@@ -168,6 +175,14 @@ listExample =
       , E.p [] [ E.text "This is some paragraph text." ]
       , E.img [ A.draggable False ]
       ]
+
+safeScriptExample :: E.ChildHTML E.Division grandparent
+safeScriptExample =
+  Safe.script $
+    (Safe.defaultExternalScript fakeJavaScriptLink)
+      { Safe.externalScriptCrossorigin     = Just HTML.Anonymous
+      , Safe.externalScriptLoadingBehavior = Safe.Async
+      }
 
 transparencyExample :: E.ChildHTML E.Division grandparent
 transparencyExample =

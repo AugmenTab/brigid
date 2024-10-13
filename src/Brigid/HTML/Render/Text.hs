@@ -591,6 +591,9 @@ renderAttribute attr =
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToText rel
 
+    Attr_Src src ->
+      Just . buildAttribute "src" $ Types.urlToText src
+
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . T.pack $ show width
 

@@ -49,6 +49,7 @@ module Brigid.HTML.Elements.TagGroups
   , URLTags
   , RelTags
   , NameTags
+  , SrcTags
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
@@ -660,4 +661,16 @@ type NameTags =
   , 'Output
   , 'Select
   , 'TextArea
+  ]
+
+type SrcTags =
+  [ 'Audio
+  , 'Embed
+  , 'IFrame
+  , 'Image
+  , 'Input
+  , 'Script
+  , 'Source
+  , 'Track
+  , 'Video
   ]

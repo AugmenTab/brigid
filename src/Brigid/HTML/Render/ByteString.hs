@@ -609,6 +609,9 @@ renderAttribute attr =
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToBytes rel
 
+    Attr_Src src ->
+      Just . buildAttribute "src" . Escape.urlByteString $ Types.urlToText src
+
     -- Attr_Width width ->
     --   Just . buildAttribute "width" . LBS8.pack $ show width
 

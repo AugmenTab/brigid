@@ -27,5 +27,6 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Name           = TagGroups.NameTags
   ValidElementsFor ReferrerPolicy = '[ Tags.Script ]
   ValidElementsFor Rel            = TagGroups.RelTags
+  ValidElementsFor Src            = TagGroups.SrcTags
 
   ValidElementsFor HxValidate     = '[ TagType.Form ]

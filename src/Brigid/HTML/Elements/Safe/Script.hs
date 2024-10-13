@@ -6,7 +6,9 @@ module Brigid.HTML.Elements.Safe.Script
   ( script
   , Script
   , InlineScript (..)
+  , defaultInlineScript
   , ExternalScript (..)
+  , defaultExternalScript
   , LoadingBehavior
       ( Block
       , Async
@@ -22,10 +24,11 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Attributes.Internal (Attribute)
+import Brigid.HTML.Attributes.Source (ValidSource)
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Tags qualified as Tags
-import Brigid.HTML.Types (CrossOriginFetch, ReferrerPolicy)
+import Brigid.HTML.Types qualified as Types
 
 script :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf script ScriptTypes
@@ -42,7 +45,9 @@ newtype Script = Script (Shrubbery.Union ScriptTypes)
 
 type ScriptTypes =
   [ InlineScript
-  , ExternalScript
+  , ExternalScript Types.AbsoluteURL
+  , ExternalScript (Types.RelativeURL Types.Get)
+  , ExternalScript Types.RawURL
   ]
 
 mkScript :: ( KnownNat branchIndex
@@ -56,8 +61,10 @@ scriptAttributes :: Script -> [Attribute Tags.Script]
 scriptAttributes (Script union) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @InlineScript   inlineScriptAttributes
-      . Shrubbery.branch @ExternalScript externalScriptAttributes
+      . Shrubbery.branch @InlineScript inlineScriptAttributes
+      . Shrubbery.branch @(ExternalScript Types.AbsoluteURL) externalScriptAttributes
+      . Shrubbery.branch @(ExternalScript (Types.RelativeURL Types.Get)) externalScriptAttributes
+      . Shrubbery.branch @(ExternalScript Types.RawURL) externalScriptAttributes
       $ Shrubbery.branchEnd
   ) union
 
@@ -66,16 +73,27 @@ scriptContent (Script union) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @InlineScript   (Just . inlineScriptContent)
-      . Shrubbery.branch @ExternalScript (const Nothing)
+      . Shrubbery.branch @(ExternalScript Types.AbsoluteURL) (const Nothing)
+      . Shrubbery.branch @(ExternalScript (Types.RelativeURL Types.Get)) (const Nothing)
+      . Shrubbery.branch @(ExternalScript Types.RawURL) (const Nothing)
       $ Shrubbery.branchEnd
   ) union
 
 data InlineScript =
   InlineScript
     { inlineScriptContent        :: NET.NonEmptyText
-    , inlineScriptReferrerPolicy :: Maybe ReferrerPolicy
+    , inlineScriptReferrerPolicy :: Maybe Types.ReferrerPolicy
  -- , inlineScriptNonce          :: Maybe _
  -- , inlineScriptType           :: Maybe _
+    }
+
+defaultInlineScript :: NET.NonEmptyText -> InlineScript
+defaultInlineScript content =
+  InlineScript
+    { inlineScriptContent        = content
+    , inlineScriptReferrerPolicy = Nothing
+ -- , inlineScriptNonce          = Nothing
+ -- , inlineScriptType           = Nothing
     }
 
 inlineScriptAttributes :: InlineScript -> [Attribute Tags.Script]
@@ -86,29 +104,46 @@ inlineScriptAttributes inline =
  -- , A.type_          <$> inlineScriptType           inline
     ]
 
-data ExternalScript =
+data ExternalScript url =
   ExternalScript
-    { externalScriptCrossorigin     :: Maybe CrossOriginFetch
+    { externalScriptCrossorigin     :: Maybe Types.CrossOriginFetch
  -- , externalScriptIntegrity       :: Maybe _
     , externalScriptLoadingBehavior :: LoadingBehavior
  -- , externalScriptNomodule        :: Maybe _
  -- , externalScriptNonce           :: Maybe _
- -- , externalScriptReferrerPolicy  :: Maybe _
- -- , externalScriptSource          :: _
+    , externalScriptReferrerPolicy  :: Maybe Types.ReferrerPolicy
+    , externalScriptSource          :: url
  -- , externalScriptType            :: Maybe _
     }
 
-externalScriptAttributes :: ExternalScript -> [Attribute Tags.Script]
+defaultExternalScript :: url -> ExternalScript url
+defaultExternalScript url =
+  ExternalScript
+    { externalScriptCrossorigin     = Nothing
+ -- , externalScriptIntegrity       = Nothing
+    , externalScriptLoadingBehavior = Block
+ -- , externalScriptNomodule        = Nothing
+ -- , externalScriptNonce           = Nothing
+    , externalScriptReferrerPolicy  = Nothing
+    , externalScriptSource          = url
+ -- , externalScriptType            = Nothing
+    }
+
+externalScriptAttributes  :: ( KnownNat branchIndex
+                             , branchIndex ~ FirstIndexOf url Types.URLTypes
+                             , ValidSource url Tags.Script
+                             )
+                          => ExternalScript url -> [Attribute Tags.Script]
 externalScriptAttributes external =
   catMaybes
- -- [ A.src                 <$> externalScriptSource          external
+    [ Just . A.src             $ externalScriptSource          external
  -- , A.type_               <$> externalScriptType            external
-    [ loadingBehaviorAttribute (externalScriptLoadingBehavior external)
+    , loadingBehaviorAttribute (externalScriptLoadingBehavior external)
     , A.crossorigin         <$> externalScriptCrossorigin     external
  -- , A.integrity           <$> externalScriptIntegrity       external
- -- , A.nomodule            <$> externalScriptReferrerPolicy  external
+ -- , A.nomodule            <$> externalScriptNomodule        external
  -- , A.nonce               <$> externalScriptNonce           external
- -- , A.referrerpolicy      <$> externalScriptNomodule        external
+    , A.referrerpolicy      <$> externalScriptReferrerPolicy  external
     ]
 
 data LoadingBehavior

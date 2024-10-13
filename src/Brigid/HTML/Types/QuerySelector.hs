@@ -646,7 +646,7 @@ import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
 import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
 import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
-import Brigid.HTML.Types.URL (RelativeURL, relativeURLToText)
+import Brigid.HTML.Types.URL (RelativeURL, URLTypes, mkURL, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
 
@@ -2923,9 +2923,11 @@ attr_sizes = (,) Attr_Sizes . Just
 attr_span :: T.Text -> AttributeSelector
 attr_span = (,) Attr_Span . Just
 
--- TODO
-attr_src :: T.Text -> AttributeSelector
-attr_src = (,) Attr_Src . Just
+attr_src :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf src URLTypes
+            )
+         => src -> AttributeSelector
+attr_src = (,) Attr_Src . Just . urlToText . mkURL
 
 -- TODO
 attr_srcdoc :: T.Text -> AttributeSelector

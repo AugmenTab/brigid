@@ -1,8 +1,15 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Types.URL
-  ( AbsoluteURL
+  ( URL
+  , URLTypes
+  , mkURL
+  , urlToText
+  , AbsoluteURL
   , absoluteURLFromText
   , absoluteURLToText
   , RelativeURL
@@ -26,8 +33,36 @@ module Brigid.HTML.Types.URL
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing qualified as R
 import Data.Text qualified as T
+import GHC.TypeLits (KnownNat)
+import Shrubbery qualified
+import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.Method (Method, Get, Post, Delete, Put, Patch)
+
+newtype URL = URL (Shrubbery.Union URLTypes)
+
+type URLTypes =
+  [ AbsoluteURL
+  , RelativeURL Get
+  , RawURL
+  ]
+
+mkURL :: ( KnownNat branchIndex
+         , branchIndex ~ FirstIndexOf url URLTypes
+         )
+      => url -> URL
+mkURL =
+  URL . Shrubbery.unify
+
+urlToText :: URL -> T.Text
+urlToText (URL url) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL absoluteURLToText
+      . Shrubbery.branch @(RelativeURL Get) relativeURLToText
+      . Shrubbery.branch @RawURL rawURLToText
+      $ Shrubbery.branchEnd
+  ) url
 
 newtype AbsoluteURL = AbsoluteURL B.BaseURI
 

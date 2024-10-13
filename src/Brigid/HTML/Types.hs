@@ -1,5 +1,9 @@
 module Brigid.HTML.Types
   ( module Export
+  , URL
+  , URLTypes
+  , mkURL
+  , urlToText
   , AbsoluteURL
   , absoluteURLFromText
   , absoluteURLToText
@@ -62,20 +66,24 @@ import Brigid.HTML.Types.This as Export
 import Brigid.HTML.Types.Threshold as Export
 import Brigid.HTML.Types.Throttle as Export
 import Brigid.HTML.Types.TriggerFilter as Export
-import Brigid.HTML.Types.URL ( AbsoluteURL
-                      , absoluteURLFromText
-                      , absoluteURLToText
-                      , RelativeURL
-                      , get
-                      , post
-                      , delete
-                      , put
-                      , patch
-                      , relativeURLToText
-                      , RawURL (..)
-                      , rawURLFromText
-                      , rawURLToText
-                      )
+import Brigid.HTML.Types.URL ( URL
+                             , URLTypes
+                             , mkURL
+                             , urlToText
+                             , AbsoluteURL
+                             , absoluteURLFromText
+                             , absoluteURLToText
+                             , RelativeURL
+                             , get
+                             , post
+                             , delete
+                             , put
+                             , patch
+                             , relativeURLToText
+                             , RawURL (..)
+                             , rawURLFromText
+                             , rawURLToText
+                             )
 import Brigid.HTML.Types.Vals as Export
 import Brigid.HTML.Types.WebsocketBinaryType as Export
 import Brigid.HTML.Types.Window as Export

@@ -13,6 +13,7 @@ module Brigid.HTML.Attributes.Scoped
   , name
   , referrerpolicy
   , rel
+  , src
   ) where
 
 import Data.Text qualified as T
@@ -24,6 +25,7 @@ import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
+import Brigid.HTML.Attributes.Source (ValidSource)
 import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
@@ -98,3 +100,12 @@ rel :: ( KnownNat branchIndex
     => rel -> Attribute tag
 rel =
   Attr_Rel . Types.mkRelationship
+
+src :: ( KnownNat branchIndex
+       , branchIndex ~ FirstIndexOf url Types.URLTypes
+       , ValidSource url tag
+       , ValidAttribute 'Src tag
+       )
+    => url -> Attribute tag
+src =
+  Attr_Src . Types.mkURL

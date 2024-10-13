@@ -35,6 +35,7 @@ library
       Brigid.HTML.Attributes.Other
       Brigid.HTML.Attributes.Relationship
       Brigid.HTML.Attributes.Scoped
+      Brigid.HTML.Attributes.Source
       Brigid.HTML.Elements
       Brigid.HTML.Elements.Children
       Brigid.HTML.Elements.Internal

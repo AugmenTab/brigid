@@ -6,6 +6,7 @@
 
 module Brigid.HTML.Attributes.Href
   ( ValidHref
+  , HrefTypeErrorMessage
   ) where
 
 import Data.Kind (Type)

@@ -49,6 +49,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Name
       , Attr_ReferrerPolicy
       , Attr_Rel
+      , Attr_Src
 
       , Attr_Htmx
       , Attr_HxBoost
@@ -650,10 +651,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Src
-  --   :: ValidAttribute 'Src tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Src
+    :: ValidAttribute 'Src tag
+    => Types.URL
+    -> Attribute tag
 
   -- Attr_SrcDoc
   --   :: ValidAttribute 'SrcDoc tag
