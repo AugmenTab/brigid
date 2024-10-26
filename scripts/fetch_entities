@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "===================================="
+echo "====== Fetching HTML Entities ======"
+echo "===================================="
+
+docker compose --file compose.entity.yml up --abort-on-container-exit
+

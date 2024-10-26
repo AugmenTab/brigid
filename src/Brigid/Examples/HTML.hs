@@ -23,6 +23,7 @@ import Fleece.Core qualified as FC
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Safe qualified as Safe
+import Brigid.HTML.Entities qualified as Entity
 import Brigid.HTML.HTMX.Config qualified as HTMX
 import Brigid.HTML.Types qualified as HTML
 
@@ -58,7 +59,11 @@ documentExample =
           -- , A.crossorigin HTML.Anonymous -- This fails, because crossorigin is not a valid attribute for body.
              ]
         [ E.header []
-            [ E.text "This is the header"
+            [ E.text "Header with entities: "
+            , Entity.latinCapitalLetterTWithCedilla
+            , Entity.latinCapitalLetterEWithDiaeresis
+            , Entity.latinCapitalLetterSWithCaron
+            , Entity.latinCapitalLetterTWithStroke
          -- , E.footer [] [] -- This fails, because marginals are removed from flow content for valid children of footer.
             ]
         , example

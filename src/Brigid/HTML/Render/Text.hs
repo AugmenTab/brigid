@@ -41,6 +41,9 @@ renderTag html =
     Tag_Text content ->
       fromText $ Escape.html content
 
+    Tag_Entity entity ->
+      fromText entity
+
     Tag_RawHTML content ->
       fromText content
 

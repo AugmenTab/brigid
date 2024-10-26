@@ -14,7 +14,8 @@ attributes:
 3. Add support for the SVG tag.
 4. Add support for MathML.
 5. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
-6. Consider adding support for an `XML` constructor for `ChildHTML`. It would take only custom elements and attributes.
+6. Add support for XML.
+7. Add support for HXML.
 
 ### Possible optimizations
 

@@ -48,6 +48,9 @@ renderTag html =
     Tag_Text content ->
       lazyByteString . toBytes $ Escape.html content
 
+    Tag_Entity entity ->
+      lazyByteString $ toBytes entity
+
     Tag_RawHTML content ->
       lazyByteString $ toBytes content
 

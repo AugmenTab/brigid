@@ -2,4 +2,7 @@
 
 set -e
 
+echo "Rebuilding entities..."
+./scripts/fetch_entities
+
 ./scripts/build_code

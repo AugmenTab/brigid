@@ -8,6 +8,7 @@ module Brigid.HTML.Elements.Internal
       ( Tag_NoElement
       , Tag_Comment
       , Tag_Text
+      , Tag_Entity
       , Tag_RawHTML
       , Tag_CustomHTML
       , Tag_Anchor
@@ -142,6 +143,11 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
     -> ChildHTML parent grandparent
 
   Tag_Text
+    :: ValidChild 'Text parent grandparent
+    => T.Text
+    -> ChildHTML parent grandparent
+
+  Tag_Entity
     :: ValidChild 'Text parent grandparent
     => T.Text
     -> ChildHTML parent grandparent

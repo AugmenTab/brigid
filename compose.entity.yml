@@ -1,0 +1,7 @@
+services:
+  entity:
+    image: logiqx/python-bs4
+    volumes:
+      - .:${PROJECT_DIR}
+    working_dir: ${PROJECT_DIR}
+    command: python3 entity_maker/entity_maker.py

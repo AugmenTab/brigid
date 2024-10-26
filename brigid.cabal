@@ -47,6 +47,7 @@ library
       Brigid.HTML.Elements.TagGroups
       Brigid.HTML.Elements.Tags
       Brigid.HTML.Elements.TagType
+      Brigid.HTML.Entities
       Brigid.HTML.HTMX.Config
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Render.ByteString
