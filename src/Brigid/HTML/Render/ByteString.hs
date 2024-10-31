@@ -590,9 +590,9 @@ renderAttribute attr =
         . buildAttribute "href"
         . ( Shrubbery.dissect
               . Shrubbery.branchBuild
-              . Shrubbery.branch @Types.AbsoluteURL (Escape.urlByteString . Types.absoluteURLToText)
-              . Shrubbery.branch @(Types.RelativeURL _) (Escape.urlByteString . Types.relativeURLToText)
-              . Shrubbery.branch @Types.Id (("#" <>) . Types.idToBytes)
+              . Shrubbery.branch @Types.AbsoluteURL (toBytes . Types.absoluteURLToText)
+              . Shrubbery.branch @(Types.RelativeURL _) (toBytes . Types.relativeURLToText)
+              . Shrubbery.branch @Types.Id (LBS8.cons '#' . Types.idToBytes)
               . Shrubbery.branch @Types.Email (toBytes . ("mailto:" <>) . Types.emailToText)
               . Shrubbery.branch @Types.BlankHref (const "#")
               . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)
@@ -766,8 +766,8 @@ renderPushURL :: Types.PushURL -> LBS.ByteString
 renderPushURL =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Types.AbsoluteURL (Escape.urlByteString . Types.absoluteURLToText)
-      . Shrubbery.branch @(Types.RelativeURL _) (Escape.urlByteString . Types.relativeURLToText)
+      . Shrubbery.branch @Types.AbsoluteURL (toBytes . Types.absoluteURLToText)
+      . Shrubbery.branch @(Types.RelativeURL _) (toBytes . Types.relativeURLToText)
       . Shrubbery.branch @Bool enumBoolToBytes
       . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)
       $ Shrubbery.branchEnd
