@@ -3,6 +3,7 @@
 
 module Brigid.HTML.Attributes.Scoped
   ( async
+  , autoplay
   , charset
   , content
   , crossorigin
@@ -35,6 +36,9 @@ import Brigid.HTML.Types qualified as Types
 --
 async :: ValidAttribute 'Async tag => Attribute tag
 async = Attr_Async
+
+autoplay :: ValidAttribute 'Autoplay tag => Attribute tag
+autoplay = Attr_Autoplay
 
 -- | Limited to UTF-8, since that is the only valid option for HTML5.
 --

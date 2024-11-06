@@ -40,6 +40,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Translate
 
       , Attr_Async
+      , Attr_Autoplay
       , Attr_Charset
       , Attr_Content
       , Attr_CrossOrigin
@@ -276,10 +277,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Autoplay
-  --   :: ValidAttribute 'Autoplay tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Autoplay
+    :: ValidAttribute 'Autoplay tag
+    => Attribute tag
 
   -- Attr_Background
   --   :: ValidAttribute 'Background tag

@@ -2627,9 +2627,8 @@ attr_async = (Attr_Async, Nothing)
 attr_autocomplete :: T.Text -> AttributeSelector
 attr_autocomplete = (,) Attr_Autocomplete . Just
 
--- TODO
-attr_autoplay :: T.Text -> AttributeSelector
-attr_autoplay = (,) Attr_Autoplay . Just
+attr_autoplay :: AttributeSelector
+attr_autoplay = (Attr_Autoplay, Nothing)
 
 -- TODO
 attr_background :: T.Text -> AttributeSelector

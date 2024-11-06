@@ -568,6 +568,9 @@ renderAttribute attr =
     Attr_Async ->
       buildBooleanAttribute "async" True
 
+    Attr_Autoplay ->
+      buildBooleanAttribute "autoplay" True
+
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 

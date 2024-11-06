@@ -18,6 +18,7 @@ type ValidAttribute attr tag =
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
   ValidElementsFor Async          = '[ Tags.Script ]
+  ValidElementsFor Autoplay       = TagGroups.MediaContent
   ValidElementsFor Charset        = [ Tags.Meta, Tags.Script ]
   ValidElementsFor Content        = '[ Tags.Meta ]
   ValidElementsFor CrossOrigin    = TagGroups.CrossOriginTags
