@@ -2802,13 +2802,11 @@ attr_low = (,) Attr_Low . Just
 attr_max :: T.Text -> AttributeSelector
 attr_max = (,) Attr_Max . Just
 
--- TODO
-attr_maxlength :: T.Text -> AttributeSelector
-attr_maxlength = (,) Attr_MaxLength . Just
+attr_maxlength :: Word -> AttributeSelector
+attr_maxlength = (,) Attr_MaxLength . Just . showText
 
--- TODO
-attr_minlength :: T.Text -> AttributeSelector
-attr_minlength = (,) Attr_MinLength . Just
+attr_minlength :: Word -> AttributeSelector
+attr_minlength = (,) Attr_MinLength . Just . showText
 
 -- TODO
 attr_media :: T.Text -> AttributeSelector

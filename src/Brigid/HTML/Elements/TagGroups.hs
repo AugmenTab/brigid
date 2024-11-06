@@ -51,6 +51,7 @@ module Brigid.HTML.Elements.TagGroups
   , NameTags
   , SrcTags
   , SizableTags
+  , LengthTags
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
@@ -684,4 +685,9 @@ type SizableTags =
   , 'Input
   , 'Object
   , 'Video
+  ]
+
+type LengthTags =
+  [ 'Input
+  , 'TextArea
   ]

@@ -13,6 +13,8 @@ module Brigid.HTML.Attributes.Scoped
   , headers
   , height
   , href
+  , maxlength
+  , minlength
   , name
   , nomodule
   , referrerpolicy
@@ -94,6 +96,20 @@ href :: ( KnownNat branchIndex
      => href -> Attribute tag
 href =
   Attr_Href . Types.mkHref
+
+-- TODO: For all `Safe` module versions of elements for which this attribute
+-- applies, a comparison of min/maxlength should be done to ensure that the
+-- bounds are applied appropriately.
+--
+maxlength :: ValidAttribute 'MaxLength tag => Word -> Attribute tag
+maxlength = Attr_MaxLength
+
+-- TODO: For all `Safe` module versions of elements for which this attribute
+-- applies, a comparison of min/maxlength should be done to ensure that the
+-- bounds are applied appropriately.
+--
+minlength :: ValidAttribute 'MinLength tag => Word -> Attribute tag
+minlength = Attr_MinLength
 
 -- | The `name` attribute is left as simple 'T.Text' because its dependency on
 -- the `content` attribute in the `meta` tag is too complex to reconcile here,

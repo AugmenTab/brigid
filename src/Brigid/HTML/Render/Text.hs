@@ -596,6 +596,12 @@ renderAttribute attr =
         . Types.unHref
         $ href
 
+    Attr_MaxLength maxlength ->
+      Just . buildAttribute "maxlength" . T.pack $ show maxlength
+
+    Attr_MinLength minlength ->
+      Just . buildAttribute "minlength" . T.pack $ show minlength
+
     Attr_Name name ->
       Just $ buildAttribute "name" name
 

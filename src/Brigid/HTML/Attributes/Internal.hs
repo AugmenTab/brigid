@@ -49,6 +49,8 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Headers
       , Attr_Height
       , Attr_Href
+      , Attr_MaxLength
+      , Attr_MinLength
       , Attr_Name
       , Attr_NoModule
       , Attr_ReferrerPolicy
@@ -500,15 +502,15 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_MaxLength
-  --   :: ValidAttribute 'MaxLength tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_MaxLength
+    :: ValidAttribute 'MaxLength tag
+    => Word
+    -> Attribute tag
 
-  -- Attr_MinLength
-  --   :: ValidAttribute 'MinLength tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_MinLength
+    :: ValidAttribute 'MinLength tag
+    => Word
+    -> Attribute tag
 
   -- Attr_Media
   --   :: ValidAttribute 'Media tag

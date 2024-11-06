@@ -614,6 +614,12 @@ renderAttribute attr =
         . Types.unHref
         $ href
 
+    Attr_MaxLength maxlength ->
+      Just . buildAttribute "maxlength" . LBS8.pack $ show maxlength
+
+    Attr_MinLength minlength ->
+      Just . buildAttribute "minlength" . LBS8.pack $ show minlength
+
     Attr_Name name ->
       Just . buildAttribute "name" $ toBytes name
 
