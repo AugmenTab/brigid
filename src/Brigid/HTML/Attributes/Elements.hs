@@ -24,6 +24,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor CrossOrigin    = TagGroups.CrossOriginTags
   ValidElementsFor Defer          = '[ Tags.Script ]
   ValidElementsFor Disabled       = TagGroups.DisableableTags
+  ValidElementsFor Headers        = '[ Tags.TableDataCell ]
   ValidElementsFor Height         = TagGroups.SizableTags
   ValidElementsFor Href           = TagGroups.HrefTags
   ValidElementsFor Name           = TagGroups.NameTags

@@ -46,6 +46,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_CrossOrigin
       , Attr_Defer
       , Attr_Disabled
+      , Attr_Headers
       , Attr_Height
       , Attr_Href
       , Attr_Name
@@ -429,10 +430,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Headers
-  --   :: ValidAttribute 'Headers tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Headers
+    :: ValidAttribute 'Headers tag
+    => NEL.NonEmpty Types.Id
+    -> Attribute tag
 
   Attr_Height
     :: ValidAttribute 'Height tag

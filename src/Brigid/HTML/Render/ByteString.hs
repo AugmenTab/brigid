@@ -588,6 +588,13 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_Headers headers ->
+      Just
+        . buildAttribute "headers"
+        . LBS8.unwords
+        . fmap Types.idToBytes
+        $ NEL.toList headers
+
     Attr_Height height ->
       Just . buildAttribute "height" . LBS8.pack $ show height
 

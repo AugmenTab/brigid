@@ -2745,9 +2745,9 @@ attr_formnovalidate = (,) Attr_FormNoValidate . Just
 attr_formtarget :: T.Text -> AttributeSelector
 attr_formtarget = (,) Attr_FormTarget . Just
 
--- TODO
-attr_headers :: T.Text -> AttributeSelector
-attr_headers = (,) Attr_Headers . Just
+attr_headers :: NEL.NonEmpty Id.Id -> AttributeSelector
+attr_headers =
+  (,) Attr_Headers . Just . T.unwords . fmap Id.idToText . NEL.toList
 
 attr_height :: Word -> AttributeSelector
 attr_height = (,) Attr_Height . Just . showText

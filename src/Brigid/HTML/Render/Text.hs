@@ -570,6 +570,13 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_Headers headers ->
+      Just
+        . buildAttribute "headers"
+        . T.unwords
+        . fmap Types.idToText
+        $ NEL.toList headers
+
     Attr_Height height ->
       Just . buildAttribute "height" . T.pack $ show height
 

@@ -10,6 +10,7 @@ module Brigid.HTML.Attributes.Scoped
   , defer
   , disable
   , disabled
+  , headers
   , height
   , href
   , name
@@ -20,6 +21,7 @@ module Brigid.HTML.Attributes.Scoped
   , width
   ) where
 
+import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
@@ -76,6 +78,10 @@ disable = Attr_Disabled
 
 disabled :: ValidAttribute 'Disabled tag => Attribute tag
 disabled = disable True
+
+headers :: ValidAttribute 'Headers tag
+        => NEL.NonEmpty Types.Id -> Attribute tag
+headers = Attr_Headers
 
 height :: ValidAttribute 'Height tag => Word -> Attribute tag
 height = Attr_Height
