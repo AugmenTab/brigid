@@ -50,6 +50,7 @@ module Brigid.HTML.Elements.TagGroups
   , RelTags
   , NameTags
   , SrcTags
+  , SizableTags
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
@@ -672,5 +673,15 @@ type SrcTags =
   , 'Script
   , 'Source
   , 'Track
+  , 'Video
+  ]
+
+type SizableTags =
+  [ 'Canvas
+  , 'Embed
+  , 'IFrame
+  , 'Image
+  , 'Input
+  , 'Object
   , 'Video
   ]

@@ -585,6 +585,9 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_Height height ->
+      Just . buildAttribute "height" . LBS8.pack $ show height
+
     Attr_Href href ->
       Just
         . buildAttribute "href"
@@ -618,8 +621,8 @@ renderAttribute attr =
     Attr_Src src ->
       Just . buildAttribute "src" . Escape.urlByteString $ Types.urlToText src
 
-    -- Attr_Width width ->
-    --   Just . buildAttribute "width" . LBS8.pack $ show width
+    Attr_Width width ->
+      Just . buildAttribute "width" . LBS8.pack $ show width
 
     -- HTMX Attributes
     --

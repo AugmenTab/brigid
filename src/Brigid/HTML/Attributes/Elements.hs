@@ -23,11 +23,13 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor CrossOrigin    = TagGroups.CrossOriginTags
   ValidElementsFor Defer          = '[ Tags.Script ]
   ValidElementsFor Disabled       = TagGroups.DisableableTags
+  ValidElementsFor Height         = TagGroups.SizableTags
   ValidElementsFor Href           = TagGroups.HrefTags
   ValidElementsFor Name           = TagGroups.NameTags
   ValidElementsFor NoModule       = '[ Tags.Script ]
   ValidElementsFor ReferrerPolicy = '[ Tags.Script ]
   ValidElementsFor Rel            = TagGroups.RelTags
   ValidElementsFor Src            = TagGroups.SrcTags
+  ValidElementsFor Width          = TagGroups.SizableTags
 
   ValidElementsFor HxValidate     = '[ TagType.Form ]

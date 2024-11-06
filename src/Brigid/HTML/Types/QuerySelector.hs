@@ -2750,9 +2750,8 @@ attr_formtarget = (,) Attr_FormTarget . Just
 attr_headers :: T.Text -> AttributeSelector
 attr_headers = (,) Attr_Headers . Just
 
--- TODO
-attr_height :: T.Text -> AttributeSelector
-attr_height = (,) Attr_Height . Just
+attr_height :: Word -> AttributeSelector
+attr_height = (,) Attr_Height . Just . showText
 
 -- TODO
 attr_high :: T.Text -> AttributeSelector
@@ -2973,9 +2972,8 @@ attr_usemap = (,) Attr_UseMap . Just
 attr_value :: T.Text -> AttributeSelector
 attr_value = (,) Attr_Value . Just
 
--- TODO
-attr_width :: T.Text -> AttributeSelector
-attr_width = (,) Attr_Width . Just
+attr_width :: Word -> AttributeSelector
+attr_width = (,) Attr_Width . Just . showText
 
 -- TODO
 attr_wrap :: T.Text -> AttributeSelector

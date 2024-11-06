@@ -45,12 +45,14 @@ module Brigid.HTML.Attributes.Internal
       , Attr_CrossOrigin
       , Attr_Defer
       , Attr_Disabled
+      , Attr_Height
       , Attr_Href
       , Attr_Name
       , Attr_NoModule
       , Attr_ReferrerPolicy
       , Attr_Rel
       , Attr_Src
+      , Attr_Width
 
       , Attr_Htmx
       , Attr_HxBoost
@@ -432,10 +434,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Height
-  --   :: ValidAttribute 'Height tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Height
+    :: ValidAttribute 'Height tag
+    => Word
+    -> Attribute tag
 
   -- Attr_High
   --   :: ValidAttribute 'High tag
@@ -707,10 +709,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Width
-  --   :: ValidAttribute 'Width tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Width
+    :: ValidAttribute 'Width tag
+    => Word
+    -> Attribute tag
 
   -- Attr_Wrap
   --   :: ValidAttribute 'Wrap tag

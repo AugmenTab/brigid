@@ -567,6 +567,9 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_Height height ->
+      Just . buildAttribute "height" . T.pack $ show height
+
     Attr_Href href ->
       Just
         . buildAttribute "href"
@@ -600,8 +603,8 @@ renderAttribute attr =
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToText src
 
-    -- Attr_Width width ->
-    --   Just . buildAttribute "width" . T.pack $ show width
+    Attr_Width width ->
+      Just . buildAttribute "width" . T.pack $ show width
 
     -- HTMX Attributes
     --

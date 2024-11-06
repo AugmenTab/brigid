@@ -9,12 +9,14 @@ module Brigid.HTML.Attributes.Scoped
   , defer
   , disable
   , disabled
+  , height
   , href
   , name
   , nomodule
   , referrerpolicy
   , rel
   , src
+  , width
   ) where
 
 import Data.Text qualified as T
@@ -71,6 +73,9 @@ disable = Attr_Disabled
 disabled :: ValidAttribute 'Disabled tag => Attribute tag
 disabled = disable True
 
+height :: ValidAttribute 'Height tag => Word -> Attribute tag
+height = Attr_Height
+
 href :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
         , ValidHref href tag
@@ -113,3 +118,6 @@ src :: ( KnownNat branchIndex
     => url -> Attribute tag
 src =
   Attr_Src . Types.mkURL
+
+width :: ValidAttribute 'Width tag => Word -> Attribute tag
+width = Attr_Width
