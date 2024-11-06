@@ -11,6 +11,7 @@ module Brigid.HTML.Attributes.Scoped
   , disabled
   , href
   , name
+  , nomodule
   , referrerpolicy
   , rel
   , src
@@ -87,6 +88,9 @@ href =
 --
 name :: ValidAttribute 'Name tag => T.Text -> Attribute tag
 name = Attr_Name
+
+nomodule :: ValidAttribute 'NoModule tag => Bool -> Attribute tag
+nomodule = Attr_NoModule
 
 referrerpolicy :: ValidAttribute 'ReferrerPolicy tag
                => Types.ReferrerPolicy -> Attribute tag

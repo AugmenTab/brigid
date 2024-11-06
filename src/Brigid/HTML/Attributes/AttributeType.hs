@@ -96,6 +96,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Multiple
       , Muted
       , Name
+      , NoModule
       , NoValidate
       , Open
       , Optimum
@@ -235,6 +236,7 @@ data AttributeType
   | Multiple
   | Muted
   | Name
+  | NoModule
   | NoValidate
   | Open
   | Optimum
@@ -368,6 +370,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Multiple        = 'Text "Multiple (multiple)"
   AttributeErrorMessage Muted           = 'Text "Muted (muted)"
   AttributeErrorMessage Name            = 'Text "Name (name)"
+  AttributeErrorMessage NoModule        = 'Text "NoModule (nomodule)"
   AttributeErrorMessage NoValidate      = 'Text "NoValidate (novalidate)"
   AttributeErrorMessage Open            = 'Text "Open (open)"
   AttributeErrorMessage Optimum         = 'Text "Optimum (optimum)"

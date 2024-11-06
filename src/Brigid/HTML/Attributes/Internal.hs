@@ -47,6 +47,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Disabled
       , Attr_Href
       , Attr_Name
+      , Attr_NoModule
       , Attr_ReferrerPolicy
       , Attr_Rel
       , Attr_Src
@@ -534,6 +535,11 @@ data Attribute (tag :: TagType) where
   Attr_Name
     :: ValidAttribute 'Name tag
     => T.Text
+    -> Attribute tag
+
+  Attr_NoModule
+    :: ValidAttribute 'NoModule tag
+    => Bool
     -> Attribute tag
 
   -- Attr_NoValidate

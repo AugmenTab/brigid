@@ -604,6 +604,9 @@ renderAttribute attr =
     Attr_Name name ->
       Just . buildAttribute "name" $ toBytes name
 
+    Attr_NoModule nomodule ->
+      buildBooleanAttribute "nomodule" nomodule
+
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"

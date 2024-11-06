@@ -109,7 +109,7 @@ data ExternalScript url =
     { externalScriptCrossorigin     :: Maybe Types.CrossOriginFetch
  -- , externalScriptIntegrity       :: Maybe _
     , externalScriptLoadingBehavior :: LoadingBehavior
- -- , externalScriptNomodule        :: Maybe _
+    , externalScriptNoModule        :: Bool
  -- , externalScriptNonce           :: Maybe _
     , externalScriptReferrerPolicy  :: Maybe Types.ReferrerPolicy
     , externalScriptSource          :: url
@@ -122,7 +122,7 @@ defaultExternalScript url =
     { externalScriptCrossorigin     = Nothing
  -- , externalScriptIntegrity       = Nothing
     , externalScriptLoadingBehavior = Block
- -- , externalScriptNomodule        = Nothing
+    , externalScriptNoModule        = False
  -- , externalScriptNonce           = Nothing
     , externalScriptReferrerPolicy  = Nothing
     , externalScriptSource          = url
@@ -136,12 +136,12 @@ externalScriptAttributes  :: ( KnownNat branchIndex
                           => ExternalScript url -> [Attribute Tags.Script]
 externalScriptAttributes external =
   catMaybes
-    [ Just . A.src             $ externalScriptSource          external
+    [ Just . A.src            $ externalScriptSource          external
+    , Just . A.nomodule       $ externalScriptNoModule        external
  -- , A.type_               <$> externalScriptType            external
     , loadingBehaviorAttribute (externalScriptLoadingBehavior external)
     , A.crossorigin         <$> externalScriptCrossorigin     external
  -- , A.integrity           <$> externalScriptIntegrity       external
- -- , A.nomodule            <$> externalScriptNomodule        external
  -- , A.nonce               <$> externalScriptNonce           external
     , A.referrerpolicy      <$> externalScriptReferrerPolicy  external
     ]

@@ -223,6 +223,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_multiple
   , attr_muted
   , attr_name
+  , attr_nomodule
   , attr_novalidate
   , attr_open
   , attr_optimum
@@ -1844,6 +1845,7 @@ data AttributeType
   | Attr_Multiple
   | Attr_Muted
   | Attr_Name
+  | Attr_NoModule
   | Attr_NoValidate
   | Attr_Open
   | Attr_Optimum
@@ -2019,6 +2021,7 @@ attributeTypeToBytes attr =
     Attr_Multiple        -> "multiple"
     Attr_Muted           -> "muted"
     Attr_Name            -> "name"
+    Attr_NoModule        -> "nomodule"
     Attr_NoValidate      -> "novalidate"
     Attr_Open            -> "open"
     Attr_Optimum         -> "optimum"
@@ -2194,6 +2197,7 @@ attributeTypeFromText attr =
     "multiple"       -> Right Attr_Multiple
     "muted"          -> Right Attr_Muted
     "name"           -> Right Attr_Name
+    "nomodule"       -> Right Attr_NoModule
     "novalidate"     -> Right Attr_NoValidate
     "open"           -> Right Attr_Open
     "optimum"        -> Right Attr_Optimum
@@ -2395,6 +2399,7 @@ attributeTypeToText attr =
     Attr_Multiple        -> "multiple"
     Attr_Muted           -> "muted"
     Attr_Name            -> "name"
+    Attr_NoModule        -> "nomodule"
     Attr_NoValidate      -> "novalidate"
     Attr_Open            -> "open"
     Attr_Optimum         -> "optimum"
@@ -2829,6 +2834,9 @@ attr_muted = (,) Attr_Muted . Just
 
 attr_name :: T.Text -> AttributeSelector
 attr_name = (,) Attr_Name . Just
+
+attr_nomodule :: Bool -> AttributeSelector
+attr_nomodule = (,) Attr_NoModule . Just . enumBoolToText
 
 -- TODO
 attr_novalidate :: T.Text -> AttributeSelector

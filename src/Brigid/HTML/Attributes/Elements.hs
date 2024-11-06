@@ -25,6 +25,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Disabled       = TagGroups.DisableableTags
   ValidElementsFor Href           = TagGroups.HrefTags
   ValidElementsFor Name           = TagGroups.NameTags
+  ValidElementsFor NoModule       = '[ Tags.Script ]
   ValidElementsFor ReferrerPolicy = '[ Tags.Script ]
   ValidElementsFor Rel            = TagGroups.RelTags
   ValidElementsFor Src            = TagGroups.SrcTags

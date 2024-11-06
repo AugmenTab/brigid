@@ -586,6 +586,9 @@ renderAttribute attr =
     Attr_Name name ->
       Just $ buildAttribute "name" name
 
+    Attr_NoModule nomodule ->
+      buildBooleanAttribute "nomodule" nomodule
+
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"
