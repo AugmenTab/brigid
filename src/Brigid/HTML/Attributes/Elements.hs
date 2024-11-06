@@ -31,6 +31,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor MinLength      = TagGroups.LengthTags
   ValidElementsFor Name           = TagGroups.NameTags
   ValidElementsFor NoModule       = '[ Tags.Script ]
+  ValidElementsFor Ping           = '[ Tags.Anchor ]
   ValidElementsFor ReferrerPolicy = '[ Tags.Script ]
   ValidElementsFor Rel            = TagGroups.RelTags
   ValidElementsFor Src            = TagGroups.SrcTags

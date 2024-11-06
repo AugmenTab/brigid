@@ -28,6 +28,10 @@ module Brigid.HTML.Types.URL
   , RawURL (..)
   , rawURLFromText
   , rawURLToText
+  , Ping
+  , PingTypes
+  , mkPing
+  , pingToText
   ) where
 
 import Beeline.HTTP.Client qualified as B
@@ -121,3 +125,28 @@ rawURLFromText = RawURL
 
 rawURLToText :: RawURL -> T.Text
 rawURLToText (RawURL url) = url
+
+newtype Ping = Ping (Shrubbery.Union PingTypes)
+
+type PingTypes =
+  [ AbsoluteURL
+  , RelativeURL Post
+  , RawURL
+  ]
+
+mkPing :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf url PingTypes
+          )
+       => url -> Ping
+mkPing =
+  Ping . Shrubbery.unify
+
+pingToText :: Ping -> T.Text
+pingToText (Ping ping) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL absoluteURLToText
+      . Shrubbery.branch @(RelativeURL Post) relativeURLToText
+      . Shrubbery.branch @RawURL rawURLToText
+      $ Shrubbery.branchEnd
+  ) ping

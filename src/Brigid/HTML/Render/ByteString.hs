@@ -626,6 +626,13 @@ renderAttribute attr =
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule
 
+    Attr_Ping pings ->
+      Just
+        . buildAttribute "ping"
+        . LBS8.unwords
+        . fmap (toBytes . Types.pingToText)
+        $ NEL.toList pings
+
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"
@@ -635,7 +642,10 @@ renderAttribute attr =
       Just . buildAttribute "rel" $ Types.relationshipToBytes rel
 
     Attr_Src src ->
-      Just . buildAttribute "src" . Escape.urlByteString $ Types.urlToText src
+      Just
+        . buildAttribute "src"
+        . Escape.urlByteString
+        $ Types.urlToText src
 
     Attr_Width width ->
       Just . buildAttribute "width" . LBS8.pack $ show width

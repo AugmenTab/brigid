@@ -53,6 +53,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_MinLength
       , Attr_Name
       , Attr_NoModule
+      , Attr_Ping
       , Attr_ReferrerPolicy
       , Attr_Rel
       , Attr_Src
@@ -567,10 +568,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Ping
-  --   :: ValidAttribute 'Ping tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Ping
+    :: ValidAttribute 'Ping tag
+    => NEL.NonEmpty Types.Ping
+    -> Attribute tag
 
   -- Attr_Placeholder
   --   :: ValidAttribute 'Placeholder tag

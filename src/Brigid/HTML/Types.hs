@@ -17,6 +17,10 @@ module Brigid.HTML.Types
   , RawURL (..)
   , rawURLFromText
   , rawURLToText
+  , Ping
+  , PingTypes
+  , mkPing
+  , pingToText
   ) where
 
 import Brigid.HTML.Types.Autocapitalize as Export
@@ -83,6 +87,10 @@ import Brigid.HTML.Types.URL ( URL
                              , RawURL (..)
                              , rawURLFromText
                              , rawURLToText
+                             , Ping
+                             , PingTypes
+                             , mkPing
+                             , pingToText
                              )
 import Brigid.HTML.Types.Vals as Export
 import Brigid.HTML.Types.WebsocketBinaryType as Export

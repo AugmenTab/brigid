@@ -52,6 +52,7 @@ documentExample =
               { HTMX.refreshOnHistoryMiss = Just True
               }
         -- , E.link [ A.href $ HTML.Id "bad-link" ] -- This fails, because Id is not a valid href type for link.
+        -- , E.script [ A.src pingURL ] Nothing -- This fails, because RelativeURL Post is not a valid URL type for the src attribute.
         ]
     , E.body [ A.hxBoost True
              , A.customAttribute "myCoolAttribute" "myCoolValue"
@@ -89,6 +90,15 @@ divId = HTML.Id "div1"
 fakeJavaScriptLink :: HTML.RawURL
 fakeJavaScriptLink =
   HTML.RawURL "my/endpoint/file.js"
+
+data Ping = Ping
+
+pingURL :: HTML.RelativeURL HTML.Post
+pingURL =
+  HTML.post Ping $
+    R.make Ping
+      /- "customers"
+      /- "log_access"
 
 example :: E.ChildHTML E.Body grandparent
 example =
@@ -144,7 +154,9 @@ example =
                 [ Safe.ruby [ A.hidden ] "忍者" "Ninja"
                 ]
             , E.li []
-                [ E.a [ A.href divId ]
+                [ E.a [ A.href divId
+                      , A.ping . NEL.singleton $ HTML.mkPing pingURL
+                      ]
                     [ E.text "Back to top"
                     ]
                 ]

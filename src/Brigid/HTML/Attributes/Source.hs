@@ -21,10 +21,10 @@ type ValidSource url tag =
   AlertSource (Elem tag (ValidSourcesFor url)) url tag ~ 'True
 
 type family ValidSourcesFor (url :: Type) :: [TagType] where
-  ValidSourcesFor Types.AbsoluteURL             = TagGroups.SrcTags
-  ValidSourcesFor (Types.RelativeURL Types.Get) = TagGroups.SrcTags
-  ValidSourcesFor (Types.RelativeURL method)    = TagGroups.SrcTags
-  ValidSourcesFor Types.RawURL                  = TagGroups.SrcTags
+  ValidSourcesFor Types.AbsoluteURL              = TagGroups.SrcTags
+  ValidSourcesFor (Types.RelativeURL Types.Get)  = TagGroups.SrcTags
+  ValidSourcesFor (Types.RelativeURL method)     = '[]
+  ValidSourcesFor Types.RawURL                   = TagGroups.SrcTags
 
 type family AlertSource (member :: Bool) (url :: Type) (tag :: TagType) :: Bool where
   AlertSource 'True url tag =

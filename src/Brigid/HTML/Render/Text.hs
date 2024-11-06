@@ -608,6 +608,13 @@ renderAttribute attr =
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule
 
+    Attr_Ping pings ->
+      Just
+        . buildAttribute "ping"
+        . T.unwords
+        . fmap Types.pingToText
+        $ NEL.toList pings
+
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"

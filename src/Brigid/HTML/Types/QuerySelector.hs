@@ -647,7 +647,7 @@ import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
 import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
 import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
-import Brigid.HTML.Types.URL (RelativeURL, URLTypes, mkURL, relativeURLToText, urlToText)
+import Brigid.HTML.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
 
@@ -2850,9 +2850,8 @@ attr_optimum = (,) Attr_Optimum . Just
 attr_pattern :: T.Text -> AttributeSelector
 attr_pattern = (,) Attr_Pattern . Just
 
--- TODO
-attr_ping :: T.Text -> AttributeSelector
-attr_ping = (,) Attr_Ping . Just
+attr_ping :: NEL.NonEmpty Ping -> AttributeSelector
+attr_ping = (,) Attr_Ping . Just . T.unwords . fmap pingToText . NEL.toList
 
 -- TODO
 attr_placeholder :: T.Text -> AttributeSelector

@@ -17,6 +17,7 @@ module Brigid.HTML.Attributes.Scoped
   , minlength
   , name
   , nomodule
+  , ping
   , referrerpolicy
   , rel
   , src
@@ -122,6 +123,9 @@ name = Attr_Name
 
 nomodule :: ValidAttribute 'NoModule tag => Bool -> Attribute tag
 nomodule = Attr_NoModule
+
+ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
+ping = Attr_Ping
 
 referrerpolicy :: ValidAttribute 'ReferrerPolicy tag
                => Types.ReferrerPolicy -> Attribute tag
