@@ -90,10 +90,15 @@ module Brigid.HTML.Attributes.Internal
 
       , Attr_HyperScript
       )
+  , attributeText
+  , buildAttrMap
   ) where
 
 import Data.LanguageCodes (ISO639_1)
+import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
+import Data.Map (Map)
+import Data.Map qualified as Map
 import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
@@ -101,7 +106,8 @@ import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
 
-type Attributes tag = [Attribute tag]
+type Attributes tag =
+  Map T.Text (Attribute tag)
 
 data Attribute (tag :: TagType) where
   -- No Attribute
@@ -199,9 +205,6 @@ data Attribute (tag :: TagType) where
   --   :: T.Text -- TODO
   --   -> Attribute tag
 
-  -- TODO: This is a minimal definition. Proper representation of BCP-47
-  -- language codes will require A LOT more work.
-  --
   Attr_Lang
     :: Maybe ISO639_1
     -> Attribute tag
@@ -836,3 +839,259 @@ data Attribute (tag :: TagType) where
   Attr_HyperScript
     :: Types.HyperScript
     -> Attribute tag
+
+attributeText :: Attribute tag -> T.Text
+attributeText attr =
+  case attr of
+    Attr_NoAttribute ->
+      "no_attribute"
+
+    Attr_Custom name _value ->
+      name
+
+    -- Global Attributes
+    --
+
+    Attr_AccessKey _key ->
+      "accesskey"
+
+    Attr_Autocapitalize _option ->
+      "autocapitalize"
+
+    Attr_Autofocus _autofocus ->
+      "autofocus"
+
+    Attr_Class _class ->
+      "class"
+
+    Attr_ContentEditable _option ->
+      "contenteditable"
+
+    Attr_CustomData data_ _value ->
+      "data-" <> data_
+
+    Attr_Dir _directionality ->
+      "dir"
+
+    Attr_Draggable _draggable ->
+      "draggable"
+
+    Attr_EnterKeyHint _option ->
+      "enterkeyhint"
+
+    Attr_ExportParts _parts ->
+      "exportparts"
+
+    Attr_Hidden _hidden ->
+      "hidden"
+
+    Attr_Id _id ->
+      "id"
+
+    Attr_Inert _inert ->
+      "inert"
+
+    -- Attr_InputMode _mode ->
+    --   "inputmode"
+
+    Attr_Is _is ->
+      "is"
+
+    -- Attr_ItemId
+
+    -- Attr_ItemProp
+
+    -- Attr_ItemRef
+
+    -- Attr_ItemScope
+
+    -- Attr_ItemType
+
+    -- TODO: This is a minimal definition. Proper representation of BCP-47
+    -- language codes will require A LOT more work.
+    --
+    Attr_Lang _lang ->
+      "lang"
+
+    -- Attr_Nonce
+
+    Attr_Part _part ->
+      "part"
+
+    Attr_Popover _state ->
+      "popover"
+
+    -- Attr_Role
+
+    -- Attr_Slot
+
+    Attr_Spellcheck _spellcheck ->
+      "spellcheck"
+
+    Attr_Style _style ->
+      "style"
+
+    Attr_TabIndex _tabindex ->
+      "tabindex"
+
+    Attr_Title _title ->
+      "title"
+
+    Attr_Translate _translate ->
+      "translate"
+
+    -- Scoped Attributes
+    --
+    Attr_Async ->
+      "async"
+
+    Attr_Autoplay ->
+      "autoplay"
+
+    Attr_Charset ->
+      "charset"
+
+    Attr_Content _content ->
+      "content"
+
+    Attr_CrossOrigin _crossorigin ->
+      "crossorigin"
+
+    Attr_Defer ->
+      "defer"
+
+    Attr_Disabled _disabled ->
+      "disabled"
+
+    Attr_Headers _headers ->
+      "headers"
+
+    Attr_Height _height ->
+      "height"
+
+    Attr_Href _href ->
+      "href"
+
+    Attr_IsMap ->
+      "ismap"
+
+    Attr_MaxLength _maxlength ->
+      "maxlength"
+
+    Attr_MinLength _minlength ->
+      "minlength"
+
+    Attr_Name _name ->
+      "name"
+
+    Attr_NoModule _nomodule ->
+      "nomodule"
+
+    Attr_Ping _ping ->
+      "ping"
+
+    Attr_ReferrerPolicy _referrerpolicy ->
+      "referrerpolicy"
+
+    Attr_Rel _rel ->
+      "rel"
+
+    Attr_Src _src ->
+      "src"
+
+    Attr_Width _width ->
+      "width"
+
+    -- HTMX Attributes
+    --
+    Attr_Htmx _url ->
+      "htmx"
+
+    Attr_HxBoost _boosted ->
+      "hx-boost"
+
+    Attr_HxConfirm _confirmation ->
+      "hx-confirm"
+
+    Attr_HxDisable _disabled ->
+      "hx-disable"
+
+    Attr_HxDisabledElt _disabled ->
+      "hx-disabled-elt"
+
+    Attr_HxDisinherit _disinherit ->
+      "hx-disinherit"
+
+    Attr_HxEncoding ->
+      "hx-encoding"
+
+    Attr_HxExt _exts ->
+      "hx-ext"
+
+    Attr_HxHeaders _headers ->
+      "hx-headers"
+
+    Attr_HxHistory ->
+      "hx-history"
+
+    Attr_HxHistoryElt ->
+      "hx-history-elt"
+
+    Attr_HxInclude _include ->
+      "hx-include"
+
+    Attr_HxIndicator _indicator ->
+      "hx-indicator"
+
+    Attr_HxOn event _action ->
+      "hx-on" <> Types.hxOnEventText event
+
+    Attr_HxParams _params ->
+      "hx-params"
+
+    Attr_HxPreserve _preserved ->
+      "hx-preserve"
+
+    Attr_HxPrompt _prompt ->
+      "hx-prompt"
+
+    Attr_HxPushURL _url ->
+      "hx-push-url"
+
+    Attr_HxReplaceURL _url ->
+      "hx-replace-url"
+
+    Attr_HxSelect _selector ->
+      "hx-select"
+
+    Attr_HxSelectOOB _selects ->
+      "hx-select-oob"
+
+    Attr_HxSwap _swap ->
+      "hx-swap"
+
+    Attr_HxSwapOOB _mbSwap ->
+      "hx-swap-oob"
+
+    Attr_HxTarget _target ->
+      "hx-target"
+
+    Attr_HxTrigger _triggers ->
+      "hx-trigger"
+
+    Attr_HxValidate ->
+      "hx-validate"
+
+    Attr_HxVals _vals ->
+      "hx-vals"
+
+    -- Other
+    --
+    Attr_HyperScript _hyperscript ->
+      "_hyperscript"
+
+buildAttrMap :: [Attribute tag] -> Attributes tag
+buildAttrMap =
+  L.foldl'
+    (\attrs attr -> Map.insert (attributeText attr) attr attrs)
+    Map.empty

@@ -22,6 +22,7 @@ import Fleece.Core qualified as FC
 
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements qualified as E
+import Brigid.HTML.Elements.AddAttribute (addDivisionAttribute)
 import Brigid.HTML.Elements.Safe qualified as Safe
 import Brigid.HTML.Entities qualified as Entity
 import Brigid.HTML.HTMX.Config qualified as HTMX
@@ -179,7 +180,8 @@ sampleHyperScript =
 listExample :: [E.ChildHTML E.Division grandparent]
 listExample =
   let testDiv =
-        E.div []
+        flip addDivisionAttribute (A.id $ HTML.Id "added-later")
+          . E.div []
           . L.intersperse (E.text " ")
           . (E.text "First text" :)
           . (<> [ E.text "Last text" ])

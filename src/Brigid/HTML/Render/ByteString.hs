@@ -14,6 +14,7 @@ import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.LanguageCodes (toChars)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
+import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -55,351 +56,351 @@ renderTag html =
       lazyByteString $ toBytes content
 
     Tag_CustomHTML elemName attrs eiCloserOrContent ->
-      buildTag (toBytes elemName) attrs eiCloserOrContent
+      buildTag (toBytes elemName) (Map.elems attrs) eiCloserOrContent
 
     Tag_Anchor attrs content ->
-      buildTag "a" attrs $ Right content
+      buildTag "a" (Map.elems attrs) $ Right content
 
     Tag_Abbreviation attrs content ->
-      buildTag "abbr" attrs $ Right content
+      buildTag "abbr" (Map.elems attrs) $ Right content
 
     Tag_ContactAddress attrs content ->
-      buildTag "address" attrs $ Right content
+      buildTag "address" (Map.elems attrs) $ Right content
 
     Tag_Area attrs ->
-      buildTag "area" attrs $ Left Types.OmitTag
+      buildTag "area" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Article attrs content ->
-      buildTag "article" attrs $ Right content
+      buildTag "article" (Map.elems attrs) $ Right content
 
     Tag_Aside attrs content ->
-      buildTag "aside" attrs $ Right content
+      buildTag "aside" (Map.elems attrs) $ Right content
 
     Tag_Audio attrs content ->
-      buildTag "audio" attrs $ Right content
+      buildTag "audio" (Map.elems attrs) $ Right content
 
     Tag_BringAttentionTo attrs content ->
-      buildTag "b" attrs $ Right content
+      buildTag "b" (Map.elems attrs) $ Right content
 
     Tag_Base attrs ->
-      buildTag "base" attrs $ Left Types.OmitTag
+      buildTag "base" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_BidirectionalIsolation attrs content ->
-      buildTag "bdi" attrs $ Right content
+      buildTag "bdi" (Map.elems attrs) $ Right content
 
     Tag_BidirectionalOverride attrs content ->
-      buildTag "bdo" attrs $ Right content
+      buildTag "bdo" (Map.elems attrs) $ Right content
 
     Tag_Blockquote attrs content ->
-      buildTag "blockquote" attrs $ Right content
+      buildTag "blockquote" (Map.elems attrs) $ Right content
 
     Tag_Body attrs content ->
-      buildTag "body" attrs $ Right content
+      buildTag "body" (Map.elems attrs) $ Right content
 
     Tag_LineBreak attrs ->
-      buildTag "br" attrs $ Left Types.OmitTag
+      buildTag "br" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Button attrs content ->
-      buildTag "button" attrs $ Right content
+      buildTag "button" (Map.elems attrs) $ Right content
 
     Tag_Canvas attrs content ->
-      buildTag "canbvas" attrs $ Right content
+      buildTag "canbvas" (Map.elems attrs) $ Right content
 
     Tag_TableCaption attrs content ->
-      buildTag "caption" attrs $ Right content
+      buildTag "caption" (Map.elems attrs) $ Right content
 
     Tag_Citation attrs content ->
-      buildTag "cite" attrs $ Right content
+      buildTag "cite" (Map.elems attrs) $ Right content
 
     Tag_Code attrs content ->
-      buildTag "code" attrs $ Right content
+      buildTag "code" (Map.elems attrs) $ Right content
 
     Tag_TableColumn attrs ->
-      buildTag "col" attrs $ Left Types.OmitTag
+      buildTag "col" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_TableColumnGroup attrs content ->
-      buildTag "colgroup" attrs $ Right content
+      buildTag "colgroup" (Map.elems attrs) $ Right content
 
     Tag_Data attrs content ->
-      buildTag "data" attrs $ Right content
+      buildTag "data" (Map.elems attrs) $ Right content
 
     Tag_DataList attrs content ->
-      buildTag "datalist" attrs $ Right content
+      buildTag "datalist" (Map.elems attrs) $ Right content
 
     Tag_DescriptionDetails attrs content ->
-      buildTag "dd" attrs $ Right content
+      buildTag "dd" (Map.elems attrs) $ Right content
 
     Tag_DeletedText attrs content ->
-      buildTag "del" attrs $ Right content
+      buildTag "del" (Map.elems attrs) $ Right content
 
     Tag_Details attrs content ->
-      buildTag "details" attrs $ Right content
+      buildTag "details" (Map.elems attrs) $ Right content
 
     Tag_Definition attrs content ->
-      buildTag "dfn" attrs $ Right content
+      buildTag "dfn" (Map.elems attrs) $ Right content
 
     Tag_Dialog attrs content ->
-      buildTag "dialog" attrs $ Right content
+      buildTag "dialog" (Map.elems attrs) $ Right content
 
     Tag_Division attrs content ->
-      buildTag "div" attrs $ Right content
+      buildTag "div" (Map.elems attrs) $ Right content
 
     Tag_DescriptionList attrs content ->
-      buildTag "dl" attrs $ Right content
+      buildTag "dl" (Map.elems attrs) $ Right content
 
     Tag_DescriptionTerm attrs content ->
-      buildTag "dt" attrs $ Right content
+      buildTag "dt" (Map.elems attrs) $ Right content
 
     Tag_Emphasis attrs content ->
-      buildTag "em" attrs $ Right content
+      buildTag "em" (Map.elems attrs) $ Right content
 
     Tag_Embed attrs ->
-      buildTag "embed" attrs $ Left Types.OmitTag
+      buildTag "embed" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Fieldset attrs content ->
-      buildTag "fieldset" attrs $ Right content
+      buildTag "fieldset" (Map.elems attrs) $ Right content
 
     Tag_FigureCaption attrs content ->
-      buildTag "figcaption" attrs $ Right content
+      buildTag "figcaption" (Map.elems attrs) $ Right content
 
     Tag_Figure attrs content ->
-      buildTag "figure" attrs $ Right content
+      buildTag "figure" (Map.elems attrs) $ Right content
 
     Tag_Footer attrs content ->
-      buildTag "footer" attrs $ Right content
+      buildTag "footer" (Map.elems attrs) $ Right content
 
     Tag_Form attrs content ->
-      buildTag "form" attrs $ Right content
+      buildTag "form" (Map.elems attrs) $ Right content
 
     Tag_H1 attrs content ->
-      buildTag "h1" attrs $ Right content
+      buildTag "h1" (Map.elems attrs) $ Right content
 
     Tag_H2 attrs content ->
-      buildTag "h2" attrs $ Right content
+      buildTag "h2" (Map.elems attrs) $ Right content
 
     Tag_H3 attrs content ->
-      buildTag "h3" attrs $ Right content
+      buildTag "h3" (Map.elems attrs) $ Right content
 
     Tag_H4 attrs content ->
-      buildTag "h4" attrs $ Right content
+      buildTag "h4" (Map.elems attrs) $ Right content
 
     Tag_H5 attrs content ->
-      buildTag "h5" attrs $ Right content
+      buildTag "h5" (Map.elems attrs) $ Right content
 
     Tag_H6 attrs content ->
-      buildTag "h6" attrs $ Right content
+      buildTag "h6" (Map.elems attrs) $ Right content
 
     Tag_Head attrs content ->
-      buildTag "head" attrs $ Right content
+      buildTag "head" (Map.elems attrs) $ Right content
 
     Tag_Header attrs content ->
-      buildTag "header" attrs $ Right content
+      buildTag "header" (Map.elems attrs) $ Right content
 
     Tag_HeadingGroup attrs content ->
-      buildTag "hgroup" attrs $ Right content
+      buildTag "hgroup" (Map.elems attrs) $ Right content
 
     Tag_HorizontalRule attrs ->
-      buildTag "hr" attrs $ Left Types.OmitTag
+      buildTag "hr" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Html attrs content ->
       lazyByteString "<!DOCTYPE html>"
-        <> buildTag "html" attrs (Right content)
+        <> buildTag "html" (Map.elems attrs) (Right content)
 
     Tag_IdiomaticText attrs content ->
-      buildTag "i" attrs $ Right content
+      buildTag "i" (Map.elems attrs) $ Right content
 
     Tag_IFrame attrs ->
-      buildTag "iframe" attrs $ Left Types.WithTag
+      buildTag "iframe" (Map.elems attrs) $ Left Types.WithTag
 
     Tag_Image attrs ->
-      buildTag "img" attrs $ Left Types.OmitTag
+      buildTag "img" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Input attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildTag "input" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_InsertedText attrs content ->
-      buildTag "ins" attrs $ Right content
+      buildTag "ins" (Map.elems attrs) $ Right content
 
     Tag_KeyboardInput attrs content ->
-      buildTag "kbd" attrs $ Right content
+      buildTag "kbd" (Map.elems attrs) $ Right content
 
     Tag_Label attrs content ->
-      buildTag "label" attrs $ Right content
+      buildTag "label" (Map.elems attrs) $ Right content
 
     Tag_Legend attrs content ->
-      buildTag "legend" attrs $ Right content
+      buildTag "legend" (Map.elems attrs) $ Right content
 
     Tag_ListItem attrs content ->
-      buildTag "li" attrs $ Right content
+      buildTag "li" (Map.elems attrs) $ Right content
 
     Tag_Link attrs ->
-      buildTag "link" attrs $ Left Types.OmitTag
+      buildTag "link" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Main attrs content ->
-      buildTag "main" attrs $ Right content
+      buildTag "main" (Map.elems attrs) $ Right content
 
     Tag_Map attrs content ->
-      buildTag "map" attrs $ Right content
+      buildTag "map" (Map.elems attrs) $ Right content
 
     Tag_Mark attrs content ->
-      buildTag "mark" attrs $ Right content
+      buildTag "mark" (Map.elems attrs) $ Right content
 
     Tag_Menu attrs content ->
-      buildTag "menu" attrs $ Right content
+      buildTag "menu" (Map.elems attrs) $ Right content
 
     Tag_Meta attrs ->
-      buildTag "meta" attrs $ Left Types.OmitTag
+      buildTag "meta" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Meter attrs content ->
-      buildTag "meter" attrs $ Right content
+      buildTag "meter" (Map.elems attrs) $ Right content
 
     Tag_Nav attrs content ->
-      buildTag "nav" attrs $ Right content
+      buildTag "nav" (Map.elems attrs) $ Right content
 
     Tag_NoScript attrs content ->
-      buildTag "noscript" attrs $ Right content
+      buildTag "noscript" (Map.elems attrs) $ Right content
 
     Tag_Object attrs content ->
-      buildTag "object" attrs $ Right content
+      buildTag "object" (Map.elems attrs) $ Right content
 
     Tag_OrderedList attrs content ->
-      buildTag "ol" attrs $ Right content
+      buildTag "ol" (Map.elems attrs) $ Right content
 
     Tag_OptionGroup attrs content ->
-      buildTag "optgroup" attrs $ Right content
+      buildTag "optgroup" (Map.elems attrs) $ Right content
 
     Tag_Option attrs content ->
-      buildTag "option" attrs $ Right content
+      buildTag "option" (Map.elems attrs) $ Right content
 
     Tag_Output attrs content ->
-      buildTag "output" attrs $ Right content
+      buildTag "output" (Map.elems attrs) $ Right content
 
     Tag_Paragraph attrs content ->
-      buildTag "p" attrs $ Right content
+      buildTag "p" (Map.elems attrs) $ Right content
 
     Tag_Picture attrs content ->
-      buildTag "picture" attrs $ Right content
+      buildTag "picture" (Map.elems attrs) $ Right content
 
     Tag_PreformattedText attrs content ->
-      buildTag "pre" attrs $ Right content
+      buildTag "pre" (Map.elems attrs) $ Right content
 
     Tag_Progress attrs content ->
-      buildTag "progress" attrs $ Right content
+      buildTag "progress" (Map.elems attrs) $ Right content
 
     Tag_Quotation attrs content ->
-      buildTag "q" attrs $ Right content
+      buildTag "q" (Map.elems attrs) $ Right content
 
     Tag_RubyParenthesis attrs content ->
-      buildTag "rp" attrs $ Right content
+      buildTag "rp" (Map.elems attrs) $ Right content
 
     Tag_RubyText attrs content ->
-      buildTag "rt" attrs $ Right content
+      buildTag "rt" (Map.elems attrs) $ Right content
 
     Tag_Ruby attrs content ->
-      buildTag "ruby" attrs $ Right content
+      buildTag "ruby" (Map.elems attrs) $ Right content
 
     Tag_Strikethrough attrs content ->
-      buildTag "s" attrs $ Right content
+      buildTag "s" (Map.elems attrs) $ Right content
 
     Tag_Sample attrs content ->
-      buildTag "sample" attrs $ Right content
+      buildTag "sample" (Map.elems attrs) $ Right content
 
     Tag_Script attrs mbScript ->
-      buildTag "script" attrs $
+      buildTag "script" (Map.elems attrs) $
         maybe
           (Left Types.WithTag)
           (Right . L.singleton . Tag_RawHTML . NET.toText)
           mbScript
 
     Tag_Search attrs content ->
-      buildTag "search" attrs $ Right content
+      buildTag "search" (Map.elems attrs) $ Right content
 
     Tag_Section attrs content ->
-      buildTag "section" attrs $ Right content
+      buildTag "section" (Map.elems attrs) $ Right content
 
     Tag_Select attrs content ->
-      buildTag "select" attrs $ Right content
+      buildTag "select" (Map.elems attrs) $ Right content
 
     Tag_Slot attrs content ->
-      buildTag "slot" attrs $ Right content
+      buildTag "slot" (Map.elems attrs) $ Right content
 
     Tag_SideComment attrs content ->
-      buildTag "small" attrs $ Right content
+      buildTag "small" (Map.elems attrs) $ Right content
 
     Tag_Source attrs ->
-      buildTag "source" attrs $ Left Types.OmitTag
+      buildTag "source" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Span attrs content ->
-      buildTag "span" attrs $ Right content
+      buildTag "span" (Map.elems attrs) $ Right content
 
     Tag_Strong attrs content ->
-      buildTag "strong" attrs $ Right content
+      buildTag "strong" (Map.elems attrs) $ Right content
 
     Tag_Style attrs style ->
-      buildTag "style" attrs
+      buildTag "style" (Map.elems attrs)
         . Right
         . L.singleton
         $ Tag_RawHTML style
 
     Tag_Subscript attrs content ->
-      buildTag "sub" attrs $ Right content
+      buildTag "sub" (Map.elems attrs) $ Right content
 
     Tag_Summary attrs content ->
-      buildTag "summary" attrs $ Right content
+      buildTag "summary" (Map.elems attrs) $ Right content
 
     Tag_Superscript attrs content ->
-      buildTag "sup" attrs $ Right content
+      buildTag "sup" (Map.elems attrs) $ Right content
 
     Tag_Table attrs content ->
-      buildTag "table" attrs $ Right content
+      buildTag "table" (Map.elems attrs) $ Right content
 
     Tag_TableBody attrs content ->
-      buildTag "tbody" attrs $ Right content
+      buildTag "tbody" (Map.elems attrs) $ Right content
 
     Tag_TableDataCell attrs content ->
-      buildTag "td" attrs $ Right content
+      buildTag "td" (Map.elems attrs) $ Right content
 
     Tag_ContentTemplate attrs content ->
-      buildTag "template" attrs $ Right content
+      buildTag "template" (Map.elems attrs) $ Right content
 
     Tag_TextArea attrs content ->
-      buildTag "textarea" attrs $ Right content
+      buildTag "textarea" (Map.elems attrs) $ Right content
 
     Tag_TableFoot attrs content ->
-      buildTag "tfoot" attrs $ Right content
+      buildTag "tfoot" (Map.elems attrs) $ Right content
 
     Tag_TableHeader attrs content ->
-      buildTag "th" attrs $ Right content
+      buildTag "th" (Map.elems attrs) $ Right content
 
     Tag_TableHead attrs content ->
-      buildTag "thead" attrs $ Right content
+      buildTag "thead" (Map.elems attrs) $ Right content
 
     Tag_Time attrs content ->
-      buildTag "time" attrs $ Right content
+      buildTag "time" (Map.elems attrs) $ Right content
 
     Tag_Title attrs content ->
-      buildTag "title" attrs $ Right content
+      buildTag "title" (Map.elems attrs) $ Right content
 
     Tag_TableRow attrs content ->
-      buildTag "tr" attrs $ Right content
+      buildTag "tr" (Map.elems attrs) $ Right content
 
     Tag_Track attrs ->
-      buildTag "track" attrs $ Left Types.OmitTag
+      buildTag "track" (Map.elems attrs) $ Left Types.OmitTag
 
     Tag_Underline attrs content ->
-      buildTag "u" attrs $ Right content
+      buildTag "u" (Map.elems attrs) $ Right content
 
     Tag_UnorderedList attrs content ->
-      buildTag "ul" attrs $ Right content
+      buildTag "ul" (Map.elems attrs) $ Right content
 
     Tag_Variable attrs content ->
-      buildTag "var" attrs $ Right content
+      buildTag "var" (Map.elems attrs) $ Right content
 
     Tag_Video attrs content ->
-      buildTag "video" attrs $ Right content
+      buildTag "video" (Map.elems attrs) $ Right content
 
     Tag_WordBreakOpportunity attrs ->
-      buildTag "wbr" attrs $ Left Types.OmitTag
+      buildTag "wbr" (Map.elems attrs) $ Left Types.OmitTag
 
 buildTag :: LBS.ByteString
          -> [Attribute attr]
