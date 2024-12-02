@@ -2774,9 +2774,8 @@ attr_httpEquiv = (,) Attr_HttpEquiv . Just
 attr_integrity :: T.Text -> AttributeSelector
 attr_integrity = (,) Attr_Integrity . Just
 
--- TODO
-attr_ismap :: T.Text -> AttributeSelector
-attr_ismap = (,) Attr_IsMap . Just
+attr_ismap :: AttributeSelector
+attr_ismap = (Attr_IsMap, Nothing)
 
 -- TODO
 attr_kind :: T.Text -> AttributeSelector

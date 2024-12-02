@@ -19,7 +19,7 @@ import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Tags qualified as Tags
-import Brigid.HTML.Elements.Internal (ChildHTML(..))
+import Brigid.HTML.Elements.Internal (ChildHTML (..))
 
 table :: ValidChild Tags.Table parent grandparent
       => [Attribute Tags.Table]

@@ -13,6 +13,7 @@ module Brigid.HTML.Attributes.Scoped
   , headers
   , height
   , href
+  , ismap
   , maxlength
   , minlength
   , name
@@ -97,6 +98,13 @@ href :: ( KnownNat branchIndex
      => href -> Attribute tag
 href =
   Attr_Href . Types.mkHref
+
+-- | The `ismap` attribute is only valid on <img> tags that are nested within
+-- an <a> tag. For safe construction of the `ismap` attribute, use
+-- 'Brigid.HTML.Elements.Safe.Image'.
+--
+ismap :: ValidAttribute 'IsMap tag => Attribute tag
+ismap = Attr_IsMap
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the

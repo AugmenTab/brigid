@@ -27,6 +27,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Headers        = '[ Tags.TableDataCell ]
   ValidElementsFor Height         = TagGroups.SizableTags
   ValidElementsFor Href           = TagGroups.HrefTags
+  ValidElementsFor IsMap          = '[ Tags.Image ]
   ValidElementsFor MaxLength      = TagGroups.LengthTags
   ValidElementsFor MinLength      = TagGroups.LengthTags
   ValidElementsFor Name           = TagGroups.NameTags

@@ -191,6 +191,7 @@ listExample =
           ]
       , E.p [] [ E.text "This is some paragraph text." ]
       , E.img [ A.draggable False ]
+   -- , Safe.imgMap [] -- This fails because `imgMap` must be used inside an Anchor tag.
       ]
 
 safeScriptExample :: E.ChildHTML E.Division grandparent
@@ -204,7 +205,7 @@ safeScriptExample =
 transparencyExample :: E.ChildHTML E.Division grandparent
 transparencyExample =
   E.a []
-    [ E.img []
+    [ Safe.imgMap []
  -- , E.a [] [] -- This fails, because a is excluded from the transparent content that a holds.
  -- , E.li [] [] -- This fails, because li isn't a valid child for the grandparent div, and a is transparent.
     , E.div [] []
