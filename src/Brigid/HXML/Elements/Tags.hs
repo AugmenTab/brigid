@@ -49,7 +49,7 @@ type NoElement = 'TagType.NoElement
 -- that it never be exported from `HXML.Elements`.
 type HXML = 'TagType.HXML
 
--- This type synonym represents an HXML comment.
+-- | This type synonym represents an HXML comment.
 type Comment = 'TagType.Comment
 
 -- | This type synonym represents raw HXML. This content is unchecked and
