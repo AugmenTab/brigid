@@ -55,8 +55,8 @@ documentExample =
         -- , E.script [ A.src pingURL ] Nothing -- This fails, because RelativeURL Post is not a valid URL type for the src attribute.
         ]
     , E.body [ A.hxBoost True
-             , A.customAttribute "myCoolAttribute" "myCoolValue"
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
+             , A.customAttribute "myCoolAttribute" "myCoolValue"
           -- , A.crossorigin HTML.Anonymous -- This fails, because crossorigin is not a valid attribute for body.
              ]
         [ E.header []

@@ -97,8 +97,8 @@ module Brigid.HTML.Attributes.Internal
 import Data.LanguageCodes (ISO639_1)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
-import Data.Map (Map)
-import Data.Map qualified as Map
+import Data.Map.Ordered.Strict (OMap, (|<))
+import Data.Map.Ordered.Strict qualified as OMap
 import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
@@ -107,7 +107,7 @@ import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
 
 type Attributes tag =
-  Map T.Text (Attribute tag)
+  OMap T.Text (Attribute tag)
 
 data Attribute (tag :: TagType) where
   -- No Attribute
@@ -1093,5 +1093,5 @@ attributeText attr =
 buildAttrMap :: [Attribute tag] -> Attributes tag
 buildAttrMap =
   L.foldl'
-    (\attrs attr -> Map.insert (attributeText attr) attr attrs)
-    Map.empty
+    (\attrs attr -> (attributeText attr, attr) |< attrs)
+    OMap.empty
