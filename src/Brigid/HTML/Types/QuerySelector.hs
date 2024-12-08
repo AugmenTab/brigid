@@ -2665,9 +2665,8 @@ attr_color = (,) Attr_Color . Just
 attr_cols :: T.Text -> AttributeSelector
 attr_cols = (,) Attr_Cols . Just
 
--- TODO
-attr_colspan :: T.Text -> AttributeSelector
-attr_colspan = (,) Attr_Colspan . Just
+attr_colspan :: Word -> AttributeSelector
+attr_colspan = (,) Attr_Colspan . Just . showText
 
 attr_content :: T.Text -> AttributeSelector
 attr_content = (,) Attr_Content . Just
@@ -2893,9 +2892,8 @@ attr_reversed = (,) Attr_Reversed . Just
 attr_rows :: T.Text -> AttributeSelector
 attr_rows = (,) Attr_Rows . Just
 
--- TODO
-attr_rowspan :: T.Text -> AttributeSelector
-attr_rowspan = (,) Attr_Rowspan . Just
+attr_rowspan :: Word -> AttributeSelector
+attr_rowspan = (,) Attr_Rowspan . Just . showText
 
 -- TODO
 attr_sandbox :: T.Text -> AttributeSelector

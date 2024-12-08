@@ -555,6 +555,9 @@ renderAttribute attr =
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 
+    Attr_Colspan colspan ->
+      Just . buildAttribute "colspan" . T.pack $ show colspan
+
     Attr_Content content ->
       Just $ buildAttribute "content" content
 
@@ -624,6 +627,9 @@ renderAttribute attr =
 
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToText rel
+
+    Attr_Rowspan rowspan ->
+      Just . buildAttribute "rowspan" . T.pack $ show rowspan
 
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToText src

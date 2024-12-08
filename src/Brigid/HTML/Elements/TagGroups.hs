@@ -40,6 +40,7 @@ module Brigid.HTML.Elements.TagGroups
   , RubyContent
   , SummaryContent
   , TableContent
+  , TableCells
   , TableRowContent
   , TableRowOnly
 
@@ -602,11 +603,16 @@ type TableContent =
   , 'TableFoot
   ]
 
+type TableCells =
+  [ 'TableDataCell
+  , 'TableHeader
+  ]
+
 -- This list represents all elements that are valid under a `<tr>` tag.
 type TableRowContent =
-  'TableDataCell
-    ': 'TableHeader
-    ': ScriptSupportingContent
+  Union
+    TableCells
+    ScriptSupportingContent
 
 type TableRowOnly =
   '[ TableRow ]

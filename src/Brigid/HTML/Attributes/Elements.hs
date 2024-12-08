@@ -20,6 +20,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Async          = '[ Tags.Script ]
   ValidElementsFor Autoplay       = TagGroups.MediaContent
   ValidElementsFor Charset        = [ Tags.Meta, Tags.Script ]
+  ValidElementsFor Colspan        = TagGroups.TableCells
   ValidElementsFor Content        = '[ Tags.Meta ]
   ValidElementsFor CrossOrigin    = TagGroups.CrossOriginTags
   ValidElementsFor Defer          = '[ Tags.Script ]
@@ -35,6 +36,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Ping           = '[ Tags.Anchor ]
   ValidElementsFor ReferrerPolicy = '[ Tags.Script ]
   ValidElementsFor Rel            = TagGroups.RelTags
+  ValidElementsFor Rowspan        = TagGroups.TableCells
   ValidElementsFor Src            = TagGroups.SrcTags
   ValidElementsFor Width          = TagGroups.SizableTags
 

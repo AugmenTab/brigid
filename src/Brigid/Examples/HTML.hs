@@ -223,8 +223,7 @@ tableWithBodyExample =
               , E.td [] [ E.text "2" ]
               , E.td [] [ E.text "3" , E.noElement ]
               , E.td [] [ E.text "4" ]
-              , E.td [] [ E.text "5" ]
-              , E.td [] [ E.text "6" ]
+              , E.td [ A.rowspan 2 ] [ E.text "5" ]
               ]
           ]
       ]
@@ -267,7 +266,7 @@ tableExample content =
                 , E.th [] [ E.text "3" ]
                 , E.th [] [ E.text "4" ]
                 , E.th [] [ E.text "5" , E.comment "Fifth comment" ]
-                , E.th [] [ E.text "6" ]
+                , E.th [ A.colspan 0 ] [ E.text "6" ]
                 ]
             ]
 

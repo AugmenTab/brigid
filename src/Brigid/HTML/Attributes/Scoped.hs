@@ -5,6 +5,7 @@ module Brigid.HTML.Attributes.Scoped
   ( async
   , autoplay
   , charset
+  , colspan
   , content
   , crossorigin
   , defer
@@ -21,6 +22,7 @@ module Brigid.HTML.Attributes.Scoped
   , ping
   , referrerpolicy
   , rel
+  , rowspan
   , src
   , width
   ) where
@@ -50,6 +52,9 @@ autoplay = Attr_Autoplay
 --
 charset :: ValidAttribute 'Charset tag => Attribute tag
 charset = Attr_Charset
+
+colspan :: ValidAttribute 'Colspan tag => Word -> Attribute tag
+colspan = Attr_Colspan
 
 -- | The `content` attribute is left as simple 'T.Text' because its value is
 -- dependent on the `name` or `http-equiv` attributes, and managing the
@@ -147,6 +152,9 @@ rel :: ( KnownNat branchIndex
     => rel -> Attribute tag
 rel =
   Attr_Rel . Types.mkRelationship
+
+rowspan :: ValidAttribute 'Rowspan tag => Word -> Attribute tag
+rowspan = Attr_Rowspan
 
 src :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes

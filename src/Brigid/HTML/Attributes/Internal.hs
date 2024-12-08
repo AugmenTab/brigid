@@ -41,6 +41,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Async
       , Attr_Autoplay
       , Attr_Charset
+      , Attr_Colspan
       , Attr_Content
       , Attr_CrossOrigin
       , Attr_Defer
@@ -56,6 +57,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Ping
       , Attr_ReferrerPolicy
       , Attr_Rel
+      , Attr_Rowspan
       , Attr_Src
       , Attr_Width
 
@@ -325,10 +327,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Colspan
-  --   :: ValidAttribute 'Colspan tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Colspan
+    :: ValidAttribute 'Colspan tag
+    => Word
+    -> Attribute tag
 
   Attr_Content
     :: ValidAttribute 'Content tag
@@ -618,10 +620,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Rowspan
-  --   :: ValidAttribute 'Rowspan tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Rowspan
+    :: ValidAttribute 'Rowspan tag
+    => Word
+    -> Attribute tag
 
   -- Attr_Sandbox
   --   :: ValidAttribute 'Sandbox tag
@@ -943,6 +945,9 @@ attributeText attr =
     Attr_Charset ->
       "charset"
 
+    Attr_Colspan _colspan ->
+      "colspan"
+
     Attr_Content _content ->
       "content"
 
@@ -987,6 +992,9 @@ attributeText attr =
 
     Attr_Rel _rel ->
       "rel"
+
+    Attr_Rowspan _rowspan ->
+      "rowspan"
 
     Attr_Src _src ->
       "src"
