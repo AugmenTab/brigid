@@ -4,9 +4,8 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 
 ### TODO (HTML)
 
-1. Consider adding safer builder functions for any HTML elements with complex conditions for its permitted content, such as what was done with <del>`table`</del> <ins>`HTML.Elements.Table`</ins>. Go through the entire list of elements again to determine what qualifies for this.
-2. For each of global, HTMX, event listeners, arias, and scoped
-attributes:
+1. Consider adding safer builder functions for any HTML elements with complex conditions for its permitted content, such as what was done with `Brigid.HTML.Elements.Safe.Table`. Go through the entire list of elements again to determine what qualifies for this.
+2. For each of global, HTMX, event listeners, arias, and scoped attributes:
     1. Make constructors for `Attribute` GADT.
     2. Make render functions.
     3. Modify `ValidElementsFor`.
@@ -14,10 +13,16 @@ attributes:
 3. Add support for the SVG tag.
 4. Add support for MathML.
 5. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
-6. Add support for XML.
-7. Add support for HXML.
+
+### TODO (XML)
+
+1. Add support for XML.
+
+### TODO (HXML)
+
+1. Add support for HXML.
 
 ### Possible optimizations
 
-1. Change all `ToText` and `ToBytes` functions to use builders; export them for use in render, but not from `HTML.Types`.
+1. Change all `ToText` and `ToBytes` functions to use builders? Export them for use in render, but not from `Brigid.HTML.Types`.
 
