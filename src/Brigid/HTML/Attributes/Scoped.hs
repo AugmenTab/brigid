@@ -5,6 +5,7 @@ module Brigid.HTML.Attributes.Scoped
   ( async
   , autoplay
   , charset
+  , cols
   , colspan
   , content
   , crossorigin
@@ -22,6 +23,7 @@ module Brigid.HTML.Attributes.Scoped
   , ping
   , referrerpolicy
   , rel
+  , rows
   , rowspan
   , src
   , width
@@ -52,6 +54,9 @@ autoplay = Attr_Autoplay
 --
 charset :: ValidAttribute 'Charset tag => Attribute tag
 charset = Attr_Charset
+
+cols :: ValidAttribute 'Cols tag => Word -> Attribute tag
+cols = Attr_Cols
 
 colspan :: ValidAttribute 'Colspan tag => Word -> Attribute tag
 colspan = Attr_Colspan
@@ -152,6 +157,9 @@ rel :: ( KnownNat branchIndex
     => rel -> Attribute tag
 rel =
   Attr_Rel . Types.mkRelationship
+
+rows :: ValidAttribute 'Rows tag => Word -> Attribute tag
+rows = Attr_Rows
 
 rowspan :: ValidAttribute 'Rowspan tag => Word -> Attribute tag
 rowspan = Attr_Rowspan

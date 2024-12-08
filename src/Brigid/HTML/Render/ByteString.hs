@@ -576,6 +576,9 @@ renderAttribute attr =
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 
+    Attr_Cols cols ->
+      Just . buildAttribute "cols" . LBS8.pack $ show cols
+
     Attr_Colspan colspan ->
       Just . buildAttribute "colspan" . LBS8.pack $ show colspan
 
@@ -648,6 +651,9 @@ renderAttribute attr =
 
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToBytes rel
+
+    Attr_Rows rows ->
+      Just . buildAttribute "rows" . LBS8.pack $ show rows
 
     Attr_Rowspan rowspan ->
       Just . buildAttribute "rowspan" . LBS8.pack $ show rowspan
