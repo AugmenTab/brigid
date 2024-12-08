@@ -3,8 +3,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 module Brigid.HTML.Attributes.Internal
-  ( Attributes
-  , Attribute
+  ( Attribute
       ( Attr_NoAttribute
       , Attr_Custom
       , Attr_AccessKey
@@ -91,23 +90,16 @@ module Brigid.HTML.Attributes.Internal
       , Attr_HyperScript
       )
   , attributeText
-  , buildAttrMap
   ) where
 
 import Data.LanguageCodes (ISO639_1)
-import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
-import Data.Map.Ordered.Strict (OMap, (|<))
-import Data.Map.Ordered.Strict qualified as OMap
 import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
-
-type Attributes tag =
-  OMap T.Text (Attribute tag)
 
 data Attribute (tag :: TagType) where
   -- No Attribute
@@ -1089,9 +1081,3 @@ attributeText attr =
     --
     Attr_HyperScript _hyperscript ->
       "_hyperscript"
-
-buildAttrMap :: [Attribute tag] -> Attributes tag
-buildAttrMap =
-  L.foldl'
-    (\attrs attr -> (attributeText attr, attr) |< attrs)
-    OMap.empty

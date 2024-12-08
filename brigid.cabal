@@ -53,7 +53,6 @@ library
       Brigid.HTML.HTMX.Config
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Render.ByteString
-      Brigid.HTML.Render.Internal.Attribute
       Brigid.HTML.Render.Internal.Escape
       Brigid.HTML.Render.String
       Brigid.HTML.Render.Text
@@ -132,13 +131,13 @@ library
     , beeline-http-client
     , beeline-routing
     , bytestring
+    , containers
     , html-email-validate
     , http-types
     , iso639
     , json-fleece-aeson
     , json-fleece-core
     , non-empty-text
-    , ordered-containers
     , shrubbery
     , text
   default-language: Haskell2010
@@ -167,13 +166,13 @@ test-suite brigid-test
     , beeline-routing
     , brigid
     , bytestring
+    , containers
     , html-email-validate
     , http-types
     , iso639
     , json-fleece-aeson
     , json-fleece-core
     , non-empty-text
-    , ordered-containers
     , shrubbery
     , text
   default-language: Haskell2010

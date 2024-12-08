@@ -32,13 +32,13 @@ dependencies:
 - beeline-http-client
 - beeline-routing
 - bytestring
+- containers
 - html-email-validate
 - http-types
 - iso639
 - json-fleece-aeson
 - json-fleece-core
 - non-empty-text
-- ordered-containers
 - shrubbery
 - text
 

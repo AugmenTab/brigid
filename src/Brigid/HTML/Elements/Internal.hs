@@ -129,7 +129,7 @@ module Brigid.HTML.Elements.Internal
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 
-import Brigid.HTML.Attributes.Internal (Attributes)
+import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.TagType (TagType (..))
 import Brigid.HTML.Types (NoContent)
@@ -158,663 +158,663 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
 
   Tag_CustomHTML
     :: T.Text
-    -> Attributes 'CustomHTML
+    -> [Attribute 'CustomHTML]
     -> Either NoContent [ChildHTML 'CustomHTML parent]
     -> ChildHTML parent grandparent
 
   Tag_Anchor
     :: ValidChild 'Anchor parent grandparent
-    => Attributes 'Anchor
+    => [Attribute 'Anchor]
     -> [ChildHTML 'Anchor parent]
     -> ChildHTML parent grandparent
 
   Tag_Abbreviation
     :: ValidChild 'Abbreviation parent grandparent
-    => Attributes 'Abbreviation
+    => [Attribute 'Abbreviation]
     -> [ChildHTML 'Abbreviation parent]
     -> ChildHTML parent grandparent
 
   Tag_ContactAddress
     :: ValidChild 'ContactAddress parent grandparent
-    => Attributes 'ContactAddress
+    => [Attribute 'ContactAddress]
     -> [ChildHTML 'ContactAddress parent]
     -> ChildHTML parent grandparent
 
   Tag_Area
     :: ValidChild 'Area parent grandparent
-    => Attributes 'Area
+    => [Attribute 'Area]
     -> ChildHTML parent grandparent
 
   Tag_Article
     :: ValidChild 'Article parent grandparent
-    => Attributes 'Article
+    => [Attribute 'Article]
     -> [ChildHTML 'Article parent]
     -> ChildHTML parent grandparent
 
   Tag_Aside
     :: ValidChild 'Aside parent grandparent
-    => Attributes 'Aside
+    => [Attribute 'Aside]
     -> [ChildHTML 'Aside parent]
     -> ChildHTML parent grandparent
 
   Tag_Audio
     :: ValidChild 'Audio parent grandparent
-    => Attributes 'Audio
+    => [Attribute 'Audio]
     -> [ChildHTML 'Audio parent]
     -> ChildHTML parent grandparent
 
   Tag_BringAttentionTo
     :: ValidChild 'BringAttentionTo parent grandparent
-    => Attributes 'BringAttentionTo
+    => [Attribute 'BringAttentionTo]
     -> [ChildHTML 'BringAttentionTo parent]
     -> ChildHTML parent grandparent
 
   Tag_Base
     :: ValidChild 'Base parent grandparent
-    => Attributes 'Base
+    => [Attribute 'Base]
     -> ChildHTML parent grandparent
 
   Tag_BidirectionalIsolation
     :: ValidChild 'BidirectionalIsolation parent grandparent
-    => Attributes 'BidirectionalIsolation
+    => [Attribute 'BidirectionalIsolation]
     -> [ChildHTML 'BidirectionalIsolation parent]
     -> ChildHTML parent grandparent
 
   Tag_BidirectionalOverride
     :: ValidChild 'BidirectionalOverride parent grandparent
-    => Attributes 'BidirectionalOverride
+    => [Attribute 'BidirectionalOverride]
     -> [ChildHTML 'BidirectionalOverride parent]
     -> ChildHTML parent grandparent
 
   Tag_Blockquote
     :: ValidChild 'Blockquote parent grandparent
-    => Attributes 'Blockquote
+    => [Attribute 'Blockquote]
     -> [ChildHTML 'Blockquote parent]
     -> ChildHTML parent grandparent
 
   Tag_Body
     :: ValidChild 'Body parent grandparent
-    => Attributes 'Body
+    => [Attribute 'Body]
     -> [ChildHTML 'Body parent]
     -> ChildHTML parent grandparent
 
   Tag_LineBreak
     :: ValidChild 'LineBreak parent grandparent
-    => Attributes 'LineBreak
+    => [Attribute 'LineBreak]
     -> ChildHTML parent grandparent
 
   Tag_Button
     :: ValidChild 'Button parent grandparent
-    => Attributes 'Button
+    => [Attribute 'Button]
     -> [ChildHTML 'Button parent]
     -> ChildHTML parent grandparent
 
   Tag_Canvas
     :: ValidChild 'Canvas parent grandparent
-    => Attributes 'Canvas
+    => [Attribute 'Canvas]
     -> [ChildHTML 'Canvas parent]
     -> ChildHTML parent grandparent
 
   Tag_TableCaption
     :: ValidChild 'TableCaption parent grandparent
-    => Attributes 'TableCaption
+    => [Attribute 'TableCaption]
     -> [ChildHTML 'TableCaption parent]
     -> ChildHTML parent grandparent
 
   Tag_Citation
     :: ValidChild 'Citation parent grandparent
-    => Attributes 'Citation
+    => [Attribute 'Citation]
     -> [ChildHTML 'Citation parent]
     -> ChildHTML parent grandparent
 
   Tag_Code
     :: ValidChild 'Code parent grandparent
-    => Attributes 'Code
+    => [Attribute 'Code]
     -> [ChildHTML 'Code parent]
     -> ChildHTML parent grandparent
 
   Tag_TableColumn
     :: ValidChild 'TableColumn parent grandparent
-    => Attributes 'TableColumn
+    => [Attribute 'TableColumn]
     -> ChildHTML parent grandparent
 
   Tag_TableColumnGroup
     :: ValidChild 'TableColumnGroup parent grandparent
-    => Attributes 'TableColumnGroup
+    => [Attribute 'TableColumnGroup]
     -> [ChildHTML 'TableColumnGroup parent]
     -> ChildHTML parent grandparent
 
   Tag_Data
     :: ValidChild 'Data parent grandparent
-    => Attributes 'Data
+    => [Attribute 'Data]
     -> [ChildHTML 'Data parent]
     -> ChildHTML parent grandparent
 
   Tag_DataList
     :: ValidChild 'DataList parent grandparent
-    => Attributes 'DataList
+    => [Attribute 'DataList]
     -> [ChildHTML 'DataList parent]
     -> ChildHTML parent grandparent
 
   Tag_DescriptionDetails
     :: ValidChild 'DescriptionDetails parent grandparent
-    => Attributes 'DescriptionDetails
+    => [Attribute 'DescriptionDetails]
     -> [ChildHTML 'DescriptionDetails parent]
     -> ChildHTML parent grandparent
 
   Tag_DeletedText
     :: ValidChild 'DeletedText parent grandparent
-    => Attributes 'DeletedText
+    => [Attribute 'DeletedText]
     -> [ChildHTML parent parent]
     -> ChildHTML parent grandparent
 
   Tag_Details
     :: ValidChild 'Details parent grandparent
-    => Attributes 'Details
+    => [Attribute 'Details]
     -> [ChildHTML 'Details parent]
     -> ChildHTML parent grandparent
 
   Tag_Definition
     :: ValidChild 'Definition parent grandparent
-    => Attributes 'Definition
+    => [Attribute 'Definition]
     -> [ChildHTML 'Definition parent]
     -> ChildHTML parent grandparent
 
   Tag_Dialog
     :: ValidChild 'Dialog parent grandparent
-    => Attributes 'Dialog
+    => [Attribute 'Dialog]
     -> [ChildHTML 'Dialog parent]
     -> ChildHTML parent grandparent
 
   Tag_Division
     :: ValidChild 'Division parent grandparent
-    => Attributes 'Division
+    => [Attribute 'Division]
     -> [ChildHTML 'Division parent]
     -> ChildHTML parent grandparent
 
   Tag_DescriptionList
     :: ValidChild 'DescriptionList parent grandparent
-    => Attributes 'DescriptionList
+    => [Attribute 'DescriptionList]
     -> [ChildHTML 'DescriptionList parent]
     -> ChildHTML parent grandparent
 
   Tag_DescriptionTerm
     :: ValidChild 'DescriptionTerm parent grandparent
-    => Attributes 'DescriptionTerm
+    => [Attribute 'DescriptionTerm]
     -> [ChildHTML 'DescriptionTerm parent]
     -> ChildHTML parent grandparent
 
   Tag_Emphasis
     :: ValidChild 'Emphasis parent grandparent
-    => Attributes 'Emphasis
+    => [Attribute 'Emphasis]
     -> [ChildHTML 'Emphasis parent]
     -> ChildHTML parent grandparent
 
   Tag_Embed
     :: ValidChild 'Embed parent grandparent
-    => Attributes 'Embed
+    => [Attribute 'Embed]
     -> ChildHTML parent grandparent
 
   Tag_Fieldset
     :: ValidChild 'Fieldset parent grandparent
-    => Attributes 'Fieldset
+    => [Attribute 'Fieldset]
     -> [ChildHTML 'Fieldset parent]
     -> ChildHTML parent grandparent
 
   Tag_FigureCaption
     :: ValidChild 'FigureCaption parent grandparent
-    => Attributes 'FigureCaption
+    => [Attribute 'FigureCaption]
     -> [ChildHTML 'FigureCaption parent]
     -> ChildHTML parent grandparent
 
   Tag_Figure
     :: ValidChild 'Figure parent grandparent
-    => Attributes 'Figure
+    => [Attribute 'Figure]
     -> [ChildHTML 'Figure parent]
     -> ChildHTML parent grandparent
 
   Tag_Footer
     :: ValidChild 'Footer parent grandparent
-    => Attributes 'Footer
+    => [Attribute 'Footer]
     -> [ChildHTML 'Footer parent]
     -> ChildHTML parent grandparent
 
   Tag_Form
     :: ValidChild 'Form parent grandparent
-    => Attributes 'Form
+    => [Attribute 'Form]
     -> [ChildHTML 'Form parent]
     -> ChildHTML parent grandparent
 
   Tag_H1
     :: ValidChild 'H1 parent grandparent
-    => Attributes 'H1
+    => [Attribute 'H1]
     -> [ChildHTML 'H1 parent]
     -> ChildHTML parent grandparent
 
   Tag_H2
     :: ValidChild 'H2 parent grandparent
-    => Attributes 'H2
+    => [Attribute 'H2]
     -> [ChildHTML 'H2 parent]
     -> ChildHTML parent grandparent
 
   Tag_H3
     :: ValidChild 'H3 parent grandparent
-    => Attributes 'H3
+    => [Attribute 'H3]
     -> [ChildHTML 'H3 parent]
     -> ChildHTML parent grandparent
 
   Tag_H4
     :: ValidChild 'H4 parent grandparent
-    => Attributes 'H4
+    => [Attribute 'H4]
     -> [ChildHTML 'H4 parent]
     -> ChildHTML parent grandparent
 
   Tag_H5
     :: ValidChild 'H5 parent grandparent
-    => Attributes 'H5
+    => [Attribute 'H5]
     -> [ChildHTML 'H5 parent]
     -> ChildHTML parent grandparent
 
   Tag_H6
     :: ValidChild 'H6 parent grandparent
-    => Attributes 'H6
+    => [Attribute 'H6]
     -> [ChildHTML 'H6 parent]
     -> ChildHTML parent grandparent
 
   Tag_Head
     :: ValidChild 'Head parent grandparent
-    => Attributes 'Head
+    => [Attribute 'Head]
     -> [ChildHTML 'Head parent]
     -> ChildHTML parent grandparent
 
   Tag_Header
     :: ValidChild 'Header parent grandparent
-    => Attributes 'Header
+    => [Attribute 'Header]
     -> [ChildHTML 'Header parent]
     -> ChildHTML parent grandparent
 
   Tag_HeadingGroup
     :: ValidChild 'HeadingGroup parent grandparent
-    => Attributes 'HeadingGroup
+    => [Attribute 'HeadingGroup]
     -> [ChildHTML 'HeadingGroup parent]
     -> ChildHTML parent grandparent
 
   Tag_HorizontalRule
     :: ValidChild 'HorizontalRule parent grandparent
-    => Attributes 'HorizontalRule
+    => [Attribute 'HorizontalRule]
     -> ChildHTML parent grandparent
 
   Tag_Html
-    :: Attributes 'Html
+    :: [Attribute 'Html]
     -> [ChildHTML 'Html 'Document]
     -> ChildHTML 'Document 'NoElement
 
   Tag_IdiomaticText
     :: ValidChild 'IdiomaticText parent grandparent
-    => Attributes 'IdiomaticText
+    => [Attribute 'IdiomaticText]
     -> [ChildHTML 'IdiomaticText parent]
     -> ChildHTML parent grandparent
 
   Tag_IFrame
     :: ValidChild 'IFrame parent grandparent
-    => Attributes 'IFrame
+    => [Attribute 'IFrame]
     -> ChildHTML parent grandparent
 
   Tag_Image
     :: ValidChild 'Image parent grandparent
-    => Attributes 'Image
+    => [Attribute 'Image]
     -> ChildHTML parent grandparent
 
   Tag_Input
     :: ValidChild 'Input parent grandparent
-    => Attributes 'Input
+    => [Attribute 'Input]
     -> ChildHTML parent grandparent
 
   Tag_InsertedText
     :: ValidChild 'InsertedText parent grandparent
-    => Attributes 'InsertedText
+    => [Attribute 'InsertedText]
     -> [ChildHTML parent parent]
     -> ChildHTML parent grandparent
 
   Tag_KeyboardInput
     :: ValidChild 'KeyboardInput parent grandparent
-    => Attributes 'KeyboardInput
+    => [Attribute 'KeyboardInput]
     -> [ChildHTML 'KeyboardInput parent]
     -> ChildHTML parent grandparent
 
   Tag_Label
     :: ValidChild 'Label parent grandparent
-    => Attributes 'Label
+    => [Attribute 'Label]
     -> [ChildHTML 'Label parent]
     -> ChildHTML parent grandparent
 
   Tag_Legend
     :: ValidChild 'Legend parent grandparent
-    => Attributes 'Legend
+    => [Attribute 'Legend]
     -> [ChildHTML 'Legend parent]
     -> ChildHTML parent grandparent
 
   Tag_ListItem
     :: ValidChild 'ListItem parent grandparent
-    => Attributes 'ListItem
+    => [Attribute 'ListItem]
     -> [ChildHTML 'ListItem parent]
     -> ChildHTML parent grandparent
 
   Tag_Link
     :: ValidChild 'Link parent grandparent
-    => Attributes 'Link
+    => [Attribute 'Link]
     -> ChildHTML parent grandparent
 
   Tag_Main
     :: ValidChild 'Main parent grandparent
-    => Attributes 'Main
+    => [Attribute 'Main]
     -> [ChildHTML 'Main parent]
     -> ChildHTML parent grandparent
 
   Tag_Map
     :: ValidChild 'Map parent grandparent
-    => Attributes 'Map
+    => [Attribute 'Map]
     -> [ChildHTML 'Map parent]
     -> ChildHTML parent grandparent
 
   Tag_Mark
     :: ValidChild 'Mark parent grandparent
-    => Attributes 'Mark
+    => [Attribute 'Mark]
     -> [ChildHTML 'Mark parent]
     -> ChildHTML parent grandparent
 
   Tag_Menu
     :: ValidChild 'Menu parent grandparent
-    => Attributes 'Menu
+    => [Attribute 'Menu]
     -> [ChildHTML 'Menu parent]
     -> ChildHTML parent grandparent
 
   Tag_Meta
     :: ValidChild 'Meta parent grandparent
-    => Attributes 'Meta
+    => [Attribute 'Meta]
     -> ChildHTML parent grandparent
 
   Tag_Meter
     :: ValidChild 'Meter parent grandparent
-    => Attributes 'Meter
+    => [Attribute 'Meter]
     -> [ChildHTML 'Meter parent]
     -> ChildHTML parent grandparent
 
   Tag_Nav
     :: ValidChild 'Nav parent grandparent
-    => Attributes 'Nav
+    => [Attribute 'Nav]
     -> [ChildHTML 'Nav parent]
     -> ChildHTML parent grandparent
 
   Tag_NoScript
     :: ValidChild 'NoScript parent grandparent
-    => Attributes 'NoScript
+    => [Attribute 'NoScript]
     -> [ChildHTML 'NoScript parent]
     -> ChildHTML parent grandparent
 
   Tag_Object
     :: ValidChild 'Object parent grandparent
-    => Attributes 'Object
+    => [Attribute 'Object]
     -> [ChildHTML parent parent]
     -> ChildHTML parent grandparent
 
   Tag_OrderedList
     :: ValidChild 'OrderedList parent grandparent
-    => Attributes 'OrderedList
+    => [Attribute 'OrderedList]
     -> [ChildHTML 'OrderedList parent]
     -> ChildHTML parent grandparent
 
   Tag_OptionGroup
     :: ValidChild 'OptionGroup parent grandparent
-    => Attributes 'OptionGroup
+    => [Attribute 'OptionGroup]
     -> [ChildHTML 'OptionGroup parent]
     -> ChildHTML parent grandparent
 
   Tag_Option
     :: ValidChild 'Option parent grandparent
-    => Attributes 'Option
+    => [Attribute 'Option]
     -> [ChildHTML 'Option parent]
     -> ChildHTML parent grandparent
 
   Tag_Output
     :: ValidChild 'Output parent grandparent
-    => Attributes 'Output
+    => [Attribute 'Output]
     -> [ChildHTML 'Output parent]
     -> ChildHTML parent grandparent
 
   Tag_Paragraph
     :: ValidChild 'Paragraph parent grandparent
-    => Attributes 'Paragraph
+    => [Attribute 'Paragraph]
     -> [ChildHTML 'Paragraph parent]
     -> ChildHTML parent grandparent
 
   Tag_Picture
     :: ValidChild 'Picture parent grandparent
-    => Attributes 'Picture
+    => [Attribute 'Picture]
     -> [ChildHTML 'Picture parent]
     -> ChildHTML parent grandparent
 
   Tag_PreformattedText
     :: ValidChild 'PreformattedText parent grandparent
-    => Attributes 'PreformattedText
+    => [Attribute 'PreformattedText]
     -> [ChildHTML 'PreformattedText parent]
     -> ChildHTML parent grandparent
 
   Tag_Progress
     :: ValidChild 'Progress parent grandparent
-    => Attributes 'Progress
+    => [Attribute 'Progress]
     -> [ChildHTML 'Progress parent]
     -> ChildHTML parent grandparent
 
   Tag_Quotation
     :: ValidChild 'Quotation parent grandparent
-    => Attributes 'Quotation
+    => [Attribute 'Quotation]
     -> [ChildHTML 'Quotation parent]
     -> ChildHTML parent grandparent
 
   Tag_RubyParenthesis
     :: ValidChild 'RubyParenthesis parent grandparent
-    => Attributes 'RubyParenthesis
+    => [Attribute 'RubyParenthesis]
     -> [ChildHTML 'RubyParenthesis parent]
     -> ChildHTML parent grandparent
 
   Tag_RubyText
     :: ValidChild 'RubyText parent grandparent
-    => Attributes 'RubyText
+    => [Attribute 'RubyText]
     -> [ChildHTML 'RubyText parent]
     -> ChildHTML parent grandparent
 
   Tag_Ruby
     :: ValidChild 'Ruby parent grandparent
-    => Attributes 'Ruby
+    => [Attribute 'Ruby]
     -> [ChildHTML 'Ruby parent]
     -> ChildHTML parent grandparent
 
   Tag_Strikethrough
     :: ValidChild 'Strikethrough parent grandparent
-    => Attributes 'Strikethrough
+    => [Attribute 'Strikethrough]
     -> [ChildHTML 'Strikethrough parent]
     -> ChildHTML parent grandparent
 
   Tag_Sample
     :: ValidChild 'Sample parent grandparent
-    => Attributes 'Sample
+    => [Attribute 'Sample]
     -> [ChildHTML 'Sample parent]
     -> ChildHTML parent grandparent
 
   Tag_Script
     :: ValidChild 'Script parent grandparent
-    => Attributes 'Script
+    => [Attribute 'Script]
     -> Maybe NET.NonEmptyText
     -> ChildHTML parent grandparent
 
   Tag_Search
     :: ValidChild 'Search parent grandparent
-    => Attributes 'Search
+    => [Attribute 'Search]
     -> [ChildHTML 'Search parent]
     -> ChildHTML parent grandparent
 
   Tag_Section
     :: ValidChild 'Section parent grandparent
-    => Attributes 'Section
+    => [Attribute 'Section]
     -> [ChildHTML 'Section parent]
     -> ChildHTML parent grandparent
 
   Tag_Select
     :: ValidChild 'Select parent grandparent
-    => Attributes 'Select
+    => [Attribute 'Select]
     -> [ChildHTML 'Select parent]
     -> ChildHTML parent grandparent
 
   Tag_Slot
     :: ValidChild 'Slot parent grandparent
-    => Attributes 'Slot
+    => [Attribute 'Slot]
     -> [ChildHTML parent parent]
     -> ChildHTML parent grandparent
 
   Tag_SideComment
     :: ValidChild 'SideComment parent grandparent
-    => Attributes 'SideComment
+    => [Attribute 'SideComment]
     -> [ChildHTML 'SideComment parent]
     -> ChildHTML parent grandparent
 
   Tag_Source
     :: ValidChild 'Source parent grandparent
-    => Attributes 'Source
+    => [Attribute 'Source]
     -> ChildHTML parent grandparent
 
   Tag_Span
     :: ValidChild 'Span parent grandparent
-    => Attributes 'Span
+    => [Attribute 'Span]
     -> [ChildHTML 'Span parent]
     -> ChildHTML parent grandparent
 
   Tag_Strong
     :: ValidChild 'Strong parent grandparent
-    => Attributes 'Strong
+    => [Attribute 'Strong]
     -> [ChildHTML 'Strong parent]
     -> ChildHTML parent grandparent
 
   Tag_Style
     :: ValidChild 'Style parent grandparent
-    => Attributes 'Style
+    => [Attribute 'Style]
     -> T.Text
     -> ChildHTML parent grandparent
 
   Tag_Subscript
     :: ValidChild 'Subscript parent grandparent
-    => Attributes 'Subscript
+    => [Attribute 'Subscript]
     -> [ChildHTML 'Subscript parent]
     -> ChildHTML parent grandparent
 
   Tag_Summary
     :: ValidChild 'Summary parent grandparent
-    => Attributes 'Summary
+    => [Attribute 'Summary]
     -> [ChildHTML 'Summary parent]
     -> ChildHTML parent grandparent
 
   Tag_Superscript
     :: ValidChild 'Superscript parent grandparent
-    => Attributes 'Superscript
+    => [Attribute 'Superscript]
     -> [ChildHTML 'Superscript parent]
     -> ChildHTML parent grandparent
 
   Tag_Table
     :: ValidChild 'Table parent grandparent
-    => Attributes 'Table
+    => [Attribute 'Table]
     -> [ChildHTML 'Table parent]
     -> ChildHTML parent grandparent
 
   Tag_TableBody
     :: ValidChild 'TableBody parent grandparent
-    => Attributes 'TableBody
+    => [Attribute 'TableBody]
     -> [ChildHTML 'TableBody parent]
     -> ChildHTML parent grandparent
 
   Tag_TableDataCell
     :: ValidChild 'TableDataCell parent grandparent
-    => Attributes 'TableDataCell
+    => [Attribute 'TableDataCell]
     -> [ChildHTML 'TableDataCell parent]
     -> ChildHTML parent grandparent
 
   Tag_ContentTemplate
     :: ValidChild 'ContentTemplate parent grandparent
-    => Attributes 'ContentTemplate
+    => [Attribute 'ContentTemplate]
     -> [ChildHTML 'ContentTemplate parent]
     -> ChildHTML parent grandparent
 
   Tag_TextArea
     :: ValidChild 'TextArea parent grandparent
-    => Attributes 'TextArea
+    => [Attribute 'TextArea]
     -> [ChildHTML 'TextArea parent]
     -> ChildHTML parent grandparent
 
   Tag_TableFoot
     :: ValidChild 'TableFoot parent grandparent
-    => Attributes 'TableFoot
+    => [Attribute 'TableFoot]
     -> [ChildHTML 'TableFoot parent]
     -> ChildHTML parent grandparent
 
   Tag_TableHeader
     :: ValidChild 'TableHeader parent grandparent
-    => Attributes 'TableHeader
+    => [Attribute 'TableHeader]
     -> [ChildHTML 'TableHeader parent]
     -> ChildHTML parent grandparent
 
   Tag_TableHead
     :: ValidChild 'TableHead parent grandparent
-    => Attributes 'TableHead
+    => [Attribute 'TableHead]
     -> [ChildHTML 'TableHead parent]
     -> ChildHTML parent grandparent
 
   Tag_Time
     :: ValidChild 'Time parent grandparent
-    => Attributes 'Time
+    => [Attribute 'Time]
     -> [ChildHTML 'Time parent]
     -> ChildHTML parent grandparent
 
   Tag_Title
     :: ValidChild 'Title parent grandparent
-    => Attributes 'Title
+    => [Attribute 'Title]
     -> [ChildHTML 'Title parent]
     -> ChildHTML parent grandparent
 
   Tag_TableRow
     :: ValidChild 'TableRow parent grandparent
-    => Attributes 'TableRow
+    => [Attribute 'TableRow]
     -> [ChildHTML 'TableRow parent]
     -> ChildHTML parent grandparent
 
   Tag_Track
     :: ValidChild 'Track parent grandparent
-    => Attributes 'Track
+    => [Attribute 'Track]
     -> ChildHTML parent grandparent
 
   Tag_Underline
     :: ValidChild 'Underline parent grandparent
-    => Attributes 'Underline
+    => [Attribute 'Underline]
     -> [ChildHTML 'Underline parent]
     -> ChildHTML parent grandparent
 
   Tag_UnorderedList
     :: ValidChild 'UnorderedList parent grandparent
-    => Attributes 'UnorderedList
+    => [Attribute 'UnorderedList]
     -> [ChildHTML 'UnorderedList parent]
     -> ChildHTML parent grandparent
 
   Tag_Variable
     :: ValidChild 'Variable parent grandparent
-    => Attributes 'Variable
+    => [Attribute 'Variable]
     -> [ChildHTML 'Variable parent]
     -> ChildHTML parent grandparent
 
   Tag_Video
     :: ValidChild 'Video parent grandparent
-    => Attributes 'Video
+    => [Attribute 'Video]
     -> [ChildHTML 'Video parent]
     -> ChildHTML parent grandparent
 
   Tag_WordBreakOpportunity
     :: ValidChild 'WordBreakOpportunity parent grandparent
-    => Attributes 'WordBreakOpportunity
+    => [Attribute 'WordBreakOpportunity]
     -> ChildHTML parent grandparent

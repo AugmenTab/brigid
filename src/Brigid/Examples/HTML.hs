@@ -57,6 +57,7 @@ documentExample =
     , E.body [ A.hxBoost True
              , A.customAttribute "anotherCoolAttr" "anotherCoolValue"
              , A.customAttribute "myCoolAttribute" "myCoolValue"
+             , A.customAttribute "anotherCoolAttr" "anotherCoolValue" -- This duplicate is removed when rendered - attributes at the front of the list are favored.
           -- , A.crossorigin HTML.Anonymous -- This fails, because crossorigin is not a valid attribute for body.
              ]
         [ E.header []

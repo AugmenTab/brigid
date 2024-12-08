@@ -11,6 +11,7 @@ import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Containers.ListUtils (nubOrdOn)
 import Data.LanguageCodes (toChars)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
@@ -20,12 +21,11 @@ import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Shrubbery qualified
 
-import Brigid.HTML.Attributes.Internal (Attribute(..))
-import Brigid.HTML.Elements.Internal (ChildHTML(..))
-import Brigid.HTML.Render.Internal.Attribute (foldAttrMap)
+import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
+import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Render.Internal.Escape qualified as Escape
 import Brigid.HTML.Types qualified as Types
-import Brigid.HTML.Types.URL (RelativeURL(..))
+import Brigid.HTML.Types.URL (RelativeURL (..))
 
 renderHTML :: ChildHTML parent grandparent -> BS.ByteString
 renderHTML = LBS.toStrict . renderLazyHTML
@@ -56,351 +56,351 @@ renderTag html =
       lazyByteString $ toBytes content
 
     Tag_CustomHTML elemName attrs eiCloserOrContent ->
-      buildTag (toBytes elemName) (foldAttrMap attrs) eiCloserOrContent
+      buildTag (toBytes elemName) attrs eiCloserOrContent
 
     Tag_Anchor attrs content ->
-      buildTag "a" (foldAttrMap attrs) $ Right content
+      buildTag "a" attrs $ Right content
 
     Tag_Abbreviation attrs content ->
-      buildTag "abbr" (foldAttrMap attrs) $ Right content
+      buildTag "abbr" attrs $ Right content
 
     Tag_ContactAddress attrs content ->
-      buildTag "address" (foldAttrMap attrs) $ Right content
+      buildTag "address" attrs $ Right content
 
     Tag_Area attrs ->
-      buildTag "area" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "area" attrs $ Left Types.OmitTag
 
     Tag_Article attrs content ->
-      buildTag "article" (foldAttrMap attrs) $ Right content
+      buildTag "article" attrs $ Right content
 
     Tag_Aside attrs content ->
-      buildTag "aside" (foldAttrMap attrs) $ Right content
+      buildTag "aside" attrs $ Right content
 
     Tag_Audio attrs content ->
-      buildTag "audio" (foldAttrMap attrs) $ Right content
+      buildTag "audio" attrs $ Right content
 
     Tag_BringAttentionTo attrs content ->
-      buildTag "b" (foldAttrMap attrs) $ Right content
+      buildTag "b" attrs $ Right content
 
     Tag_Base attrs ->
-      buildTag "base" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "base" attrs $ Left Types.OmitTag
 
     Tag_BidirectionalIsolation attrs content ->
-      buildTag "bdi" (foldAttrMap attrs) $ Right content
+      buildTag "bdi" attrs $ Right content
 
     Tag_BidirectionalOverride attrs content ->
-      buildTag "bdo" (foldAttrMap attrs) $ Right content
+      buildTag "bdo" attrs $ Right content
 
     Tag_Blockquote attrs content ->
-      buildTag "blockquote" (foldAttrMap attrs) $ Right content
+      buildTag "blockquote" attrs $ Right content
 
     Tag_Body attrs content ->
-      buildTag "body" (foldAttrMap attrs) $ Right content
+      buildTag "body" attrs $ Right content
 
     Tag_LineBreak attrs ->
-      buildTag "br" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "br" attrs $ Left Types.OmitTag
 
     Tag_Button attrs content ->
-      buildTag "button" (foldAttrMap attrs) $ Right content
+      buildTag "button" attrs $ Right content
 
     Tag_Canvas attrs content ->
-      buildTag "canbvas" (foldAttrMap attrs) $ Right content
+      buildTag "canbvas" attrs $ Right content
 
     Tag_TableCaption attrs content ->
-      buildTag "caption" (foldAttrMap attrs) $ Right content
+      buildTag "caption" attrs $ Right content
 
     Tag_Citation attrs content ->
-      buildTag "cite" (foldAttrMap attrs) $ Right content
+      buildTag "cite" attrs $ Right content
 
     Tag_Code attrs content ->
-      buildTag "code" (foldAttrMap attrs) $ Right content
+      buildTag "code" attrs $ Right content
 
     Tag_TableColumn attrs ->
-      buildTag "col" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "col" attrs $ Left Types.OmitTag
 
     Tag_TableColumnGroup attrs content ->
-      buildTag "colgroup" (foldAttrMap attrs) $ Right content
+      buildTag "colgroup" attrs $ Right content
 
     Tag_Data attrs content ->
-      buildTag "data" (foldAttrMap attrs) $ Right content
+      buildTag "data" attrs $ Right content
 
     Tag_DataList attrs content ->
-      buildTag "datalist" (foldAttrMap attrs) $ Right content
+      buildTag "datalist" attrs $ Right content
 
     Tag_DescriptionDetails attrs content ->
-      buildTag "dd" (foldAttrMap attrs) $ Right content
+      buildTag "dd" attrs $ Right content
 
     Tag_DeletedText attrs content ->
-      buildTag "del" (foldAttrMap attrs) $ Right content
+      buildTag "del" attrs $ Right content
 
     Tag_Details attrs content ->
-      buildTag "details" (foldAttrMap attrs) $ Right content
+      buildTag "details" attrs $ Right content
 
     Tag_Definition attrs content ->
-      buildTag "dfn" (foldAttrMap attrs) $ Right content
+      buildTag "dfn" attrs $ Right content
 
     Tag_Dialog attrs content ->
-      buildTag "dialog" (foldAttrMap attrs) $ Right content
+      buildTag "dialog" attrs $ Right content
 
     Tag_Division attrs content ->
-      buildTag "div" (foldAttrMap attrs) $ Right content
+      buildTag "div" attrs $ Right content
 
     Tag_DescriptionList attrs content ->
-      buildTag "dl" (foldAttrMap attrs) $ Right content
+      buildTag "dl" attrs $ Right content
 
     Tag_DescriptionTerm attrs content ->
-      buildTag "dt" (foldAttrMap attrs) $ Right content
+      buildTag "dt" attrs $ Right content
 
     Tag_Emphasis attrs content ->
-      buildTag "em" (foldAttrMap attrs) $ Right content
+      buildTag "em" attrs $ Right content
 
     Tag_Embed attrs ->
-      buildTag "embed" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "embed" attrs $ Left Types.OmitTag
 
     Tag_Fieldset attrs content ->
-      buildTag "fieldset" (foldAttrMap attrs) $ Right content
+      buildTag "fieldset" attrs $ Right content
 
     Tag_FigureCaption attrs content ->
-      buildTag "figcaption" (foldAttrMap attrs) $ Right content
+      buildTag "figcaption" attrs $ Right content
 
     Tag_Figure attrs content ->
-      buildTag "figure" (foldAttrMap attrs) $ Right content
+      buildTag "figure" attrs $ Right content
 
     Tag_Footer attrs content ->
-      buildTag "footer" (foldAttrMap attrs) $ Right content
+      buildTag "footer" attrs $ Right content
 
     Tag_Form attrs content ->
-      buildTag "form" (foldAttrMap attrs) $ Right content
+      buildTag "form" attrs $ Right content
 
     Tag_H1 attrs content ->
-      buildTag "h1" (foldAttrMap attrs) $ Right content
+      buildTag "h1" attrs $ Right content
 
     Tag_H2 attrs content ->
-      buildTag "h2" (foldAttrMap attrs) $ Right content
+      buildTag "h2" attrs $ Right content
 
     Tag_H3 attrs content ->
-      buildTag "h3" (foldAttrMap attrs) $ Right content
+      buildTag "h3" attrs $ Right content
 
     Tag_H4 attrs content ->
-      buildTag "h4" (foldAttrMap attrs) $ Right content
+      buildTag "h4" attrs $ Right content
 
     Tag_H5 attrs content ->
-      buildTag "h5" (foldAttrMap attrs) $ Right content
+      buildTag "h5" attrs $ Right content
 
     Tag_H6 attrs content ->
-      buildTag "h6" (foldAttrMap attrs) $ Right content
+      buildTag "h6" attrs $ Right content
 
     Tag_Head attrs content ->
-      buildTag "head" (foldAttrMap attrs) $ Right content
+      buildTag "head" attrs $ Right content
 
     Tag_Header attrs content ->
-      buildTag "header" (foldAttrMap attrs) $ Right content
+      buildTag "header" attrs $ Right content
 
     Tag_HeadingGroup attrs content ->
-      buildTag "hgroup" (foldAttrMap attrs) $ Right content
+      buildTag "hgroup" attrs $ Right content
 
     Tag_HorizontalRule attrs ->
-      buildTag "hr" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "hr" attrs $ Left Types.OmitTag
 
     Tag_Html attrs content ->
       lazyByteString "<!DOCTYPE html>"
-        <> buildTag "html" (foldAttrMap attrs) (Right content)
+        <> buildTag "html" attrs (Right content)
 
     Tag_IdiomaticText attrs content ->
-      buildTag "i" (foldAttrMap attrs) $ Right content
+      buildTag "i" attrs $ Right content
 
     Tag_IFrame attrs ->
-      buildTag "iframe" (foldAttrMap attrs) $ Left Types.WithTag
+      buildTag "iframe" attrs $ Left Types.WithTag
 
     Tag_Image attrs ->
-      buildTag "img" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "img" attrs $ Left Types.OmitTag
 
     Tag_Input attrs ->
-      buildTag "input" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "input" attrs $ Left Types.OmitTag
 
     Tag_InsertedText attrs content ->
-      buildTag "ins" (foldAttrMap attrs) $ Right content
+      buildTag "ins" attrs $ Right content
 
     Tag_KeyboardInput attrs content ->
-      buildTag "kbd" (foldAttrMap attrs) $ Right content
+      buildTag "kbd" attrs $ Right content
 
     Tag_Label attrs content ->
-      buildTag "label" (foldAttrMap attrs) $ Right content
+      buildTag "label" attrs $ Right content
 
     Tag_Legend attrs content ->
-      buildTag "legend" (foldAttrMap attrs) $ Right content
+      buildTag "legend" attrs $ Right content
 
     Tag_ListItem attrs content ->
-      buildTag "li" (foldAttrMap attrs) $ Right content
+      buildTag "li" attrs $ Right content
 
     Tag_Link attrs ->
-      buildTag "link" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "link" attrs $ Left Types.OmitTag
 
     Tag_Main attrs content ->
-      buildTag "main" (foldAttrMap attrs) $ Right content
+      buildTag "main" attrs $ Right content
 
     Tag_Map attrs content ->
-      buildTag "map" (foldAttrMap attrs) $ Right content
+      buildTag "map" attrs $ Right content
 
     Tag_Mark attrs content ->
-      buildTag "mark" (foldAttrMap attrs) $ Right content
+      buildTag "mark" attrs $ Right content
 
     Tag_Menu attrs content ->
-      buildTag "menu" (foldAttrMap attrs) $ Right content
+      buildTag "menu" attrs $ Right content
 
     Tag_Meta attrs ->
-      buildTag "meta" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "meta" attrs $ Left Types.OmitTag
 
     Tag_Meter attrs content ->
-      buildTag "meter" (foldAttrMap attrs) $ Right content
+      buildTag "meter" attrs $ Right content
 
     Tag_Nav attrs content ->
-      buildTag "nav" (foldAttrMap attrs) $ Right content
+      buildTag "nav" attrs $ Right content
 
     Tag_NoScript attrs content ->
-      buildTag "noscript" (foldAttrMap attrs) $ Right content
+      buildTag "noscript" attrs $ Right content
 
     Tag_Object attrs content ->
-      buildTag "object" (foldAttrMap attrs) $ Right content
+      buildTag "object" attrs $ Right content
 
     Tag_OrderedList attrs content ->
-      buildTag "ol" (foldAttrMap attrs) $ Right content
+      buildTag "ol" attrs $ Right content
 
     Tag_OptionGroup attrs content ->
-      buildTag "optgroup" (foldAttrMap attrs) $ Right content
+      buildTag "optgroup" attrs $ Right content
 
     Tag_Option attrs content ->
-      buildTag "option" (foldAttrMap attrs) $ Right content
+      buildTag "option" attrs $ Right content
 
     Tag_Output attrs content ->
-      buildTag "output" (foldAttrMap attrs) $ Right content
+      buildTag "output" attrs $ Right content
 
     Tag_Paragraph attrs content ->
-      buildTag "p" (foldAttrMap attrs) $ Right content
+      buildTag "p" attrs $ Right content
 
     Tag_Picture attrs content ->
-      buildTag "picture" (foldAttrMap attrs) $ Right content
+      buildTag "picture" attrs $ Right content
 
     Tag_PreformattedText attrs content ->
-      buildTag "pre" (foldAttrMap attrs) $ Right content
+      buildTag "pre" attrs $ Right content
 
     Tag_Progress attrs content ->
-      buildTag "progress" (foldAttrMap attrs) $ Right content
+      buildTag "progress" attrs $ Right content
 
     Tag_Quotation attrs content ->
-      buildTag "q" (foldAttrMap attrs) $ Right content
+      buildTag "q" attrs $ Right content
 
     Tag_RubyParenthesis attrs content ->
-      buildTag "rp" (foldAttrMap attrs) $ Right content
+      buildTag "rp" attrs $ Right content
 
     Tag_RubyText attrs content ->
-      buildTag "rt" (foldAttrMap attrs) $ Right content
+      buildTag "rt" attrs $ Right content
 
     Tag_Ruby attrs content ->
-      buildTag "ruby" (foldAttrMap attrs) $ Right content
+      buildTag "ruby" attrs $ Right content
 
     Tag_Strikethrough attrs content ->
-      buildTag "s" (foldAttrMap attrs) $ Right content
+      buildTag "s" attrs $ Right content
 
     Tag_Sample attrs content ->
-      buildTag "sample" (foldAttrMap attrs) $ Right content
+      buildTag "sample" attrs $ Right content
 
     Tag_Script attrs mbScript ->
-      buildTag "script" (foldAttrMap attrs) $
+      buildTag "script" attrs $
         maybe
           (Left Types.WithTag)
           (Right . L.singleton . Tag_RawHTML . NET.toText)
           mbScript
 
     Tag_Search attrs content ->
-      buildTag "search" (foldAttrMap attrs) $ Right content
+      buildTag "search" attrs $ Right content
 
     Tag_Section attrs content ->
-      buildTag "section" (foldAttrMap attrs) $ Right content
+      buildTag "section" attrs $ Right content
 
     Tag_Select attrs content ->
-      buildTag "select" (foldAttrMap attrs) $ Right content
+      buildTag "select" attrs $ Right content
 
     Tag_Slot attrs content ->
-      buildTag "slot" (foldAttrMap attrs) $ Right content
+      buildTag "slot" attrs $ Right content
 
     Tag_SideComment attrs content ->
-      buildTag "small" (foldAttrMap attrs) $ Right content
+      buildTag "small" attrs $ Right content
 
     Tag_Source attrs ->
-      buildTag "source" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "source" attrs $ Left Types.OmitTag
 
     Tag_Span attrs content ->
-      buildTag "span" (foldAttrMap attrs) $ Right content
+      buildTag "span" attrs $ Right content
 
     Tag_Strong attrs content ->
-      buildTag "strong" (foldAttrMap attrs) $ Right content
+      buildTag "strong" attrs $ Right content
 
     Tag_Style attrs style ->
-      buildTag "style" (foldAttrMap attrs)
+      buildTag "style" attrs
         . Right
         . L.singleton
         $ Tag_RawHTML style
 
     Tag_Subscript attrs content ->
-      buildTag "sub" (foldAttrMap attrs) $ Right content
+      buildTag "sub" attrs $ Right content
 
     Tag_Summary attrs content ->
-      buildTag "summary" (foldAttrMap attrs) $ Right content
+      buildTag "summary" attrs $ Right content
 
     Tag_Superscript attrs content ->
-      buildTag "sup" (foldAttrMap attrs) $ Right content
+      buildTag "sup" attrs $ Right content
 
     Tag_Table attrs content ->
-      buildTag "table" (foldAttrMap attrs) $ Right content
+      buildTag "table" attrs $ Right content
 
     Tag_TableBody attrs content ->
-      buildTag "tbody" (foldAttrMap attrs) $ Right content
+      buildTag "tbody" attrs $ Right content
 
     Tag_TableDataCell attrs content ->
-      buildTag "td" (foldAttrMap attrs) $ Right content
+      buildTag "td" attrs $ Right content
 
     Tag_ContentTemplate attrs content ->
-      buildTag "template" (foldAttrMap attrs) $ Right content
+      buildTag "template" attrs $ Right content
 
     Tag_TextArea attrs content ->
-      buildTag "textarea" (foldAttrMap attrs) $ Right content
+      buildTag "textarea" attrs $ Right content
 
     Tag_TableFoot attrs content ->
-      buildTag "tfoot" (foldAttrMap attrs) $ Right content
+      buildTag "tfoot" attrs $ Right content
 
     Tag_TableHeader attrs content ->
-      buildTag "th" (foldAttrMap attrs) $ Right content
+      buildTag "th" attrs $ Right content
 
     Tag_TableHead attrs content ->
-      buildTag "thead" (foldAttrMap attrs) $ Right content
+      buildTag "thead" attrs $ Right content
 
     Tag_Time attrs content ->
-      buildTag "time" (foldAttrMap attrs) $ Right content
+      buildTag "time" attrs $ Right content
 
     Tag_Title attrs content ->
-      buildTag "title" (foldAttrMap attrs) $ Right content
+      buildTag "title" attrs $ Right content
 
     Tag_TableRow attrs content ->
-      buildTag "tr" (foldAttrMap attrs) $ Right content
+      buildTag "tr" attrs $ Right content
 
     Tag_Track attrs ->
-      buildTag "track" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "track" attrs $ Left Types.OmitTag
 
     Tag_Underline attrs content ->
-      buildTag "u" (foldAttrMap attrs) $ Right content
+      buildTag "u" attrs $ Right content
 
     Tag_UnorderedList attrs content ->
-      buildTag "ul" (foldAttrMap attrs) $ Right content
+      buildTag "ul" attrs $ Right content
 
     Tag_Variable attrs content ->
-      buildTag "var" (foldAttrMap attrs) $ Right content
+      buildTag "var" attrs $ Right content
 
     Tag_Video attrs content ->
-      buildTag "video" (foldAttrMap attrs) $ Right content
+      buildTag "video" attrs $ Right content
 
     Tag_WordBreakOpportunity attrs ->
-      buildTag "wbr" (foldAttrMap attrs) $ Left Types.OmitTag
+      buildTag "wbr" attrs $ Left Types.OmitTag
 
 buildTag :: LBS.ByteString
          -> [Attribute attr]
@@ -413,7 +413,8 @@ buildTag tag attributes content =
     , lazyByteString . B.bool " " LBS.empty $ L.null attributes
     , mconcat
         . L.intersperse (lazyByteString " ")
-        $ mapMaybe renderAttribute attributes
+        . mapMaybe renderAttribute
+        $ nubOrdOn attributeText attributes
     , case content of
         Left  Types.OmitTag -> lazyByteString "/>"
         Left  Types.WithTag -> lazyByteString ">"
