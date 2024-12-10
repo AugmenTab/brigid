@@ -41,6 +41,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Async
       , Attr_Autoplay
       , Attr_Charset
+      , Attr_Cite
       , Attr_Cols
       , Attr_Colspan
       , Attr_Content
@@ -285,21 +286,6 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Autoplay tag
     => Attribute tag
 
-  -- Attr_Background
-  --   :: ValidAttribute 'Background tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
-
-  -- Attr_BackgroundColor
-  --   :: ValidAttribute 'BackgroundColor tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
-
-  -- Attr_Border
-  --   :: ValidAttribute 'Border tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
-
   -- Attr_Capture
   --   :: ValidAttribute 'Capture tag
   --   => T.Text -- TODO
@@ -314,15 +300,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Cite
-  --   :: ValidAttribute 'Cite tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
-
-  -- Attr_Color
-  --   :: ValidAttribute 'Color tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Cite
+    :: ValidAttribute 'Cite tag
+    => Types.URL
+    -> Attribute tag
 
   Attr_Cols
     :: ValidAttribute 'Cols tag
@@ -946,6 +927,9 @@ attributeText attr =
 
     Attr_Charset ->
       "charset"
+
+    Attr_Cite _cite ->
+      "cite"
 
     Attr_Cols _cols ->
       "cols"

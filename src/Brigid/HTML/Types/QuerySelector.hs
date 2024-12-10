@@ -171,14 +171,10 @@ module Brigid.HTML.Types.QuerySelector
   , attr_async
   , attr_autocomplete
   , attr_autoplay
-  , attr_background
-  , attr_bgcolor
-  , attr_border
   , attr_capture
   , attr_charset
   , attr_checked
   , attr_cite
-  , attr_color
   , attr_cols
   , attr_colspan
   , attr_content
@@ -2631,18 +2627,6 @@ attr_autoplay :: AttributeSelector
 attr_autoplay = (Attr_Autoplay, Nothing)
 
 -- TODO
-attr_background :: T.Text -> AttributeSelector
-attr_background = (,) Attr_Background . Just
-
--- TODO
-attr_bgcolor :: T.Text -> AttributeSelector
-attr_bgcolor = (,) Attr_BackgroundColor . Just
-
--- TODO
-attr_border :: T.Text -> AttributeSelector
-attr_border = (,) Attr_Border . Just
-
--- TODO
 attr_capture :: T.Text -> AttributeSelector
 attr_capture = (,) Attr_Capture . Just
 
@@ -2653,13 +2637,11 @@ attr_charset = (Attr_Charset, Just "utf-8")
 attr_checked :: T.Text -> AttributeSelector
 attr_checked = (,) Attr_Checked . Just
 
--- TODO
-attr_cite :: T.Text -> AttributeSelector
-attr_cite = (,) Attr_Cite . Just
-
--- TODO
-attr_color :: T.Text -> AttributeSelector
-attr_color = (,) Attr_Color . Just
+attr_cite :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf cite URLTypes
+             )
+          => cite -> AttributeSelector
+attr_cite = (,) Attr_Cite . Just . urlToText . mkURL
 
 attr_cols :: Word -> AttributeSelector
 attr_cols = (,) Attr_Cols . Just . showText

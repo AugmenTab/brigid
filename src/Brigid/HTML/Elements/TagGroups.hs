@@ -44,6 +44,7 @@ module Brigid.HTML.Elements.TagGroups
   , TableRowContent
   , TableRowOnly
 
+  , CitableTags
   , CrossOriginTags
   , DisableableTags
   , HrefTags
@@ -619,6 +620,13 @@ type TableRowOnly =
 
 -- Attribute-Focused Tag Groups
 --
+
+type CitableTags =
+  [ 'Blockquote
+  , 'DeletedText
+  , 'InsertedText
+  , 'Quotation
+  ]
 
 type CrossOriginTags =
   [ 'Audio

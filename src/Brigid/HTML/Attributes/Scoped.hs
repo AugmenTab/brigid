@@ -5,6 +5,7 @@ module Brigid.HTML.Attributes.Scoped
   ( async
   , autoplay
   , charset
+  , cite
   , cols
   , colspan
   , content
@@ -54,6 +55,14 @@ autoplay = Attr_Autoplay
 --
 charset :: ValidAttribute 'Charset tag => Attribute tag
 charset = Attr_Charset
+
+cite :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf cite Types.URLTypes
+        , ValidAttribute 'Cite tag
+        )
+     => cite -> Attribute tag
+cite =
+  Attr_Cite . Types.mkURL
 
 cols :: ValidAttribute 'Cols tag => Word -> Attribute tag
 cols = Attr_Cols

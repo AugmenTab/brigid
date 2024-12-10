@@ -3,6 +3,7 @@ module Brigid.HTML.Types
   , URL
   , URLTypes
   , mkURL
+  , urlToBytes
   , urlToText
   , AbsoluteURL
   , absoluteURLFromText
@@ -73,6 +74,7 @@ import Brigid.HTML.Types.TriggerFilter as Export
 import Brigid.HTML.Types.URL ( URL
                              , URLTypes
                              , mkURL
+                             , urlToBytes
                              , urlToText
                              , AbsoluteURL
                              , absoluteURLFromText
