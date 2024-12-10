@@ -2653,9 +2653,11 @@ attr_charset = (Attr_Charset, Just "utf-8")
 attr_checked :: T.Text -> AttributeSelector
 attr_checked = (,) Attr_Checked . Just
 
--- TODO
-attr_cite :: T.Text -> AttributeSelector
-attr_cite = (,) Attr_Cite . Just
+attr_cite :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf cite URLTypes
+             )
+          => cite -> AttributeSelector
+attr_cite = (,) Attr_Cite . Just . urlToText . mkURL
 
 -- TODO
 attr_color :: T.Text -> AttributeSelector

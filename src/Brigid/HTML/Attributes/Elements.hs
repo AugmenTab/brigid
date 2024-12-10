@@ -20,6 +20,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Async          = '[ Tags.Script ]
   ValidElementsFor Autoplay       = TagGroups.MediaContent
   ValidElementsFor Charset        = [ Tags.Meta, Tags.Script ]
+  ValidElementsFor Cite           = TagGroups.CitableTags
   ValidElementsFor Cols           = '[ Tags.TextArea ]
   ValidElementsFor Colspan        = TagGroups.TableCells
   ValidElementsFor Content        = '[ Tags.Meta ]

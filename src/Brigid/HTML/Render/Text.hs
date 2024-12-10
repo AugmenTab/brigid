@@ -555,6 +555,9 @@ renderAttribute attr =
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 
+    Attr_Cite cite ->
+      Just . buildAttribute "cite" $ Types.urlToText cite
+
     Attr_Cols cols ->
       Just . buildAttribute "cols" . T.pack $ show cols
 

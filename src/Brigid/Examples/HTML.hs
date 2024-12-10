@@ -107,6 +107,9 @@ example =
         , A.styles [ "color:blue", "font-size:2em" ]
         ]
     [ E.noElement
+    , E.blockquote [ A.cite . exampleURL $ GetCustomer 100 ]
+        [
+        ]
     , E.comment "First comment"
     , E.form [ A.hxValidate ]
         [ E.button [ A.hyperscript sampleHyperScript ]

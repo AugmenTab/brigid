@@ -44,14 +44,10 @@ module Brigid.HTML.Attributes.AttributeType
       , Async
       , Autocomplete
       , Autoplay
-      , Background
-      , BackgroundColor
-      , Border
       , Capture
       , Charset
       , Checked
       , Cite
-      , Color
       , Cols
       , Colspan
       , Content
@@ -184,14 +180,10 @@ data AttributeType
   | Async
   | Autocomplete
   | Autoplay
-  | Background
-  | BackgroundColor
-  | Border
   | Capture
   | Charset
   | Checked
   | Cite
-  | Color
   | Cols
   | Colspan
   | Content
@@ -318,14 +310,10 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Async           = 'Text "Async (async)"
   AttributeErrorMessage Autocomplete    = 'Text "Autocomplete (autocomplete)"
   AttributeErrorMessage Autoplay        = 'Text "Autoplay (autoplay)"
-  AttributeErrorMessage Background      = 'Text "Background (background)"
-  AttributeErrorMessage BackgroundColor = 'Text "BackgroundColor (bgcolor)"
-  AttributeErrorMessage Border          = 'Text "Border (border)"
   AttributeErrorMessage Capture         = 'Text "Capture (capture)"
   AttributeErrorMessage Charset         = 'Text "Charset (charset)"
   AttributeErrorMessage Checked         = 'Text "Checked (checked)"
   AttributeErrorMessage Cite            = 'Text "Cite (cite)"
-  AttributeErrorMessage Color           = 'Text "Color (color)"
   AttributeErrorMessage Cols            = 'Text "Cols (cols)"
   AttributeErrorMessage Colspan         = 'Text "Colspan (colspan)"
   AttributeErrorMessage Content         = 'Text "Content (content)"

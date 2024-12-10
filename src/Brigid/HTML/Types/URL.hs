@@ -8,6 +8,7 @@ module Brigid.HTML.Types.URL
   ( URL
   , URLTypes
   , mkURL
+  , urlToBytes
   , urlToText
   , AbsoluteURL
   , absoluteURLFromText
@@ -36,6 +37,8 @@ module Brigid.HTML.Types.URL
 
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing qualified as R
+import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -58,6 +61,16 @@ mkURL :: ( KnownNat branchIndex
 mkURL =
   URL . Shrubbery.unify
 
+urlToBytes :: URL -> LBS.ByteString
+urlToBytes (URL url) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL absoluteURLToBytes
+      . Shrubbery.branch @(RelativeURL Get) relativeURLToBytes
+      . Shrubbery.branch @RawURL rawURLToBytes
+      $ Shrubbery.branchEnd
+  ) url
+
 urlToText :: URL -> T.Text
 urlToText (URL url) =
   ( Shrubbery.dissect
@@ -73,6 +86,10 @@ newtype AbsoluteURL = AbsoluteURL B.BaseURI
 absoluteURLFromText :: T.Text -> Either String AbsoluteURL
 absoluteURLFromText =
   fmap AbsoluteURL . B.parseBaseURI . T.unpack
+
+absoluteURLToBytes :: AbsoluteURL -> LBS.ByteString
+absoluteURLToBytes (AbsoluteURL url) =
+  LBS8.pack $ B.renderBaseURI url
 
 absoluteURLToText :: AbsoluteURL -> T.Text
 absoluteURLToText (AbsoluteURL url) =
@@ -105,6 +122,10 @@ patch :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Patch
 patch route =
   Relative_Patch . snd . flip R.generateRoute route . R.patch
 
+relativeURLToBytes :: RelativeURL method -> LBS.ByteString
+relativeURLToBytes =
+  LBS8.pack . T.unpack . relativeURLToText
+
 relativeURLToText :: RelativeURL method -> T.Text
 relativeURLToText url =
   case url of
@@ -122,6 +143,10 @@ newtype RawURL = RawURL T.Text
 
 rawURLFromText :: T.Text -> RawURL
 rawURLFromText = RawURL
+
+rawURLToBytes :: RawURL -> LBS.ByteString
+rawURLToBytes =
+  LBS8.pack . T.unpack . rawURLToText
 
 rawURLToText :: RawURL -> T.Text
 rawURLToText (RawURL url) = url
