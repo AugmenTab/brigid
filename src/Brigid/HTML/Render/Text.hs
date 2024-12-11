@@ -621,6 +621,9 @@ renderAttribute attr =
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" . T.pack $ show minlength
 
+    Attr_Muted muted ->
+      buildBooleanAttribute "muted" muted
+
     Attr_Name name ->
       Just $ buildAttribute "name" name
 

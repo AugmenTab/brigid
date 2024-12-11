@@ -21,6 +21,8 @@ module Brigid.HTML.Attributes.Scoped
   , ismap
   , maxlength
   , minlength
+  , mute
+  , muted
   , name
   , nomodule
   , ping
@@ -147,6 +149,12 @@ maxlength = Attr_MaxLength
 --
 minlength :: ValidAttribute 'MinLength tag => Word -> Attribute tag
 minlength = Attr_MinLength
+
+mute :: ValidAttribute 'Muted tag => Bool -> Attribute tag
+mute = Attr_Muted
+
+muted :: ValidAttribute 'Muted tag => Attribute tag
+muted = mute True
 
 -- | The `name` attribute is left as simple 'T.Text' because its dependency on
 -- the `content` attribute in the `meta` tag is too complex to reconcile here,

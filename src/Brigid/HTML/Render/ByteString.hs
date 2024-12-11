@@ -642,6 +642,9 @@ renderAttribute attr =
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" . LBS8.pack $ show minlength
 
+    Attr_Muted muted ->
+      buildBooleanAttribute "muted" muted
+
     Attr_Name name ->
       Just . buildAttribute "name" $ toBytes name
 

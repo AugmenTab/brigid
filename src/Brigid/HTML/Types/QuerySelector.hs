@@ -2811,9 +2811,8 @@ attr_min = (,) Attr_Min . Just
 attr_multiple :: T.Text -> AttributeSelector
 attr_multiple = (,) Attr_Multiple . Just
 
--- TODO
-attr_muted :: T.Text -> AttributeSelector
-attr_muted = (,) Attr_Muted . Just
+attr_muted :: AttributeSelector
+attr_muted = (Attr_Muted, Nothing)
 
 attr_name :: T.Text -> AttributeSelector
 attr_name = (,) Attr_Name . Just

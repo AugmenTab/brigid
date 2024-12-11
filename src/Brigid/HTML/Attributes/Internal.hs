@@ -56,6 +56,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_IsMap
       , Attr_MaxLength
       , Attr_MinLength
+      , Attr_Muted
       , Attr_Name
       , Attr_NoModule
       , Attr_Ping
@@ -519,10 +520,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Muted
-  --   :: ValidAttribute 'Muted tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Muted
+    :: ValidAttribute 'Muted tag
+    => Bool
+    -> Attribute tag
 
   Attr_Name
     :: ValidAttribute 'Name tag
@@ -978,6 +979,9 @@ attributeText attr =
 
     Attr_MinLength _minlength ->
       "minlength"
+
+    Attr_Muted _muted ->
+      "muted"
 
     Attr_Name _name ->
       "name"

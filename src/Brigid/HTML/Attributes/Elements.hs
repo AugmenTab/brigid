@@ -35,6 +35,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor IsMap          = '[ Tags.Image ]
   ValidElementsFor MaxLength      = TagGroups.LengthTags
   ValidElementsFor MinLength      = TagGroups.LengthTags
+  ValidElementsFor Muted          = TagGroups.MediaContent
   ValidElementsFor Name           = TagGroups.NameTags
   ValidElementsFor NoModule       = '[ Tags.Script ]
   ValidElementsFor Ping           = '[ Tags.Anchor ]
