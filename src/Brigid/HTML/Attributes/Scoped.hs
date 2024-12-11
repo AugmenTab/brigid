@@ -9,6 +9,7 @@ module Brigid.HTML.Attributes.Scoped
   , cols
   , colspan
   , content
+  , controls
   , crossorigin
   , defer
   , disable
@@ -79,6 +80,9 @@ colspan = Attr_Colspan
 --
 content :: ValidAttribute 'Content tag => T.Text -> Attribute tag
 content = Attr_Content
+
+controls :: ValidAttribute 'Controls tag => Attribute tag
+controls = Attr_Controls
 
 {-|
    This enumerated attribute indicates whether CORS must be used when fetching

@@ -567,6 +567,9 @@ renderAttribute attr =
     Attr_Content content ->
       Just $ buildAttribute "content" content
 
+    Attr_Controls ->
+      buildBooleanAttribute "controls" True
+
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"

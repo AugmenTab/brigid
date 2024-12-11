@@ -2652,9 +2652,8 @@ attr_colspan = (,) Attr_Colspan . Just . showText
 attr_content :: T.Text -> AttributeSelector
 attr_content = (,) Attr_Content . Just
 
--- TODO
-attr_controls :: T.Text -> AttributeSelector
-attr_controls = (,) Attr_Controls . Just
+attr_controls :: AttributeSelector
+attr_controls = (Attr_Controls, Nothing)
 
 -- TODO
 attr_coords :: T.Text -> AttributeSelector

@@ -24,6 +24,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Cols           = '[ Tags.TextArea ]
   ValidElementsFor Colspan        = TagGroups.TableCells
   ValidElementsFor Content        = '[ Tags.Meta ]
+  ValidElementsFor Controls       = TagGroups.MediaContent
   ValidElementsFor CrossOrigin    = TagGroups.CrossOriginTags
   ValidElementsFor Defer          = '[ Tags.Script ]
   ValidElementsFor Disabled       = TagGroups.DisableableTags
