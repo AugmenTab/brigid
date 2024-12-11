@@ -46,6 +46,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Colspan
       , Attr_Content
       , Attr_Controls
+      , Attr_ControlsList
       , Attr_CrossOrigin
       , Attr_Defer
       , Attr_Disabled
@@ -324,6 +325,11 @@ data Attribute (tag :: TagType) where
   Attr_Controls
     :: ValidAttribute 'Controls tag
     => Attribute tag
+
+  Attr_ControlsList
+    :: ValidAttribute 'ControlsList tag
+    => Types.ControlsList
+    -> Attribute tag
 
   -- Attr_Coords
   --   :: ValidAttribute 'Coords tag
@@ -942,6 +948,9 @@ attributeText attr =
 
     Attr_Controls ->
       "controls"
+
+    Attr_ControlsList _controlslist ->
+      "controlslist"
 
     Attr_CrossOrigin _crossorigin ->
       "crossorigin"

@@ -52,6 +52,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Colspan
       , Content
       , Controls
+      , ControlsList
       , Coords
       , CrossOrigin
       , Data
@@ -188,6 +189,7 @@ data AttributeType
   | Colspan
   | Content
   | Controls
+  | ControlsList
   | Coords
   | CrossOrigin
   | Data
@@ -318,6 +320,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Colspan         = 'Text "Colspan (colspan)"
   AttributeErrorMessage Content         = 'Text "Content (content)"
   AttributeErrorMessage Controls        = 'Text "Controls (controls)"
+  AttributeErrorMessage ControlsList    = 'Text "ControlsList (controlslist)"
   AttributeErrorMessage Coords          = 'Text "Coords (coords)"
   AttributeErrorMessage CrossOrigin     = 'Text "CrossOrigin (crossorigin)"
   AttributeErrorMessage Data            = 'Text "Data (data)"

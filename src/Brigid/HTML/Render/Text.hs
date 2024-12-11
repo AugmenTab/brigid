@@ -570,6 +570,11 @@ renderAttribute attr =
     Attr_Controls ->
       buildBooleanAttribute "controls" True
 
+    Attr_ControlsList controlslist ->
+      Just
+        . buildAttribute "controlslist"
+        $ Types.controlslistToText controlslist
+
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"

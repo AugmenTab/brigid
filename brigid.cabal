@@ -63,6 +63,7 @@ library
       Brigid.HTML.Types.ClassSelector
       Brigid.HTML.Types.Consume
       Brigid.HTML.Types.ContentEditable
+      Brigid.HTML.Types.ControlsList
       Brigid.HTML.Types.CrossOrigin
       Brigid.HTML.Types.Delay
       Brigid.HTML.Types.Directionality
