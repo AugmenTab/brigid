@@ -650,6 +650,9 @@ renderAttribute attr =
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 
+    Attr_Label label ->
+      Just . buildAttribute "label" $ toBytes label
+
     Attr_Loop ->
       buildBooleanAttribute "loop" True
 

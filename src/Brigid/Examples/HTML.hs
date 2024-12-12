@@ -230,7 +230,7 @@ transparencyExample =
               , A.playsinline
               , A.poster fakeJavaScriptLink
               ]
-        [ E.track [ A.default_ ]
+        [ E.track [ A.default_, A.label "English" ]
         ]
     ]
 

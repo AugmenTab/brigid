@@ -48,6 +48,7 @@ module Brigid.HTML.Elements.TagGroups
   , CrossOriginTags
   , DisableableTags
   , HrefTags
+  , LabelableTags
   , URLTags
   , RelTags
   , NameTags
@@ -652,6 +653,11 @@ type HrefTags =
   'Base
     ': 'Link
     ': URLTags
+
+type LabelableTags =
+  [ 'OptionGroup
+  , 'Track
+  ]
 
 type URLTags =
   [ 'Anchor

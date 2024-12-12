@@ -2796,7 +2796,6 @@ attr_ismap = (Attr_IsMap, Nothing)
 attr_kind :: T.Text -> AttributeSelector
 attr_kind = (,) Attr_Kind . Just
 
--- TODO
 attr_label :: T.Text -> AttributeSelector
 attr_label = (,) Attr_Label . Just
 

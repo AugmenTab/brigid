@@ -22,6 +22,7 @@ module Brigid.HTML.Attributes.Scoped
   , height
   , href
   , ismap
+  , label
   , loop
   , maxlength
   , minlength
@@ -154,6 +155,9 @@ href =
 --
 ismap :: ValidAttribute 'IsMap tag => Attribute tag
 ismap = Attr_IsMap
+
+label :: ValidAttribute 'Label tag => T.Text -> Attribute tag
+label = Attr_Label
 
 loop :: ValidAttribute 'Loop tag => Attribute tag
 loop = Attr_Loop
