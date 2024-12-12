@@ -135,7 +135,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_accesskey
   , attr_autocapitalize
   , attr_autofocus
-  , attr_class_
+  , attr_class
   , attr_contenteditable
   , attr_customData
   , attr_dir
@@ -183,7 +183,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_controlslist
   , attr_coords
   , attr_crossorigin
-  , attr_data_
+  , attr_data
   , attr_datetime
   , attr_decoding
   , attr_default_
@@ -254,7 +254,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_start
   , attr_step
   , attr_target
-  , attr_type_
+  , attr_type
   , attr_usemap
   , attr_value
   , attr_width
@@ -2514,8 +2514,8 @@ attr_autocapitalize =
 attr_autofocus :: T.Text -> AttributeSelector
 attr_autofocus = (,) Attr_Autofocus . Just
 
-attr_class_ :: Class.Class -> AttributeSelector
-attr_class_ = (,) Attr_Class . Just . Class.classToText
+attr_class :: Class.Class -> AttributeSelector
+attr_class = (,) Attr_Class . Just . Class.classToText
 
 attr_contenteditable :: ContentEditableOption -> AttributeSelector
 attr_contenteditable =
@@ -2694,8 +2694,8 @@ attr_crossorigin :: CrossOriginFetch -> AttributeSelector
 attr_crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
 
 -- TODO
-attr_data_ :: T.Text -> AttributeSelector
-attr_data_ = (,) Attr_Data . Just
+attr_data :: T.Text -> AttributeSelector
+attr_data = (,) Attr_Data . Just
 
 -- TODO
 attr_datetime :: T.Text -> AttributeSelector
@@ -2968,8 +2968,8 @@ attr_target :: T.Text -> AttributeSelector
 attr_target = (,) Attr_Target . Just
 
 -- TODO
-attr_type_ :: T.Text -> AttributeSelector
-attr_type_ = (,) Attr_Type . Just
+attr_type :: T.Text -> AttributeSelector
+attr_type = (,) Attr_Type . Just
 
 -- TODO
 attr_usemap :: T.Text -> AttributeSelector

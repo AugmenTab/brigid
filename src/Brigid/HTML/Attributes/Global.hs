@@ -5,7 +5,7 @@ module Brigid.HTML.Attributes.Global
   , class_
   , classes
   , contenteditable
-  , customData
+  , data_
   , dir
   , draggable
   , enterkeyhint
@@ -66,8 +66,8 @@ classes = class_ . Types.Class . T.unwords
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable
 
-customData :: T.Text -> T.Text -> Attribute tag
-customData = Attr_CustomData
+data_ :: T.Text -> T.Text -> Attribute tag
+data_ = Attr_CustomData
 
 dir :: Types.Directionality -> Attribute tag
 dir = Attr_Dir

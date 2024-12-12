@@ -132,7 +132,7 @@ example =
                 [ A.id $ HTML.Id "my-custom-elem-id" ]
                   ( Right
                       [ E.script [ A.src fakeJavaScriptLink
-                                 , A.customData "my-custom-elem-attr" "test"
+                                 , A.data_ "my-custom-elem-attr" "test"
                                  ]
                           Nothing
                       ]
