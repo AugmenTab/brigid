@@ -73,6 +73,7 @@ import Brigid.HTML.Types.Target as Export
 import Brigid.HTML.Types.This as Export
 import Brigid.HTML.Types.Threshold as Export
 import Brigid.HTML.Types.Throttle as Export
+import Brigid.HTML.Types.TrackKind as Export
 import Brigid.HTML.Types.TriggerFilter as Export
 import Brigid.HTML.Types.URL ( URL
                              , URLTypes

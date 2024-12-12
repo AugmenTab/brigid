@@ -58,6 +58,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Height
       , Attr_Href
       , Attr_IsMap
+      , Attr_Kind
       , Attr_Label
       , Attr_Loop
       , Attr_MaxLength
@@ -480,10 +481,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'IsMap tag
     => Attribute tag
 
-  -- Attr_Kind
-  --   :: ValidAttribute 'Kind tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Kind
+    :: ValidAttribute 'Kind tag
+    => Types.TrackKind
+    -> Attribute tag
 
   Attr_Label
     :: ValidAttribute 'Label tag
@@ -1001,6 +1002,9 @@ attributeText attr =
 
     Attr_IsMap ->
       "ismap"
+
+    Attr_Kind _kind ->
+      "kind"
 
     Attr_Label _label ->
       "label"

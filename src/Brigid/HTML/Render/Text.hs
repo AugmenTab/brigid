@@ -624,6 +624,9 @@ renderAttribute attr =
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 
+    Attr_Kind kind ->
+      Just . buildAttribute "kind" $ Types.trackKindToText kind
+
     Attr_Label label ->
       Just $ buildAttribute "label" label
 

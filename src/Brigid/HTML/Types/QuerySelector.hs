@@ -652,6 +652,7 @@ import Brigid.HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText
 import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
 import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
+import Brigid.HTML.Types.TrackKind (TrackKind, trackKindToText)
 import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
 import Brigid.HTML.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
@@ -2788,9 +2789,8 @@ attr_integrity = (,) Attr_Integrity . Just
 attr_ismap :: AttributeSelector
 attr_ismap = (Attr_IsMap, Nothing)
 
--- TODO
-attr_kind :: T.Text -> AttributeSelector
-attr_kind = (,) Attr_Kind . Just
+attr_kind :: TrackKind -> AttributeSelector
+attr_kind = (,) Attr_Kind . Just . trackKindToText
 
 attr_label :: T.Text -> AttributeSelector
 attr_label = (,) Attr_Label . Just

@@ -232,7 +232,10 @@ transparencyExample =
               , A.poster fakeJavaScriptLink
               ]
         [ E.track [ A.default_, A.label $ HTML.bcp47Language EN, A.srclang EN ]
-        , E.track [ A.label $ HTML.bcp47Language GA, A.srclang GA ]
+        , E.track [ A.label $ HTML.bcp47Language GA
+                  , A.srclang GA
+                  , A.kind HTML.Metadata
+                  ]
         ]
     ]
 
