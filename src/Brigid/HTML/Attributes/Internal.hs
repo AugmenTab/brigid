@@ -109,7 +109,6 @@ module Brigid.HTML.Attributes.Internal
   , attributeText
   ) where
 
-import Data.LanguageCodes (ISO639_1)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 
@@ -215,7 +214,7 @@ data Attribute (tag :: TagType) where
   --   -> Attribute tag
 
   Attr_Lang
-    :: Maybe ISO639_1
+    :: Maybe Types.BCP_47
     -> Attribute tag
 
   -- Attr_Nonce
@@ -910,9 +909,6 @@ attributeText attr =
 
     -- Attr_ItemType
 
-    -- TODO: This is a minimal definition. Proper representation of BCP-47
-    -- language codes will require A LOT more work.
-    --
     Attr_Lang _lang ->
       "lang"
 

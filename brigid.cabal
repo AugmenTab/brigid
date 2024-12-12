@@ -58,6 +58,7 @@ library
       Brigid.HTML.Render.Text
       Brigid.HTML.Types
       Brigid.HTML.Types.Autocapitalize
+      Brigid.HTML.Types.BCP_47
       Brigid.HTML.Types.Changed
       Brigid.HTML.Types.Class
       Brigid.HTML.Types.ClassSelector

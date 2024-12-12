@@ -25,6 +25,7 @@ module Brigid.HTML.Types
   ) where
 
 import Brigid.HTML.Types.Autocapitalize as Export
+import Brigid.HTML.Types.BCP_47 as Export
 import Brigid.HTML.Types.Changed as Export
 import Brigid.HTML.Types.Class as Export
 import Brigid.HTML.Types.ClassSelector as Export

@@ -8,7 +8,6 @@ module Brigid.HTML.Render.Text
 
 import Data.Bool qualified as B
 import Data.Containers.ListUtils (nubOrdOn)
-import Data.LanguageCodes (toChars)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
@@ -505,11 +504,7 @@ renderAttribute attr =
     -- Attr_ItemType
 
     Attr_Lang lang ->
-      Just
-        . buildAttribute "lang"
-        . T.pack
-        . maybe "" (\(c1, c2) -> [ c1, c2 ])
-        $ toChars <$> lang
+      Just . buildAttribute "lang" $ maybe "" Types.bcp47ToText lang
 
     -- Attr_Nonce
 

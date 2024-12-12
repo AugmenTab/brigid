@@ -12,7 +12,6 @@ import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Containers.ListUtils (nubOrdOn)
-import Data.LanguageCodes (toChars)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
@@ -526,11 +525,8 @@ renderAttribute attr =
     -- Attr_ItemType
 
     Attr_Lang lang ->
-      Just
-        . buildAttribute "lang"
-        . LBS8.pack
-        . maybe "" (\(c1, c2) -> [ c1, c2 ])
-        $ toChars <$> lang
+      Just . buildAttribute "lang" $ maybe "" Types.bcp47ToBytes lang
+
 
     -- Attr_Nonce
 
