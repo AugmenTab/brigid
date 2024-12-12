@@ -35,6 +35,7 @@ module Brigid.HTML.Attributes.AttributeType
       , TabIndex
       , Title
       , Translate
+      , WritingSuggestions
 
       , Accept
       , AcceptCharset
@@ -171,6 +172,7 @@ data AttributeType
   | TabIndex
   | Title
   | Translate
+  | WritingSuggestions
 
   -- Scoped Attributes
   --
@@ -305,6 +307,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage TabIndex              = 'Text "TabIndex (tabindex)"
   AttributeErrorMessage Title                 = 'Text "Title (title)"
   AttributeErrorMessage Translate             = 'Text "Translate (translate)"
+  AttributeErrorMessage WritingSuggestions    = 'Text "WritingSuggestions (writingsuggestions)"
 
   AttributeErrorMessage Accept                = 'Text "Accept (accept)"
   AttributeErrorMessage AcceptCharset         = 'Text "AcceptCharset (accept-charset)"

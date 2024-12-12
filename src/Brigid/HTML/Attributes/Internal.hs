@@ -37,6 +37,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_TabIndex
       , Attr_Title
       , Attr_Translate
+      , Attr_WritingSuggestions
 
       , Attr_Async
       , Attr_Autoplay
@@ -249,6 +250,10 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_Translate
+    :: Bool -- Note: NOT a boolean attribute; prints string true/false
+    -> Attribute tag
+
+  Attr_WritingSuggestions
     :: Bool -- Note: NOT a boolean attribute; prints string true/false
     -> Attribute tag
 
@@ -929,6 +934,9 @@ attributeText attr =
 
     Attr_Translate _translate ->
       "translate"
+
+    Attr_WritingSuggestions _writingsuggestions ->
+      "writingsuggestions"
 
     -- Scoped Attributes
     --

@@ -105,6 +105,7 @@ example :: E.ChildHTML E.Body grandparent
 example =
   E.div [ A.id divId
         , A.styles [ "color:blue", "font-size:2em" ]
+        , A.writingsuggestions True
         ]
     [ E.noElement
     , E.blockquote [ A.cite . exampleURL $ GetCustomer 100 ]
@@ -119,7 +120,7 @@ example =
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]
-    , E.textarea [ A.cols 80, A.rows 5 ]
+    , E.textarea [ A.cols 80, A.rows 5, A.writingsuggestions False ]
         [
         ]
     , E.div [ A.tabindex HTML.NotReachable ]

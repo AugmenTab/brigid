@@ -163,6 +163,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_tabindex
   , attr_title
   , attr_translate
+  , attr_writingsuggestions
   , attr_accept
   , attr_acceptCharset
   , attr_action
@@ -323,6 +324,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_TabIndex
       , Attr_Title
       , Attr_Translate
+      , Attr_WritingSuggestions
       , Attr_Accept
       , Attr_AcceptCharset
       , Attr_Action
@@ -1784,6 +1786,7 @@ data AttributeType
   | Attr_TabIndex
   | Attr_Title
   | Attr_Translate
+  | Attr_WritingSuggestions
 
   -- Scoped Attributes
   --
@@ -1962,6 +1965,7 @@ attributeTypeToBytes attr =
     Attr_TabIndex            -> "tabindex"
     Attr_Title               -> "title"
     Attr_Translate           -> "translate"
+    Attr_WritingSuggestions  -> "writingsuggestions"
 
     -- Scoped Attributes
     --
@@ -2110,36 +2114,37 @@ attributeTypeFromText attr =
   case attr of
     -- Global Attributes
     --
-    "accesskey"       -> Right Attr_AccessKey
-    "autocapitalize"  -> Right Attr_Autocapitalize
-    "autofocus"       -> Right Attr_Autofocus
-    "class"           -> Right Attr_Class
-    "contenteditable" -> Right Attr_ContentEditable
-    "dir"             -> Right Attr_Dir
-    "draggable"       -> Right Attr_Draggable
-    "enterkeyhint"    -> Right Attr_EnterKeyHint
-    "exportparts"     -> Right Attr_ExportParts
-    "hidden"          -> Right Attr_Hidden
-    "id"              -> Right Attr_Id
-    "inert"           -> Right Attr_Inert
-    "inputmode"       -> Right Attr_InputMode
-    "is"              -> Right Attr_Is
-    "itemid"          -> Right Attr_ItemId
-    "itemprop"        -> Right Attr_ItemProp
-    "itemref"         -> Right Attr_ItemRef
-    "itemscope"       -> Right Attr_ItemScope
-    "itemtype"        -> Right Attr_ItemType
-    "lang"            -> Right Attr_Lang
-    "nonce"           -> Right Attr_Nonce
-    "part"            -> Right Attr_Part
-    "popover"         -> Right Attr_Popover
-    "role"            -> Right Attr_Role
-    "slot"            -> Right Attr_Slot
-    "spellcheck"      -> Right Attr_Spellcheck
-    "style"           -> Right Attr_Style
-    "tabindex"        -> Right Attr_TabIndex
-    "title"           -> Right Attr_Title
-    "translate"       -> Right Attr_Translate
+    "accesskey"          -> Right Attr_AccessKey
+    "autocapitalize"     -> Right Attr_Autocapitalize
+    "autofocus"          -> Right Attr_Autofocus
+    "class"              -> Right Attr_Class
+    "contenteditable"    -> Right Attr_ContentEditable
+    "dir"                -> Right Attr_Dir
+    "draggable"          -> Right Attr_Draggable
+    "enterkeyhint"       -> Right Attr_EnterKeyHint
+    "exportparts"        -> Right Attr_ExportParts
+    "hidden"             -> Right Attr_Hidden
+    "id"                 -> Right Attr_Id
+    "inert"              -> Right Attr_Inert
+    "inputmode"          -> Right Attr_InputMode
+    "is"                 -> Right Attr_Is
+    "itemid"             -> Right Attr_ItemId
+    "itemprop"           -> Right Attr_ItemProp
+    "itemref"            -> Right Attr_ItemRef
+    "itemscope"          -> Right Attr_ItemScope
+    "itemtype"           -> Right Attr_ItemType
+    "lang"               -> Right Attr_Lang
+    "nonce"              -> Right Attr_Nonce
+    "part"               -> Right Attr_Part
+    "popover"            -> Right Attr_Popover
+    "role"               -> Right Attr_Role
+    "slot"               -> Right Attr_Slot
+    "spellcheck"         -> Right Attr_Spellcheck
+    "style"              -> Right Attr_Style
+    "tabindex"           -> Right Attr_TabIndex
+    "title"              -> Right Attr_Title
+    "translate"          -> Right Attr_Translate
+    "writingsuggestions" -> Right Attr_WritingSuggestions
 
     -- Scoped Attributes
     --
@@ -2343,6 +2348,7 @@ attributeTypeToText attr =
     Attr_TabIndex            -> "tabindex"
     Attr_Title               -> "title"
     Attr_Translate           -> "translate"
+    Attr_WritingSuggestions  -> "writingsuggestions"
 
     -- Scoped Attributes
     --
@@ -2605,6 +2611,9 @@ attr_title = (,) Attr_Title . Just
 
 attr_translate :: Bool -> AttributeSelector
 attr_translate = (,) Attr_Translate . Just . enumBoolToText
+
+attr_writingsuggestions :: Bool -> AttributeSelector
+attr_writingsuggestions = (,) Attr_WritingSuggestions . Just . enumBoolToText
 
 -- Scoped Attributes
 --

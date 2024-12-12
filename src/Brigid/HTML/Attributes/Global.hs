@@ -34,6 +34,7 @@ module Brigid.HTML.Attributes.Global
   , unsafeTabIndex
   , title
   , translate
+  , writingsuggestions
   ) where
 
 -- Global Attributes
@@ -153,3 +154,9 @@ title = Attr_Title
 
 translate :: Bool -> Attribute tag
 translate = Attr_Translate
+
+-- | At the time of writing, this attribute is not available on Firefox - see:
+-- https://bugzilla.mozilla.org/show_bug.cgi?id=1871621
+--
+writingsuggestions :: Bool -> Attribute tag
+writingsuggestions = Attr_WritingSuggestions

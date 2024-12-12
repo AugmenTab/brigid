@@ -565,6 +565,11 @@ renderAttribute attr =
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ enumBoolToBytes translate
 
+    Attr_WritingSuggestions writingsuggestions ->
+      Just
+        . buildAttribute "writingsuggestions"
+        $ enumBoolToBytes writingsuggestions
+
     -- Scoped Attributes
     --
     Attr_Async ->
