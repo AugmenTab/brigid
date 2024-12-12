@@ -2,4 +2,5 @@
 
 set -e
 
-./scripts/build_code --file-watch
+./scripts/build_code "$@"
+
