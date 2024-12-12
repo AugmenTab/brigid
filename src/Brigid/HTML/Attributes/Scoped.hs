@@ -15,6 +15,7 @@ module Brigid.HTML.Attributes.Scoped
   , defer
   , disable
   , disabled
+  , disableremoteplayback
   , headers
   , height
   , href
@@ -112,6 +113,10 @@ disable = Attr_Disabled
 
 disabled :: ValidAttribute 'Disabled tag => Attribute tag
 disabled = disable True
+
+disableremoteplayback :: ValidAttribute 'DisableRemotePlayback tag
+                      => Attribute tag
+disableremoteplayback = Attr_DisableRemotePlayback
 
 headers :: ValidAttribute 'Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag

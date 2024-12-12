@@ -586,6 +586,9 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_DisableRemotePlayback ->
+      buildBooleanAttribute "disableremoteplayback" True
+
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"

@@ -50,6 +50,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_CrossOrigin
       , Attr_Defer
       , Attr_Disabled
+      , Attr_DisableRemotePlayback
       , Attr_Headers
       , Attr_Height
       , Attr_Href
@@ -375,6 +376,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Disabled tag
     => Bool
     -> Attribute tag
+
+  Attr_DisableRemotePlayback
+    :: ValidAttribute 'DisableRemotePlayback tag
+    => Attribute tag
 
   -- Attr_Download
   --   :: ValidAttribute 'Download tag
@@ -961,6 +966,9 @@ attributeText attr =
 
     Attr_Disabled _disabled ->
       "disabled"
+
+    Attr_DisableRemotePlayback ->
+      "disableremoteplayback"
 
     Attr_Headers _headers ->
       "headers"
