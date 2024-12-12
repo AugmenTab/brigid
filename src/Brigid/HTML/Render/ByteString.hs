@@ -612,6 +612,9 @@ renderAttribute attr =
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 
+    Attr_DisablePictureInPicture ->
+      buildBooleanAttribute "disablepictureinpicture" True
+
     Attr_DisableRemotePlayback ->
       buildBooleanAttribute "disableremoteplayback" True
 

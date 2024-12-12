@@ -51,6 +51,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_CrossOrigin
       , Attr_Defer
       , Attr_Disabled
+      , Attr_DisablePictureInPicture
       , Attr_DisableRemotePlayback
       , Attr_Headers
       , Attr_Height
@@ -383,6 +384,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Disabled tag
     => Bool
     -> Attribute tag
+
+  Attr_DisablePictureInPicture
+    :: ValidAttribute 'DisablePictureInPicture tag
+    => Attribute tag
 
   Attr_DisableRemotePlayback
     :: ValidAttribute 'DisableRemotePlayback tag
@@ -975,6 +980,9 @@ attributeText attr =
 
     Attr_Disabled _disabled ->
       "disabled"
+
+    Attr_DisablePictureInPicture ->
+      "disablepictureinpicture"
 
     Attr_DisableRemotePlayback ->
       "disableremoteplayback"
