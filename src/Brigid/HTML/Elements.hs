@@ -939,6 +939,10 @@ wbr :: ValidChild Tags.WordBreakOpportunity parent grandparent
     -> ChildHTML parent grandparent
 wbr = Tag_WordBreakOpportunity
 
+-- | This is a convenience function that takes a 'Text' and replaces
+-- whitespaces with `<wbr>` to give the browser ample opportunities to break
+-- the text without splitting words.
+--
 wbrs :: ( ValidChild Tags.WordBreakOpportunity parent grandparent
         , ValidChild Tags.Text parent grandparent
         )

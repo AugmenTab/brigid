@@ -196,7 +196,7 @@ listExample =
       , E.button [ A.disabled ]
           [ E.rawHTML "{{ Fake mustache code here! }}"
           ]
-      , E.p [] [ E.text "This is some paragraph text." ]
+      , E.p [] $ E.wbrs "This is some paragraph text."
       , E.img [ A.draggable False ]
    -- , Safe.imgMap [] -- This fails because `imgMap` must be used inside an Anchor tag.
       ]
