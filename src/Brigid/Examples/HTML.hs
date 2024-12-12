@@ -227,6 +227,7 @@ transparencyExample =
               , A.loop
               , A.preload HTML.PreloadMetadata
               , A.disablepictureinpicture
+              , A.playsinline
               ]
         []
     ]

@@ -2870,9 +2870,8 @@ attr_ping = (,) Attr_Ping . Just . T.unwords . fmap pingToText . NEL.toList
 attr_placeholder :: T.Text -> AttributeSelector
 attr_placeholder = (,) Attr_Placeholder . Just
 
--- TODO
-attr_playsinline :: T.Text -> AttributeSelector
-attr_playsinline = (,) Attr_PlaysInline . Just
+attr_playsinline :: AttributeSelector
+attr_playsinline = (Attr_PlaysInline, Nothing)
 
 -- TODO
 attr_poster :: T.Text -> AttributeSelector

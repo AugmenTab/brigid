@@ -64,6 +64,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Name
       , Attr_NoModule
       , Attr_Ping
+      , Attr_PlaysInline
       , Attr_Preload
       , Attr_ReferrerPolicy
       , Attr_Rel
@@ -581,10 +582,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_PlaysInline
-  --   :: ValidAttribute 'PlaysInline tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_PlaysInline
+    :: ValidAttribute 'PlaysInline tag
+    => Bool
+    -> Attribute tag
 
   -- Attr_Poster
   --   :: ValidAttribute 'Poster tag
@@ -1019,6 +1020,9 @@ attributeText attr =
 
     Attr_Ping _ping ->
       "ping"
+
+    Attr_PlaysInline _playsinline ->
+      "playsinline"
 
     Attr_Preload _preload ->
       "preload"

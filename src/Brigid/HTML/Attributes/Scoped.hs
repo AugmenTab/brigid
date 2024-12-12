@@ -29,6 +29,8 @@ module Brigid.HTML.Attributes.Scoped
   , name
   , nomodule
   , ping
+  , playInline
+  , playsinline
   , preload
   , referrerpolicy
   , rel
@@ -185,6 +187,12 @@ nomodule = Attr_NoModule
 
 ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping
+
+playInline :: ValidAttribute 'PlaysInline tag => Bool -> Attribute tag
+playInline = Attr_PlaysInline
+
+playsinline :: ValidAttribute 'PlaysInline tag => Attribute tag
+playsinline = playInline True
 
 preload :: ValidAttribute 'Preload tag => Types.Preload -> Attribute tag
 preload = Attr_Preload
