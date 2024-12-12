@@ -17,7 +17,7 @@ module Brigid.HTML.Elements.Children
   ) where
 
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
-import Brigid.HTML.Elements.TagType (TagType(..))
+import Brigid.HTML.Elements.TagType (TagType (..))
 import Brigid.HTML.Internal.TagOperations (AlertElement, Elem, Filter, Remove, Union)
 
 type ValidChild tag parent grandparent =
@@ -84,14 +84,14 @@ type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [Ta
   ValidChildrenFor NoScript               grandparent = Remove NoScript (Union TagGroups.NoScriptBodyContent (ValidChildrenFor grandparent NoElement))
   ValidChildrenFor OrderedList            grandparent = TagGroups.ListContent
   ValidChildrenFor OptionGroup            grandparent = '[ Option ]
-  ValidChildrenFor Option                 grandparent = TagGroups.TextOnly
+  ValidChildrenFor Option                 grandparent = '[ Text ]
   ValidChildrenFor Output                 grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Paragraph              grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Picture                grandparent = TagGroups.PictureContent
   ValidChildrenFor PreformattedText       grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Progress               grandparent = Remove Progress TagGroups.PhrasingContent
   ValidChildrenFor Quotation              grandparent = TagGroups.PhrasingContent
-  ValidChildrenFor RubyParenthesis        grandparent = TagGroups.TextOnly
+  ValidChildrenFor RubyParenthesis        grandparent = '[ Text ]
   ValidChildrenFor RubyText               grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Ruby                   grandparent = TagGroups.RubyContent
   ValidChildrenFor Strikethrough          grandparent = TagGroups.PhrasingContent
@@ -106,15 +106,15 @@ type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [Ta
   ValidChildrenFor Summary                grandparent = TagGroups.SummaryContent
   ValidChildrenFor Superscript            grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Table                  grandparent = TagGroups.TableContent
-  ValidChildrenFor TableBody              grandparent = TagGroups.TableRowOnly
+  ValidChildrenFor TableBody              grandparent = '[ TableRow ]
   ValidChildrenFor TableDataCell          grandparent = TagGroups.FlowContent
   ValidChildrenFor ContentTemplate        grandparent = TagGroups.AllElements
-  ValidChildrenFor TextArea               grandparent = TagGroups.TextOnly
-  ValidChildrenFor TableFoot              grandparent = TagGroups.TableRowOnly
+  ValidChildrenFor TextArea               grandparent = '[ Text ]
+  ValidChildrenFor TableFoot              grandparent = '[ TableRow ]
   ValidChildrenFor TableHeader            grandparent = Filter TagGroups.TableHeaderExcluded TagGroups.FlowContent
-  ValidChildrenFor TableHead              grandparent = TagGroups.TableRowOnly
+  ValidChildrenFor TableHead              grandparent = '[ TableRow ]
   ValidChildrenFor Time                   grandparent = TagGroups.PhrasingContent
-  ValidChildrenFor Title                  grandparent = TagGroups.TextOnly
+  ValidChildrenFor Title                  grandparent = '[ Text ]
   ValidChildrenFor TableRow               grandparent = TagGroups.TableRowContent
   ValidChildrenFor Underline              grandparent = TagGroups.PhrasingContent
   ValidChildrenFor UnorderedList          grandparent = TagGroups.ListContent
