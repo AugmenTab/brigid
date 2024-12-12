@@ -74,6 +74,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Rows
       , Attr_Rowspan
       , Attr_Src
+      , Attr_SrcLang
       , Attr_Width
 
       , Attr_Htmx
@@ -678,10 +679,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_SrcLang
-  --   :: ValidAttribute 'SrcLang tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_SrcLang
+    :: ValidAttribute 'SrcLang tag
+    => Types.BCP_47
+    -> Attribute tag
 
   -- Attr_SrcSet
   --   :: ValidAttribute 'SrcSet tag
@@ -1048,6 +1049,9 @@ attributeText attr =
 
     Attr_Src _src ->
       "src"
+
+    Attr_SrcLang _srclang ->
+      "srclang"
 
     Attr_Width _width ->
       "width"

@@ -678,6 +678,9 @@ renderAttribute attr =
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToText src
 
+    Attr_SrcLang srclang ->
+      Just . buildAttribute "srclang" $ Types.bcp47ToText srclang
+
     Attr_Width width ->
       Just . buildAttribute "width" . T.pack $ show width
 

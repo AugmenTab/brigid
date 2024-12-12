@@ -40,6 +40,7 @@ module Brigid.HTML.Attributes.Scoped
   , rows
   , rowspan
   , src
+  , srclang
   , width
   ) where
 
@@ -241,6 +242,9 @@ src :: ( KnownNat branchIndex
     => url -> Attribute tag
 src =
   Attr_Src . Types.mkURL
+
+srclang :: ValidAttribute 'SrcLang tag => Types.BCP_47 -> Attribute tag
+srclang = Attr_SrcLang
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width

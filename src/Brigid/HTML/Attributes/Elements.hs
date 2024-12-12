@@ -7,7 +7,7 @@ module Brigid.HTML.Attributes.Elements
   ( ValidAttribute
   ) where
 
-import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
+import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType qualified as TagType
@@ -52,6 +52,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Rows                    = '[ Tags.TextArea ]
   ValidElementsFor Rowspan                 = TagGroups.TableCells
   ValidElementsFor Src                     = TagGroups.SrcTags
+  ValidElementsFor SrcLang                 = '[ Tags.Track ]
   ValidElementsFor Width                   = TagGroups.SizableTags
 
   ValidElementsFor HxValidate              = '[ TagType.Form ]

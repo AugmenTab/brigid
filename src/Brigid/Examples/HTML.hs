@@ -12,6 +12,7 @@ import Prelude hiding (head)
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
+import Data.LanguageCodes (ISO639_1(EN, GA))
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
@@ -230,7 +231,8 @@ transparencyExample =
               , A.playsinline
               , A.poster fakeJavaScriptLink
               ]
-        [ E.track [ A.default_, A.label "English" ]
+        [ E.track [ A.default_, A.label $ HTML.bcp47Language EN, A.srclang EN ]
+        , E.track [ A.label $ HTML.bcp47Language GA, A.srclang GA ]
         ]
     ]
 

@@ -41,7 +41,6 @@ module Brigid.HTML.Attributes.Global
 --
 
 import Prelude hiding (id)
-import Data.LanguageCodes (ISO639_1)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 
@@ -116,7 +115,7 @@ itemtype
 
 -- | Use `Nothing` to represent an unknown language.
 --
-lang :: Maybe ISO639_1 -> Attribute tag
+lang :: Maybe Types.BCP_47 -> Attribute tag
 lang = Attr_Lang
 
 -- nonce

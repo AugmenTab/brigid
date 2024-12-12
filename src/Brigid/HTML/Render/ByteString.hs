@@ -703,6 +703,9 @@ renderAttribute attr =
         . Escape.urlByteString
         $ Types.urlToText src
 
+    Attr_SrcLang srclang ->
+      Just . buildAttribute "srclang" $ Types.bcp47ToBytes srclang
+
     Attr_Width width ->
       Just . buildAttribute "width" . LBS8.pack $ show width
 

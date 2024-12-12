@@ -601,7 +601,6 @@ import Prelude hiding (Show, div, head, id, map, max, min, show, span)
 import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
-import Data.LanguageCodes (ISO639_1, toChars)
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
@@ -613,6 +612,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
 
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
+import Brigid.HTML.Types.BCP_47 (BCP_47, bcp47ToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
 import Brigid.HTML.Types.ClassSelector qualified as CS
@@ -2577,13 +2577,9 @@ attr_itemscope = (,) Attr_ItemScope . Just
 attr_itemtype :: T.Text -> AttributeSelector
 attr_itemtype = (,) Attr_ItemType . Just
 
-attr_lang :: Maybe ISO639_1 -> AttributeSelector
+attr_lang :: Maybe BCP_47 -> AttributeSelector
 attr_lang =
-  (,) Attr_Lang
-    . Just
-    . T.pack
-    . maybe "" (\(c1, c2) -> [ c1, c2 ])
-    . fmap toChars
+  (,) Attr_Lang . Just . maybe "" bcp47ToText
 
 -- TODO
 attr_nonce :: T.Text -> AttributeSelector
@@ -2945,9 +2941,8 @@ attr_src = (,) Attr_Src . Just . urlToText . mkURL
 attr_srcdoc :: T.Text -> AttributeSelector
 attr_srcdoc = (,) Attr_SrcDoc . Just
 
--- TODO
-attr_srclang :: T.Text -> AttributeSelector
-attr_srclang = (,) Attr_SrcLang . Just
+attr_srclang :: BCP_47 -> AttributeSelector
+attr_srclang = (,) Attr_SrcLang . Just . bcp47ToText
 
 -- TODO
 attr_srcset :: T.Text -> AttributeSelector
