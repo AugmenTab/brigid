@@ -43,6 +43,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor NoModule                = '[ Tags.Script ]
   ValidElementsFor Ping                    = '[ Tags.Anchor ]
   ValidElementsFor PlaysInline             = '[ Tags.Video ]
+  ValidElementsFor Poster                  = '[ Tags.Video ]
   ValidElementsFor Preload                 = TagGroups.MediaContent
   ValidElementsFor ReferrerPolicy          = '[ Tags.Script ]
   ValidElementsFor Rel                     = TagGroups.RelTags

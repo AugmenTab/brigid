@@ -2873,9 +2873,11 @@ attr_placeholder = (,) Attr_Placeholder . Just
 attr_playsinline :: AttributeSelector
 attr_playsinline = (Attr_PlaysInline, Nothing)
 
--- TODO
-attr_poster :: T.Text -> AttributeSelector
-attr_poster = (,) Attr_Poster . Just
+attr_poster :: ( KnownNat branchIndex
+               , branchIndex ~ FirstIndexOf poster URLTypes
+               )
+            => poster -> AttributeSelector
+attr_poster = (,) Attr_Poster . Just . urlToText . mkURL
 
 attr_preload :: Preload -> AttributeSelector
 attr_preload = (,) Attr_Preload . Just . preloadToText

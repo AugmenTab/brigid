@@ -654,6 +654,9 @@ renderAttribute attr =
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
 
+    Attr_Poster poster ->
+      Just . buildAttribute "poster" $ Types.urlToText poster
+
     Attr_Preload preload ->
       Just . buildAttribute "preload" $ Types.preloadToText preload
 

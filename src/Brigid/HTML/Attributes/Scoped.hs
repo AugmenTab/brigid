@@ -31,6 +31,7 @@ module Brigid.HTML.Attributes.Scoped
   , ping
   , playInline
   , playsinline
+  , poster
   , preload
   , referrerpolicy
   , rel
@@ -193,6 +194,14 @@ playInline = Attr_PlaysInline
 
 playsinline :: ValidAttribute 'PlaysInline tag => Attribute tag
 playsinline = playInline True
+
+poster :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf poster Types.URLTypes
+          , ValidAttribute 'Poster tag
+          )
+       => poster -> Attribute tag
+poster =
+  Attr_Poster . Types.mkURL
 
 preload :: ValidAttribute 'Preload tag => Types.Preload -> Attribute tag
 preload = Attr_Preload

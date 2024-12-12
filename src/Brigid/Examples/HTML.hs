@@ -228,6 +228,7 @@ transparencyExample =
               , A.preload HTML.PreloadMetadata
               , A.disablepictureinpicture
               , A.playsinline
+              , A.poster fakeJavaScriptLink
               ]
         []
     ]
