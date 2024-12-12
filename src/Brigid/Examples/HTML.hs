@@ -224,6 +224,7 @@ transparencyExample =
         []
     , E.video [ A.muted
               , A.loop
+              , A.preload HTML.PreloadMetadata
               ]
         []
     ]

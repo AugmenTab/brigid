@@ -62,6 +62,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Name
       , Attr_NoModule
       , Attr_Ping
+      , Attr_Preload
       , Attr_ReferrerPolicy
       , Attr_Rel
       , Attr_Rows
@@ -580,10 +581,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Preload
-  --   :: ValidAttribute 'Preload tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Preload
+    :: ValidAttribute 'Preload tag
+    => Types.Preload
+    -> Attribute tag
 
   -- Attr_ReadOnly
   --   :: ValidAttribute 'ReadOnly tag
@@ -1002,6 +1003,9 @@ attributeText attr =
 
     Attr_Ping _ping ->
       "ping"
+
+    Attr_Preload _preload ->
+      "preload"
 
     Attr_ReferrerPolicy _referrerpolicy ->
       "referrerpolicy"

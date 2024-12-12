@@ -28,6 +28,7 @@ module Brigid.HTML.Attributes.Scoped
   , name
   , nomodule
   , ping
+  , preload
   , referrerpolicy
   , rel
   , rows
@@ -179,6 +180,9 @@ nomodule = Attr_NoModule
 
 ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping
+
+preload :: ValidAttribute 'Preload tag => Types.Preload -> Attribute tag
+preload = Attr_Preload
 
 referrerpolicy :: ValidAttribute 'ReferrerPolicy tag
                => Types.ReferrerPolicy -> Attribute tag

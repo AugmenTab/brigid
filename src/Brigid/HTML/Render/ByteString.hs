@@ -664,6 +664,9 @@ renderAttribute attr =
         . fmap (toBytes . Types.pingToText)
         $ NEL.toList pings
 
+    Attr_Preload preload ->
+      Just . buildAttribute "preload" $ Types.preloadToBytes preload
+
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"

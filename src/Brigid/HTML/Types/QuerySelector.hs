@@ -635,6 +635,7 @@ import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
 import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
+import Brigid.HTML.Types.Preload (Preload, preloadToText)
 import Brigid.HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
 import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
@@ -2859,9 +2860,8 @@ attr_playsinline = (,) Attr_PlaysInline . Just
 attr_poster :: T.Text -> AttributeSelector
 attr_poster = (,) Attr_Poster . Just
 
--- TODO
-attr_preload :: T.Text -> AttributeSelector
-attr_preload = (,) Attr_Preload . Just
+attr_preload :: Preload -> AttributeSelector
+attr_preload = (,) Attr_Preload . Just . preloadToText
 
 -- TODO
 attr_readonly :: T.Text -> AttributeSelector

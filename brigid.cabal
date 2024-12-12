@@ -88,6 +88,7 @@ library
       Brigid.HTML.Types.Once
       Brigid.HTML.Types.Part
       Brigid.HTML.Types.PopoverState
+      Brigid.HTML.Types.Preload
       Brigid.HTML.Types.PushURL
       Brigid.HTML.Types.QuerySelector
       Brigid.HTML.Types.QueueOption

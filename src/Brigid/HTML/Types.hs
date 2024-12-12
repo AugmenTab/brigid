@@ -55,6 +55,7 @@ import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Once as Export
 import Brigid.HTML.Types.Part as Export
 import Brigid.HTML.Types.PopoverState as Export
+import Brigid.HTML.Types.Preload as Export
 import Brigid.HTML.Types.PushURL as Export
 import Brigid.HTML.Types.QuerySelector as Export
 import Brigid.HTML.Types.QueueOption as Export
