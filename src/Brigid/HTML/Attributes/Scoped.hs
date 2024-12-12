@@ -20,6 +20,7 @@ module Brigid.HTML.Attributes.Scoped
   , height
   , href
   , ismap
+  , loop
   , maxlength
   , minlength
   , mute
@@ -140,6 +141,9 @@ href =
 --
 ismap :: ValidAttribute 'IsMap tag => Attribute tag
 ismap = Attr_IsMap
+
+loop :: ValidAttribute 'Loop tag => Attribute tag
+loop = Attr_Loop
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the

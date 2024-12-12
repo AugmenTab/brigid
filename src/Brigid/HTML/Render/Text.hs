@@ -618,6 +618,9 @@ renderAttribute attr =
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 
+    Attr_Loop ->
+      buildBooleanAttribute "loop" True
+
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . T.pack $ show maxlength
 

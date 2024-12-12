@@ -2786,9 +2786,8 @@ attr_label = (,) Attr_Label . Just
 attr_list :: T.Text -> AttributeSelector
 attr_list = (,) Attr_List . Just
 
--- TODO
-attr_loop :: T.Text -> AttributeSelector
-attr_loop = (,) Attr_Loop . Just
+attr_loop :: AttributeSelector
+attr_loop = (Attr_Loop, Nothing)
 
 -- TODO
 attr_low :: T.Text -> AttributeSelector

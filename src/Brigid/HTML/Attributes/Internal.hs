@@ -55,6 +55,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Height
       , Attr_Href
       , Attr_IsMap
+      , Attr_Loop
       , Attr_MaxLength
       , Attr_MinLength
       , Attr_Muted
@@ -480,10 +481,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Loop
-  --   :: ValidAttribute 'Loop tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Loop
+    :: ValidAttribute 'Loop tag
+    => Attribute tag
 
   -- Attr_Low
   --   :: ValidAttribute 'Low tag
@@ -981,6 +981,9 @@ attributeText attr =
 
     Attr_IsMap ->
       "ismap"
+
+    Attr_Loop ->
+      "loop"
 
     Attr_MaxLength _maxlength ->
       "maxlength"

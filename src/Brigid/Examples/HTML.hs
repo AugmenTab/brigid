@@ -216,14 +216,16 @@ transparencyExample =
  -- , E.a [] [] -- This fails, because a is excluded from the transparent content that a holds.
  -- , E.li [] [] -- This fails, because li isn't a valid child for the grandparent div, and a is transparent.
     , E.div [] []
-    , E.audio
-        [ A.controls
-        , A.controlslist HTML.NoDownload
-        , A.mute False
-        , A.disableremoteplayback
-        ]
+    , E.audio [ A.controls
+              , A.controlslist HTML.NoDownload
+              , A.mute False
+              , A.disableremoteplayback
+              ]
         []
-    , E.video [ A.muted ] []
+    , E.video [ A.muted
+              , A.loop
+              ]
+        []
     ]
 
 tableWithBodyExample :: E.ChildHTML E.Division grandparent

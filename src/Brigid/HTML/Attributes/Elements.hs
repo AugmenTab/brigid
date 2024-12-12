@@ -34,6 +34,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Height                = TagGroups.SizableTags
   ValidElementsFor Href                  = TagGroups.HrefTags
   ValidElementsFor IsMap                 = '[ Tags.Image ]
+  ValidElementsFor Loop                  = TagGroups.MediaContent
   ValidElementsFor MaxLength             = TagGroups.LengthTags
   ValidElementsFor MinLength             = TagGroups.LengthTags
   ValidElementsFor Muted                 = TagGroups.MediaContent
