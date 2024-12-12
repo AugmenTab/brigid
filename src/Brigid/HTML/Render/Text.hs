@@ -585,6 +585,9 @@ renderAttribute attr =
         . buildAttribute "crossorigin"
         $ Types.crossoriginFetchToText crossorigin
 
+    Attr_Default ->
+      buildBooleanAttribute "default" True
+
     Attr_Defer ->
       buildBooleanAttribute "defer" True
 

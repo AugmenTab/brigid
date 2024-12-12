@@ -49,6 +49,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Controls
       , Attr_ControlsList
       , Attr_CrossOrigin
+      , Attr_Default
       , Attr_Defer
       , Attr_Disabled
       , Attr_DisablePictureInPicture
@@ -368,10 +369,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Default
-  --   :: ValidAttribute 'Default tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Default
+    :: ValidAttribute 'Default tag
+    => Attribute tag
 
   Attr_Defer
     :: ValidAttribute 'Defer tag
@@ -976,6 +976,9 @@ attributeText attr =
 
     Attr_CrossOrigin _crossorigin ->
       "crossorigin"
+
+    Attr_Default ->
+      "default"
 
     Attr_Defer ->
       "defer"

@@ -27,6 +27,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Controls                = TagGroups.MediaContent
   ValidElementsFor ControlsList            = TagGroups.MediaContent
   ValidElementsFor CrossOrigin             = TagGroups.CrossOriginTags
+  ValidElementsFor Default                 = '[ Tags.Track ]
   ValidElementsFor Defer                   = '[ Tags.Script ]
   ValidElementsFor Disabled                = TagGroups.DisableableTags
   ValidElementsFor DisablePictureInPicture = '[ Tags.Video ]

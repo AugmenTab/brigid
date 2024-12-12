@@ -12,6 +12,7 @@ module Brigid.HTML.Attributes.Scoped
   , controls
   , controlslist
   , crossorigin
+  , default_
   , defer
   , disable
   , disabled
@@ -110,6 +111,9 @@ crossorigin :: ValidAttribute 'CrossOrigin tag
             => Types.CrossOriginFetch
             -> Attribute tag
 crossorigin = Attr_CrossOrigin
+
+default_ :: ValidAttribute 'Default tag => Attribute tag
+default_ = Attr_Default
 
 defer :: ValidAttribute 'Defer tag => Attribute tag
 defer = Attr_Defer

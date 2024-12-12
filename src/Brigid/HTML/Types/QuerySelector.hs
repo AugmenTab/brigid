@@ -186,7 +186,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_data
   , attr_datetime
   , attr_decoding
-  , attr_default_
+  , attr_default
   , attr_defer
   , attr_dirname
   , attr_disabled
@@ -2705,9 +2705,8 @@ attr_datetime = (,) Attr_Datetime . Just
 attr_decoding :: T.Text -> AttributeSelector
 attr_decoding = (,) Attr_Decoding . Just
 
--- TODO
-attr_default_ :: T.Text -> AttributeSelector
-attr_default_ = (,) Attr_Default . Just
+attr_default :: AttributeSelector
+attr_default = (Attr_Default, Nothing)
 
 attr_defer :: AttributeSelector
 attr_defer = (Attr_Defer, Nothing)

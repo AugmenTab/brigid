@@ -230,7 +230,8 @@ transparencyExample =
               , A.playsinline
               , A.poster fakeJavaScriptLink
               ]
-        []
+        [ E.track [ A.default_ ]
+        ]
     ]
 
 tableWithBodyExample :: E.ChildHTML E.Division grandparent
