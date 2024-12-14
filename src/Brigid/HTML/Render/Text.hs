@@ -19,6 +19,7 @@ import Shrubbery qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
+import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Render.Internal.Escape qualified as Escape
 import Brigid.HTML.Types qualified as Types
 import Brigid.HTML.Types.URL (RelativeURL(..))
@@ -462,7 +463,7 @@ renderAttribute attr =
         $ Types.directionalityToText directionality
 
     Attr_Draggable draggable ->
-      Just . buildAttribute "draggable" $ enumBoolToText draggable
+      Just . buildAttribute "draggable" $ Render.enumBoolToText draggable
 
     Attr_EnterKeyHint option ->
       Just
@@ -472,8 +473,7 @@ renderAttribute attr =
     Attr_ExportParts parts ->
       Just
         . buildAttribute "exportparts"
-        . T.intercalate ", "
-        . fmap Types.exportPartToText
+        . Render.foldToTextWithSeparator Types.exportPartToText ", "
         $ NEL.toList parts
 
     Attr_Hidden hidden ->
@@ -511,8 +511,7 @@ renderAttribute attr =
     Attr_Part parts ->
       Just
         . buildAttribute "part"
-        . T.unwords
-        . fmap Types.partToText
+        . Render.foldToTextWithSeparator Types.partToText " "
         $ NEL.toList parts
 
     Attr_Popover state ->
@@ -525,7 +524,7 @@ renderAttribute attr =
     -- Attr_Slot
 
     Attr_Spellcheck spellcheck ->
-      Just . buildAttribute "spellcheck" $ enumBoolToText spellcheck
+      Just . buildAttribute "spellcheck" $ Render.enumBoolToText spellcheck
 
     Attr_Style style ->
       Just . buildAttribute "style" $ Escape.attribute style
@@ -537,12 +536,12 @@ renderAttribute attr =
       Just . buildAttribute "title" $ Escape.attribute title
 
     Attr_Translate translate ->
-      Just . buildAttribute "translate" $ enumBoolToText translate
+      Just . buildAttribute "translate" $ Render.enumBoolToText translate
 
     Attr_WritingSuggestions writingsuggestions ->
       Just
         . buildAttribute "writingsuggestions"
-        $ enumBoolToText writingsuggestions
+        $ Render.enumBoolToText writingsuggestions
 
     -- Scoped Attributes
     --
@@ -601,8 +600,7 @@ renderAttribute attr =
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
-        . T.unwords
-        . fmap Types.idToText
+        . Render.foldToTextWithSeparator Types.idToText " "
         $ NEL.toList headers
 
     Attr_Height height ->
@@ -654,8 +652,7 @@ renderAttribute attr =
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"
-        . T.unwords
-        . fmap Types.pingToText
+        . Render.foldToTextWithSeparator Types.pingToText " "
         $ NEL.toList pings
 
     Attr_PlaysInline playsinline ->
@@ -704,7 +701,7 @@ renderAttribute attr =
        in Just . buildAttribute hxAttr $ Escape.urlText hxPath
 
     Attr_HxBoost boosted ->
-      Just . buildAttribute "hx-boost" $ enumBoolToText boosted
+      Just . buildAttribute "hx-boost" $ Render.enumBoolToText boosted
 
     Attr_HxConfirm confirmation ->
       Just . buildAttribute "hx-confirm" $ Escape.attribute confirmation
@@ -715,8 +712,7 @@ renderAttribute attr =
     Attr_HxDisabledElt disabled ->
       Just
         . buildAttribute "hx-disabled-elt"
-        . T.intercalate ", "
-        . fmap Types.disabledSelectorToText
+        . Render.foldToTextWithSeparator Types.disabledSelectorToText ", "
         $ NEL.toList disabled
 
     Attr_HxDisinherit disinherit ->
@@ -728,8 +724,7 @@ renderAttribute attr =
     Attr_HxExt exts ->
       Just
         . buildAttribute "hx-ext"
-        . T.intercalate ","
-        . fmap Types.extensionToText
+        . Render.foldToTextWithSeparator Types.extensionToText ","
         $ NEL.toList exts
 
     Attr_HxHeaders headers ->
@@ -779,8 +774,7 @@ renderAttribute attr =
     Attr_HxSelectOOB selects ->
       Just
         . buildAttribute "hx-select-oob"
-        . T.intercalate ", "
-        . fmap Types.outOfBandSelectToText
+        . Render.foldToTextWithSeparator Types.outOfBandSelectToText ", "
         $ NEL.toList selects
 
     Attr_HxSwap swap ->
@@ -797,8 +791,7 @@ renderAttribute attr =
     Attr_HxTrigger triggers ->
       Just
         . buildAttribute "hx-trigger"
-        . T.intercalate ", "
-        . fmap Types.triggerToText
+        . Render.foldToTextWithSeparator Types.triggerToText ", "
         $ NEL.toList triggers
 
     Attr_HxValidate ->
@@ -820,16 +813,13 @@ buildBooleanAttribute :: T.Text -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
   B.bool Nothing (Just $ fromText attr)
 
-enumBoolToText :: Bool -> T.Text
-enumBoolToText = B.bool "false" "true"
-
 renderPushURL :: Types.PushURL -> T.Text
 renderPushURL =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @Types.AbsoluteURL Types.absoluteURLToText
       . Shrubbery.branch @(Types.RelativeURL _) Types.relativeURLToText
-      . Shrubbery.branch @Bool enumBoolToText
+      . Shrubbery.branch @Bool Render.enumBoolToText
       . Shrubbery.branch @Types.RawURL Types.rawURLToText
       $ Shrubbery.branchEnd
   ) . Types.unPushURL

@@ -24,10 +24,13 @@ module Brigid.HTML.Types.Extension
   , extServerSentEvents
   , extWebSockets
   , extCustomExtension
+  , extensionToBytes
   , extensionToText
   ) where
 
 import Data.Bool qualified as B
+import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 
 data Extension =
@@ -116,6 +119,11 @@ extWebSockets = mkExtension WebSockets
 extCustomExtension :: T.Text -> Extension
 extCustomExtension = mkExtension . CustomExtension
 
+extensionToBytes :: Extension -> LBS.ByteString
+extensionToBytes ext =
+  B.bool "" "ignore:" (extensionIgnored ext)
+    <> extensionTypeToBytes (extensionType ext)
+
 extensionToText :: Extension -> T.Text
 extensionToText ext =
   B.bool "" "ignore:" (extensionIgnored ext)
@@ -145,6 +153,33 @@ data ExtensionType
   | ServerSentEvents
   | WebSockets
   | CustomExtension T.Text
+
+extensionTypeToBytes :: ExtensionType -> LBS.ByteString
+extensionTypeToBytes ext =
+  case ext of
+    AjaxHeader          -> "ajax-header"
+    AlpineMorph         -> "alpine-morph"
+    ClassTools          -> "class-tools"
+    ClientSideTemplates -> "client-side-templates"
+    Debug               -> "debug"
+    EventHeader         -> "event-header"
+    HeadSupport         -> "head-support"
+    IncludeVals         -> "include-vals"
+    JsonEnc             -> "json-enc"
+    Idiomorph           -> "idiomorph"
+    LoadingStates       -> "loading-states"
+    MethodOverride      -> "method-override"
+    MorphdomSwap        -> "morphdom-swap"
+    MultiSwap           -> "multi-swap"
+    PathDeps            -> "path-deps"
+    PathParams          -> "path-params"
+    Preload             -> "preload"
+    RemoveMe            -> "remove-me"
+    ResponseTargets     -> "response-targets"
+    Restored            -> "restored"
+    ServerSentEvents    -> "server-sent-events"
+    WebSockets          -> "web-sockets"
+    CustomExtension txt -> LBS8.pack $ T.unpack txt
 
 extensionTypeToText :: ExtensionType -> T.Text
 extensionTypeToText ext =

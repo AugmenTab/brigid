@@ -598,7 +598,6 @@ module Brigid.HTML.Types.QuerySelector
   ) where
 
 import Prelude hiding (Show, div, head, id, map, max, min, show, span)
-import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
@@ -609,8 +608,8 @@ import GHC.TypeLits (KnownNat)
 import Numeric.Natural (Natural)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
-import Text.Show qualified as Show
 
+import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import Brigid.HTML.Types.BCP_47 (BCP_47, bcp47ToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
@@ -2529,7 +2528,7 @@ attr_dir :: Directionality -> AttributeSelector
 attr_dir = (,) Attr_Dir . Just . directionalityToText
 
 attr_draggable :: Bool -> AttributeSelector
-attr_draggable = (,) Attr_Draggable . Just . enumBoolToText
+attr_draggable = (,) Attr_Draggable . Just . Render.enumBoolToText
 
 attr_enterkeyhint :: KeyHintOption -> AttributeSelector
 attr_enterkeyhint = (,) Attr_EnterKeyHint . Just . keyHintOptionToText
@@ -2538,8 +2537,7 @@ attr_exportparts :: NEL.NonEmpty ExportPart -> AttributeSelector
 attr_exportparts =
   (,) Attr_ExportParts
     . Just
-    . T.intercalate ", "
-    . fmap exportPartToText
+    . Render.foldToTextWithSeparator exportPartToText ", "
     . NEL.toList
 
 attr_hidden :: AttributeSelector
@@ -2587,7 +2585,11 @@ attr_nonce :: T.Text -> AttributeSelector
 attr_nonce = (,) Attr_Nonce . Just
 
 attr_part :: NEL.NonEmpty Part -> AttributeSelector
-attr_part = (,) Attr_Part . Just . T.unwords . fmap partToText . NEL.toList
+attr_part =
+  (,) Attr_Part
+    . Just
+    . Render.foldToTextWithSeparator partToText " "
+    . NEL.toList
 
 attr_popover :: PopoverState -> AttributeSelector
 attr_popover = (,) Attr_Popover . Just . popoverStateToText
@@ -2601,22 +2603,23 @@ attr_slot :: T.Text -> AttributeSelector
 attr_slot = (,) Attr_Slot . Just
 
 attr_spellcheck :: Bool -> AttributeSelector
-attr_spellcheck = (,) Attr_Spellcheck . Just . enumBoolToText
+attr_spellcheck = (,) Attr_Spellcheck . Just . Render.enumBoolToText
 
 attr_style :: T.Text -> AttributeSelector
 attr_style = (,) Attr_Style . Just
 
 attr_tabindex :: Int -> AttributeSelector
-attr_tabindex = (,) Attr_TabIndex . Just . showText
+attr_tabindex = (,) Attr_TabIndex . Just . Render.showText
 
 attr_title :: T.Text -> AttributeSelector
 attr_title = (,) Attr_Title . Just
 
 attr_translate :: Bool -> AttributeSelector
-attr_translate = (,) Attr_Translate . Just . enumBoolToText
+attr_translate = (,) Attr_Translate . Just . Render.enumBoolToText
 
 attr_writingsuggestions :: Bool -> AttributeSelector
-attr_writingsuggestions = (,) Attr_WritingSuggestions . Just . enumBoolToText
+attr_writingsuggestions =
+  (,) Attr_WritingSuggestions . Just . Render.enumBoolToText
 
 -- Scoped Attributes
 --
@@ -2668,10 +2671,10 @@ attr_cite :: ( KnownNat branchIndex
 attr_cite = (,) Attr_Cite . Just . urlToText . mkURL
 
 attr_cols :: Word -> AttributeSelector
-attr_cols = (,) Attr_Cols . Just . showText
+attr_cols = (,) Attr_Cols . Just . Render.showText
 
 attr_colspan :: Word -> AttributeSelector
-attr_colspan = (,) Attr_Colspan . Just . showText
+attr_colspan = (,) Attr_Colspan . Just . Render.showText
 
 attr_content :: T.Text -> AttributeSelector
 attr_content = (,) Attr_Content . Just
@@ -2758,10 +2761,13 @@ attr_formtarget = (,) Attr_FormTarget . Just
 
 attr_headers :: NEL.NonEmpty Id.Id -> AttributeSelector
 attr_headers =
-  (,) Attr_Headers . Just . T.unwords . fmap Id.idToText . NEL.toList
+  (,) Attr_Headers
+    . Just
+    . Render.foldToTextWithSeparator Id.idToText " "
+    . NEL.toList
 
 attr_height :: Word -> AttributeSelector
-attr_height = (,) Attr_Height . Just . showText
+attr_height = (,) Attr_Height . Just . Render.showText
 
 -- TODO
 attr_high :: T.Text -> AttributeSelector
@@ -2810,10 +2816,10 @@ attr_max :: T.Text -> AttributeSelector
 attr_max = (,) Attr_Max . Just
 
 attr_maxlength :: Word -> AttributeSelector
-attr_maxlength = (,) Attr_MaxLength . Just . showText
+attr_maxlength = (,) Attr_MaxLength . Just . Render.showText
 
 attr_minlength :: Word -> AttributeSelector
-attr_minlength = (,) Attr_MinLength . Just . showText
+attr_minlength = (,) Attr_MinLength . Just . Render.showText
 
 -- TODO
 attr_media :: T.Text -> AttributeSelector
@@ -2838,7 +2844,7 @@ attr_name :: T.Text -> AttributeSelector
 attr_name = (,) Attr_Name . Just
 
 attr_nomodule :: Bool -> AttributeSelector
-attr_nomodule = (,) Attr_NoModule . Just . enumBoolToText
+attr_nomodule = (,) Attr_NoModule . Just . Render.enumBoolToText
 
 -- TODO
 attr_novalidate :: T.Text -> AttributeSelector
@@ -2857,7 +2863,11 @@ attr_pattern :: T.Text -> AttributeSelector
 attr_pattern = (,) Attr_Pattern . Just
 
 attr_ping :: NEL.NonEmpty Ping -> AttributeSelector
-attr_ping = (,) Attr_Ping . Just . T.unwords . fmap pingToText . NEL.toList
+attr_ping =
+  (,) Attr_Ping
+    . Just
+    . Render.foldToTextWithSeparator pingToText " "
+    . NEL.toList
 
 -- TODO
 attr_placeholder :: T.Text -> AttributeSelector
@@ -2897,10 +2907,10 @@ attr_reversed :: T.Text -> AttributeSelector
 attr_reversed = (,) Attr_Reversed . Just
 
 attr_rows :: Word -> AttributeSelector
-attr_rows = (,) Attr_Rows . Just . showText
+attr_rows = (,) Attr_Rows . Just . Render.showText
 
 attr_rowspan :: Word -> AttributeSelector
-attr_rowspan = (,) Attr_Rowspan . Just . showText
+attr_rowspan = (,) Attr_Rowspan . Just . Render.showText
 
 -- TODO
 attr_sandbox :: T.Text -> AttributeSelector
@@ -2972,7 +2982,7 @@ attr_value :: T.Text -> AttributeSelector
 attr_value = (,) Attr_Value . Just
 
 attr_width :: Word -> AttributeSelector
-attr_width = (,) Attr_Width . Just . showText
+attr_width = (,) Attr_Width . Just . Render.showText
 
 -- TODO
 attr_wrap :: T.Text -> AttributeSelector
@@ -3013,8 +3023,7 @@ attr_hxSelectOOB :: NEL.NonEmpty OutOfBandSelect -> AttributeSelector
 attr_hxSelectOOB =
   (,) Attr_HxSelectOOB
     . Just
-    . T.intercalate ", "
-    . fmap outOfBandSelectToText
+    . Render.foldToTextWithSeparator outOfBandSelectToText ", "
     . NEL.toList
 
 attr_hxSwap :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf swap SwapTypes)
@@ -3040,8 +3049,7 @@ attr_hxTrigger :: NEL.NonEmpty Trigger -> AttributeSelector
 attr_hxTrigger =
   (,) Attr_HxTrigger
     . Just
-    . T.intercalate ", "
-    . fmap triggerToText
+    . Render.foldToTextWithSeparator triggerToText ", "
     . NEL.toList
 
 attr_hxVals :: ( KnownNat branchIndex
@@ -3051,7 +3059,7 @@ attr_hxVals :: ( KnownNat branchIndex
 attr_hxVals = (,) Attr_HxVals . Just . htmxValsToText . mkHtmxVals
 
 attr_hxBoost :: Bool -> AttributeSelector
-attr_hxBoost = (,) Attr_HxBoost . Just . enumBoolToText
+attr_hxBoost = (,) Attr_HxBoost . Just . Render.enumBoolToText
 
 attr_hxConfirm :: T.Text -> AttributeSelector
 attr_hxConfirm = (,) Attr_HxConfirm . Just
@@ -3066,8 +3074,7 @@ attr_hxDisabledElt :: NEL.NonEmpty DisabledSelector -> AttributeSelector
 attr_hxDisabledElt =
   (,) Attr_HxDisabledElt
     . Just
-    . T.intercalate ", "
-    . fmap disabledSelectorToText
+    . Render.foldToTextWithSeparator disabledSelectorToText ", "
     . NEL.toList
 
 attr_hxDisinherit :: ( KnownNat branchIndex
@@ -3084,8 +3091,7 @@ attr_hxExt :: NEL.NonEmpty Extension -> AttributeSelector
 attr_hxExt =
   (,) Attr_HxExt
     . Just
-    . T.intercalate ","
-    . fmap extensionToText
+    . Render.foldToTextWithSeparator extensionToText ","
     . NEL.toList
 
 attr_hxHeaders :: ( KnownNat branchIndex
@@ -4146,11 +4152,5 @@ rawTriggerToBytes =
 
 -- Helpers
 --
-enumBoolToText :: Bool -> T.Text
-enumBoolToText = B.bool "false" "true"
-
 lbsUnwords :: [LBS.ByteString] -> LBS.ByteString
 lbsUnwords = LBS.intercalate (LBS8.pack " ")
-
-showText :: Show.Show s => s -> T.Text
-showText = T.pack . Show.show

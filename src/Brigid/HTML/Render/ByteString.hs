@@ -22,6 +22,7 @@ import Shrubbery qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
+import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Render.Internal.Escape qualified as Escape
 import Brigid.HTML.Types qualified as Types
 import Brigid.HTML.Types.URL (RelativeURL (..))
@@ -479,7 +480,7 @@ renderAttribute attr =
         $ Types.directionalityToBytes directionality
 
     Attr_Draggable draggable ->
-      Just . buildAttribute "draggable" $ enumBoolToBytes draggable
+      Just . buildAttribute "draggable" $ Render.enumBoolToBytes draggable
 
     Attr_EnterKeyHint option ->
       Just
@@ -489,8 +490,7 @@ renderAttribute attr =
     Attr_ExportParts parts ->
       Just
         . buildAttribute "exportparts"
-        . LBS.intercalate ", "
-        . fmap Types.exportPartToBytes
+        . Render.foldToBytesWithSeparator Types.exportPartToBytes ", "
         $ NEL.toList parts
 
     Attr_Hidden hidden ->
@@ -533,8 +533,7 @@ renderAttribute attr =
     Attr_Part parts ->
       Just
         . buildAttribute "part"
-        . LBS.intercalate " "
-        . fmap Types.partToBytes
+        . Render.foldToBytesWithSeparator Types.partToBytes " "
         $ NEL.toList parts
 
     Attr_Popover state ->
@@ -547,7 +546,7 @@ renderAttribute attr =
     -- Attr_Slot
 
     Attr_Spellcheck spellcheck ->
-      Just . buildAttribute "spellcheck" $ enumBoolToBytes spellcheck
+      Just . buildAttribute "spellcheck" $ Render.enumBoolToBytes spellcheck
 
     Attr_Style style ->
       Just . buildAttribute "style" . toBytes $ Escape.attribute style
@@ -559,12 +558,12 @@ renderAttribute attr =
       Just . buildAttribute "title" . toBytes $ Escape.attribute title
 
     Attr_Translate translate ->
-      Just . buildAttribute "translate" $ enumBoolToBytes translate
+      Just . buildAttribute "translate" $ Render.enumBoolToBytes translate
 
     Attr_WritingSuggestions writingsuggestions ->
       Just
         . buildAttribute "writingsuggestions"
-        $ enumBoolToBytes writingsuggestions
+        $ Render.enumBoolToBytes writingsuggestions
 
     -- Scoped Attributes
     --
@@ -623,8 +622,7 @@ renderAttribute attr =
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
-        . LBS8.unwords
-        . fmap Types.idToBytes
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
         $ NEL.toList headers
 
     Attr_Height height ->
@@ -676,8 +674,7 @@ renderAttribute attr =
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"
-        . LBS8.unwords
-        . fmap (toBytes . Types.pingToText)
+        . Render.foldToBytesWithSeparator Types.pingToBytes " "
         $ NEL.toList pings
 
     Attr_PlaysInline playsinline ->
@@ -729,7 +726,7 @@ renderAttribute attr =
        in Just . buildAttribute hxAttr $ Escape.urlByteString hxPath
 
     Attr_HxBoost boosted ->
-      Just . buildAttribute "hx-boost" $ enumBoolToBytes boosted
+      Just . buildAttribute "hx-boost" $ Render.enumBoolToBytes boosted
 
     Attr_HxConfirm confirmation ->
       Just
@@ -743,8 +740,7 @@ renderAttribute attr =
     Attr_HxDisabledElt disabled ->
       Just
         . buildAttribute "hx-disabled-elt"
-        . LBS.intercalate (LBS8.pack ", ")
-        . fmap Types.disabledSelectorToBytes
+        . Render.foldToBytesWithSeparator Types.disabledSelectorToBytes ", "
         $ NEL.toList disabled
 
     Attr_HxDisinherit disinherit ->
@@ -758,8 +754,7 @@ renderAttribute attr =
     Attr_HxExt exts ->
       Just
         . buildAttribute "hx-ext"
-        . LBS.intercalate ","
-        . fmap (toBytes . Types.extensionToText)
+        . Render.foldToBytesWithSeparator Types.extensionToBytes ","
         $ NEL.toList exts
 
     Attr_HxHeaders headers ->
@@ -812,8 +807,7 @@ renderAttribute attr =
     Attr_HxSelectOOB selects ->
       Just
         . buildAttribute "hx-select-oob"
-        . LBS8.intercalate (LBS8.pack ", ")
-        . fmap Types.outOfBandSelectToBytes
+        . Render.foldToBytesWithSeparator Types.outOfBandSelectToBytes ", "
         $ NEL.toList selects
 
     Attr_HxSwap swap ->
@@ -830,8 +824,7 @@ renderAttribute attr =
     Attr_HxTrigger triggers ->
       Just
         . buildAttribute "hx-trigger"
-        . LBS.intercalate (LBS8.pack ", ")
-        . fmap Types.triggerToBytes
+        . Render.foldToBytesWithSeparator Types.triggerToBytes ", "
         $ NEL.toList triggers
 
     Attr_HxValidate ->
@@ -853,9 +846,6 @@ buildBooleanAttribute :: LBS.ByteString -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
   B.bool Nothing (Just $ lazyByteString attr)
 
-enumBoolToBytes :: Bool -> LBS.ByteString
-enumBoolToBytes = B.bool "false" "true"
-
 toBytes :: T.Text -> LBS.ByteString
 toBytes = LBS.fromStrict . TE.encodeUtf8
 
@@ -865,7 +855,7 @@ renderPushURL =
       . Shrubbery.branchBuild
       . Shrubbery.branch @Types.AbsoluteURL (toBytes . Types.absoluteURLToText)
       . Shrubbery.branch @(Types.RelativeURL _) (toBytes . Types.relativeURLToText)
-      . Shrubbery.branch @Bool enumBoolToBytes
+      . Shrubbery.branch @Bool Render.enumBoolToBytes
       . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)
       $ Shrubbery.branchEnd
   ) . Types.unPushURL

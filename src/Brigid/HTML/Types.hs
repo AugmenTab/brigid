@@ -21,6 +21,7 @@ module Brigid.HTML.Types
   , Ping
   , PingTypes
   , mkPing
+  , pingToBytes
   , pingToText
   ) where
 
@@ -96,6 +97,7 @@ import Brigid.HTML.Types.URL ( URL
                              , Ping
                              , PingTypes
                              , mkPing
+                             , pingToBytes
                              , pingToText
                              )
 import Brigid.HTML.Types.Vals as Export

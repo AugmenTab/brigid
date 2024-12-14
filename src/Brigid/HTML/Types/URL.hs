@@ -32,6 +32,7 @@ module Brigid.HTML.Types.URL
   , Ping
   , PingTypes
   , mkPing
+  , pingToBytes
   , pingToText
   ) where
 
@@ -165,6 +166,16 @@ mkPing :: ( KnownNat branchIndex
        => url -> Ping
 mkPing =
   Ping . Shrubbery.unify
+
+pingToBytes :: Ping -> LBS.ByteString
+pingToBytes (Ping ping) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL absoluteURLToBytes
+      . Shrubbery.branch @(RelativeURL Post) relativeURLToBytes
+      . Shrubbery.branch @RawURL rawURLToBytes
+      $ Shrubbery.branchEnd
+  ) ping
 
 pingToText :: Ping -> T.Text
 pingToText (Ping ping) =
