@@ -2,7 +2,8 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.Scoped
-  ( async
+  ( alt
+  , async
   , autoplay
   , charset
   , cite
@@ -60,6 +61,9 @@ import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
 --
+alt :: ValidAttribute 'Alt tag => T.Text -> Attribute tag
+alt = Attr_Alt
+
 async :: ValidAttribute 'Async tag => Attribute tag
 async = Attr_Async
 

@@ -2637,7 +2637,6 @@ attr_action = (,) Attr_Action . Just
 attr_allow :: T.Text -> AttributeSelector
 attr_allow = (,) Attr_Allow . Just
 
--- TODO
 attr_alt :: T.Text -> AttributeSelector
 attr_alt = (,) Attr_Alt . Just
 

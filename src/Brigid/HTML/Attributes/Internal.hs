@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Translate
       , Attr_WritingSuggestions
 
+      , Attr_Alt
       , Attr_Async
       , Attr_Autoplay
       , Attr_Charset
@@ -285,10 +286,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Alt
-  --   :: ValidAttribute 'Alt tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Alt
+    :: ValidAttribute 'Alt tag
+    => T.Text
+    -> Attribute tag
 
   Attr_Async
     :: ValidAttribute 'Async tag
@@ -946,6 +947,9 @@ attributeText attr =
 
     -- Scoped Attributes
     --
+    Attr_Alt _alt ->
+      "alt"
+
     Attr_Async ->
       "async"
 

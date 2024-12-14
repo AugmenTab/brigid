@@ -199,7 +199,7 @@ listExample =
           [ E.rawHTML "{{ Fake mustache code here! }}"
           ]
       , E.p [] $ E.wbrs "This is some paragraph text."
-      , E.img [ A.draggable False ]
+      , E.img [ A.draggable False, A.alt "This describes the image." ]
    -- , Safe.imgMap [] -- This fails because `imgMap` must be used inside an Anchor tag.
       ]
 

@@ -546,6 +546,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Alt alt ->
+      Just $ buildAttribute "alt" alt
+
     Attr_Async ->
       buildBooleanAttribute "async" True
 

@@ -568,6 +568,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Alt alt ->
+      Just . buildAttribute "alt" $ toBytes alt
+
     Attr_Async ->
       buildBooleanAttribute "async" True
 
