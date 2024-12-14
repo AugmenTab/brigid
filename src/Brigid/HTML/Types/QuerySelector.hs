@@ -2685,9 +2685,12 @@ attr_controls = (Attr_Controls, Nothing)
 attr_controlslist :: ControlsList -> AttributeSelector
 attr_controlslist = (,) Attr_ControlsList . Just . controlslistToText
 
--- TODO
-attr_coords :: T.Text -> AttributeSelector
-attr_coords = (,) Attr_Coords . Just
+attr_coords :: NEL.NonEmpty Word -> AttributeSelector
+attr_coords =
+  (,) Attr_Coords
+    . Just
+    . Render.foldToTextWithSeparator Render.showText ","
+    . NEL.toList
 
 attr_crossorigin :: CrossOriginFetch -> AttributeSelector
 attr_crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText

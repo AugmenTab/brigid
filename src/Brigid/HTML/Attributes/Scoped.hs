@@ -12,6 +12,7 @@ module Brigid.HTML.Attributes.Scoped
   , content
   , controls
   , controlslist
+  , coords
   , crossorigin
   , default_
   , defer
@@ -105,6 +106,14 @@ controls = Attr_Controls
 controlslist :: ValidAttribute 'ControlsList tag
              => Types.ControlsList -> Attribute tag
 controlslist = Attr_ControlsList
+
+-- | The `coords` attribute is used in combination with the `shape` attribute
+-- to specify the size and area of a an <area> tag in an image <map>. For safe
+-- construction of the `coords` and `shape` attributes on an `area` tag, use
+-- `Brigid.HTML.Elements.Safe.Area`.
+--
+coords :: ValidAttribute 'Coords tag => NEL.NonEmpty Word -> Attribute tag
+coords = Attr_Coords
 
 {-|
    This enumerated attribute indicates whether CORS must be used when fetching

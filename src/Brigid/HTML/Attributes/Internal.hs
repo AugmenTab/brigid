@@ -49,6 +49,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Content
       , Attr_Controls
       , Attr_ControlsList
+      , Attr_Coords
       , Attr_CrossOrigin
       , Attr_Default
       , Attr_Defer
@@ -347,10 +348,10 @@ data Attribute (tag :: TagType) where
     => Types.ControlsList
     -> Attribute tag
 
-  -- Attr_Coords
-  --   :: ValidAttribute 'Coords tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Coords
+    :: ValidAttribute 'Coords tag
+    => NEL.NonEmpty Word
+    -> Attribute tag
 
   Attr_CrossOrigin
     :: ValidAttribute 'CrossOrigin tag
@@ -976,6 +977,9 @@ attributeText attr =
 
     Attr_ControlsList _controlslist ->
       "controlslist"
+
+    Attr_Coords _coords ->
+      "coords"
 
     Attr_CrossOrigin _crossorigin ->
       "crossorigin"

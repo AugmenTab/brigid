@@ -24,6 +24,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Cite                    = TagGroups.CitableTags
   ValidElementsFor Cols                    = '[ Tags.TextArea ]
   ValidElementsFor Colspan                 = TagGroups.TableCells
+  ValidElementsFor Coords                  = '[ Tags.Area ]
   ValidElementsFor Content                 = '[ Tags.Meta ]
   ValidElementsFor Controls                = TagGroups.MediaContent
   ValidElementsFor ControlsList            = TagGroups.MediaContent

@@ -180,6 +180,10 @@ address :: ValidChild Tags.ContactAddress parent grandparent
         -> ChildHTML parent grandparent
 address = Tag_ContactAddress
 
+-- | The <area> tag must be a descendent of a <map> tag, but it need not be a
+-- direct descendent. Checking for this isn't possible with in Brigid, so the
+-- user is responsible for ensuring the correct use of this tag.
+--
 area :: ValidChild Tags.Area parent grandparent
      => [Attribute Tags.Area]
      -> ChildHTML parent grandparent

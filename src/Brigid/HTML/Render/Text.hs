@@ -566,6 +566,12 @@ renderAttribute attr =
     Attr_Colspan colspan ->
       Just . buildAttribute "colspan" . T.pack $ show colspan
 
+    Attr_Coords coords ->
+      Just
+        . buildAttribute "coords"
+        . Render.foldToTextWithSeparator Render.showText ","
+        $ NEL.toList coords
+
     Attr_Content content ->
       Just $ buildAttribute "content" content
 

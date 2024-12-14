@@ -138,6 +138,7 @@ example =
                           Nothing
                       ]
                   )
+            , E.area [ A.coords $ 10 :| [ 58 ] ]
             ]
         , safeScriptExample
         , transparencyExample

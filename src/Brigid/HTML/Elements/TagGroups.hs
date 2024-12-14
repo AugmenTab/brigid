@@ -390,6 +390,7 @@ type MetadataContent =
 type PhrasingContent =
   [ 'Text
   , 'Abbreviation
+  , 'Area
   , 'Audio
   , 'BringAttentionTo
   , 'BidirectionalIsolation

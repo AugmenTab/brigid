@@ -588,6 +588,12 @@ renderAttribute attr =
     Attr_Colspan colspan ->
       Just . buildAttribute "colspan" . LBS8.pack $ show colspan
 
+    Attr_Coords coords ->
+      Just
+        . buildAttribute "coords"
+        . Render.foldToBytesWithSeparator Render.showBytes ","
+        $ NEL.toList coords
+
     Attr_Content content ->
       Just . buildAttribute "content" $ toBytes content
 
