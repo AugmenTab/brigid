@@ -42,6 +42,7 @@ module Brigid.HTML.Attributes.Scoped
   , rel
   , rows
   , rowspan
+  , shape
   , src
   , srclang
   , width
@@ -250,6 +251,9 @@ rows = Attr_Rows
 
 rowspan :: ValidAttribute 'Rowspan tag => Word -> Attribute tag
 rowspan = Attr_Rowspan
+
+shape :: ValidAttribute 'Shape tag => Types.Shape -> Attribute tag
+shape = Attr_Shape
 
 src :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes

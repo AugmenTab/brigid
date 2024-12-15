@@ -644,6 +644,7 @@ import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOpti
 import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
+import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
@@ -2927,9 +2928,8 @@ attr_scope = (,) Attr_Scope . Just
 attr_selected :: T.Text -> AttributeSelector
 attr_selected = (,) Attr_Selected . Just
 
--- TODO
-attr_shape :: T.Text -> AttributeSelector
-attr_shape = (,) Attr_Shape . Just
+attr_shape :: Shape -> AttributeSelector
+attr_shape = (,) Attr_Shape . Just . shapeToText
 
 -- TODO
 attr_size :: T.Text -> AttributeSelector

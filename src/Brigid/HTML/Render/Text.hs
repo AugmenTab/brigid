@@ -684,6 +684,9 @@ renderAttribute attr =
     Attr_Rowspan rowspan ->
       Just . buildAttribute "rowspan" . T.pack $ show rowspan
 
+    Attr_Shape shape ->
+      Just . buildAttribute "shape" $ Types.shapeToText shape
+
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToText src
 

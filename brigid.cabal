@@ -100,6 +100,7 @@ library
       Brigid.HTML.Types.Relationship
       Brigid.HTML.Types.RequestParams
       Brigid.HTML.Types.ScrollBehavior
+      Brigid.HTML.Types.Shape
       Brigid.HTML.Types.Swap
       Brigid.HTML.Types.SwapTiming
       Brigid.HTML.Types.SwapTransition

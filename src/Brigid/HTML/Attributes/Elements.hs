@@ -54,6 +54,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Rel                     = TagGroups.RelTags
   ValidElementsFor Rows                    = '[ Tags.TextArea ]
   ValidElementsFor Rowspan                 = TagGroups.TableCells
+  ValidElementsFor Shape                   = '[ Tags.Area ]
   ValidElementsFor Src                     = TagGroups.SrcTags
   ValidElementsFor SrcLang                 = '[ Tags.Track ]
   ValidElementsFor Width                   = TagGroups.SizableTags

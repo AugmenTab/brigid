@@ -76,6 +76,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Rel
       , Attr_Rows
       , Attr_Rowspan
+      , Attr_Shape
       , Attr_Src
       , Attr_SrcLang
       , Attr_Width
@@ -652,10 +653,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Shape
-  --   :: ValidAttribute 'Shape tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Shape
+    :: ValidAttribute 'Shape tag
+    => Types.Shape
+    -> Attribute tag
 
   -- Attr_Size
   --   :: ValidAttribute 'Size tag
@@ -1058,6 +1059,9 @@ attributeText attr =
 
     Attr_Rowspan _rowspan ->
       "rowspan"
+
+    Attr_Shape _shape ->
+      "shape"
 
     Attr_Src _src ->
       "src"
