@@ -2,7 +2,8 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.Scoped
-  ( alt
+  ( acceptCharset
+  , alt
   , async
   , autoplay
   , charset
@@ -64,6 +65,19 @@ import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
 --
+
+-- | This will default to using "UTF-8" as the only supported encoding.
+--
+-- Previously, this attribute accepted a list of valid encodings that the
+-- server could accept. In the current HTML5 specification, UTF-8 is the
+-- recommended and default character encoding for web applications. Specifying
+-- multiple encodings is now considered unnecessary and non-standard practice.
+--
+-- If you must specify multiple encodings, create a custom attribute instead.
+--
+acceptCharset :: ValidAttribute 'AcceptCharset tag => Attribute tag
+acceptCharset = Attr_AcceptCharset
+
 alt :: ValidAttribute 'Alt tag => T.Text -> Attribute tag
 alt = Attr_Alt
 

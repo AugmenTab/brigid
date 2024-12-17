@@ -113,7 +113,7 @@ example =
         [
         ]
     , E.comment "First comment"
-    , E.form [ A.hxValidate ]
+    , E.form [ A.hxValidate, A.acceptCharset ]
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []

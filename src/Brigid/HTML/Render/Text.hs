@@ -545,6 +545,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_AcceptCharset ->
+      Just $ buildAttribute "accept-charset" "UTF-8"
+
     Attr_Alt alt ->
       Just $ buildAttribute "alt" alt
 

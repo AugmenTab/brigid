@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Translate
       , Attr_WritingSuggestions
 
+      , Attr_AcceptCharset
       , Attr_Alt
       , Attr_Async
       , Attr_Autoplay
@@ -274,10 +275,9 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_AcceptCharset
-  --   :: ValidAttribute 'AcceptCharset tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_AcceptCharset
+    :: ValidAttribute 'AcceptCharset tag
+    => Attribute tag
 
   -- Attr_Action
   --   :: ValidAttribute 'Action tag
@@ -950,6 +950,9 @@ attributeText attr =
 
     -- Scoped Attributes
     --
+    Attr_AcceptCharset ->
+      "accept-charset"
+
     Attr_Alt _alt ->
       "alt"
 

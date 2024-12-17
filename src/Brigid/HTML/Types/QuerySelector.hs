@@ -648,7 +648,7 @@ import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
-import Brigid.HTML.Types.Target (Target, targetTypeToText)
+import Brigid.HTML.Types.Target (Target, targetToText)
 import Brigid.HTML.Types.TargetType (TargetType, targetTypeToBytes, targetTypeToText)
 import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
@@ -2630,9 +2630,8 @@ attr_writingsuggestions =
 attr_accept :: T.Text -> AttributeSelector
 attr_accept = (,) Attr_Accept . Just
 
--- TODO
-attr_acceptCharset :: T.Text -> AttributeSelector
-attr_acceptCharset = (,) Attr_AcceptCharset . Just
+attr_acceptCharset :: AttributeSelector
+attr_acceptCharset = (Attr_AcceptCharset, Just "UTF-8")
 
 -- TODO
 attr_action :: T.Text -> AttributeSelector

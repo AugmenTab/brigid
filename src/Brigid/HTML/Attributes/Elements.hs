@@ -17,6 +17,7 @@ type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
+  ValidElementsFor AcceptCharset           = '[ Tags.Form ]
   ValidElementsFor Alt                     = '[ Tags.Area, Tags.Image ]
   ValidElementsFor Async                   = '[ Tags.Script ]
   ValidElementsFor Autoplay                = TagGroups.MediaContent
