@@ -660,6 +660,7 @@ import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, tri
 import Brigid.HTML.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
+import Brigid.HTML.Types.Wrap (Wrap, wrapToText)
 
 newtype QuerySelector =
   QuerySelector
@@ -2992,9 +2993,8 @@ attr_value = (,) Attr_Value . Just
 attr_width :: Word -> AttributeSelector
 attr_width = (,) Attr_Width . Just . Render.showText
 
--- TODO
-attr_wrap :: T.Text -> AttributeSelector
-attr_wrap = (,) Attr_Wrap . Just
+attr_wrap :: Wrap -> AttributeSelector
+attr_wrap = (,) Attr_Wrap . Just . wrapToText
 
 attr_xmlns :: ( KnownNat branchIndex
               , branchIndex ~ FirstIndexOf url URLTypes

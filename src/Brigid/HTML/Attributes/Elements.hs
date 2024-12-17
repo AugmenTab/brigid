@@ -60,6 +60,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor SrcLang                 = '[ Tags.Track ]
   ValidElementsFor Target                  = TagGroups.TargetableTags
   ValidElementsFor Width                   = TagGroups.SizableTags
+  ValidElementsFor Wrap                    = '[ Tags.TextArea ]
   ValidElementsFor XMLNS                   = '[ Tags.Html ] -- SVG, MathML
 
   ValidElementsFor HxValidate              = '[ TagType.Form ]

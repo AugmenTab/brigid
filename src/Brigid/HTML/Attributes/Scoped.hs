@@ -48,6 +48,7 @@ module Brigid.HTML.Attributes.Scoped
   , srclang
   , target
   , width
+  , wrap
   , xmlns
   ) where
 
@@ -288,6 +289,9 @@ target = Attr_Target
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width
+
+wrap :: ValidAttribute 'Wrap tag => Types.Wrap -> Attribute tag
+wrap = Attr_Wrap
 
 xmlns :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf url Types.URLTypes

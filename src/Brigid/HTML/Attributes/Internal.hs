@@ -82,6 +82,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_SrcLang
       , Attr_Target
       , Attr_Width
+      , Attr_Wrap
       , Attr_XMLNS
 
       , Attr_Htmx
@@ -730,10 +731,10 @@ data Attribute (tag :: TagType) where
     => Word
     -> Attribute tag
 
-  -- Attr_Wrap
-  --   :: ValidAttribute 'Wrap tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Wrap
+    :: ValidAttribute 'Wrap tag
+    => Types.Wrap
+    -> Attribute tag
 
   Attr_XMLNS
     :: ValidAttribute 'XMLNS tag
@@ -1084,6 +1085,9 @@ attributeText attr =
 
     Attr_Width _width ->
       "width"
+
+    Attr_Wrap _wrap ->
+      "wrap"
 
     Attr_XMLNS _xmlns ->
       "xmlns"

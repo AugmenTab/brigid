@@ -121,7 +121,11 @@ example =
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]
-    , E.textarea [ A.cols 80, A.rows 5, A.writingsuggestions False ]
+    , E.textarea [ A.cols 80
+                 , A.rows 5
+                 , A.writingsuggestions False
+                 , A.wrap HTML.Hard
+                 ]
         [
         ]
     , E.div [ A.tabindex HTML.NotReachable ]
