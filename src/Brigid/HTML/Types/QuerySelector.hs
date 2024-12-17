@@ -648,6 +648,7 @@ import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
+import Brigid.HTML.Types.Target (Target, targetTypeToText)
 import Brigid.HTML.Types.TargetType (TargetType, targetTypeToBytes, targetTypeToText)
 import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
@@ -2968,9 +2969,8 @@ attr_start = (,) Attr_Start . Just
 attr_step :: T.Text -> AttributeSelector
 attr_step = (,) Attr_Step . Just
 
--- TODO
-attr_target :: T.Text -> AttributeSelector
-attr_target = (,) Attr_Target . Just
+attr_target :: Target -> AttributeSelector
+attr_target = (,) Attr_Target . Just . targetToText
 
 -- TODO
 attr_type :: T.Text -> AttributeSelector

@@ -693,6 +693,9 @@ renderAttribute attr =
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Types.bcp47ToText srclang
 
+    Attr_Target target ->
+      Just . buildAttribute "target" $ Types.targetToText target
+
     Attr_Width width ->
       Just . buildAttribute "width" . T.pack $ show width
 

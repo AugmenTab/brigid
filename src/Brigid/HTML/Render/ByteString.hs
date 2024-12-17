@@ -718,6 +718,9 @@ renderAttribute attr =
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Types.bcp47ToBytes srclang
 
+    Attr_Target target ->
+      Just . buildAttribute "target" $ Types.targetToBytes target
+
     Attr_Width width ->
       Just . buildAttribute "width" . LBS8.pack $ show width
 

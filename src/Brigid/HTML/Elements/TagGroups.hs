@@ -53,6 +53,7 @@ module Brigid.HTML.Elements.TagGroups
   , RelTags
   , SizableTags
   , SrcTags
+  , TargetableTags
   , URLTags
   ) where
 
@@ -714,6 +715,13 @@ type SrcTags =
   , 'Source
   , 'Track
   , 'Video
+  ]
+
+type TargetableTags =
+  [ 'Anchor
+  , 'Area
+  , 'Base
+  , 'Form
   ]
 
 type URLTags =

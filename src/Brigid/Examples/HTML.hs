@@ -138,7 +138,7 @@ example =
                           Nothing
                       ]
                   )
-            , E.area [ A.coords $ 10 :| [ 58 ] ]
+            , E.area [ A.coords $ 10 :| [ 58 ], A.target HTML.Blank ]
             ]
         , safeScriptExample
         , transparencyExample

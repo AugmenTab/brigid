@@ -79,6 +79,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Shape
       , Attr_Src
       , Attr_SrcLang
+      , Attr_Target
       , Attr_Width
 
       , Attr_Htmx
@@ -703,10 +704,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Target
-  --   :: ValidAttribute 'Target tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Target
+    :: ValidAttribute 'Target tag
+    => Types.Target
+    -> Attribute tag
 
   -- Attr_Type
   --   :: ValidAttribute 'Type tag
@@ -1068,6 +1069,9 @@ attributeText attr =
 
     Attr_SrcLang _srclang ->
       "srclang"
+
+    Attr_Target _target ->
+      "target"
 
     Attr_Width _width ->
       "width"

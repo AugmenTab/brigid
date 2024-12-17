@@ -45,6 +45,7 @@ module Brigid.HTML.Attributes.Scoped
   , shape
   , src
   , srclang
+  , target
   , width
   ) where
 
@@ -109,7 +110,7 @@ controlslist :: ValidAttribute 'ControlsList tag
 controlslist = Attr_ControlsList
 
 -- | The `coords` attribute is used in combination with the `shape` attribute
--- to specify the size and area of a an <area> tag in an image <map>. For safe
+-- to specify the size and area of an <area> tag in an image <map>. For safe
 -- construction of the `coords` and `shape` attributes on an `area` tag, use
 -- `Brigid.HTML.Elements.Safe.Area`.
 --
@@ -266,6 +267,9 @@ src =
 
 srclang :: ValidAttribute 'SrcLang tag => Types.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang
+
+target :: ValidAttribute 'Target tag => Types.Target -> Attribute tag
+target = Attr_Target
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width
