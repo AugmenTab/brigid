@@ -42,6 +42,7 @@ dependencies:
 - non-empty-text
 - shrubbery
 - text
+- time
 
 ghc-options:
 - -j

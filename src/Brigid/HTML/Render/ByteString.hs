@@ -613,6 +613,9 @@ renderAttribute attr =
         . buildAttribute "crossorigin"
         $ Types.crossoriginFetchToBytes crossorigin
 
+    Attr_Datetime datetime ->
+      Just . buildAttribute "datetime" $ LBS8.pack datetime
+
     Attr_Default ->
       buildBooleanAttribute "default" True
 

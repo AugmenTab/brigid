@@ -52,6 +52,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_ControlsList
       , Attr_Coords
       , Attr_CrossOrigin
+      , Attr_Datetime
       , Attr_Default
       , Attr_Defer
       , Attr_Disabled
@@ -367,10 +368,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Datetime
-  --   :: ValidAttribute 'Datetime tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Datetime
+    :: ValidAttribute 'Datetime tag
+    => String
+    -> Attribute tag
 
   -- Attr_Decoding
   --   :: ValidAttribute 'Decoding tag
@@ -995,6 +996,9 @@ attributeText attr =
 
     Attr_CrossOrigin _crossorigin ->
       "crossorigin"
+
+    Attr_Datetime _datetime ->
+      "datetime"
 
     Attr_Default ->
       "default"

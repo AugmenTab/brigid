@@ -18,6 +18,7 @@ import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Time qualified as Time
 import Fleece.Core ((#+))
 import Fleece.Core qualified as FC
 
@@ -93,6 +94,10 @@ fakeJavaScriptLink :: HTML.RawURL
 fakeJavaScriptLink =
   HTML.RawURL "my/endpoint/file.js"
 
+exampleDate :: Time.Day
+exampleDate =
+  Time.fromGregorian 2024 12 16
+
 data Ping = Ping
 
 pingURL :: HTML.RelativeURL HTML.Post
@@ -113,6 +118,17 @@ example =
         [
         ]
     , E.comment "First comment"
+    , E.p []
+        [ E.text "On "
+        , E.time [ A.datetime exampleDate ]
+            [ E.text "the day this was written"
+            ]
+        , E.text ", we learned about using week numbers to represent "
+        , E.time [ A.datetimeWithFormat "%G-W%V-%u" exampleDate ]
+            [ E.text "the same date"
+            ]
+        , E.text "."
+        ]
     , E.form [ A.hxValidate, A.acceptCharset ]
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]

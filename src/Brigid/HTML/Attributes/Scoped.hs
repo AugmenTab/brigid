@@ -15,6 +15,8 @@ module Brigid.HTML.Attributes.Scoped
   , controlslist
   , coords
   , crossorigin
+  , datetime
+  , datetimeWithFormat
   , default_
   , defer
   , disable
@@ -54,6 +56,8 @@ module Brigid.HTML.Attributes.Scoped
 
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
+import Data.Time qualified as Time
+import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
@@ -145,6 +149,18 @@ crossorigin :: ValidAttribute 'CrossOrigin tag
             => Types.CrossOriginFetch
             -> Attribute tag
 crossorigin = Attr_CrossOrigin
+
+datetime :: (ISO8601 t, ValidAttribute 'Datetime tag) => t -> Attribute tag
+datetime = Attr_Datetime . iso8601Show
+
+-- | This option is provided for users that want to supply their own 'datetime'
+-- encodings besides the common standards, and are willing to accept the risks
+-- of using a potentially unsupported encoding.
+--
+datetimeWithFormat :: (Time.FormatTime t, ValidAttribute 'Datetime tag)
+                   => String -> t -> Attribute tag
+datetimeWithFormat format =
+  Attr_Datetime . Time.formatTime Time.defaultTimeLocale format
 
 default_ :: ValidAttribute 'Default tag => Attribute tag
 default_ = Attr_Default

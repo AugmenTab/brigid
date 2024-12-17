@@ -54,6 +54,7 @@ module Brigid.HTML.Elements.TagGroups
   , SizableTags
   , SrcTags
   , TargetableTags
+  , TimestampableTags
   , URLTags
   ) where
 
@@ -722,6 +723,12 @@ type TargetableTags =
   , 'Area
   , 'Base
   , 'Form
+  ]
+
+type TimestampableTags =
+  [ 'DeletedText
+  , 'InsertedText
+  , 'Time
   ]
 
 type URLTags =

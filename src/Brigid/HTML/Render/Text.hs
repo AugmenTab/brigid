@@ -591,6 +591,9 @@ renderAttribute attr =
         . buildAttribute "crossorigin"
         $ Types.crossoriginFetchToText crossorigin
 
+    Attr_Datetime datetime ->
+      Just . buildAttribute "datetime" $ T.pack datetime
+
     Attr_Default ->
       buildBooleanAttribute "default" True
 

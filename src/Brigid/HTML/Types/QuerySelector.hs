@@ -185,6 +185,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_crossorigin
   , attr_data
   , attr_datetime
+  , attr_datetimeWithFormat
   , attr_decoding
   , attr_default
   , attr_defer
@@ -606,6 +607,8 @@ import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
+import Data.Time qualified as Time
+import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
 import Numeric.Natural (Natural)
 import Shrubbery qualified
@@ -2707,9 +2710,16 @@ attr_crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
 attr_data :: T.Text -> AttributeSelector
 attr_data = (,) Attr_Data . Just
 
--- TODO
-attr_datetime :: T.Text -> AttributeSelector
-attr_datetime = (,) Attr_Datetime . Just
+attr_datetime :: ISO8601 t => t -> AttributeSelector
+attr_datetime = (,) Attr_Datetime . Just . T.pack . iso8601Show
+
+attr_datetimeWithFormat :: Time.FormatTime t
+                        => String -> t -> AttributeSelector
+attr_datetimeWithFormat format =
+  (,) Attr_Datetime
+    . Just
+    . T.pack
+    . Time.formatTime Time.defaultTimeLocale format
 
 -- TODO
 attr_decoding :: T.Text -> AttributeSelector
