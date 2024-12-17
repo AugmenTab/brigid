@@ -139,6 +139,18 @@ example =
                       ]
                   )
             , E.area [ A.coords $ 10 :| [ 58 ], A.target HTML.Blank ]
+            , Safe.area $
+                Safe.Area
+                  { Safe.areaShape = Just $ Safe.Circle (100, 580) 25
+                  , Safe.areaHrefAttributes  =
+                      Just $
+                        Safe.mkHrefAttributes
+                          (exampleURL $ GetCustomer 151)
+                          (Just "Your browser does not support this element.")
+                          (Just HTML.Rel_Bookmark)
+                          (Just HTML.Parent)
+                  , Safe.areaOtherAttributes = [ A.id $ HTML.Id "safe-area" ]
+                  }
             ]
         , safeScriptExample
         , transparencyExample

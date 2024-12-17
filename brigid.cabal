@@ -41,6 +41,7 @@ library
       Brigid.HTML.Elements.Children
       Brigid.HTML.Elements.Internal
       Brigid.HTML.Elements.Safe
+      Brigid.HTML.Elements.Safe.Area
       Brigid.HTML.Elements.Safe.Image
       Brigid.HTML.Elements.Safe.Meta
       Brigid.HTML.Elements.Safe.Ruby
@@ -139,6 +140,7 @@ library
     , beeline-routing
     , bytestring
     , containers
+    , foldable1-classes-compat
     , html-email-validate
     , http-types
     , iso639
@@ -174,6 +176,7 @@ test-suite brigid-test
     , brigid
     , bytestring
     , containers
+    , foldable1-classes-compat
     , html-email-validate
     , http-types
     , iso639

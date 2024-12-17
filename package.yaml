@@ -33,6 +33,7 @@ dependencies:
 - beeline-routing
 - bytestring
 - containers
+- foldable1-classes-compat
 - html-email-validate
 - http-types
 - iso639
