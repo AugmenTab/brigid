@@ -795,7 +795,7 @@ renderAttribute attr =
         $ maybe "true" Types.outOfBandSwapToText mbSwap
 
     Attr_HxTarget target ->
-      Just . buildAttribute "hx-target" $ Types.targetToText target
+      Just . buildAttribute "hx-target" $ Types.hxTargetToText target
 
     Attr_HxTrigger triggers ->
       Just

@@ -103,10 +103,10 @@ hxSwapOOB :: ( KnownNat branchIndex
 hxSwapOOB = Attr_HxSwapOOB . fmap Types.mkOutOfBandSwap
 
 hxTarget :: ( KnownNat branchIndex
-            , branchIndex ~ FirstIndexOf target Types.TargetTypes
+            , branchIndex ~ FirstIndexOf target Types.HxTargetTypes
             )
          => target -> Attribute tag
-hxTarget = Attr_HxTarget . Types.mkTarget
+hxTarget = Attr_HxTarget . Types.mkHxTarget
 
 hxTrigger :: NEL.NonEmpty Types.Trigger -> Attribute tag
 hxTrigger = Attr_HxTrigger

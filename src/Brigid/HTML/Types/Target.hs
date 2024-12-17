@@ -1,27 +1,39 @@
 module Brigid.HTML.Types.Target
-  ( TargetType
-      ( TargetNext
-      , TargetPrevious
+  ( Target
+      ( Self
+      , Blank
+      , Parent
+      , Top
       )
-  , targetTypeToBytes
-  , targetTypeToText
+  , targetToBytes
+  , targetToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 
-data TargetType
-  = TargetNext
-  | TargetPrevious
+data Target
+  = Self
+  | Blank
+  | Parent
+  | Top
+  | CustomTarget T.Text
 
-targetTypeToBytes :: TargetType -> LBS.ByteString
-targetTypeToBytes targetType =
-  case targetType of
-    TargetNext     -> "next"
-    TargetPrevious -> "previous"
+targetToBytes :: Target -> LBS.ByteString
+targetToBytes target =
+  case target of
+    Self           -> "_self"
+    Blank          -> "_blank"
+    Parent         -> "_parent"
+    Top            -> "_top"
+    CustomTarget t -> LBS8.pack $ T.unpack t
 
-targetTypeToText :: TargetType -> T.Text
-targetTypeToText targetType =
-  case targetType of
-    TargetNext     -> "next"
-    TargetPrevious -> "previous"
+targetToText :: Target -> T.Text
+targetToText target =
+  case target of
+    Self           -> "_self"
+    Blank          -> "_blank"
+    Parent         -> "_parent"
+    Top            -> "_top"
+    CustomTarget t -> t

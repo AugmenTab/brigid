@@ -478,12 +478,12 @@ module Brigid.HTML.Types.QuerySelector
   , indicateSelector
   , indicatorToBytes
   , indicatorToText
-  , Target
-  , TargetTypes
-  , mkTarget
-  , unTarget
-  , targetToBytes
-  , targetToText
+  , HxTarget
+  , HxTargetTypes
+  , mkHxTarget
+  , unHxTarget
+  , hxTargetToBytes
+  , hxTargetToText
   , Swap
   , SwapTypes
   , mkSwap
@@ -510,8 +510,8 @@ module Brigid.HTML.Types.QuerySelector
   , swapDisplayTypeToBytes
   , swapDisplayTypeToText
   , SwapDisplayView
-      ( Top
-      , Bottom
+      ( SwapTop
+      , SwapBottom
       )
   , swapDisplayViewToBytes
   , swapDisplayViewToText
@@ -648,7 +648,7 @@ import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
-import Brigid.HTML.Types.Target (TargetType, targetTypeToBytes, targetTypeToText)
+import Brigid.HTML.Types.TargetType (TargetType, targetTypeToBytes, targetTypeToText)
 import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
 import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
@@ -3043,10 +3043,10 @@ attr_hxSwapOOB =
     . maybe "true" (outOfBandSwapToText . mkOutOfBandSwap)
 
 attr_hxTarget :: ( KnownNat branchIndex
-                 , branchIndex ~ FirstIndexOf target TargetTypes
+                 , branchIndex ~ FirstIndexOf target HxTargetTypes
                  )
               => target -> AttributeSelector
-attr_hxTarget = (,) Attr_HxTarget . Just . targetToText . mkTarget
+attr_hxTarget = (,) Attr_HxTarget . Just . hxTargetToText . mkHxTarget
 
 attr_hxTrigger :: NEL.NonEmpty Trigger -> AttributeSelector
 attr_hxTrigger =
@@ -3382,20 +3382,20 @@ swapDisplayTypeToText displayType =
     Show     -> "show"
 
 data SwapDisplayView
-  = Top
-  | Bottom
+  = SwapTop
+  | SwapBottom
 
 swapDisplayViewToBytes :: SwapDisplayView -> LBS.ByteString
 swapDisplayViewToBytes view =
   case view of
-    Top    -> "top"
-    Bottom -> "bottom"
+    SwapTop    -> "top"
+    SwapBottom -> "bottom"
 
 swapDisplayViewToText :: SwapDisplayView -> T.Text
 swapDisplayViewToText view =
   case view of
-    Top    -> "top"
-    Bottom -> "bottom"
+    SwapTop    -> "top"
+    SwapBottom -> "bottom"
 
 newtype RawSwap =
   RawSwap
@@ -3686,14 +3686,14 @@ indicatorToText =
      $ Shrubbery.branchEnd
   ) . unIndicator
 
--- Target and TargetSelector
+-- HxTarget and TargetSelector
 --
-newtype Target =
-  Target
-    { unTarget :: Shrubbery.Union TargetTypes
+newtype HxTarget =
+  HxTarget
+    { unHxTarget :: Shrubbery.Union HxTargetTypes
     }
 
-type TargetTypes =
+type HxTargetTypes =
   [ QuerySelector
   , TargetSelector
   , TargetType
@@ -3701,15 +3701,15 @@ type TargetTypes =
   , RawSelector
   ]
 
-mkTarget :: ( KnownNat branchIndex
-            , branchIndex ~ FirstIndexOf target TargetTypes
-            )
-         => target -> Target
-mkTarget =
-  Target . Shrubbery.unify
+mkHxTarget :: ( KnownNat branchIndex
+              , branchIndex ~ FirstIndexOf target HxTargetTypes
+              )
+           => target -> HxTarget
+mkHxTarget =
+  HxTarget . Shrubbery.unify
 
-targetToBytes :: Target -> LBS.ByteString
-targetToBytes =
+hxTargetToBytes :: HxTarget -> LBS.ByteString
+hxTargetToBytes =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @QuerySelector querySelectorToBytes
@@ -3718,10 +3718,10 @@ targetToBytes =
       . Shrubbery.branch @This thisToBytes
       . Shrubbery.branch @RawSelector rawSelectorToBytes
       $ Shrubbery.branchEnd
-  ) . unTarget
+  ) . unHxTarget
 
-targetToText :: Target -> T.Text
-targetToText =
+hxTargetToText :: HxTarget -> T.Text
+hxTargetToText =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @QuerySelector querySelectorToText
@@ -3730,7 +3730,7 @@ targetToText =
       . Shrubbery.branch @This thisToText
       . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
-  ) . unTarget
+  ) . unHxTarget
 
 data TargetSelectorType
   = TargetSelector_Closest

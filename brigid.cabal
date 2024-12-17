@@ -105,6 +105,7 @@ library
       Brigid.HTML.Types.SwapTiming
       Brigid.HTML.Types.SwapTransition
       Brigid.HTML.Types.Target
+      Brigid.HTML.Types.TargetType
       Brigid.HTML.Types.This
       Brigid.HTML.Types.Threshold
       Brigid.HTML.Types.Throttle

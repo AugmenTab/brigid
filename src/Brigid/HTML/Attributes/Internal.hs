@@ -826,7 +826,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_HxTarget
-    :: Types.Target
+    :: Types.HxTarget
     -> Attribute tag
 
   Attr_HxTrigger

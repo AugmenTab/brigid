@@ -404,7 +404,7 @@ htmxExample =
                , A.hxSwap
                    . HTML.swapAfterbegin
                    . Just
-                   . HTML.scroll HTML.Top
+                   . HTML.scroll HTML.SwapTop
                    $ Just idQuerySelectorExample
                , A.hxTrigger $
                    HTML.mkTrigger (HTML.every 1 Nothing)
