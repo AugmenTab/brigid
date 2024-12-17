@@ -702,6 +702,9 @@ renderAttribute attr =
     Attr_Width width ->
       Just . buildAttribute "width" . T.pack $ show width
 
+    Attr_XMLNS xmlns ->
+      Just . buildAttribute "xmlns" $ Types.urlToText xmlns
+
     -- HTMX Attributes
     --
     Attr_Htmx url ->

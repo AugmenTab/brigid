@@ -48,6 +48,7 @@ module Brigid.HTML.Attributes.Scoped
   , srclang
   , target
   , width
+  , xmlns
   ) where
 
 import Data.List.NonEmpty qualified as NEL
@@ -287,3 +288,11 @@ target = Attr_Target
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width
+
+xmlns :: ( KnownNat branchIndex
+         , branchIndex ~ FirstIndexOf url Types.URLTypes
+         , ValidAttribute 'XMLNS tag
+         )
+      => url -> Attribute tag
+xmlns =
+  Attr_XMLNS . Types.mkURL

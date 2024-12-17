@@ -82,6 +82,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_SrcLang
       , Attr_Target
       , Attr_Width
+      , Attr_XMLNS
 
       , Attr_Htmx
       , Attr_HxBoost
@@ -734,6 +735,11 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
+  Attr_XMLNS
+    :: ValidAttribute 'XMLNS tag
+    => Types.URL
+    -> Attribute tag
+
   -- HTMX Attributes
   --
   Attr_Htmx
@@ -1078,6 +1084,9 @@ attributeText attr =
 
     Attr_Width _width ->
       "width"
+
+    Attr_XMLNS _xmlns ->
+      "xmlns"
 
     -- HTMX Attributes
     --

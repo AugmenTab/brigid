@@ -132,6 +132,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Value
       , Width
       , Wrap
+      , XMLNS
 
       , HxValidate
       )
@@ -272,6 +273,7 @@ data AttributeType
   | Value
   | Width
   | Wrap
+  | XMLNS
 
   -- HTMX Attributes
   --
@@ -406,5 +408,6 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Value                   = 'Text "Value (value)"
   AttributeErrorMessage Width                   = 'Text "Width (width)"
   AttributeErrorMessage Wrap                    = 'Text "Wrap (wrap)"
+  AttributeErrorMessage XMLNS                   = 'Text "XMLNS (xmlns)"
 
   AttributeErrorMessage HxValidate              = 'Text "HTMX Validate (hx-validate)"

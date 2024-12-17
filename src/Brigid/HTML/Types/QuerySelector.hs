@@ -259,6 +259,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_value
   , attr_width
   , attr_wrap
+  , attr_xmlns
   , attr_hxGet
   , attr_hxPost
   , attr_hxOn
@@ -424,6 +425,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Value
       , Attr_Width
       , Attr_Wrap
+      , Attr_XMLNS
       , Attr_HxGet
       , Attr_HxPost
       , Attr_HxOn
@@ -1893,6 +1895,7 @@ data AttributeType
   | Attr_Value
   | Attr_Width
   | Attr_Wrap
+  | Attr_XMLNS
 
   -- HTMX Attributes
   --
@@ -2073,6 +2076,7 @@ attributeTypeToBytes attr =
     Attr_Value                   -> "value"
     Attr_Width                   -> "width"
     Attr_Wrap                    -> "wrap"
+    Attr_XMLNS                   -> "xmlns"
 
     -- HTMX Attributes
     --
@@ -2252,6 +2256,7 @@ attributeTypeFromText attr =
     "value"                   -> Right Attr_Value
     "width"                   -> Right Attr_Width
     "wrap"                    -> Right Attr_Wrap
+    "xmlns"                   -> Right Attr_XMLNS
 
     -- HTMX Attributes
     --
@@ -2458,6 +2463,7 @@ attributeTypeToText attr =
     Attr_Value                   -> "value"
     Attr_Width                   -> "width"
     Attr_Wrap                    -> "wrap"
+    Attr_XMLNS                   -> "xmlns"
 
     -- HTMX Attributes
     --
@@ -2989,6 +2995,13 @@ attr_width = (,) Attr_Width . Just . Render.showText
 -- TODO
 attr_wrap :: T.Text -> AttributeSelector
 attr_wrap = (,) Attr_Wrap . Just
+
+attr_xmlns :: ( KnownNat branchIndex
+              , branchIndex ~ FirstIndexOf url URLTypes
+              )
+           => url -> AttributeSelector
+attr_xmlns =
+  (,) Attr_XMLNS . Just . urlToText . mkURL
 
 -- HTMX Attributes
 --

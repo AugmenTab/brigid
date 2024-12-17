@@ -727,6 +727,9 @@ renderAttribute attr =
     Attr_Width width ->
       Just . buildAttribute "width" . LBS8.pack $ show width
 
+    Attr_XMLNS xmlns ->
+      Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns
+
     -- HTMX Attributes
     --
     Attr_Htmx url ->

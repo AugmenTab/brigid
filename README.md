@@ -17,6 +17,7 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 ### TODO (XML)
 
 1. Add support for XML.
+2. Add function to produce an XML WSDL from a provided Brigid XML structure?
 
 ### TODO (HXML)
 

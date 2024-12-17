@@ -30,7 +30,7 @@ import Brigid.HTML.Types qualified as HTML
 
 documentExample :: E.Document
 documentExample =
-  E.html []
+  E.html [ A.xmlns fakeJavaScriptLink ]
     [ E.head []
         [ E.script [ A.crossorigin HTML.Anonymous ] $
             NET.fromText "This is a test!"
