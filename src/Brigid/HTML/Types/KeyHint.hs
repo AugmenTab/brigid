@@ -1,12 +1,12 @@
 module Brigid.HTML.Types.KeyHint
   ( KeyHintOption
-      ( Enter
-      , Done
-      , Go
-      , Next
-      , Previous
-      , Search
-      , Send
+      ( KeyHintEnter
+      , KeyHintDone
+      , KeyHintGo
+      , KeyHintNext
+      , KeyHintPrevious
+      , KeyHintSearch
+      , KeyHintSend
       )
   , keyHintOptionToBytes
   , keyHintOptionToText
@@ -16,32 +16,32 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data KeyHintOption
-  = Enter
-  | Done
-  | Go
-  | Next
-  | Previous
-  | Search
-  | Send
+  = KeyHintEnter
+  | KeyHintDone
+  | KeyHintGo
+  | KeyHintNext
+  | KeyHintPrevious
+  | KeyHintSearch
+  | KeyHintSend
 
 keyHintOptionToBytes :: KeyHintOption -> LBS.ByteString
 keyHintOptionToBytes option =
   case option of
-    Enter    -> "enter"
-    Done     -> "done"
-    Go       -> "go"
-    Next     -> "next"
-    Previous -> "previous"
-    Search   -> "search"
-    Send     -> "send"
+    KeyHintEnter    -> "enter"
+    KeyHintDone     -> "done"
+    KeyHintGo       -> "go"
+    KeyHintNext     -> "next"
+    KeyHintPrevious -> "previous"
+    KeyHintSearch   -> "search"
+    KeyHintSend     -> "send"
 
 keyHintOptionToText :: KeyHintOption -> T.Text
 keyHintOptionToText option =
   case option of
-    Enter    -> "enter"
-    Done     -> "done"
-    Go       -> "go"
-    Next     -> "next"
-    Previous -> "previous"
-    Search   -> "search"
-    Send     -> "send"
+    KeyHintEnter    -> "enter"
+    KeyHintDone     -> "done"
+    KeyHintGo       -> "go"
+    KeyHintNext     -> "next"
+    KeyHintPrevious -> "previous"
+    KeyHintSearch   -> "search"
+    KeyHintSend     -> "send"

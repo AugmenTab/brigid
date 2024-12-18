@@ -131,7 +131,7 @@ import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Internal (ChildHTML(..))
 import Brigid.HTML.Elements.Tags qualified as Tags
-import Brigid.HTML.Types (NoContent)
+import Brigid.HTML.Types qualified as Types
 
 type Document = ChildHTML Tags.Document Tags.NoElement
 
@@ -157,7 +157,7 @@ rawHTML = Tag_RawHTML
 
 customHTML :: T.Text
            -> [Attribute Tags.CustomHTML]
-           -> Either NoContent [ChildHTML Tags.CustomHTML parent]
+           -> Either Types.NoContent [ChildHTML Tags.CustomHTML parent]
            -> ChildHTML parent grandparent
 customHTML =
   Tag_CustomHTML

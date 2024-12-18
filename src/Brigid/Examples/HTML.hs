@@ -92,7 +92,7 @@ divId = HTML.Id "div1"
 
 fakeJavaScriptLink :: HTML.RawURL
 fakeJavaScriptLink =
-  HTML.RawURL "my/endpoint/file.js"
+  HTML.mkRawURL "my/endpoint/file.js"
 
 exampleDate :: Time.Day
 exampleDate =
@@ -213,7 +213,7 @@ sampleHyperScript =
   HTML.HyperScript
     . T.unwords
     $ [ "on"
-      , HTML.eventToText $ HTML.mkEvent HTML.Click
+      , HTML.eventToText $ HTML.mkEvent HTML.ClickEvent
       , "put 'hello' into the"
       , HTML.querySelectorToText idQuerySelectorExample
       ]
@@ -374,11 +374,11 @@ htmxExample =
                , A.hxExt $ HTML.extJsonEnc :| [ HTML.ignore HTML.extAjaxHeader ]
                , A.hxSelect divId
                , A.hxParams HTML.AllParams
-               , A.hxOn HTML.Click "alert(\"Hello!\")"
+               , A.hxOn HTML.ClickEvent "alert(\"Hello!\")"
                , A.hxTrigger
                    . NEL.singleton
                    . HTML.mkTrigger
-                   . HTML.mkTriggerEvent (HTML.mkEvent HTML.KeyUp) Nothing
+                   . HTML.mkTriggerEvent (HTML.mkEvent HTML.KeyUpEvent) Nothing
                    $ [ HTML.triggerChanged
                      , HTML.triggerDelay 1
                      ]

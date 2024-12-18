@@ -2964,7 +2964,8 @@ attr_src :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf src URLTypes
             )
          => src -> AttributeSelector
-attr_src = (,) Attr_Src . Just . urlToText . mkURL
+attr_src =
+  (,) Attr_Src . Just . urlToText . mkURL
 
 -- TODO
 attr_srcdoc :: T.Text -> AttributeSelector

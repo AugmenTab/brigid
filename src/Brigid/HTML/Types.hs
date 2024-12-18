@@ -15,8 +15,9 @@ module Brigid.HTML.Types
   , put
   , patch
   , relativeURLToText
-  , RawURL (..)
-  , rawURLFromText
+  , RawURL
+  , mkRawURL
+  , rawURLToBytes
   , rawURLToText
   , Ping
   , PingTypes
@@ -93,8 +94,9 @@ import Brigid.HTML.Types.URL ( URL
                              , put
                              , patch
                              , relativeURLToText
-                             , RawURL (..)
-                             , rawURLFromText
+                             , RawURL
+                             , mkRawURL
+                             , rawURLToBytes
                              , rawURLToText
                              , Ping
                              , PingTypes

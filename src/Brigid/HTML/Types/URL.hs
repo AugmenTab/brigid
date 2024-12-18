@@ -26,8 +26,9 @@ module Brigid.HTML.Types.URL
   , put
   , patch
   , relativeURLToText
-  , RawURL (..)
-  , rawURLFromText
+  , RawURL
+  , mkRawURL
+  , rawURLToBytes
   , rawURLToText
   , Ping
   , PingTypes
@@ -140,17 +141,17 @@ relativeURLToText url =
 -- contains is encoded as appropriate for whatever use case it finds itself in.
 -- It provides an unsafe constructor for URLs; it should be handled with care
 -- and used only when necessary.
-newtype RawURL = RawURL T.Text
+newtype RawURL =
+  RawURL
+    { rawURLToText :: T.Text
+    }
 
-rawURLFromText :: T.Text -> RawURL
-rawURLFromText = RawURL
+mkRawURL :: T.Text -> RawURL
+mkRawURL = RawURL
 
 rawURLToBytes :: RawURL -> LBS.ByteString
 rawURLToBytes =
   LBS8.pack . T.unpack . rawURLToText
-
-rawURLToText :: RawURL -> T.Text
-rawURLToText (RawURL url) = url
 
 newtype Ping = Ping (Shrubbery.Union PingTypes)
 
