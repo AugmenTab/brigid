@@ -43,6 +43,7 @@ module Brigid.HTML.Elements.TagGroups
   , TableCells
   , TableRowContent
 
+  , AltTags
   , CitableTags
   , CrossOriginTags
   , DisableableTags
@@ -61,7 +62,7 @@ module Brigid.HTML.Elements.TagGroups
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
-import Brigid.HTML.Internal.TagOperations (Union)
+import Brigid.HTML.Internal.TagOperations (Remove, Union)
 
 type AllElements =
   [ 'Comment
@@ -121,6 +122,28 @@ type AllElements =
   , 'IFrame
   , 'Image
   , 'Input
+  , 'InputButton
+  , 'InputCheckbox
+  , 'InputColor
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputFile
+  , 'InputHidden
+  , 'InputImage
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputRange
+  , 'InputReset
+  , 'InputSearch
+  , 'InputSubmit
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
   , 'InsertedText
   , 'KeyboardInput
   , 'Label
@@ -218,107 +241,129 @@ type EmbeddedContent =
 --
 type FlowContent =
   [ 'Text
-   , 'Anchor
-   , 'Abbreviation
-   , 'ContactAddress
-   , 'Article
-   , 'Aside
-   , 'Audio
-   , 'BringAttentionTo
-   , 'BidirectionalIsolation
-   , 'BidirectionalOverride
-   , 'Blockquote
-   , 'LineBreak
-   , 'Button
-   , 'Canvas
-   , 'Citation
-   , 'Code
-   , 'Data
-   , 'DataList
-   , 'DeletedText
-   , 'Details
-   , 'Definition
-   , 'Dialog
-   , 'Division
-   , 'DescriptionList
-   , 'Emphasis
-   , 'Embed
-   , 'Fieldset
-   , 'Figure
-   , 'Footer
-   , 'Form
-   , 'H1
-   , 'H2
-   , 'H3
-   , 'H4
-   , 'H5
-   , 'H6
-   , 'Header
-   , 'HeadingGroup
-   , 'HorizontalRule
-   , 'IdiomaticText
-   , 'IFrame
-   , 'Image
-   , 'Input
-   , 'InsertedText
-   , 'KeyboardInput
-   , 'Label
-   , 'Main
-   , 'Map
-   , 'Mark
-   --' , Math
-   , 'Menu
-   , 'Meter
-   , 'Nav
-   , 'NoScript
-   , 'Object
-   , 'OrderedList
-   , 'Output
-   , 'Paragraph
-   , 'Picture
-   , 'PreformattedText
-   , 'Progress
-   , 'Quotation
-   , 'Ruby
-   , 'Strikethrough
-   , 'Sample
-   , 'Search
-   , 'Script
-   , 'Section
-   , 'Select
-   , 'Slot
-   , 'SideComment
-   , 'Span
-   , 'Strong
-   , 'Subscript
-   , 'Superscript
-   --' , SVG
-   , 'Table
-   , 'ContentTemplate
-   , 'TextArea
-   , 'Time
-   , 'Underline
-   , 'UnorderedList
-   , 'Variable
-   , 'Video
-   , 'WordBreakOpportunity
-   ]
+  , 'Anchor
+  , 'Abbreviation
+  , 'ContactAddress
+  , 'Article
+  , 'Aside
+  , 'Audio
+  , 'BringAttentionTo
+  , 'BidirectionalIsolation
+  , 'BidirectionalOverride
+  , 'Blockquote
+  , 'LineBreak
+  , 'Button
+  , 'Canvas
+  , 'Citation
+  , 'Code
+  , 'Data
+  , 'DataList
+  , 'DeletedText
+  , 'Details
+  , 'Definition
+  , 'Dialog
+  , 'Division
+  , 'DescriptionList
+  , 'Emphasis
+  , 'Embed
+  , 'Fieldset
+  , 'Figure
+  , 'Footer
+  , 'Form
+  , 'H1
+  , 'H2
+  , 'H3
+  , 'H4
+  , 'H5
+  , 'H6
+  , 'Header
+  , 'HeadingGroup
+  , 'HorizontalRule
+  , 'IdiomaticText
+  , 'IFrame
+  , 'Image
+  , 'Input
+  , 'InputButton
+  , 'InputCheckbox
+  , 'InputColor
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputFile
+  , 'InputHidden
+  , 'InputImage
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputRange
+  , 'InputReset
+  , 'InputSearch
+  , 'InputSubmit
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
+  , 'InsertedText
+  , 'KeyboardInput
+  , 'Label
+  , 'Main
+  , 'Map
+  , 'Mark
+  --' , Math
+  , 'Menu
+  , 'Meter
+  , 'Nav
+  , 'NoScript
+  , 'Object
+  , 'OrderedList
+  , 'Output
+  , 'Paragraph
+  , 'Picture
+  , 'PreformattedText
+  , 'Progress
+  , 'Quotation
+  , 'Ruby
+  , 'Strikethrough
+  , 'Sample
+  , 'Search
+  , 'Script
+  , 'Section
+  , 'Select
+  , 'Slot
+  , 'SideComment
+  , 'Span
+  , 'Strong
+  , 'Subscript
+  , 'Superscript
+  --' , SVG
+  , 'Table
+  , 'ContentTemplate
+  , 'TextArea
+  , 'Time
+  , 'Underline
+  , 'UnorderedList
+  , 'Variable
+  , 'Video
+  , 'WordBreakOpportunity
+  ]
 
 -- This list represents all elements that are considered form-associated
 -- content.
 --
 type FormAssociatedContent =
-  [ 'Button
-  , 'Fieldset
-  , 'Input
-  , 'Label
-  , 'Meter
-  , 'Object
-  , 'Output
-  , 'Progress
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Button
+    , 'Fieldset
+    , 'Label
+    , 'Meter
+    , 'Object
+    , 'Output
+    , 'Progress
+    , 'Select
+    , 'TextArea
+    ]
 
 -- This list represents all elements that are considered sectioning content.
 --
@@ -328,40 +373,41 @@ type HeadingContent =
 -- This list represents all elements that are considered interactive content.
 --
 type InteractiveContent =
-  [ 'Button
-  , 'Details
-  , 'Embed
-  , 'IFrame
-  , 'Label
-  , 'Select
-  , 'TextArea
-  ]
+  Union (Remove 'InputHidden InputTags)
+    [ 'Button
+    , 'Details
+    , 'Embed
+    , 'IFrame
+    , 'Label
+    , 'Select
+    , 'TextArea
+    ]
 
 -- This list represents all elements that are of the labelable subtype of
 -- form-associated content.
 --
 type LabelableContent =
-  [ 'Button
-  , 'Input
-  , 'Meter
-  , 'Output
-  , 'Progress
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Button
+    , 'Meter
+    , 'Output
+    , 'Progress
+    , 'Select
+    , 'TextArea
+    ]
 
 -- This list represents all elements that are of the listed subtype of
 -- form-associated content.
 --
 type ListedContent =
-  [ 'Button
-  , 'Fieldset
-  , 'Input
-  , 'Object
-  , 'Output
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Button
+    , 'Fieldset
+    , 'Object
+    , 'Output
+    , 'Select
+    , 'TextArea
+    ]
 
 -- This list represents all marginal content.
 --
@@ -413,6 +459,28 @@ type PhrasingContent =
   , 'IFrame
   , 'Image
   , 'Input
+  , 'InputButton
+  , 'InputCheckbox
+  , 'InputColor
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputFile
+  , 'InputHidden
+  , 'InputImage
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputRange
+  , 'InputReset
+  , 'InputSearch
+  , 'InputSubmit
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
   , 'KeyboardInput
   , 'Label
   , 'Mark
@@ -449,11 +517,11 @@ type PhrasingContent =
 -- form-associated content.
 --
 type ResettableContent =
-  [ 'Input
-  , 'Output
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Output
+    , 'Select
+    , 'TextArea
+    ]
 
 -- This list represents all elements that are considered script-supporting
 -- elements.
@@ -476,12 +544,12 @@ type SectioningContent =
 -- form-associated content.
 --
 type SubmittableContent =
-  [ 'Button
-  , 'Input
-  , 'Object
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Button
+    , 'Object
+    , 'Select
+    , 'TextArea
+    ]
 
 -- This list represents all elements that are considered transparent to some
 -- degree.
@@ -542,10 +610,10 @@ type AudioVideoContent =
 -- This list represents all elements that are valid under a `<canvas>` tag.
 --
 type CanvasContent =
-  [ 'Anchor
-  , 'Button
-  , 'Input
-  ]
+  Union InputTags
+    [ 'Anchor
+    , 'Button
+    ]
 
 -- This list represents all elements that are valid under a `<dlist>` tag.
 --
@@ -635,6 +703,13 @@ type TableRowContent =
 -- Attribute-Focused Tag Groups
 --
 
+type AltTags =
+  [ 'Area
+  , 'Image
+  , 'Input
+  , 'InputImage
+  ]
+
 type CitableTags =
   [ 'Blockquote
   , 'DeletedText
@@ -652,15 +727,15 @@ type CrossOriginTags =
   ]
 
 type DisableableTags =
-  [ 'Button
-  , 'CustomHTML
-  , 'Fieldset
-  , 'Input
-  , 'OptionGroup
-  , 'Option
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Button
+    , 'CustomHTML
+    , 'Fieldset
+    , 'OptionGroup
+    , 'Option
+    , 'Select
+    , 'TextArea
+    ]
 
 type HrefTags =
   'Base
@@ -700,22 +775,29 @@ type LabelableTags =
 
 type LengthTags =
   [ 'Input
+  , 'InputEmail
+  , 'InputPassword
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputUrl
   , 'TextArea
   ]
 
 type NameTags =
-  [ 'Button
-  , 'Fieldset
-  , 'Form
-  , 'IFrame
-  , 'Input
-  , 'Map
-  , 'Meta
-  , 'Object
-  , 'Output
-  , 'Select
-  , 'TextArea
-  ]
+  Union InputTags
+    [ 'Button
+    , 'Fieldset
+    , 'Form
+    , 'IFrame
+    , 'Input
+    , 'Map
+    , 'Meta
+    , 'Object
+    , 'Output
+    , 'Select
+    , 'TextArea
+    ]
 
 type RelTags =
   [ 'Anchor
@@ -730,6 +812,7 @@ type SizableTags =
   , 'IFrame
   , 'Image
   , 'Input
+  , 'InputImage
   , 'Object
   , 'Video
   ]
@@ -740,6 +823,7 @@ type SrcTags =
   , 'IFrame
   , 'Image
   , 'Input
+  , 'InputImage
   , 'Script
   , 'Source
   , 'Track
@@ -764,6 +848,28 @@ type TypeableTags =
   , 'Button
   , 'Embed
   , 'Input
+  , 'InputButton
+  , 'InputCheckbox
+  , 'InputColor
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputFile
+  , 'InputHidden
+  , 'InputImage
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputRange
+  , 'InputReset
+  , 'InputSearch
+  , 'InputSubmit
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
   , 'Link
   , 'Object
   , 'OrderedList

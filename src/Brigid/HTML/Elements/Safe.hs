@@ -12,6 +12,7 @@ module Brigid.HTML.Elements.Safe
 
 import Brigid.HTML.Elements.Safe.Area as Export
 import Brigid.HTML.Elements.Safe.Image as Export
+import Brigid.HTML.Elements.Safe.Input as Export
 import Brigid.HTML.Elements.Safe.Meta as Export
 import Brigid.HTML.Elements.Safe.Ruby as Export
 import Brigid.HTML.Elements.Safe.Script as Export

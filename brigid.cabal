@@ -44,6 +44,7 @@ library
       Brigid.HTML.Elements.Safe
       Brigid.HTML.Elements.Safe.Area
       Brigid.HTML.Elements.Safe.Image
+      Brigid.HTML.Elements.Safe.Input
       Brigid.HTML.Elements.Safe.Meta
       Brigid.HTML.Elements.Safe.Ruby
       Brigid.HTML.Elements.Safe.Script

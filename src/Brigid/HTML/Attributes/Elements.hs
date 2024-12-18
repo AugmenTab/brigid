@@ -2,6 +2,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Brigid.HTML.Attributes.Elements
   ( ValidAttribute
@@ -18,7 +19,7 @@ type ValidAttribute attr tag =
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
   ValidElementsFor AcceptCharset           = '[ Tags.Form ]
-  ValidElementsFor Alt                     = '[ Tags.Area, Tags.Image ]
+  ValidElementsFor Alt                     = TagGroups.AltTags
   ValidElementsFor Async                   = '[ Tags.Script ]
   ValidElementsFor Autoplay                = TagGroups.MediaContent
   ValidElementsFor Charset                 = [ Tags.Meta, Tags.Script ]

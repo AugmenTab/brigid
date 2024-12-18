@@ -64,6 +64,28 @@ module Brigid.HTML.Elements.Internal
       , Tag_IFrame
       , Tag_Image
       , Tag_Input
+      , Tag_InputButton
+      , Tag_InputCheckbox
+      , Tag_InputColor
+      , Tag_InputDate
+      , Tag_InputDatetimeLocal
+      , Tag_InputEmail
+      , Tag_InputFile
+      , Tag_InputHidden
+      , Tag_InputImage
+      , Tag_InputMonth
+      , Tag_InputNumber
+      , Tag_InputPassword
+      , Tag_InputRadio
+      , Tag_InputRange
+      , Tag_InputReset
+      , Tag_InputSearch
+      , Tag_InputSubmit
+      , Tag_InputTel
+      , Tag_InputText
+      , Tag_InputTime
+      , Tag_InputUrl
+      , Tag_InputWeek
       , Tag_InsertedText
       , Tag_KeyboardInput
       , Tag_Label
@@ -468,6 +490,116 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
   Tag_Input
     :: ValidChild 'Input parent grandparent
     => [Attribute 'Input]
+    -> ChildHTML parent grandparent
+
+  Tag_InputButton
+    :: ValidChild 'InputButton parent grandparent
+    => [Attribute 'InputButton]
+    -> ChildHTML parent grandparent
+
+  Tag_InputCheckbox
+    :: ValidChild 'InputCheckbox parent grandparent
+    => [Attribute 'InputCheckbox]
+    -> ChildHTML parent grandparent
+
+  Tag_InputColor
+    :: ValidChild 'InputColor parent grandparent
+    => [Attribute 'InputColor]
+    -> ChildHTML parent grandparent
+
+  Tag_InputDate
+    :: ValidChild 'InputDate parent grandparent
+    => [Attribute 'InputDate]
+    -> ChildHTML parent grandparent
+
+  Tag_InputDatetimeLocal
+    :: ValidChild 'InputDatetimeLocal parent grandparent
+    => [Attribute 'InputDatetimeLocal]
+    -> ChildHTML parent grandparent
+
+  Tag_InputEmail
+    :: ValidChild 'InputEmail parent grandparent
+    => [Attribute 'InputEmail]
+    -> ChildHTML parent grandparent
+
+  Tag_InputFile
+    :: ValidChild 'InputFile parent grandparent
+    => [Attribute 'InputFile]
+    -> ChildHTML parent grandparent
+
+  Tag_InputHidden
+    :: ValidChild 'InputHidden parent grandparent
+    => [Attribute 'InputHidden]
+    -> ChildHTML parent grandparent
+
+  Tag_InputImage
+    :: ValidChild 'InputImage parent grandparent
+    => [Attribute 'InputImage]
+    -> ChildHTML parent grandparent
+
+  Tag_InputMonth
+    :: ValidChild 'InputMonth parent grandparent
+    => [Attribute 'InputMonth]
+    -> ChildHTML parent grandparent
+
+  Tag_InputNumber
+    :: ValidChild 'InputNumber parent grandparent
+    => [Attribute 'InputNumber]
+    -> ChildHTML parent grandparent
+
+  Tag_InputPassword
+    :: ValidChild 'InputPassword parent grandparent
+    => [Attribute 'InputPassword]
+    -> ChildHTML parent grandparent
+
+  Tag_InputRadio
+    :: ValidChild 'InputRadio parent grandparent
+    => [Attribute 'InputRadio]
+    -> ChildHTML parent grandparent
+
+  Tag_InputRange
+    :: ValidChild 'InputRange parent grandparent
+    => [Attribute 'InputRange]
+    -> ChildHTML parent grandparent
+
+  Tag_InputReset
+    :: ValidChild 'InputReset parent grandparent
+    => [Attribute 'InputReset]
+    -> ChildHTML parent grandparent
+
+  Tag_InputSearch
+    :: ValidChild 'InputSearch parent grandparent
+    => [Attribute 'InputSearch]
+    -> ChildHTML parent grandparent
+
+  Tag_InputSubmit
+    :: ValidChild 'InputSubmit parent grandparent
+    => [Attribute 'InputSubmit]
+    -> ChildHTML parent grandparent
+
+  Tag_InputTel
+    :: ValidChild 'InputTel parent grandparent
+    => [Attribute 'InputTel]
+    -> ChildHTML parent grandparent
+
+  Tag_InputText
+    :: ValidChild 'InputText parent grandparent
+    => [Attribute 'InputText]
+    -> ChildHTML parent grandparent
+
+  Tag_InputTime
+    :: ValidChild 'InputTime parent grandparent
+    => [Attribute 'InputTime]
+    -> ChildHTML parent grandparent
+
+  Tag_InputUrl
+    :: ValidChild 'InputUrl parent grandparent
+    => [Attribute 'InputUrl]
+    -> ChildHTML parent grandparent
+
+  Tag_InputWeek
+    :: ValidChild 'InputWeek parent grandparent
+    => [Attribute 'InputWeek]
     -> ChildHTML parent grandparent
 
   Tag_InsertedText

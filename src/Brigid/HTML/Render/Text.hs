@@ -211,6 +211,72 @@ renderTag html =
     Tag_Input attrs ->
       buildTag "input" attrs $ Left Types.OmitTag
 
+    Tag_InputButton attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputCheckbox attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputColor attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputDate attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputDatetimeLocal attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputEmail attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputFile attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputHidden attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputImage attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputMonth attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputNumber attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputPassword attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputRadio attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputRange attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputReset attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputSearch attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputSubmit attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputTel attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputText attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputTime attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputUrl attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
+    Tag_InputWeek attrs ->
+      buildTag "input" attrs $ Left Types.OmitTag
+
     Tag_InsertedText attrs content ->
       buildTag "ins" attrs $ Right content
 
