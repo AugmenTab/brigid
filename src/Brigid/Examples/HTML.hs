@@ -133,7 +133,7 @@ example =
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []
-        , E.input []
+        , E.input [ A.type_ HTML.Number ]
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]

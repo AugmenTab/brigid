@@ -47,6 +47,7 @@ module Brigid.HTML.Elements.TagGroups
   , CrossOriginTags
   , DisableableTags
   , HrefTags
+  , InputTags
   , LabelableTags
   , LengthTags
   , NameTags
@@ -55,6 +56,7 @@ module Brigid.HTML.Elements.TagGroups
   , SrcTags
   , TargetableTags
   , TimestampableTags
+  , TypeableTags
   , URLTags
   ) where
 
@@ -665,6 +667,32 @@ type HrefTags =
     ': 'Link
     ': URLTags
 
+type InputTags =
+  [ 'Input
+  , 'InputButton
+  , 'InputCheckbox
+  , 'InputColor
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputFile
+  , 'InputHidden
+  , 'InputImage
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputRange
+  , 'InputReset
+  , 'InputSearch
+  , 'InputSubmit
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
+  ]
+
 type LabelableTags =
   [ 'OptionGroup
   , 'Track
@@ -729,6 +757,19 @@ type TimestampableTags =
   [ 'DeletedText
   , 'InsertedText
   , 'Time
+  ]
+
+type TypeableTags =
+  [ 'Anchor
+  , 'Button
+  , 'Embed
+  , 'Input
+  , 'Link
+  , 'Object
+  , 'OrderedList
+  , 'Script
+  , 'Source
+  , 'Style
   ]
 
 type URLTags =

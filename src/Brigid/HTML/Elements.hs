@@ -129,7 +129,7 @@ import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements.Children (ValidChild)
-import Brigid.HTML.Elements.Internal (ChildHTML(..))
+import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Types qualified as Types
 

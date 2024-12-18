@@ -660,6 +660,7 @@ import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText
 import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
 import Brigid.HTML.Types.TrackKind (TrackKind, trackKindToText)
 import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
+import Brigid.HTML.Types.TypeOption (TypeOptionTypes, mkTypeOption, typeOptionToText)
 import Brigid.HTML.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
@@ -2989,9 +2990,12 @@ attr_step = (,) Attr_Step . Just
 attr_target :: Target -> AttributeSelector
 attr_target = (,) Attr_Target . Just . targetToText
 
--- TODO
-attr_type :: T.Text -> AttributeSelector
-attr_type = (,) Attr_Type . Just
+attr_type :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf type_ TypeOptionTypes
+             )
+          => type_ -> AttributeSelector
+attr_type =
+  (,) Attr_Type . Just . typeOptionToText . mkTypeOption
 
 -- TODO
 attr_usemap :: T.Text -> AttributeSelector

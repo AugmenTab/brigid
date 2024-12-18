@@ -727,6 +727,9 @@ renderAttribute attr =
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToBytes target
 
+    Attr_Type type_ ->
+      Just . buildAttribute "type" $ Types.typeOptionToBytes type_
+
     Attr_Width width ->
       Just . buildAttribute "width" . LBS8.pack $ show width
 

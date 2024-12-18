@@ -49,6 +49,7 @@ module Brigid.HTML.Attributes.Scoped
   , src
   , srclang
   , target
+  , type_
   , width
   , wrap
   , xmlns
@@ -67,6 +68,7 @@ import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Attributes.Source (ValidSource)
+import Brigid.HTML.Attributes.Type (ValidTypeOption)
 import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
@@ -302,6 +304,15 @@ srclang = Attr_SrcLang
 
 target :: ValidAttribute 'Target tag => Types.Target -> Attribute tag
 target = Attr_Target
+
+type_ :: ( KnownNat branchIndex
+         , branchIndex ~ FirstIndexOf type_ Types.TypeOptionTypes
+         , ValidTypeOption type_ tag
+         , ValidAttribute 'Type tag
+         )
+      => type_ -> Attribute tag
+type_ =
+  Attr_Type . Types.mkTypeOption
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width
