@@ -113,6 +113,7 @@ library
       Brigid.HTML.Types.Throttle
       Brigid.HTML.Types.TrackKind
       Brigid.HTML.Types.TriggerFilter
+      Brigid.HTML.Types.TypeOption
       Brigid.HTML.Types.URL
       Brigid.HTML.Types.Vals
       Brigid.HTML.Types.WebsocketBinaryType
