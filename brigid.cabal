@@ -84,6 +84,7 @@ library
       Brigid.HTML.Types.IgnoreTitle
       Brigid.HTML.Types.InlineJSON
       Brigid.HTML.Types.InputMode
+      Brigid.HTML.Types.InputType
       Brigid.HTML.Types.KeyHint
       Brigid.HTML.Types.Method
       Brigid.HTML.Types.NoContent

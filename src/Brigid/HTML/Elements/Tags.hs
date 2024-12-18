@@ -60,6 +60,28 @@ module Brigid.HTML.Elements.Tags
   , IFrame
   , Image
   , Input
+  , InputButton
+  , InputCheckbox
+  , InputColor
+  , InputDate
+  , InputDatetimeLocal
+  , InputEmail
+  , InputFile
+  , InputHidden
+  , InputImage
+  , InputMonth
+  , InputNumber
+  , InputPassword
+  , InputRadio
+  , InputRange
+  , InputReset
+  , InputSearch
+  , InputSubmit
+  , InputTel
+  , InputText
+  , InputTime
+  , InputUrl
+  , InputWeek
   , InsertedText
   , KeyboardInput
   , Label
@@ -305,6 +327,80 @@ type Image = 'TagType.Image
 
 -- | This type synonym represents the @\<input>@ element.
 type Input = 'TagType.Input
+
+-- | This type synonym represents the @\<input>@ element with the @button@
+-- type.
+type InputButton = 'TagType.InputButton
+
+-- | This type synonym represents the @\<input>@ element with the @checkbox@
+-- type.
+type InputCheckbox = 'TagType.InputCheckbox
+
+-- | This type synonym represents the @\<input>@ element with the @color@ type.
+type InputColor = 'TagType.InputColor
+
+-- | This type synonym represents the @\<input>@ element with the @date@ type.
+type InputDate = 'TagType.InputDate
+
+-- | This type synonym represents the @\<input>@ element with the
+-- @datetime-local@ type.
+type InputDatetimeLocal = 'TagType.InputDatetimeLocal
+
+-- | This type synonym represents the @\<input>@ element with the @email@ type.
+type InputEmail = 'TagType.InputEmail
+
+-- | This type synonym represents the @\<input>@ element with the @file@ type.
+type InputFile = 'TagType.InputFile
+
+-- | This type synonym represents the @\<input>@ element with the @hidden@
+-- type.
+type InputHidden = 'TagType.InputHidden
+
+-- | This type synonym represents the @\<input>@ element with the @image@ type.
+type InputImage = 'TagType.InputImage
+
+-- | This type synonym represents the @\<input>@ element with the @month@ type.
+type InputMonth = 'TagType.InputMonth
+
+-- | This type synonym represents the @\<input>@ element with the @number@
+-- type.
+type InputNumber = 'TagType.InputNumber
+
+-- | This type synonym represents the @\<input>@ element with the @password@
+-- type.
+type InputPassword = 'TagType.InputPassword
+
+-- | This type synonym represents the @\<input>@ element with the @radio@ type.
+type InputRadio = 'TagType.InputRadio
+
+-- | This type synonym represents the @\<input>@ element with the @range@ type.
+type InputRange = 'TagType.InputRange
+
+-- | This type synonym represents the @\<input>@ element with the @reset@ type.
+type InputReset = 'TagType.InputReset
+
+-- | This type synonym represents the @\<input>@ element with the @search@
+-- type.
+type InputSearch = 'TagType.InputSearch
+
+-- | This type synonym represents the @\<input>@ element with the @submit@
+-- type.
+type InputSubmit = 'TagType.InputSubmit
+
+-- | This type synonym represents the @\<input>@ element with the @tel@ type.
+type InputTel = 'TagType.InputTel
+
+-- | This type synonym represents the @\<input>@ element with the @text@ type.
+type InputText = 'TagType.InputText
+
+-- | This type synonym represents the @\<input>@ element with the @time@ type.
+type InputTime = 'TagType.InputTime
+
+-- | This type synonym represents the @\<input>@ element with the @url@ type.
+type InputUrl = 'TagType.InputUrl
+
+-- | This type synonym represents the @\<input>@ element with the @week@ type.
+type InputWeek = 'TagType.InputWeek
 
 -- | This type synonym represents the @\<ins>@ element.
 type InsertedText = 'TagType.InsertedText
