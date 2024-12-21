@@ -2821,9 +2821,8 @@ attr_kind = (,) Attr_Kind . Just . trackKindToText
 attr_label :: T.Text -> AttributeSelector
 attr_label = (,) Attr_Label . Just
 
--- TODO
-attr_list :: T.Text -> AttributeSelector
-attr_list = (,) Attr_List . Just
+attr_list :: Id.Id -> AttributeSelector
+attr_list = (,) Attr_List . Just . Id.idToText
 
 attr_loop :: AttributeSelector
 attr_loop = (Attr_Loop, Nothing)

@@ -45,6 +45,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor IsMap                   = '[ Tags.Image ]
   ValidElementsFor Kind                    = '[ Tags.Track ]
   ValidElementsFor Label                   = TagGroups.LabelableTags
+  ValidElementsFor List                    = TagGroups.InputTags
   ValidElementsFor Loop                    = TagGroups.MediaContent
   ValidElementsFor MaxLength               = TagGroups.LengthTags
   ValidElementsFor MinLength               = TagGroups.LengthTags

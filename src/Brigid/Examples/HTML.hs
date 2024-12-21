@@ -133,7 +133,7 @@ example =
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []
-        , E.input [ A.type_ HTML.Number ]
+        , E.input [ A.type_ HTML.Number, A.list divId ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.
                      ]

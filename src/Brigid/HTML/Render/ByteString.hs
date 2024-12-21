@@ -740,6 +740,9 @@ renderAttribute attr =
     Attr_Label label ->
       Just . buildAttribute "label" $ toBytes label
 
+    Attr_List list ->
+      Just . buildAttribute "label" $ Types.idToBytes list
+
     Attr_Loop ->
       buildBooleanAttribute "loop" True
 

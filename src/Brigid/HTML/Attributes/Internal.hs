@@ -66,6 +66,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_IsMap
       , Attr_Kind
       , Attr_Label
+      , Attr_List
       , Attr_Loop
       , Attr_MaxLength
       , Attr_MinLength
@@ -506,10 +507,10 @@ data Attribute (tag :: TagType) where
     => T.Text
     -> Attribute tag
 
-  -- Attr_List
-  --   :: ValidAttribute 'List tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_List
+    :: ValidAttribute 'List tag
+    => Types.Id
+    -> Attribute tag
 
   Attr_Loop
     :: ValidAttribute 'Loop tag
@@ -1046,6 +1047,9 @@ attributeText attr =
 
     Attr_Label _label ->
       "label"
+
+    Attr_List _list ->
+      "list"
 
     Attr_Loop ->
       "loop"

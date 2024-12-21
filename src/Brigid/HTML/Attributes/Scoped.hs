@@ -32,6 +32,7 @@ module Brigid.HTML.Attributes.Scoped
   , ismap
   , kind
   , label
+  , list
   , loop
   , maxlength
   , minlength
@@ -234,6 +235,13 @@ kind = Attr_Kind
 
 label :: ValidAttribute 'Label tag => T.Text -> Attribute tag
 label = Attr_Label
+
+-- TODO: A Safe module could build inputs and datalists in tandom, taking an Id
+-- to ensure proper list application and that the values are valid for the
+-- input type.
+--
+list :: ValidAttribute 'List tag => Types.Id -> Attribute tag
+list = Attr_List
 
 loop :: ValidAttribute 'Loop tag => Attribute tag
 loop = Attr_Loop
