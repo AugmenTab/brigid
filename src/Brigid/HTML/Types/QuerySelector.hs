@@ -605,6 +605,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Data.Time qualified as Time
@@ -2744,9 +2745,8 @@ attr_disablepictureinpicture = (Attr_DisablePictureInPicture, Nothing)
 attr_disableremoteplayback :: AttributeSelector
 attr_disableremoteplayback = (Attr_DisableRemotePlayback, Nothing)
 
--- TODO
-attr_download :: T.Text -> AttributeSelector
-attr_download = (,) Attr_Download . Just
+attr_download :: Maybe NET.NonEmptyText -> AttributeSelector
+attr_download = (,) Attr_Download . fmap NET.toText
 
 -- TODO
 attr_enctype :: T.Text -> AttributeSelector

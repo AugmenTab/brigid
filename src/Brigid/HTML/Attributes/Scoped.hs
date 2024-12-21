@@ -25,6 +25,7 @@ module Brigid.HTML.Attributes.Scoped
   , disabled
   , disablepictureinpicture
   , disableremoteplayback
+  , download
   , headers
   , height
   , href
@@ -58,6 +59,7 @@ module Brigid.HTML.Attributes.Scoped
   ) where
 
 import Data.List.NonEmpty qualified as NEL
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
@@ -191,6 +193,10 @@ disablepictureinpicture = Attr_DisablePictureInPicture
 disableremoteplayback :: ValidAttribute 'DisableRemotePlayback tag
                       => Attribute tag
 disableremoteplayback = Attr_DisableRemotePlayback
+
+download :: ValidAttribute 'Download tag
+         => Maybe NET.NonEmptyText -> Attribute tag
+download = Attr_Download
 
 headers :: ValidAttribute 'Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag

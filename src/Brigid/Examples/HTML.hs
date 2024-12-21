@@ -250,7 +250,9 @@ safeScriptExample =
 
 transparencyExample :: E.ChildHTML E.Division grandparent
 transparencyExample =
-  E.a []
+  E.a [ A.href fakeJavaScriptLink
+      , A.download $ NET.fromText "file_name"
+      ]
     [ Safe.imgMap []
  -- , E.a [] [] -- This fails, because a is excluded from the transparent content that a holds.
  -- , E.li [] [] -- This fails, because li isn't a valid child for the grandparent div, and a is transparent.
@@ -284,7 +286,7 @@ tableWithBodyExample =
           [ Safe.tr []
               [ E.td [] [ E.text "1" ]
               , E.td [] [ E.text "2" ]
-              , E.td [] [ E.text "3" , E.noElement ]
+              , E.td [] [ E.text "3", E.noElement ]
               , E.td [] [ E.text "4" ]
               , E.td [ A.rowspan 2 ] [ E.text "5" ]
               ]
@@ -302,7 +304,7 @@ tableWithRowExample =
         , E.td [] [ E.text "3" ]
         , E.td [] [ E.text "4" ]
         , E.td [] [ E.text "5" ]
-        , E.td [] [ E.text "6" , E.noElement ]
+        , E.td [] [ E.text "6", E.noElement ]
         ]
 
 tableExample :: Either [Safe.TableBody] [Safe.TableRow E.Table E.Division]
@@ -325,10 +327,10 @@ tableExample content =
           Safe.thead []
             [ Safe.tr []
                 [ E.th [] [ E.text "1" ]
-                , E.th [] [ E.text "2" , E.noElement ]
+                , E.th [] [ E.text "2", E.noElement ]
                 , E.th [] [ E.text "3" ]
                 , E.th [] [ E.text "4" ]
-                , E.th [] [ E.text "5" , E.comment "Fifth comment" ]
+                , E.th [] [ E.text "5", E.comment "Fifth comment" ]
                 , E.th [ A.colspan 0 ] [ E.text "6" ]
                 ]
             ]
@@ -342,7 +344,7 @@ tableExample content =
                 , E.td [] [ E.text "3" ]
                 , E.td [] [ E.noElement, E.text "4" ]
                 , E.td [] [ E.text "5" ]
-                , E.td [] [ E.text "6" , E.noElement ]
+                , E.td [] [ E.text "6", E.noElement ]
                 ]
             ]
 

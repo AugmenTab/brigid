@@ -678,6 +678,12 @@ renderAttribute attr =
     Attr_DisableRemotePlayback ->
       buildBooleanAttribute "disableremoteplayback" True
 
+    Attr_Download download ->
+      maybe
+        (buildBooleanAttribute "download" True)
+        (Just . buildAttribute "download" . NET.toText)
+        download
+
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"

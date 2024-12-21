@@ -59,6 +59,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Disabled
       , Attr_DisablePictureInPicture
       , Attr_DisableRemotePlayback
+      , Attr_Download
       , Attr_Headers
       , Attr_Height
       , Attr_Href
@@ -122,6 +123,7 @@ module Brigid.HTML.Attributes.Internal
   ) where
 
 import Data.List.NonEmpty qualified as NEL
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
@@ -406,10 +408,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'DisableRemotePlayback tag
     => Attribute tag
 
-  -- Attr_Download
-  --   :: ValidAttribute 'Download tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Download
+    :: ValidAttribute 'Download tag
+    => Maybe NET.NonEmptyText
+    -> Attribute tag
 
   -- Attr_Enctype
   --   :: ValidAttribute 'Enctype tag
@@ -1019,6 +1021,9 @@ attributeText attr =
 
     Attr_DisableRemotePlayback ->
       "disableremoteplayback"
+
+    Attr_Download _download ->
+      "download"
 
     Attr_Headers _headers ->
       "headers"
