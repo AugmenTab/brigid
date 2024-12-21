@@ -55,6 +55,7 @@ module Brigid.HTML.Elements.TagGroups
   , NameTags
   , PlaceholderableTags
   , RelTags
+  , RequireableTags
   , SizableTags
   , SrcTags
   , TargetableTags
@@ -823,6 +824,27 @@ type RelTags =
   , 'Area
   , 'Form
   , 'Link
+  ]
+
+type RequireableTags =
+  [ 'Input
+  , 'InputCheckbox
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputFile
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
+  , 'Select
+  , 'TextArea
   ]
 
 type SizableTags =

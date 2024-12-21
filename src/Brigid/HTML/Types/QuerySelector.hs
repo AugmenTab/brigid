@@ -2918,9 +2918,8 @@ attr_rel :: ( KnownNat branchIndex
          => rel -> AttributeSelector
 attr_rel = (,) Attr_Rel . Just . relationshipToText . mkRelationship
 
--- TODO
-attr_required :: T.Text -> AttributeSelector
-attr_required = (,) Attr_Required . Just
+attr_required :: AttributeSelector
+attr_required = (Attr_Required, Nothing)
 
 attr_reversed :: AttributeSelector
 attr_reversed = (Attr_Reversed, Nothing)

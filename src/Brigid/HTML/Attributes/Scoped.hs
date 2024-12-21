@@ -47,6 +47,8 @@ module Brigid.HTML.Attributes.Scoped
   , preload
   , referrerpolicy
   , rel
+  , require
+  , required
   , reverse
   , reversed
   , rows
@@ -301,6 +303,12 @@ rel :: ( KnownNat branchIndex
     => rel -> Attribute tag
 rel =
   Attr_Rel . Types.mkRelationship
+
+require :: ValidAttribute 'Required tag => Bool -> Attribute tag
+require = Attr_Required
+
+required :: ValidAttribute 'Required tag => Attribute tag
+required = require True
 
 reverse :: ValidAttribute 'Reversed tag => Bool -> Attribute tag
 reverse = Attr_Reversed

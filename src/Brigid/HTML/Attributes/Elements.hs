@@ -58,6 +58,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Preload                 = TagGroups.MediaContent
   ValidElementsFor ReferrerPolicy          = '[ Tags.Script ]
   ValidElementsFor Rel                     = TagGroups.RelTags
+  ValidElementsFor Required                = TagGroups.RequireableTags
   ValidElementsFor Reversed                = '[ Tags.OrderedList ]
   ValidElementsFor Rows                    = '[ Tags.TextArea ]
   ValidElementsFor Rowspan                 = TagGroups.TableCells

@@ -762,6 +762,9 @@ renderAttribute attr =
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToText rel
 
+    Attr_Required required ->
+      buildBooleanAttribute "required" required
+
     Attr_Reversed reversed ->
       buildBooleanAttribute "reversed" reversed
 

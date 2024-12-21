@@ -79,6 +79,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Preload
       , Attr_ReferrerPolicy
       , Attr_Rel
+      , Attr_Required
       , Attr_Reversed
       , Attr_Rows
       , Attr_Rowspan
@@ -628,10 +629,10 @@ data Attribute (tag :: TagType) where
     => Types.Relationship
     -> Attribute tag
 
-  -- Attr_Required
-  --   :: ValidAttribute 'Required tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Required
+    :: ValidAttribute 'Required tag
+    => Bool
+    -> Attribute tag
 
   Attr_Reversed
     :: ValidAttribute 'Reversed tag
@@ -1083,6 +1084,9 @@ attributeText attr =
 
     Attr_Rel _rel ->
       "rel"
+
+    Attr_Required _required ->
+      "required"
 
     Attr_Reversed _reversed ->
       "reversed"
