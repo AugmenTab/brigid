@@ -53,6 +53,7 @@ module Brigid.HTML.Elements.TagGroups
   , LabelableTags
   , LengthTags
   , NameTags
+  , PlaceholderableTags
   , RelTags
   , SizableTags
   , SrcTags
@@ -805,6 +806,17 @@ type NameTags =
     , 'Select
     , 'TextArea
     ]
+
+type PlaceholderableTags =
+  [ 'Input
+  , 'InputEmail
+  , 'InputPassword
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputUrl
+  , 'TextArea
+  ]
 
 type RelTags =
   [ 'Anchor

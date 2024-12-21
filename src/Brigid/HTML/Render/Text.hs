@@ -742,6 +742,9 @@ renderAttribute attr =
         . Render.foldToTextWithSeparator Types.pingToText " "
         $ NEL.toList pings
 
+    Attr_Placeholder placeholder ->
+      Just $ buildAttribute "placeholder" placeholder
+
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
 

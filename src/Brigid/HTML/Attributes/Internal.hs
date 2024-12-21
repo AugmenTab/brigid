@@ -73,6 +73,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Name
       , Attr_NoModule
       , Attr_Ping
+      , Attr_Placeholder
       , Attr_PlaysInline
       , Attr_Poster
       , Attr_Preload
@@ -592,10 +593,10 @@ data Attribute (tag :: TagType) where
     => NEL.NonEmpty Types.Ping
     -> Attribute tag
 
-  -- Attr_Placeholder
-  --   :: ValidAttribute 'Placeholder tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Placeholder
+    :: ValidAttribute 'Placeholder tag
+    => T.Text
+    -> Attribute tag
 
   Attr_PlaysInline
     :: ValidAttribute 'PlaysInline tag
@@ -1064,6 +1065,9 @@ attributeText attr =
 
     Attr_Ping _ping ->
       "ping"
+
+    Attr_Placeholder _placeholder ->
+      "placeholder"
 
     Attr_PlaysInline _playsinline ->
       "playsinline"

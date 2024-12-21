@@ -40,6 +40,7 @@ module Brigid.HTML.Attributes.Scoped
   , name
   , nomodule
   , ping
+  , placeholder
   , playInline
   , playsinline
   , poster
@@ -267,6 +268,9 @@ nomodule = Attr_NoModule
 
 ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping
+
+placeholder :: ValidAttribute 'Placeholder tag => T.Text -> Attribute tag
+placeholder = Attr_Placeholder
 
 playInline :: ValidAttribute 'PlaysInline tag => Bool -> Attribute tag
 playInline = Attr_PlaysInline

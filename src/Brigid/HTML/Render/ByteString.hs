@@ -764,6 +764,9 @@ renderAttribute attr =
         . Render.foldToBytesWithSeparator Types.pingToBytes " "
         $ NEL.toList pings
 
+    Attr_Placeholder placeholder ->
+      Just . buildAttribute "placeholder" $ toBytes placeholder
+
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
 

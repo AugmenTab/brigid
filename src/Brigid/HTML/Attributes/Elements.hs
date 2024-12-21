@@ -52,6 +52,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Name                    = TagGroups.NameTags
   ValidElementsFor NoModule                = '[ Tags.Script ]
   ValidElementsFor Ping                    = '[ Tags.Anchor ]
+  ValidElementsFor Placeholder             = TagGroups.PlaceholderableTags
   ValidElementsFor PlaysInline             = '[ Tags.Video ]
   ValidElementsFor Poster                  = '[ Tags.Video ]
   ValidElementsFor Preload                 = TagGroups.MediaContent

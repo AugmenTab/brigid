@@ -2890,7 +2890,6 @@ attr_ping =
     . Render.foldToTextWithSeparator pingToText " "
     . NEL.toList
 
--- TODO
 attr_placeholder :: T.Text -> AttributeSelector
 attr_placeholder = (,) Attr_Placeholder . Just
 
