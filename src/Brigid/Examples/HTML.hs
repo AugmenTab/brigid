@@ -256,7 +256,15 @@ transparencyExample =
     [ Safe.imgMap []
  -- , E.a [] [] -- This fails, because a is excluded from the transparent content that a holds.
  -- , E.li [] [] -- This fails, because li isn't a valid child for the grandparent div, and a is transparent.
-    , E.div [] []
+    , E.div []
+        [ E.ol [ A.reversed ]
+            [ E.li [] [ E.text "1" ]
+            , E.li [] [ E.text "2" ]
+            , E.li [] [ E.text "3" ]
+            , E.li [] [ E.text "4" ]
+            , E.li [] [ E.text "5" ]
+            ]
+        ]
     , E.audio [ A.controls
               , A.controlslist HTML.NoDownload
               , A.mute False

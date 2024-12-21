@@ -2923,9 +2923,8 @@ attr_rel = (,) Attr_Rel . Just . relationshipToText . mkRelationship
 attr_required :: T.Text -> AttributeSelector
 attr_required = (,) Attr_Required . Just
 
--- TODO
-attr_reversed :: T.Text -> AttributeSelector
-attr_reversed = (,) Attr_Reversed . Just
+attr_reversed :: AttributeSelector
+attr_reversed = (Attr_Reversed, Nothing)
 
 attr_rows :: Word -> AttributeSelector
 attr_rows = (,) Attr_Rows . Just . Render.showText

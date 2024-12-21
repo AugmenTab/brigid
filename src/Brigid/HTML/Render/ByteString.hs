@@ -781,6 +781,9 @@ renderAttribute attr =
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToBytes rel
 
+    Attr_Reversed reversed ->
+      buildBooleanAttribute "reversed" reversed
+
     Attr_Rows rows ->
       Just . buildAttribute "rows" . LBS8.pack $ show rows
 

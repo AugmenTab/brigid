@@ -759,6 +759,9 @@ renderAttribute attr =
     Attr_Rel rel ->
       Just . buildAttribute "rel" $ Types.relationshipToText rel
 
+    Attr_Reversed reversed ->
+      buildBooleanAttribute "reversed" reversed
+
     Attr_Rows rows ->
       Just . buildAttribute "rows" . T.pack $ show rows
 

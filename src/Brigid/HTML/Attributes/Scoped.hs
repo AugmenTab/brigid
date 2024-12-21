@@ -46,6 +46,8 @@ module Brigid.HTML.Attributes.Scoped
   , preload
   , referrerpolicy
   , rel
+  , reverse
+  , reversed
   , rows
   , rowspan
   , shape
@@ -58,6 +60,7 @@ module Brigid.HTML.Attributes.Scoped
   , xmlns
   ) where
 
+import Prelude hiding (reverse)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -294,6 +297,12 @@ rel :: ( KnownNat branchIndex
     => rel -> Attribute tag
 rel =
   Attr_Rel . Types.mkRelationship
+
+reverse :: ValidAttribute 'Reversed tag => Bool -> Attribute tag
+reverse = Attr_Reversed
+
+reversed :: ValidAttribute 'Reversed tag => Attribute tag
+reversed = reverse True
 
 rows :: ValidAttribute 'Rows tag => Word -> Attribute tag
 rows = Attr_Rows
