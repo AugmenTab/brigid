@@ -44,6 +44,7 @@ module Brigid.HTML.Elements.TagGroups
   , TableRowContent
 
   , AltTags
+  , CheckableTags
   , CitableTags
   , CrossOriginTags
   , DisableableTags
@@ -708,6 +709,12 @@ type AltTags =
   , 'Image
   , 'Input
   , 'InputImage
+  ]
+
+type CheckableTags =
+  [ 'Input
+  , 'InputCheckbox
+  , 'InputRadio
   ]
 
 type CitableTags =

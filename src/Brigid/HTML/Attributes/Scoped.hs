@@ -7,6 +7,8 @@ module Brigid.HTML.Attributes.Scoped
   , async
   , autoplay
   , charset
+  , check
+  , checked
   , cite
   , cols
   , colspan
@@ -99,6 +101,12 @@ autoplay = Attr_Autoplay
 --
 charset :: ValidAttribute 'Charset tag => Attribute tag
 charset = Attr_Charset
+
+check :: ValidAttribute 'Checked tag => Bool -> Attribute tag
+check = Attr_Checked
+
+checked :: ValidAttribute 'Checked tag => Attribute tag
+checked = check True
 
 cite :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf cite Types.URLTypes

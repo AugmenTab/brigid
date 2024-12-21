@@ -648,6 +648,9 @@ renderAttribute attr =
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 
+    Attr_Checked checked ->
+      buildBooleanAttribute "checked" checked
+
     Attr_Cite cite ->
       Just . buildAttribute "cite" $ Types.urlToBytes cite
 

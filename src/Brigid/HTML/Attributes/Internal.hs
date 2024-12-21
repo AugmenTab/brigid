@@ -44,6 +44,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Async
       , Attr_Autoplay
       , Attr_Charset
+      , Attr_Checked
       , Attr_Cite
       , Attr_Cols
       , Attr_Colspan
@@ -320,10 +321,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Charset tag
     => Attribute tag
 
-  -- Attr_Checked
-  --   :: ValidAttribute 'Checked tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Checked
+    :: ValidAttribute 'Checked tag
+    => Bool
+    -> Attribute tag
 
   Attr_Cite
     :: ValidAttribute 'Cite tag
@@ -973,6 +974,9 @@ attributeText attr =
 
     Attr_Charset ->
       "charset"
+
+    Attr_Checked _checked ->
+      "checked"
 
     Attr_Cite _cite ->
       "cite"

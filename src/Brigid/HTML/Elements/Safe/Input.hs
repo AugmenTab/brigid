@@ -102,6 +102,8 @@ password :: ValidChild Tags.InputPassword parent grandparent
 password =
   Tag_InputPassword . (type_ Password :)
 
+-- TODO: How to ensure that only one element has the `checked` attribute?
+--
 radio :: ValidChild Tags.InputRadio parent grandparent
       => [Attribute Tags.InputRadio]
       -> ChildHTML parent grandparent

@@ -2672,9 +2672,8 @@ attr_capture = (,) Attr_Capture . Just
 attr_charset :: AttributeSelector
 attr_charset = (Attr_Charset, Just "utf-8")
 
--- TODO
-attr_checked :: T.Text -> AttributeSelector
-attr_checked = (,) Attr_Checked . Just
+attr_checked :: AttributeSelector
+attr_checked = (Attr_Checked, Nothing)
 
 attr_cite :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf cite URLTypes
