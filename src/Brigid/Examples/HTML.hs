@@ -129,7 +129,7 @@ example =
             ]
         , E.text "."
         ]
-    , E.form [ A.hxValidate, A.acceptCharset ]
+    , E.form [ A.hxValidate, A.acceptCharset, A.validate False ]
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []

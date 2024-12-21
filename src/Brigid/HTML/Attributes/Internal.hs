@@ -72,6 +72,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Muted
       , Attr_Name
       , Attr_NoModule
+      , Attr_NoValidate
       , Attr_Ping
       , Attr_Placeholder
       , Attr_PlaysInline
@@ -569,10 +570,10 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
-  -- Attr_NoValidate
-  --   :: ValidAttribute 'NoValidate tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_NoValidate
+    :: ValidAttribute 'NoValidate tag
+    => Bool
+    -> Attribute tag
 
   -- Attr_Open
   --   :: ValidAttribute 'Open tag
@@ -1063,6 +1064,9 @@ attributeText attr =
 
     Attr_NoModule _nomodule ->
       "nomodule"
+
+    Attr_NoValidate _novalidate ->
+      "novalidate"
 
     Attr_Ping _ping ->
       "ping"

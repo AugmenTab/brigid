@@ -2867,9 +2867,8 @@ attr_name = (,) Attr_Name . Just
 attr_nomodule :: Bool -> AttributeSelector
 attr_nomodule = (,) Attr_NoModule . Just . Render.enumBoolToText
 
--- TODO
-attr_novalidate :: T.Text -> AttributeSelector
-attr_novalidate = (,) Attr_NoValidate . Just
+attr_novalidate :: AttributeSelector
+attr_novalidate = (Attr_NoValidate, Nothing)
 
 -- TODO
 attr_open :: T.Text -> AttributeSelector

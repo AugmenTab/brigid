@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Scoped
   , muted
   , name
   , nomodule
+  , novalidate
   , ping
   , placeholder
   , playInline
@@ -58,6 +59,7 @@ module Brigid.HTML.Attributes.Scoped
   , srclang
   , target
   , type_
+  , validate
   , width
   , wrap
   , xmlns
@@ -268,6 +270,12 @@ name = Attr_Name
 nomodule :: ValidAttribute 'NoModule tag => Bool -> Attribute tag
 nomodule = Attr_NoModule
 
+-- TODO: A Safe module could take a Maybe of form validation attributes, and
+-- use this attribute otherwise.
+--
+novalidate :: ValidAttribute 'NoValidate tag => Attribute tag
+novalidate = validate False
+
 ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping
 
@@ -348,6 +356,12 @@ type_ :: ( KnownNat branchIndex
       => type_ -> Attribute tag
 type_ =
   Attr_Type . Types.mkTypeOption
+
+-- | This function permits an inline argument to determine whether validation
+-- should be enabled. If 'False', the @novalidate@ attribute will be added.
+--
+validate :: ValidAttribute 'NoValidate tag => Bool -> Attribute tag
+validate = Attr_NoValidate . not
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width

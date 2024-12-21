@@ -51,6 +51,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Muted                   = TagGroups.MediaContent
   ValidElementsFor Name                    = TagGroups.NameTags
   ValidElementsFor NoModule                = '[ Tags.Script ]
+  ValidElementsFor NoValidate              = '[ Tags.Form ]
   ValidElementsFor Ping                    = '[ Tags.Anchor ]
   ValidElementsFor Placeholder             = TagGroups.PlaceholderableTags
   ValidElementsFor PlaysInline             = '[ Tags.Video ]

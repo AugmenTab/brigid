@@ -736,6 +736,9 @@ renderAttribute attr =
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule
 
+    Attr_NoValidate novalidate ->
+      buildBooleanAttribute "novalidate" novalidate
+
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"
