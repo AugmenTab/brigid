@@ -22,6 +22,7 @@ module Brigid.HTML.Attributes.Scoped
   , decoding
   , default_
   , defer
+  , dirname
   , disable
   , disabled
   , disablepictureinpicture
@@ -192,6 +193,9 @@ default_ = Attr_Default
 
 defer :: ValidAttribute 'Defer tag => Attribute tag
 defer = Attr_Defer
+
+dirname :: ValidAttribute 'Dirname tag => T.Text -> Attribute tag
+dirname = Attr_Dirname
 
 disable :: ValidAttribute 'Disabled tag => Bool -> Attribute tag
 disable = Attr_Disabled

@@ -2732,7 +2732,6 @@ attr_default = (Attr_Default, Nothing)
 attr_defer :: AttributeSelector
 attr_defer = (Attr_Defer, Nothing)
 
--- TODO
 attr_dirname :: T.Text -> AttributeSelector
 attr_dirname = (,) Attr_Dirname . Just
 

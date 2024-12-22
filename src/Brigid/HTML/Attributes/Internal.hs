@@ -57,6 +57,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Decoding
       , Attr_Default
       , Attr_Defer
+      , Attr_Dirname
       , Attr_Disabled
       , Attr_DisablePictureInPicture
       , Attr_DisableRemotePlayback
@@ -396,10 +397,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Defer tag
     => Attribute tag
 
-  -- Attr_Dirname
-  --   :: ValidAttribute 'Dirname tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Dirname
+    :: ValidAttribute 'Dirname tag
+    => T.Text
+    -> Attribute tag
 
   Attr_Disabled
     :: ValidAttribute 'Disabled tag
@@ -1021,6 +1022,9 @@ attributeText attr =
 
     Attr_Defer ->
       "defer"
+
+    Attr_Dirname _dirname ->
+      "dirname"
 
     Attr_Disabled _disabled ->
       "disabled"

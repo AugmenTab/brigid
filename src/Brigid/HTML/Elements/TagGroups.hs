@@ -47,6 +47,7 @@ module Brigid.HTML.Elements.TagGroups
   , CheckableTags
   , CitableTags
   , CrossOriginTags
+  , DirnameableTags
   , DisableableTags
   , HrefTags
   , InputTags
@@ -733,6 +734,16 @@ type CrossOriginTags =
   , 'Link
   , 'Script
   , 'Video
+  ]
+
+type DirnameableTags =
+  [ 'Input
+  , 'InputEmail
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputUrl
+  , 'TextArea
   ]
 
 type DisableableTags =

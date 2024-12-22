@@ -694,6 +694,9 @@ renderAttribute attr =
     Attr_Defer ->
       buildBooleanAttribute "defer" True
 
+    Attr_Dirname dirname ->
+      Just . buildAttribute "dirname" $ toBytes dirname
+
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
 

@@ -36,6 +36,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Decoding                = '[ Tags.Image ]
   ValidElementsFor Default                 = '[ Tags.Track ]
   ValidElementsFor Defer                   = '[ Tags.Script ]
+  ValidElementsFor Dirname                 = TagGroups.DirnameableTags
   ValidElementsFor Disabled                = TagGroups.DisableableTags
   ValidElementsFor DisablePictureInPicture = '[ Tags.Video ]
   ValidElementsFor DisableRemotePlayback   = TagGroups.MediaContent
