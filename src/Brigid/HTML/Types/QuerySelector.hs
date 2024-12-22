@@ -625,6 +625,7 @@ import Brigid.HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToTe
 import Brigid.HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
 import Brigid.HTML.Types.ControlsList (ControlsList, controlslistToText)
 import Brigid.HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
+import Brigid.HTML.Types.Decoding (Decoding, decodingToText)
 import Brigid.HTML.Types.Delay (Delay, delay, delayToBytes, delayToText)
 import Brigid.HTML.Types.Directionality (Directionality, directionalityToText)
 import Brigid.HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
@@ -2722,9 +2723,8 @@ attr_datetimeWithFormat format =
     . T.pack
     . Time.formatTime Time.defaultTimeLocale format
 
--- TODO
-attr_decoding :: T.Text -> AttributeSelector
-attr_decoding = (,) Attr_Decoding . Just
+attr_decoding :: Decoding -> AttributeSelector
+attr_decoding = (,) Attr_Decoding . Just . decodingToText
 
 attr_default :: AttributeSelector
 attr_default = (Attr_Default, Nothing)

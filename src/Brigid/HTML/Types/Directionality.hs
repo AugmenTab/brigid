@@ -2,7 +2,7 @@ module Brigid.HTML.Types.Directionality
   ( Directionality
       ( LeftToRight
       , RightToLeft
-      , Auto
+      , AutoDirection
       )
   , directionalityToBytes
   , directionalityToText
@@ -14,18 +14,18 @@ import Data.Text qualified as T
 data Directionality
   = LeftToRight
   | RightToLeft
-  | Auto
+  | AutoDirection
 
 directionalityToBytes :: Directionality -> LBS.ByteString
 directionalityToBytes option =
   case option of
-    LeftToRight -> "ltr"
-    RightToLeft -> "rtl"
-    Auto        -> "auto"
+    LeftToRight   -> "ltr"
+    RightToLeft   -> "rtl"
+    AutoDirection -> "auto"
 
 directionalityToText :: Directionality -> T.Text
 directionalityToText option =
   case option of
-    LeftToRight -> "ltr"
-    RightToLeft -> "rtl"
-    Auto        -> "auto"
+    LeftToRight   -> "ltr"
+    RightToLeft   -> "rtl"
+    AutoDirection -> "auto"

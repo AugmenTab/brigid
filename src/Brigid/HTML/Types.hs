@@ -35,6 +35,7 @@ import Brigid.HTML.Types.Consume as Export
 import Brigid.HTML.Types.ContentEditable as Export
 import Brigid.HTML.Types.ControlsList as Export
 import Brigid.HTML.Types.CrossOrigin as Export
+import Brigid.HTML.Types.Decoding as Export
 import Brigid.HTML.Types.Delay as Export
 import Brigid.HTML.Types.Directionality as Export
 import Brigid.HTML.Types.Disinherit as Export

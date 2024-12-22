@@ -33,6 +33,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor ControlsList            = TagGroups.MediaContent
   ValidElementsFor CrossOrigin             = TagGroups.CrossOriginTags
   ValidElementsFor Datetime                = TagGroups.TimestampableTags
+  ValidElementsFor Decoding                = '[ Tags.Image ]
   ValidElementsFor Default                 = '[ Tags.Track ]
   ValidElementsFor Defer                   = '[ Tags.Script ]
   ValidElementsFor Disabled                = TagGroups.DisableableTags

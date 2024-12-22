@@ -70,6 +70,7 @@ library
       Brigid.HTML.Types.ContentEditable
       Brigid.HTML.Types.ControlsList
       Brigid.HTML.Types.CrossOrigin
+      Brigid.HTML.Types.Decoding
       Brigid.HTML.Types.Delay
       Brigid.HTML.Types.Directionality
       Brigid.HTML.Types.Disinherit

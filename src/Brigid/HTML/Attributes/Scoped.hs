@@ -19,6 +19,7 @@ module Brigid.HTML.Attributes.Scoped
   , crossorigin
   , datetime
   , datetimeWithFormat
+  , decoding
   , default_
   , defer
   , disable
@@ -182,6 +183,9 @@ datetimeWithFormat :: (Time.FormatTime t, ValidAttribute 'Datetime tag)
                    => String -> t -> Attribute tag
 datetimeWithFormat format =
   Attr_Datetime . Time.formatTime Time.defaultTimeLocale format
+
+decoding :: ValidAttribute 'Decoding tag => Types.Decoding -> Attribute tag
+decoding = Attr_Decoding
 
 default_ :: ValidAttribute 'Default tag => Attribute tag
 default_ = Attr_Default

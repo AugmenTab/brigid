@@ -54,6 +54,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Coords
       , Attr_CrossOrigin
       , Attr_Datetime
+      , Attr_Decoding
       , Attr_Default
       , Attr_Defer
       , Attr_Disabled
@@ -382,10 +383,10 @@ data Attribute (tag :: TagType) where
     => String
     -> Attribute tag
 
-  -- Attr_Decoding
-  --   :: ValidAttribute 'Decoding tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Decoding
+    :: ValidAttribute 'Decoding tag
+    => Types.Decoding
+    -> Attribute tag
 
   Attr_Default
     :: ValidAttribute 'Default tag
@@ -1011,6 +1012,9 @@ attributeText attr =
 
     Attr_Datetime _datetime ->
       "datetime"
+
+    Attr_Decoding _decoding ->
+      "decoding"
 
     Attr_Default ->
       "default"

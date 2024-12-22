@@ -685,6 +685,9 @@ renderAttribute attr =
     Attr_Datetime datetime ->
       Just . buildAttribute "datetime" $ LBS8.pack datetime
 
+    Attr_Decoding decoding ->
+      Just . buildAttribute "decoding" $ Types.decodingToBytes decoding
+
     Attr_Default ->
       buildBooleanAttribute "default" True
 
