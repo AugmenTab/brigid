@@ -15,6 +15,7 @@ import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
+import Ogma qualified
 import Shrubbery qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
@@ -570,7 +571,7 @@ renderAttribute attr =
     -- Attr_ItemType
 
     Attr_Lang lang ->
-      Just . buildAttribute "lang" $ maybe "" Types.bcp47ToText lang
+      Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToText lang
 
     -- Attr_Nonce
 
@@ -793,7 +794,7 @@ renderAttribute attr =
       Just . buildAttribute "src" $ Types.urlToText src
 
     Attr_SrcLang srclang ->
-      Just . buildAttribute "srclang" $ Types.bcp47ToText srclang
+      Just . buildAttribute "srclang" $ Ogma.bcp_47ToText srclang
 
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToText target

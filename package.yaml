@@ -40,6 +40,7 @@ dependencies:
 - json-fleece-aeson
 - json-fleece-core
 - non-empty-text
+- ogma
 - shrubbery
 - text
 - time

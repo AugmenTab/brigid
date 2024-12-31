@@ -18,6 +18,7 @@ import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
+import Ogma qualified
 import Shrubbery qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
@@ -591,8 +592,7 @@ renderAttribute attr =
     -- Attr_ItemType
 
     Attr_Lang lang ->
-      Just . buildAttribute "lang" $ maybe "" Types.bcp47ToBytes lang
-
+      Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToBytes lang
 
     -- Attr_Nonce
 
@@ -818,7 +818,7 @@ renderAttribute attr =
         $ Types.urlToText src
 
     Attr_SrcLang srclang ->
-      Just . buildAttribute "srclang" $ Types.bcp47ToBytes srclang
+      Just . buildAttribute "srclang" $ Ogma.bcp_47ToBytes srclang
 
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToBytes target

@@ -64,6 +64,17 @@ packages:
   original:
     hackage: non-empty-text-0.2.0@sha256:7d1c1f9a11c78c00c656269f940d2fcccd3c2eaf6b619f66bb83a9ea72decc1f,2438
 - completed:
+    name: ogma
+    pantry-tree:
+      sha256: 9c6156afe617acdd2f85155424b67b00367a52d924327bd8feaa1abdae50ff4c
+      size: 2109
+    sha256: 6a25550d7a0c0905089e7094fc8b57790b56fd515ff5c6d5dfad2e462b63f06e
+    size: 302695
+    url: https://github.com/AugmenTab/ogma/archive/03cf20d532d9c0ab4b66a13b185978fbba5c7bea.tar.gz
+    version: 0.1.0.0
+  original:
+    url: https://github.com/AugmenTab/ogma/archive/03cf20d532d9c0ab4b66a13b185978fbba5c7bea.tar.gz
+- completed:
     name: shrubbery
     pantry-tree:
       sha256: b3c533a32106f822be41996bcd00c6b1993ad6c95f0ad830c48ac39059a291be

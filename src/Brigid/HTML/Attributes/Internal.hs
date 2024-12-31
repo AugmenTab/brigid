@@ -132,6 +132,7 @@ module Brigid.HTML.Attributes.Internal
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Ogma qualified
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
@@ -235,7 +236,7 @@ data Attribute (tag :: TagType) where
   --   -> Attribute tag
 
   Attr_Lang
-    :: Maybe Types.BCP_47
+    :: Maybe Ogma.BCP_47
     -> Attribute tag
 
   -- Attr_Nonce
@@ -700,7 +701,7 @@ data Attribute (tag :: TagType) where
 
   Attr_SrcLang
     :: ValidAttribute 'SrcLang tag
-    => Types.BCP_47
+    => Ogma.BCP_47
     -> Attribute tag
 
   -- Attr_SrcSet

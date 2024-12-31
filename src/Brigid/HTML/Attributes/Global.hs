@@ -43,6 +43,7 @@ module Brigid.HTML.Attributes.Global
 import Prelude hiding (id)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
+import Ogma qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Types qualified as Types
@@ -115,7 +116,7 @@ itemtype
 
 -- | Use `Nothing` to represent an unknown language.
 --
-lang :: Maybe Types.BCP_47 -> Attribute tag
+lang :: Maybe Ogma.BCP_47 -> Attribute tag
 lang = Attr_Lang
 
 -- nonce

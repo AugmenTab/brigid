@@ -12,7 +12,6 @@ import Prelude hiding (head)
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
-import Data.LanguageCodes (ISO639_1(EN, GA))
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
@@ -21,6 +20,7 @@ import Data.Text qualified as T
 import Data.Time qualified as Time
 import Fleece.Core ((#+))
 import Fleece.Core qualified as FC
+import Ogma qualified
 
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements qualified as E
@@ -285,9 +285,12 @@ transparencyExample =
               , A.playsinline
               , A.poster fakeJavaScriptLink
               ]
-        [ E.track [ A.default_, A.label $ HTML.bcp47Language EN, A.srclang EN ]
-        , E.track [ A.label $ HTML.bcp47Language GA
-                  , A.srclang GA
+        [ E.track [ A.default_
+                  , A.label . T.pack $ show Ogma.English -- TODO: This will be corrected shortly
+                  , A.srclang $ Ogma.simpleBCP_47 Ogma.English
+                  ]
+        , E.track [ A.label . T.pack $ show $ Ogma.Irish -- TODO: This will be corrected shortly
+                  , A.srclang $ Ogma.simpleBCP_47 Ogma.Irish
                   , A.kind HTML.Metadata
                   ]
         ]

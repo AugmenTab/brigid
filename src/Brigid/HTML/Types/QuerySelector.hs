@@ -612,12 +612,12 @@ import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
 import Numeric.Natural (Natural)
+import Ogma (BCP_47, bcp_47ToText)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
-import Brigid.HTML.Types.BCP_47 (BCP_47, bcp47ToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
 import Brigid.HTML.Types.ClassSelector qualified as CS
@@ -2593,7 +2593,7 @@ attr_itemtype = (,) Attr_ItemType . Just
 
 attr_lang :: Maybe BCP_47 -> AttributeSelector
 attr_lang =
-  (,) Attr_Lang . Just . maybe "" bcp47ToText
+  (,) Attr_Lang . Just . maybe "" bcp_47ToText
 
 -- TODO
 attr_nonce :: T.Text -> AttributeSelector
@@ -2966,7 +2966,7 @@ attr_srcdoc :: T.Text -> AttributeSelector
 attr_srcdoc = (,) Attr_SrcDoc . Just
 
 attr_srclang :: BCP_47 -> AttributeSelector
-attr_srclang = (,) Attr_SrcLang . Just . bcp47ToText
+attr_srclang = (,) Attr_SrcLang . Just . bcp_47ToText
 
 -- TODO
 attr_srcset :: T.Text -> AttributeSelector

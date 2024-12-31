@@ -75,6 +75,7 @@ import Data.Text qualified as T
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
+import Ogma qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
@@ -358,7 +359,7 @@ src :: ( KnownNat branchIndex
 src =
   Attr_Src . Types.mkURL
 
-srclang :: ValidAttribute 'SrcLang tag => Types.BCP_47 -> Attribute tag
+srclang :: ValidAttribute 'SrcLang tag => Ogma.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang
 
 target :: ValidAttribute 'Target tag => Types.Target -> Attribute tag
