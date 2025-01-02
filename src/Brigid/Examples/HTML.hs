@@ -15,6 +15,7 @@ import Beeline.Routing qualified as R
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
+import Data.Maybe (fromMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Time qualified as Time
@@ -255,6 +256,12 @@ safeScriptExample =
       , Safe.externalScriptLoadingBehavior = Safe.Async
       }
 
+english :: Ogma.BCP_47
+english = Ogma.simpleBCP_47 Ogma.English
+
+irish :: Ogma.BCP_47
+irish = Ogma.simpleBCP_47 Ogma.Irish
+
 transparencyExample :: E.ChildHTML E.Division grandparent
 transparencyExample =
   E.a [ A.href fakeJavaScriptLink
@@ -286,11 +293,15 @@ transparencyExample =
               , A.poster fakeJavaScriptLink
               ]
         [ E.track [ A.default_
-                  , A.label . T.pack $ show Ogma.English -- TODO: This will be corrected shortly
-                  , A.srclang $ Ogma.simpleBCP_47 Ogma.English
+                  , A.label
+                      . fromMaybe (Ogma.bcp_47LanguageToText english)
+                      $ Ogma.bcp_47EndonymToText english
+                  , A.srclang english
                   ]
-        , E.track [ A.label . T.pack $ show $ Ogma.Irish -- TODO: This will be corrected shortly
-                  , A.srclang $ Ogma.simpleBCP_47 Ogma.Irish
+        , E.track [ A.label
+                      . fromMaybe (Ogma.bcp_47LanguageToText irish)
+                      $ Ogma.bcp_47EndonymToText irish
+                  , A.srclang irish
                   , A.kind HTML.Metadata
                   ]
         ]

@@ -66,14 +66,14 @@ packages:
 - completed:
     name: ogma
     pantry-tree:
-      sha256: 9c6156afe617acdd2f85155424b67b00367a52d924327bd8feaa1abdae50ff4c
-      size: 2109
-    sha256: 6a25550d7a0c0905089e7094fc8b57790b56fd515ff5c6d5dfad2e462b63f06e
-    size: 302695
-    url: https://github.com/AugmenTab/ogma/archive/03cf20d532d9c0ab4b66a13b185978fbba5c7bea.tar.gz
+      sha256: 0a5ac4e83aa2420b2b9ad3a775d6438c7c849b9e858adb757f899fe2804d3fd5
+      size: 2422
+    sha256: 82e4536500978c30b97ecf7e2ffcd81da5582e77ea78f1484ee39e0ec474cb08
+    size: 616413
+    url: https://github.com/AugmenTab/ogma/archive/78d861e576c3b06b3bfaa54aac19dd307d17a66c.tar.gz
     version: 0.1.0.0
   original:
-    url: https://github.com/AugmenTab/ogma/archive/03cf20d532d9c0ab4b66a13b185978fbba5c7bea.tar.gz
+    url: https://github.com/AugmenTab/ogma/archive/78d861e576c3b06b3bfaa54aac19dd307d17a66c.tar.gz
 - completed:
     name: shrubbery
     pantry-tree:
