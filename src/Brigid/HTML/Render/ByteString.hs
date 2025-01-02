@@ -812,10 +812,7 @@ renderAttribute attr =
       Just . buildAttribute "shape" $ Types.shapeToBytes shape
 
     Attr_Src src ->
-      Just
-        . buildAttribute "src"
-        . Escape.urlByteString
-        $ Types.urlToText src
+      Just . buildAttribute "src" $ Types.urlToBytes src
 
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Ogma.bcp_47ToBytes srclang
