@@ -114,6 +114,7 @@ library
       Brigid.HTML.Types.This
       Brigid.HTML.Types.Threshold
       Brigid.HTML.Types.Throttle
+      Brigid.HTML.Types.Time
       Brigid.HTML.Types.TrackKind
       Brigid.HTML.Types.TriggerFilter
       Brigid.HTML.Types.TypeOption
