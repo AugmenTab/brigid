@@ -1,27 +1,27 @@
 module Brigid.HTML.Types.InputType
   ( InputType
-      ( Button
-      , Checkbox
-      , Color
-      , Date
-      , DatetimeLocal
-      , Email
-      , File
-      , Hidden
-      , Image
-      , Month
-      , Number
-      , Password
-      , Radio
-      , Range
-      , Reset
-      , Search
-      , Submit
-      , Tel
-      , Text
-      , Time
-      , Url
-      , Week
+      ( InputButton
+      , InputCheckbox
+      , InputColor
+      , InputDate
+      , InputDatetimeLocal
+      , InputEmail
+      , InputFile
+      , InputHidden
+      , InputImage
+      , InputMonth
+      , InputNumber
+      , InputPassword
+      , InputRadio
+      , InputRange
+      , InputReset
+      , InputSearch
+      , InputSubmit
+      , InputTel
+      , InputText
+      , InputTime
+      , InputUrl
+      , InputWeek
       )
   , inputTypeToBytes
   , inputTypeToText
@@ -31,77 +31,77 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data InputType
-  = Button
-  | Checkbox
-  | Color
-  | Date
-  | DatetimeLocal
-  | Email
-  | File
-  | Hidden
-  | Image
-  | Month
-  | Number
-  | Password
-  | Radio
-  | Range
-  | Reset
-  | Search
-  | Submit
-  | Tel
-  | Text
-  | Time
-  | Url
-  | Week
+  = InputButton
+  | InputCheckbox
+  | InputColor
+  | InputDate
+  | InputDatetimeLocal
+  | InputEmail
+  | InputFile
+  | InputHidden
+  | InputImage
+  | InputMonth
+  | InputNumber
+  | InputPassword
+  | InputRadio
+  | InputRange
+  | InputReset
+  | InputSearch
+  | InputSubmit
+  | InputTel
+  | InputText
+  | InputTime
+  | InputUrl
+  | InputWeek
 
 inputTypeToBytes :: InputType -> LBS.ByteString
 inputTypeToBytes input =
   case input of
-    Button        -> "button"
-    Checkbox      -> "checkbox"
-    Color         -> "color"
-    Date          -> "date"
-    DatetimeLocal -> "datetime-local"
-    Email         -> "email"
-    File          -> "file"
-    Hidden        -> "hidden"
-    Image         -> "image"
-    Month         -> "month"
-    Number        -> "number"
-    Password      -> "password"
-    Radio         -> "radio"
-    Range         -> "range"
-    Reset         -> "reset"
-    Search        -> "search"
-    Submit        -> "submit"
-    Tel           -> "tel"
-    Text          -> "text"
-    Time          -> "time"
-    Url           -> "url"
-    Week          -> "week"
+    InputButton        -> "button"
+    InputCheckbox      -> "checkbox"
+    InputColor         -> "color"
+    InputDate          -> "date"
+    InputDatetimeLocal -> "datetime-local"
+    InputEmail         -> "email"
+    InputFile          -> "file"
+    InputHidden        -> "hidden"
+    InputImage         -> "image"
+    InputMonth         -> "month"
+    InputNumber        -> "number"
+    InputPassword      -> "password"
+    InputRadio         -> "radio"
+    InputRange         -> "range"
+    InputReset         -> "reset"
+    InputSearch        -> "search"
+    InputSubmit        -> "submit"
+    InputTel           -> "tel"
+    InputText          -> "text"
+    InputTime          -> "time"
+    InputUrl           -> "url"
+    InputWeek          -> "week"
 
 inputTypeToText :: InputType -> T.Text
 inputTypeToText input =
   case input of
-    Button        -> "button"
-    Checkbox      -> "checkbox"
-    Color         -> "color"
-    Date          -> "date"
-    DatetimeLocal -> "datetime-local"
-    Email         -> "email"
-    File          -> "file"
-    Hidden        -> "hidden"
-    Image         -> "image"
-    Month         -> "month"
-    Number        -> "number"
-    Password      -> "password"
-    Radio         -> "radio"
-    Range         -> "range"
-    Reset         -> "reset"
-    Search        -> "search"
-    Submit        -> "submit"
-    Tel           -> "tel"
-    Text          -> "text"
-    Time          -> "time"
-    Url           -> "url"
-    Week          -> "week"
+    InputButton        -> "button"
+    InputCheckbox      -> "checkbox"
+    InputColor         -> "color"
+    InputDate          -> "date"
+    InputDatetimeLocal -> "datetime-local"
+    InputEmail         -> "email"
+    InputFile          -> "file"
+    InputHidden        -> "hidden"
+    InputImage         -> "image"
+    InputMonth         -> "month"
+    InputNumber        -> "number"
+    InputPassword      -> "password"
+    InputRadio         -> "radio"
+    InputRange         -> "range"
+    InputReset         -> "reset"
+    InputSearch        -> "search"
+    InputSubmit        -> "submit"
+    InputTel           -> "tel"
+    InputText          -> "text"
+    InputTime          -> "time"
+    InputUrl           -> "url"
+    InputWeek          -> "week"

@@ -93,6 +93,7 @@ library
       Brigid.HTML.Types.Method
       Brigid.HTML.Types.NoContent
       Brigid.HTML.Types.None
+      Brigid.HTML.Types.Number
       Brigid.HTML.Types.Once
       Brigid.HTML.Types.Part
       Brigid.HTML.Types.Phone
@@ -159,6 +160,7 @@ library
     , libphonenumber
     , non-empty-text
     , ogma
+    , scientific
     , shrubbery
     , text
     , time
@@ -198,6 +200,7 @@ test-suite brigid-test
     , libphonenumber
     , non-empty-text
     , ogma
+    , scientific
     , shrubbery
     , text
     , time

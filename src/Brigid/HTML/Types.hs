@@ -59,6 +59,7 @@ import Brigid.HTML.Types.KeyHint as Export
 import Brigid.HTML.Types.Method as Export
 import Brigid.HTML.Types.NoContent as Export
 import Brigid.HTML.Types.None as Export
+import Brigid.HTML.Types.Number as Export
 import Brigid.HTML.Types.Once as Export
 import Brigid.HTML.Types.Part as Export
 import Brigid.HTML.Types.Phone as Export

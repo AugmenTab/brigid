@@ -11,6 +11,7 @@ import Data.Text.Encoding qualified as TE
 import Text.Html.Email.Validate qualified as Validate
 
 newtype Email = Email T.Text
+  deriving (Eq, Show)
 
 emailFromText :: T.Text -> Either String Email
 emailFromText txt =

@@ -43,6 +43,7 @@ import Beeline.HTTP.Client qualified as B
 import Beeline.Routing qualified as R
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Function (on)
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -51,6 +52,12 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.HTML.Types.Method (Method, Get, Post, Delete, Put, Patch)
 
 newtype URL = URL (Shrubbery.Union URLTypes)
+
+instance Eq URL where
+  (==) = (==) `on` urlToText
+
+instance Show URL where
+  show = T.unpack . urlToText
 
 type URLTypes =
   [ AbsoluteURL
@@ -69,9 +76,9 @@ urlToBytes :: URL -> LBS.ByteString
 urlToBytes (URL url) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @AbsoluteURL absoluteURLToBytes
+      . Shrubbery.branch @AbsoluteURL       absoluteURLToBytes
       . Shrubbery.branch @(RelativeURL Get) relativeURLToBytes
-      . Shrubbery.branch @RawURL rawURLToBytes
+      . Shrubbery.branch @RawURL            rawURLToBytes
       $ Shrubbery.branchEnd
   ) url
 
@@ -79,13 +86,14 @@ urlToText :: URL -> T.Text
 urlToText (URL url) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @AbsoluteURL absoluteURLToText
+      . Shrubbery.branch @AbsoluteURL       absoluteURLToText
       . Shrubbery.branch @(RelativeURL Get) relativeURLToText
-      . Shrubbery.branch @RawURL rawURLToText
+      . Shrubbery.branch @RawURL            rawURLToText
       $ Shrubbery.branchEnd
   ) url
 
 newtype AbsoluteURL = AbsoluteURL B.BaseURI
+  deriving (Eq, Show)
 
 absoluteURLFromText :: T.Text -> Either String AbsoluteURL
 absoluteURLFromText =
@@ -105,6 +113,12 @@ data RelativeURL (method :: Method) where
   Relative_Delete :: T.Text -> RelativeURL Delete
   Relative_Put    :: T.Text -> RelativeURL Put
   Relative_Patch  :: T.Text -> RelativeURL Patch
+
+instance Eq (RelativeURL method) where
+  (==) = (==) `on` relativeURLToText
+
+instance Show (RelativeURL method) where
+  show = T.unpack . relativeURLToText
 
 get :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Get
 get route =
@@ -146,7 +160,7 @@ relativeURLToText url =
 newtype RawURL =
   RawURL
     { rawURLToText :: T.Text
-    }
+    } deriving (Eq, Show)
 
 mkRawURL :: T.Text -> RawURL
 mkRawURL = RawURL

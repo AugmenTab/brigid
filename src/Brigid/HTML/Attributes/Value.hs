@@ -22,16 +22,20 @@ type ValidValue val tag =
   AlertValue (Elem tag (ValidValuesFor val)) val tag ~ 'True
 
 type family ValidValuesFor (val :: Type) :: [TagType] where
-  ValidValuesFor Types.HexColor    = [ Tags.Input, Tags.InputColor ]
-  ValidValuesFor Types.Date        = [ Tags.Input, Tags.InputDate ]
-  ValidValuesFor Types.Email       = [ Tags.Input, Tags.InputEmail ]
-  ValidValuesFor Types.Month       = [ Tags.Input, Tags.InputMonth ]
-  ValidValuesFor Types.PhoneNumber = [ Tags.Input, Tags.InputTel ]
-  ValidValuesFor T.Text            = TagGroups.TextValueTags
-  ValidValuesFor Types.Time        = [ Tags.Input, Tags.InputTime ]
-  ValidValuesFor Types.AbsoluteURL = [ Tags.Input, Tags.InputUrl ]
-  ValidValuesFor Types.RawURL      = [ Tags.Input, Tags.InputUrl ]
-  ValidValuesFor Types.Week        = [ Tags.Input, Tags.InputWeek ]
+  ValidValuesFor Types.HexColor                 = [ Tags.Input, Tags.InputColor ]
+  ValidValuesFor Types.Date                     = [ Tags.Input, Tags.InputDate ]
+  ValidValuesFor Types.Email                    = [ Tags.Input, Tags.InputEmail ]
+  ValidValuesFor Types.Month                    = [ Tags.Input, Tags.InputMonth ]
+  ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber ]
+  ValidValuesFor Rational                       = [ Tags.Input, Tags.InputRange ]
+  ValidValuesFor Types.PhoneNumber              = [ Tags.Input, Tags.InputTel ]
+  ValidValuesFor T.Text                         = TagGroups.TextValueTags
+  ValidValuesFor Types.Time                     = [ Tags.Input, Tags.InputTime ]
+  ValidValuesFor Types.AbsoluteURL              = [ Tags.Input, Tags.InputUrl ]
+  ValidValuesFor (Types.RelativeURL Types.Get)  = [ Tags.Input, Tags.InputUrl ]
+  ValidValuesFor (Types.RelativeURL Types.Post) = [ Tags.Input, Tags.InputUrl ]
+  ValidValuesFor Types.RawURL                   = [ Tags.Input, Tags.InputUrl ]
+  ValidValuesFor Types.Week                     = [ Tags.Input, Tags.InputWeek ]
 
 type family AlertValue (member :: Bool) (val :: Type) (tag :: TagType) :: Bool where
   AlertValue 'True val tag =
@@ -47,4 +51,17 @@ type family AlertValue (member :: Bool) (val :: Type) (tag :: TagType) :: Bool w
       )
 
 type family ValueTypeErrorMessage (val :: Type) :: ErrorMessage where
-  ValueTypeErrorMessage _ = 'Text "_"
+  ValueTypeErrorMessage Types.HexColor                 = 'Text "HexColor"
+  ValueTypeErrorMessage Types.Date                     = 'Text "Date"
+  ValueTypeErrorMessage Types.Email                    = 'Text "Email"
+  ValueTypeErrorMessage Types.Month                    = 'Text "Month"
+  ValueTypeErrorMessage Types.Number                   = 'Text "Number"
+  ValueTypeErrorMessage Rational                       = 'Text "Rational"
+  ValueTypeErrorMessage Types.PhoneNumber              = 'Text "PhoneNumber"
+  ValueTypeErrorMessage T.Text                         = 'Text "Text"
+  ValueTypeErrorMessage Types.Time                     = 'Text "Time"
+  ValueTypeErrorMessage Types.AbsoluteURL              = 'Text "AbsoluteURL"
+  ValueTypeErrorMessage (Types.RelativeURL Types.Get)  = 'Text "RelativeURL Get"
+  ValueTypeErrorMessage (Types.RelativeURL Types.Post) = 'Text "RelativeURL Post"
+  ValueTypeErrorMessage Types.RawURL                   = 'Text "RawURL"
+  ValueTypeErrorMessage Types.Week                     = 'Text "Week"

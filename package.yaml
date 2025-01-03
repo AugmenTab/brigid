@@ -42,6 +42,7 @@ dependencies:
 - libphonenumber
 - non-empty-text
 - ogma
+- scientific
 - shrubbery
 - text
 - time

@@ -41,7 +41,7 @@ newtype Date = Date Time.Day
   deriving (Eq, Time.FormatTime)
 
 instance Show Date where
-  show = ("Date " <>) . dateToString
+  show = dateToString
 
 mkDate :: Time.Day -> Date
 mkDate = Date
@@ -59,7 +59,7 @@ newtype Month = Month Time.Day
   deriving (Eq, Time.FormatTime)
 
 instance Show Month where
-  show = ("Month " <>) . monthToString
+  show = monthToString
 
 mkMonth :: Time.Year -> MonthOfYear -> Month
 mkMonth year month =
@@ -112,7 +112,7 @@ newtype Time = Time Time.TimeOfDay
   deriving (Eq, Time.FormatTime)
 
 instance Show Time where
-  show = ("TimeOfDay " <>) . timeToString
+  show = timeToString
 
 mkTime :: Time.TimeOfDay -> Time
 mkTime = Time
@@ -130,7 +130,7 @@ newtype Week = Week Time.Day
   deriving (Eq, Time.FormatTime)
 
 instance Show Week where
-  show = ("Week " <>) . weekToString
+  show = weekToString
 
 mkWeek :: Time.Day -> Week
 mkWeek = Week

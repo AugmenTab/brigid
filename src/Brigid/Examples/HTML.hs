@@ -17,6 +17,7 @@ import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (fromMaybe)
 import Data.NonEmptyText qualified as NET
+import Data.Ratio ((%))
 import Data.Text qualified as T
 import Data.Time qualified as Time
 import Fleece.Core ((#+))
@@ -134,7 +135,7 @@ example =
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []
-        , E.input [ A.type_ HTML.Number, A.list divId ]
+        , E.input [ A.type_ HTML.InputNumber, A.list divId ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.
                      ]
@@ -143,6 +144,15 @@ example =
                    , A.required
                    , A.dirname "telephone"
                    ]
+        , Safe.number [ A.value $
+                          HTML.Number
+                            { HTML.number = 1.05
+                            , HTML.decimalPlaces = 2
+                            }
+                      ]
+        , Safe.range [ A.value $ (1 % 100 :: Rational) ]
+        , Safe.range [ A.value $ (1 :: Rational) ]
+     -- , Safe.checkbox [ A.value fakeJavaScriptLink ] -- This fails because RawURL is not a valid value for InputCheckbox.
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
         ]
