@@ -1,4 +1,4 @@
-resolver: lts-21.19
+resolver: lts-22.39
 system-ghc: true
 install-ghc: false
 
@@ -43,7 +43,7 @@ extra-deps:
 - non-empty-text-0.2.0@sha256:7d1c1f9a11c78c00c656269f940d2fcccd3c2eaf6b619f66bb83a9ea72decc1f,2438
 # Ogma
 - github: AugmenTab/ogma
-  commit: 78d861e576c3b06b3bfaa54aac19dd307d17a66c
+  commit: 0776fd8d004d6c4a491032fd12dc433031372a2c
 # Shrubbery
 - github: flipstone/shrubbery
   commit: 629750cccdf9ac2110eab8ee52218b1e62032ef7
