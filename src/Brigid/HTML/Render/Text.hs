@@ -789,6 +789,9 @@ renderAttribute attr =
     Attr_Type type_ ->
       Just . buildAttribute "type" $ Types.typeOptionToText type_
 
+    Attr_Value value ->
+      Just . buildAttribute "value" $ Types.valueToText value
+
     Attr_Width width ->
       Just . buildAttribute "width" . T.pack $ show width
 

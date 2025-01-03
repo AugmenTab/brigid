@@ -810,6 +810,9 @@ renderAttribute attr =
     Attr_Type type_ ->
       Just . buildAttribute "type" $ Types.typeOptionToBytes type_
 
+    Attr_Value value ->
+      Just . buildAttribute "value" $ Types.valueToBytes value
+
     Attr_Width width ->
       Just . buildAttribute "width" . LBS8.pack $ show width
 

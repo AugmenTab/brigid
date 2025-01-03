@@ -665,6 +665,7 @@ import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, tri
 import Brigid.HTML.Types.TypeOption (TypeOptionTypes, mkTypeOption, typeOptionToText)
 import Brigid.HTML.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
+import Brigid.HTML.Types.Value (ValueTypes, mkValue, valueToText)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
 import Brigid.HTML.Types.Wrap (Wrap, wrapToText)
 
@@ -2913,7 +2914,8 @@ attr_rel :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf rel RelationshipTypes
             )
          => rel -> AttributeSelector
-attr_rel = (,) Attr_Rel . Just . relationshipToText . mkRelationship
+attr_rel =
+  (,) Attr_Rel . Just . relationshipToText . mkRelationship
 
 attr_required :: AttributeSelector
 attr_required = (Attr_Required, Nothing)
@@ -2994,9 +2996,12 @@ attr_type =
 attr_usemap :: T.Text -> AttributeSelector
 attr_usemap = (,) Attr_UseMap . Just
 
--- TODO
-attr_value :: T.Text -> AttributeSelector
-attr_value = (,) Attr_Value . Just
+attr_value :: ( KnownNat branchIndex
+              , branchIndex ~ FirstIndexOf value ValueTypes
+              )
+           => value -> AttributeSelector
+attr_value =
+  (,) Attr_Value . Just . valueToText . mkValue
 
 attr_width :: Word -> AttributeSelector
 attr_width = (,) Attr_Width . Just . Render.showText

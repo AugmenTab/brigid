@@ -63,6 +63,7 @@ module Brigid.HTML.Attributes.Scoped
   , target
   , type_
   , validate
+  , value
   , width
   , wrap
   , xmlns
@@ -85,6 +86,7 @@ import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Attributes.Source (ValidSource)
 import Brigid.HTML.Attributes.Type (ValidTypeOption)
+import Brigid.HTML.Attributes.Value (ValidValue)
 import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
@@ -379,6 +381,15 @@ type_ =
 --
 validate :: ValidAttribute 'NoValidate tag => Bool -> Attribute tag
 validate = Attr_NoValidate . not
+
+value :: ( KnownNat branchIndex
+         , branchIndex ~ FirstIndexOf value Types.ValueTypes
+         , ValidValue value tag
+         , ValidAttribute 'Value tag
+         )
+      => value -> Attribute tag
+value =
+  Attr_Value . Types.mkValue
 
 width :: ValidAttribute 'Width tag => Word -> Attribute tag
 width = Attr_Width
