@@ -701,20 +701,7 @@ renderAttribute attr =
       Just . buildAttribute "height" . T.pack $ show height
 
     Attr_Href href ->
-      Just
-        . buildAttribute "href"
-        . ( Shrubbery.dissect
-              . Shrubbery.branchBuild
-              . Shrubbery.branch @Types.AbsoluteURL Types.absoluteURLToText
-              . Shrubbery.branch @(Types.RelativeURL _) Types.relativeURLToText
-              . Shrubbery.branch @Types.Id (T.cons '#' . Types.idToText)
-              . Shrubbery.branch @Types.Email (("mailto:" <>) . Types.emailToText)
-              . Shrubbery.branch @Types.BlankHref (const "#")
-              . Shrubbery.branch @Types.RawURL Types.rawURLToText
-              $ Shrubbery.branchEnd
-          )
-        . Types.unHref
-        $ href
+      Just . buildAttribute "href" $ Types.hrefToText href
 
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True

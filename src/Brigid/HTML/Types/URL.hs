@@ -12,6 +12,7 @@ module Brigid.HTML.Types.URL
   , urlToText
   , AbsoluteURL
   , absoluteURLFromText
+  , absoluteURLToBytes
   , absoluteURLToText
   , RelativeURL
       ( Relative_Get
@@ -25,6 +26,7 @@ module Brigid.HTML.Types.URL
   , delete
   , put
   , patch
+  , relativeURLToBytes
   , relativeURLToText
   , RawURL
   , mkRawURL

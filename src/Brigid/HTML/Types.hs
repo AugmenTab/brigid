@@ -7,6 +7,7 @@ module Brigid.HTML.Types
   , urlToText
   , AbsoluteURL
   , absoluteURLFromText
+  , absoluteURLToBytes
   , absoluteURLToText
   , RelativeURL
   , get
@@ -14,6 +15,7 @@ module Brigid.HTML.Types
   , delete
   , put
   , patch
+  , relativeURLToBytes
   , relativeURLToText
   , RawURL
   , mkRawURL
@@ -58,6 +60,7 @@ import Brigid.HTML.Types.NoContent as Export
 import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Once as Export
 import Brigid.HTML.Types.Part as Export
+import Brigid.HTML.Types.Phone as Export
 import Brigid.HTML.Types.PopoverState as Export
 import Brigid.HTML.Types.Preload as Export
 import Brigid.HTML.Types.PushURL as Export
@@ -88,6 +91,7 @@ import Brigid.HTML.Types.URL ( URL
                              , urlToText
                              , AbsoluteURL
                              , absoluteURLFromText
+                             , absoluteURLToBytes
                              , absoluteURLToText
                              , RelativeURL
                              , get
@@ -95,6 +99,7 @@ import Brigid.HTML.Types.URL ( URL
                              , delete
                              , put
                              , patch
+                             , relativeURLToBytes
                              , relativeURLToText
                              , RawURL
                              , mkRawURL

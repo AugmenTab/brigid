@@ -722,20 +722,7 @@ renderAttribute attr =
       Just . buildAttribute "height" . LBS8.pack $ show height
 
     Attr_Href href ->
-      Just
-        . buildAttribute "href"
-        . ( Shrubbery.dissect
-              . Shrubbery.branchBuild
-              . Shrubbery.branch @Types.AbsoluteURL (toBytes . Types.absoluteURLToText)
-              . Shrubbery.branch @(Types.RelativeURL _) (toBytes . Types.relativeURLToText)
-              . Shrubbery.branch @Types.Id (LBS8.cons '#' . Types.idToBytes)
-              . Shrubbery.branch @Types.Email (toBytes . ("mailto:" <>) . Types.emailToText)
-              . Shrubbery.branch @Types.BlankHref (const "#")
-              . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)
-              $ Shrubbery.branchEnd
-          )
-        . Types.unHref
-        $ href
+      Just . buildAttribute "href" $ Types.hrefToBytes href
 
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
@@ -973,9 +960,9 @@ renderPushURL :: Types.PushURL -> LBS.ByteString
 renderPushURL =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Types.AbsoluteURL (toBytes . Types.absoluteURLToText)
-      . Shrubbery.branch @(Types.RelativeURL _) (toBytes . Types.relativeURLToText)
+      . Shrubbery.branch @Types.AbsoluteURL Types.absoluteURLToBytes
+      . Shrubbery.branch @(Types.RelativeURL _) Types.relativeURLToBytes
       . Shrubbery.branch @Bool Render.enumBoolToBytes
-      . Shrubbery.branch @Types.RawURL (toBytes . Types.rawURLToText)
+      . Shrubbery.branch @Types.RawURL Types.rawURLToBytes
       $ Shrubbery.branchEnd
   ) . Types.unPushURL

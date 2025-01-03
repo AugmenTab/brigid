@@ -93,6 +93,7 @@ library
       Brigid.HTML.Types.None
       Brigid.HTML.Types.Once
       Brigid.HTML.Types.Part
+      Brigid.HTML.Types.Phone
       Brigid.HTML.Types.PopoverState
       Brigid.HTML.Types.Preload
       Brigid.HTML.Types.PushURL
@@ -148,9 +149,10 @@ library
     , foldable1-classes-compat
     , html-email-validate
     , http-types
-    , iso639
+    , iso3166-country-codes
     , json-fleece-aeson
     , json-fleece-core
+    , libphonenumber
     , non-empty-text
     , ogma
     , shrubbery
@@ -186,9 +188,10 @@ test-suite brigid-test
     , foldable1-classes-compat
     , html-email-validate
     , http-types
-    , iso639
+    , iso3166-country-codes
     , json-fleece-aeson
     , json-fleece-core
+    , libphonenumber
     , non-empty-text
     , ogma
     , shrubbery

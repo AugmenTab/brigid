@@ -36,6 +36,9 @@ extra-deps:
   subdirs:
     - json-fleece-aeson
     - json-fleece-core
+# libphonenumber
+- git: https://github.com/typeable/libphonenumber.git
+  commit: 5e03e45e2ef02b17a9d0ec3b1e951ef7214cba4a
 # Non-Empty Text
 - non-empty-text-0.2.0@sha256:7d1c1f9a11c78c00c656269f940d2fcccd3c2eaf6b619f66bb83a9ea72decc1f,2438
 # Ogma
