@@ -80,6 +80,7 @@ library
       Brigid.HTML.Types.Extension
       Brigid.HTML.Types.FocusScroll
       Brigid.HTML.Types.Headers
+      Brigid.HTML.Types.HexColor
       Brigid.HTML.Types.Href
       Brigid.HTML.Types.HyperScript
       Brigid.HTML.Types.Id

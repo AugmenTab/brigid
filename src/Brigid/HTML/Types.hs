@@ -47,6 +47,7 @@ import Brigid.HTML.Types.Every as Export
 import Brigid.HTML.Types.Extension as Export
 import Brigid.HTML.Types.FocusScroll as Export
 import Brigid.HTML.Types.Headers as Export
+import Brigid.HTML.Types.HexColor as Export
 import Brigid.HTML.Types.Href as Export
 import Brigid.HTML.Types.HyperScript as Export
 import Brigid.HTML.Types.Id as Export
