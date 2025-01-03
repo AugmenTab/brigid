@@ -63,6 +63,8 @@ module Brigid.HTML.Elements.TagGroups
   , TimestampableTags
   , TypeableTags
   , URLTags
+  , ValuableTags
+  , TextValueTags
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
@@ -933,4 +935,28 @@ type TypeableTags =
 type URLTags =
   [ 'Anchor
   , 'Area
+  ]
+
+type ValuableTags =
+  Union (Remove 'InputFile InputTags)
+    [ 'Button
+    , 'Meter
+    , 'ListItem
+    , 'Option
+    , 'Progress
+    ]
+
+type TextValueTags =
+  [ 'Button
+  , 'Input
+  , 'InputButton
+  , 'InputCheckbox
+  , 'InputHidden
+  , 'InputImage
+  , 'InputPassword
+  , 'InputRadio
+  , 'InputReset
+  , 'InputSearch
+  , 'InputSubmit
+  , 'InputText
   ]

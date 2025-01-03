@@ -114,6 +114,7 @@ import Brigid.HTML.Types.URL ( URL
                              , pingToText
                              )
 import Brigid.HTML.Types.Vals as Export
+import Brigid.HTML.Types.Value as Export
 import Brigid.HTML.Types.WebsocketBinaryType as Export
 import Brigid.HTML.Types.Window as Export
 import Brigid.HTML.Types.Wrap as Export

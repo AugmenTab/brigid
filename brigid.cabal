@@ -37,6 +37,7 @@ library
       Brigid.HTML.Attributes.Scoped
       Brigid.HTML.Attributes.Source
       Brigid.HTML.Attributes.Type
+      Brigid.HTML.Attributes.Value
       Brigid.HTML.Elements
       Brigid.HTML.Elements.Category
       Brigid.HTML.Elements.Children
@@ -121,6 +122,7 @@ library
       Brigid.HTML.Types.TypeOption
       Brigid.HTML.Types.URL
       Brigid.HTML.Types.Vals
+      Brigid.HTML.Types.Value
       Brigid.HTML.Types.WebsocketBinaryType
       Brigid.HTML.Types.Window
       Brigid.HTML.Types.Wrap
