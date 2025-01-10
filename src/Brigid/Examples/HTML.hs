@@ -282,7 +282,9 @@ transparencyExample =
  -- , E.a [] [] -- This fails, because a is excluded from the transparent content that a holds.
  -- , E.li [] [] -- This fails, because li isn't a valid child for the grandparent div, and a is transparent.
     , E.div []
-        [ E.ol [ A.reversed ]
+        [ E.ol [ A.reversed
+               , A.type_ HTML.UppercaseLatinLetters
+               ]
             [ E.li [] [ E.text "1" ]
             , E.li [] [ E.text "2" ]
             , E.li [] [ E.text "3" ]

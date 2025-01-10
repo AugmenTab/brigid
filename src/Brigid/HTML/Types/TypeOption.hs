@@ -22,11 +22,13 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.InputType (InputType, inputTypeToBytes, inputTypeToText)
+import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, numberingTypeToText)
 
 newtype TypeOption = TypeOption (Shrubbery.Union TypeOptionTypes)
 
 type TypeOptionTypes =
   [ InputType
+  , NumberingType
   , RawTypeOption
   ]
 
@@ -41,7 +43,8 @@ typeOptionToBytes :: TypeOption -> LBS.ByteString
 typeOptionToBytes (TypeOption typeOption) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @InputType inputTypeToBytes
+      . Shrubbery.branch @InputType     inputTypeToBytes
+      . Shrubbery.branch @NumberingType numberingTypeToBytes
       . Shrubbery.branch @RawTypeOption rawTypeOptionToBytes
       $ Shrubbery.branchEnd
   ) typeOption
@@ -50,7 +53,8 @@ typeOptionToText :: TypeOption -> T.Text
 typeOptionToText (TypeOption typeOption) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @InputType inputTypeToText
+      . Shrubbery.branch @InputType     inputTypeToText
+      . Shrubbery.branch @NumberingType numberingTypeToText
       . Shrubbery.branch @RawTypeOption rawTypeOptionToText
       $ Shrubbery.branchEnd
   ) typeOption
