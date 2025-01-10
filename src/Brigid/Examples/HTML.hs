@@ -143,6 +143,7 @@ example =
         , Safe.tel [ A.placeholder "Enter phone number"
                    , A.required
                    , A.dirname "telephone"
+                   , A.readonly
                    ]
         , Safe.number [ A.value $
                           HTML.Number

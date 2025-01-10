@@ -81,6 +81,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_PlaysInline
       , Attr_Poster
       , Attr_Preload
+      , Attr_ReadOnly
       , Attr_ReferrerPolicy
       , Attr_Rel
       , Attr_Required
@@ -620,10 +621,9 @@ data Attribute (tag :: TagType) where
     => Types.Preload
     -> Attribute tag
 
-  -- Attr_ReadOnly
-  --   :: ValidAttribute 'ReadOnly tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ReadOnly
+    :: ValidAttribute 'ReadOnly tag
+    => Attribute tag
 
   Attr_ReferrerPolicy
     :: ValidAttribute 'ReferrerPolicy tag
@@ -1096,6 +1096,9 @@ attributeText attr =
 
     Attr_Preload _preload ->
       "preload"
+
+    Attr_ReadOnly ->
+      "readonly"
 
     Attr_ReferrerPolicy _referrerpolicy ->
       "referrerpolicy"

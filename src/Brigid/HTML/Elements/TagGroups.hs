@@ -55,6 +55,7 @@ module Brigid.HTML.Elements.TagGroups
   , LengthTags
   , NameTags
   , PlaceholderableTags
+  , ReadOnlyTags
   , RelTags
   , RequireableTags
   , SizableTags
@@ -830,6 +831,22 @@ type PlaceholderableTags =
   , 'InputText
   , 'InputUrl
   , 'TextArea
+  ]
+
+type ReadOnlyTags =
+  [ 'Input
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputEmail
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputTime
+  , 'InputUrl
+  , 'InputWeek
   ]
 
 type RelTags =

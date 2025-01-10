@@ -49,6 +49,7 @@ module Brigid.HTML.Attributes.Scoped
   , playsinline
   , poster
   , preload
+  , readonly
   , referrerpolicy
   , rel
   , require
@@ -317,6 +318,9 @@ poster =
 
 preload :: ValidAttribute 'Preload tag => Types.Preload -> Attribute tag
 preload = Attr_Preload
+
+readonly :: ValidAttribute 'ReadOnly tag => Attribute tag
+readonly = Attr_ReadOnly
 
 referrerpolicy :: ValidAttribute 'ReferrerPolicy tag
                => Types.ReferrerPolicy -> Attribute tag

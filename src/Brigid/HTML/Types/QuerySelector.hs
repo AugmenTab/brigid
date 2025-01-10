@@ -2903,9 +2903,8 @@ attr_poster = (,) Attr_Poster . Just . urlToText . mkURL
 attr_preload :: Preload -> AttributeSelector
 attr_preload = (,) Attr_Preload . Just . preloadToText
 
--- TODO
-attr_readonly :: T.Text -> AttributeSelector
-attr_readonly = (,) Attr_ReadOnly . Just
+attr_readonly :: AttributeSelector
+attr_readonly = (Attr_ReadOnly, Nothing)
 
 attr_referrerpolicy :: ReferrerPolicy -> AttributeSelector
 attr_referrerpolicy = (,) Attr_ReferrerPolicy . Just . referrerPolicyToText

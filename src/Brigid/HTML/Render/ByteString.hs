@@ -775,6 +775,9 @@ renderAttribute attr =
     Attr_Preload preload ->
       Just . buildAttribute "preload" $ Types.preloadToBytes preload
 
+    Attr_ReadOnly ->
+      buildBooleanAttribute "readonly" True
+
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"

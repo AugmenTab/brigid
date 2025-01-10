@@ -60,6 +60,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor PlaysInline             = '[ Tags.Video ]
   ValidElementsFor Poster                  = '[ Tags.Video ]
   ValidElementsFor Preload                 = TagGroups.MediaContent
+  ValidElementsFor ReadOnly                = TagGroups.ReadOnlyTags
   ValidElementsFor ReferrerPolicy          = '[ Tags.Script ]
   ValidElementsFor Rel                     = TagGroups.RelTags
   ValidElementsFor Required                = TagGroups.RequireableTags
