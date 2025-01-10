@@ -2973,9 +2973,8 @@ attr_srclang = (,) Attr_SrcLang . Just . bcp_47ToText
 attr_srcset :: T.Text -> AttributeSelector
 attr_srcset = (,) Attr_SrcSet . Just
 
--- TODO
-attr_start :: T.Text -> AttributeSelector
-attr_start = (,) Attr_Start . Just
+attr_start :: Int -> AttributeSelector
+attr_start = (,) Attr_Start . Just . Render.showText
 
 -- TODO
 attr_step :: T.Text -> AttributeSelector

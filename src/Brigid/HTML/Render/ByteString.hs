@@ -807,6 +807,9 @@ renderAttribute attr =
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Ogma.bcp_47ToBytes srclang
 
+    Attr_Start start ->
+      Just . buildAttribute "start" $ Render.showBytes start
+
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToBytes target
 

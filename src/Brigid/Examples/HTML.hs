@@ -284,6 +284,7 @@ transparencyExample =
     , E.div []
         [ E.ol [ A.reversed
                , A.type_ HTML.UppercaseLatinLetters
+               , A.start 3
                ]
             [ E.li [] [ E.text "1" ]
             , E.li [] [ E.text "2" ]

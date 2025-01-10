@@ -61,6 +61,7 @@ module Brigid.HTML.Attributes.Scoped
   , shape
   , src
   , srclang
+  , start
   , target
   , type_
   , validate
@@ -367,6 +368,9 @@ src =
 
 srclang :: ValidAttribute 'SrcLang tag => Ogma.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang
+
+start :: ValidAttribute 'Start tag => Int -> Attribute tag
+start = Attr_Start
 
 target :: ValidAttribute 'Target tag => Types.Target -> Attribute tag
 target = Attr_Target

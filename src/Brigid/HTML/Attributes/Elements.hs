@@ -70,6 +70,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Shape                   = '[ Tags.Area ]
   ValidElementsFor Src                     = TagGroups.SrcTags
   ValidElementsFor SrcLang                 = '[ Tags.Track ]
+  ValidElementsFor Start                   = '[ Tags.OrderedList ]
   ValidElementsFor Target                  = TagGroups.TargetableTags
   ValidElementsFor Type                    = TagGroups.TypeableTags
   ValidElementsFor Value                   = TagGroups.ValuableTags

@@ -786,6 +786,9 @@ renderAttribute attr =
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Ogma.bcp_47ToText srclang
 
+    Attr_Start start ->
+      Just . buildAttribute "start" $ Render.showText start
+
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToText target
 
