@@ -40,8 +40,10 @@ module Brigid.HTML.Attributes.Scoped
   , list
   , loop
   , low
+  , max
   , maxlength
   , method
+  , min
   , minlength
   , mute
   , muted
@@ -77,7 +79,7 @@ module Brigid.HTML.Attributes.Scoped
   , xmlns
   ) where
 
-import Prelude hiding (reverse)
+import Prelude hiding (max, min, reverse)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -91,6 +93,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
+import Brigid.HTML.Attributes.RangeBound (ValidRangeBound)
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Attributes.Source (ValidSource)
 import Brigid.HTML.Attributes.Type (ValidTypeOption)
@@ -279,6 +282,19 @@ low :: ValidAttribute 'Low tag => Types.Number -> Attribute tag
 low = Attr_Low
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
+-- applies, a comparison of min/max should be done to ensure that the bounds
+-- are applied appropriately.
+--
+max :: ( KnownNat branchIndex
+       , branchIndex ~ FirstIndexOf max Types.RangeBoundTypes
+       , ValidRangeBound max tag
+       , ValidAttribute 'Max tag
+       )
+    => max -> Attribute tag
+max =
+  Attr_Max . Types.mkRangeBound
+
+-- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the
 -- bounds are applied appropriately.
 --
@@ -290,6 +306,19 @@ maxlength = Attr_MaxLength
 --
 method :: ValidAttribute 'Method tag => Types.FormMethod -> Attribute tag
 method = Attr_Method
+
+-- TODO: For all `Safe` module versions of elements for which this attribute
+-- applies, a comparison of min/max should be done to ensure that the bounds
+-- are applied appropriately.
+--
+min :: ( KnownNat branchIndex
+       , branchIndex ~ FirstIndexOf min Types.RangeBoundTypes
+       , ValidRangeBound min tag
+       , ValidAttribute 'Max tag
+       )
+    => min -> Attribute tag
+min =
+  Attr_Max . Types.mkRangeBound
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the

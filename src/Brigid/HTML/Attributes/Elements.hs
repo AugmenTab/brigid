@@ -53,8 +53,10 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor List                    = TagGroups.InputTags
   ValidElementsFor Loop                    = TagGroups.MediaContent
   ValidElementsFor Low                     = '[ Tags.Meter ]
+  ValidElementsFor Max                     = TagGroups.RangedTags
   ValidElementsFor MaxLength               = TagGroups.LengthTags
   ValidElementsFor Method                  = '[ Tags.Form ]
+  ValidElementsFor Min                     = TagGroups.RangedTags
   ValidElementsFor MinLength               = TagGroups.LengthTags
   ValidElementsFor Muted                   = TagGroups.MediaContent
   ValidElementsFor Name                    = TagGroups.NameTags

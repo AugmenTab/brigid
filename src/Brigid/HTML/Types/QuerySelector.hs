@@ -649,6 +649,7 @@ import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import Brigid.HTML.Types.Preload (Preload, preloadToText)
 import Brigid.HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
+import Brigid.HTML.Types.RangeBound (RangeBound, rangeBoundToText)
 import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
@@ -2828,9 +2829,8 @@ attr_loop = (Attr_Loop, Nothing)
 attr_low :: Number -> AttributeSelector
 attr_low = (,) Attr_Low . Just . numberToText
 
--- TODO
-attr_max :: T.Text -> AttributeSelector
-attr_max = (,) Attr_Max . Just
+attr_max :: RangeBound -> AttributeSelector
+attr_max = (,) Attr_Max . Just . rangeBoundToText
 
 attr_maxlength :: Word -> AttributeSelector
 attr_maxlength = (,) Attr_MaxLength . Just . Render.showText
@@ -2845,9 +2845,8 @@ attr_media = (,) Attr_Media . Just
 attr_method :: FormMethod -> AttributeSelector
 attr_method = (,) Attr_Method . Just . formMethodToText
 
--- TODO
-attr_min :: T.Text -> AttributeSelector
-attr_min = (,) Attr_Min . Just
+attr_min :: RangeBound -> AttributeSelector
+attr_min = (,) Attr_Min . Just . rangeBoundToText
 
 -- TODO
 attr_multiple :: T.Text -> AttributeSelector

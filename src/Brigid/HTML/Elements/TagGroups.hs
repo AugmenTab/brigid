@@ -57,6 +57,8 @@ module Brigid.HTML.Elements.TagGroups
   , LengthTags
   , NameTags
   , PlaceholderableTags
+  , RangedTags
+  , RangedNumberTags
   , ReadOnlyTags
   , RelTags
   , RequireableTags
@@ -844,6 +846,27 @@ type PlaceholderableTags =
   , 'InputText
   , 'InputUrl
   , 'TextArea
+  ]
+
+type RangedTags =
+  [ 'Input
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputRange
+  , 'InputTime
+  , 'InputWeek
+  , 'Meter
+  , 'Progress
+  ]
+
+type RangedNumberTags =
+  [ 'Input
+  , 'InputNumber
+  , 'InputRange
+  , 'Meter
+  , 'Progress
   ]
 
 type ReadOnlyTags =

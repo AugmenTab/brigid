@@ -6,6 +6,7 @@ module Brigid.HTML.Render.ByteString
   , renderLazyHTML
   ) where
 
+import Prelude hiding (max, min)
 import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
@@ -751,11 +752,17 @@ renderAttribute attr =
     Attr_Low low ->
       Just . buildAttribute "low" $ Types.numberToBytes low
 
+    Attr_Max max ->
+      Just . buildAttribute "max" $ Types.rangeBoundToBytes max
+
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . LBS8.pack $ show maxlength
 
     Attr_Method method ->
       Just . buildAttribute "method" $ Types.formMethodToBytes method
+
+    Attr_Min min ->
+      Just . buildAttribute "min" $ Types.rangeBoundToBytes min
 
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" . LBS8.pack $ show minlength

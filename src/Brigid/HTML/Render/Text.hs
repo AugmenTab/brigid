@@ -6,6 +6,7 @@ module Brigid.HTML.Render.Text
   , renderLazyHTML
   ) where
 
+import Prelude hiding (max, min)
 import Data.Bool qualified as B
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
@@ -730,11 +731,17 @@ renderAttribute attr =
     Attr_Low low ->
       Just . buildAttribute "low" $ Types.numberToText low
 
+    Attr_Max max ->
+      Just . buildAttribute "max" $ Types.rangeBoundToText max
+
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . T.pack $ show maxlength
 
     Attr_Method method ->
       Just . buildAttribute "method" $ Types.formMethodToText method
+
+    Attr_Min min ->
+      Just . buildAttribute "min" $ Types.rangeBoundToText min
 
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" . T.pack $ show minlength

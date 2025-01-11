@@ -171,10 +171,16 @@ example =
     , E.div [ A.tabindex HTML.NotReachable ]
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
-            , E.meter [ A.low $ HTML.numberFromIntegral (0 :: Int)
-                      , A.optimum $ HTML.numberFromReal (4 % 5 :: Rational) 1
-                      , A.high $ HTML.numberFromIntegral (2 :: Int)
+            , E.meter [ A.min $ HTML.numberFromIntegral (0 :: Int)
+                      , A.low $ HTML.numberFromReal (1 % 4 :: Rational) 2
+                      , A.optimum $ HTML.numberFromFractional (1 / 2 :: Double) 1
+                      , A.high $ HTML.numberFromReal (3 % 4 :: Rational) 2
+                      , A.max $ HTML.numberFromIntegral (1 :: Int)
                       ]
+                []
+            , E.progress [ A.min $ HTML.numberFromIntegral (0 :: Int)
+                         , A.max $ HTML.numberFromIntegral (100 :: Int)
+                         ]
                 []
             , E.comment "Second comment"
             , E.customHTML

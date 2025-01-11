@@ -33,6 +33,7 @@ library
       Brigid.HTML.Attributes.HTMX
       Brigid.HTML.Attributes.Internal
       Brigid.HTML.Attributes.Other
+      Brigid.HTML.Attributes.RangeBound
       Brigid.HTML.Attributes.Relationship
       Brigid.HTML.Attributes.Scoped
       Brigid.HTML.Attributes.Source
@@ -103,6 +104,7 @@ library
       Brigid.HTML.Types.PushURL
       Brigid.HTML.Types.QuerySelector
       Brigid.HTML.Types.QueueOption
+      Brigid.HTML.Types.RangeBound
       Brigid.HTML.Types.RawJavaScript
       Brigid.HTML.Types.Reachability
       Brigid.HTML.Types.ReferrerPolicy

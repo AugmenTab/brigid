@@ -25,6 +25,9 @@ data Number =
 instance Eq Number where
   (==) = (==) `on` number
 
+instance Ord Number where
+  compare = compare `on` number
+
 instance Show Number where
   show = formatNumber
 

@@ -42,7 +42,7 @@ import Data.Text qualified as T
 import Data.Time qualified as Time
 
 newtype Date = Date Time.Day
-  deriving (Eq, Time.FormatTime)
+  deriving (Eq, Ord, Time.FormatTime)
 
 instance Show Date where
   show = dateToString
@@ -60,7 +60,7 @@ dateToText :: Date -> T.Text
 dateToText = T.pack . dateToString
 
 newtype DatetimeLocal = DatetimeLocal Time.LocalTime
-  deriving (Eq, Time.FormatTime)
+  deriving (Eq, Ord, Time.FormatTime)
 
 instance Show DatetimeLocal where
   show = datetimeLocalToString
@@ -79,7 +79,7 @@ datetimeLocalToText :: DatetimeLocal -> T.Text
 datetimeLocalToText = T.pack . datetimeLocalToString
 
 newtype Month = Month Time.Day
-  deriving (Eq, Time.FormatTime)
+  deriving (Eq, Ord, Time.FormatTime)
 
 instance Show Month where
   show = monthToString
@@ -132,7 +132,7 @@ monthOfYear month =
     December  -> Time.December
 
 newtype Time = Time Time.TimeOfDay
-  deriving (Eq, Time.FormatTime)
+  deriving (Eq, Ord, Time.FormatTime)
 
 instance Show Time where
   show = timeToString
@@ -150,7 +150,7 @@ timeToText :: Time -> T.Text
 timeToText = T.pack . timeToString
 
 newtype Week = Week Time.Day
-  deriving (Eq, Time.FormatTime)
+  deriving (Eq, Ord, Time.FormatTime)
 
 instance Show Week where
   show = weekToString

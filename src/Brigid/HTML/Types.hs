@@ -69,6 +69,7 @@ import Brigid.HTML.Types.Preload as Export
 import Brigid.HTML.Types.PushURL as Export
 import Brigid.HTML.Types.QuerySelector as Export
 import Brigid.HTML.Types.QueueOption as Export
+import Brigid.HTML.Types.RangeBound as Export
 import Brigid.HTML.Types.RawJavaScript as Export
 import Brigid.HTML.Types.Reachability as Export
 import Brigid.HTML.Types.ReferrerPolicy as Export

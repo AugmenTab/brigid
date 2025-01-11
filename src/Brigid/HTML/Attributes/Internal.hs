@@ -74,8 +74,10 @@ module Brigid.HTML.Attributes.Internal
       , Attr_List
       , Attr_Loop
       , Attr_Low
+      , Attr_Max
       , Attr_MaxLength
       , Attr_Method
+      , Attr_Min
       , Attr_MinLength
       , Attr_Muted
       , Attr_Name
@@ -532,10 +534,10 @@ data Attribute (tag :: TagType) where
     => Types.Number
     -> Attribute tag
 
-  -- Attr_Max
-  --   :: ValidAttribute 'Max tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Max
+    :: ValidAttribute 'Max tag
+    => Types.RangeBound
+    -> Attribute tag
 
   Attr_MaxLength
     :: ValidAttribute 'MaxLength tag
@@ -552,10 +554,10 @@ data Attribute (tag :: TagType) where
     => Types.FormMethod
     -> Attribute tag
 
-  -- Attr_Min
-  --   :: ValidAttribute 'Min tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Min
+    :: ValidAttribute 'Min tag
+    => Types.RangeBound
+    -> Attribute tag
 
   Attr_MinLength
     :: ValidAttribute 'MinLength tag
@@ -1082,11 +1084,17 @@ attributeText attr =
     Attr_Low _low ->
       "low"
 
+    Attr_Max _max ->
+      "max"
+
     Attr_MaxLength _maxlength ->
       "maxlength"
 
     Attr_Method _method ->
       "method"
+
+    Attr_Min _min ->
+      "min"
 
     Attr_MinLength _minlength ->
       "minlength"
