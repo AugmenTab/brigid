@@ -8,14 +8,20 @@ module Brigid.HTML.Types.Method
       , PUT
       , PATCH
       )
-  , methodToBytes
   , methodFromText
+  , methodToBytes
   , methodToText
   , Get
   , Post
   , Delete
   , Put
   , Patch
+  , FormMethod
+      ( FormGET
+      , FormPOST
+      )
+  , formMethodToBytes
+  , formMethodToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -28,15 +34,6 @@ data Method
   | PUT
   | PATCH
 
-methodToBytes :: Method -> LBS.ByteString
-methodToBytes method =
-  case method of
-    GET    -> "get"
-    POST   -> "post"
-    DELETE -> "delete"
-    PUT    -> "put"
-    PATCH  -> "patch"
-
 methodFromText :: T.Text -> Either String Method
 methodFromText txt =
   case txt of
@@ -46,6 +43,15 @@ methodFromText txt =
     "put"    -> Right PUT
     "patch"  -> Right PATCH
     _        -> Left $ "Invalid Method: " <> T.unpack txt
+
+methodToBytes :: Method -> LBS.ByteString
+methodToBytes method =
+  case method of
+    GET    -> "get"
+    POST   -> "post"
+    DELETE -> "delete"
+    PUT    -> "put"
+    PATCH  -> "patch"
 
 methodToText :: Method -> T.Text
 methodToText method =
@@ -65,3 +71,19 @@ type Delete = 'DELETE
 type Put = 'PUT
 
 type Patch = 'PATCH
+
+data FormMethod
+  = FormGET
+  | FormPOST
+
+formMethodToBytes :: FormMethod -> LBS.ByteString
+formMethodToBytes method =
+  case method of
+    FormGET  -> methodToBytes GET
+    FormPOST -> methodToBytes POST
+
+formMethodToText :: FormMethod -> T.Text
+formMethodToText method =
+  case method of
+    FormGET  -> methodToText GET
+    FormPOST -> methodToText POST

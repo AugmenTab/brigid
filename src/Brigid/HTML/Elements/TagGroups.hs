@@ -813,7 +813,6 @@ type NameTags =
     , 'Fieldset
     , 'Form
     , 'IFrame
-    , 'Input
     , 'Map
     , 'Meta
     , 'Object

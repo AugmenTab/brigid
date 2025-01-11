@@ -639,7 +639,7 @@ import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSele
 import Brigid.HTML.Types.Id qualified as Id
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
-import Brigid.HTML.Types.Method (Get, Post, Delete, Put, Patch)
+import Brigid.HTML.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
 import Brigid.HTML.Types.NoContent (NoContent)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
@@ -2845,9 +2845,8 @@ attr_minlength = (,) Attr_MinLength . Just . Render.showText
 attr_media :: T.Text -> AttributeSelector
 attr_media = (,) Attr_Media . Just
 
--- TODO
-attr_method :: T.Text -> AttributeSelector
-attr_method = (,) Attr_Method . Just
+attr_method :: FormMethod -> AttributeSelector
+attr_method = (,) Attr_Method . Just . formMethodToText
 
 -- TODO
 attr_min :: T.Text -> AttributeSelector

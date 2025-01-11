@@ -721,6 +721,9 @@ renderAttribute attr =
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . T.pack $ show maxlength
 
+    Attr_Method method ->
+      Just . buildAttribute "method" $ Types.formMethodToText method
+
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" . T.pack $ show minlength
 

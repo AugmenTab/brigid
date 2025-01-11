@@ -37,6 +37,7 @@ module Brigid.HTML.Attributes.Scoped
   , list
   , loop
   , maxlength
+  , method
   , minlength
   , mute
   , muted
@@ -265,6 +266,12 @@ loop = Attr_Loop
 --
 maxlength :: ValidAttribute 'MaxLength tag => Word -> Attribute tag
 maxlength = Attr_MaxLength
+
+-- TODO: This should be derived from the RelativeURL given in the action
+-- attribute in the Safe.Form module.
+--
+method :: ValidAttribute 'Method tag => Types.FormMethod -> Attribute tag
+method = Attr_Method
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the

@@ -71,6 +71,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_List
       , Attr_Loop
       , Attr_MaxLength
+      , Attr_Method
       , Attr_MinLength
       , Attr_Muted
       , Attr_Name
@@ -537,25 +538,25 @@ data Attribute (tag :: TagType) where
     => Word
     -> Attribute tag
 
-  Attr_MinLength
-    :: ValidAttribute 'MinLength tag
-    => Word
-    -> Attribute tag
-
   -- Attr_Media
   --   :: ValidAttribute 'Media tag
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Method
-  --   :: ValidAttribute 'Method tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Method
+    :: ValidAttribute 'Method tag
+    => Types.FormMethod
+    -> Attribute tag
 
   -- Attr_Min
   --   :: ValidAttribute 'Min tag
   --   => T.Text -- TODO
   --   -> Attribute tag
+
+  Attr_MinLength
+    :: ValidAttribute 'MinLength tag
+    => Word
+    -> Attribute tag
 
   -- Attr_Multiple
   --   :: ValidAttribute 'Multiple tag
@@ -1067,6 +1068,9 @@ attributeText attr =
 
     Attr_MaxLength _maxlength ->
       "maxlength"
+
+    Attr_Method _method ->
+      "method"
 
     Attr_MinLength _minlength ->
       "minlength"

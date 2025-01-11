@@ -84,10 +84,13 @@ newtype GetCustomer =
 
 exampleURL :: GetCustomer -> HTML.RelativeURL HTML.Get
 exampleURL route =
-  HTML.get route $
-    R.make GetCustomer
-      /- "customers"
-      /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
+  HTML.get route exampleRoute
+
+exampleRoute :: R.Router r => R.Builder r GetCustomer GetCustomer
+exampleRoute =
+  R.make GetCustomer
+    /- "customers"
+    /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
 
 divId :: HTML.Id
 divId = HTML.Id "div1"
@@ -131,7 +134,11 @@ example =
             ]
         , E.text "."
         ]
-    , E.form [ A.hxValidate, A.acceptCharset, A.validate False ]
+    , E.form [ A.hxValidate
+             , A.acceptCharset
+             , A.validate False
+             , A.method HTML.FormPOST
+             ]
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []

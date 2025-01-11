@@ -742,6 +742,9 @@ renderAttribute attr =
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . LBS8.pack $ show maxlength
 
+    Attr_Method method ->
+      Just . buildAttribute "method" $ Types.formMethodToBytes method
+
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" . LBS8.pack $ show minlength
 
