@@ -3,6 +3,10 @@ module Brigid.HTML.Types.Time
   , mkDate
   , dateToBytes
   , dateToText
+  , DatetimeLocal
+  , mkDatetimeLocal
+  , datetimeLocalToBytes
+  , datetimeLocalToText
   , Month
   , mkMonth
   , monthFromDay
@@ -54,6 +58,25 @@ dateToString = format "%Y-%m-%d"
 
 dateToText :: Date -> T.Text
 dateToText = T.pack . dateToString
+
+newtype DatetimeLocal = DatetimeLocal Time.LocalTime
+  deriving (Eq, Time.FormatTime)
+
+instance Show DatetimeLocal where
+  show = datetimeLocalToString
+
+mkDatetimeLocal :: Time.LocalTime -> DatetimeLocal
+mkDatetimeLocal = DatetimeLocal
+
+datetimeLocalToBytes :: DatetimeLocal -> LBS.ByteString
+datetimeLocalToBytes = LBS8.pack . datetimeLocalToString
+
+datetimeLocalToString :: DatetimeLocal -> String
+datetimeLocalToString = format "%Y-%m-%dT%H:%M"
+
+
+datetimeLocalToText :: DatetimeLocal -> T.Text
+datetimeLocalToText = T.pack . datetimeLocalToString
 
 newtype Month = Month Time.Day
   deriving (Eq, Time.FormatTime)

@@ -154,8 +154,8 @@ example =
                    ]
         , Safe.number [ A.value $ HTML.numberFromFractional (0.75 :: Double) 2
                       ]
-        , Safe.range [ A.value $ (1 % 100 :: Rational) ]
-        , Safe.range [ A.value $ (1 :: Rational) ]
+        , Safe.range [ A.value $ HTML.numberFromReal (1 % 100 :: Rational) 2 ]
+        , Safe.range [ A.value $ HTML.numberFromReal (1 :: Rational) 0 ]
      -- , Safe.checkbox [ A.value fakeJavaScriptLink ] -- This fails because RawURL is not a valid value for InputCheckbox.
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.

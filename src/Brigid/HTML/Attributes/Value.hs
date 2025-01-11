@@ -24,10 +24,10 @@ type ValidValue val tag =
 type family ValidValuesFor (val :: Type) :: [TagType] where
   ValidValuesFor Types.HexColor                 = [ Tags.Input, Tags.InputColor ]
   ValidValuesFor Types.Date                     = [ Tags.Input, Tags.InputDate ]
+  ValidValuesFor Types.DatetimeLocal            = [ Tags.Input, Tags.InputDatetimeLocal ]
   ValidValuesFor Types.Email                    = [ Tags.Input, Tags.InputEmail ]
   ValidValuesFor Types.Month                    = [ Tags.Input, Tags.InputMonth ]
-  ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber ]
-  ValidValuesFor Rational                       = [ Tags.Input, Tags.InputRange ]
+  ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber, Tags.InputRange ]
   ValidValuesFor Types.PhoneNumber              = [ Tags.Input, Tags.InputTel ]
   ValidValuesFor T.Text                         = TagGroups.TextValueTags
   ValidValuesFor Types.Time                     = [ Tags.Input, Tags.InputTime ]
@@ -53,10 +53,10 @@ type family AlertValue (member :: Bool) (val :: Type) (tag :: TagType) :: Bool w
 type family ValueTypeErrorMessage (val :: Type) :: ErrorMessage where
   ValueTypeErrorMessage Types.HexColor                 = 'Text "HexColor"
   ValueTypeErrorMessage Types.Date                     = 'Text "Date"
+  ValueTypeErrorMessage Types.DatetimeLocal            = 'Text "DatetimeLocal"
   ValueTypeErrorMessage Types.Email                    = 'Text "Email"
   ValueTypeErrorMessage Types.Month                    = 'Text "Month"
   ValueTypeErrorMessage Types.Number                   = 'Text "Number"
-  ValueTypeErrorMessage Rational                       = 'Text "Rational"
   ValueTypeErrorMessage Types.PhoneNumber              = 'Text "PhoneNumber"
   ValueTypeErrorMessage T.Text                         = 'Text "Text"
   ValueTypeErrorMessage Types.Time                     = 'Text "Time"

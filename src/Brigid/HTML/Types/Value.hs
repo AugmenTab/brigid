@@ -11,12 +11,9 @@ module Brigid.HTML.Types.Value
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
-import Data.Ratio (denominator, numerator)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
-import Numeric (showFFloat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
@@ -33,10 +30,10 @@ newtype Value = Value (Shrubbery.Union ValueTypes)
 type ValueTypes =
   [ HexColor
   , BTime.Date
+  , BTime.DatetimeLocal
   , Email
   , BTime.Month
   , Number
-  , Rational
   , PhoneNumber
   , T.Text
   , BTime.Time
@@ -60,10 +57,10 @@ instance Show Value where
         . Shrubbery.branchBuild
         . Shrubbery.branch @HexColor               show
         . Shrubbery.branch @BTime.Date             show
+        . Shrubbery.branch @BTime.DatetimeLocal    show
         . Shrubbery.branch @Email                  show
         . Shrubbery.branch @BTime.Month            show
         . Shrubbery.branch @Number                 show
-        . Shrubbery.branch @Rational               showDecimal
         . Shrubbery.branch @PhoneNumber            show
         . Shrubbery.branch @T.Text                 T.unpack
         . Shrubbery.branch @BTime.Time             show
@@ -81,10 +78,10 @@ valueToBytes (Value value) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @HexColor               hexColorToBytes
       . Shrubbery.branch @BTime.Date             BTime.dateToBytes
+      . Shrubbery.branch @BTime.DatetimeLocal    BTime.datetimeLocalToBytes
       . Shrubbery.branch @Email                  emailToBytes
       . Shrubbery.branch @BTime.Month            BTime.monthToBytes
       . Shrubbery.branch @Number                 numberToBytes
-      . Shrubbery.branch @Rational               (LBS8.pack . showDecimal)
       . Shrubbery.branch @PhoneNumber            phoneNumberToBytes
       . Shrubbery.branch @T.Text                 (LBS.fromStrict . TE.encodeUtf8)
       . Shrubbery.branch @BTime.Time             BTime.timeToBytes
@@ -102,10 +99,10 @@ valueToText (Value value) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @HexColor               hexColorToText
       . Shrubbery.branch @BTime.Date             BTime.dateToText
+      . Shrubbery.branch @BTime.DatetimeLocal    BTime.datetimeLocalToText
       . Shrubbery.branch @Email                  emailToText
       . Shrubbery.branch @BTime.Month            BTime.monthToText
       . Shrubbery.branch @Number                 numberToText
-      . Shrubbery.branch @Rational               (T.pack . showDecimal)
       . Shrubbery.branch @PhoneNumber            phoneNumberToText
       . Shrubbery.branch @T.Text                 id
       . Shrubbery.branch @BTime.Time             BTime.timeToText
@@ -116,14 +113,3 @@ valueToText (Value value) =
       . Shrubbery.branch @BTime.Week             BTime.weekToText
       $ Shrubbery.branchEnd
   ) value
-
--- Helpers
---
-toDecimal :: Rational -> Double
-toDecimal = fromRational
-
-showDecimal :: Rational -> String
-showDecimal n =
-  if denominator n == 1
-     then show $ numerator n
-     else showFFloat Nothing (toDecimal n) ""
