@@ -45,12 +45,14 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor FormNoValidate          = TagGroups.FormNoValidateTags
   ValidElementsFor Headers                 = '[ Tags.TableDataCell ]
   ValidElementsFor Height                  = TagGroups.SizableTags
+  ValidElementsFor High                    = '[ Tags.Meter ]
   ValidElementsFor Href                    = TagGroups.HrefTags
   ValidElementsFor IsMap                   = '[ Tags.Image ]
   ValidElementsFor Kind                    = '[ Tags.Track ]
   ValidElementsFor Label                   = TagGroups.LabelableTags
   ValidElementsFor List                    = TagGroups.InputTags
   ValidElementsFor Loop                    = TagGroups.MediaContent
+  ValidElementsFor Low                     = '[ Tags.Meter ]
   ValidElementsFor MaxLength               = TagGroups.LengthTags
   ValidElementsFor Method                  = '[ Tags.Form ]
   ValidElementsFor MinLength               = TagGroups.LengthTags
@@ -58,6 +60,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Name                    = TagGroups.NameTags
   ValidElementsFor NoModule                = '[ Tags.Script ]
   ValidElementsFor NoValidate              = '[ Tags.Form ]
+  ValidElementsFor Optimum                 = '[ Tags.Meter ]
   ValidElementsFor Ping                    = '[ Tags.Anchor ]
   ValidElementsFor Placeholder             = TagGroups.PlaceholderableTags
   ValidElementsFor PlaysInline             = '[ Tags.Video ]

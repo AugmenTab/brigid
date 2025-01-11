@@ -152,11 +152,7 @@ example =
                    , A.dirname "telephone"
                    , A.readonly
                    ]
-        , Safe.number [ A.value $
-                          HTML.Number
-                            { HTML.number = 1.05
-                            , HTML.decimalPlaces = 2
-                            }
+        , Safe.number [ A.value $ HTML.numberFromFractional (0.75 :: Double) 2
                       ]
         , Safe.range [ A.value $ (1 % 100 :: Rational) ]
         , Safe.range [ A.value $ (1 :: Rational) ]
@@ -175,6 +171,11 @@ example =
     , E.div [ A.tabindex HTML.NotReachable ]
         [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
+            , E.meter [ A.low $ HTML.numberFromIntegral (0 :: Int)
+                      , A.optimum $ HTML.numberFromReal (4 % 5 :: Rational) 1
+                      , A.high $ HTML.numberFromIntegral (2 :: Int)
+                      ]
+                []
             , E.comment "Second comment"
             , E.customHTML
                 "my-custom-element"

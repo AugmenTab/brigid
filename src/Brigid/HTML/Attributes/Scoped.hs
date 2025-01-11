@@ -32,12 +32,14 @@ module Brigid.HTML.Attributes.Scoped
   , formnovalidate
   , headers
   , height
+  , high
   , href
   , ismap
   , kind
   , label
   , list
   , loop
+  , low
   , maxlength
   , method
   , minlength
@@ -46,6 +48,7 @@ module Brigid.HTML.Attributes.Scoped
   , name
   , nomodule
   , novalidate
+  , optimum
   , ping
   , placeholder
   , playInline
@@ -237,6 +240,9 @@ headers = Attr_Headers
 height :: ValidAttribute 'Height tag => Word -> Attribute tag
 height = Attr_Height
 
+high :: ValidAttribute 'High tag => Types.Number -> Attribute tag
+high = Attr_High
+
 href :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
         , ValidHref href tag
@@ -268,6 +274,9 @@ list = Attr_List
 
 loop :: ValidAttribute 'Loop tag => Attribute tag
 loop = Attr_Loop
+
+low :: ValidAttribute 'Low tag => Types.Number -> Attribute tag
+low = Attr_Low
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the
@@ -312,6 +321,9 @@ nomodule = Attr_NoModule
 --
 novalidate :: ValidAttribute 'NoValidate tag => Attribute tag
 novalidate = validate False
+
+optimum :: ValidAttribute 'Optimum tag => Types.Number -> Attribute tag
+optimum = Attr_Optimum
 
 ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping

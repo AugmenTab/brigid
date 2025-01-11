@@ -66,12 +66,14 @@ module Brigid.HTML.Attributes.Internal
       , Attr_FormNoValidate
       , Attr_Headers
       , Attr_Height
+      , Attr_High
       , Attr_Href
       , Attr_IsMap
       , Attr_Kind
       , Attr_Label
       , Attr_List
       , Attr_Loop
+      , Attr_Low
       , Attr_MaxLength
       , Attr_Method
       , Attr_MinLength
@@ -79,6 +81,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Name
       , Attr_NoModule
       , Attr_NoValidate
+      , Attr_Optimum
       , Attr_Ping
       , Attr_Placeholder
       , Attr_PlaysInline
@@ -476,10 +479,10 @@ data Attribute (tag :: TagType) where
     => Word
     -> Attribute tag
 
-  -- Attr_High
-  --   :: ValidAttribute 'High tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_High
+    :: ValidAttribute 'High tag
+    => Types.Number
+    -> Attribute tag
 
   Attr_Href
     :: ValidAttribute 'Href tag
@@ -524,10 +527,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Loop tag
     => Attribute tag
 
-  -- Attr_Low
-  --   :: ValidAttribute 'Low tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Low
+    :: ValidAttribute 'Low tag
+    => Types.Number
+    -> Attribute tag
 
   -- Attr_Max
   --   :: ValidAttribute 'Max tag
@@ -589,10 +592,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Optimum
-  --   :: ValidAttribute 'Optimum tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Optimum
+    :: ValidAttribute 'Optimum tag
+    => Types.Number
+    -> Attribute tag
 
   -- Attr_Pattern
   --   :: ValidAttribute 'Pattern tag
@@ -1055,6 +1058,9 @@ attributeText attr =
     Attr_Height _height ->
       "height"
 
+    Attr_High _high ->
+      "high"
+
     Attr_Href _href ->
       "href"
 
@@ -1072,6 +1078,9 @@ attributeText attr =
 
     Attr_Loop ->
       "loop"
+
+    Attr_Low _low ->
+      "low"
 
     Attr_MaxLength _maxlength ->
       "maxlength"
@@ -1093,6 +1102,9 @@ attributeText attr =
 
     Attr_NoValidate _novalidate ->
       "novalidate"
+
+    Attr_Optimum _optimum ->
+      "optimum"
 
     Attr_Ping _ping ->
       "ping"

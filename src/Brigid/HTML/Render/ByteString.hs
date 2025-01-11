@@ -727,6 +727,9 @@ renderAttribute attr =
     Attr_Height height ->
       Just . buildAttribute "height" . LBS8.pack $ show height
 
+    Attr_High high ->
+      Just . buildAttribute "high" $ Types.numberToBytes high
+
     Attr_Href href ->
       Just . buildAttribute "href" $ Types.hrefToBytes href
 
@@ -744,6 +747,9 @@ renderAttribute attr =
 
     Attr_Loop ->
       buildBooleanAttribute "loop" True
+
+    Attr_Low low ->
+      Just . buildAttribute "low" $ Types.numberToBytes low
 
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . LBS8.pack $ show maxlength
@@ -765,6 +771,9 @@ renderAttribute attr =
 
     Attr_NoValidate novalidate ->
       buildBooleanAttribute "novalidate" novalidate
+
+    Attr_Optimum optimum ->
+      Just . buildAttribute "optimum" $ Types.numberToBytes optimum
 
     Attr_Ping pings ->
       Just

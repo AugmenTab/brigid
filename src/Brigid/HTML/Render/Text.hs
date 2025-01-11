@@ -706,6 +706,9 @@ renderAttribute attr =
     Attr_Height height ->
       Just . buildAttribute "height" . T.pack $ show height
 
+    Attr_High high ->
+      Just . buildAttribute "high" $ Types.numberToText high
+
     Attr_Href href ->
       Just . buildAttribute "href" $ Types.hrefToText href
 
@@ -723,6 +726,9 @@ renderAttribute attr =
 
     Attr_Loop ->
       buildBooleanAttribute "loop" True
+
+    Attr_Low low ->
+      Just . buildAttribute "low" $ Types.numberToText low
 
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" . T.pack $ show maxlength
@@ -744,6 +750,9 @@ renderAttribute attr =
 
     Attr_NoValidate novalidate ->
       buildBooleanAttribute "novalidate" novalidate
+
+    Attr_Optimum optimum ->
+      Just . buildAttribute "optimum" $ Types.numberToText optimum
 
     Attr_Ping pings ->
       Just

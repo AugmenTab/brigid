@@ -641,6 +641,7 @@ import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTit
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import Brigid.HTML.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
 import Brigid.HTML.Types.NoContent (NoContent)
+import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
 import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
@@ -2788,9 +2789,8 @@ attr_headers =
 attr_height :: Word -> AttributeSelector
 attr_height = (,) Attr_Height . Just . Render.showText
 
--- TODO
-attr_high :: T.Text -> AttributeSelector
-attr_high = (,) Attr_High . Just
+attr_high :: Number -> AttributeSelector
+attr_high = (,) Attr_High . Just . numberToText
 
 attr_href :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf href HrefSelectorTypes
@@ -2825,9 +2825,8 @@ attr_list = (,) Attr_List . Just . Id.idToText
 attr_loop :: AttributeSelector
 attr_loop = (Attr_Loop, Nothing)
 
--- TODO
-attr_low :: T.Text -> AttributeSelector
-attr_low = (,) Attr_Low . Just
+attr_low :: Number -> AttributeSelector
+attr_low = (,) Attr_Low . Just . numberToText
 
 -- TODO
 attr_max :: T.Text -> AttributeSelector
@@ -2870,9 +2869,8 @@ attr_novalidate = (Attr_NoValidate, Nothing)
 attr_open :: T.Text -> AttributeSelector
 attr_open = (,) Attr_Open . Just
 
--- TODO
-attr_optimum :: T.Text -> AttributeSelector
-attr_optimum = (,) Attr_Optimum . Just
+attr_optimum :: Number -> AttributeSelector
+attr_optimum = (,) Attr_Optimum . Just . numberToText
 
 -- TODO
 attr_pattern :: T.Text -> AttributeSelector
