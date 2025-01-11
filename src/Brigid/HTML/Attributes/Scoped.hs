@@ -28,6 +28,7 @@ module Brigid.HTML.Attributes.Scoped
   , disablepictureinpicture
   , disableremoteplayback
   , download
+  , formmethod
   , headers
   , height
   , href
@@ -220,6 +221,10 @@ disableremoteplayback = Attr_DisableRemotePlayback
 download :: ValidAttribute 'Download tag
          => Maybe NET.NonEmptyText -> Attribute tag
 download = Attr_Download
+
+formmethod :: ValidAttribute 'FormMethod tag
+           => Types.FormMethod -> Attribute tag
+formmethod = Attr_FormMethod
 
 headers :: ValidAttribute 'Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag

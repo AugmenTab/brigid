@@ -712,6 +712,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . toBytes . NET.toText)
         download
 
+    Attr_FormMethod formmethod ->
+      Just . buildAttribute "formmethod" $ Types.formMethodToBytes formmethod
+
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"

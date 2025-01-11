@@ -49,6 +49,7 @@ module Brigid.HTML.Elements.TagGroups
   , CrossOriginTags
   , DirnameableTags
   , DisableableTags
+  , FormMethodTags
   , HrefTags
   , InputTags
   , LabelableTags
@@ -759,6 +760,12 @@ type DisableableTags =
     , 'Select
     , 'TextArea
     ]
+
+type FormMethodTags =
+  [ 'Input
+  , 'InputImage
+  , 'InputSubmit
+  ]
 
 type HrefTags =
   'Base

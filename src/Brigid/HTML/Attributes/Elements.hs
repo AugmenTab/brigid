@@ -41,6 +41,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor DisablePictureInPicture = '[ Tags.Video ]
   ValidElementsFor DisableRemotePlayback   = TagGroups.MediaContent
   ValidElementsFor Download                = '[ Tags.Anchor ]
+  ValidElementsFor FormMethod              = TagGroups.FormMethodTags
   ValidElementsFor Headers                 = '[ Tags.TableDataCell ]
   ValidElementsFor Height                  = TagGroups.SizableTags
   ValidElementsFor Href                    = TagGroups.HrefTags

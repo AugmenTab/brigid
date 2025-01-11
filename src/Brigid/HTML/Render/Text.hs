@@ -691,6 +691,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . NET.toText)
         download
 
+    Attr_FormMethod formmethod ->
+      Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod
+
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"

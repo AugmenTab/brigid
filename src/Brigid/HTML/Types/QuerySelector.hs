@@ -2768,9 +2768,8 @@ attr_formaction = (,) Attr_FormAction . Just
 attr_formenctype :: T.Text -> AttributeSelector
 attr_formenctype = (,) Attr_FormEnctype . Just
 
--- TODO
-attr_formmethod :: T.Text -> AttributeSelector
-attr_formmethod = (,) Attr_FormMethod . Just
+attr_formmethod :: FormMethod -> AttributeSelector
+attr_formmethod = (,) Attr_FormMethod . Just . formMethodToText
 
 -- TODO
 attr_formnovalidate :: T.Text -> AttributeSelector

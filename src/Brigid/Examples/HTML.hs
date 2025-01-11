@@ -163,6 +163,7 @@ example =
      -- , Safe.checkbox [ A.value fakeJavaScriptLink ] -- This fails because RawURL is not a valid value for InputCheckbox.
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
+        , Safe.submit [ A.formmethod HTML.FormGET ]
         ]
     , E.textarea [ A.cols 80
                  , A.rows 5
