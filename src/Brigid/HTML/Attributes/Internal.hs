@@ -63,6 +63,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_DisableRemotePlayback
       , Attr_Download
       , Attr_FormMethod
+      , Attr_FormNoValidate
       , Attr_Headers
       , Attr_Height
       , Attr_Href
@@ -456,10 +457,9 @@ data Attribute (tag :: TagType) where
     => Types.FormMethod
     -> Attribute tag
 
-  -- Attr_FormNoValidate
-  --   :: ValidAttribute 'FormNoValidate tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_FormNoValidate
+    :: ValidAttribute 'FormNoValidate tag
+    => Attribute tag
 
   -- Attr_FormTarget
   --   :: ValidAttribute 'FormTarget tag
@@ -1045,6 +1045,9 @@ attributeText attr =
 
     Attr_FormMethod _formmethod ->
       "formmethod"
+
+    Attr_FormNoValidate ->
+      "formnovalidate"
 
     Attr_Headers _headers ->
       "headers"

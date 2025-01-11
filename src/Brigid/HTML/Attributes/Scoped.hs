@@ -29,6 +29,7 @@ module Brigid.HTML.Attributes.Scoped
   , disableremoteplayback
   , download
   , formmethod
+  , formnovalidate
   , headers
   , height
   , href
@@ -225,6 +226,9 @@ download = Attr_Download
 formmethod :: ValidAttribute 'FormMethod tag
            => Types.FormMethod -> Attribute tag
 formmethod = Attr_FormMethod
+
+formnovalidate :: ValidAttribute 'FormNoValidate tag => Attribute tag
+formnovalidate = Attr_FormNoValidate
 
 headers :: ValidAttribute 'Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag

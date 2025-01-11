@@ -50,6 +50,7 @@ module Brigid.HTML.Elements.TagGroups
   , DirnameableTags
   , DisableableTags
   , FormMethodTags
+  , FormNoValidateTags
   , HrefTags
   , InputTags
   , LabelableTags
@@ -764,6 +765,12 @@ type DisableableTags =
 type FormMethodTags =
   [ 'Input
   , 'InputImage
+  , 'InputSubmit
+  ]
+
+type FormNoValidateTags =
+  [ 'Button
+  , 'Input
   , 'InputSubmit
   ]
 

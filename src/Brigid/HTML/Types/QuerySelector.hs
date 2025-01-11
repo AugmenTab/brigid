@@ -2771,9 +2771,8 @@ attr_formenctype = (,) Attr_FormEnctype . Just
 attr_formmethod :: FormMethod -> AttributeSelector
 attr_formmethod = (,) Attr_FormMethod . Just . formMethodToText
 
--- TODO
-attr_formnovalidate :: T.Text -> AttributeSelector
-attr_formnovalidate = (,) Attr_FormNoValidate . Just
+attr_formnovalidate :: AttributeSelector
+attr_formnovalidate = (Attr_FormNoValidate, Nothing)
 
 -- TODO
 attr_formtarget :: T.Text -> AttributeSelector

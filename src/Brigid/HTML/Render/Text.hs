@@ -694,6 +694,9 @@ renderAttribute attr =
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod
 
+    Attr_FormNoValidate ->
+      buildBooleanAttribute "formnovalidate" True
+
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
