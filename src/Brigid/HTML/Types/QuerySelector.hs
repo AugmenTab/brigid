@@ -640,6 +640,7 @@ import Brigid.HTML.Types.Id qualified as Id
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import Brigid.HTML.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
+import Brigid.HTML.Types.Name (NameOptionTypes, mkNameOption, nameOptionToText)
 import Brigid.HTML.Types.NoContent (NoContent)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
@@ -2855,8 +2856,12 @@ attr_multiple = (,) Attr_Multiple . Just
 attr_muted :: AttributeSelector
 attr_muted = (Attr_Muted, Nothing)
 
-attr_name :: T.Text -> AttributeSelector
-attr_name = (,) Attr_Name . Just
+attr_name :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf name NameOptionTypes
+             )
+           => name -> AttributeSelector
+attr_name =
+  (,) Attr_Name . Just . nameOptionToText . mkNameOption
 
 attr_nomodule :: Bool -> AttributeSelector
 attr_nomodule = (,) Attr_NoModule . Just . Render.enumBoolToText

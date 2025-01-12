@@ -17,7 +17,7 @@ import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements qualified as E
-import Brigid.HTML.Types.Class (Class(Class))
+import Brigid.HTML.Types.Class (Class, classToText, mkClass)
 import Brigid.HTML.Types.Method (Method, methodFromText, methodToText)
 import Brigid.HTML.Types.QuerySelector qualified as QS
 import Brigid.HTML.Types.ScrollBehavior qualified as SB
@@ -61,39 +61,40 @@ data Config =
 
 configSchema :: FA.Encoder Config
 configSchema =
-  FC.object $
-    FC.constructor Config
-      #+ FC.optional "historyEnabled"          historyEnabled          FC.boolean
-      #+ FC.optional "historyCacheSize"        historyCacheSize        naturalSchema
-      #+ FC.optional "refreshOnHistoryMiss"    refreshOnHistoryMiss    FC.boolean
-      #+ FC.optional "defaultSwapStyle"        defaultSwapStyle        swapStyleSchema
-      #+ FC.optional "defaultSwapDelay"        defaultSwapDelay        naturalSchema
-      #+ FC.optional "defaultSettleDelay"      defaultSettleDelay      naturalSchema
-      #+ FC.optional "includeIndicatorStyles"  includeIndicatorStyles  FC.boolean
-      #+ FC.optional "indicatorClass"          indicatorClass          (FC.coerceSchema FC.text)
-      #+ FC.optional "requestClass"            requestClass            (FC.coerceSchema FC.text)
-      #+ FC.optional "addedClass"              addedClass              (FC.coerceSchema FC.text)
-      #+ FC.optional "settlingClass"           settlingClass           (FC.coerceSchema FC.text)
-      #+ FC.optional "swappingClass"           swappingClass           (FC.coerceSchema FC.text)
-      #+ FC.optional "allowEval"               allowEval               FC.boolean
-      #+ FC.optional "allowScriptTypes"        allowScriptTypes        FC.boolean
- --   #+ FC.optional "inlineScriptNonce"       inlineScriptNonce       :: Maybe _
-      #+ FC.optional "attributesToSettle"      attributesToSettle      (FC.nonEmpty attributeTypeSchema)
-      #+ FC.optional "useTemplateFragments"    useTemplateFragments    FC.boolean
- --   #+ FC.optional "wsReconnectDelay"        wsReconnectDelay        :: Maybe _
-      #+ FC.optional "wsBinaryType"            wsBinaryType            websocketBinaryTypeSchema
-      #+ FC.optional "disableSelector"         disableSelector         (FC.nonEmpty attributeTypeSchema)
-      #+ FC.optional "withCredentials"         withCredentials         FC.boolean
-      #+ FC.optional "timeout"                 timeout                 naturalSchema
-      #+ FC.optional "scrollBehavior"          scrollBehavior          scrollBehaviorSchema
- --   #+ FC.optional "defaultFocusScroll"      defaultFocusScroll      :: Maybe _
-      #+ FC.optional "getCacheBusterParam"     getCacheBusterParam     FC.boolean
-      #+ FC.optional "globalViewTransitions"   globalViewTransitions   FC.boolean
-      #+ FC.optional "methodsThatUseUrlParams" methodsThatUseUrlParams (FC.nonEmpty methodSchema)
-      #+ FC.optional "selfRequestsOnly"        selfRequestsOnly        FC.boolean
-      #+ FC.optional "ignoreTitle"             ignoreTitle             FC.boolean
-      #+ FC.optional "scrollIntoViewOnBoost"   scrollIntoViewOnBoost   FC.boolean
- --   #+ FC.optional "triggerSpecsCache"       triggerSpecsCache       :: Maybe _
+  let classSchema = FC.transform classToText mkClass FC.text
+   in FC.object $
+        FC.constructor Config
+          #+ FC.optional "historyEnabled"          historyEnabled          FC.boolean
+          #+ FC.optional "historyCacheSize"        historyCacheSize        naturalSchema
+          #+ FC.optional "refreshOnHistoryMiss"    refreshOnHistoryMiss    FC.boolean
+          #+ FC.optional "defaultSwapStyle"        defaultSwapStyle        swapStyleSchema
+          #+ FC.optional "defaultSwapDelay"        defaultSwapDelay        naturalSchema
+          #+ FC.optional "defaultSettleDelay"      defaultSettleDelay      naturalSchema
+          #+ FC.optional "includeIndicatorStyles"  includeIndicatorStyles  FC.boolean
+          #+ FC.optional "indicatorClass"          indicatorClass          classSchema
+          #+ FC.optional "requestClass"            requestClass            classSchema
+          #+ FC.optional "addedClass"              addedClass              classSchema
+          #+ FC.optional "settlingClass"           settlingClass           classSchema
+          #+ FC.optional "swappingClass"           swappingClass           classSchema
+          #+ FC.optional "allowEval"               allowEval               FC.boolean
+          #+ FC.optional "allowScriptTypes"        allowScriptTypes        FC.boolean
+     --   #+ FC.optional "inlineScriptNonce"       inlineScriptNonce       :: Maybe _
+          #+ FC.optional "attributesToSettle"      attributesToSettle      (FC.nonEmpty attributeTypeSchema)
+          #+ FC.optional "useTemplateFragments"    useTemplateFragments    FC.boolean
+     --   #+ FC.optional "wsReconnectDelay"        wsReconnectDelay        :: Maybe _
+          #+ FC.optional "wsBinaryType"            wsBinaryType            websocketBinaryTypeSchema
+          #+ FC.optional "disableSelector"         disableSelector         (FC.nonEmpty attributeTypeSchema)
+          #+ FC.optional "withCredentials"         withCredentials         FC.boolean
+          #+ FC.optional "timeout"                 timeout                 naturalSchema
+          #+ FC.optional "scrollBehavior"          scrollBehavior          scrollBehaviorSchema
+     --   #+ FC.optional "defaultFocusScroll"      defaultFocusScroll      :: Maybe _
+          #+ FC.optional "getCacheBusterParam"     getCacheBusterParam     FC.boolean
+          #+ FC.optional "globalViewTransitions"   globalViewTransitions   FC.boolean
+          #+ FC.optional "methodsThatUseUrlParams" methodsThatUseUrlParams (FC.nonEmpty methodSchema)
+          #+ FC.optional "selfRequestsOnly"        selfRequestsOnly        FC.boolean
+          #+ FC.optional "ignoreTitle"             ignoreTitle             FC.boolean
+          #+ FC.optional "scrollIntoViewOnBoost"   scrollIntoViewOnBoost   FC.boolean
+     --   #+ FC.optional "triggerSpecsCache"       triggerSpecsCache       :: Maybe _
 
 defaultConfig :: Config
 defaultConfig =

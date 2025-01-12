@@ -44,7 +44,7 @@ documentExample =
             . Safe.Palettes
             $ NEL.singleton Safe.Dark
         , Safe.meta . Safe.Name $ Safe.Referrer HTML.NoReferrer
-        , E.meta [ A.name "viewport"
+        , E.meta [ A.name HTML.Viewport
                  , A.content "width=device-width, initial-scale=1"
                  ]
         , E.link
@@ -519,7 +519,7 @@ htmxExample =
     ]
 
 myClass :: HTML.Class
-myClass = HTML.Class "myClass"
+myClass = HTML.mkClass "myClass"
 
 idQuerySelectorExample :: HTML.QuerySelector
 idQuerySelectorExample =
@@ -542,7 +542,7 @@ elementQuerySelectorExample =
             ( Just $
                 HTML.tag_td
                   (Just $ HTML.attr_disabled)
-                  [ HTML.not . HTML.toClassSelector $ HTML.Class "main" ]
+                  [ HTML.not . HTML.toClassSelector $ HTML.mkClass "main" ]
                   ( Just $
                       HTML.tag_a
                         (Just . HTML.attr_href . exampleURL $ GetCustomer 1)

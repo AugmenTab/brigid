@@ -771,7 +771,7 @@ renderAttribute attr =
       buildBooleanAttribute "muted" muted
 
     Attr_Name name ->
-      Just . buildAttribute "name" $ toBytes name
+      Just . buildAttribute "name" $ Types.nameOptionToBytes name
 
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule

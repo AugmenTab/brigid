@@ -1,5 +1,6 @@
 module Brigid.HTML.Types.Class
-  ( Class (Class)
+  ( Class
+  , mkClass
   , classToBytes
   , classToText
   ) where
@@ -8,10 +9,13 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 
-newtype Class = Class T.Text
+newtype Class =
+  Class
+    { classToText :: T.Text
+    }
+
+mkClass :: T.Text -> Class
+mkClass = Class
 
 classToBytes :: Class -> LBS.ByteString
-classToBytes (Class _class) = LBS.fromStrict $ TE.encodeUtf8 _class
-
-classToText :: Class -> T.Text
-classToText (Class _class) = _class
+classToBytes = LBS.fromStrict . TE.encodeUtf8 . classToText

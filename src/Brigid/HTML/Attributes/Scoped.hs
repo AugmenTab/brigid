@@ -93,6 +93,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
+import Brigid.HTML.Attributes.Name (ValidName)
 import Brigid.HTML.Attributes.RangeBound (ValidRangeBound)
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Attributes.Source (ValidSource)
@@ -333,14 +334,14 @@ mute = Attr_Muted
 muted :: ValidAttribute 'Muted tag => Attribute tag
 muted = mute True
 
--- | The `name` attribute is left as simple 'T.Text' because its dependency on
--- the `content` attribute in the `meta` tag is too complex to reconcile here,
--- and is not a concern on other tags that use this attribute. For safe
--- construction of the `name` and `content` attributes together on a `meta`
--- tag, use 'Brigid.HTML.Elements.Safe.Meta'.
---
-name :: ValidAttribute 'Name tag => T.Text -> Attribute tag
-name = Attr_Name
+name :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf name Types.NameOptionTypes
+        , ValidName name tag
+        , ValidAttribute 'Name tag
+        )
+     => name -> Attribute tag
+name =
+  Attr_Name . Types.mkNameOption
 
 nomodule :: ValidAttribute 'NoModule tag => Bool -> Attribute tag
 nomodule = Attr_NoModule

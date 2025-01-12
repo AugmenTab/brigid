@@ -750,7 +750,7 @@ renderAttribute attr =
       buildBooleanAttribute "muted" muted
 
     Attr_Name name ->
-      Just $ buildAttribute "name" name
+      Just . buildAttribute "name" $ Types.nameOptionToText name
 
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule

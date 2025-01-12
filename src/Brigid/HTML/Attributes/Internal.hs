@@ -576,7 +576,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Name
     :: ValidAttribute 'Name tag
-    => T.Text
+    => Types.NameOption
     -> Attribute tag
 
   Attr_NoModule

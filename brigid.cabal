@@ -32,6 +32,7 @@ library
       Brigid.HTML.Attributes.Href
       Brigid.HTML.Attributes.HTMX
       Brigid.HTML.Attributes.Internal
+      Brigid.HTML.Attributes.Name
       Brigid.HTML.Attributes.Other
       Brigid.HTML.Attributes.RangeBound
       Brigid.HTML.Attributes.Relationship
@@ -91,7 +92,9 @@ library
       Brigid.HTML.Types.InputMode
       Brigid.HTML.Types.InputType
       Brigid.HTML.Types.KeyHint
+      Brigid.HTML.Types.MetadataName
       Brigid.HTML.Types.Method
+      Brigid.HTML.Types.Name
       Brigid.HTML.Types.NoContent
       Brigid.HTML.Types.None
       Brigid.HTML.Types.Number

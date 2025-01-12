@@ -27,6 +27,27 @@ import Brigid.HTML.Types.URL qualified as URL
 
 newtype Value = Value (Shrubbery.Union ValueTypes)
 
+instance Show Value where
+  show (Value value) =
+    ( Shrubbery.dissect
+        . Shrubbery.branchBuild
+        . Shrubbery.branch @HexColor               show
+        . Shrubbery.branch @BTime.Date             show
+        . Shrubbery.branch @BTime.DatetimeLocal    show
+        . Shrubbery.branch @Email                  show
+        . Shrubbery.branch @BTime.Month            show
+        . Shrubbery.branch @Number                 show
+        . Shrubbery.branch @PhoneNumber            show
+        . Shrubbery.branch @T.Text                 T.unpack
+        . Shrubbery.branch @BTime.Time             show
+        . Shrubbery.branch @URL.AbsoluteURL        show
+        . Shrubbery.branch @(URL.RelativeURL Get)  show
+        . Shrubbery.branch @(URL.RelativeURL Post) show
+        . Shrubbery.branch @URL.RawURL             show
+        . Shrubbery.branch @BTime.Week             show
+        $ Shrubbery.branchEnd
+    ) value
+
 type ValueTypes =
   [ HexColor
   , BTime.Date
@@ -50,27 +71,6 @@ mkValue :: ( KnownNat branchIndex
         => value -> Value
 mkValue =
   Value . Shrubbery.unify
-
-instance Show Value where
-  show (Value value) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @HexColor               show
-        . Shrubbery.branch @BTime.Date             show
-        . Shrubbery.branch @BTime.DatetimeLocal    show
-        . Shrubbery.branch @Email                  show
-        . Shrubbery.branch @BTime.Month            show
-        . Shrubbery.branch @Number                 show
-        . Shrubbery.branch @PhoneNumber            show
-        . Shrubbery.branch @T.Text                 T.unpack
-        . Shrubbery.branch @BTime.Time             show
-        . Shrubbery.branch @URL.AbsoluteURL        show
-        . Shrubbery.branch @(URL.RelativeURL Get)  show
-        . Shrubbery.branch @(URL.RelativeURL Post) show
-        . Shrubbery.branch @URL.RawURL             show
-        . Shrubbery.branch @BTime.Week             show
-        $ Shrubbery.branchEnd
-    ) value
 
 valueToBytes :: Value -> LBS.ByteString
 valueToBytes (Value value) =

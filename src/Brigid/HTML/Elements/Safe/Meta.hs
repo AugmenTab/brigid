@@ -42,7 +42,7 @@ import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Tags (Meta)
-import Brigid.HTML.Types (ReferrerPolicy, referrerPolicyToText)
+import Brigid.HTML.Types qualified as Types
 
 data Metadata
      = Charset
@@ -62,42 +62,50 @@ meta metadata =
 data MetadataName
   = ApplicationName
   | Author
+  | ColorScheme ColorSchemeOption
   | Description
   | Generator
   | Keywords
-  | Referrer ReferrerPolicy
-  | ColorScheme ColorSchemeOption
+  | Referrer Types.ReferrerPolicy
+  | Robots
   | ThemeColor
   | Viewport
 
-metadataNameToText :: MetadataName -> T.Text
-metadataNameToText metadata =
-  case metadata of
-    ApplicationName          -> "application-name"
-    Author                   -> "author"
-    Description              -> "description"
-    Generator                -> "generator"
-    Keywords                 -> "keywords"
-    Referrer        _content -> "referrer"
-    ColorScheme     _content -> "color-scheme"
-    ThemeColor               -> "theme-color"
-    Viewport                 -> "viewport"
-
 nameAttributes :: MetadataName -> [Attribute Meta]
 nameAttributes name =
-  [ A.name $ metadataNameToText name
-  , A.content $
-      case name of
-        ApplicationName         -> "" -- TODO
-        Author                  -> "" -- TODO
-        Description             -> "" -- TODO
-        Generator               -> "" -- TODO
-        Keywords                -> "" -- TODO
-        Referrer        content -> referrerPolicyToText content
-        ColorScheme     content -> colorSchemeOptionToText content
-        ThemeColor              -> "" -- TODO
-        Viewport                -> "" -- TODO
-  ]
+  let (metadataName, metadataContent) =
+        case name of
+          ApplicationName ->
+            (Types.ApplicationName, "") -- TODO
+
+          Author ->
+            (Types.Author, "") -- TODO
+
+          ColorScheme content ->
+            (Types.ColorScheme, colorSchemeOptionToText content)
+
+          Description ->
+            (Types.Description, "") -- TODO
+
+          Generator ->
+            (Types.Generator, "") -- TODO
+
+          Keywords ->
+            (Types.Keywords, "") -- TODO
+
+          Referrer content ->
+            (Types.Referrer, Types.referrerPolicyToText content)
+
+          Robots ->
+            (Types.Robots, "") -- TODO
+
+          ThemeColor ->
+            (Types.ThemeColor, "") -- TODO
+
+          Viewport ->
+            (Types.Viewport, "") -- TODO
+
+   in [ A.name metadataName, A.content metadataContent ]
 
 data ColorSchemeOption
   = Normal
