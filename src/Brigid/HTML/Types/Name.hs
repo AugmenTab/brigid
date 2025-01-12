@@ -3,8 +3,7 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Types.Name
-  ( Name
-  , mkName
+  ( Name (Name)
   , nameToBytes
   , nameToText
   , NameOption
@@ -27,9 +26,6 @@ newtype Name =
   Name
     { nameToText :: T.Text
     } deriving (Eq, Show)
-
-mkName :: T.Text -> Name
-mkName = Name
 
 nameToBytes :: Name -> LBS.ByteString
 nameToBytes = LBS.fromStrict . TE.encodeUtf8 . nameToText

@@ -1,6 +1,5 @@
 module Brigid.HTML.Types.Class
-  ( Class
-  , mkClass
+  ( Class (Class)
   , classToBytes
   , classToText
   ) where
@@ -13,9 +12,6 @@ newtype Class =
   Class
     { classToText :: T.Text
     }
-
-mkClass :: T.Text -> Class
-mkClass = Class
 
 classToBytes :: Class -> LBS.ByteString
 classToBytes = LBS.fromStrict . TE.encodeUtf8 . classToText

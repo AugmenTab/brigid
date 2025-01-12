@@ -61,7 +61,7 @@ class_ :: Types.Class -> Attribute tag
 class_ = Attr_Class
 
 classes :: [T.Text] -> Attribute tag
-classes = class_ . Types.mkClass . T.unwords
+classes = class_ . Types.Class . T.unwords
 
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable

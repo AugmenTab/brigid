@@ -519,7 +519,7 @@ htmxExample =
     ]
 
 myClass :: HTML.Class
-myClass = HTML.mkClass "myClass"
+myClass = HTML.Class "myClass"
 
 idQuerySelectorExample :: HTML.QuerySelector
 idQuerySelectorExample =
@@ -542,7 +542,7 @@ elementQuerySelectorExample =
             ( Just $
                 HTML.tag_td
                   (Just $ HTML.attr_disabled)
-                  [ HTML.not . HTML.toClassSelector $ HTML.mkClass "main" ]
+                  [ HTML.not . HTML.toClassSelector $ HTML.Class "main" ]
                   ( Just $
                       HTML.tag_a
                         (Just . HTML.attr_href . exampleURL $ GetCustomer 1)
