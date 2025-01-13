@@ -63,6 +63,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_DisableRemotePlayback
       , Attr_Download
       , Attr_For
+      , Attr_Form
       , Attr_FormMethod
       , Attr_FormNoValidate
       , Attr_Headers
@@ -443,10 +444,10 @@ data Attribute (tag :: TagType) where
     => Types.ForOption
     -> Attribute tag
 
-  -- Attr_Form
-  --   :: ValidAttribute 'Form tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Form
+    :: ValidAttribute 'Form tag
+    => Types.Id
+    -> Attribute tag
 
   -- Attr_FormAction
   --   :: ValidAttribute 'FormAction tag
@@ -1051,6 +1052,9 @@ attributeText attr =
 
     Attr_For _for ->
       "for"
+
+    Attr_Form _form ->
+      "form"
 
     Attr_FormMethod _formmethod ->
       "formmethod"

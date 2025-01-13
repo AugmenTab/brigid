@@ -695,6 +695,9 @@ renderAttribute attr =
     Attr_For for ->
       Just . buildAttribute "for" $ Types.forOptionToText for
 
+    Attr_Form form ->
+      Just . buildAttribute "form" $ Types.idToText form
+
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod
 

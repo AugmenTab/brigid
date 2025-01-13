@@ -716,6 +716,9 @@ renderAttribute attr =
     Attr_For for ->
       Just . buildAttribute "for" $ Types.forOptionToBytes for
 
+    Attr_Form form ->
+      Just . buildAttribute "form" $ Types.idToBytes form
+
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToBytes formmethod
 

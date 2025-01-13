@@ -29,6 +29,7 @@ module Brigid.HTML.Attributes.Scoped
   , disableremoteplayback
   , download
   , for
+  , form
   , formmethod
   , formnovalidate
   , headers
@@ -240,6 +241,9 @@ for :: ( KnownNat branchIndex
     => for -> Attribute tag
 for =
   Attr_For . Types.mkForOption
+
+form :: ValidAttribute 'Form tag => Types.Id -> Attribute tag
+form = Attr_Form
 
 formmethod :: ValidAttribute 'FormMethod tag
            => Types.FormMethod -> Attribute tag

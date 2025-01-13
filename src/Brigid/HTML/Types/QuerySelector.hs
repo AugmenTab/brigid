@@ -2763,9 +2763,8 @@ attr_for :: ( KnownNat branchIndex
 attr_for =
   (,) Attr_For . Just . forOptionToText . mkForOption
 
--- TODO
-attr_form :: T.Text -> AttributeSelector
-attr_form = (,) Attr_Form . Just
+attr_form :: Id.Id -> AttributeSelector
+attr_form = (,) Attr_Form . Just . Id.idToText
 
 -- TODO
 attr_formaction :: T.Text -> AttributeSelector

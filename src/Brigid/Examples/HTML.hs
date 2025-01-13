@@ -112,6 +112,9 @@ pingURL =
       /- "customers"
       /- "log_access"
 
+formId :: HTML.Id
+formId = HTML.Id "my_form"
+
 numberId :: HTML.Id
 numberId = HTML.Id "number"
 
@@ -137,7 +140,8 @@ example =
             ]
         , E.text "."
         ]
-    , E.form [ A.hxValidate
+    , E.form [ A.id formId
+             , A.hxValidate
              , A.acceptCharset
              , A.validate False
              , A.method HTML.FormPOST
@@ -148,7 +152,11 @@ example =
         , E.label [ A.for numberId ]
             [ E.text "Number:"
             ]
-        , E.input [ A.id numberId, A.type_ HTML.InputNumber, A.list divId ]
+        , E.input [ A.id numberId
+                  , A.type_ HTML.InputNumber
+                  , A.list divId
+                  , A.form formId
+                  ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.
                      ]
