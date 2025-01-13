@@ -112,6 +112,9 @@ pingURL =
       /- "customers"
       /- "log_access"
 
+numberId :: HTML.Id
+numberId = HTML.Id "number"
+
 example :: E.ChildHTML E.Body grandparent
 example =
   E.div [ A.id divId
@@ -142,7 +145,10 @@ example =
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "Do HyperScript" ]
         , E.div [] []
-        , E.input [ A.type_ HTML.InputNumber, A.list divId ]
+        , E.label [ A.for numberId ]
+            [ E.text "Number:"
+            ]
+        , E.input [ A.id numberId, A.type_ HTML.InputNumber, A.list divId ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.
                      ]
@@ -169,7 +175,10 @@ example =
         [
         ]
     , E.div [ A.tabindex HTML.NotReachable ]
-        [ E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
+        [ E.output [ A.for $ divId :| [ numberId ] ]
+            [
+            ]
+        , E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
             , E.meter [ A.min $ HTML.numberFromIntegral (0 :: Int)
                       , A.low $ HTML.numberFromReal (1 % 4 :: Rational) 2

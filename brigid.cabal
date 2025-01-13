@@ -28,6 +28,7 @@ library
       Brigid.HTML.Attributes
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Elements
+      Brigid.HTML.Attributes.For
       Brigid.HTML.Attributes.Global
       Brigid.HTML.Attributes.Href
       Brigid.HTML.Attributes.HTMX
@@ -82,6 +83,7 @@ library
       Brigid.HTML.Types.Every
       Brigid.HTML.Types.Extension
       Brigid.HTML.Types.FocusScroll
+      Brigid.HTML.Types.For
       Brigid.HTML.Types.Headers
       Brigid.HTML.Types.HexColor
       Brigid.HTML.Types.Href

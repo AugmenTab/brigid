@@ -713,6 +713,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . toBytes . NET.toText)
         download
 
+    Attr_For for ->
+      Just . buildAttribute "for" $ Types.forOptionToBytes for
+
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToBytes formmethod
 

@@ -28,6 +28,7 @@ module Brigid.HTML.Attributes.Scoped
   , disablepictureinpicture
   , disableremoteplayback
   , download
+  , for
   , formmethod
   , formnovalidate
   , headers
@@ -91,6 +92,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
+import Brigid.HTML.Attributes.For (ValidFor)
 import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Name (ValidName)
@@ -229,6 +231,15 @@ disableremoteplayback = Attr_DisableRemotePlayback
 download :: ValidAttribute 'Download tag
          => Maybe NET.NonEmptyText -> Attribute tag
 download = Attr_Download
+
+for :: ( KnownNat branchIndex
+       , branchIndex ~ FirstIndexOf for Types.ForOptionTypes
+       , ValidFor for tag
+       , ValidAttribute 'For tag
+       )
+    => for -> Attribute tag
+for =
+  Attr_For . Types.mkForOption
 
 formmethod :: ValidAttribute 'FormMethod tag
            => Types.FormMethod -> Attribute tag

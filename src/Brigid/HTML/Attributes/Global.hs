@@ -41,6 +41,7 @@ module Brigid.HTML.Attributes.Global
 --
 
 import Prelude hiding (id)
+import Data.Containers.ListUtils (nubOrd)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 import Ogma qualified
@@ -61,7 +62,7 @@ class_ :: Types.Class -> Attribute tag
 class_ = Attr_Class
 
 classes :: [T.Text] -> Attribute tag
-classes = class_ . Types.Class . T.unwords
+classes = class_ . Types.Class . T.unwords . nubOrd
 
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable

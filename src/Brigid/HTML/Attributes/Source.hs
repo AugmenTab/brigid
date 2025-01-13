@@ -9,7 +9,7 @@ module Brigid.HTML.Attributes.Source
   ) where
 
 import Data.Kind (Type)
-import GHC.TypeLits (ErrorMessage(..), TypeError)
+import GHC.TypeLits (ErrorMessage (..), TypeError)
 
 import Brigid.HTML.Attributes.Href (HrefTypeErrorMessage)
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups

@@ -633,6 +633,7 @@ import Brigid.HTML.Types.Document (Document, documentToBytes, documentToText)
 import Brigid.HTML.Types.Event qualified as Event
 import Brigid.HTML.Types.Every (Every, everyToBytes, everyToText)
 import Brigid.HTML.Types.Extension (Extension, extensionToText)
+import Brigid.HTML.Types.For (ForOptionTypes, forOptionToText, mkForOption)
 import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
 import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
@@ -2755,9 +2756,12 @@ attr_download = (,) Attr_Download . fmap NET.toText
 attr_enctype :: T.Text -> AttributeSelector
 attr_enctype = (,) Attr_Enctype . Just
 
--- TODO
-attr_for :: T.Text -> AttributeSelector
-attr_for = (,) Attr_For . Just
+attr_for :: ( KnownNat branchIndex
+            , branchIndex ~ FirstIndexOf for ForOptionTypes
+            )
+         => for -> AttributeSelector
+attr_for =
+  (,) Attr_For . Just . forOptionToText . mkForOption
 
 -- TODO
 attr_form :: T.Text -> AttributeSelector

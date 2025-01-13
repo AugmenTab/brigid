@@ -21,7 +21,7 @@ module Brigid.HTML.Internal.TagOperations
   , Union
   ) where
 
-import GHC.TypeLits (ErrorMessage(..), TypeError)
+import GHC.TypeLits (ErrorMessage (..), TypeError)
 
 import Brigid.HTML.Attributes.AttributeType (AttributeErrorMessage, AttributeType)
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)

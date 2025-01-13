@@ -692,6 +692,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . NET.toText)
         download
 
+    Attr_For for ->
+      Just . buildAttribute "for" $ Types.forOptionToText for
+
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod
 
