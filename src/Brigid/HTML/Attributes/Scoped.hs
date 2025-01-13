@@ -32,6 +32,7 @@ module Brigid.HTML.Attributes.Scoped
   , form
   , formmethod
   , formnovalidate
+  , formtarget
   , headers
   , height
   , high
@@ -251,6 +252,9 @@ formmethod = Attr_FormMethod
 
 formnovalidate :: ValidAttribute 'FormNoValidate tag => Attribute tag
 formnovalidate = Attr_FormNoValidate
+
+formtarget :: ValidAttribute 'FormTarget tag => Types.Target -> Attribute tag
+formtarget = Attr_FormTarget
 
 headers :: ValidAttribute 'Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag

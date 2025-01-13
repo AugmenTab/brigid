@@ -2780,9 +2780,8 @@ attr_formmethod = (,) Attr_FormMethod . Just . formMethodToText
 attr_formnovalidate :: AttributeSelector
 attr_formnovalidate = (Attr_FormNoValidate, Nothing)
 
--- TODO
-attr_formtarget :: T.Text -> AttributeSelector
-attr_formtarget = (,) Attr_FormTarget . Just
+attr_formtarget :: Target -> AttributeSelector
+attr_formtarget = (,) Attr_FormTarget . Just . targetToText
 
 attr_headers :: NEL.NonEmpty Id.Id -> AttributeSelector
 attr_headers =

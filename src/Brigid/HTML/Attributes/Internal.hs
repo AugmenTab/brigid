@@ -66,6 +66,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Form
       , Attr_FormMethod
       , Attr_FormNoValidate
+      , Attr_FormTarget
       , Attr_Headers
       , Attr_Height
       , Attr_High
@@ -468,10 +469,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'FormNoValidate tag
     => Attribute tag
 
-  -- Attr_FormTarget
-  --   :: ValidAttribute 'FormTarget tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_FormTarget
+    :: ValidAttribute 'FormTarget tag
+    => Types.Target
+    -> Attribute tag
 
   Attr_Headers
     :: ValidAttribute 'Headers tag
@@ -1061,6 +1062,9 @@ attributeText attr =
 
     Attr_FormNoValidate ->
       "formnovalidate"
+
+    Attr_FormTarget _formtarget ->
+      "formtarget"
 
     Attr_Headers _headers ->
       "headers"

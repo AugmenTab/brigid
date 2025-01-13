@@ -45,6 +45,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Form                    = TagGroups.InputTags
   ValidElementsFor FormMethod              = TagGroups.FormMethodTags
   ValidElementsFor FormNoValidate          = TagGroups.FormNoValidateTags
+  ValidElementsFor FormTarget              = TagGroups.FormTargetTags
   ValidElementsFor Headers                 = '[ Tags.TableDataCell ]
   ValidElementsFor Height                  = TagGroups.SizableTags
   ValidElementsFor High                    = '[ Tags.Meter ]

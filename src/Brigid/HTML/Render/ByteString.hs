@@ -725,6 +725,9 @@ renderAttribute attr =
     Attr_FormNoValidate ->
       buildBooleanAttribute "formnovalidate" True
 
+    Attr_FormTarget formtarget ->
+      Just . buildAttribute "formtarget" $ Types.targetToBytes formtarget
+
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
