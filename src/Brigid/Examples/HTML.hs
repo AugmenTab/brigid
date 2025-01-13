@@ -210,7 +210,11 @@ example =
                           Nothing
                       ]
                   )
-            , E.area [ A.coords $ 10 :| [ 58 ], A.target HTML.Blank ]
+            , E.area [ A.coords $ 10 :| [ 58 ]
+                     , A.target HTML.Blank
+                     , A.href fakeJavaScriptLink
+                     , A.hreflang irish
+                     ]
             , Safe.area $
                 Safe.Area
                   { Safe.areaShape = Just $ Safe.Circle (100, 580) 25

@@ -2802,9 +2802,8 @@ attr_href :: ( KnownNat branchIndex
           => href -> AttributeSelector
 attr_href = (,) Attr_Href . Just . hrefSelectorToText . mkHrefSelector
 
--- TODO
-attr_hreflang :: T.Text -> AttributeSelector
-attr_hreflang = (,) Attr_HrefLang . Just
+attr_hreflang :: Ogma.BCP_47 -> AttributeSelector
+attr_hreflang = (,) Attr_HrefLang . Just . Ogma.bcp_47ToText
 
 -- TODO
 attr_httpEquiv :: T.Text -> AttributeSelector

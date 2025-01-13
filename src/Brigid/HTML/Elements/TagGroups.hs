@@ -53,6 +53,7 @@ module Brigid.HTML.Elements.TagGroups
   , FormNoValidateTags
   , FormTargetTags
   , HrefTags
+  , HrefLangTags
   , InputTags
   , LabelableTags
   , LengthTags
@@ -788,6 +789,12 @@ type HrefTags =
   'Base
     ': 'Link
     ': URLTags
+
+type HrefLangTags =
+  [ 'Anchor
+  , 'Area
+  , 'Link
+  ]
 
 type InputTags =
   [ 'Input

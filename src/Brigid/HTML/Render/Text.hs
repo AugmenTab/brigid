@@ -722,6 +722,9 @@ renderAttribute attr =
     Attr_Href href ->
       Just . buildAttribute "href" $ Types.hrefToText href
 
+    Attr_HrefLang hreflang ->
+      Just . buildAttribute "hreflang" $ Ogma.bcp_47ToText hreflang
+
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 

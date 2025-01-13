@@ -71,6 +71,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Height
       , Attr_High
       , Attr_Href
+      , Attr_HrefLang
       , Attr_IsMap
       , Attr_Kind
       , Attr_Label
@@ -494,10 +495,10 @@ data Attribute (tag :: TagType) where
     => Types.Href Types.Get
     -> Attribute tag
 
-  -- Attr_HrefLang
-  --   :: ValidAttribute 'HrefLang tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_HrefLang
+    :: ValidAttribute 'HrefLang tag
+    => Ogma.BCP_47
+    -> Attribute tag
 
   -- Attr_HttpEquiv
   --   :: ValidAttribute 'HttpEquiv tag
@@ -1077,6 +1078,9 @@ attributeText attr =
 
     Attr_Href _href ->
       "href"
+
+    Attr_HrefLang _hreflang ->
+      "hreflang"
 
     Attr_IsMap ->
       "ismap"
