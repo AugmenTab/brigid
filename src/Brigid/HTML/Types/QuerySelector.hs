@@ -618,6 +618,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Internal.Render qualified as Render
+import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
@@ -2653,9 +2654,12 @@ attr_accept = (,) Attr_Accept . Just
 attr_acceptCharset :: AttributeSelector
 attr_acceptCharset = (Attr_AcceptCharset, Just "UTF-8")
 
--- TODO
-attr_action :: T.Text -> AttributeSelector
-attr_action = (,) Attr_Action . Just
+attr_action :: ( KnownNat branchIndex
+               , branchIndex ~ FirstIndexOf action ActionTypes
+               )
+            => action -> AttributeSelector
+attr_action =
+  (,) Attr_Action . Just . actionToText . mkAction
 
 attr_allow :: [FeaturePolicyDirective] -> AttributeSelector
 attr_allow =
@@ -2772,9 +2776,13 @@ attr_for =
 attr_form :: Id.Id -> AttributeSelector
 attr_form = (,) Attr_Form . Just . Id.idToText
 
--- TODO
-attr_formaction :: T.Text -> AttributeSelector
-attr_formaction = (,) Attr_FormAction . Just
+attr_formaction :: ( KnownNat branchIndex
+                   , branchIndex ~ FirstIndexOf action ActionTypes
+                   )
+                => action -> AttributeSelector
+attr_formaction =
+  (,) Attr_FormAction . Just . actionToText . mkAction
+
 
 -- TODO
 attr_formenctype :: T.Text -> AttributeSelector

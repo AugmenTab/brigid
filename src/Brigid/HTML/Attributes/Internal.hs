@@ -40,6 +40,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_WritingSuggestions
 
       , Attr_AcceptCharset
+      , Attr_Action
       , Attr_Allow
       , Attr_Alt
       , Attr_Async
@@ -65,6 +66,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Download
       , Attr_For
       , Attr_Form
+      , Attr_FormAction
       , Attr_FormMethod
       , Attr_FormNoValidate
       , Attr_FormTarget
@@ -310,10 +312,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'AcceptCharset tag
     => Attribute tag
 
-  -- Attr_Action
-  --   :: ValidAttribute 'Action tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Action
+    :: ValidAttribute 'Action tag
+    => Types.Action
+    -> Attribute tag
 
   Attr_Allow
     :: ValidAttribute 'Allow tag
@@ -452,10 +454,10 @@ data Attribute (tag :: TagType) where
     => Types.Id
     -> Attribute tag
 
-  -- Attr_FormAction
-  --   :: ValidAttribute 'FormAction tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_FormAction
+    :: ValidAttribute 'FormAction tag
+    => Types.Action
+    -> Attribute tag
 
   -- Attr_FormEnctype
   --   :: ValidAttribute 'FormEnctype tag
@@ -987,6 +989,9 @@ attributeText attr =
     Attr_AcceptCharset ->
       "accept-charset"
 
+    Attr_Action _action ->
+      "action"
+
     Attr_Allow _allow ->
       "allow"
 
@@ -1061,6 +1066,9 @@ attributeText attr =
 
     Attr_Form _form ->
       "form"
+
+    Attr_FormAction _formaction ->
+      "formaction"
 
     Attr_FormMethod _formmethod ->
       "formmethod"

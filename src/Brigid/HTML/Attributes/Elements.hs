@@ -19,6 +19,7 @@ type ValidAttribute attr tag =
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
   ValidElementsFor AcceptCharset           = '[ Tags.Form ]
+  ValidElementsFor Action                  = '[ Tags.Form ]
   ValidElementsFor Allow                   = '[ Tags.IFrame ]
   ValidElementsFor Alt                     = TagGroups.AltTags
   ValidElementsFor Async                   = '[ Tags.Script ]
@@ -44,9 +45,10 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Download                = '[ Tags.Anchor ]
   ValidElementsFor For                     = '[ Tags.Label, Tags.Output ]
   ValidElementsFor Form                    = TagGroups.InputTags
+  ValidElementsFor FormAction              = TagGroups.FormSubmitTags
   ValidElementsFor FormMethod              = TagGroups.FormMethodTags
   ValidElementsFor FormNoValidate          = TagGroups.FormNoValidateTags
-  ValidElementsFor FormTarget              = TagGroups.FormTargetTags
+  ValidElementsFor FormTarget              = TagGroups.FormSubmitTags
   ValidElementsFor Headers                 = '[ Tags.TableDataCell ]
   ValidElementsFor Height                  = TagGroups.SizableTags
   ValidElementsFor High                    = '[ Tags.Meter ]

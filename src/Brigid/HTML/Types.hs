@@ -28,6 +28,7 @@ module Brigid.HTML.Types
   , pingToText
   ) where
 
+import Brigid.HTML.Types.Action as Export
 import Brigid.HTML.Types.Autocapitalize as Export
 import Brigid.HTML.Types.Changed as Export
 import Brigid.HTML.Types.Class as Export

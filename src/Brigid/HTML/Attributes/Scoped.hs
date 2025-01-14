@@ -3,6 +3,7 @@
 
 module Brigid.HTML.Attributes.Scoped
   ( acceptCharset
+  , action
   , allow
   , alt
   , async
@@ -31,6 +32,7 @@ module Brigid.HTML.Attributes.Scoped
   , download
   , for
   , form
+  , formaction
   , formmethod
   , formnovalidate
   , formtarget
@@ -122,6 +124,14 @@ import Brigid.HTML.Types qualified as Types
 --
 acceptCharset :: ValidAttribute 'AcceptCharset tag => Attribute tag
 acceptCharset = Attr_AcceptCharset
+
+action :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf action Types.ActionTypes
+          , ValidAttribute 'Action tag
+          )
+       => action -> Attribute tag
+action =
+  Attr_Action . Types.mkAction
 
 allow :: ValidAttribute 'Allow tag
       => [Types.FeaturePolicyDirective] -> Attribute tag
@@ -252,6 +262,14 @@ for =
 
 form :: ValidAttribute 'Form tag => Types.Id -> Attribute tag
 form = Attr_Form
+
+formaction :: ( KnownNat branchIndex
+              , branchIndex ~ FirstIndexOf action Types.ActionTypes
+              , ValidAttribute 'FormAction tag
+              )
+           => action -> Attribute tag
+formaction =
+  Attr_FormAction . Types.mkAction
 
 formmethod :: ValidAttribute 'FormMethod tag
            => Types.FormMethod -> Attribute tag

@@ -616,6 +616,9 @@ renderAttribute attr =
     Attr_AcceptCharset ->
       Just $ buildAttribute "accept-charset" "UTF-8"
 
+    Attr_Action action ->
+      Just . buildAttribute "action" $ Types.actionToText action
+
     Attr_Allow allow ->
       Just
         . buildAttribute "allow"
@@ -703,6 +706,9 @@ renderAttribute attr =
 
     Attr_Form form ->
       Just . buildAttribute "form" $ Types.idToText form
+
+    Attr_FormAction formaction ->
+      Just . buildAttribute "formaction" $ Types.actionToText formaction
 
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod

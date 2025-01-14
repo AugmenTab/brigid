@@ -65,6 +65,7 @@ library
       Brigid.HTML.Render.String
       Brigid.HTML.Render.Text
       Brigid.HTML.Types
+      Brigid.HTML.Types.Action
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.Changed
       Brigid.HTML.Types.Class
