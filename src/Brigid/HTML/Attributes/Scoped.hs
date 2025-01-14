@@ -73,6 +73,8 @@ module Brigid.HTML.Attributes.Scoped
   , reversed
   , rows
   , rowspan
+  , select
+  , selected
   , shape
   , src
   , srclang
@@ -458,6 +460,12 @@ rows = Attr_Rows
 
 rowspan :: ValidAttribute 'Rowspan tag => Word -> Attribute tag
 rowspan = Attr_Rowspan
+
+select :: ValidAttribute 'Selected tag => Bool -> Attribute tag
+select = Attr_Selected
+
+selected :: ValidAttribute 'Selected tag => Attribute tag
+selected = select True
 
 shape :: ValidAttribute 'Shape tag => Types.Shape -> Attribute tag
 shape = Attr_Shape

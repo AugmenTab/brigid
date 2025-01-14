@@ -847,6 +847,9 @@ renderAttribute attr =
     Attr_Rowspan rowspan ->
       Just . buildAttribute "rowspan" . LBS8.pack $ show rowspan
 
+    Attr_Selected selected ->
+      buildBooleanAttribute "selected" selected
+
     Attr_Shape shape ->
       Just . buildAttribute "shape" $ Types.shapeToBytes shape
 

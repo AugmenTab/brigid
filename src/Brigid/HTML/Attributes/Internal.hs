@@ -103,6 +103,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Reversed
       , Attr_Rows
       , Attr_Rowspan
+      , Attr_Selected
       , Attr_Shape
       , Attr_Src
       , Attr_SrcLang
@@ -680,10 +681,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Selected
-  --   :: ValidAttribute 'Selected tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Selected
+    :: ValidAttribute 'Selected tag
+    => Bool
+    -> Attribute tag
 
   Attr_Shape
     :: ValidAttribute 'Shape tag
@@ -1177,6 +1178,9 @@ attributeText attr =
 
     Attr_Rowspan _rowspan ->
       "rowspan"
+
+    Attr_Selected _selected ->
+      "selected"
 
     Attr_Shape _shape ->
       "shape"

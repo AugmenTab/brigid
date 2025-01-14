@@ -826,6 +826,9 @@ renderAttribute attr =
     Attr_Rowspan rowspan ->
       Just . buildAttribute "rowspan" . T.pack $ show rowspan
 
+    Attr_Selected selected ->
+      buildBooleanAttribute "selected" selected
+
     Attr_Shape shape ->
       Just . buildAttribute "shape" $ Types.shapeToText shape
 

@@ -82,6 +82,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Reversed                = '[ Tags.OrderedList ]
   ValidElementsFor Rows                    = '[ Tags.TextArea ]
   ValidElementsFor Rowspan                 = TagGroups.TableCells
+  ValidElementsFor Selected                = '[ Tags.Option ]
   ValidElementsFor Shape                   = '[ Tags.Area ]
   ValidElementsFor Src                     = TagGroups.SrcTags
   ValidElementsFor SrcLang                 = '[ Tags.Track ]

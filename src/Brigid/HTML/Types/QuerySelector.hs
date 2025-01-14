@@ -2950,9 +2950,8 @@ attr_sandbox = (,) Attr_Sandbox . Just
 attr_scope :: T.Text -> AttributeSelector
 attr_scope = (,) Attr_Scope . Just
 
--- TODO
-attr_selected :: T.Text -> AttributeSelector
-attr_selected = (,) Attr_Selected . Just
+attr_selected :: AttributeSelector
+attr_selected = (Attr_Selected, Nothing)
 
 attr_shape :: Shape -> AttributeSelector
 attr_shape = (,) Attr_Shape . Just . shapeToText
