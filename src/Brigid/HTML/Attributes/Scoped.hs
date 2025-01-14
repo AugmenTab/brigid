@@ -3,6 +3,7 @@
 
 module Brigid.HTML.Attributes.Scoped
   ( acceptCharset
+  , allow
   , alt
   , async
   , autoplay
@@ -84,6 +85,7 @@ module Brigid.HTML.Attributes.Scoped
   ) where
 
 import Prelude hiding (max, min, reverse)
+import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -120,6 +122,10 @@ import Brigid.HTML.Types qualified as Types
 --
 acceptCharset :: ValidAttribute 'AcceptCharset tag => Attribute tag
 acceptCharset = Attr_AcceptCharset
+
+allow :: ValidAttribute 'Allow tag
+      => [Types.FeaturePolicyDirective] -> Attribute tag
+allow = Attr_Allow . nubOrdOn fromEnum
 
 alt :: ValidAttribute 'Alt tag => T.Text -> Attribute tag
 alt = Attr_Alt

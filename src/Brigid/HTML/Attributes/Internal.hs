@@ -40,6 +40,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_WritingSuggestions
 
       , Attr_AcceptCharset
+      , Attr_Allow
       , Attr_Alt
       , Attr_Async
       , Attr_Autoplay
@@ -314,10 +315,10 @@ data Attribute (tag :: TagType) where
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Allow
-  --   :: ValidAttribute 'Allow tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Allow
+    :: ValidAttribute 'Allow tag
+    => [Types.FeaturePolicyDirective]
+    -> Attribute tag
 
   Attr_Alt
     :: ValidAttribute 'Alt tag
@@ -985,6 +986,9 @@ attributeText attr =
     --
     Attr_AcceptCharset ->
       "accept-charset"
+
+    Attr_Allow _allow ->
+      "allow"
 
     Attr_Alt _alt ->
       "alt"

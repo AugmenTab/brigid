@@ -19,6 +19,7 @@ type ValidAttribute attr tag =
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
   ValidElementsFor AcceptCharset           = '[ Tags.Form ]
+  ValidElementsFor Allow                   = '[ Tags.IFrame ]
   ValidElementsFor Alt                     = TagGroups.AltTags
   ValidElementsFor Async                   = '[ Tags.Script ]
   ValidElementsFor Autoplay                = TagGroups.MediaContent

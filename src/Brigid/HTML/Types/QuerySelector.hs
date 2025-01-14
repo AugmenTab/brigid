@@ -600,9 +600,10 @@ module Brigid.HTML.Types.QuerySelector
   , rawTriggerToText
   ) where
 
-import Prelude hiding (Show, div, head, id, map, max, min, show, span)
+import Prelude hiding (Show, div, head, map, max, min, show, span)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Containers.ListUtils (nubOrd)
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
 import Data.NonEmptyText qualified as NET
@@ -633,6 +634,7 @@ import Brigid.HTML.Types.Document (Document, documentToBytes, documentToText)
 import Brigid.HTML.Types.Event qualified as Event
 import Brigid.HTML.Types.Every (Every, everyToBytes, everyToText)
 import Brigid.HTML.Types.Extension (Extension, extensionToText)
+import Brigid.HTML.Types.FeaturePolicyDirective (FeaturePolicyDirective, featurePolicyDirectiveToText)
 import Brigid.HTML.Types.For (ForOptionTypes, forOptionToText, mkForOption)
 import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
@@ -2655,9 +2657,13 @@ attr_acceptCharset = (Attr_AcceptCharset, Just "UTF-8")
 attr_action :: T.Text -> AttributeSelector
 attr_action = (,) Attr_Action . Just
 
--- TODO
-attr_allow :: T.Text -> AttributeSelector
-attr_allow = (,) Attr_Allow . Just
+attr_allow :: [FeaturePolicyDirective] -> AttributeSelector
+attr_allow =
+  (,) Attr_Allow
+    . Just
+    . Render.foldToTextWithSeparator id "; "
+    . nubOrd
+    . fmap featurePolicyDirectiveToText
 
 attr_alt :: T.Text -> AttributeSelector
 attr_alt = (,) Attr_Alt . Just

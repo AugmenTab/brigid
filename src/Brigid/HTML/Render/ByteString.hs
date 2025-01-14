@@ -637,6 +637,12 @@ renderAttribute attr =
     Attr_AcceptCharset ->
       Just $ buildAttribute "accept-charset" "UTF-8"
 
+    Attr_Allow allow ->
+      Just
+        . buildAttribute "allow"
+        . Render.foldToBytesWithSeparator Types.featurePolicyDirectiveToBytes "; "
+        $ allow
+
     Attr_Alt alt ->
       Just . buildAttribute "alt" $ toBytes alt
 
