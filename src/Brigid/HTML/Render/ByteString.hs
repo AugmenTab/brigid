@@ -619,7 +619,7 @@ renderAttribute attr =
       Just . buildAttribute "style" . toBytes $ Escape.attribute style
 
     Attr_TabIndex tabindex ->
-      Just . buildAttribute "tabindex" . LBS8.pack $ show tabindex
+      Just . buildAttribute "tabindex" $ Render.showBytes tabindex
 
     Attr_Title title ->
       Just . buildAttribute "title" . toBytes $ Escape.attribute title
@@ -665,10 +665,10 @@ renderAttribute attr =
       Just . buildAttribute "cite" $ Types.urlToBytes cite
 
     Attr_Cols cols ->
-      Just . buildAttribute "cols" . LBS8.pack $ show cols
+      Just . buildAttribute "cols" $ Render.showBytes cols
 
     Attr_Colspan colspan ->
-      Just . buildAttribute "colspan" . LBS8.pack $ show colspan
+      Just . buildAttribute "colspan" $ Render.showBytes colspan
 
     Attr_Coords coords ->
       Just
@@ -747,7 +747,7 @@ renderAttribute attr =
         $ NEL.toList headers
 
     Attr_Height height ->
-      Just . buildAttribute "height" . LBS8.pack $ show height
+      Just . buildAttribute "height" $ Render.showBytes height
 
     Attr_High high ->
       Just . buildAttribute "high" $ Types.numberToBytes high
@@ -780,7 +780,7 @@ renderAttribute attr =
       Just . buildAttribute "max" $ Types.rangeBoundToBytes max
 
     Attr_MaxLength maxlength ->
-      Just . buildAttribute "maxlength" . LBS8.pack $ show maxlength
+      Just . buildAttribute "maxlength" $ Render.showBytes maxlength
 
     Attr_Method method ->
       Just . buildAttribute "method" $ Types.formMethodToBytes method
@@ -789,7 +789,7 @@ renderAttribute attr =
       Just . buildAttribute "min" $ Types.rangeBoundToBytes min
 
     Attr_MinLength minlength ->
-      Just . buildAttribute "minlength" . LBS8.pack $ show minlength
+      Just . buildAttribute "minlength" $ Render.showBytes minlength
 
     Attr_Muted muted ->
       buildBooleanAttribute "muted" muted
@@ -842,10 +842,10 @@ renderAttribute attr =
       buildBooleanAttribute "reversed" reversed
 
     Attr_Rows rows ->
-      Just . buildAttribute "rows" . LBS8.pack $ show rows
+      Just . buildAttribute "rows" $ Render.showBytes rows
 
     Attr_Rowspan rowspan ->
-      Just . buildAttribute "rowspan" . LBS8.pack $ show rowspan
+      Just . buildAttribute "rowspan" $ Render.showBytes rowspan
 
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
@@ -872,7 +872,7 @@ renderAttribute attr =
       Just . buildAttribute "value" $ Types.valueToBytes value
 
     Attr_Width width ->
-      Just . buildAttribute "width" . LBS8.pack $ show width
+      Just . buildAttribute "width" $ Render.showBytes width
 
     Attr_Wrap wrap ->
       Just . buildAttribute "wrap" $ Types.wrapToBytes wrap

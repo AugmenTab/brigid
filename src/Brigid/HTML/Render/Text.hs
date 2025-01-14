@@ -598,7 +598,7 @@ renderAttribute attr =
       Just . buildAttribute "style" $ Escape.attribute style
 
     Attr_TabIndex tabindex ->
-      Just . buildAttribute "tabindex" . T.pack $ show tabindex
+      Just . buildAttribute "tabindex" $ Render.showText tabindex
 
     Attr_Title title ->
       Just . buildAttribute "title" $ Escape.attribute title
@@ -644,10 +644,10 @@ renderAttribute attr =
       Just . buildAttribute "cite" $ Types.urlToText cite
 
     Attr_Cols cols ->
-      Just . buildAttribute "cols" . T.pack $ show cols
+      Just . buildAttribute "cols" $ Render.showText cols
 
     Attr_Colspan colspan ->
-      Just . buildAttribute "colspan" . T.pack $ show colspan
+      Just . buildAttribute "colspan" $ Render.showText colspan
 
     Attr_Coords coords ->
       Just
@@ -726,7 +726,7 @@ renderAttribute attr =
         $ NEL.toList headers
 
     Attr_Height height ->
-      Just . buildAttribute "height" . T.pack $ show height
+      Just . buildAttribute "height" $ Render.showText height
 
     Attr_High high ->
       Just . buildAttribute "high" $ Types.numberToText high
@@ -759,7 +759,7 @@ renderAttribute attr =
       Just . buildAttribute "max" $ Types.rangeBoundToText max
 
     Attr_MaxLength maxlength ->
-      Just . buildAttribute "maxlength" . T.pack $ show maxlength
+      Just . buildAttribute "maxlength" $ Render.showText maxlength
 
     Attr_Method method ->
       Just . buildAttribute "method" $ Types.formMethodToText method
@@ -768,7 +768,7 @@ renderAttribute attr =
       Just . buildAttribute "min" $ Types.rangeBoundToText min
 
     Attr_MinLength minlength ->
-      Just . buildAttribute "minlength" . T.pack $ show minlength
+      Just . buildAttribute "minlength" $ Render.showText minlength
 
     Attr_Muted muted ->
       buildBooleanAttribute "muted" muted
@@ -821,10 +821,10 @@ renderAttribute attr =
       buildBooleanAttribute "reversed" reversed
 
     Attr_Rows rows ->
-      Just . buildAttribute "rows" . T.pack $ show rows
+      Just . buildAttribute "rows" $ Render.showText rows
 
     Attr_Rowspan rowspan ->
-      Just . buildAttribute "rowspan" . T.pack $ show rowspan
+      Just . buildAttribute "rowspan" $ Render.showText rowspan
 
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
@@ -851,7 +851,7 @@ renderAttribute attr =
       Just . buildAttribute "value" $ Types.valueToText value
 
     Attr_Width width ->
-      Just . buildAttribute "width" . T.pack $ show width
+      Just . buildAttribute "width" $ Render.showText width
 
     Attr_Wrap wrap ->
       Just . buildAttribute "wrap" $ Types.wrapToText wrap
