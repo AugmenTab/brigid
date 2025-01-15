@@ -1,8 +1,8 @@
 module Brigid.HTML.Types.Wrap
   ( Wrap
-      ( Hard
-      , Soft
-      , Off
+      ( WrapHard
+      , WrapSoft
+      , WrapOff
       )
   , wrapToBytes
   , wrapToText
@@ -12,20 +12,20 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data Wrap
-  = Hard
-  | Soft
-  | Off
+  = WrapHard
+  | WrapSoft
+  | WrapOff
 
 wrapToBytes :: Wrap -> LBS.ByteString
 wrapToBytes wrap =
   case wrap of
-    Hard -> "hard"
-    Soft -> "soft"
-    Off  -> "off"
+    WrapHard -> "hard"
+    WrapSoft -> "soft"
+    WrapOff  -> "off"
 
 wrapToText :: Wrap -> T.Text
 wrapToText wrap =
   case wrap of
-    Hard -> "hard"
-    Soft -> "soft"
-    Off  -> "off"
+    WrapHard -> "hard"
+    WrapSoft -> "soft"
+    WrapOff  -> "off"

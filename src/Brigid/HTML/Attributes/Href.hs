@@ -25,7 +25,7 @@ type family ValidHrefsFor (href :: Type) :: [TagType] where
   ValidHrefsFor (Types.RelativeURL Types.Get) = TagGroups.HrefTags
   ValidHrefsFor (Types.RelativeURL method)    = '[]
   ValidHrefsFor Types.Id                      = TagGroups.URLTags
-  ValidHrefsFor Types.Email                   = TagGroups.URLTags
+  ValidHrefsFor Types.EmailAddress            = TagGroups.URLTags
   ValidHrefsFor Types.RawURL                  = TagGroups.HrefTags
 
 type family AlertHref (member :: Bool) (href :: Type) (tag :: TagType) :: Bool where
@@ -51,8 +51,8 @@ type family HrefTypeErrorMessage (href :: Type) :: ErrorMessage where
   HrefTypeErrorMessage Types.Id =
     'Text "Id"
 
-  HrefTypeErrorMessage Types.Email =
-    'Text "Email"
+  HrefTypeErrorMessage Types.EmailAddress =
+    'Text "EmailAddress"
 
   HrefTypeErrorMessage Types.RawURL =
     'Text "RawURL"

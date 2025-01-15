@@ -24,7 +24,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Email (Email, emailToBytes, emailToText)
+import Brigid.HTML.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
 import Brigid.HTML.Types.Id (Id, idToBytes, idToText)
 import Brigid.HTML.Types.Method (Get, Post)
 import Brigid.HTML.Types.Phone (PhoneNumber)
@@ -39,7 +39,7 @@ type HrefTypes method =
   [ URL.AbsoluteURL
   , URL.RelativeURL method
   , Id
-  , Email
+  , EmailAddress
   , PhoneNumber
   -- TODO: SMS; will require escaping the text portion during rendering
   , BlankHref
@@ -57,13 +57,13 @@ hrefToBytes :: Href method -> LBS.ByteString
 hrefToBytes (Href href) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @URL.AbsoluteURL URL.absoluteURLToBytes
+      . Shrubbery.branch @URL.AbsoluteURL     URL.absoluteURLToBytes
       . Shrubbery.branch @(URL.RelativeURL _) URL.relativeURLToBytes
-      . Shrubbery.branch @Id (LBS8.cons '#' . idToBytes)
-      . Shrubbery.branch @Email (("mailto:" <>) . emailToBytes)
-      . Shrubbery.branch @PhoneNumber (LBS.fromStrict . formatNumber RFC3966)
-      . Shrubbery.branch @BlankHref (const "#")
-      . Shrubbery.branch @URL.RawURL URL.rawURLToBytes
+      . Shrubbery.branch @Id                  (LBS8.cons '#' . idToBytes)
+      . Shrubbery.branch @EmailAddress        (("mailto:" <>) . emailAddressToBytes)
+      . Shrubbery.branch @PhoneNumber         (LBS.fromStrict . formatNumber RFC3966)
+      . Shrubbery.branch @BlankHref           (const "#")
+      . Shrubbery.branch @URL.RawURL          URL.rawURLToBytes
       $ Shrubbery.branchEnd
   ) href
 
@@ -71,13 +71,13 @@ hrefToText :: Href method -> T.Text
 hrefToText (Href href) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @URL.AbsoluteURL URL.absoluteURLToText
+      . Shrubbery.branch @URL.AbsoluteURL     URL.absoluteURLToText
       . Shrubbery.branch @(URL.RelativeURL _) URL.relativeURLToText
-      . Shrubbery.branch @Id (T.cons '#' . idToText)
-      . Shrubbery.branch @Email (("mailto:" <>) . emailToText)
-      . Shrubbery.branch @PhoneNumber (TE.decodeUtf8 . formatNumber RFC3966)
-      . Shrubbery.branch @BlankHref (const "#")
-      . Shrubbery.branch @URL.RawURL URL.rawURLToText
+      . Shrubbery.branch @Id                  (T.cons '#' . idToText)
+      . Shrubbery.branch @EmailAddress        (("mailto:" <>) . emailAddressToText)
+      . Shrubbery.branch @PhoneNumber         (TE.decodeUtf8 . formatNumber RFC3966)
+      . Shrubbery.branch @BlankHref           (const "#")
+      . Shrubbery.branch @URL.RawURL          URL.rawURLToText
       $ Shrubbery.branchEnd
   ) href
 
@@ -93,7 +93,7 @@ type HrefSelectorTypes =
   , URL.RelativeURL Get
   , URL.RelativeURL Post
   , Id
-  , Email
+  , EmailAddress
   -- TODO: PhoneNumber
   -- TODO: SMS; will require escaping the text portion during rendering
   , BlankHref
@@ -111,13 +111,13 @@ hrefSelectorToText :: HrefSelector -> T.Text
 hrefSelectorToText =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @URL.AbsoluteURL URL.absoluteURLToText
-      . Shrubbery.branch @(URL.RelativeURL Get) URL.relativeURLToText
+      . Shrubbery.branch @URL.AbsoluteURL        URL.absoluteURLToText
+      . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToText
       . Shrubbery.branch @(URL.RelativeURL Post) URL.relativeURLToText
-      . Shrubbery.branch @Id (T.cons '#' . idToText)
-      . Shrubbery.branch @Email (("mailto:" <>) . emailToText)
-      . Shrubbery.branch @BlankHref (const "#")
-      . Shrubbery.branch @URL.RawURL URL.rawURLToText
+      . Shrubbery.branch @Id                     (T.cons '#' . idToText)
+      . Shrubbery.branch @EmailAddress           (("mailto:" <>) . emailAddressToText)
+      . Shrubbery.branch @BlankHref              (const "#")
+      . Shrubbery.branch @URL.RawURL             URL.rawURLToText
       $ Shrubbery.branchEnd
   ) . unHrefSelector
 

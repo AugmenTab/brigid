@@ -25,7 +25,7 @@ type family ValidValuesFor (val :: Type) :: [TagType] where
   ValidValuesFor Types.HexColor                 = [ Tags.Input, Tags.InputColor ]
   ValidValuesFor Types.Date                     = [ Tags.Input, Tags.InputDate ]
   ValidValuesFor Types.DatetimeLocal            = [ Tags.Input, Tags.InputDatetimeLocal ]
-  ValidValuesFor Types.Email                    = [ Tags.Input, Tags.InputEmail ]
+  ValidValuesFor Types.EmailAddress             = [ Tags.Input, Tags.InputEmail ]
   ValidValuesFor Types.Month                    = [ Tags.Input, Tags.InputMonth ]
   ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber, Tags.InputRange ]
   ValidValuesFor Types.PhoneNumber              = [ Tags.Input, Tags.InputTel ]
@@ -54,7 +54,7 @@ type family ValueTypeErrorMessage (val :: Type) :: ErrorMessage where
   ValueTypeErrorMessage Types.HexColor                 = 'Text "HexColor"
   ValueTypeErrorMessage Types.Date                     = 'Text "Date"
   ValueTypeErrorMessage Types.DatetimeLocal            = 'Text "DatetimeLocal"
-  ValueTypeErrorMessage Types.Email                    = 'Text "Email"
+  ValueTypeErrorMessage Types.EmailAddress             = 'Text "Email"
   ValueTypeErrorMessage Types.Month                    = 'Text "Month"
   ValueTypeErrorMessage Types.Number                   = 'Text "Number"
   ValueTypeErrorMessage Types.PhoneNumber              = 'Text "PhoneNumber"

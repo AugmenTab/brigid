@@ -79,7 +79,7 @@ library
       Brigid.HTML.Types.Directionality
       Brigid.HTML.Types.Disinherit
       Brigid.HTML.Types.Document
-      Brigid.HTML.Types.Email
+      Brigid.HTML.Types.EmailAddress
       Brigid.HTML.Types.Event
       Brigid.HTML.Types.Every
       Brigid.HTML.Types.Extension

@@ -42,7 +42,7 @@ import Brigid.HTML.Types.Delay as Export
 import Brigid.HTML.Types.Directionality as Export
 import Brigid.HTML.Types.Disinherit as Export
 import Brigid.HTML.Types.Document as Export
-import Brigid.HTML.Types.Email as Export
+import Brigid.HTML.Types.EmailAddress as Export
 import Brigid.HTML.Types.Event as Export
 import Brigid.HTML.Types.Every as Export
 import Brigid.HTML.Types.Extension as Export

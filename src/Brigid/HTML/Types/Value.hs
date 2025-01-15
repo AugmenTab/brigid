@@ -17,7 +17,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Email (Email, emailToBytes, emailToText)
+import Brigid.HTML.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
 import Brigid.HTML.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
 import Brigid.HTML.Types.Method (Get, Post)
 import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
@@ -34,7 +34,7 @@ instance Show Value where
         . Shrubbery.branch @HexColor               show
         . Shrubbery.branch @BTime.Date             show
         . Shrubbery.branch @BTime.DatetimeLocal    show
-        . Shrubbery.branch @Email                  show
+        . Shrubbery.branch @EmailAddress           show
         . Shrubbery.branch @BTime.Month            show
         . Shrubbery.branch @Number                 show
         . Shrubbery.branch @PhoneNumber            show
@@ -52,7 +52,7 @@ type ValueTypes =
   [ HexColor
   , BTime.Date
   , BTime.DatetimeLocal
-  , Email
+  , EmailAddress
   , BTime.Month
   , Number
   , PhoneNumber
@@ -79,7 +79,7 @@ valueToBytes (Value value) =
       . Shrubbery.branch @HexColor               hexColorToBytes
       . Shrubbery.branch @BTime.Date             BTime.dateToBytes
       . Shrubbery.branch @BTime.DatetimeLocal    BTime.datetimeLocalToBytes
-      . Shrubbery.branch @Email                  emailToBytes
+      . Shrubbery.branch @EmailAddress           emailAddressToBytes
       . Shrubbery.branch @BTime.Month            BTime.monthToBytes
       . Shrubbery.branch @Number                 numberToBytes
       . Shrubbery.branch @PhoneNumber            phoneNumberToBytes
@@ -100,7 +100,7 @@ valueToText (Value value) =
       . Shrubbery.branch @HexColor               hexColorToText
       . Shrubbery.branch @BTime.Date             BTime.dateToText
       . Shrubbery.branch @BTime.DatetimeLocal    BTime.datetimeLocalToText
-      . Shrubbery.branch @Email                  emailToText
+      . Shrubbery.branch @EmailAddress           emailAddressToText
       . Shrubbery.branch @BTime.Month            BTime.monthToText
       . Shrubbery.branch @Number                 numberToText
       . Shrubbery.branch @PhoneNumber            phoneNumberToText

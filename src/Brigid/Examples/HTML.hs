@@ -178,7 +178,7 @@ example =
     , E.textarea [ A.cols 80
                  , A.rows 5
                  , A.writingsuggestions False
-                 , A.wrap HTML.Hard
+                 , A.wrap HTML.WrapHard
                  ]
         [
         ]
