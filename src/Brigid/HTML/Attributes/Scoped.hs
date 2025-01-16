@@ -207,8 +207,7 @@ coords = Attr_Coords
    the enumerated keyword @anonymous@ was used.
 -}
 crossorigin :: ValidAttribute 'CrossOrigin tag
-            => Types.CrossOriginFetch
-            -> Attribute tag
+            => Types.CrossOriginFetch -> Attribute tag
 crossorigin = Attr_CrossOrigin
 
 datetime :: (ISO8601 t, ValidAttribute 'Datetime tag) => t -> Attribute tag
