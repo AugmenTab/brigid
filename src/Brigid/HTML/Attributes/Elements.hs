@@ -74,6 +74,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Name                    = TagGroups.NameTags
   ValidElementsFor NoModule                = '[ Tags.Script ]
   ValidElementsFor NoValidate              = '[ Tags.Form ]
+  ValidElementsFor Open                    = '[ Tags.Details ]
   ValidElementsFor Optimum                 = '[ Tags.Meter ]
   ValidElementsFor Ping                    = '[ Tags.Anchor ]
   ValidElementsFor Placeholder             = TagGroups.PlaceholderableTags

@@ -95,6 +95,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Name
       , Attr_NoModule
       , Attr_NoValidate
+      , Attr_Open
       , Attr_Optimum
       , Attr_Ping
       , Attr_Placeholder
@@ -606,10 +607,9 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
-  -- Attr_Open
-  --   :: ValidAttribute 'Open tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Open
+    :: ValidAttribute 'Open tag
+    => Attribute tag
 
   Attr_Optimum
     :: ValidAttribute 'Optimum tag
@@ -1163,6 +1163,9 @@ attributeText attr =
 
     Attr_NoValidate _novalidate ->
       "novalidate"
+
+    Attr_Open ->
+      "open"
 
     Attr_Optimum _optimum ->
       "optimum"

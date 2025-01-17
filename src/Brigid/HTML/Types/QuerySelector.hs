@@ -2895,9 +2895,8 @@ attr_nomodule = (,) Attr_NoModule . Just . Render.enumBoolToText
 attr_novalidate :: AttributeSelector
 attr_novalidate = (Attr_NoValidate, Nothing)
 
--- TODO
-attr_open :: T.Text -> AttributeSelector
-attr_open = (,) Attr_Open . Just
+attr_open :: AttributeSelector
+attr_open = (Attr_Open, Nothing)
 
 attr_optimum :: Number -> AttributeSelector
 attr_optimum = (,) Attr_Optimum . Just . numberToText

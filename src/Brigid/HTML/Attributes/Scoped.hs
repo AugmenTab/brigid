@@ -62,6 +62,7 @@ module Brigid.HTML.Attributes.Scoped
   , name
   , nomodule
   , novalidate
+  , open
   , optimum
   , ping
   , placeholder
@@ -438,6 +439,9 @@ nomodule = Attr_NoModule
 --
 novalidate :: ValidAttribute 'NoValidate tag => Attribute tag
 novalidate = validate False
+
+open :: ValidAttribute 'Open tag => Attribute tag
+open = Attr_Open
 
 optimum :: ValidAttribute 'Optimum tag => Types.Number -> Attribute tag
 optimum = Attr_Optimum

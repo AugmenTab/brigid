@@ -802,6 +802,9 @@ renderAttribute attr =
     Attr_NoValidate novalidate ->
       buildBooleanAttribute "novalidate" novalidate
 
+    Attr_Open ->
+      buildBooleanAttribute "open" True
+
     Attr_Optimum optimum ->
       Just . buildAttribute "optimum" $ Types.numberToText optimum
 
