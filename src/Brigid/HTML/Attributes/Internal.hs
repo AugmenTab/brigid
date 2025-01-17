@@ -88,6 +88,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Method
       , Attr_Min
       , Attr_MinLength
+      , Attr_Multiple
       , Attr_Muted
       , Attr_Name
       , Attr_NoModule
@@ -578,10 +579,9 @@ data Attribute (tag :: TagType) where
     => Word
     -> Attribute tag
 
-  -- Attr_Multiple
-  --   :: ValidAttribute 'Multiple tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Multiple
+    :: ValidAttribute 'Multiple tag
+    => Attribute tag
 
   Attr_Muted
     :: ValidAttribute 'Muted tag
@@ -1139,6 +1139,9 @@ attributeText attr =
 
     Attr_MinLength _minlength ->
       "minlength"
+
+    Attr_Multiple ->
+      "multiple"
 
     Attr_Muted _muted ->
       "muted"

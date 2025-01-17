@@ -2872,9 +2872,8 @@ attr_method = (,) Attr_Method . Just . formMethodToText
 attr_min :: RangeBound -> AttributeSelector
 attr_min = (,) Attr_Min . Just . rangeBoundToText
 
--- TODO
-attr_multiple :: T.Text -> AttributeSelector
-attr_multiple = (,) Attr_Multiple . Just
+attr_multiple :: AttributeSelector
+attr_multiple = (Attr_Multiple, Nothing)
 
 attr_muted :: AttributeSelector
 attr_muted = (Attr_Muted, Nothing)

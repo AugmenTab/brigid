@@ -54,6 +54,7 @@ module Brigid.HTML.Attributes.Scoped
   , method
   , min
   , minlength
+  , multiple
   , mute
   , muted
   , name
@@ -395,6 +396,9 @@ min =
 --
 minlength :: ValidAttribute 'MinLength tag => Word -> Attribute tag
 minlength = Attr_MinLength
+
+multiple :: ValidAttribute 'Multiple tag => Attribute tag
+multiple = Attr_Multiple
 
 mute :: ValidAttribute 'Muted tag => Bool -> Attribute tag
 mute = Attr_Muted

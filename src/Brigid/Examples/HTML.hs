@@ -161,6 +161,7 @@ example =
                   ]
         , E.input [ A.type_ HTML.InputFile
                   , A.capture Nothing
+                  , A.multiple
                   ]
         , E.input [ A.type_ HTML.InputFile
                   , A.capture $ Just HTML.User

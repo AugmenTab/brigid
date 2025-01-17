@@ -67,6 +67,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Method                  = '[ Tags.Form ]
   ValidElementsFor Min                     = TagGroups.RangedTags
   ValidElementsFor MinLength               = TagGroups.LengthTags
+  ValidElementsFor Multiple                = [ Tags.Input, Tags.InputFile, Tags.Select ]
   ValidElementsFor Muted                   = TagGroups.MediaContent
   ValidElementsFor Name                    = TagGroups.NameTags
   ValidElementsFor NoModule                = '[ Tags.Script ]

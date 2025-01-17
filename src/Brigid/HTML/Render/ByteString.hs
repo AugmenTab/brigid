@@ -802,6 +802,9 @@ renderAttribute attr =
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" $ Render.showBytes minlength
 
+    Attr_Multiple ->
+      buildBooleanAttribute "multiple" True
+
     Attr_Muted muted ->
       buildBooleanAttribute "muted" muted
 
