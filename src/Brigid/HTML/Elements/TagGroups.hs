@@ -44,6 +44,7 @@ module Brigid.HTML.Elements.TagGroups
   , TableRowContent
 
   , AltTags
+  , AutocompletableTags
   , CheckableTags
   , CitableTags
   , CrossOriginTags
@@ -721,6 +722,21 @@ type AltTags =
   , 'Image
   , 'Input
   , 'InputImage
+  ]
+
+type AutocompletableTags =
+  [ 'Form
+  , 'Input
+  , 'InputDate
+  , 'InputEmail
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputPassword
+  , 'InputTel
+  , 'InputText
+  , 'InputUrl
+  , 'Select
+  , 'TextArea
   ]
 
 type CheckableTags =

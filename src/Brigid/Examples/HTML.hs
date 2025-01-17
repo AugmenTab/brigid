@@ -118,10 +118,6 @@ formId = HTML.Id "my_form"
 numberId :: HTML.Id
 numberId = HTML.Id "number"
 
-exampleAutocompleteToken :: HTML.AutocompleteToken
-exampleAutocompleteToken =
-  HTML.mkAutocompleteToken $ HTML.section "test" HTML.Username
-
 example :: E.ChildHTML E.Body grandparent
 example =
   E.div [ A.id divId
@@ -151,7 +147,7 @@ example =
              , A.method HTML.FormPOST
              ]
         [ E.button [ A.hyperscript sampleHyperScript ]
-            [ E.text "Do HyperScript" ]
+            [ E.text "log 'Do HyperScript'" ]
         , E.div [] []
         , E.label [ A.for numberId ]
             [ E.text "Number:"
@@ -160,8 +156,7 @@ example =
                   , A.type_ HTML.InputNumber
                   , A.list divId
                   , A.form formId
-                  , A.customAttribute "autocomplete" $
-                      HTML.autocompleteTokenToText exampleAutocompleteToken
+                  , A.autocomplete $ HTML.section "test" HTML.Username
                   ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.

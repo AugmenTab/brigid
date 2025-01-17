@@ -631,6 +631,11 @@ renderAttribute attr =
     Attr_Async ->
       buildBooleanAttribute "async" True
 
+    Attr_Autocomplete autocomplete ->
+      Just
+        . buildAttribute "autocomplete"
+        $ Types.autocompleteTokenToText autocomplete
+
     Attr_Autoplay ->
       buildBooleanAttribute "autoplay" True
 

@@ -7,6 +7,7 @@ module Brigid.HTML.Attributes.Scoped
   , allow
   , alt
   , async
+  , autocomplete
   , autoplay
   , charset
   , check
@@ -100,6 +101,7 @@ import Ogma qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
+import Brigid.HTML.Attributes.Autocomplete (ValidAutocomplete)
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.For (ValidFor)
 import Brigid.HTML.Attributes.Href (ValidHref)
@@ -144,6 +146,15 @@ alt = Attr_Alt
 
 async :: ValidAttribute 'Async tag => Attribute tag
 async = Attr_Async
+
+autocomplete :: ( KnownNat branchIndex
+                , branchIndex ~ FirstIndexOf token Types.AutocompleteTokenTypes
+                , ValidAutocomplete token tag
+                , ValidAttribute 'Autocomplete tag
+                )
+             => token -> Attribute tag
+autocomplete =
+  Attr_Autocomplete . Types.mkAutocompleteToken
 
 autoplay :: ValidAttribute 'Autoplay tag => Attribute tag
 autoplay = Attr_Autoplay

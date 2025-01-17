@@ -23,6 +23,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Allow                   = '[ Tags.IFrame ]
   ValidElementsFor Alt                     = TagGroups.AltTags
   ValidElementsFor Async                   = '[ Tags.Script ]
+  ValidElementsFor Autocomplete            = TagGroups.AutocompletableTags
   ValidElementsFor Autoplay                = TagGroups.MediaContent
   ValidElementsFor Charset                 = [ Tags.Meta, Tags.Script ]
   ValidElementsFor Checked                 = TagGroups.CheckableTags

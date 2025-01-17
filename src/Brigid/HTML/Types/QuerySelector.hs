@@ -619,6 +619,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
+import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
@@ -2675,9 +2676,12 @@ attr_alt = (,) Attr_Alt . Just
 attr_async :: AttributeSelector
 attr_async = (Attr_Async, Nothing)
 
--- TODO
-attr_autocomplete :: T.Text -> AttributeSelector
-attr_autocomplete = (,) Attr_Autocomplete . Just
+attr_autocomplete :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf token AutocompleteTokenTypes
+                     )
+                  => token -> AttributeSelector
+attr_autocomplete =
+  (,) Attr_Autocomplete . Just . autocompleteTokenToText . mkAutocompleteToken
 
 attr_autoplay :: AttributeSelector
 attr_autoplay = (Attr_Autoplay, Nothing)

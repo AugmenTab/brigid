@@ -13,7 +13,8 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 module Brigid.HTML.Internal.TagOperations
-  ( AlertAttribute
+  ( Add
+  , AlertAttribute
   , AlertElement
   , Elem
   , Filter

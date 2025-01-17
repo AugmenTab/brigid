@@ -27,6 +27,7 @@ library
       Brigid.Examples.HTML
       Brigid.HTML.Attributes
       Brigid.HTML.Attributes.AttributeType
+      Brigid.HTML.Attributes.Autocomplete
       Brigid.HTML.Attributes.Elements
       Brigid.HTML.Attributes.For
       Brigid.HTML.Attributes.Global

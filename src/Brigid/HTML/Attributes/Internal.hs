@@ -44,6 +44,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Allow
       , Attr_Alt
       , Attr_Async
+      , Attr_Autocomplete
       , Attr_Autoplay
       , Attr_Charset
       , Attr_Checked
@@ -153,7 +154,7 @@ import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Ogma qualified
 
-import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
+import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
@@ -332,10 +333,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Async tag
     => Attribute tag
 
-  -- Attr_Autocomplete
-  --   :: ValidAttribute 'Autocomplete tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Autocomplete
+    :: ValidAttribute 'Autocomplete tag
+    => Types.AutocompleteToken
+    -> Attribute tag
 
   Attr_Autoplay
     :: ValidAttribute 'Autoplay tag
@@ -1001,6 +1002,9 @@ attributeText attr =
 
     Attr_Async ->
       "async"
+
+    Attr_Autocomplete _autocomplete ->
+      "autocomplete"
 
     Attr_Autoplay ->
       "autoplay"
