@@ -106,6 +106,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Reversed
       , Attr_Rows
       , Attr_Rowspan
+      , Attr_Sandbox
       , Attr_Selected
       , Attr_Shape
       , Attr_Size
@@ -677,10 +678,10 @@ data Attribute (tag :: TagType) where
     => Word
     -> Attribute tag
 
-  -- Attr_Sandbox
-  --   :: ValidAttribute 'Sandbox tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Sandbox
+    :: ValidAttribute 'Sandbox tag
+    => [Types.SandboxToken]
+    -> Attribute tag
 
   -- Attr_Scope
   --   :: ValidAttribute 'Scope tag
@@ -1193,6 +1194,9 @@ attributeText attr =
 
     Attr_Rowspan _rowspan ->
       "rowspan"
+
+    Attr_Sandbox _sandbox ->
+      "sandbox"
 
     Attr_Selected _selected ->
       "selected"

@@ -661,6 +661,7 @@ import Brigid.HTML.Types.RangeBound (RangeBound, rangeBoundToText)
 import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
+import Brigid.HTML.Types.SandboxToken (SandboxToken, sandboxTokenToText)
 import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
@@ -2949,9 +2950,13 @@ attr_rows = (,) Attr_Rows . Just . Render.showText
 attr_rowspan :: Word -> AttributeSelector
 attr_rowspan = (,) Attr_Rowspan . Just . Render.showText
 
--- TODO
-attr_sandbox :: T.Text -> AttributeSelector
-attr_sandbox = (,) Attr_Sandbox . Just
+attr_sandbox :: [SandboxToken] -> AttributeSelector
+attr_sandbox tokens =
+  ( Attr_Sandbox
+  , if null tokens
+      then Nothing
+      else Just $ Render.foldToTextWithSeparator sandboxTokenToText " " tokens
+  )
 
 -- TODO
 attr_scope :: T.Text -> AttributeSelector

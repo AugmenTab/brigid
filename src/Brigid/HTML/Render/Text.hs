@@ -840,6 +840,15 @@ renderAttribute attr =
     Attr_Rowspan rowspan ->
       Just . buildAttribute "rowspan" $ Render.showText rowspan
 
+    Attr_Sandbox sandbox ->
+      if null sandbox
+        then buildBooleanAttribute "sandbox" True
+        else
+          Just
+            . buildAttribute "sandbox"
+            . Render.foldToTextWithSeparator Types.sandboxTokenToText " "
+            $ sandbox
+
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
 

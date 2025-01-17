@@ -486,6 +486,8 @@ htmxExample =
             [ E.comment "Disinherit one"
             ]
         ]
+    , E.iframe [ A.sandbox [ HTML.AllowSameOrigin ]
+               ]
     , E.button [ A.hxGet . exampleURL $ GetCustomer 3
                , A.hxBoost False
                , A.hxPrompt $

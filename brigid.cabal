@@ -120,6 +120,7 @@ library
       Brigid.HTML.Types.ReferrerPolicy
       Brigid.HTML.Types.Relationship
       Brigid.HTML.Types.RequestParams
+      Brigid.HTML.Types.SandboxToken
       Brigid.HTML.Types.ScrollBehavior
       Brigid.HTML.Types.Shape
       Brigid.HTML.Types.Swap
