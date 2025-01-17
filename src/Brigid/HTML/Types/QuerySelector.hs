@@ -647,7 +647,7 @@ import Brigid.HTML.Types.Id qualified as Id
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import Brigid.HTML.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
-import Brigid.HTML.Types.Name (NameOptionTypes, mkNameOption, nameOptionToText)
+import Brigid.HTML.Types.Name (Name, NameOptionTypes, mkNameOption, nameOptionToText, nameToText)
 import Brigid.HTML.Types.NoContent (NoContent)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
@@ -3009,9 +3009,8 @@ attr_type :: ( KnownNat branchIndex
 attr_type =
   (,) Attr_Type . Just . typeOptionToText . mkTypeOption
 
--- TODO
-attr_usemap :: T.Text -> AttributeSelector
-attr_usemap = (,) Attr_UseMap . Just
+attr_usemap :: Name -> AttributeSelector
+attr_usemap = (,) Attr_UseMap . Just . nameToText
 
 attr_value :: ( KnownNat branchIndex
               , branchIndex ~ FirstIndexOf value ValueTypes

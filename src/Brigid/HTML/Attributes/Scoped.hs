@@ -85,6 +85,7 @@ module Brigid.HTML.Attributes.Scoped
   , start
   , target
   , type_
+  , usemap
   , validate
   , value
   , width
@@ -520,6 +521,13 @@ type_ :: ( KnownNat branchIndex
       => type_ -> Attribute tag
 type_ =
   Attr_Type . Types.mkTypeOption
+
+-- TODO: For broader compatibility and clarity, it's common to include both id
+-- and name on the <map> element with the same value. When making a `Safe`
+-- module, the id and name attributes will be the same.
+--
+usemap :: ValidAttribute 'UseMap tag => Types.Name -> Attribute tag
+usemap = Attr_UseMap
 
 -- | This function permits an inline argument to determine whether validation
 -- should be enabled. If 'False', the @novalidate@ attribute will be added.

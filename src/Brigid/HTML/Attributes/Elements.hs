@@ -93,6 +93,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Start                   = '[ Tags.OrderedList ]
   ValidElementsFor Target                  = TagGroups.TargetableTags
   ValidElementsFor Type                    = TagGroups.TypeableTags
+  ValidElementsFor UseMap                  = [ Tags.Image, Tags.Object ]
   ValidElementsFor Value                   = TagGroups.ValuableTags
   ValidElementsFor Width                   = TagGroups.SizableTags
   ValidElementsFor Wrap                    = '[ Tags.TextArea ]

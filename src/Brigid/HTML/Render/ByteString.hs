@@ -885,6 +885,9 @@ renderAttribute attr =
     Attr_Type type_ ->
       Just . buildAttribute "type" $ Types.typeOptionToBytes type_
 
+    Attr_UseMap usemap ->
+      Just . buildAttribute "usemap" . LBS8.cons '#' $ Types.nameToBytes usemap
+
     Attr_Value value ->
       Just . buildAttribute "value" $ Types.valueToBytes value
 

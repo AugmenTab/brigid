@@ -864,6 +864,9 @@ renderAttribute attr =
     Attr_Type type_ ->
       Just . buildAttribute "type" $ Types.typeOptionToText type_
 
+    Attr_UseMap usemap ->
+      Just . buildAttribute "usemap" . T.cons '#' $ Types.nameToText usemap
+
     Attr_Value value ->
       Just . buildAttribute "value" $ Types.valueToText value
 

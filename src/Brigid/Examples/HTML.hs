@@ -12,6 +12,7 @@ import Prelude hiding (head)
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
+import Data.Coerce (coerce)
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
@@ -301,6 +302,7 @@ listExample =
       , E.img [ A.draggable False
               , A.alt "This describes the image."
               , A.decoding HTML.DecodeAsync
+              , A.usemap $ coerce divId
               ]
    -- , Safe.imgMap [] -- This fails because `imgMap` must be used inside an Anchor tag.
       ]
