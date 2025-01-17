@@ -660,6 +660,12 @@ renderAttribute attr =
     Attr_Autoplay ->
       buildBooleanAttribute "autoplay" True
 
+    Attr_Capture mbCapture ->
+      maybe
+        (buildBooleanAttribute "capture" True)
+        (Just . buildAttribute "capture" . Types.captureMethodToBytes)
+        mbCapture
+
     Attr_Charset ->
       Just $ buildAttribute "charset" "utf-8"
 

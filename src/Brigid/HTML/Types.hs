@@ -31,6 +31,7 @@ module Brigid.HTML.Types
 import Brigid.HTML.Types.Action as Export
 import Brigid.HTML.Types.Autocapitalize as Export
 import Brigid.HTML.Types.AutocompleteToken as Export
+import Brigid.HTML.Types.CaptureMethod as Export
 import Brigid.HTML.Types.Changed as Export
 import Brigid.HTML.Types.Class as Export
 import Brigid.HTML.Types.ClassSelector as Export

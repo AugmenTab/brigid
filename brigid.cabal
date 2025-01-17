@@ -69,6 +69,7 @@ library
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
+      Brigid.HTML.Types.CaptureMethod
       Brigid.HTML.Types.Changed
       Brigid.HTML.Types.Class
       Brigid.HTML.Types.ClassSelector

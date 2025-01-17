@@ -9,6 +9,7 @@ module Brigid.HTML.Attributes.Scoped
   , async
   , autocomplete
   , autoplay
+  , capture
   , charset
   , check
   , checked
@@ -158,6 +159,10 @@ autocomplete =
 
 autoplay :: ValidAttribute 'Autoplay tag => Attribute tag
 autoplay = Attr_Autoplay
+
+capture :: ValidAttribute 'Capture tag
+        => Maybe Types.CaptureMethod -> Attribute tag
+capture = Attr_Capture
 
 -- | Limited to UTF-8, since that is the only valid option for HTML5.
 --

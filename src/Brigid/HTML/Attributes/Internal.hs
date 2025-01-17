@@ -46,6 +46,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Async
       , Attr_Autocomplete
       , Attr_Autoplay
+      , Attr_Capture
       , Attr_Charset
       , Attr_Checked
       , Attr_Cite
@@ -342,10 +343,10 @@ data Attribute (tag :: TagType) where
     :: ValidAttribute 'Autoplay tag
     => Attribute tag
 
-  -- Attr_Capture
-  --   :: ValidAttribute 'Capture tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Capture
+    :: ValidAttribute 'Capture tag
+    => Maybe Types.CaptureMethod
+    -> Attribute tag
 
   Attr_Charset
     :: ValidAttribute 'Charset tag
@@ -1008,6 +1009,9 @@ attributeText attr =
 
     Attr_Autoplay ->
       "autoplay"
+
+    Attr_Capture _capture ->
+      "capture"
 
     Attr_Charset ->
       "charset"

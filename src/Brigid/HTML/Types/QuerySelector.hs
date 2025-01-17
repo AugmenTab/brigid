@@ -621,6 +621,7 @@ import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
+import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
 import Brigid.HTML.Types.ClassSelector qualified as CS
@@ -2686,9 +2687,11 @@ attr_autocomplete =
 attr_autoplay :: AttributeSelector
 attr_autoplay = (Attr_Autoplay, Nothing)
 
--- TODO
-attr_capture :: T.Text -> AttributeSelector
-attr_capture = (,) Attr_Capture . Just
+attr_capture :: Maybe CaptureMethod -> AttributeSelector
+attr_capture =
+  maybe
+    (Attr_Capture, Nothing)
+    ((,) Attr_Capture . Just . captureMethodToText)
 
 attr_charset :: AttributeSelector
 attr_charset = (Attr_Charset, Just "utf-8")

@@ -158,6 +158,12 @@ example =
                   , A.form formId
                   , A.autocomplete $ HTML.section "test" HTML.Username
                   ]
+        , E.input [ A.type_ HTML.InputFile
+                  , A.capture Nothing
+                  ]
+        , E.input [ A.type_ HTML.InputFile
+                  , A.capture $ Just HTML.User
+                  ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.
                      ]
