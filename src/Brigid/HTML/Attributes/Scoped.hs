@@ -88,6 +88,7 @@ module Brigid.HTML.Attributes.Scoped
   , size
   , span
   , src
+  , srcdoc
   , srclang
   , start
   , target
@@ -124,6 +125,8 @@ import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Attributes.Source (ValidSource)
 import Brigid.HTML.Attributes.Type (ValidTypeOption)
 import Brigid.HTML.Attributes.Value (ValidValue)
+import Brigid.HTML.Elements.Internal (ChildHTML)
+import Brigid.HTML.Render.ByteString (renderLazyHTML)
 import Brigid.HTML.Types qualified as Types
 
 -- Scoped Attributes
@@ -544,6 +547,10 @@ src :: ( KnownNat branchIndex
     => url -> Attribute tag
 src =
   Attr_Src . Types.mkURL
+
+srcdoc :: ValidAttribute 'SrcDoc tag
+       => ChildHTML parent grandparent -> Attribute tag
+srcdoc = Attr_SrcDoc . renderLazyHTML
 
 srclang :: ValidAttribute 'SrcLang tag => Ogma.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang

@@ -2986,7 +2986,11 @@ attr_src :: ( KnownNat branchIndex
 attr_src =
   (,) Attr_Src . Just . urlToText . mkURL
 
--- TODO
+-- | This is using a 'Text' representation of the HTML document contained in
+-- the 'srcdoc' attribute. It is provided for completion's sake - it is highly
+-- recommended that you not try to perform a query select based on this
+-- attribute. If you absolutely must, use at your own risk.
+--
 attr_srcdoc :: T.Text -> AttributeSelector
 attr_srcdoc = (,) Attr_SrcDoc . Just
 

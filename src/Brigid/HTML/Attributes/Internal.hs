@@ -117,6 +117,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Size
       , Attr_Span
       , Attr_Src
+      , Attr_SrcDoc
       , Attr_SrcLang
       , Attr_Start
       , Attr_Target
@@ -160,6 +161,7 @@ module Brigid.HTML.Attributes.Internal
   , attributeText
   ) where
 
+import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -728,10 +730,10 @@ data Attribute (tag :: TagType) where
     => Types.URL
     -> Attribute tag
 
-  -- Attr_SrcDoc
-  --   :: ValidAttribute 'SrcDoc tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_SrcDoc
+    :: ValidAttribute 'SrcDoc tag
+    => LBS.ByteString
+    -> Attribute tag
 
   Attr_SrcLang
     :: ValidAttribute 'SrcLang tag
@@ -1237,6 +1239,9 @@ attributeText attr =
 
     Attr_Src _src ->
       "src"
+
+    Attr_SrcDoc _srcdoc ->
+      "srcdoc"
 
     Attr_SrcLang _srclang ->
       "srclang"

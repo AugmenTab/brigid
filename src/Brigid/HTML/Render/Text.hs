@@ -8,12 +8,14 @@ module Brigid.HTML.Render.Text
 
 import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
+import Data.ByteString.Lazy qualified as LBS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 import Ogma qualified
@@ -495,10 +497,10 @@ renderAttribute attr =
       Just $ fromText T.empty
 
     Attr_Custom name value ->
-      Just . buildAttribute name $ Escape.attribute value
+      Just . buildAttribute name $ Escape.attributeText value
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ Escape.attributeChar key
+      Just . buildAttribute "accesskey" $ Escape.attributeCharText key
 
     Attr_Autocapitalize option ->
       Just
@@ -511,7 +513,7 @@ renderAttribute attr =
     Attr_Class _class ->
       Just
         . buildAttribute "class"
-        . Escape.attribute
+        . Escape.attributeText
         $ Types.classToText _class
 
     Attr_ContentEditable option ->
@@ -523,7 +525,7 @@ renderAttribute attr =
       Just $
         buildAttribute
           ("data-" <> data_)
-          (Escape.attribute value)
+          (Escape.attributeText value)
 
     Attr_Dir directionality ->
       Just
@@ -548,7 +550,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id id ->
-      Just . buildAttribute "id" . Escape.attribute $ Types.idToText id
+      Just . buildAttribute "id" . Escape.attributeText $ Types.idToText id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -559,7 +561,7 @@ renderAttribute attr =
     --     $ Types.inputModeToText mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" $ Escape.attribute is
+      Just . buildAttribute "is" $ Escape.attributeText is
 
     -- Attr_ItemId
 
@@ -595,13 +597,13 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ Render.enumBoolToText spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" $ Escape.attribute style
+      Just . buildAttribute "style" $ Escape.attributeText style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" $ Render.showText tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" $ Escape.attribute title
+      Just . buildAttribute "title" $ Escape.attributeText title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ Render.enumBoolToText translate
@@ -879,6 +881,13 @@ renderAttribute attr =
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToText src
 
+    Attr_SrcDoc srcdoc ->
+      Just
+        . buildAttribute "srcdoc"
+        . TE.decodeUtf8
+        . LBS.toStrict
+        $ Escape.attributeBytes srcdoc
+
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Ogma.bcp_47ToText srclang
 
@@ -923,7 +932,7 @@ renderAttribute attr =
       Just . buildAttribute "hx-boost" $ Render.enumBoolToText boosted
 
     Attr_HxConfirm confirmation ->
-      Just . buildAttribute "hx-confirm" $ Escape.attribute confirmation
+      Just . buildAttribute "hx-confirm" $ Escape.attributeText confirmation
 
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
@@ -964,19 +973,19 @@ renderAttribute attr =
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventText event)
-        $ Escape.attribute action
+        $ Escape.attributeText action
 
     Attr_HxParams params ->
       Just
         . buildAttribute "hx-params"
-        . Escape.attribute
+        . Escape.attributeText
         $ Types.requestParamsToText params
 
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
 
     Attr_HxPrompt prompt ->
-      Just . buildAttribute "hx-prompt" $ Escape.attribute prompt
+      Just . buildAttribute "hx-prompt" $ Escape.attributeText prompt
 
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
@@ -987,7 +996,7 @@ renderAttribute attr =
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"
-        . Escape.attribute
+        . Escape.attributeText
         $ Types.querySelectorToText selector
 
     Attr_HxSelectOOB selects ->

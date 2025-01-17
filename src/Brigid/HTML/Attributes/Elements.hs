@@ -96,6 +96,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Size                    = Add Tags.Select TagGroups.FreeTextInputTags
   ValidElementsFor Span                    = [ Tags.TableColumn, Tags.TableColumnGroup ]
   ValidElementsFor Src                     = TagGroups.SrcTags
+  ValidElementsFor SrcDoc                  = '[ Tags.IFrame ]
   ValidElementsFor SrcLang                 = '[ Tags.Track ]
   ValidElementsFor Start                   = '[ Tags.OrderedList ]
   ValidElementsFor Target                  = TagGroups.TargetableTags

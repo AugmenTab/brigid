@@ -1,6 +1,8 @@
 module Brigid.HTML.Render.Internal.Escape
-  ( attribute
-  , attributeChar
+  ( attributeBytes
+  , attributeCharBytes
+  , attributeText
+  , attributeCharText
   , html
   , urlByteString
   , urlText
@@ -8,16 +10,28 @@ module Brigid.HTML.Render.Internal.Escape
 
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 import Network.HTTP.Types.URI (urlEncode)
 
-attribute :: T.Text -> T.Text
-attribute =
-  T.concatMap attributeChar
+attributeBytes :: LBS.ByteString -> LBS.ByteString
+attributeBytes =
+  LBS8.concatMap attributeCharBytes
 
-attributeChar :: Char -> T.Text
-attributeChar c =
+attributeCharBytes :: Char -> LBS.ByteString
+attributeCharBytes c =
+  case c of
+    '"'  -> "&quot;"
+    '\'' -> "&#39;"
+    _    -> LBS8.singleton c
+
+attributeText :: T.Text -> T.Text
+attributeText =
+  T.concatMap attributeCharText
+
+attributeCharText :: Char -> T.Text
+attributeCharText c =
   case c of
     '"'  -> "&quot;"
     '\'' -> "&#39;"

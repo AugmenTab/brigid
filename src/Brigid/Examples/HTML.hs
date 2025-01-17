@@ -492,6 +492,7 @@ htmxExample =
             ]
         ]
     , E.iframe [ A.sandbox [ HTML.AllowSameOrigin ]
+               , A.srcdoc tableWithBodyExample
                ]
     , E.object [ A.data_ . exampleURL $ GetCustomer 200
                ]

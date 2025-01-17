@@ -511,10 +511,10 @@ renderAttribute attr =
       Just $
         buildAttribute
           (toBytes name)
-          (toBytes $ Escape.attribute value)
+          (toBytes $ Escape.attributeText value)
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" . toBytes $ Escape.attributeChar key
+      Just . buildAttribute "accesskey" $ Escape.attributeCharBytes key
 
     Attr_Autocapitalize option ->
       Just
@@ -527,9 +527,8 @@ renderAttribute attr =
     Attr_Class _class ->
       Just
         . buildAttribute "class"
-        . toBytes
-        . Escape.attribute
-        $ Types.classToText _class
+        . Escape.attributeBytes
+        $ Types.classToBytes _class
 
     Attr_ContentEditable option ->
       Just
@@ -540,7 +539,7 @@ renderAttribute attr =
       Just $
         buildAttribute
           ("data-" <> toBytes data_)
-          (toBytes $ Escape.attribute value)
+          (toBytes $ Escape.attributeText value)
 
     Attr_Dir directionality ->
       Just
@@ -565,11 +564,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id id ->
-      Just
-        . buildAttribute "id"
-        . toBytes
-        . Escape.attribute
-        $ Types.idToText id
+      Just . buildAttribute "id" . Escape.attributeBytes $ Types.idToBytes id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -580,7 +575,7 @@ renderAttribute attr =
     --     $ Types.inputModeToBytes mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" . toBytes $ Escape.attribute is
+      Just . buildAttribute "is" . toBytes $ Escape.attributeText is
 
     -- Attr_ItemId
 
@@ -616,13 +611,13 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ Render.enumBoolToBytes spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" . toBytes $ Escape.attribute style
+      Just . buildAttribute "style" . toBytes $ Escape.attributeText style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" $ Render.showBytes tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" . toBytes $ Escape.attribute title
+      Just . buildAttribute "title" . toBytes $ Escape.attributeText title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ Render.enumBoolToBytes translate
@@ -902,6 +897,9 @@ renderAttribute attr =
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToBytes src
 
+    Attr_SrcDoc srcdoc ->
+      Just . buildAttribute "srcdoc" $ Escape.attributeBytes srcdoc
+
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Ogma.bcp_47ToBytes srclang
 
@@ -949,7 +947,7 @@ renderAttribute attr =
       Just
         . buildAttribute "hx-confirm"
         . toBytes
-        $ Escape.attribute confirmation
+        $ Escape.attributeText confirmation
 
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
@@ -993,20 +991,19 @@ renderAttribute attr =
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventBytes event)
         . toBytes
-        $ Escape.attribute action
+        $ Escape.attributeText action
 
     Attr_HxParams params ->
       Just
         . buildAttribute "hx-params"
-        . toBytes
-        . Escape.attribute
-        $ Types.requestParamsToText params
+        . Escape.attributeBytes
+        $ Types.requestParamsToBytes params
 
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
 
     Attr_HxPrompt prompt ->
-      Just . buildAttribute "hx-prompt" . toBytes $ Escape.attribute prompt
+      Just . buildAttribute "hx-prompt" . toBytes $ Escape.attributeText prompt
 
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
@@ -1017,9 +1014,8 @@ renderAttribute attr =
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"
-        . toBytes
-        . Escape.attribute
-        $ Types.querySelectorToText selector
+        . Escape.attributeBytes
+        $ Types.querySelectorToBytes selector
 
     Attr_HxSelectOOB selects ->
       Just
