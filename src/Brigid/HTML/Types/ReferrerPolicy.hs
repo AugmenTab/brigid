@@ -25,6 +25,7 @@ data ReferrerPolicy
   | StrictOrigin
   | StrictOriginWhenCrossOrigin
   | UnsafeURL
+  deriving (Bounded, Enum, Eq, Show)
 
 referrerPolicyToBytes :: ReferrerPolicy -> LBS.ByteString
 referrerPolicyToBytes referrer =

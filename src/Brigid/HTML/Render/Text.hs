@@ -751,6 +751,9 @@ renderAttribute attr =
     Attr_HrefLang hreflang ->
       Just . buildAttribute "hreflang" $ Ogma.bcp_47ToText hreflang
 
+    Attr_HttpEquiv httpEquiv ->
+      Just . buildAttribute "http-equiv" $ Types.httpEquivTokenToText httpEquiv
+
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 

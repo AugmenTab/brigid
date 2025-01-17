@@ -44,6 +44,7 @@ module Brigid.HTML.Attributes.Scoped
   , high
   , href
   , hreflang
+  , httpEquiv
   , ismap
   , kind
   , label
@@ -334,6 +335,10 @@ href =
 
 hreflang :: ValidAttribute 'HrefLang tag => Ogma.BCP_47 -> Attribute tag
 hreflang = Attr_HrefLang
+
+httpEquiv :: ValidAttribute 'HttpEquiv tag
+          => Types.HttpEquivToken -> Attribute tag
+httpEquiv = Attr_HttpEquiv
 
 -- | The `ismap` attribute is only valid on <img> tags that are nested within
 -- an <a> tag. For safe construction of the `ismap` attribute, use

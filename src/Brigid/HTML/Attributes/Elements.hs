@@ -57,6 +57,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor High                    = '[ Tags.Meter ]
   ValidElementsFor Href                    = TagGroups.HrefTags
   ValidElementsFor HrefLang                = TagGroups.HrefLangTags
+  ValidElementsFor HttpEquiv               = '[ Tags.Meta ]
   ValidElementsFor IsMap                   = '[ Tags.Image ]
   ValidElementsFor Kind                    = '[ Tags.Track ]
   ValidElementsFor Label                   = TagGroups.LabelableTags

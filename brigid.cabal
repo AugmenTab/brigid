@@ -92,6 +92,7 @@ library
       Brigid.HTML.Types.Headers
       Brigid.HTML.Types.HexColor
       Brigid.HTML.Types.Href
+      Brigid.HTML.Types.HttpEquivToken
       Brigid.HTML.Types.HyperScript
       Brigid.HTML.Types.Id
       Brigid.HTML.Types.IgnoreTitle

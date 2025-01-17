@@ -643,6 +643,7 @@ import Brigid.HTML.Types.For (ForOptionTypes, forOptionToText, mkForOption)
 import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
 import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
+import Brigid.HTML.Types.HttpEquivToken (HttpEquivToken, httpEquivTokenToText)
 import Brigid.HTML.Types.Id qualified as Id
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
@@ -2831,9 +2832,8 @@ attr_href = (,) Attr_Href . Just . hrefSelectorToText . mkHrefSelector
 attr_hreflang :: Ogma.BCP_47 -> AttributeSelector
 attr_hreflang = (,) Attr_HrefLang . Just . Ogma.bcp_47ToText
 
--- TODO
-attr_httpEquiv :: T.Text -> AttributeSelector
-attr_httpEquiv = (,) Attr_HttpEquiv . Just
+attr_httpEquiv :: HttpEquivToken -> AttributeSelector
+attr_httpEquiv = (,) Attr_HttpEquiv . Just . httpEquivTokenToText
 
 -- TODO
 attr_integrity :: T.Text -> AttributeSelector

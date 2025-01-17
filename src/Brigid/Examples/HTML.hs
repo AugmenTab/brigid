@@ -39,6 +39,7 @@ documentExample =
         [ E.script [ A.crossorigin HTML.Anonymous ] $
             NET.fromText "This is a test!"
         , Safe.meta Safe.Charset
+        , Safe.meta $ Safe.HttpEquiv Safe.Pragma
         , Safe.meta
             . Safe.Name
             . Safe.ColorScheme
