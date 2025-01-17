@@ -97,6 +97,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_NoValidate
       , Attr_Open
       , Attr_Optimum
+      , Attr_Pattern
       , Attr_Ping
       , Attr_Placeholder
       , Attr_PlaysInline
@@ -616,10 +617,16 @@ data Attribute (tag :: TagType) where
     => Types.Number
     -> Attribute tag
 
-  -- Attr_Pattern
-  --   :: ValidAttribute 'Pattern tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  -- TODO: We may change this to a type with smart constructors that can guard
+  -- against different JavaScript regex features that aren't supported by all
+  -- browsers. This would allow us to offer users a safe `Pattern` type that has
+  -- constructors guarding against KavaScript regex features they don't intend
+  -- to support.
+  --
+  Attr_Pattern
+    :: ValidAttribute 'Pattern tag
+    => T.Text
+    -> Attribute tag
 
   Attr_Ping
     :: ValidAttribute 'Ping tag
@@ -1169,6 +1176,9 @@ attributeText attr =
 
     Attr_Optimum _optimum ->
       "optimum"
+
+    Attr_Pattern _pattern ->
+      "pattern"
 
     Attr_Ping _ping ->
       "ping"

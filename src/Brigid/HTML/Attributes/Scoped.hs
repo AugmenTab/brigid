@@ -64,6 +64,7 @@ module Brigid.HTML.Attributes.Scoped
   , novalidate
   , open
   , optimum
+  , pattern
   , ping
   , placeholder
   , playInline
@@ -445,6 +446,16 @@ open = Attr_Open
 
 optimum :: ValidAttribute 'Optimum tag => Types.Number -> Attribute tag
 optimum = Attr_Optimum
+
+-- | This attribute takes a simple 'T.Text' because there's no way to validate
+-- that the provided regular expression is valid. We can check for the pattern
+-- to be a valid JavaScript regular expression, but not all browsers support
+-- every feature of JavaScript regular expressions. The user must accept the
+-- risk that the provided pattern may still be invalid in actual practice when
+-- using this function.
+--
+pattern :: ValidAttribute 'Pattern tag => T.Text -> Attribute tag
+pattern = Attr_Pattern
 
 ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping

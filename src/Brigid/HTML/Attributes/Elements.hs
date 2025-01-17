@@ -12,7 +12,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType qualified as TagType
-import Brigid.HTML.Internal.TagOperations (AlertAttribute, Elem)
+import Brigid.HTML.Internal.TagOperations (Add, AlertAttribute, Elem)
 
 type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
@@ -65,10 +65,10 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Loop                    = TagGroups.MediaContent
   ValidElementsFor Low                     = '[ Tags.Meter ]
   ValidElementsFor Max                     = TagGroups.RangedTags
-  ValidElementsFor MaxLength               = TagGroups.LengthTags
+  ValidElementsFor MaxLength               = Add Tags.TextArea TagGroups.FreeTextInputTags
   ValidElementsFor Method                  = '[ Tags.Form ]
   ValidElementsFor Min                     = TagGroups.RangedTags
-  ValidElementsFor MinLength               = TagGroups.LengthTags
+  ValidElementsFor MinLength               = Add Tags.TextArea TagGroups.FreeTextInputTags
   ValidElementsFor Multiple                = [ Tags.Input, Tags.InputFile, Tags.Select ]
   ValidElementsFor Muted                   = TagGroups.MediaContent
   ValidElementsFor Name                    = TagGroups.NameTags
@@ -76,8 +76,9 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor NoValidate              = '[ Tags.Form ]
   ValidElementsFor Open                    = '[ Tags.Details ]
   ValidElementsFor Optimum                 = '[ Tags.Meter ]
+  ValidElementsFor Pattern                 = TagGroups.FreeTextInputTags
   ValidElementsFor Ping                    = '[ Tags.Anchor ]
-  ValidElementsFor Placeholder             = TagGroups.PlaceholderableTags
+  ValidElementsFor Placeholder             = Add Tags.TextArea TagGroups.FreeTextInputTags
   ValidElementsFor PlaysInline             = '[ Tags.Video ]
   ValidElementsFor Poster                  = '[ Tags.Video ]
   ValidElementsFor Preload                 = TagGroups.MediaContent
@@ -91,7 +92,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Sandbox                 = '[ Tags.IFrame ]
   ValidElementsFor Selected                = '[ Tags.Option ]
   ValidElementsFor Shape                   = '[ Tags.Area ]
-  ValidElementsFor Size                    = TagGroups.SizedTags
+  ValidElementsFor Size                    = Add Tags.Select TagGroups.FreeTextInputTags
   ValidElementsFor Span                    = [ Tags.TableColumn, Tags.TableColumnGroup ]
   ValidElementsFor Src                     = TagGroups.SrcTags
   ValidElementsFor SrcLang                 = '[ Tags.Track ]

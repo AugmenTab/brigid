@@ -169,6 +169,7 @@ example =
                   ]
         , E.input [ A.type_ HTML.InputText
                   , A.size 25
+                  , A.pattern "^[a-zA-Z]{3,10}$"
                   ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.

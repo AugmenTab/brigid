@@ -808,6 +808,9 @@ renderAttribute attr =
     Attr_Optimum optimum ->
       Just . buildAttribute "optimum" $ Types.numberToText optimum
 
+    Attr_Pattern pattern ->
+      Just $ buildAttribute "pattern" pattern
+
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"

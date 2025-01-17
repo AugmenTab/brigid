@@ -2901,7 +2901,6 @@ attr_open = (Attr_Open, Nothing)
 attr_optimum :: Number -> AttributeSelector
 attr_optimum = (,) Attr_Optimum . Just . numberToText
 
--- TODO
 attr_pattern :: T.Text -> AttributeSelector
 attr_pattern = (,) Attr_Pattern . Just
 

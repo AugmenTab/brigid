@@ -831,6 +831,9 @@ renderAttribute attr =
     Attr_Optimum optimum ->
       Just . buildAttribute "optimum" $ Types.numberToBytes optimum
 
+    Attr_Pattern pattern ->
+      Just . buildAttribute "pattern" $ toBytes pattern
+
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"

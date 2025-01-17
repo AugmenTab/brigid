@@ -53,20 +53,18 @@ module Brigid.HTML.Elements.TagGroups
   , FormMethodTags
   , FormNoValidateTags
   , FormSubmitTags
+  , FreeTextInputTags
   , HrefTags
   , HrefLangTags
   , InputTags
   , LabelableTags
-  , LengthTags
   , NameTags
-  , PlaceholderableTags
   , RangedNumberTags
   , RangedTags
   , ReadOnlyTags
   , RelTags
   , RequireableTags
   , SizableTags
-  , SizedTags
   , SrcTags
   , TargetableTags
   , TimestampableTags
@@ -802,6 +800,16 @@ type FormSubmitTags =
   , 'InputSubmit
   ]
 
+type FreeTextInputTags =
+  [ 'Input
+  , 'InputEmail
+  , 'InputPassword
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputUrl
+  ]
+
 type HrefTags =
   'Base
     ': 'Link
@@ -844,17 +852,6 @@ type LabelableTags =
   , 'Track
   ]
 
-type LengthTags =
-  [ 'Input
-  , 'InputEmail
-  , 'InputPassword
-  , 'InputSearch
-  , 'InputTel
-  , 'InputText
-  , 'InputUrl
-  , 'TextArea
-  ]
-
 type NameTags =
   Union InputTags
     [ 'Button
@@ -869,17 +866,6 @@ type NameTags =
     , 'Slot
     , 'TextArea
     ]
-
-type PlaceholderableTags =
-  [ 'Input
-  , 'InputEmail
-  , 'InputPassword
-  , 'InputSearch
-  , 'InputTel
-  , 'InputText
-  , 'InputUrl
-  , 'TextArea
-  ]
 
 type RangedNumberTags =
   [ 'Input
@@ -955,17 +941,6 @@ type SizableTags =
   , 'InputImage
   , 'Object
   , 'Video
-  ]
-
-type SizedTags =
-  [ 'Input
-  , 'InputEmail
-  , 'InputPassword
-  , 'InputSearch
-  , 'InputTel
-  , 'InputText
-  , 'InputUrl
-  , 'Select
   ]
 
 type SrcTags =
