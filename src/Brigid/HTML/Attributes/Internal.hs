@@ -111,6 +111,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Rows
       , Attr_Rowspan
       , Attr_Sandbox
+      , Attr_Scope
       , Attr_Selected
       , Attr_Shape
       , Attr_Size
@@ -692,10 +693,10 @@ data Attribute (tag :: TagType) where
     => [Types.SandboxToken]
     -> Attribute tag
 
-  -- Attr_Scope
-  --   :: ValidAttribute 'Scope tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Scope
+    :: ValidAttribute 'Scope tag
+    => Types.Scope
+    -> Attribute tag
 
   Attr_Selected
     :: ValidAttribute 'Selected tag
@@ -1218,6 +1219,9 @@ attributeText attr =
 
     Attr_Sandbox _sandbox ->
       "sandbox"
+
+    Attr_Scope _scope ->
+      "scope"
 
     Attr_Selected _selected ->
       "selected"

@@ -90,6 +90,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Rows                    = '[ Tags.TextArea ]
   ValidElementsFor Rowspan                 = TagGroups.TableCells
   ValidElementsFor Sandbox                 = '[ Tags.IFrame ]
+  ValidElementsFor Scope                   = '[ Tags.TableHeader ]
   ValidElementsFor Selected                = '[ Tags.Option ]
   ValidElementsFor Shape                   = '[ Tags.Area ]
   ValidElementsFor Size                    = Add Tags.Select TagGroups.FreeTextInputTags

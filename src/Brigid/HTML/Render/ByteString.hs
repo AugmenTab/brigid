@@ -884,6 +884,9 @@ renderAttribute attr =
             . Render.foldToBytesWithSeparator Types.sandboxTokenToBytes " "
             $ sandbox
 
+    Attr_Scope scope ->
+      Just . buildAttribute "scope" $ Types.scopeToBytes scope
+
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
 

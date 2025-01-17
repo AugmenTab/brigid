@@ -861,6 +861,9 @@ renderAttribute attr =
             . Render.foldToTextWithSeparator Types.sandboxTokenToText " "
             $ sandbox
 
+    Attr_Scope scope ->
+      Just . buildAttribute "scope" $ Types.scopeToText scope
+
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
 

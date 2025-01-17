@@ -81,6 +81,7 @@ module Brigid.HTML.Attributes.Scoped
   , rows
   , rowspan
   , sandbox
+  , scope
   , select
   , selected
   , shape
@@ -516,6 +517,9 @@ rowspan = Attr_Rowspan
 
 sandbox :: ValidAttribute 'Sandbox tag => [Types.SandboxToken] -> Attribute tag
 sandbox = Attr_Sandbox
+
+scope :: ValidAttribute 'Scope tag => Types.Scope -> Attribute tag
+scope = Attr_Scope
 
 select :: ValidAttribute 'Selected tag => Bool -> Attribute tag
 select = Attr_Selected

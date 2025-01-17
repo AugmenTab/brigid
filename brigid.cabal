@@ -122,6 +122,7 @@ library
       Brigid.HTML.Types.Relationship
       Brigid.HTML.Types.RequestParams
       Brigid.HTML.Types.SandboxToken
+      Brigid.HTML.Types.Scope
       Brigid.HTML.Types.ScrollBehavior
       Brigid.HTML.Types.Shape
       Brigid.HTML.Types.Swap

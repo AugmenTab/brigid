@@ -663,6 +663,7 @@ import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
 import Brigid.HTML.Types.SandboxToken (SandboxToken, sandboxTokenToText)
+import Brigid.HTML.Types.Scope (Scope, scopeToText)
 import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
@@ -2959,9 +2960,8 @@ attr_sandbox tokens =
       else Just $ Render.foldToTextWithSeparator sandboxTokenToText " " tokens
   )
 
--- TODO
-attr_scope :: T.Text -> AttributeSelector
-attr_scope = (,) Attr_Scope . Just
+attr_scope :: Scope -> AttributeSelector
+attr_scope = (,) Attr_Scope . Just . scopeToText
 
 attr_selected :: AttributeSelector
 attr_selected = (Attr_Selected, Nothing)

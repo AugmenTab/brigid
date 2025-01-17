@@ -420,12 +420,15 @@ tableExample content =
         Just $
           Safe.thead []
             [ Safe.tr []
-                [ E.th [] [ E.text "1" ]
-                , E.th [] [ E.text "2", E.noElement ]
-                , E.th [] [ E.text "3" ]
-                , E.th [] [ E.text "4" ]
-                , E.th [] [ E.text "5", E.comment "Fifth comment" ]
-                , E.th [ A.colspan 0 ] [ E.text "6" ]
+                [ E.th [ A.scope HTML.Col ] [ E.text "1" ]
+                , E.th [ A.scope HTML.Col ] [ E.text "2", E.noElement ]
+                , E.th [ A.scope HTML.Col ] [ E.text "3" ]
+                , E.th [ A.scope HTML.Col ] [ E.text "4" ]
+                , E.th [ A.scope HTML.Col ]
+                    [ E.text "5"
+                    , E.comment "Fifth comment"
+                    ]
+                , E.th [ A.scope HTML.Col, A.colspan 0 ] [ E.text "6" ]
                 ]
             ]
 
