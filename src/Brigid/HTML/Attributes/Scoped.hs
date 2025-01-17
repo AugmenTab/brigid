@@ -21,6 +21,7 @@ module Brigid.HTML.Attributes.Scoped
   , controlslist
   , coords
   , crossorigin
+  , data_
   , datetime
   , datetimeWithFormat
   , decoding
@@ -231,6 +232,14 @@ coords = Attr_Coords
 crossorigin :: ValidAttribute 'CrossOrigin tag
             => Types.CrossOriginFetch -> Attribute tag
 crossorigin = Attr_CrossOrigin
+
+data_ :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf _data Types.URLTypes
+          , ValidAttribute 'Data tag
+          )
+       => _data -> Attribute tag
+data_ =
+  Attr_Data . Types.mkURL
 
 datetime :: (ISO8601 t, ValidAttribute 'Datetime tag) => t -> Attribute tag
 datetime = Attr_Datetime . iso8601Show

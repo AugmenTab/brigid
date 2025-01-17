@@ -2732,9 +2732,12 @@ attr_coords =
 attr_crossorigin :: CrossOriginFetch -> AttributeSelector
 attr_crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
 
--- TODO
-attr_data :: T.Text -> AttributeSelector
-attr_data = (,) Attr_Data . Just
+attr_data :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf _data URLTypes
+             )
+          => _data -> AttributeSelector
+attr_data =
+  (,) Attr_Data . Just . urlToText . mkURL
 
 attr_datetime :: ISO8601 t => t -> AttributeSelector
 attr_datetime = (,) Attr_Datetime . Just . T.pack . iso8601Show

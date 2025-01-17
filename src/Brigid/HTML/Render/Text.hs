@@ -682,6 +682,9 @@ renderAttribute attr =
         . buildAttribute "crossorigin"
         $ Types.crossoriginFetchToText crossorigin
 
+    Attr_Data _data ->
+      Just . buildAttribute "data" $ Types.urlToText _data
+
     Attr_Datetime datetime ->
       Just . buildAttribute "datetime" $ T.pack datetime
 

@@ -703,6 +703,9 @@ renderAttribute attr =
         . buildAttribute "crossorigin"
         $ Types.crossoriginFetchToBytes crossorigin
 
+    Attr_Data _data ->
+      Just . buildAttribute "data" $ Types.urlToBytes _data
+
     Attr_Datetime datetime ->
       Just . buildAttribute "datetime" $ LBS8.pack datetime
 

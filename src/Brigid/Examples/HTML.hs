@@ -217,7 +217,7 @@ example =
                 [ A.id $ HTML.Id "my-custom-elem-id" ]
                   ( Right
                       [ E.script [ A.src fakeJavaScriptLink
-                                 , A.data_ "my-custom-elem-attr" "test"
+                                 , A.customData "my-custom-elem-attr" "test"
                                  ]
                           Nothing
                       ]
@@ -488,6 +488,10 @@ htmxExample =
         ]
     , E.iframe [ A.sandbox [ HTML.AllowSameOrigin ]
                ]
+    , E.object [ A.data_ . exampleURL $ GetCustomer 200
+               ]
+        [
+        ]
     , E.button [ A.hxGet . exampleURL $ GetCustomer 3
                , A.hxBoost False
                , A.hxPrompt $
