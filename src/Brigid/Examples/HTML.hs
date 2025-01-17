@@ -164,6 +164,9 @@ example =
         , E.input [ A.type_ HTML.InputFile
                   , A.capture $ Just HTML.User
                   ]
+        , E.input [ A.type_ HTML.InputText
+                  , A.size 25
+                  ]
         , Safe.image [ A.alt "This is a picture of numbers."
                   -- , A.maxlength 100 -- This fails because length is not a valid attribute for image input.
                      ]
@@ -404,7 +407,7 @@ tableExample content =
 
       colgroups =
         L.replicate 2
-          . Safe.colgroup []
+          . Safe.colgroup [ A.span 1 ]
           . L.replicate 3
           $ E.col []
 

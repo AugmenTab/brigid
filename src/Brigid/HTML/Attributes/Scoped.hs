@@ -78,6 +78,8 @@ module Brigid.HTML.Attributes.Scoped
   , select
   , selected
   , shape
+  , size
+  , span
   , src
   , srclang
   , start
@@ -90,7 +92,7 @@ module Brigid.HTML.Attributes.Scoped
   , xmlns
   ) where
 
-import Prelude hiding (max, min, reverse)
+import Prelude hiding (max, min, reverse, span)
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
@@ -98,6 +100,7 @@ import Data.Text qualified as T
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
+import Integer (Positive)
 import Ogma qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
@@ -484,6 +487,12 @@ selected = select True
 
 shape :: ValidAttribute 'Shape tag => Types.Shape -> Attribute tag
 shape = Attr_Shape
+
+size :: ValidAttribute 'Size tag => Positive -> Attribute tag
+size = Attr_Size
+
+span :: ValidAttribute 'Span tag => Positive -> Attribute tag
+span = Attr_Span
 
 src :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes

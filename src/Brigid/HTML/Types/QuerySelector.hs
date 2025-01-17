@@ -612,6 +612,7 @@ import Data.Text.Encoding qualified as TE
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
+import Integer (Positive)
 import Numeric.Natural (Natural)
 import Ogma (BCP_47, bcp_47ToText)
 import Shrubbery qualified
@@ -2963,17 +2964,15 @@ attr_selected = (Attr_Selected, Nothing)
 attr_shape :: Shape -> AttributeSelector
 attr_shape = (,) Attr_Shape . Just . shapeToText
 
--- TODO
-attr_size :: T.Text -> AttributeSelector
-attr_size = (,) Attr_Size . Just
+attr_size :: Positive -> AttributeSelector
+attr_size = (,) Attr_Size . Just . Render.showText
 
 -- TODO
 attr_sizes :: T.Text -> AttributeSelector
 attr_sizes = (,) Attr_Sizes . Just
 
--- TODO
-attr_span :: T.Text -> AttributeSelector
-attr_span = (,) Attr_Span . Just
+attr_span :: Positive -> AttributeSelector
+attr_span = (,) Attr_Span . Just . Render.showText
 
 attr_src :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf src URLTypes

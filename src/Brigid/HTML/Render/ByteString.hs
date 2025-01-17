@@ -6,7 +6,7 @@ module Brigid.HTML.Render.ByteString
   , renderLazyHTML
   ) where
 
-import Prelude hiding (max, min)
+import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
@@ -564,12 +564,12 @@ renderAttribute attr =
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
 
-    Attr_Id _id ->
+    Attr_Id id ->
       Just
         . buildAttribute "id"
         . toBytes
         . Escape.attribute
-        $ Types.idToText _id
+        $ Types.idToText id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -863,6 +863,12 @@ renderAttribute attr =
 
     Attr_Shape shape ->
       Just . buildAttribute "shape" $ Types.shapeToBytes shape
+
+    Attr_Size size ->
+      Just . buildAttribute "size" $ Render.showBytes size
+
+    Attr_Span span ->
+      Just . buildAttribute "span" $ Render.showBytes span
 
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToBytes src

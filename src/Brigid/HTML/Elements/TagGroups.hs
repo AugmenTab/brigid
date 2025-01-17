@@ -66,6 +66,7 @@ module Brigid.HTML.Elements.TagGroups
   , RelTags
   , RequireableTags
   , SizableTags
+  , SizedTags
   , SrcTags
   , TargetableTags
   , TimestampableTags
@@ -954,6 +955,17 @@ type SizableTags =
   , 'InputImage
   , 'Object
   , 'Video
+  ]
+
+type SizedTags =
+  [ 'Input
+  , 'InputEmail
+  , 'InputPassword
+  , 'InputSearch
+  , 'InputTel
+  , 'InputText
+  , 'InputUrl
+  , 'Select
   ]
 
 type SrcTags =

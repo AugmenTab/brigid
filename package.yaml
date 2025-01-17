@@ -36,6 +36,7 @@ dependencies:
 - foldable1-classes-compat
 - html-email-validate
 - http-types
+- integer-types
 - iso3166-country-codes
 - json-fleece-aeson
 - json-fleece-core

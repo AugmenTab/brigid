@@ -45,7 +45,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor DisablePictureInPicture = '[ Tags.Video ]
   ValidElementsFor DisableRemotePlayback   = TagGroups.MediaContent
   ValidElementsFor Download                = '[ Tags.Anchor ]
-  ValidElementsFor For                     = '[ Tags.Label, Tags.Output ]
+  ValidElementsFor For                     = [ Tags.Label, Tags.Output ]
   ValidElementsFor Form                    = TagGroups.InputTags
   ValidElementsFor FormAction              = TagGroups.FormSubmitTags
   ValidElementsFor FormMethod              = TagGroups.FormMethodTags
@@ -86,6 +86,8 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Rowspan                 = TagGroups.TableCells
   ValidElementsFor Selected                = '[ Tags.Option ]
   ValidElementsFor Shape                   = '[ Tags.Area ]
+  ValidElementsFor Size                    = TagGroups.SizedTags
+  ValidElementsFor Span                    = [ Tags.TableColumn, Tags.TableColumnGroup ]
   ValidElementsFor Src                     = TagGroups.SrcTags
   ValidElementsFor SrcLang                 = '[ Tags.Track ]
   ValidElementsFor Start                   = '[ Tags.OrderedList ]

@@ -6,7 +6,7 @@ module Brigid.HTML.Render.Text
   , renderLazyHTML
   ) where
 
-import Prelude hiding (max, min)
+import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
@@ -547,8 +547,8 @@ renderAttribute attr =
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
 
-    Attr_Id _id ->
-      Just . buildAttribute "id" . Escape.attribute $ Types.idToText _id
+    Attr_Id id ->
+      Just . buildAttribute "id" . Escape.attribute $ Types.idToText id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -842,6 +842,12 @@ renderAttribute attr =
 
     Attr_Shape shape ->
       Just . buildAttribute "shape" $ Types.shapeToText shape
+
+    Attr_Size size ->
+      Just . buildAttribute "size" $ Render.showText size
+
+    Attr_Span span ->
+      Just . buildAttribute "span" $ Render.showText span
 
     Attr_Src src ->
       Just . buildAttribute "src" $ Types.urlToText src

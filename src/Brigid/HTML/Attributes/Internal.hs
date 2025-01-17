@@ -107,6 +107,8 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Rowspan
       , Attr_Selected
       , Attr_Shape
+      , Attr_Size
+      , Attr_Span
       , Attr_Src
       , Attr_SrcLang
       , Attr_Start
@@ -153,6 +155,7 @@ module Brigid.HTML.Attributes.Internal
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Integer (Positive)
 import Ogma qualified
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
@@ -693,20 +696,20 @@ data Attribute (tag :: TagType) where
     => Types.Shape
     -> Attribute tag
 
-  -- Attr_Size
-  --   :: ValidAttribute 'Size tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Size
+    :: ValidAttribute 'Size tag
+    => Positive
+    -> Attribute tag
 
   -- Attr_Sizes
   --   :: ValidAttribute 'Sizes tag
   --   => T.Text -- TODO
   --   -> Attribute tag
 
-  -- Attr_Span
-  --   :: ValidAttribute 'Span tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Span
+    :: ValidAttribute 'Span tag
+    => Positive
+    -> Attribute tag
 
   Attr_Src
     :: ValidAttribute 'Src tag
@@ -1192,6 +1195,12 @@ attributeText attr =
 
     Attr_Shape _shape ->
       "shape"
+
+    Attr_Size _size ->
+      "size"
+
+    Attr_Span _span ->
+      "span"
 
     Attr_Src _src ->
       "src"
