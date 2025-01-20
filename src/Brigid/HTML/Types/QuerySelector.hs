@@ -646,6 +646,7 @@ import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSele
 import Brigid.HTML.Types.HttpEquivToken (HttpEquivToken, httpEquivTokenToText)
 import Brigid.HTML.Types.Id qualified as Id
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
+import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import Brigid.HTML.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
 import Brigid.HTML.Types.Name (Name, NameOptionTypes, mkNameOption, nameOptionToText, nameToText)
@@ -2578,9 +2579,8 @@ attr_id = (,) Attr_Id . Just . Id.idToText
 attr_inert :: AttributeSelector
 attr_inert = (Attr_Inert, Nothing)
 
--- TODO
-attr_inputmode :: T.Text -> AttributeSelector
-attr_inputmode = (,) Attr_InputMode . Just
+attr_inputmode :: InputMode -> AttributeSelector
+attr_inputmode = (,) Attr_InputMode . Just . inputModeToText
 
 attr_is :: T.Text -> AttributeSelector
 attr_is = (,) Attr_Is . Just

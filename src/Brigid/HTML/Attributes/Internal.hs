@@ -19,7 +19,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Hidden
       , Attr_Id
       , Attr_Inert
-   -- , Attr_InputMode
+      , Attr_InputMode
       , Attr_Is
    -- , Attr_ItemId
    -- , Attr_ItemProp
@@ -242,9 +242,9 @@ data Attribute (tag :: TagType) where
     :: Bool
     -> Attribute tag
 
-  -- Attr_InputMode
-  --   :: Types.InputMode
-  --   -> Attribute tag
+  Attr_InputMode
+    :: Types.InputMode
+    -> Attribute tag
 
   Attr_Is
     :: T.Text
@@ -956,8 +956,8 @@ attributeText attr =
     Attr_Inert _inert ->
       "inert"
 
-    -- Attr_InputMode _mode ->
-    --   "inputmode"
+    Attr_InputMode _inputmode ->
+      "inputmode"
 
     Attr_Is _is ->
       "is"

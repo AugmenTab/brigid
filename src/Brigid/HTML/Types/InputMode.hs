@@ -25,6 +25,7 @@ data InputMode
   | SearchMode
   | EmailMode
   | URLMode
+  deriving (Bounded, Enum, Eq, Show)
 
 inputModeToBytes :: InputMode -> LBS.ByteString
 inputModeToBytes mode =

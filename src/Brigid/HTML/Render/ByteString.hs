@@ -569,10 +569,8 @@ renderAttribute attr =
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
 
-    -- Attr_InputMode mode ->
-    --   Just
-    --     . buildAttribute "inputmode"
-    --     $ Types.inputModeToBytes mode
+    Attr_InputMode mode ->
+      Just . buildAttribute "inputmode" $ Types.inputModeToBytes mode
 
     Attr_Is is ->
       Just . buildAttribute "is" . toBytes $ Escape.attributeText is

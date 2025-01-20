@@ -10,13 +10,17 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
     3. Modify `ValidElementsFor`.
     4. Modify the attribute selector functions in `HTML.Types.QuerySelector` to
        take their appropriate types.
-2. Add safe builder functions for any HTML elements with complex conditions for
+2. Add relevant type class instances (Bounded, Enum, Eq, Ord, Show, etc) and
+   from/to text functions to applicable types.
+3. Consider a `contenteditable/inputmode` dual attribute type for the `Safe`
+   module.
+4. Add safe builder functions for any HTML elements with complex conditions for
    its permitted content, such as what was done with
    `Brigid.HTML.Elements.Safe.Table`. Go through the entire list of elements
    again to determine what qualifies for this.
-3. Add support for the SVG tag.
-4. Add support for MathML.
-5. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
+5. Add support for the SVG tag.
+6. Add support for MathML.
+7. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
 
 ### TODO (XML)
 

@@ -14,7 +14,7 @@ module Brigid.HTML.Attributes.Global
   , hidden
   , id
   , inert
-  -- , inputmode
+  , inputmode
   , is
   -- , item
   -- , itemid
@@ -94,8 +94,8 @@ id = Attr_Id
 inert :: Bool -> Attribute tag
 inert = Attr_Inert
 
--- inputmode :: Types.InputMode -> Attribute tag
--- inputmode = Attr_InputMode
+inputmode :: Types.InputMode -> Attribute tag
+inputmode = Attr_InputMode
 
 is :: T.Text -> Attribute tag
 is = Attr_Is
