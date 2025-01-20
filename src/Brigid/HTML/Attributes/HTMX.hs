@@ -43,9 +43,9 @@ import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Attributes.AttributeType (AttributeType(..))
+import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
-import Brigid.HTML.Attributes.Internal (Attribute(..))
+import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Types qualified as Types
 
 -- Core Attributes

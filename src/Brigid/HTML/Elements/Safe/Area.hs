@@ -21,6 +21,7 @@ import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
+import Integer (Positive)
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes qualified as A
@@ -49,12 +50,12 @@ data Area =
     , areaOtherAttributes :: [Attribute Tags.Area]
     }
 
-type Coord = (Word, Word)
+type Coord = (Integer, Integer)
 
 data Shape
   = Default
   | Rect Coord Coord
-  | Circle Coord Word
+  | Circle Coord Positive
   | Poly (NonEmpty Coord)
 
 shapeAttrs :: Shape -> [Attribute Tags.Area]
@@ -67,7 +68,7 @@ shapeAttrs shape =
       [ A.shape Types.Rect, A.coords $ x1 :| [ y1, x2, y2 ] ]
 
     Circle (x, y) rad ->
-      [ A.shape Types.Circle, A.coords $ x :| [ y, rad ] ]
+      [ A.shape Types.Circle, A.coords $ x :| [ y, fromIntegral rad ] ]
 
     Poly ((x, y) :| coords) ->
       [ A.shape Types.Poly

@@ -166,6 +166,7 @@ import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Integer (Positive)
+import Numeric.Natural (Natural)
 import Ogma qualified
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
@@ -302,7 +303,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_TabIndex
-    :: Int
+    :: Integer
     -> Attribute tag
 
   Attr_Title
@@ -377,12 +378,12 @@ data Attribute (tag :: TagType) where
 
   Attr_Cols
     :: ValidAttribute 'Cols tag
-    => Word
+    => Natural
     -> Attribute tag
 
   Attr_Colspan
     :: ValidAttribute 'Colspan tag
-    => Word
+    => Positive
     -> Attribute tag
 
   Attr_Content
@@ -401,7 +402,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Coords
     :: ValidAttribute 'Coords tag
-    => NEL.NonEmpty Word
+    => NEL.NonEmpty Integer
     -> Attribute tag
 
   Attr_CrossOrigin
@@ -501,7 +502,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Height
     :: ValidAttribute 'Height tag
-    => Word
+    => Positive
     -> Attribute tag
 
   Attr_High
@@ -564,7 +565,7 @@ data Attribute (tag :: TagType) where
 
   Attr_MaxLength
     :: ValidAttribute 'MaxLength tag
-    => Word
+    => Natural
     -> Attribute tag
 
   -- Attr_Media
@@ -584,7 +585,7 @@ data Attribute (tag :: TagType) where
 
   Attr_MinLength
     :: ValidAttribute 'MinLength tag
-    => Word
+    => Natural
     -> Attribute tag
 
   Attr_Multiple
@@ -682,12 +683,12 @@ data Attribute (tag :: TagType) where
 
   Attr_Rows
     :: ValidAttribute 'Rows tag
-    => Word
+    => Natural
     -> Attribute tag
 
   Attr_Rowspan
     :: ValidAttribute 'Rowspan tag
-    => Word
+    => Positive
     -> Attribute tag
 
   Attr_Sandbox
@@ -747,7 +748,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Start
     :: ValidAttribute 'Start tag
-    => Int
+    => Integer
     -> Attribute tag
 
   -- Attr_Step
@@ -777,7 +778,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Width
     :: ValidAttribute 'Width tag
-    => Word
+    => Positive
     -> Attribute tag
 
   Attr_Wrap

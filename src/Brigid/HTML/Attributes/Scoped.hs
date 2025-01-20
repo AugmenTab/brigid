@@ -110,6 +110,7 @@ import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
 import Integer (Positive)
+import Numeric.Natural (Natural)
 import Ogma qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
@@ -197,10 +198,10 @@ cite :: ( KnownNat branchIndex
 cite =
   Attr_Cite . Types.mkURL
 
-cols :: ValidAttribute 'Cols tag => Word -> Attribute tag
+cols :: ValidAttribute 'Cols tag => Natural -> Attribute tag
 cols = Attr_Cols
 
-colspan :: ValidAttribute 'Colspan tag => Word -> Attribute tag
+colspan :: ValidAttribute 'Colspan tag => Positive -> Attribute tag
 colspan = Attr_Colspan
 
 -- | The `content` attribute is left as simple 'T.Text' because its value is
@@ -225,7 +226,7 @@ controlslist = Attr_ControlsList
 -- construction of the `coords` and `shape` attributes on an `area` tag, use
 -- `Brigid.HTML.Elements.Safe.Area`.
 --
-coords :: ValidAttribute 'Coords tag => NEL.NonEmpty Word -> Attribute tag
+coords :: ValidAttribute 'Coords tag => NEL.NonEmpty Integer -> Attribute tag
 coords = Attr_Coords
 
 {-|
@@ -324,7 +325,7 @@ headers :: ValidAttribute 'Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag
 headers = Attr_Headers
 
-height :: ValidAttribute 'Height tag => Word -> Attribute tag
+height :: ValidAttribute 'Height tag => Positive -> Attribute tag
 height = Attr_Height
 
 high :: ValidAttribute 'High tag => Types.Number -> Attribute tag
@@ -389,7 +390,7 @@ max =
 -- applies, a comparison of min/maxlength should be done to ensure that the
 -- bounds are applied appropriately.
 --
-maxlength :: ValidAttribute 'MaxLength tag => Word -> Attribute tag
+maxlength :: ValidAttribute 'MaxLength tag => Natural -> Attribute tag
 maxlength = Attr_MaxLength
 
 -- TODO: This should be derived from the RelativeURL given in the action
@@ -415,7 +416,7 @@ min =
 -- applies, a comparison of min/maxlength should be done to ensure that the
 -- bounds are applied appropriately.
 --
-minlength :: ValidAttribute 'MinLength tag => Word -> Attribute tag
+minlength :: ValidAttribute 'MinLength tag => Natural -> Attribute tag
 minlength = Attr_MinLength
 
 multiple :: ValidAttribute 'Multiple tag => Attribute tag
@@ -512,10 +513,10 @@ reverse = Attr_Reversed
 reversed :: ValidAttribute 'Reversed tag => Attribute tag
 reversed = reverse True
 
-rows :: ValidAttribute 'Rows tag => Word -> Attribute tag
+rows :: ValidAttribute 'Rows tag => Natural -> Attribute tag
 rows = Attr_Rows
 
-rowspan :: ValidAttribute 'Rowspan tag => Word -> Attribute tag
+rowspan :: ValidAttribute 'Rowspan tag => Positive -> Attribute tag
 rowspan = Attr_Rowspan
 
 sandbox :: ValidAttribute 'Sandbox tag => [Types.SandboxToken] -> Attribute tag
@@ -555,7 +556,7 @@ srcdoc = Attr_SrcDoc . renderLazyHTML
 srclang :: ValidAttribute 'SrcLang tag => Ogma.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang
 
-start :: ValidAttribute 'Start tag => Int -> Attribute tag
+start :: ValidAttribute 'Start tag => Integer -> Attribute tag
 start = Attr_Start
 
 target :: ValidAttribute 'Target tag => Types.Target -> Attribute tag
@@ -592,7 +593,7 @@ value :: ( KnownNat branchIndex
 value =
   Attr_Value . Types.mkValue
 
-width :: ValidAttribute 'Width tag => Word -> Attribute tag
+width :: ValidAttribute 'Width tag => Positive -> Attribute tag
 width = Attr_Width
 
 wrap :: ValidAttribute 'Wrap tag => Types.Wrap -> Attribute tag

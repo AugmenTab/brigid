@@ -142,12 +142,13 @@ styles :: [T.Text] -> Attribute tag
 styles = style . T.intercalate ";"
 
 tabindex :: Types.Reachability -> Attribute tag
-tabindex = unsafeTabIndex . Types.reachabilityToInt
+tabindex = unsafeTabIndex . Types.reachabilityToInteger
 
 -- This is "unsafe" because the HTML documentation recommends against using any
 -- values other than 0 or -1 because it can be confusing for users with screen
 -- readers or who use keyboard navigation.
-unsafeTabIndex :: Int -> Attribute tag
+--
+unsafeTabIndex :: Integer -> Attribute tag
 unsafeTabIndex = Attr_TabIndex
 
 title :: T.Text -> Attribute tag

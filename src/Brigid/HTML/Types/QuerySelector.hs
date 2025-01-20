@@ -217,10 +217,10 @@ module Brigid.HTML.Types.QuerySelector
   , attr_low
   , attr_max
   , attr_maxlength
-  , attr_minlength
   , attr_media
   , attr_method
   , attr_min
+  , attr_minlength
   , attr_multiple
   , attr_muted
   , attr_name
@@ -2637,7 +2637,7 @@ attr_spellcheck = (,) Attr_Spellcheck . Just . Render.enumBoolToText
 attr_style :: T.Text -> AttributeSelector
 attr_style = (,) Attr_Style . Just
 
-attr_tabindex :: Int -> AttributeSelector
+attr_tabindex :: Integer -> AttributeSelector
 attr_tabindex = (,) Attr_TabIndex . Just . Render.showText
 
 attr_title :: T.Text -> AttributeSelector
@@ -2709,10 +2709,10 @@ attr_cite :: ( KnownNat branchIndex
           => cite -> AttributeSelector
 attr_cite = (,) Attr_Cite . Just . urlToText . mkURL
 
-attr_cols :: Word -> AttributeSelector
+attr_cols :: Natural -> AttributeSelector
 attr_cols = (,) Attr_Cols . Just . Render.showText
 
-attr_colspan :: Word -> AttributeSelector
+attr_colspan :: Positive -> AttributeSelector
 attr_colspan = (,) Attr_Colspan . Just . Render.showText
 
 attr_content :: T.Text -> AttributeSelector
@@ -2724,7 +2724,7 @@ attr_controls = (Attr_Controls, Nothing)
 attr_controlslist :: ControlsList -> AttributeSelector
 attr_controlslist = (,) Attr_ControlsList . Just . controlslistToText
 
-attr_coords :: NEL.NonEmpty Word -> AttributeSelector
+attr_coords :: NEL.NonEmpty Integer -> AttributeSelector
 attr_coords =
   (,) Attr_Coords
     . Just
@@ -2818,7 +2818,7 @@ attr_headers =
     . Render.foldToTextWithSeparator Id.idToText " "
     . NEL.toList
 
-attr_height :: Word -> AttributeSelector
+attr_height :: Positive -> AttributeSelector
 attr_height = (,) Attr_Height . Just . Render.showText
 
 attr_high :: Number -> AttributeSelector
@@ -2861,11 +2861,8 @@ attr_low = (,) Attr_Low . Just . numberToText
 attr_max :: RangeBound -> AttributeSelector
 attr_max = (,) Attr_Max . Just . rangeBoundToText
 
-attr_maxlength :: Word -> AttributeSelector
+attr_maxlength :: Natural -> AttributeSelector
 attr_maxlength = (,) Attr_MaxLength . Just . Render.showText
-
-attr_minlength :: Word -> AttributeSelector
-attr_minlength = (,) Attr_MinLength . Just . Render.showText
 
 -- TODO
 attr_media :: T.Text -> AttributeSelector
@@ -2876,6 +2873,9 @@ attr_method = (,) Attr_Method . Just . formMethodToText
 
 attr_min :: RangeBound -> AttributeSelector
 attr_min = (,) Attr_Min . Just . rangeBoundToText
+
+attr_minlength :: Natural -> AttributeSelector
+attr_minlength = (,) Attr_MinLength . Just . Render.showText
 
 attr_multiple :: AttributeSelector
 attr_multiple = (Attr_Multiple, Nothing)
@@ -2946,10 +2946,10 @@ attr_required = (Attr_Required, Nothing)
 attr_reversed :: AttributeSelector
 attr_reversed = (Attr_Reversed, Nothing)
 
-attr_rows :: Word -> AttributeSelector
+attr_rows :: Natural -> AttributeSelector
 attr_rows = (,) Attr_Rows . Just . Render.showText
 
-attr_rowspan :: Word -> AttributeSelector
+attr_rowspan :: Positive -> AttributeSelector
 attr_rowspan = (,) Attr_Rowspan . Just . Render.showText
 
 attr_sandbox :: [SandboxToken] -> AttributeSelector
@@ -3001,7 +3001,7 @@ attr_srclang = (,) Attr_SrcLang . Just . bcp_47ToText
 attr_srcset :: T.Text -> AttributeSelector
 attr_srcset = (,) Attr_SrcSet . Just
 
-attr_start :: Int -> AttributeSelector
+attr_start :: Integer -> AttributeSelector
 attr_start = (,) Attr_Start . Just . Render.showText
 
 -- TODO
@@ -3028,7 +3028,7 @@ attr_value :: ( KnownNat branchIndex
 attr_value =
   (,) Attr_Value . Just . valueToText . mkValue
 
-attr_width :: Word -> AttributeSelector
+attr_width :: Positive -> AttributeSelector
 attr_width = (,) Attr_Width . Just . Render.showText
 
 attr_wrap :: Wrap -> AttributeSelector

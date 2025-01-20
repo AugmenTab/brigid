@@ -3,15 +3,16 @@ module Brigid.HTML.Types.Reachability
       ( Reachable
       , NotReachable
       )
-  , reachabilityToInt
+  , reachabilityToInteger
   ) where
 
 data Reachability
-  = Reachable
-  | NotReachable
+  = NotReachable
+  | Reachable
+  deriving (Bounded, Enum, Eq, Ord, Show)
 
-reachabilityToInt :: Reachability -> Int
-reachabilityToInt option =
+reachabilityToInteger :: Reachability -> Integer
+reachabilityToInteger option =
   case option of
     Reachable    -> 0
     NotReachable -> negate 1
