@@ -138,7 +138,7 @@ module Brigid.HTML.Attributes.AttributeType
       )
   ) where
 
-import GHC.TypeLits (ErrorMessage(..))
+import GHC.TypeLits (ErrorMessage (..))
 
 data AttributeType
   -- Global Attributes

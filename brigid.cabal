@@ -144,6 +144,10 @@ library
       Brigid.HTML.Types.WebsocketBinaryType
       Brigid.HTML.Types.Window
       Brigid.HTML.Types.Wrap
+      Brigid.HXML.Attributes
+      Brigid.HXML.Attributes.AttributeType
+      Brigid.HXML.Attributes.Elements
+      Brigid.HXML.Attributes.Internal
       Brigid.HXML.Elements
       Brigid.HXML.Elements.Children
       Brigid.HXML.Elements.Internal

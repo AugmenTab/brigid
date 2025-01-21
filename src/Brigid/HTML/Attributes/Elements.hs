@@ -11,13 +11,13 @@ module Brigid.HTML.Attributes.Elements
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.Tags qualified as Tags
-import Brigid.HTML.Elements.TagType qualified as TagType
+import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Internal.TagOperations (Add, AlertAttribute, Elem)
 
 type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
 
-type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] where
+type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor AcceptCharset           = '[ Tags.Form ]
   ValidElementsFor Action                  = '[ Tags.Form ]
   ValidElementsFor Allow                   = '[ Tags.IFrame ]
@@ -107,4 +107,4 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType.TagType] w
   ValidElementsFor Wrap                    = '[ Tags.TextArea ]
   ValidElementsFor XMLNS                   = '[ Tags.Html ] -- SVG, MathML
 
-  ValidElementsFor HxValidate              = '[ TagType.Form ]
+  ValidElementsFor HxValidate              = '[ Tags.Form ]

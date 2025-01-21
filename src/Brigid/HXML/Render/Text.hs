@@ -6,10 +6,15 @@ module Brigid.HXML.Render.Text
   , renderLazyHXML
   ) where
 
+import Data.Bool qualified as B
+import Data.Containers.ListUtils (nubOrdOn)
+import Data.List qualified as L
+import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
+import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
 
@@ -31,109 +36,115 @@ renderTag hxml =
     Tag_RawHXML content ->
       fromText content
 
-    Tag_CustomHXML elemName eiCloserOrContent ->
-      buildTag elemName eiCloserOrContent
+    Tag_CustomHXML elemName attrs eiCloserOrContent ->
+      buildTag elemName attrs eiCloserOrContent
 
-    Tag_Behavior ->
-      buildTag "behavior" $ Left Types.OmitTag
+    Tag_Behavior attrs ->
+      buildTag "behavior" attrs $ Left Types.OmitTag
 
-    Tag_Body content ->
-      buildTag "body" $ closingTag content
+    Tag_Body attrs content ->
+      buildTag "body" attrs $ closingTag content
 
-    Tag_DateField ->
-      buildTag "date-field" $ Left Types.OmitTag
+    Tag_DateField attrs ->
+      buildTag "date-field" attrs $ Left Types.OmitTag
 
-    Tag_Document content ->
-      buildTag "doc" $ closingTag content
+    Tag_Document attrs content ->
+      buildTag "doc" attrs $ closingTag content
 
-    Tag_Form content ->
-      buildTag "form" $ closingTag content
+    Tag_Form attrs content ->
+      buildTag "form" attrs $ closingTag content
 
-    Tag_Header content ->
-      buildTag "header" $ closingTag content
+    Tag_Header attrs content ->
+      buildTag "header" attrs $ closingTag content
 
-    Tag_Image ->
-      buildTag "image" $ Left Types.OmitTag
+    Tag_Image attrs ->
+      buildTag "image" attrs $ Left Types.OmitTag
 
-    Tag_Item content ->
-      buildTag "item" $ closingTag content
+    Tag_Item attrs content ->
+      buildTag "item" attrs $ closingTag content
 
-    Tag_Items content ->
-      buildTag "items" $ closingTag content
+    Tag_Items attrs content ->
+      buildTag "items" attrs $ closingTag content
 
-    Tag_List content ->
-      buildTag "list" $ closingTag content
+    Tag_List attrs content ->
+      buildTag "list" attrs $ closingTag content
 
-    Tag_Modifier content ->
-      buildTag "modifier" $ closingTag content
+    Tag_Modifier attrs content ->
+      buildTag "modifier" attrs $ closingTag content
 
-    Tag_Navigator content ->
-      buildTag "navigator" $ closingTag content
+    Tag_Navigator attrs content ->
+      buildTag "navigator" attrs $ closingTag content
 
-    Tag_NavRoute ->
-      buildTag "nav-route" $ Left Types.OmitTag
+    Tag_NavRoute attrs ->
+      buildTag "nav-route" attrs $ Left Types.OmitTag
 
-    Tag_Option content ->
-      buildTag "option" $ closingTag content
+    Tag_Option attrs content ->
+      buildTag "option" attrs $ closingTag content
 
-    Tag_PickerField content ->
-      buildTag "picker-field" $ closingTag content
+    Tag_PickerField attrs content ->
+      buildTag "picker-field" attrs $ closingTag content
 
-    Tag_PickerItem ->
-      buildTag "picker-item" $ Left Types.OmitTag
+    Tag_PickerItem attrs ->
+      buildTag "picker-item" attrs $ Left Types.OmitTag
 
-    Tag_Screen content ->
-      buildTag "screen" $ closingTag content
+    Tag_Screen attrs content ->
+      buildTag "screen" attrs $ closingTag content
 
-    Tag_Section ->
-      buildTag "section" $ Left Types.OmitTag
+    Tag_Section attrs ->
+      buildTag "section" attrs $ Left Types.OmitTag
 
-    Tag_SectionList content ->
-      buildTag "section-list" $ closingTag content
+    Tag_SectionList attrs content ->
+      buildTag "section-list" attrs $ closingTag content
 
-    Tag_SectionTitle content ->
-      buildTag "section-title" $ closingTag content
+    Tag_SectionTitle attrs content ->
+      buildTag "section-title" attrs $ closingTag content
 
-    Tag_SelectMultiple content ->
-      buildTag "select-multiple" $ closingTag content
+    Tag_SelectMultiple attrs content ->
+      buildTag "select-multiple" attrs $ closingTag content
 
-    Tag_SelectSingle content ->
-      buildTag "select-single" $ closingTag content
+    Tag_SelectSingle attrs content ->
+      buildTag "select-single" attrs $ closingTag content
 
-    Tag_Spinner ->
-      buildTag "spinner" $ Left Types.OmitTag
+    Tag_Spinner attrs ->
+      buildTag "spinner" attrs $ Left Types.OmitTag
 
-    Tag_Style content ->
-      buildTag "style" $ closingTag content
+    Tag_Style attrs content ->
+      buildTag "style" attrs $ closingTag content
 
-    Tag_Styles content ->
-      buildTag "styles" $ closingTag content
+    Tag_Styles attrs content ->
+      buildTag "styles" attrs $ closingTag content
 
-    Tag_Switch ->
-      buildTag "switch" $ Left Types.OmitTag
+    Tag_Switch attrs ->
+      buildTag "switch" attrs $ Left Types.OmitTag
 
-    Tag_Text ->
-      buildTag "text" $ Left Types.OmitTag
+    Tag_Text attrs ->
+      buildTag "text" attrs $ Left Types.OmitTag
 
-    Tag_TextArea ->
-      buildTag "text-area" $ Left Types.OmitTag
+    Tag_TextArea attrs ->
+      buildTag "text-area" attrs $ Left Types.OmitTag
 
-    Tag_TextField ->
-      buildTag "text-field" $ Left Types.OmitTag
+    Tag_TextField attrs ->
+      buildTag "text-field" attrs $ Left Types.OmitTag
 
-    Tag_View content ->
-      buildTag "view" $ closingTag content
+    Tag_View attrs content ->
+      buildTag "view" attrs $ closingTag content
 
-    Tag_WebView ->
-      buildTag "web-view" $ Left Types.OmitTag
+    Tag_WebView attrs ->
+      buildTag "web-view" attrs $ Left Types.OmitTag
 
 buildTag :: T.Text
+         -> [Attribute tag]
          -> Either Types.NoContent [ChildHXML parent]
          -> Builder
-buildTag tag content =
+buildTag tag attrs content =
   mconcat
     [ fromText "<"
     , fromText tag
+    , fromText . B.bool " " T.empty $ L.null attrs
+    , mconcat
+        . L.intersperse (fromText " ")
+        . mapMaybe renderAttribute
+        $ nubOrdOn attributeText attrs
     , case content of
         Left  Types.OmitTag -> fromText "/>"
         Left  Types.WithTag -> fromText ">"
@@ -146,6 +157,22 @@ buildTag tag content =
         Left Types.WithTag -> fromText "</" <> fromText tag <> fromText ">"
         Right _children    -> fromText "</" <> fromText tag <> fromText ">"
     ]
+
+renderAttribute :: Attribute any -> Maybe Builder
+renderAttribute attr =
+  case attr of
+    Attr_NoAttribute ->
+      Just $ fromText T.empty
+
+    Attr_Custom name value ->
+      Just $ buildAttribute name value
+
+    Attr_XMLNS xmlns ->
+      Just . buildAttribute "xmlns" $ Types.urlToText xmlns
+
+buildAttribute :: T.Text -> T.Text -> Builder
+buildAttribute attr value =
+  fromText attr <> "=\"" <> fromText value <> fromText "\""
 
 closingTag :: [ChildHXML parent] -> Either Types.NoContent [ChildHXML parent]
 closingTag content =

@@ -45,6 +45,7 @@ module Brigid.HXML.Elements.Internal
 
 import Data.Text qualified as T
 
+import Brigid.HXML.Attributes.Internal (Attribute)
 import Brigid.HXML.Elements.Children (ValidChild)
 import Brigid.HXML.Elements.TagType (TagType (..))
 import Brigid.HXML.Types (NoContent)
@@ -63,136 +64,168 @@ data ChildHXML (parent :: TagType) where
 
   Tag_CustomHXML
     :: T.Text
+    -> [Attribute 'CustomHXML]
     -> Either NoContent [ChildHXML 'CustomHXML]
     -> ChildHXML parent
 
   Tag_Behavior
-    :: ChildHXML parent
+    :: [Attribute 'Behavior]
+    -> ChildHXML parent
 
   Tag_Body
     :: ValidChild 'Body parent
-    => [ChildHXML 'Body]
+    => [Attribute 'Body]
+    -> [ChildHXML 'Body]
     -> ChildHXML parent
 
   Tag_DateField
-    :: ChildHXML parent
+    :: [Attribute 'DateField]
+    -> ChildHXML parent
 
   Tag_Document
     :: ValidChild 'Document parent
-    => [ChildHXML 'Document]
+    => [Attribute 'Document]
+    -> [ChildHXML 'Document]
     -> ChildHXML parent
 
   Tag_Form
     :: ValidChild 'Form parent
-    => [ChildHXML 'Form]
+    => [Attribute 'Form]
+    -> [ChildHXML 'Form]
     -> ChildHXML parent
 
   Tag_Header
     :: ValidChild 'Header parent
-    => [ChildHXML 'Header]
+    => [Attribute 'Header]
+    -> [ChildHXML 'Header]
     -> ChildHXML parent
 
   Tag_Image
-    :: ChildHXML parent
+    :: [Attribute 'Image]
+    -> ChildHXML parent
 
   Tag_Item
     :: ValidChild 'Item parent
-    => [ChildHXML 'Item]
+    => [Attribute 'Item]
+    -> [ChildHXML 'Item]
     -> ChildHXML parent
 
   Tag_Items
     :: ValidChild 'Items parent
-    => [ChildHXML 'Items]
+    => [Attribute 'Items]
+    -> [ChildHXML 'Items]
     -> ChildHXML parent
 
   Tag_List
     :: ValidChild 'List parent
-    => [ChildHXML 'List]
+    => [Attribute 'List]
+    -> [ChildHXML 'List]
     -> ChildHXML parent
 
   Tag_Modifier
     :: ValidChild 'Modifier parent
-    => [ChildHXML 'Modifier]
+    => [Attribute 'Modifier]
+    -> [ChildHXML 'Modifier]
     -> ChildHXML parent
 
   Tag_Navigator
     :: ValidChild 'Navigator parent
-    => [ChildHXML 'Navigator]
+    => [Attribute 'Navigator]
+    -> [ChildHXML 'Navigator]
     -> ChildHXML parent
 
   Tag_NavRoute
-    :: ChildHXML parent
+    :: [Attribute 'NavRoute]
+    -> ChildHXML parent
 
   Tag_Option
     :: ValidChild 'Option parent
-    => [ChildHXML 'Option]
+    => [Attribute 'Option]
+    -> [ChildHXML 'Option]
     -> ChildHXML parent
 
   Tag_PickerField
     :: ValidChild 'PickerField parent
-    => [ChildHXML 'PickerField]
+    => [Attribute 'PickerField]
+    -> [ChildHXML 'PickerField]
     -> ChildHXML parent
 
   Tag_PickerItem
-    :: ChildHXML parent
+    :: [Attribute 'PickerItem]
+    -> ChildHXML parent
 
   Tag_Screen
     :: ValidChild 'Screen parent
-    => [ChildHXML 'Screen]
+    => [Attribute 'Screen]
+    -> [ChildHXML 'Screen]
     -> ChildHXML parent
 
   Tag_Section
-    :: ChildHXML parent
+    :: [Attribute 'Section]
+    -> ChildHXML parent
 
   Tag_SectionList
     :: ValidChild 'SectionList parent
-    => [ChildHXML 'SectionList]
+    => [Attribute 'SectionList]
+    -> [ChildHXML 'SectionList]
     -> ChildHXML parent
 
   Tag_SectionTitle
     :: ValidChild 'SectionTitle parent
-    => [ChildHXML 'SectionTitle]
+    => [Attribute 'SectionTitle]
+    -> [ChildHXML 'SectionTitle]
     -> ChildHXML parent
 
   Tag_SelectMultiple
     :: ValidChild 'SelectMultiple parent
-    => [ChildHXML 'SelectMultiple]
+    => [Attribute 'SelectMultiple]
+    -> [ChildHXML 'SelectMultiple]
     -> ChildHXML parent
 
   Tag_SelectSingle
     :: ValidChild 'SelectSingle parent
-    => [ChildHXML 'SelectSingle]
+    => [Attribute 'SelectSingle]
+    -> [ChildHXML 'SelectSingle]
     -> ChildHXML parent
 
   Tag_Spinner
-    :: ChildHXML parent
+    :: [Attribute 'Spinner]
+    -> ChildHXML parent
 
   Tag_Style
     :: ValidChild 'Style parent
-    => [ChildHXML 'Style]
+    => [Attribute 'Style]
+    -> [ChildHXML 'Style]
     -> ChildHXML parent
 
   Tag_Styles
     :: ValidChild 'Styles parent
-    => [ChildHXML 'Styles]
+    => [Attribute 'Styles]
+    -> [ChildHXML 'Styles]
     -> ChildHXML parent
 
   Tag_Switch
-    :: ChildHXML parent
+    :: [Attribute 'Switch]
+    -> ChildHXML parent
 
   Tag_Text
-    :: ChildHXML parent
+    :: [Attribute 'Text]
+    -> ChildHXML parent
 
   Tag_TextArea
-    :: ChildHXML parent
+    :: [Attribute 'TextArea]
+    -> ChildHXML parent
 
   Tag_TextField
-    :: ChildHXML parent
+    :: [Attribute 'TextField]
+    -> ChildHXML parent
 
   Tag_View
     :: ValidChild 'View parent
-    => [ChildHXML 'View]
+    => [Attribute 'View]
+    -> [ChildHXML 'View]
     -> ChildHXML parent
 
   Tag_WebView
-    :: ChildHXML parent
+    :: [Attribute 'WebView]
+    -> ChildHXML parent

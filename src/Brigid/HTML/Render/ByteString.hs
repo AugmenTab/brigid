@@ -469,18 +469,18 @@ renderTag html =
       buildTag "wbr" attrs $ Left Types.OmitTag
 
 buildTag :: LBS.ByteString
-         -> [Attribute attr]
+         -> [Attribute tag]
          -> Either Types.NoContent [ChildHTML parent grandparent]
          -> Builder
-buildTag tag attributes content =
+buildTag tag attrs content =
   mconcat
     [ lazyByteString "<"
     , lazyByteString tag
-    , lazyByteString . B.bool " " LBS.empty $ L.null attributes
+    , lazyByteString . B.bool " " LBS.empty $ L.null attrs
     , mconcat
         . L.intersperse (lazyByteString " ")
         . mapMaybe renderAttribute
-        $ nubOrdOn attributeText attributes
+        $ nubOrdOn attributeText attrs
     , case content of
         Left  Types.OmitTag -> lazyByteString "/>"
         Left  Types.WithTag -> lazyByteString ">"

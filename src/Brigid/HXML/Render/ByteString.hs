@@ -6,12 +6,17 @@ module Brigid.HXML.Render.ByteString
   , renderLazyHXML
   ) where
 
+import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
+import Data.Containers.ListUtils (nubOrdOn)
+import Data.List qualified as L
+import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 
+import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
 
@@ -35,109 +40,115 @@ renderTag hxml =
     Tag_RawHXML content ->
       lazyByteString $ toBytes content
 
-    Tag_CustomHXML elemName eiCloserOrContent ->
-      buildTag (toBytes elemName) eiCloserOrContent
+    Tag_CustomHXML elemName attrs eiCloserOrContent ->
+      buildTag (toBytes elemName) attrs eiCloserOrContent
 
-    Tag_Behavior ->
-      buildTag "behavior" $ Left Types.OmitTag
+    Tag_Behavior attrs ->
+      buildTag "behavior" attrs $ Left Types.OmitTag
 
-    Tag_Body content ->
-      buildTag "body" $ contentOrSelfClosing content
+    Tag_Body attrs content ->
+      buildTag "body" attrs $ contentOrSelfClosing content
 
-    Tag_DateField ->
-      buildTag "date-field" $ Left Types.OmitTag
+    Tag_DateField attrs ->
+      buildTag "date-field" attrs $ Left Types.OmitTag
 
-    Tag_Document content ->
-      buildTag "doc" $ contentOrSelfClosing content
+    Tag_Document attrs content ->
+      buildTag "doc" attrs $ contentOrSelfClosing content
 
-    Tag_Form content ->
-      buildTag "form" $ contentOrClosingTag content
+    Tag_Form attrs content ->
+      buildTag "form" attrs $ contentOrClosingTag content
 
-    Tag_Header content ->
-      buildTag "header" $ contentOrSelfClosing content
+    Tag_Header attrs content ->
+      buildTag "header" attrs $ contentOrSelfClosing content
 
-    Tag_Image ->
-      buildTag "image" $ Left Types.OmitTag
+    Tag_Image attrs ->
+      buildTag "image" attrs $ Left Types.OmitTag
 
-    Tag_Item content ->
-      buildTag "item" $ contentOrClosingTag content
+    Tag_Item attrs content ->
+      buildTag "item" attrs $ contentOrClosingTag content
 
-    Tag_Items content ->
-      buildTag "items" $ contentOrSelfClosing content
+    Tag_Items attrs content ->
+      buildTag "items" attrs $ contentOrSelfClosing content
 
-    Tag_List content ->
-      buildTag "list" $ contentOrClosingTag content
+    Tag_List attrs content ->
+      buildTag "list" attrs $ contentOrClosingTag content
 
-    Tag_Modifier content ->
-      buildTag "modifier" $ contentOrSelfClosing content
+    Tag_Modifier attrs content ->
+      buildTag "modifier" attrs $ contentOrSelfClosing content
 
-    Tag_Navigator content ->
-      buildTag "navigator" $ contentOrSelfClosing content
+    Tag_Navigator attrs content ->
+      buildTag "navigator" attrs $ contentOrSelfClosing content
 
-    Tag_NavRoute ->
-      buildTag "nav-route" $ Left Types.OmitTag
+    Tag_NavRoute attrs ->
+      buildTag "nav-route" attrs $ Left Types.OmitTag
 
-    Tag_Option content ->
-      buildTag "option" $ contentOrSelfClosing content
+    Tag_Option attrs content ->
+      buildTag "option" attrs $ contentOrSelfClosing content
 
-    Tag_PickerField content ->
-      buildTag "picker-field" $ contentOrSelfClosing content
+    Tag_PickerField attrs content ->
+      buildTag "picker-field" attrs $ contentOrSelfClosing content
 
-    Tag_PickerItem ->
-      buildTag "picker-item" $ Left Types.OmitTag
+    Tag_PickerItem attrs ->
+      buildTag "picker-item" attrs $ Left Types.OmitTag
 
-    Tag_Screen content ->
-      buildTag "screen" $ contentOrSelfClosing content
+    Tag_Screen attrs content ->
+      buildTag "screen" attrs $ contentOrSelfClosing content
 
-    Tag_Section ->
-      buildTag "section" $ Left Types.OmitTag
+    Tag_Section attrs ->
+      buildTag "section" attrs $ Left Types.OmitTag
 
-    Tag_SectionList content ->
-      buildTag "section-list" $ contentOrClosingTag content
+    Tag_SectionList attrs content ->
+      buildTag "section-list" attrs $ contentOrClosingTag content
 
-    Tag_SectionTitle content ->
-      buildTag "section-title" $ contentOrSelfClosing content
+    Tag_SectionTitle attrs content ->
+      buildTag "section-title" attrs $ contentOrSelfClosing content
 
-    Tag_SelectMultiple content ->
-      buildTag "select-multiple" $ contentOrSelfClosing content
+    Tag_SelectMultiple attrs content ->
+      buildTag "select-multiple" attrs $ contentOrSelfClosing content
 
-    Tag_SelectSingle content ->
-      buildTag "select-single" $ contentOrSelfClosing content
+    Tag_SelectSingle attrs content ->
+      buildTag "select-single" attrs $ contentOrSelfClosing content
 
-    Tag_Spinner ->
-      buildTag "spinner" $ Left Types.OmitTag
+    Tag_Spinner attrs ->
+      buildTag "spinner" attrs $ Left Types.OmitTag
 
-    Tag_Style content ->
-      buildTag "style" $ contentOrSelfClosing content
+    Tag_Style attrs content ->
+      buildTag "style" attrs $ contentOrSelfClosing content
 
-    Tag_Styles content ->
-      buildTag "styles" $ contentOrSelfClosing content
+    Tag_Styles attrs content ->
+      buildTag "styles" attrs $ contentOrSelfClosing content
 
-    Tag_Switch ->
-      buildTag "switch" $ Left Types.OmitTag
+    Tag_Switch attrs ->
+      buildTag "switch" attrs $ Left Types.OmitTag
 
-    Tag_Text ->
-      buildTag "text" $ Left Types.WithTag
+    Tag_Text attrs ->
+      buildTag "text" attrs $ Left Types.WithTag
 
-    Tag_TextArea ->
-      buildTag "text-area" $ Left Types.OmitTag
+    Tag_TextArea attrs ->
+      buildTag "text-area" attrs $ Left Types.OmitTag
 
-    Tag_TextField ->
-      buildTag "text-field" $ Left Types.OmitTag
+    Tag_TextField attrs ->
+      buildTag "text-field" attrs $ Left Types.OmitTag
 
-    Tag_View content ->
-      buildTag "view" $ contentOrClosingTag content
+    Tag_View attrs content ->
+      buildTag "view" attrs $ contentOrClosingTag content
 
-    Tag_WebView ->
-      buildTag "web-view" $ Left Types.OmitTag
+    Tag_WebView attrs ->
+      buildTag "web-view" attrs $ Left Types.OmitTag
 
 buildTag :: LBS.ByteString
+         -> [Attribute tag]
          -> Either Types.NoContent [ChildHXML parent]
          -> Builder
-buildTag tag content =
+buildTag tag attrs content =
   mconcat
     [ lazyByteString "<"
     , lazyByteString tag
+    , lazyByteString . B.bool " " LBS.empty $ L.null attrs
+    , mconcat
+        . L.intersperse (lazyByteString " ")
+        . mapMaybe renderAttribute
+        $ nubOrdOn attributeText attrs
     , case content of
         Left  Types.OmitTag -> lazyByteString "/>"
         Left  Types.WithTag -> lazyByteString ">"
@@ -155,6 +166,22 @@ buildTag tag content =
         Right _children ->
           lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
     ]
+
+renderAttribute :: Attribute any -> Maybe Builder
+renderAttribute attr =
+  case attr of
+    Attr_NoAttribute ->
+      Just $ lazyByteString LBS.empty
+
+    Attr_Custom name value ->
+      Just $ buildAttribute (toBytes name) (toBytes value)
+
+    Attr_XMLNS xmlns ->
+      Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns
+
+buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
+buildAttribute attr value =
+  lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""
 
 contentOrClosingTag :: [ChildHXML parent]
                     -> Either Types.NoContent [ChildHXML parent]
