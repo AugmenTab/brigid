@@ -38,14 +38,12 @@ renderLazyHTML = toLazyByteString . renderTag
 renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
   case html of
-    -- Global Attributes
-    --
     Tag_NoElement ->
       lazyByteString LBS.empty
 
-    Tag_Comment content ->
+    Tag_Comment comment ->
       lazyByteString "<!-- "
-        <> lazyByteString (toBytes content)
+        <> lazyByteString (toBytes comment)
         <> lazyByteString " -->"
 
     Tag_Text content ->
@@ -504,6 +502,8 @@ buildTag tag attributes content =
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
+    -- Global Attributes
+    --
     Attr_NoAttribute ->
       Just $ lazyByteString LBS.empty
 

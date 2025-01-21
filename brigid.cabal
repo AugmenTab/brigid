@@ -151,6 +151,9 @@ library
       Brigid.HXML.Elements.Tags
       Brigid.HXML.Elements.TagType
       Brigid.HXML.Internal.TagOperations
+      Brigid.HXML.Render.ByteString
+      Brigid.HXML.Render.String
+      Brigid.HXML.Render.Text
       Brigid.HXML.Types
   other-modules:
       Paths_brigid

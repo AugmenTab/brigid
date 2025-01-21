@@ -40,8 +40,8 @@ renderTag html =
     Tag_NoElement ->
       fromText T.empty
 
-    Tag_Comment content ->
-      fromText "<!-- " <> fromText content <> fromText " -->"
+    Tag_Comment comment ->
+      fromText "<!-- " <> fromText comment <> fromText " -->"
 
     Tag_Text content ->
       fromText $ Escape.html content
