@@ -10,6 +10,7 @@
 -- safe use case for it. If a better solution ever comes along that allows for
 -- the elimination of this extension, we shouldn't hesitate to jump on the
 -- opportunity.
+--
 {-# LANGUAGE UndecidableInstances #-}
 
 module Brigid.HTML.Internal.TagOperations

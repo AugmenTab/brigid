@@ -1,7 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 
 module Brigid.HTML.Elements
-  ( Document
+  ( HTML
   , ChildHTML
   , noElement
   , Tags.Comment, comment
@@ -133,7 +133,7 @@ import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Types qualified as Types
 
-type Document = ChildHTML Tags.Document Tags.NoElement
+type HTML = ChildHTML Tags.Document Tags.NoElement
 
 noElement :: ChildHTML parent grandparent
 noElement = Tag_NoElement

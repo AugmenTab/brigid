@@ -32,7 +32,7 @@ import Brigid.HTML.Entities qualified as Entity
 import Brigid.HTML.HTMX.Config qualified as HTMX
 import Brigid.HTML.Types qualified as HTML
 
-documentExample :: E.Document
+documentExample :: E.HTML
 documentExample =
   E.html [ A.xmlns fakeJavaScriptLink ]
     [ E.head []

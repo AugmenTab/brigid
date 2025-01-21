@@ -24,7 +24,6 @@ type ValidChild tag parent grandparent =
   AlertElement (Elem tag (ValidChildrenFor parent grandparent)) tag parent ~ 'True
 
 type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [TagType] where
-  ValidChildrenFor NoElement              grandparent = '[]
   ValidChildrenFor Document               grandparent = '[ Html ]
   ValidChildrenFor CustomHTML             grandparent = TagGroups.AllElements
   ValidChildrenFor Anchor                 grandparent = Filter TagGroups.AnchorExcluded (ValidChildrenFor grandparent NoElement)

@@ -43,95 +43,139 @@ module Brigid.HXML.Elements.Internal
       )
   ) where
 
-import Brigid.HXML.Elements.TagType (TagType(..))
+import Data.Text qualified as T
+
+import Brigid.HXML.Elements.Children (ValidChild)
+import Brigid.HXML.Elements.TagType (TagType (..))
+import Brigid.HXML.Types (NoContent)
 
 data ChildHXML (parent :: TagType) where
   Tag_NoElement
     :: ChildHXML parent
 
   Tag_Comment
-    :: ChildHXML parent
+    :: T.Text
+    -> ChildHXML parent
 
   Tag_RawHXML
-    :: ChildHXML parent
+    :: T.Text
+    -> ChildHXML parent
 
   Tag_CustomHXML
-    :: ChildHXML parent
+    :: T.Text
+    -> Either NoContent [ChildHXML 'CustomHXML]
+    -> ChildHXML parent
 
   Tag_Behavior
     :: ChildHXML parent
 
   Tag_Body
-    :: ChildHXML parent
+    :: ValidChild 'Body parent
+    => [ChildHXML 'Body]
+    -> ChildHXML parent
 
   Tag_DateField
     :: ChildHXML parent
 
   Tag_Document
-    :: ChildHXML parent
+    :: ValidChild 'Document parent
+    => [ChildHXML 'Document]
+    -> ChildHXML parent
 
   Tag_Form
-    :: ChildHXML parent
+    :: ValidChild 'Form parent
+    => [ChildHXML 'Form]
+    -> ChildHXML parent
 
   Tag_Header
-    :: ChildHXML parent
+    :: ValidChild 'Header parent
+    => [ChildHXML 'Header]
+    -> ChildHXML parent
 
   Tag_Image
     :: ChildHXML parent
 
   Tag_Item
-    :: ChildHXML parent
+    :: ValidChild 'Item parent
+    => [ChildHXML 'Item]
+    -> ChildHXML parent
 
   Tag_Items
-    :: ChildHXML parent
+    :: ValidChild 'Items parent
+    => [ChildHXML 'Items]
+    -> ChildHXML parent
 
   Tag_List
-    :: ChildHXML parent
+    :: ValidChild 'List parent
+    => [ChildHXML 'List]
+    -> ChildHXML parent
 
   Tag_Modifier
-    :: ChildHXML parent
+    :: ValidChild 'Modifier parent
+    => [ChildHXML 'Modifier]
+    -> ChildHXML parent
 
   Tag_Navigator
-    :: ChildHXML parent
+    :: ValidChild 'Navigator parent
+    => [ChildHXML 'Navigator]
+    -> ChildHXML parent
 
   Tag_NavRoute
     :: ChildHXML parent
 
   Tag_Option
-    :: ChildHXML parent
+    :: ValidChild 'Option parent
+    => [ChildHXML 'Option]
+    -> ChildHXML parent
 
   Tag_PickerField
-    :: ChildHXML parent
+    :: ValidChild 'PickerField parent
+    => [ChildHXML 'PickerField]
+    -> ChildHXML parent
 
   Tag_PickerItem
     :: ChildHXML parent
 
   Tag_Screen
-    :: ChildHXML parent
+    :: ValidChild 'Screen parent
+    => [ChildHXML 'Screen]
+    -> ChildHXML parent
 
   Tag_Section
     :: ChildHXML parent
 
   Tag_SectionList
-    :: ChildHXML parent
+    :: ValidChild 'SectionList parent
+    => [ChildHXML 'SectionList]
+    -> ChildHXML parent
 
   Tag_SectionTitle
-    :: ChildHXML parent
+    :: ValidChild 'SectionTitle parent
+    => [ChildHXML 'SectionTitle]
+    -> ChildHXML parent
 
   Tag_SelectMultiple
-    :: ChildHXML parent
+    :: ValidChild 'SelectMultiple parent
+    => [ChildHXML 'SelectMultiple]
+    -> ChildHXML parent
 
   Tag_SelectSingle
-    :: ChildHXML parent
+    :: ValidChild 'SelectSingle parent
+    => [ChildHXML 'SelectSingle]
+    -> ChildHXML parent
 
   Tag_Spinner
     :: ChildHXML parent
 
   Tag_Style
-    :: ChildHXML parent
+    :: ValidChild 'Style parent
+    => [ChildHXML 'Style]
+    -> ChildHXML parent
 
   Tag_Styles
-    :: ChildHXML parent
+    :: ValidChild 'Styles parent
+    => [ChildHXML 'Styles]
+    -> ChildHXML parent
 
   Tag_Switch
     :: ChildHXML parent
@@ -146,7 +190,9 @@ data ChildHXML (parent :: TagType) where
     :: ChildHXML parent
 
   Tag_View
-    :: ChildHXML parent
+    :: ValidChild 'View parent
+    => [ChildHXML 'View]
+    -> ChildHXML parent
 
   Tag_WebView
     :: ChildHXML parent

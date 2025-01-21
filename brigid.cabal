@@ -25,6 +25,7 @@ source-repository head
 library
   exposed-modules:
       Brigid.Examples.HTML
+      Brigid.Examples.HXML
       Brigid.HTML.Attributes
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Autocomplete
@@ -143,9 +144,14 @@ library
       Brigid.HTML.Types.WebsocketBinaryType
       Brigid.HTML.Types.Window
       Brigid.HTML.Types.Wrap
+      Brigid.HXML.Elements
+      Brigid.HXML.Elements.Children
       Brigid.HXML.Elements.Internal
+      Brigid.HXML.Elements.TagGroups
       Brigid.HXML.Elements.Tags
       Brigid.HXML.Elements.TagType
+      Brigid.HXML.Internal.TagOperations
+      Brigid.HXML.Types
   other-modules:
       Paths_brigid
   autogen-modules:
