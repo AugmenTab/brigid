@@ -48,7 +48,7 @@ renderTag html =
       lazyByteString . Render.textToBytes $ Escape.escape content
 
     Tag_Entity entity ->
-      lazyByteString $ Render.textToBytes entity
+      lazyByteString $ LBS8.pack entity
 
     Tag_RawHTML content ->
       lazyByteString $ Render.textToBytes content

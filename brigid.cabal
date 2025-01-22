@@ -160,6 +160,7 @@ library
       Brigid.HXML.Internal.TagOperations
       Brigid.HXML.Types.KeyboardDismissMode
       Brigid.HXML.Types.ScrollOrientation
+      Brigid.Internal.Entities
       Brigid.Internal.Escape
       Brigid.Internal.Render
       Paths_brigid

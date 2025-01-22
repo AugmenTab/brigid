@@ -47,7 +47,7 @@ renderTag html =
       fromText $ Escape.escape content
 
     Tag_Entity entity ->
-      fromText entity
+      fromText $ T.pack entity
 
     Tag_RawHTML content ->
       fromText content

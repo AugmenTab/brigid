@@ -171,7 +171,7 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
 
   Tag_Entity
     :: ValidChild 'Text parent grandparent
-    => T.Text
+    => String
     -> ChildHTML parent grandparent
 
   Tag_RawHTML

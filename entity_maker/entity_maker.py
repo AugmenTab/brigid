@@ -12,8 +12,43 @@ from bs4 import BeautifulSoup
 def indent(n):
     return " " * n
 
+def create_file(module, tag, entities):
+    if module == "HTML":
+        argument = " grandparent"
+    else:
+        argument = ""
 
-def create_file(entities):
+    open(str(Path.cwd()) + f'/src/Brigid/{module}/Entities.hs', 'w').close()
+
+    with open(str(Path.cwd()) + f'/src/Brigid/{module}/Entities.hs', 'a') as f:
+        def write_import(prepend, name):
+            f.write("\n" + indent(2) + prepend + " " + name)
+
+
+        f.write(f"module Brigid.{module}.Entities")
+        write_import("(", entities[0]['name'])
+
+        for entity in entities[1:]:
+            write_import(",", entity['name'])
+
+        f.write("\n" + indent(2) + ") where\n")
+        f.write("\n" + f"import Brigid.{module}.Elements.Children (ValidChild)")
+        f.write("\n" + f"import Brigid.{module}.Elements.Internal (Child{module} (Tag_Entity))")
+        f.write("\n" + f"import Brigid.{module}.Elements.Tags ({tag})")
+        f.write("\n" + f"import Brigid.Internal.Entities qualified as Entity")
+
+        for entity in entities:
+            f.write("\n\n" + "-- | The " + entity['comment'] + " HTML entity")
+            if entity['symbol'] == "":
+                f.write('.')
+            else:
+                f.write(" ('" + entity['symbol'] + "').")
+            f.write("\n" + entity['name'] + f" :: ValidChild {tag} parent{argument}")
+            f.write("\n" + indent(len(entity['name'])) + f" => ChildHTML parent{argument}")
+            f.write("\n" + entity['name'] + " = Tag_Entity Entity." + entity['name'])
+
+
+def create_shared_file(entities):
     module_comment = '''-- | This module exposes a number of convenience functions to write an HTML
 -- entity. Each entity is written using the HTML decimal code. The names for
 -- these entity constants were derived from a description of the entity's
@@ -27,24 +62,21 @@ def create_file(entities):
 --
 '''
 
-    open(str(Path.cwd()) + '/src/Brigid/HTML/Entities.hs', 'w').close()
+    open(str(Path.cwd()) + '/src/Brigid/Internal/Entities.hs', 'w').close()
 
-    with open(str(Path.cwd()) + '/src/Brigid/HTML/Entities.hs', 'a') as f:
+    with open(str(Path.cwd()) + '/src/Brigid/Internal/Entities.hs', 'a') as f:
         def write_import(prepend, name):
             f.write("\n" + indent(2) + prepend + " " + name)
 
 
         f.write(module_comment)
-        f.write("module Brigid.HTML.Entities")
+        f.write("module Brigid.Internal.Entities")
         write_import("(", entities[0]['name'])
 
         for entity in entities[1:]:
             write_import(",", entity['name'])
 
         f.write("\n" + indent(2) + ") where\n")
-        f.write("\n" + "import Brigid.HTML.Elements.Children (ValidChild)")
-        f.write("\n" + "import Brigid.HTML.Elements.Internal (ChildHTML (Tag_Entity))")
-        f.write("\n" + "import Brigid.HTML.Elements.Tags (Text)")
 
         for entity in entities:
             f.write("\n\n" + "-- | The " + entity['comment'] + " HTML entity")
@@ -52,9 +84,8 @@ def create_file(entities):
                 f.write('.')
             else:
                 f.write(" ('" + entity['symbol'] + "').")
-            f.write("\n" + entity['name'] + " :: ValidChild Text parent grandparent")
-            f.write("\n" + indent(len(entity['name'])) + " => ChildHTML parent grandparent")
-            f.write("\n" + entity['name'] + " = Tag_Entity \"" + entity['code'] + "\"")
+            f.write("\n" + entity['name'] + " :: String")
+            f.write("\n" + entity['name'] + " = \"" + entity['code'] + "\"")
 
 
 def sanitize(input_string):
@@ -133,8 +164,12 @@ if __name__ == "__main__":
         entities = parse_entities(get_table_rows(soup))
         print("Entities parsed..")
 
+        print("Writing Brigid.Internal.Entities...")
+        create_shared_file(entities)
+
         print("Writing Brigid.HTML.Entities...")
-        create_file(entities)
+        create_file("HTML", "Text", entities)
+
         print("Done.")
         exit(0)
 
