@@ -72,7 +72,6 @@ library
       Brigid.HTML.Elements.Tags
       Brigid.HTML.Elements.TagType
       Brigid.HTML.Internal.TagOperations
-      Brigid.HTML.Render.Internal.Escape
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
@@ -161,6 +160,7 @@ library
       Brigid.HXML.Internal.TagOperations
       Brigid.HXML.Types.KeyboardDismissMode
       Brigid.HXML.Types.ScrollOrientation
+      Brigid.Internal.Escape
       Brigid.Internal.Render
       Paths_brigid
   autogen-modules:

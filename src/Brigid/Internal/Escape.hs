@@ -1,9 +1,9 @@
-module Brigid.HTML.Render.Internal.Escape
+module Brigid.Internal.Escape
   ( attributeBytes
   , attributeCharBytes
   , attributeText
   , attributeCharText
-  , html
+  , escape
   , urlByteString
   , urlText
   ) where
@@ -37,8 +37,8 @@ attributeCharText c =
     '\'' -> "&#39;"
     _    -> T.singleton c
 
-html :: T.Text -> T.Text
-html =
+escape :: T.Text -> T.Text
+escape =
   T.concatMap $
     \c ->
       case c of
