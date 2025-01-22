@@ -19,6 +19,12 @@ documentExample =
             , E.style [] []
             , E.style [] []
             ]
+        , E.header [ A.hide True
+                   , A.safeArea False
+                   , A.style "hidden"
+                   ]
+            [
+            ]
         , E.body []
             [ E.text []
             , E.text []

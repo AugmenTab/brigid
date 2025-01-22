@@ -6,7 +6,10 @@ module Brigid.HXML.Attributes.Internal
   ( Attribute
       ( Attr_NoAttribute
       , Attr_Custom
+      , Attr_Hide
       , Attr_Id
+      , Attr_SafeArea
+      , Attr_Style
       , Attr_XMLNS
       )
   , attributeText
@@ -28,9 +31,24 @@ data Attribute (tag :: TagType) where
     -> T.Text
     -> Attribute tag
 
+  Attr_Hide
+    :: ValidAttribute 'Hide tag
+    => Bool
+    -> Attribute tag
+
   Attr_Id
     :: ValidAttribute 'Id tag
     => Types.Id
+    -> Attribute tag
+
+  Attr_SafeArea
+    :: ValidAttribute 'SafeArea tag
+    => Bool
+    -> Attribute tag
+
+  Attr_Style
+    :: ValidAttribute 'Style tag
+    => T.Text
     -> Attribute tag
 
   Attr_XMLNS
@@ -47,8 +65,17 @@ attributeText attr =
     Attr_Custom name _value ->
       name
 
+    Attr_Hide _hide ->
+      "hide"
+
     Attr_Id _id ->
       "id"
+
+    Attr_SafeArea _safeArea ->
+      "safe-area"
+
+    Attr_Style _style ->
+      "style"
 
     Attr_XMLNS _xmlns ->
       "xmlns"

@@ -15,6 +15,7 @@ import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
+import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
@@ -168,8 +169,17 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute name value
 
+    Attr_Hide hide ->
+      Just . buildAttribute "hide" $ Render.enumBoolToText hide
+
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToText id
+
+    Attr_SafeArea safeArea ->
+      Just . buildAttribute "safe-area" $ Render.enumBoolToText safeArea
+
+    Attr_Style style ->
+      Just $ buildAttribute "style" style
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToText xmlns

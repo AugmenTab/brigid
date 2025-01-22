@@ -47,6 +47,7 @@ import Data.Text qualified as T
 import Ogma qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..))
+import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Types qualified as Types
 
 accesskey :: Char -> Attribute tag
@@ -139,7 +140,7 @@ style :: T.Text -> Attribute tag
 style = Attr_Style
 
 styles :: [T.Text] -> Attribute tag
-styles = style . T.intercalate ";"
+styles = style . Render.foldToTextWithSeparator (\x -> x) ";"
 
 tabindex :: Types.Reachability -> Attribute tag
 tabindex = unsafeTabIndex . Types.reachabilityToInteger

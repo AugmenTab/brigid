@@ -4,7 +4,10 @@
 module Brigid.HXML.Attributes.AttributeType
   ( AttributeErrorMessage
   , AttributeType
-      ( Id
+      ( Hide
+      , Id
+      , SafeArea
+      , Style
       , XMLNS
       )
   ) where
@@ -12,9 +15,15 @@ module Brigid.HXML.Attributes.AttributeType
 import GHC.TypeLits (ErrorMessage (..))
 
 data AttributeType
-  = Id
+  = Hide
+  | Id
+  | SafeArea
+  | Style
   | XMLNS
 
 type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
-  AttributeErrorMessage Id    = 'Text "Id (id)"
-  AttributeErrorMessage XMLNS = 'Text "XMLNS (xmlns)"
+  AttributeErrorMessage Hide      = 'Text "Hide (hide)"
+  AttributeErrorMessage Id        = 'Text "Id (id)"
+  AttributeErrorMessage SafeArea  = 'Text "SafeArea (safe-area)"
+  AttributeErrorMessage Style     = 'Text "Style (style)"
+  AttributeErrorMessage XMLNS     = 'Text "XMLNS (xmlns)"
