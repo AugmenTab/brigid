@@ -4,9 +4,11 @@
 module Brigid.HXML.Attributes
   ( noAttribute
   , customAttribute
+  , id
   , xmlns
   ) where
 
+import Prelude hiding (id)
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
@@ -21,6 +23,9 @@ noAttribute = Attr_NoAttribute
 
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
+
+id :: ValidAttribute 'Id tag => Types.Id -> Attribute tag
+id = Attr_Id
 
 xmlns :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf url Types.URLTypes

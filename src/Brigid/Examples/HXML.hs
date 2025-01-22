@@ -13,7 +13,7 @@ hyperviewNamespace =
 documentExample :: E.HXML
 documentExample =
   E.doc [ A.xmlns hyperviewNamespace ]
-    [ E.screen []
+    [ E.screen [ A.id $ HXML.Id "my-screen" ]
         [ E.styles []
             [ E.style [] []
             , E.style [] []

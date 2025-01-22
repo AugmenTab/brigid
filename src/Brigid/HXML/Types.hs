@@ -23,6 +23,7 @@ module Brigid.HXML.Types
   , rawURLToText
   ) where
 
+import Brigid.HTML.Types.Id as Export
 import Brigid.HTML.Types.NoContent as Export
 import Brigid.HTML.Types.URL ( URL
                              , URLTypes

@@ -6,6 +6,7 @@ module Brigid.HXML.Render.Text
   , renderLazyHXML
   ) where
 
+import Prelude hiding (id)
 import Data.Bool qualified as B
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
@@ -166,6 +167,9 @@ renderAttribute attr =
 
     Attr_Custom name value ->
       Just $ buildAttribute name value
+
+    Attr_Id id ->
+      Just . buildAttribute "id" $ Types.idToText id
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToText xmlns

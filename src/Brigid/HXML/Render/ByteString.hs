@@ -6,6 +6,7 @@ module Brigid.HXML.Render.ByteString
   , renderLazyHXML
   ) where
 
+import Prelude hiding (id)
 import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
@@ -175,6 +176,9 @@ renderAttribute attr =
 
     Attr_Custom name value ->
       Just $ buildAttribute (toBytes name) (toBytes value)
+
+    Attr_Id id ->
+      Just . buildAttribute "id" $ Types.idToBytes id
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns

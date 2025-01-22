@@ -17,4 +17,5 @@ type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
-  ValidElementsFor XMLNS = '[ Tags.Document ]
+  ValidElementsFor 'Id    = '[ Tags.Screen ]
+  ValidElementsFor 'XMLNS = '[ Tags.Document ]
