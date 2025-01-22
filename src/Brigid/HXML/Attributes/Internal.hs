@@ -9,6 +9,9 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Hide
       , Attr_Id
       , Attr_SafeArea
+      , Attr_Scroll
+      , Attr_ScrollOrientation
+      , Attr_ShowsScrollIndicator
       , Attr_Style
       , Attr_XMLNS
       )
@@ -46,6 +49,21 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_Scroll
+    :: ValidAttribute 'Scroll tag
+    => Bool
+    -> Attribute tag
+
+  Attr_ScrollOrientation
+    :: ValidAttribute 'ScrollOrientation tag
+    => Types.ScrollOrientation
+    -> Attribute tag
+
+  Attr_ShowsScrollIndicator
+    :: ValidAttribute 'ShowsScrollIndicator tag
+    => Bool
+    -> Attribute tag
+
   Attr_Style
     :: ValidAttribute 'Style tag
     => T.Text
@@ -73,6 +91,15 @@ attributeText attr =
 
     Attr_SafeArea _safeArea ->
       "safe-area"
+
+    Attr_Scroll _scroll ->
+      "scroll"
+
+    Attr_ScrollOrientation _scrollOrientation ->
+      "scroll-orientation"
+
+    Attr_ShowsScrollIndicator _showsScrollIndicator ->
+      "shows-scroll-indicator"
 
     Attr_Style _style ->
       "style"

@@ -7,6 +7,9 @@ module Brigid.HXML.Attributes
   , hide
   , id
   , safeArea
+  , scroll
+  , scrollOrientation
+  , showsScrollIndicator
   , style
   , styles
   , xmlns
@@ -37,6 +40,17 @@ id = Attr_Id
 
 safeArea :: ValidAttribute 'SafeArea tag => Bool -> Attribute tag
 safeArea = Attr_SafeArea
+
+scroll :: ValidAttribute 'Scroll tag => Bool -> Attribute tag
+scroll = Attr_Scroll
+
+scrollOrientation :: ValidAttribute 'ScrollOrientation tag
+                  => Types.ScrollOrientation -> Attribute tag
+scrollOrientation = Attr_ScrollOrientation
+
+showsScrollIndicator :: ValidAttribute 'ShowsScrollIndicator tag
+                     => Bool -> Attribute tag
+showsScrollIndicator = Attr_ShowsScrollIndicator
 
 style :: ValidAttribute 'Style tag => T.Text -> Attribute tag
 style = Attr_Style

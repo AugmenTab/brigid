@@ -25,7 +25,10 @@ documentExample =
                    ]
             [
             ]
-        , E.body []
+        , E.body [ A.scroll True
+                 , A.scrollOrientation HXML.Horizontal
+                 , A.showsScrollIndicator True
+                 ]
             [ E.text []
             , E.text []
             ]

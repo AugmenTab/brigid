@@ -47,3 +47,6 @@ import Brigid.HTML.Types.URL ( URL
                              , rawURLToBytes
                              , rawURLToText
                              )
+
+import Brigid.HXML.Types.ScrollOrientation as Export
+

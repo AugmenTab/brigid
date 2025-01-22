@@ -178,6 +178,19 @@ renderAttribute attr =
     Attr_SafeArea safeArea ->
       Just . buildAttribute "safe-area" $ Render.enumBoolToText safeArea
 
+    Attr_Scroll scroll ->
+      Just . buildAttribute "scroll" $ Render.enumBoolToText scroll
+
+    Attr_ScrollOrientation scrollOrientation ->
+      Just
+        . buildAttribute "scroll-orientation"
+        $ Types.scrollOrientationToText scrollOrientation
+
+    Attr_ShowsScrollIndicator showsScrollIndicator ->
+      Just
+        . buildAttribute "shows-scroll-indicator"
+        $ Render.enumBoolToText showsScrollIndicator
+
     Attr_Style style ->
       Just $ buildAttribute "style" style
 
