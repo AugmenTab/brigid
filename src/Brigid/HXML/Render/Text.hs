@@ -169,11 +169,27 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute name value
 
+    Attr_AvoidKeyboard avoidKeyboard ->
+      Just
+        . buildAttribute "avoid-keyboard"
+        $ Render.enumBoolToText avoidKeyboard
+
+    Attr_ContentContainerStyle contentContainerStyle ->
+      Just
+        . buildAttribute "content-container-style"
+        . Render.foldToTextWithSeparator Types.idToText " "
+        $ contentContainerStyle
+
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToText hide
 
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToText id
+
+    Attr_KeyboardDismissMode keyboardDismissMode ->
+      Just
+        . buildAttribute "keyboard-dismiss-mode"
+        $ Types.keyboardDismissModeToText keyboardDismissMode
 
     Attr_SafeArea safeArea ->
       Just . buildAttribute "safe-area" $ Render.enumBoolToText safeArea
@@ -186,13 +202,23 @@ renderAttribute attr =
         . buildAttribute "scroll-orientation"
         $ Types.scrollOrientationToText scrollOrientation
 
+    Attr_ScrollToInputOffset scrollToInputOffset ->
+      Just
+        . buildAttribute "scroll-orientation"
+        $ Render.showText scrollToInputOffset
+
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
         . buildAttribute "shows-scroll-indicator"
         $ Render.enumBoolToText showsScrollIndicator
 
+    Attr_Sticky sticky ->
+      Just . buildAttribute "sticky" $ Render.enumBoolToText sticky
+
     Attr_Style style ->
-      Just $ buildAttribute "style" style
+      Just
+        . buildAttribute "style"
+        $ Render.foldToTextWithSeparator Types.idToText " " style
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToText xmlns

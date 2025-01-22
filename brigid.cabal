@@ -159,6 +159,7 @@ library
       Brigid.HXML.Render.String
       Brigid.HXML.Render.Text
       Brigid.HXML.Types
+      Brigid.HXML.Types.KeyboardDismissMode
       Brigid.HXML.Types.ScrollOrientation
   other-modules:
       Paths_brigid

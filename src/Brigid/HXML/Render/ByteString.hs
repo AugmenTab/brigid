@@ -178,11 +178,27 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute (toBytes name) (toBytes value)
 
+    Attr_AvoidKeyboard avoidKeyboard ->
+      Just
+        . buildAttribute "avoid-keyboard"
+        $ Render.enumBoolToBytes avoidKeyboard
+
+    Attr_ContentContainerStyle contentContainerStyle ->
+      Just
+        . buildAttribute "content-container-style"
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        $ contentContainerStyle
+
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToBytes hide
 
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToBytes id
+
+    Attr_KeyboardDismissMode keyboardDismissMode ->
+      Just
+        . buildAttribute "keyboard-dismiss-mode"
+        $ Types.keyboardDismissModeToBytes keyboardDismissMode
 
     Attr_SafeArea safeArea ->
       Just . buildAttribute "safe-area" $ Render.enumBoolToBytes safeArea
@@ -195,13 +211,23 @@ renderAttribute attr =
         . buildAttribute "scroll-orientation"
         $ Types.scrollOrientationToBytes scrollOrientation
 
+    Attr_ScrollToInputOffset scrollToInputOffset ->
+      Just
+        . buildAttribute "scroll-orientation"
+        $ Render.showBytes scrollToInputOffset
+
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
         . buildAttribute "shows-scroll-indicator"
         $ Render.enumBoolToBytes showsScrollIndicator
 
+    Attr_Sticky sticky ->
+      Just . buildAttribute "sticky" $ Render.enumBoolToBytes sticky
+
     Attr_Style style ->
-      Just . buildAttribute "style" $ toBytes style
+      Just
+        . buildAttribute "style"
+        $ Render.foldToBytesWithSeparator Types.idToBytes " " style
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns

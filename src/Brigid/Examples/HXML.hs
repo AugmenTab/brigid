@@ -6,22 +6,21 @@ import Brigid.HXML.Attributes qualified as A
 import Brigid.HXML.Elements qualified as E
 import Brigid.HXML.Types qualified as HXML
 
-hyperviewNamespace :: HXML.RawURL
-hyperviewNamespace =
-  HXML.mkRawURL "https://hyperview.org/hyperview"
-
 documentExample :: E.HXML
 documentExample =
   E.doc [ A.xmlns hyperviewNamespace ]
     [ E.screen [ A.id $ HXML.Id "my-screen" ]
         [ E.styles []
-            [ E.style [] []
+            [ E.style [ -- TODO: A.id myStyleId
+                      ]
+                [
+                ]
             , E.style [] []
             , E.style [] []
             ]
         , E.header [ A.hide True
                    , A.safeArea False
-                   , A.style "hidden"
+                   , A.style myStyleId
                    ]
             [
             ]
@@ -29,8 +28,21 @@ documentExample =
                  , A.scrollOrientation HXML.Horizontal
                  , A.showsScrollIndicator True
                  ]
-            [ E.text []
-            , E.text []
+            [ E.view [ A.avoidKeyboard False
+                     , A.contentContainerStyle [ myStyleId ]
+                     , A.keyboardDismissMode HXML.OnDrag
+                     , A.scrollToInputOffset 50
+                     , A.sticky True
+                     ]
+                [ E.text []
+                ]
             ]
         ]
     ]
+
+hyperviewNamespace :: HXML.RawURL
+hyperviewNamespace =
+  HXML.mkRawURL "https://hyperview.org/hyperview"
+
+myStyleId :: HXML.Id
+myStyleId = HXML.Id "MyStyle"
