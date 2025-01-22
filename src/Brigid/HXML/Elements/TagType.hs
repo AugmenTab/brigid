@@ -7,6 +7,7 @@ module Brigid.HXML.Elements.TagType
       ( NoElement
       , HXML
       , Comment
+      , Content
       , RawHXML
       , CustomHXML
       , Behavior
@@ -49,6 +50,7 @@ data TagType
   = NoElement
   | HXML
   | Comment
+  | Content
   | RawHXML
   | CustomHXML
   | Behavior
@@ -86,6 +88,7 @@ data TagType
 type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
   TagErrorMessage HXML           = 'TypeLits.Text "HXML Document"
   TagErrorMessage Comment        = 'TypeLits.Text "Comment"
+  TagErrorMessage Content        = 'TypeLits.Text "Text Content"
   TagErrorMessage RawHXML        = 'TypeLits.Text "RawHXML"
   TagErrorMessage CustomHXML     = 'TypeLits.Text "CustomHXML"
   TagErrorMessage Behavior       = 'TypeLits.Text "Behavior <behavior>"

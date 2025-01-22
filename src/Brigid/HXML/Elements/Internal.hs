@@ -7,6 +7,8 @@ module Brigid.HXML.Elements.Internal
   ( ChildHXML
       ( Tag_NoElement
       , Tag_Comment
+      , Tag_Content
+      , Tag_Entity
       , Tag_RawHXML
       , Tag_CustomHXML
       , Tag_Behavior
@@ -56,6 +58,16 @@ data ChildHXML (parent :: TagType) where
 
   Tag_Comment
     :: T.Text
+    -> ChildHXML parent
+
+  Tag_Content
+    :: ValidChild 'Content parent
+    => T.Text
+    -> ChildHXML parent
+
+  Tag_Entity
+    :: ValidChild 'Content parent
+    => String
     -> ChildHXML parent
 
   Tag_RawHXML
@@ -209,7 +221,9 @@ data ChildHXML (parent :: TagType) where
     -> ChildHXML parent
 
   Tag_Text
-    :: [Attribute 'Text]
+    :: ValidChild 'Text parent
+    => [Attribute 'Text]
+    -> [ChildHXML 'Text]
     -> ChildHXML parent
 
   Tag_TextArea

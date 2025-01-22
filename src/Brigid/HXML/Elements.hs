@@ -3,6 +3,7 @@ module Brigid.HXML.Elements
   , ChildHXML
   , noElement
   , Tags.Comment, comment
+  , Tags.Content, content
   , Tags.RawHXML, rawHXML
   , Tags.CustomHXML, customHXML
   , Tags.Behavior, behavior
@@ -53,6 +54,9 @@ noElement = Tag_NoElement
 
 comment :: T.Text -> ChildHXML parent
 comment = Tag_Comment
+
+content :: ValidChild Tags.Content parent => T.Text -> ChildHXML parent
+content = Tag_Content
 
 rawHXML :: T.Text -> ChildHXML parent
 rawHXML = Tag_RawHXML
@@ -173,7 +177,8 @@ styles = Tag_Styles
 switch :: [Attribute Tags.Switch] -> ChildHXML parent
 switch = Tag_Switch
 
-text :: [Attribute Tags.Text] -> ChildHXML parent
+text :: ValidChild Tags.Text parent
+     => [Attribute Tags.Text] -> [ChildHXML Tags.Text] -> ChildHXML parent
 text = Tag_Text
 
 textArea :: [Attribute Tags.TextArea] -> ChildHXML parent

@@ -43,4 +43,5 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor SelectSingle   = '[ 'Option ]
   ValidChildrenFor Style          = '[ 'Modifier ]
   ValidChildrenFor Styles         = '[ 'Style ]
+  ValidChildrenFor Text           = '[ 'Content ]
   ValidChildrenFor View           = TagGroups.ViewTags

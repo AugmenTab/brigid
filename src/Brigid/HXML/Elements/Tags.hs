@@ -4,6 +4,7 @@ module Brigid.HXML.Elements.Tags
   ( NoElement
   , HXML
   , Comment
+  , Content
   , RawHXML
   , CustomHXML
   , Behavior
@@ -51,6 +52,10 @@ type HXML = 'TagType.HXML
 
 -- | This type synonym represents an HXML comment.
 type Comment = 'TagType.Comment
+
+-- | This type synonym represents the textual content with the @\<text>@
+-- comment.
+type Content = 'TagType.Content
 
 -- | This type synonym represents raw HXML. This content is unchecked and
 -- should be considered unsafe. Its intended use-case is for writing

@@ -37,6 +37,7 @@ library
       Brigid.HTML.Types
       Brigid.HXML.Attributes
       Brigid.HXML.Elements
+      Brigid.HXML.Entities
       Brigid.HXML.Render.ByteString
       Brigid.HXML.Render.String
       Brigid.HXML.Render.Text

@@ -4,6 +4,7 @@ module Brigid.Examples.HXML
 
 import Brigid.HXML.Attributes qualified as A
 import Brigid.HXML.Elements qualified as E
+import Brigid.HXML.Entities qualified as Entity
 import Brigid.HXML.Types qualified as HXML
 
 documentExample :: E.HXML
@@ -35,6 +36,12 @@ documentExample =
                      , A.sticky True
                      ]
                 [ E.text []
+                    [ E.content "Here's"
+                    , Entity.noBreakSpace
+                    , E.content "some"
+                    , Entity.noBreakSpace
+                    , E.content "text!"
+                    ]
                 ]
             ]
         ]

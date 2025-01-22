@@ -44,7 +44,7 @@ def create_file(module, tag, entities):
             else:
                 f.write(" ('" + entity['symbol'] + "').")
             f.write("\n" + entity['name'] + f" :: ValidChild {tag} parent{argument}")
-            f.write("\n" + indent(len(entity['name'])) + f" => ChildHTML parent{argument}")
+            f.write("\n" + indent(len(entity['name'])) + f" => Child{module} parent{argument}")
             f.write("\n" + entity['name'] + " = Tag_Entity Entity." + entity['name'])
 
 
@@ -169,6 +169,9 @@ if __name__ == "__main__":
 
         print("Writing Brigid.HTML.Entities...")
         create_file("HTML", "Text", entities)
+
+        print("Writing Brigid.HXML.Entities...")
+        create_file("HXML", "Content", entities)
 
         print("Done.")
         exit(0)

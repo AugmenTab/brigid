@@ -11,6 +11,7 @@ import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.Maybe (mapMaybe)
@@ -36,6 +37,12 @@ renderTag hxml =
       lazyByteString "<!-- "
         <> lazyByteString (Render.textToBytes comment)
         <> lazyByteString " -->"
+
+    Tag_Content content ->
+      lazyByteString $ Render.textToBytes content
+
+    Tag_Entity entity ->
+      lazyByteString $ LBS8.pack entity
 
     Tag_RawHXML content ->
       lazyByteString $ Render.textToBytes content
@@ -121,8 +128,8 @@ renderTag hxml =
     Tag_Switch attrs ->
       buildTag "switch" attrs $ Left Types.OmitTag
 
-    Tag_Text attrs ->
-      buildTag "text" attrs $ Left Types.WithTag
+    Tag_Text attrs content ->
+      buildTag "text" attrs $ contentOrClosingTag content
 
     Tag_TextArea attrs ->
       buildTag "text-area" attrs $ Left Types.OmitTag

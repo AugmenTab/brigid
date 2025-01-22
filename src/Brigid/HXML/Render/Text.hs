@@ -35,6 +35,12 @@ renderTag hxml =
     Tag_Comment comment ->
       fromText "<!-- " <> fromText comment <> fromText " -->"
 
+    Tag_Content content ->
+      fromText content
+
+    Tag_Entity entity ->
+      fromText $ T.pack entity
+
     Tag_RawHXML content ->
       fromText content
 
@@ -45,82 +51,82 @@ renderTag hxml =
       buildTag "behavior" attrs $ Left Types.OmitTag
 
     Tag_Body attrs content ->
-      buildTag "body" attrs $ closingTag content
+      buildTag "body" attrs $ contentOrSelfClosing content
 
     Tag_DateField attrs ->
       buildTag "date-field" attrs $ Left Types.OmitTag
 
     Tag_Document attrs content ->
-      buildTag "doc" attrs $ closingTag content
+      buildTag "doc" attrs $ contentOrSelfClosing content
 
     Tag_Form attrs content ->
-      buildTag "form" attrs $ closingTag content
+      buildTag "form" attrs $ contentOrSelfClosing content
 
     Tag_Header attrs content ->
-      buildTag "header" attrs $ closingTag content
+      buildTag "header" attrs $ contentOrSelfClosing content
 
     Tag_Image attrs ->
       buildTag "image" attrs $ Left Types.OmitTag
 
     Tag_Item attrs content ->
-      buildTag "item" attrs $ closingTag content
+      buildTag "item" attrs $ contentOrSelfClosing content
 
     Tag_Items attrs content ->
-      buildTag "items" attrs $ closingTag content
+      buildTag "items" attrs $ contentOrSelfClosing content
 
     Tag_List attrs content ->
-      buildTag "list" attrs $ closingTag content
+      buildTag "list" attrs $ contentOrSelfClosing content
 
     Tag_Modifier attrs content ->
-      buildTag "modifier" attrs $ closingTag content
+      buildTag "modifier" attrs $ contentOrSelfClosing content
 
     Tag_Navigator attrs content ->
-      buildTag "navigator" attrs $ closingTag content
+      buildTag "navigator" attrs $ contentOrSelfClosing content
 
     Tag_NavRoute attrs ->
       buildTag "nav-route" attrs $ Left Types.OmitTag
 
     Tag_Option attrs content ->
-      buildTag "option" attrs $ closingTag content
+      buildTag "option" attrs $ contentOrSelfClosing content
 
     Tag_PickerField attrs content ->
-      buildTag "picker-field" attrs $ closingTag content
+      buildTag "picker-field" attrs $ contentOrSelfClosing content
 
     Tag_PickerItem attrs ->
       buildTag "picker-item" attrs $ Left Types.OmitTag
 
     Tag_Screen attrs content ->
-      buildTag "screen" attrs $ closingTag content
+      buildTag "screen" attrs $ contentOrSelfClosing content
 
     Tag_Section attrs ->
       buildTag "section" attrs $ Left Types.OmitTag
 
     Tag_SectionList attrs content ->
-      buildTag "section-list" attrs $ closingTag content
+      buildTag "section-list" attrs $ contentOrSelfClosing content
 
     Tag_SectionTitle attrs content ->
-      buildTag "section-title" attrs $ closingTag content
+      buildTag "section-title" attrs $ contentOrSelfClosing content
 
     Tag_SelectMultiple attrs content ->
-      buildTag "select-multiple" attrs $ closingTag content
+      buildTag "select-multiple" attrs $ contentOrSelfClosing content
 
     Tag_SelectSingle attrs content ->
-      buildTag "select-single" attrs $ closingTag content
+      buildTag "select-single" attrs $ contentOrSelfClosing content
 
     Tag_Spinner attrs ->
       buildTag "spinner" attrs $ Left Types.OmitTag
 
     Tag_Style attrs content ->
-      buildTag "style" attrs $ closingTag content
+      buildTag "style" attrs $ contentOrSelfClosing content
 
     Tag_Styles attrs content ->
-      buildTag "styles" attrs $ closingTag content
+      buildTag "styles" attrs $ contentOrSelfClosing content
 
     Tag_Switch attrs ->
       buildTag "switch" attrs $ Left Types.OmitTag
 
-    Tag_Text attrs ->
-      buildTag "text" attrs $ Left Types.OmitTag
+    Tag_Text attrs content ->
+      buildTag "text" attrs $ contentOrClosingTag content
 
     Tag_TextArea attrs ->
       buildTag "text-area" attrs $ Left Types.OmitTag
@@ -129,7 +135,7 @@ renderTag hxml =
       buildTag "text-field" attrs $ Left Types.OmitTag
 
     Tag_View attrs content ->
-      buildTag "view" attrs $ closingTag content
+      buildTag "view" attrs $ contentOrSelfClosing content
 
     Tag_WebView attrs ->
       buildTag "web-view" attrs $ Left Types.OmitTag
@@ -227,8 +233,16 @@ buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
   fromText attr <> "=\"" <> fromText value <> fromText "\""
 
-closingTag :: [ChildHXML parent] -> Either Types.NoContent [ChildHXML parent]
-closingTag content =
+contentOrClosingTag :: [ChildHXML parent]
+                    -> Either Types.NoContent [ChildHXML parent]
+contentOrClosingTag content =
+  if null content
+    then Left Types.WithTag
+    else Right content
+
+contentOrSelfClosing :: [ChildHXML parent]
+                     -> Either Types.NoContent [ChildHXML parent]
+contentOrSelfClosing content =
   if null content
     then Left Types.OmitTag
     else Right content
