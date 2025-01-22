@@ -17,17 +17,15 @@ import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
-import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Ogma qualified
 import Shrubbery qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
-import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Render.Internal.Escape qualified as Escape
 import Brigid.HTML.Types qualified as Types
 import Brigid.HTML.Types.URL (RelativeURL (..))
+import Brigid.Internal.Render qualified as Render
 
 renderHTML :: ChildHTML parent grandparent -> BS.ByteString
 renderHTML = LBS.toStrict . renderLazyHTML
@@ -43,20 +41,20 @@ renderTag html =
 
     Tag_Comment comment ->
       lazyByteString "<!-- "
-        <> lazyByteString (toBytes comment)
+        <> lazyByteString (Render.textToBytes comment)
         <> lazyByteString " -->"
 
     Tag_Text content ->
-      lazyByteString . toBytes $ Escape.html content
+      lazyByteString . Render.textToBytes $ Escape.html content
 
     Tag_Entity entity ->
-      lazyByteString $ toBytes entity
+      lazyByteString $ Render.textToBytes entity
 
     Tag_RawHTML content ->
-      lazyByteString $ toBytes content
+      lazyByteString $ Render.textToBytes content
 
     Tag_CustomHTML elemName attrs eiCloserOrContent ->
-      buildTag (toBytes elemName) attrs eiCloserOrContent
+      buildTag (Render.textToBytes elemName) attrs eiCloserOrContent
 
     Tag_Anchor attrs content ->
       buildTag "a" attrs $ Right content
@@ -510,8 +508,8 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $
         buildAttribute
-          (toBytes name)
-          (toBytes $ Escape.attributeText value)
+          (Render.textToBytes name)
+          (Render.textToBytes $ Escape.attributeText value)
 
     Attr_AccessKey key ->
       Just . buildAttribute "accesskey" $ Escape.attributeCharBytes key
@@ -538,8 +536,8 @@ renderAttribute attr =
     Attr_CustomData data_ value ->
       Just $
         buildAttribute
-          ("data-" <> toBytes data_)
-          (toBytes $ Escape.attributeText value)
+          ("data-" <> Render.textToBytes data_)
+          (Render.textToBytes $ Escape.attributeText value)
 
     Attr_Dir directionality ->
       Just
@@ -573,7 +571,7 @@ renderAttribute attr =
       Just . buildAttribute "inputmode" $ Types.inputModeToBytes mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" . toBytes $ Escape.attributeText is
+      Just . buildAttribute "is" . Render.textToBytes $ Escape.attributeText is
 
     -- Attr_ItemId
 
@@ -609,13 +607,19 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ Render.enumBoolToBytes spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" . toBytes $ Escape.attributeText style
+      Just
+        . buildAttribute "style"
+        . Render.textToBytes
+        $ Escape.attributeText style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" $ Render.showBytes tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" . toBytes $ Escape.attributeText title
+      Just
+        . buildAttribute "title"
+        . Render.textToBytes
+        $ Escape.attributeText title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ Render.enumBoolToBytes translate
@@ -640,7 +644,7 @@ renderAttribute attr =
         $ allow
 
     Attr_Alt alt ->
-      Just . buildAttribute "alt" $ toBytes alt
+      Just . buildAttribute "alt" $ Render.textToBytes alt
 
     Attr_Async ->
       buildBooleanAttribute "async" True
@@ -681,7 +685,7 @@ renderAttribute attr =
         $ NEL.toList coords
 
     Attr_Content content ->
-      Just . buildAttribute "content" $ toBytes content
+      Just . buildAttribute "content" $ Render.textToBytes content
 
     Attr_Controls ->
       buildBooleanAttribute "controls" True
@@ -712,7 +716,7 @@ renderAttribute attr =
       buildBooleanAttribute "defer" True
 
     Attr_Dirname dirname ->
-      Just . buildAttribute "dirname" $ toBytes dirname
+      Just . buildAttribute "dirname" $ Render.textToBytes dirname
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
@@ -726,7 +730,7 @@ renderAttribute attr =
     Attr_Download download ->
       maybe
         (buildBooleanAttribute "download" True)
-        (Just . buildAttribute "download" . toBytes . NET.toText)
+        (Just . buildAttribute "download" . Render.textToBytes . NET.toText)
         download
 
     Attr_For for ->
@@ -777,7 +781,7 @@ renderAttribute attr =
       Just . buildAttribute "kind" $ Types.trackKindToBytes kind
 
     Attr_Label label ->
-      Just . buildAttribute "label" $ toBytes label
+      Just . buildAttribute "label" $ Render.textToBytes label
 
     Attr_List list ->
       Just . buildAttribute "label" $ Types.idToBytes list
@@ -825,7 +829,7 @@ renderAttribute attr =
       Just . buildAttribute "optimum" $ Types.numberToBytes optimum
 
     Attr_Pattern pattern ->
-      Just . buildAttribute "pattern" $ toBytes pattern
+      Just . buildAttribute "pattern" $ Render.textToBytes pattern
 
     Attr_Ping pings ->
       Just
@@ -834,7 +838,7 @@ renderAttribute attr =
         $ NEL.toList pings
 
     Attr_Placeholder placeholder ->
-      Just . buildAttribute "placeholder" $ toBytes placeholder
+      Just . buildAttribute "placeholder" $ Render.textToBytes placeholder
 
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
@@ -944,7 +948,7 @@ renderAttribute attr =
     Attr_HxConfirm confirmation ->
       Just
         . buildAttribute "hx-confirm"
-        . toBytes
+        . Render.textToBytes
         $ Escape.attributeText confirmation
 
     Attr_HxDisable disabled ->
@@ -988,7 +992,7 @@ renderAttribute attr =
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventBytes event)
-        . toBytes
+        . Render.textToBytes
         $ Escape.attributeText action
 
     Attr_HxParams params ->
@@ -1001,7 +1005,10 @@ renderAttribute attr =
       buildBooleanAttribute "hx-preserve" preserved
 
     Attr_HxPrompt prompt ->
-      Just . buildAttribute "hx-prompt" . toBytes $ Escape.attributeText prompt
+      Just
+        . buildAttribute "hx-prompt"
+        . Render.textToBytes
+        $ Escape.attributeText prompt
 
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
@@ -1056,9 +1063,6 @@ buildAttribute attr value =
 buildBooleanAttribute :: LBS.ByteString -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
   B.bool Nothing (Just $ lazyByteString attr)
-
-toBytes :: T.Text -> LBS.ByteString
-toBytes = LBS.fromStrict . TE.encodeUtf8
 
 renderPushURL :: Types.PushURL -> LBS.ByteString
 renderPushURL =

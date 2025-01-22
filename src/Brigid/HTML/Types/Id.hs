@@ -6,7 +6,8 @@ module Brigid.HTML.Types.Id
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
+
+import Brigid.Internal.Render qualified as Render
 
 newtype Id =
   Id
@@ -14,4 +15,4 @@ newtype Id =
     } deriving (Eq, Show)
 
 idToBytes :: Id -> LBS.ByteString
-idToBytes = LBS.fromStrict . TE.encodeUtf8 . idToText
+idToBytes = Render.textToBytes . idToText

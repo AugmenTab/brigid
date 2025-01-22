@@ -6,7 +6,8 @@ module Brigid.HTML.Types.HyperScript
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
+
+import Brigid.Internal.Render qualified as Render
 
 newtype HyperScript =
   HyperScript
@@ -15,4 +16,4 @@ newtype HyperScript =
 
 hyperScriptToBytes :: HyperScript -> LBS.ByteString
 hyperScriptToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . hyperScriptToText
+  Render.textToBytes . hyperScriptToText

@@ -6,7 +6,8 @@ module Brigid.HTML.Types.RawJavaScript
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
+
+import Brigid.Internal.Render qualified as Render
 
 newtype RawJavaScript =
   RawJavaScript
@@ -15,7 +16,7 @@ newtype RawJavaScript =
 
 rawJavaScriptToBytes :: RawJavaScript -> LBS.ByteString
 rawJavaScriptToBytes =
-  ("js:" <>) . LBS.fromStrict . TE.encodeUtf8 . unRawJavaScript
+  ("js:" <>) . Render.textToBytes . unRawJavaScript
 
 rawJavaScriptToText :: RawJavaScript -> T.Text
 rawJavaScriptToText =

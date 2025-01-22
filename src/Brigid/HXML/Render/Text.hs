@@ -15,10 +15,10 @@ import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
-import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
+import Brigid.Internal.Render qualified as Render
 
 renderHXML :: ChildHXML parent -> T.Text
 renderHXML = TL.toStrict . renderLazyHXML

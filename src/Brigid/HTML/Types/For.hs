@@ -18,8 +18,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Internal.Render (foldToBytesWithSeparator, foldToTextWithSeparator)
 import Brigid.HTML.Types.Id (Id, idToBytes, idToText)
+import Brigid.Internal.Render (foldToBytesWithSeparator, foldToTextWithSeparator)
 
 newtype ForOption = ForOption (Shrubbery.Union ForOptionTypes)
 

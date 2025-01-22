@@ -23,10 +23,10 @@ import Shrubbery qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
-import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Render.Internal.Escape qualified as Escape
 import Brigid.HTML.Types qualified as Types
 import Brigid.HTML.Types.URL (RelativeURL(..))
+import Brigid.Internal.Render qualified as Render
 
 renderHTML :: ChildHTML parent grandparent -> T.Text
 renderHTML = TL.toStrict . renderLazyHTML

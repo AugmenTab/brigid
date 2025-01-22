@@ -608,7 +608,6 @@ import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
@@ -618,7 +617,6 @@ import Ogma (BCP_47, bcp_47ToText)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
@@ -682,6 +680,7 @@ import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Value (ValueTypes, mkValue, valueToText)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
 import Brigid.HTML.Types.Wrap (Wrap, wrapToText)
+import Brigid.Internal.Render qualified as Render
 
 newtype QuerySelector =
   QuerySelector
@@ -742,7 +741,7 @@ newtype RawSelector =
 
 rawSelectorToBytes :: RawSelector -> LBS.ByteString
 rawSelectorToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . rawSelectorToText
+  Render.textToBytes . rawSelectorToText
 
 data ElementSelector =
   ElementSelector
@@ -1530,7 +1529,7 @@ data ElementType
 elementTypeToBytes :: ElementType -> LBS.ByteString
 elementTypeToBytes element =
   case element of
-    Tag_CustomElement tagName  -> LBS.fromStrict $ TE.encodeUtf8 tagName
+    Tag_CustomElement tagName  -> Render.textToBytes tagName
     Tag_Anchor                 -> "a"
     Tag_Abbreviation           -> "abbr"
     Tag_ContactAddress         -> "address"
@@ -1768,7 +1767,7 @@ attributeSelectorToBytes (attr, mbVal) =
   LBS.concat
     [ "["
     , attributeTypeToBytes attr
-    , maybe "" (\v -> "='" <> LBS.fromStrict (TE.encodeUtf8 v) <> "'") mbVal
+    , maybe "" (\v -> "='" <> Render.textToBytes v <> "'") mbVal
     , "]"
     ]
 
@@ -1960,7 +1959,7 @@ attributeTypeToBytes :: AttributeType -> LBS.ByteString
 attributeTypeToBytes attr =
   case attr of
     -- Custom Attribute
-    Attr_CustomAttribute attrName -> LBS.fromStrict $ TE.encodeUtf8 attrName
+    Attr_CustomAttribute attrName -> Render.textToBytes attrName
 
     -- Global Attributes
     --
@@ -1969,7 +1968,7 @@ attributeTypeToBytes attr =
     Attr_Autofocus           -> "autofocus"
     Attr_Class               -> "class"
     Attr_ContentEditable     -> "contenteditable"
-    Attr_CustomData attrName -> "data-" <> LBS.fromStrict (TE.encodeUtf8 attrName)
+    Attr_CustomData attrName -> "data-" <> Render.textToBytes attrName
     Attr_Dir                 -> "dir"
     Attr_Draggable           -> "draggable"
     Attr_EnterKeyHint        -> "enterkeyhint"
@@ -3453,7 +3452,7 @@ newtype RawSwap =
     }
 
 rawSwapToBytes :: RawSwap -> LBS.ByteString
-rawSwapToBytes = LBS.fromStrict . TE.encodeUtf8 . rawSwapToText
+rawSwapToBytes = Render.textToBytes . rawSwapToText
 
 -- Swap Selector
 --
@@ -4186,7 +4185,7 @@ customTrigger = mkTrigger . CustomTrigger
 
 customTriggerToBytes :: CustomTrigger -> LBS.ByteString
 customTriggerToBytes (CustomTrigger trigger) =
-  LBS.fromStrict (TE.encodeUtf8 trigger) <> " from:body"
+  Render.textToBytes trigger <> " from:body"
 
 customTriggerToText :: CustomTrigger -> T.Text
 customTriggerToText (CustomTrigger trigger) =
@@ -4201,7 +4200,7 @@ newtype RawTrigger =
 
 rawTriggerToBytes :: RawTrigger -> LBS.ByteString
 rawTriggerToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . rawTriggerToText
+  Render.textToBytes . rawTriggerToText
 
 -- Helpers
 --

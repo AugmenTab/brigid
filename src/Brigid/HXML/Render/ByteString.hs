@@ -14,13 +14,11 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.Maybe (mapMaybe)
-import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 
-import Brigid.HTML.Internal.Render qualified as Render
 import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
+import Brigid.Internal.Render qualified as Render
 
 renderHXML :: ChildHXML parent -> BS.ByteString
 renderHXML = LBS.toStrict . renderLazyHXML
@@ -36,14 +34,14 @@ renderTag hxml =
 
     Tag_Comment comment ->
       lazyByteString "<!-- "
-        <> lazyByteString (toBytes comment)
+        <> lazyByteString (Render.textToBytes comment)
         <> lazyByteString " -->"
 
     Tag_RawHXML content ->
-      lazyByteString $ toBytes content
+      lazyByteString $ Render.textToBytes content
 
     Tag_CustomHXML elemName attrs eiCloserOrContent ->
-      buildTag (toBytes elemName) attrs eiCloserOrContent
+      buildTag (Render.textToBytes elemName) attrs eiCloserOrContent
 
     Tag_Behavior attrs ->
       buildTag "behavior" attrs $ Left Types.OmitTag
@@ -176,7 +174,7 @@ renderAttribute attr =
       Just $ lazyByteString LBS.empty
 
     Attr_Custom name value ->
-      Just $ buildAttribute (toBytes name) (toBytes value)
+      Just $ buildAttribute (Render.textToBytes name) (Render.textToBytes value)
 
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
@@ -249,6 +247,3 @@ contentOrSelfClosing content =
   if null content
     then Left Types.OmitTag
     else Right content
-
-toBytes :: T.Text -> LBS.ByteString
-toBytes = LBS.fromStrict . TE.encodeUtf8

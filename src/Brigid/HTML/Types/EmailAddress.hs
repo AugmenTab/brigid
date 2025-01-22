@@ -7,8 +7,9 @@ module Brigid.HTML.Types.EmailAddress
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Text.Html.Email.Validate qualified as Validate
+
+import Brigid.Internal.Render qualified as Render
 
 newtype EmailAddress =
   EmailAddress
@@ -22,4 +23,4 @@ emailAddressFromText txt =
     Right email -> Right . EmailAddress $ Validate.emailToText email
 
 emailAddressToBytes :: EmailAddress -> LBS.ByteString
-emailAddressToBytes = LBS.fromStrict . TE.encodeUtf8 . emailAddressToText
+emailAddressToBytes = Render.textToBytes . emailAddressToText

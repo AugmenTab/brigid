@@ -1,16 +1,22 @@
-module Brigid.HTML.Internal.Render
-  ( enumBoolToBytes
+module Brigid.Internal.Render
+  ( bytesToText
+  , enumBoolToBytes
   , enumBoolToText
   , foldToBytesWithSeparator
   , foldToTextWithSeparator
   , showBytes
   , showText
+  , textToBytes
   ) where
 
 import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
+
+bytesToText :: LBS.ByteString -> T.Text
+bytesToText = TE.decodeUtf8 . LBS.toStrict
 
 enumBoolToBytes :: Bool -> LBS.ByteString
 enumBoolToBytes = B.bool "false" "true"
@@ -50,3 +56,7 @@ showBytes = LBS8.pack . show
 
 showText :: Show s => s -> T.Text
 showText = T.pack . show
+
+textToBytes :: T.Text -> LBS.ByteString
+textToBytes = LBS.fromStrict . TE.encodeUtf8
+

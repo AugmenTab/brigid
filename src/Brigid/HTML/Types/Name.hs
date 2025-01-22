@@ -15,12 +15,12 @@ module Brigid.HTML.Types.Name
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.MetadataName (MetadataName, metadataNameToBytes, metadataNameToText)
+import Brigid.Internal.Render qualified as Render
 
 newtype Name =
   Name
@@ -28,7 +28,7 @@ newtype Name =
     } deriving (Eq, Show)
 
 nameToBytes :: Name -> LBS.ByteString
-nameToBytes = LBS.fromStrict . TE.encodeUtf8 . nameToText
+nameToBytes = Render.textToBytes . nameToText
 
 newtype NameOption = NameOption (Shrubbery.Union NameOptionTypes)
 

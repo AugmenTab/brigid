@@ -61,6 +61,24 @@ ghc-options:
 
 library:
   source-dirs: src
+  exposed-modules:
+    - Brigid.Examples.HTML
+    - Brigid.Examples.HXML
+    - Brigid.HTML.Attributes
+    - Brigid.HTML.Elements
+    - Brigid.HTML.Elements.Safe
+    - Brigid.HTML.Entities
+    - Brigid.HTML.HTMX.Config
+    - Brigid.HTML.Render.ByteString
+    - Brigid.HTML.Render.String
+    - Brigid.HTML.Render.Text
+    - Brigid.HTML.Types
+    - Brigid.HXML.Attributes
+    - Brigid.HXML.Elements
+    - Brigid.HXML.Render.ByteString
+    - Brigid.HXML.Render.String
+    - Brigid.HXML.Render.Text
+    - Brigid.HXML.Types
 
 tests:
   brigid-test:

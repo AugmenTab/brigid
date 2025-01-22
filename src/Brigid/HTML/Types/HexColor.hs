@@ -9,7 +9,8 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Set qualified as Set
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
+
+import Brigid.Internal.Render qualified as Render
 
 newtype HexColor =
   HexColor
@@ -48,4 +49,4 @@ hexColorFromText txt = do
   Right $ HexColor txt
 
 hexColorToBytes :: HexColor -> LBS.ByteString
-hexColorToBytes = LBS.fromStrict . TE.encodeUtf8 . hexColorToText
+hexColorToBytes = Render.textToBytes . hexColorToText

@@ -6,7 +6,8 @@ module Brigid.HTML.Types.TriggerFilter
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
+
+import Brigid.Internal.Render qualified as Render
 
 newtype TriggerFilter =
   TriggerFilter
@@ -15,4 +16,4 @@ newtype TriggerFilter =
 
 triggerFilterToBytes :: TriggerFilter -> LBS.ByteString
 triggerFilterToBytes =
-  LBS.fromStrict . TE.encodeUtf8 . triggerFilterToText
+  Render.textToBytes . triggerFilterToText

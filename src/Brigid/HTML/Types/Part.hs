@@ -13,12 +13,13 @@ module Brigid.HTML.Types.Part
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
+
+import Brigid.Internal.Render qualified as Render
 
 newtype Part = Part T.Text
 
 partToBytes :: Part -> LBS.ByteString
-partToBytes = LBS.fromStrict . TE.encodeUtf8 . partToText
+partToBytes = Render.textToBytes . partToText
 
 partToText :: Part -> T.Text
 partToText (Part part) = part
@@ -26,7 +27,7 @@ partToText (Part part) = part
 data ExportPart = ExportPart Part (Maybe T.Text)
 
 exportPartToBytes :: ExportPart -> LBS.ByteString
-exportPartToBytes = LBS.fromStrict . TE.encodeUtf8 . exportPartToText
+exportPartToBytes = Render.textToBytes . exportPartToText
 
 exportPartToText :: ExportPart -> T.Text
 exportPartToText (ExportPart part mbExposed) =

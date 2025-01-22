@@ -21,7 +21,6 @@ import Data.Foldable (fold)
 import Data.List (intersperse)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder qualified as TLB
 import GHC.TypeLits (KnownNat)
@@ -29,6 +28,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.RawJavaScript qualified as JS
+import Brigid.Internal.Render qualified as Render
 
 newtype HtmxHeaders =
   HtmxHeaders
@@ -217,9 +217,9 @@ customRequestHeaderToBytes :: CustomRequestHeader -> LBS.ByteString
 customRequestHeaderToBytes header =
   LBS.concat
     [ "\""
-    , LBS.fromStrict . TE.encodeUtf8 $ customRequestHeaderName header
+    , Render.textToBytes $ customRequestHeaderName header
     , "\" : \""
-    , LBS.fromStrict . TE.encodeUtf8 $ customRequestHeaderValue header
+    , Render.textToBytes $ customRequestHeaderValue header
     , "\""
     ]
 customRequestHeaderToText :: CustomRequestHeader -> T.Text

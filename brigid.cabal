@@ -27,6 +27,21 @@ library
       Brigid.Examples.HTML
       Brigid.Examples.HXML
       Brigid.HTML.Attributes
+      Brigid.HTML.Elements
+      Brigid.HTML.Elements.Safe
+      Brigid.HTML.Entities
+      Brigid.HTML.HTMX.Config
+      Brigid.HTML.Render.ByteString
+      Brigid.HTML.Render.String
+      Brigid.HTML.Render.Text
+      Brigid.HTML.Types
+      Brigid.HXML.Attributes
+      Brigid.HXML.Elements
+      Brigid.HXML.Render.ByteString
+      Brigid.HXML.Render.String
+      Brigid.HXML.Render.Text
+      Brigid.HXML.Types
+  other-modules:
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Autocomplete
       Brigid.HTML.Attributes.Elements
@@ -43,11 +58,9 @@ library
       Brigid.HTML.Attributes.Source
       Brigid.HTML.Attributes.Type
       Brigid.HTML.Attributes.Value
-      Brigid.HTML.Elements
       Brigid.HTML.Elements.Category
       Brigid.HTML.Elements.Children
       Brigid.HTML.Elements.Internal
-      Brigid.HTML.Elements.Safe
       Brigid.HTML.Elements.Safe.Area
       Brigid.HTML.Elements.Safe.Image
       Brigid.HTML.Elements.Safe.Input
@@ -58,15 +71,8 @@ library
       Brigid.HTML.Elements.TagGroups
       Brigid.HTML.Elements.Tags
       Brigid.HTML.Elements.TagType
-      Brigid.HTML.Entities
-      Brigid.HTML.HTMX.Config
-      Brigid.HTML.Internal.Render
       Brigid.HTML.Internal.TagOperations
-      Brigid.HTML.Render.ByteString
       Brigid.HTML.Render.Internal.Escape
-      Brigid.HTML.Render.String
-      Brigid.HTML.Render.Text
-      Brigid.HTML.Types
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
@@ -144,24 +150,18 @@ library
       Brigid.HTML.Types.WebsocketBinaryType
       Brigid.HTML.Types.Window
       Brigid.HTML.Types.Wrap
-      Brigid.HXML.Attributes
       Brigid.HXML.Attributes.AttributeType
       Brigid.HXML.Attributes.Elements
       Brigid.HXML.Attributes.Internal
-      Brigid.HXML.Elements
       Brigid.HXML.Elements.Children
       Brigid.HXML.Elements.Internal
       Brigid.HXML.Elements.TagGroups
       Brigid.HXML.Elements.Tags
       Brigid.HXML.Elements.TagType
       Brigid.HXML.Internal.TagOperations
-      Brigid.HXML.Render.ByteString
-      Brigid.HXML.Render.String
-      Brigid.HXML.Render.Text
-      Brigid.HXML.Types
       Brigid.HXML.Types.KeyboardDismissMode
       Brigid.HXML.Types.ScrollOrientation
-  other-modules:
+      Brigid.Internal.Render
       Paths_brigid
   autogen-modules:
       Paths_brigid

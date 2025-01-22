@@ -12,9 +12,8 @@ module Brigid.HTML.Types.RequestParams
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 
-import Brigid.HTML.Internal.Render qualified as Render
+import Brigid.Internal.Render qualified as Render
 
 data RequestParams
   = AllParams
@@ -36,14 +35,14 @@ requestParamsToBytes requestParams =
       LBS8.unwords
         [ "not"
         , Render.foldToBytesWithSeparator
-            (LBS.fromStrict . TE.encodeUtf8)
+            Render.textToBytes
             ","
             params
         ]
 
     Params params ->
       Render.foldToBytesWithSeparator
-        (LBS.fromStrict . TE.encodeUtf8)
+        Render.textToBytes
         ","
         params
 

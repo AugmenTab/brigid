@@ -12,7 +12,6 @@ module Brigid.HTML.Types.Value
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -24,6 +23,7 @@ import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.HTML.Types.Phone (PhoneNumber, phoneNumberToBytes, phoneNumberToText)
 import Brigid.HTML.Types.Time qualified as BTime
 import Brigid.HTML.Types.URL qualified as URL
+import Brigid.Internal.Render qualified as Render
 
 newtype Value = Value (Shrubbery.Union ValueTypes)
 
@@ -83,7 +83,7 @@ valueToBytes (Value value) =
       . Shrubbery.branch @BTime.Month            BTime.monthToBytes
       . Shrubbery.branch @Number                 numberToBytes
       . Shrubbery.branch @PhoneNumber            phoneNumberToBytes
-      . Shrubbery.branch @T.Text                 (LBS.fromStrict . TE.encodeUtf8)
+      . Shrubbery.branch @T.Text                 Render.textToBytes
       . Shrubbery.branch @BTime.Time             BTime.timeToBytes
       . Shrubbery.branch @URL.AbsoluteURL        URL.absoluteURLToBytes
       . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToBytes
