@@ -18,6 +18,7 @@ module Brigid.HXML.Attributes
   , scrollToInputOffset
   , selectable
   , showsScrollIndicator
+  , source
   , sticky
   , style
   , styles
@@ -89,6 +90,14 @@ selectable = Attr_Selectable
 showsScrollIndicator :: ValidAttribute 'ShowsScrollIndicator tag
                      => Bool -> Attribute tag
 showsScrollIndicator = Attr_ShowsScrollIndicator
+
+source :: ( KnownNat branchIndex
+          , branchIndex ~ FirstIndexOf url Types.URLTypes
+          , ValidAttribute 'Source tag
+          )
+       => url -> Attribute tag
+source =
+  Attr_Source . Types.mkURL
 
 sticky :: ValidAttribute 'Sticky tag => Bool -> Attribute tag
 sticky = Attr_Sticky

@@ -244,6 +244,9 @@ renderAttribute attr =
         . buildAttribute "shows-scroll-indicator"
         $ Render.enumBoolToBytes showsScrollIndicator
 
+    Attr_Source source ->
+      Just . buildAttribute "source" $ Types.urlToBytes source
+
     Attr_Sticky sticky ->
       Just . buildAttribute "sticky" $ Render.enumBoolToBytes sticky
 

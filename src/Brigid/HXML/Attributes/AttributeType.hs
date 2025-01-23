@@ -18,6 +18,7 @@ module Brigid.HXML.Attributes.AttributeType
       , ScrollToInputOffset
       , Selectable
       , ShowsScrollIndicator
+      , Source
       , Sticky
       , Style
       , XMLNS
@@ -41,6 +42,7 @@ data AttributeType
   | ScrollToInputOffset
   | Selectable
   | ShowsScrollIndicator
+  | Source
   | Sticky
   | Style
   | XMLNS
@@ -60,6 +62,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'ScrollToInputOffset   = 'Text "ScrollToInputOffset (scroll-to-input-offset)"
   AttributeErrorMessage 'Selectable            = 'Text "Selectable (selectable)"
   AttributeErrorMessage 'ShowsScrollIndicator  = 'Text "ShowsScrollIndicator (shows-scroll-indicator)"
+  AttributeErrorMessage 'Source                = 'Text "Source (source)"
   AttributeErrorMessage 'Sticky                = 'Text "Sticky (sticky)"
   AttributeErrorMessage 'Style                 = 'Text "Style (style)"
   AttributeErrorMessage 'XMLNS                 = 'Text "XMLNS (xmlns)"

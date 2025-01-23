@@ -46,6 +46,7 @@ documentExample =
                     , Entity.noBreakSpace
                     , E.content "text!"
                     ]
+                , E.image [ A.source hyperviewNamespace ]
                 ]
             ]
         ]

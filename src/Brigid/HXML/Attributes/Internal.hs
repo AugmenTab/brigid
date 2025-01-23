@@ -20,6 +20,7 @@ module Brigid.HXML.Attributes.Internal
       , Attr_ScrollToInputOffset
       , Attr_Selectable
       , Attr_ShowsScrollIndicator
+      , Attr_Source
       , Attr_Sticky
       , Attr_Style
       , Attr_XMLNS
@@ -114,6 +115,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_Source
+    :: ValidAttribute 'Source tag
+    => Types.URL
+    -> Attribute tag
+
   Attr_Sticky
     :: ValidAttribute 'Sticky tag
     => Bool
@@ -179,6 +185,9 @@ attributeText attr =
 
     Attr_ShowsScrollIndicator _showsScrollIndicator ->
       "shows-scroll-indicator"
+
+    Attr_Source _source ->
+      "source"
 
     Attr_Sticky _sticky ->
       "sticky"
