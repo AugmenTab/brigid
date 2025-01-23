@@ -9,7 +9,9 @@ module Brigid.HXML.Attributes.AttributeType
       , ContentContainerStyle
       , Hide
       , Id
+      , ItemHeight
       , KeyboardDismissMode
+      , KeyboardShouldPersistTaps
       , NumberOfLines
       , Preformatted
       , SafeArea
@@ -33,7 +35,9 @@ data AttributeType
   | ContentContainerStyle
   | Hide
   | Id
+  | ItemHeight
   | KeyboardDismissMode
+  | KeyboardShouldPersistTaps
   | NumberOfLines
   | Preformatted
   | SafeArea
@@ -48,21 +52,22 @@ data AttributeType
   | XMLNS
 
 type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
-  AttributeErrorMessage 'AdjustsFontSizeToFit  = 'Text "AdjustsFontSizeToFit (adjustsFontSizeToFit)"
-  AttributeErrorMessage 'AvoidKeyboard         = 'Text "AvoidKeyboard (avoid-keyboard)"
-  AttributeErrorMessage 'ContentContainerStyle = 'Text "ContentContainerStyle (content-container-style)"
-  AttributeErrorMessage 'Hide                  = 'Text "Hide (hide)"
-  AttributeErrorMessage 'Id                    = 'Text "Id (id)"
-  AttributeErrorMessage 'KeyboardDismissMode   = 'Text "KeyboardDismissMode (keyboard-dismiss-mode)"
-  AttributeErrorMessage 'NumberOfLines         = 'Text "NumberOfLines (numberOfLines)"
-  AttributeErrorMessage 'Preformatted          = 'Text "Preformatted (preformatted)"
-  AttributeErrorMessage 'SafeArea              = 'Text "SafeArea (safe-area)"
-  AttributeErrorMessage 'Scroll                = 'Text "Scroll (scroll)"
-  AttributeErrorMessage 'ScrollOrientation     = 'Text "ScrollOrientation (scroll-orientation)"
-  AttributeErrorMessage 'ScrollToInputOffset   = 'Text "ScrollToInputOffset (scroll-to-input-offset)"
-  AttributeErrorMessage 'Selectable            = 'Text "Selectable (selectable)"
-  AttributeErrorMessage 'ShowsScrollIndicator  = 'Text "ShowsScrollIndicator (shows-scroll-indicator)"
-  AttributeErrorMessage 'Source                = 'Text "Source (source)"
-  AttributeErrorMessage 'Sticky                = 'Text "Sticky (sticky)"
-  AttributeErrorMessage 'Style                 = 'Text "Style (style)"
-  AttributeErrorMessage 'XMLNS                 = 'Text "XMLNS (xmlns)"
+  AttributeErrorMessage 'AdjustsFontSizeToFit      = 'Text "AdjustsFontSizeToFit (adjustsFontSizeToFit)"
+  AttributeErrorMessage 'AvoidKeyboard             = 'Text "AvoidKeyboard (avoid-keyboard)"
+  AttributeErrorMessage 'ContentContainerStyle     = 'Text "ContentContainerStyle (content-container-style)"
+  AttributeErrorMessage 'Hide                      = 'Text "Hide (hide)"
+  AttributeErrorMessage 'Id                        = 'Text "Id (id)"
+  AttributeErrorMessage 'ItemHeight                = 'Text "ItemHeight (itemHeight)"
+  AttributeErrorMessage 'KeyboardDismissMode       = 'Text "KeyboardShouldPersistTaps (keyboard-should-persist-taps)"
+  AttributeErrorMessage 'NumberOfLines             = 'Text "NumberOfLines (numberOfLines)"
+  AttributeErrorMessage 'Preformatted              = 'Text "Preformatted (preformatted)"
+  AttributeErrorMessage 'SafeArea                  = 'Text "SafeArea (safe-area)"
+  AttributeErrorMessage 'Scroll                    = 'Text "Scroll (scroll)"
+  AttributeErrorMessage 'ScrollOrientation         = 'Text "ScrollOrientation (scroll-orientation)"
+  AttributeErrorMessage 'ScrollToInputOffset       = 'Text "ScrollToInputOffset (scroll-to-input-offset)"
+  AttributeErrorMessage 'Selectable                = 'Text "Selectable (selectable)"
+  AttributeErrorMessage 'ShowsScrollIndicator      = 'Text "ShowsScrollIndicator (shows-scroll-indicator)"
+  AttributeErrorMessage 'Source                    = 'Text "Source (source)"
+  AttributeErrorMessage 'Sticky                    = 'Text "Sticky (sticky)"
+  AttributeErrorMessage 'Style                     = 'Text "Style (style)"
+  AttributeErrorMessage 'XMLNS                     = 'Text "XMLNS (xmlns)"

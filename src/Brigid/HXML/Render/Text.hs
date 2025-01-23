@@ -197,10 +197,18 @@ renderAttribute attr =
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToText id
 
+    Attr_ItemHeight itemHeight ->
+      Just . buildAttribute "itemHeight" $ Render.showText itemHeight
+
     Attr_KeyboardDismissMode keyboardDismissMode ->
       Just
         . buildAttribute "keyboard-dismiss-mode"
         $ Types.keyboardDismissModeToText keyboardDismissMode
+
+    Attr_KeyboardShouldPersistTaps keyboardShouldPersistTaps ->
+      Just
+        . buildAttribute "keyboard-should-persist-taps"
+        $ Types.keyboardShouldPersistTapsToText keyboardShouldPersistTaps
 
     Attr_NumberOfLines numberOfLines ->
       Just

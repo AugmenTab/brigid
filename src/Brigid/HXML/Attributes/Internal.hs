@@ -11,7 +11,9 @@ module Brigid.HXML.Attributes.Internal
       , Attr_ContentContainerStyle
       , Attr_Hide
       , Attr_Id
+      , Attr_ItemHeight
       , Attr_KeyboardDismissMode
+      , Attr_KeyboardShouldPersistTaps
       , Attr_NumberOfLines
       , Attr_Preformatted
       , Attr_SafeArea
@@ -70,9 +72,19 @@ data Attribute (tag :: TagType) where
     => Types.Id
     -> Attribute tag
 
+  Attr_ItemHeight
+    :: ValidAttribute 'ItemHeight tag
+    => Positive
+    -> Attribute tag
+
   Attr_KeyboardDismissMode
     :: ValidAttribute 'KeyboardDismissMode tag
     => Types.KeyboardDismissMode
+    -> Attribute tag
+
+  Attr_KeyboardShouldPersistTaps
+    :: ValidAttribute 'KeyboardShouldPersistTaps tag
+    => Types.KeyboardShouldPersistTaps
     -> Attribute tag
 
   Attr_NumberOfLines
@@ -159,8 +171,14 @@ attributeText attr =
     Attr_Id _id ->
       "id"
 
+    Attr_ItemHeight _itemHeight ->
+      "itemHeight"
+
     Attr_KeyboardDismissMode _keyboardDismissMode ->
       "keyboard-dismiss-mode"
+
+    Attr_KeyboardShouldPersistTaps _keyboardShouldPersistTaps ->
+      "keyboard-should-persist-taps"
 
     Attr_NumberOfLines _numberOfLines ->
       "numberOfLines"

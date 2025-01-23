@@ -9,7 +9,9 @@ module Brigid.HXML.Attributes
   , contentContainerStyle
   , hide
   , id
+  , itemHeight
   , keyboardDismissMode
+  , keyboardShouldPersistTaps
   , numberOfLines
   , preformatted
   , safeArea
@@ -60,9 +62,16 @@ hide = Attr_Hide
 id :: ValidAttribute 'Id tag => Types.Id -> Attribute tag
 id = Attr_Id
 
+itemHeight :: ValidAttribute 'ItemHeight tag => Positive -> Attribute tag
+itemHeight = Attr_ItemHeight
+
 keyboardDismissMode :: ValidAttribute 'KeyboardDismissMode tag
                     => Types.KeyboardDismissMode -> Attribute tag
 keyboardDismissMode = Attr_KeyboardDismissMode
+
+keyboardShouldPersistTaps :: ValidAttribute 'KeyboardShouldPersistTaps tag
+                          => Types.KeyboardShouldPersistTaps -> Attribute tag
+keyboardShouldPersistTaps = Attr_KeyboardShouldPersistTaps
 
 numberOfLines :: ValidAttribute 'NumberOfLines tag => Positive -> Attribute tag
 numberOfLines = Attr_NumberOfLines
