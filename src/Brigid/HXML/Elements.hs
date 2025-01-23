@@ -136,7 +136,10 @@ screen :: ValidChild Tags.Screen parent
        => [Attribute Tags.Screen] -> [ChildHXML Tags.Screen] -> ChildHXML parent
 screen = Tag_Screen
 
-section :: [Attribute Tags.Section] -> ChildHXML parent
+section :: ValidChild Tags.Section parent
+        => [Attribute Tags.Section]
+        -> [ChildHXML Tags.Section]
+        -> ChildHXML parent
 section = Tag_Section
 
 sectionList :: ValidChild Tags.SectionList parent

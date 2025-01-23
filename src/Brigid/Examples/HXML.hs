@@ -2,6 +2,8 @@ module Brigid.Examples.HXML
   ( documentExample
   ) where
 
+import Data.Coerce (coerce)
+
 import Brigid.HXML.Attributes qualified as A
 import Brigid.HXML.Elements qualified as E
 import Brigid.HXML.Entities qualified as Entity
@@ -29,7 +31,11 @@ documentExample =
                  , A.scrollOrientation HXML.Horizontal
                  , A.showsScrollIndicator True
                  ]
-            [ E.view [ A.avoidKeyboard False
+            [ E.spinner [ case HXML.hexColorFromText "#FFFFFF" of
+                            Left  _err  -> A.noAttribute
+                            Right color -> A.color color
+                        ]
+            , E.view [ A.avoidKeyboard False
                      , A.contentContainerStyle [ myStyleId ]
                      , A.keyboardDismissMode HXML.OnDrag
                      , A.scrollToInputOffset 50
@@ -38,21 +44,33 @@ documentExample =
                 [ E.list [ A.itemHeight 250
                          , A.keyboardShouldPersistTaps HXML.Handled
                          ]
-                    [ E.item []
-                        [ E.text [ A.adjustsFontSizeToFit True
-                                 , A.numberOfLines 100
-                                 , A.preformatted False
-                                 , A.selectable True
-                                 ]
-                            [ E.content "Here's"
-                            , Entity.noBreakSpace
-                            , E.content "some"
-                            , Entity.noBreakSpace
-                            , E.content "text!"
+                    [ E.items []
+                        [ E.item [ A.key $ coerce myStyleId ]
+                            [ E.text [ A.adjustsFontSizeToFit True
+                                     , A.numberOfLines 100
+                                     , A.preformatted False
+                                     , A.selectable True
+                                     ]
+                                [ E.content "Here's"
+                                , Entity.noBreakSpace
+                                , E.content "some"
+                                , Entity.noBreakSpace
+                                , E.content "text!"
+                                ]
                             ]
                         ]
                     ]
                 , E.image [ A.source hyperviewNamespace ]
+                , E.sectionList [ A.stickySectionTitles True
+                                ]
+                    [ E.section []
+                        [ E.sectionTitle []
+                            [ E.text []
+                                [ E.content "My Section"
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ]

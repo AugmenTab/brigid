@@ -6,10 +6,12 @@ module Brigid.HXML.Attributes
   , customAttribute
   , adjustsFontSizeToFit
   , avoidKeyboard
+  , color
   , contentContainerStyle
   , hide
   , id
   , itemHeight
+  , key
   , keyboardDismissMode
   , keyboardShouldPersistTaps
   , numberOfLines
@@ -22,6 +24,7 @@ module Brigid.HXML.Attributes
   , showsScrollIndicator
   , source
   , sticky
+  , stickySectionTitles
   , style
   , styles
   , xmlns
@@ -52,6 +55,9 @@ adjustsFontSizeToFit = Attr_AdjustsFontSizeToFit
 avoidKeyboard :: ValidAttribute 'AvoidKeyboard tag => Bool -> Attribute tag
 avoidKeyboard = Attr_AvoidKeyboard
 
+color :: ValidAttribute 'Color tag => Types.HexColor -> Attribute tag
+color = Attr_Color
+
 contentContainerStyle :: ValidAttribute 'ContentContainerStyle tag
                       => [Types.Id] -> Attribute tag
 contentContainerStyle = Attr_ContentContainerStyle
@@ -64,6 +70,9 @@ id = Attr_Id
 
 itemHeight :: ValidAttribute 'ItemHeight tag => Positive -> Attribute tag
 itemHeight = Attr_ItemHeight
+
+key :: ValidAttribute 'Key tag => Types.Key -> Attribute tag
+key = Attr_Key
 
 keyboardDismissMode :: ValidAttribute 'KeyboardDismissMode tag
                     => Types.KeyboardDismissMode -> Attribute tag
@@ -110,6 +119,10 @@ source =
 
 sticky :: ValidAttribute 'Sticky tag => Bool -> Attribute tag
 sticky = Attr_Sticky
+
+stickySectionTitles :: ValidAttribute 'StickySectionTitles tag
+                    => Bool -> Attribute tag
+stickySectionTitles = Attr_StickySectionTitles
 
 style :: ValidAttribute 'Style tag => Types.Id -> Attribute tag
 style = styles . L.singleton

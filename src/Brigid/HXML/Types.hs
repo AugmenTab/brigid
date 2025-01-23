@@ -23,6 +23,7 @@ module Brigid.HXML.Types
   , rawURLToText
   ) where
 
+import Brigid.HTML.Types.HexColor as Export
 import Brigid.HTML.Types.Id as Export
 import Brigid.HTML.Types.NoContent as Export
 import Brigid.HTML.Types.URL ( URL
@@ -48,6 +49,7 @@ import Brigid.HTML.Types.URL ( URL
                              , rawURLToText
                              )
 
+import Brigid.HXML.Types.Key as Export
 import Brigid.HXML.Types.KeyboardDismissMode as Export
 import Brigid.HXML.Types.KeyboardShouldPersistTaps as Export
 import Brigid.HXML.Types.ScrollOrientation as Export

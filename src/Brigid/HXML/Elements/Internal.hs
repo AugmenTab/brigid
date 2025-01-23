@@ -173,7 +173,9 @@ data ChildHXML (parent :: TagType) where
     -> ChildHXML parent
 
   Tag_Section
-    :: [Attribute 'Section]
+    :: ValidChild 'Section parent
+    => [Attribute 'Section]
+    -> [ChildHXML 'Section]
     -> ChildHXML parent
 
   Tag_SectionList

@@ -159,6 +159,7 @@ library
       Brigid.HXML.Elements.Tags
       Brigid.HXML.Elements.TagType
       Brigid.HXML.Internal.TagOperations
+      Brigid.HXML.Types.Key
       Brigid.HXML.Types.KeyboardDismissMode
       Brigid.HXML.Types.KeyboardShouldPersistTaps
       Brigid.HXML.Types.ScrollOrientation

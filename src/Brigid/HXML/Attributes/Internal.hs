@@ -8,10 +8,12 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Custom
       , Attr_AdjustsFontSizeToFit
       , Attr_AvoidKeyboard
+      , Attr_Color
       , Attr_ContentContainerStyle
       , Attr_Hide
       , Attr_Id
       , Attr_ItemHeight
+      , Attr_Key
       , Attr_KeyboardDismissMode
       , Attr_KeyboardShouldPersistTaps
       , Attr_NumberOfLines
@@ -24,6 +26,7 @@ module Brigid.HXML.Attributes.Internal
       , Attr_ShowsScrollIndicator
       , Attr_Source
       , Attr_Sticky
+      , Attr_StickySectionTitles
       , Attr_Style
       , Attr_XMLNS
       )
@@ -57,6 +60,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_Color
+    :: ValidAttribute 'Color tag
+    => Types.HexColor
+    -> Attribute tag
+
   Attr_ContentContainerStyle
     :: ValidAttribute 'ContentContainerStyle tag
     => [Types.Id]
@@ -75,6 +83,11 @@ data Attribute (tag :: TagType) where
   Attr_ItemHeight
     :: ValidAttribute 'ItemHeight tag
     => Positive
+    -> Attribute tag
+
+  Attr_Key
+    :: ValidAttribute 'Key tag
+    => Types.Key
     -> Attribute tag
 
   Attr_KeyboardDismissMode
@@ -137,6 +150,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_StickySectionTitles
+    :: ValidAttribute 'StickySectionTitles tag
+    => Bool
+    -> Attribute tag
+
   Attr_Style
     :: ValidAttribute 'Style tag
     => [Types.Id]
@@ -162,6 +180,9 @@ attributeText attr =
     Attr_AvoidKeyboard _avoidKeyboard ->
       "avoid-keyboard"
 
+    Attr_Color _color ->
+      "color"
+
     Attr_ContentContainerStyle _contentContainerStyle ->
       "content-container-style"
 
@@ -173,6 +194,9 @@ attributeText attr =
 
     Attr_ItemHeight _itemHeight ->
       "itemHeight"
+
+    Attr_Key _key ->
+      "key"
 
     Attr_KeyboardDismissMode _keyboardDismissMode ->
       "keyboard-dismiss-mode"
@@ -209,6 +233,9 @@ attributeText attr =
 
     Attr_Sticky _sticky ->
       "sticky"
+
+    Attr_StickySectionTitles _stickySectionTitles ->
+      "sticky-section-titles"
 
     Attr_Style _style ->
       "style"

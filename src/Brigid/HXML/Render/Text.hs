@@ -98,8 +98,8 @@ renderTag hxml =
     Tag_Screen attrs content ->
       buildTag "screen" attrs $ contentOrSelfClosing content
 
-    Tag_Section attrs ->
-      buildTag "section" attrs $ Left Types.OmitTag
+    Tag_Section attrs content ->
+      buildTag "section" attrs $ contentOrSelfClosing content
 
     Tag_SectionList attrs content ->
       buildTag "section-list" attrs $ contentOrSelfClosing content
@@ -185,6 +185,9 @@ renderAttribute attr =
         . buildAttribute "avoid-keyboard"
         $ Render.enumBoolToText avoidKeyboard
 
+    Attr_Color color ->
+      Just . buildAttribute "color" $ Types.hexColorToText color
+
     Attr_ContentContainerStyle contentContainerStyle ->
       Just
         . buildAttribute "content-container-style"
@@ -199,6 +202,9 @@ renderAttribute attr =
 
     Attr_ItemHeight itemHeight ->
       Just . buildAttribute "itemHeight" $ Render.showText itemHeight
+
+    Attr_Key key ->
+      Just . buildAttribute "key" $ Types.keyToText key
 
     Attr_KeyboardDismissMode keyboardDismissMode ->
       Just
@@ -249,6 +255,11 @@ renderAttribute attr =
 
     Attr_Sticky sticky ->
       Just . buildAttribute "sticky" $ Render.enumBoolToText sticky
+
+    Attr_StickySectionTitles stickySectionTitles ->
+      Just
+        . buildAttribute "sticky-section-titles"
+        $ Render.enumBoolToText stickySectionTitles
 
     Attr_Style style ->
       Just
