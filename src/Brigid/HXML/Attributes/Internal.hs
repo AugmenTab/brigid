@@ -6,15 +6,19 @@ module Brigid.HXML.Attributes.Internal
   ( Attribute
       ( Attr_NoAttribute
       , Attr_Custom
+      , Attr_AdjustsFontSizeToFit
       , Attr_AvoidKeyboard
       , Attr_ContentContainerStyle
       , Attr_Hide
       , Attr_Id
       , Attr_KeyboardDismissMode
+      , Attr_NumberOfLines
+      , Attr_Preformatted
       , Attr_SafeArea
       , Attr_Scroll
       , Attr_ScrollOrientation
       , Attr_ScrollToInputOffset
+      , Attr_Selectable
       , Attr_ShowsScrollIndicator
       , Attr_Sticky
       , Attr_Style
@@ -24,6 +28,7 @@ module Brigid.HXML.Attributes.Internal
   ) where
 
 import Data.Text qualified as T
+import Integer (Positive)
 
 import Brigid.HXML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HXML.Attributes.Elements (ValidAttribute)
@@ -37,6 +42,11 @@ data Attribute (tag :: TagType) where
   Attr_Custom
     :: T.Text
     -> T.Text
+    -> Attribute tag
+
+  Attr_AdjustsFontSizeToFit
+    :: ValidAttribute 'AdjustsFontSizeToFit tag
+    => Bool
     -> Attribute tag
 
   Attr_AvoidKeyboard
@@ -64,6 +74,16 @@ data Attribute (tag :: TagType) where
     => Types.KeyboardDismissMode
     -> Attribute tag
 
+  Attr_NumberOfLines
+    :: ValidAttribute 'NumberOfLines tag
+    => Positive
+    -> Attribute tag
+
+  Attr_Preformatted
+    :: ValidAttribute 'Preformatted tag
+    => Bool
+    -> Attribute tag
+
   Attr_SafeArea
     :: ValidAttribute 'SafeArea tag
     => Bool
@@ -82,6 +102,11 @@ data Attribute (tag :: TagType) where
   Attr_ScrollToInputOffset
     :: ValidAttribute 'ScrollToInputOffset tag
     => Integer
+    -> Attribute tag
+
+  Attr_Selectable
+    :: ValidAttribute 'Selectable tag
+    => Bool
     -> Attribute tag
 
   Attr_ShowsScrollIndicator
@@ -113,6 +138,9 @@ attributeText attr =
     Attr_Custom name _value ->
       name
 
+    Attr_AdjustsFontSizeToFit _adjustsFontSizeToFit ->
+      "adjustsFontSizeToFit"
+
     Attr_AvoidKeyboard _avoidKeyboard ->
       "avoid-keyboard"
 
@@ -128,6 +156,12 @@ attributeText attr =
     Attr_KeyboardDismissMode _keyboardDismissMode ->
       "keyboard-dismiss-mode"
 
+    Attr_NumberOfLines _numberOfLines ->
+      "numberOfLines"
+
+    Attr_Preformatted _preformatted ->
+      "preformatted"
+
     Attr_SafeArea _safeArea ->
       "safe-area"
 
@@ -139,6 +173,9 @@ attributeText attr =
 
     Attr_ScrollToInputOffset _scrollToInputOffset ->
       "scroll-to-input-offset"
+
+    Attr_Selectable _selectable ->
+      "selectable"
 
     Attr_ShowsScrollIndicator _showsScrollIndicator ->
       "shows-scroll-indicator"

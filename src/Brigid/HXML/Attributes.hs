@@ -4,15 +4,19 @@
 module Brigid.HXML.Attributes
   ( noAttribute
   , customAttribute
+  , adjustsFontSizeToFit
   , avoidKeyboard
   , contentContainerStyle
   , hide
   , id
   , keyboardDismissMode
+  , numberOfLines
+  , preformatted
   , safeArea
   , scroll
   , scrollOrientation
   , scrollToInputOffset
+  , selectable
   , showsScrollIndicator
   , sticky
   , style
@@ -24,6 +28,7 @@ import Prelude hiding (id)
 import Data.List qualified as L
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
+import Integer (Positive)
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HXML.Attributes.AttributeType (AttributeType (..))
@@ -36,6 +41,10 @@ noAttribute = Attr_NoAttribute
 
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
+
+adjustsFontSizeToFit :: ValidAttribute 'AdjustsFontSizeToFit tag
+                     => Bool -> Attribute tag
+adjustsFontSizeToFit = Attr_AdjustsFontSizeToFit
 
 avoidKeyboard :: ValidAttribute 'AvoidKeyboard tag => Bool -> Attribute tag
 avoidKeyboard = Attr_AvoidKeyboard
@@ -54,6 +63,12 @@ keyboardDismissMode :: ValidAttribute 'KeyboardDismissMode tag
                     => Types.KeyboardDismissMode -> Attribute tag
 keyboardDismissMode = Attr_KeyboardDismissMode
 
+numberOfLines :: ValidAttribute 'NumberOfLines tag => Positive -> Attribute tag
+numberOfLines = Attr_NumberOfLines
+
+preformatted :: ValidAttribute 'Preformatted tag => Bool -> Attribute tag
+preformatted = Attr_Preformatted
+
 safeArea :: ValidAttribute 'SafeArea tag => Bool -> Attribute tag
 safeArea = Attr_SafeArea
 
@@ -67,6 +82,9 @@ scrollOrientation = Attr_ScrollOrientation
 scrollToInputOffset :: ValidAttribute 'ScrollToInputOffset tag
                     => Integer -> Attribute tag
 scrollToInputOffset = Attr_ScrollToInputOffset
+
+selectable :: ValidAttribute 'Selectable tag => Bool -> Attribute tag
+selectable = Attr_Selectable
 
 showsScrollIndicator :: ValidAttribute 'ShowsScrollIndicator tag
                      => Bool -> Attribute tag

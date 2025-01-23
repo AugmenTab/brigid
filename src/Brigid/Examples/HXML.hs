@@ -35,7 +35,11 @@ documentExample =
                      , A.scrollToInputOffset 50
                      , A.sticky True
                      ]
-                [ E.text []
+                [ E.text [ A.adjustsFontSizeToFit True
+                         , A.numberOfLines 100
+                         , A.preformatted False
+                         , A.selectable True
+                         ]
                     [ E.content "Here's"
                     , Entity.noBreakSpace
                     , E.content "some"

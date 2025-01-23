@@ -175,6 +175,11 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute name value
 
+    Attr_AdjustsFontSizeToFit adjustsFontSizeToFit ->
+      Just
+        . buildAttribute "adjustsFontSizeToFit"
+        $ Render.enumBoolToText adjustsFontSizeToFit
+
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
         . buildAttribute "avoid-keyboard"
@@ -197,6 +202,16 @@ renderAttribute attr =
         . buildAttribute "keyboard-dismiss-mode"
         $ Types.keyboardDismissModeToText keyboardDismissMode
 
+    Attr_NumberOfLines numberOfLines ->
+      Just
+        . buildAttribute "numberOfLines"
+        $ Render.showText numberOfLines
+
+    Attr_Preformatted preformatted ->
+      Just
+        . buildAttribute "preformatted"
+        $ Render.enumBoolToText preformatted
+
     Attr_SafeArea safeArea ->
       Just . buildAttribute "safe-area" $ Render.enumBoolToText safeArea
 
@@ -212,6 +227,9 @@ renderAttribute attr =
       Just
         . buildAttribute "scroll-orientation"
         $ Render.showText scrollToInputOffset
+
+    Attr_Selectable selectable ->
+      Just . buildAttribute "selectable" $ Render.enumBoolToText selectable
 
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just

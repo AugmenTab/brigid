@@ -183,6 +183,11 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute (Render.textToBytes name) (Render.textToBytes value)
 
+    Attr_AdjustsFontSizeToFit adjustsFontSizeToFit ->
+      Just
+        . buildAttribute "adjustsFontSizeToFit"
+        $ Render.enumBoolToBytes adjustsFontSizeToFit
+
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
         . buildAttribute "avoid-keyboard"
@@ -205,6 +210,16 @@ renderAttribute attr =
         . buildAttribute "keyboard-dismiss-mode"
         $ Types.keyboardDismissModeToBytes keyboardDismissMode
 
+    Attr_NumberOfLines numberOfLines ->
+      Just
+        . buildAttribute "numberOfLines"
+        $ Render.showBytes numberOfLines
+
+    Attr_Preformatted preformatted ->
+      Just
+        . buildAttribute "preformatted"
+        $ Render.enumBoolToBytes preformatted
+
     Attr_SafeArea safeArea ->
       Just . buildAttribute "safe-area" $ Render.enumBoolToBytes safeArea
 
@@ -220,6 +235,9 @@ renderAttribute attr =
       Just
         . buildAttribute "scroll-orientation"
         $ Render.showBytes scrollToInputOffset
+
+    Attr_Selectable selectable ->
+      Just . buildAttribute "selectable" $ Render.enumBoolToBytes selectable
 
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
