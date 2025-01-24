@@ -30,10 +30,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.HTML.Types.RawJavaScript qualified as JS
 import Brigid.Internal.Render qualified as Render
 
-newtype HtmxHeaders =
-  HtmxHeaders
-    { unHtmxHeaders :: Shrubbery.Union HtmxHeadersTypes
-    }
+newtype HtmxHeaders = HtmxHeaders (Shrubbery.Union HtmxHeadersTypes)
 
 type HtmxHeadersTypes =
   [ RequestHeaders
@@ -44,25 +41,26 @@ mkHtmxHeaders :: ( KnownNat branchIndex
                  , branchIndex ~ FirstIndexOf headers HtmxHeadersTypes
                  )
               => headers -> HtmxHeaders
-mkHtmxHeaders = HtmxHeaders . Shrubbery.unify
+mkHtmxHeaders =
+  HtmxHeaders . Shrubbery.unify
 
 htmxHeadersToBytes :: HtmxHeaders -> LBS.ByteString
-htmxHeadersToBytes =
+htmxHeadersToBytes (HtmxHeaders headers) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @RequestHeaders requestHeadersToBytes
-      . Shrubbery.branch @JS.RawJavaScript JS.rawJavaScriptToBytes
+      . Shrubbery.branch @RequestHeaders   requestHeadersToBytes
+      . Shrubbery.branch @JS.RawJavaScript (("js:" <>) . JS.rawJavaScriptToBytes)
       $ Shrubbery.branchEnd
-  ) . unHtmxHeaders
+  ) headers
 
 htmxHeadersToText :: HtmxHeaders -> T.Text
-htmxHeadersToText =
+htmxHeadersToText (HtmxHeaders headers) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @RequestHeaders requestHeadersToText
-      . Shrubbery.branch @JS.RawJavaScript JS.rawJavaScriptToText
+      . Shrubbery.branch @RequestHeaders   requestHeadersToText
+      . Shrubbery.branch @JS.RawJavaScript (("js:" <>) . JS.rawJavaScriptToText)
       $ Shrubbery.branchEnd
-  ) . unHtmxHeaders
+  ) headers
 
 data RequestHeaders =
   RequestHeaders

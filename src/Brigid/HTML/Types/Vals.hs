@@ -6,7 +6,6 @@ module Brigid.HTML.Types.Vals
   ( HtmxVals
   , HtmxValsTypes
   , mkHtmxVals
-  , unHtmxVals
   , htmxValsToBytes
   , htmxValsToText
   ) where
@@ -20,10 +19,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.HTML.Types.InlineJSON (InlineJSON, inlineJSONToBytes, inlineJSONToText)
 import Brigid.HTML.Types.RawJavaScript qualified as RawJS
 
-newtype HtmxVals =
-  HtmxVals
-    { unHtmxVals :: Shrubbery.Union HtmxValsTypes
-    }
+newtype HtmxVals = HtmxVals (Shrubbery.Union HtmxValsTypes)
 
 type HtmxValsTypes =
   [ InlineJSON
@@ -38,19 +34,19 @@ mkHtmxVals =
   HtmxVals . Shrubbery.unify
 
 htmxValsToBytes :: HtmxVals -> LBS.ByteString
-htmxValsToBytes =
+htmxValsToBytes (HtmxVals vals) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @InlineJSON inlineJSONToBytes
-      . Shrubbery.branch @RawJS.RawJavaScript RawJS.rawJavaScriptToBytes
+      . Shrubbery.branch @InlineJSON          inlineJSONToBytes
+      . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToBytes)
       $ Shrubbery.branchEnd
-  ) . unHtmxVals
+  ) vals
 
 htmxValsToText :: HtmxVals -> T.Text
-htmxValsToText =
+htmxValsToText (HtmxVals vals) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @InlineJSON inlineJSONToText
-      . Shrubbery.branch @RawJS.RawJavaScript RawJS.rawJavaScriptToText
+      . Shrubbery.branch @InlineJSON          inlineJSONToText
+      . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToText)
       $ Shrubbery.branchEnd
-  ) . unHtmxVals
+  ) vals

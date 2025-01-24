@@ -6,12 +6,15 @@ module Brigid.HXML.Attributes.Internal
   ( Attribute
       ( Attr_NoAttribute
       , Attr_Custom
+      , Attr_ActivityIndicatorColor
       , Attr_AdjustsFontSizeToFit
       , Attr_AvoidKeyboard
       , Attr_Color
       , Attr_ContentContainerStyle
       , Attr_Hide
+      , Attr_Html
       , Attr_Id
+      , Attr_InjectedJavaScript
       , Attr_ItemHeight
       , Attr_Key
       , Attr_KeyboardDismissMode
@@ -23,16 +26,19 @@ module Brigid.HXML.Attributes.Internal
       , Attr_ScrollOrientation
       , Attr_ScrollToInputOffset
       , Attr_Selectable
+      , Attr_ShowLoadingIndicator
       , Attr_ShowsScrollIndicator
       , Attr_Source
       , Attr_Sticky
       , Attr_StickySectionTitles
       , Attr_Style
+      , Attr_Url
       , Attr_XMLNS
       )
   , attributeText
   ) where
 
+import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Integer (Positive)
 
@@ -48,6 +54,11 @@ data Attribute (tag :: TagType) where
   Attr_Custom
     :: T.Text
     -> T.Text
+    -> Attribute tag
+
+  Attr_ActivityIndicatorColor
+    :: ValidAttribute 'ActivityIndicatorColor tag
+    => Types.Color
     -> Attribute tag
 
   Attr_AdjustsFontSizeToFit
@@ -75,9 +86,19 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_Html
+    :: ValidAttribute 'Html tag
+    => LBS.ByteString
+    -> Attribute tag
+
   Attr_Id
     :: ValidAttribute 'Id tag
     => Types.Id
+    -> Attribute tag
+
+  Attr_InjectedJavaScript
+    :: ValidAttribute InjectedJavaScript tag
+    => Types.RawJavaScript
     -> Attribute tag
 
   Attr_ItemHeight
@@ -135,6 +156,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_ShowLoadingIndicator
+    :: ValidAttribute 'ShowLoadingIndicator tag
+    => Types.ShowLoadingIndicator
+    -> Attribute tag
+
   Attr_ShowsScrollIndicator
     :: ValidAttribute 'ShowsScrollIndicator tag
     => Bool
@@ -160,6 +186,11 @@ data Attribute (tag :: TagType) where
     => [Types.Id]
     -> Attribute tag
 
+  Attr_Url
+    :: ValidAttribute 'Url tag
+    => Types.URL
+    -> Attribute tag
+
   Attr_XMLNS
     :: ValidAttribute 'XMLNS tag
     => Types.URL
@@ -173,6 +204,9 @@ attributeText attr =
 
     Attr_Custom name _value ->
       name
+
+    Attr_ActivityIndicatorColor _activityIndicatorColor ->
+      "activity-indicator-color"
 
     Attr_AdjustsFontSizeToFit _adjustsFontSizeToFit ->
       "adjustsFontSizeToFit"
@@ -189,8 +223,14 @@ attributeText attr =
     Attr_Hide _hide ->
       "hide"
 
+    Attr_Html _html ->
+      "html"
+
     Attr_Id _id ->
       "id"
+
+    Attr_InjectedJavaScript _injectedJavaScript ->
+      "injected-java-script"
 
     Attr_ItemHeight _itemHeight ->
       "itemHeight"
@@ -225,6 +265,9 @@ attributeText attr =
     Attr_Selectable _selectable ->
       "selectable"
 
+    Attr_ShowLoadingIndicator _showLoadingIndicator ->
+      "show-loading-indicator"
+
     Attr_ShowsScrollIndicator _showsScrollIndicator ->
       "shows-scroll-indicator"
 
@@ -239,6 +282,9 @@ attributeText attr =
 
     Attr_Style _style ->
       "style"
+
+    Attr_Url _url ->
+      "url"
 
     Attr_XMLNS _xmlns ->
       "xmlns"

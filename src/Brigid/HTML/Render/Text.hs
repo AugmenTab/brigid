@@ -8,14 +8,12 @@ module Brigid.HTML.Render.Text
 
 import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
-import Data.ByteString.Lazy qualified as LBS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
-import Data.Text.Encoding qualified as TE
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 import Ogma qualified
@@ -882,8 +880,7 @@ renderAttribute attr =
     Attr_SrcDoc srcdoc ->
       Just
         . buildAttribute "srcdoc"
-        . TE.decodeUtf8
-        . LBS.toStrict
+        . Render.bytesToText
         $ Escape.attributeBytes srcdoc
 
     Attr_SrcLang srclang ->

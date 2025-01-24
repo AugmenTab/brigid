@@ -18,6 +18,7 @@ import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
+import Brigid.Internal.Escape qualified as Escape
 import Brigid.Internal.Render qualified as Render
 
 renderHXML :: ChildHXML parent -> T.Text
@@ -175,6 +176,11 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute name value
 
+    Attr_ActivityIndicatorColor activityIndicatorColor ->
+      Just
+        . buildAttribute "activity-indicator-color"
+        $ Types.colorToText activityIndicatorColor
+
     Attr_AdjustsFontSizeToFit adjustsFontSizeToFit ->
       Just
         . buildAttribute "adjustsFontSizeToFit"
@@ -197,8 +203,19 @@ renderAttribute attr =
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToText hide
 
+    Attr_Html html ->
+      Just
+        . buildAttribute "html"
+        . Render.bytesToText
+        $ Escape.attributeBytes html
+
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToText id
+
+    Attr_InjectedJavaScript injectedJavaScript ->
+      Just
+        . buildAttribute "injected-java-script"
+        $ Types.rawJavaScriptToText injectedJavaScript
 
     Attr_ItemHeight itemHeight ->
       Just . buildAttribute "itemHeight" $ Render.showText itemHeight
@@ -245,6 +262,11 @@ renderAttribute attr =
     Attr_Selectable selectable ->
       Just . buildAttribute "selectable" $ Render.enumBoolToText selectable
 
+    Attr_ShowLoadingIndicator showLoadingIndicator ->
+      Just
+        . buildAttribute "show-loading-indicator"
+        $ Types.showLoadingIndicatorToText showLoadingIndicator
+
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
         . buildAttribute "shows-scroll-indicator"
@@ -265,6 +287,9 @@ renderAttribute attr =
       Just
         . buildAttribute "style"
         $ Render.foldToTextWithSeparator Types.idToText " " style
+
+    Attr_Url url ->
+      Just . buildAttribute "url" $ Types.urlToText url
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToText xmlns

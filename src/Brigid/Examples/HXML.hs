@@ -4,6 +4,7 @@ module Brigid.Examples.HXML
 
 import Data.Coerce (coerce)
 
+import Brigid.Examples.HTML qualified as HTML
 import Brigid.HXML.Attributes qualified as A
 import Brigid.HXML.Elements qualified as E
 import Brigid.HXML.Entities qualified as Entity
@@ -71,6 +72,14 @@ documentExample =
                             ]
                         ]
                     ]
+                , E.webView [ A.activityIndicatorColor $ HXML.ColorName "blue"
+                            , A.html HTML.documentExample
+                            , A.injectedJavaScript
+                                . HXML.RawJavaScript
+                                $ "alert('Hello Hyperview user!')"
+                            , A.showLoadingIndicator HXML.DocumentOnly
+                            , A.url hyperviewNamespace
+                            ]
                 ]
             ]
         ]

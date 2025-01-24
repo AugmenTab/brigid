@@ -19,6 +19,7 @@ import Data.Maybe (mapMaybe)
 import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
+import Brigid.Internal.Escape qualified as Escape
 import Brigid.Internal.Render qualified as Render
 
 renderHXML :: ChildHXML parent -> BS.ByteString
@@ -183,6 +184,11 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $ buildAttribute (Render.textToBytes name) (Render.textToBytes value)
 
+    Attr_ActivityIndicatorColor activityIndicatorColor ->
+      Just
+        . buildAttribute "activity-indicator-color"
+        $ Types.colorToBytes activityIndicatorColor
+
     Attr_AdjustsFontSizeToFit adjustsFontSizeToFit ->
       Just
         . buildAttribute "adjustsFontSizeToFit"
@@ -205,8 +211,16 @@ renderAttribute attr =
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToBytes hide
 
+    Attr_Html html ->
+      Just . buildAttribute "html" $ Escape.attributeBytes html
+
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToBytes id
+
+    Attr_InjectedJavaScript injectedJavaScript ->
+      Just
+        . buildAttribute "injected-java-script"
+        $ Types.rawJavaScriptToBytes injectedJavaScript
 
     Attr_ItemHeight itemHeight ->
       Just . buildAttribute "itemHeight" $ Render.showBytes itemHeight
@@ -253,6 +267,11 @@ renderAttribute attr =
     Attr_Selectable selectable ->
       Just . buildAttribute "selectable" $ Render.enumBoolToBytes selectable
 
+    Attr_ShowLoadingIndicator showLoadingIndicator ->
+      Just
+        . buildAttribute "show-loading-indicator"
+        $ Types.showLoadingIndicatorToBytes showLoadingIndicator
+
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
         . buildAttribute "shows-scroll-indicator"
@@ -273,6 +292,9 @@ renderAttribute attr =
       Just
         . buildAttribute "style"
         $ Render.foldToBytesWithSeparator Types.idToBytes " " style
+
+    Attr_Url url ->
+      Just . buildAttribute "url" $ Types.urlToBytes url
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns

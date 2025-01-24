@@ -4,12 +4,15 @@
 module Brigid.HXML.Attributes
   ( noAttribute
   , customAttribute
+  , activityIndicatorColor
   , adjustsFontSizeToFit
   , avoidKeyboard
   , color
   , contentContainerStyle
   , hide
+  , html
   , id
+  , injectedJavaScript
   , itemHeight
   , key
   , keyboardDismissMode
@@ -21,12 +24,14 @@ module Brigid.HXML.Attributes
   , scrollOrientation
   , scrollToInputOffset
   , selectable
+  , showLoadingIndicator
   , showsScrollIndicator
   , source
   , sticky
   , stickySectionTitles
   , style
   , styles
+  , url
   , xmlns
   ) where
 
@@ -37,6 +42,8 @@ import GHC.TypeLits (KnownNat)
 import Integer (Positive)
 import Shrubbery.TypeList (FirstIndexOf)
 
+import Brigid.HTML.Elements (ChildHTML)
+import Brigid.HTML.Render.ByteString (renderLazyHTML)
 import Brigid.HXML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Attributes.Elements (ValidAttribute)
@@ -47,6 +54,14 @@ noAttribute = Attr_NoAttribute
 
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
+
+activityIndicatorColor :: ( KnownNat branchIndex
+                          , branchIndex ~ FirstIndexOf color Types.ColorTypes
+                          , ValidAttribute 'ActivityIndicatorColor tag
+                          )
+                       => color -> Attribute tag
+activityIndicatorColor =
+  Attr_ActivityIndicatorColor . Types.mkColor
 
 adjustsFontSizeToFit :: ValidAttribute 'AdjustsFontSizeToFit tag
                      => Bool -> Attribute tag
@@ -65,8 +80,16 @@ contentContainerStyle = Attr_ContentContainerStyle
 hide :: ValidAttribute 'Hide tag => Bool -> Attribute tag
 hide = Attr_Hide
 
+html :: ValidAttribute 'Html tag
+     => ChildHTML parent grandparent -> Attribute tag
+html = Attr_Html . renderLazyHTML
+
 id :: ValidAttribute 'Id tag => Types.Id -> Attribute tag
 id = Attr_Id
+
+injectedJavaScript :: ValidAttribute 'InjectedJavaScript tag
+                   => Types.RawJavaScript -> Attribute tag
+injectedJavaScript = Attr_InjectedJavaScript
 
 itemHeight :: ValidAttribute 'ItemHeight tag => Positive -> Attribute tag
 itemHeight = Attr_ItemHeight
@@ -105,6 +128,10 @@ scrollToInputOffset = Attr_ScrollToInputOffset
 selectable :: ValidAttribute 'Selectable tag => Bool -> Attribute tag
 selectable = Attr_Selectable
 
+showLoadingIndicator :: ValidAttribute 'ShowLoadingIndicator tag
+                     => Types.ShowLoadingIndicator -> Attribute tag
+showLoadingIndicator = Attr_ShowLoadingIndicator
+
 showsScrollIndicator :: ValidAttribute 'ShowsScrollIndicator tag
                      => Bool -> Attribute tag
 showsScrollIndicator = Attr_ShowsScrollIndicator
@@ -129,6 +156,14 @@ style = styles . L.singleton
 
 styles :: ValidAttribute 'Style tag => [Types.Id] -> Attribute tag
 styles = Attr_Style
+
+url :: ( KnownNat branchIndex
+       , branchIndex ~ FirstIndexOf url Types.URLTypes
+       , ValidAttribute 'Url tag
+       )
+    => url -> Attribute tag
+url =
+  Attr_Url . Types.mkURL
 
 xmlns :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf url Types.URLTypes
