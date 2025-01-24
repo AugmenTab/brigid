@@ -21,6 +21,8 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 5. Add support for the SVG tag.
 6. Add support for MathML.
 7. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
+8. Consider `Default` type class that returns the default value for a given
+   type or attribute.
 
 ### TODO (XML)
 
@@ -29,7 +31,15 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 
 ### TODO (HXML)
 
-1. Add support for HXML.
+1. For each attribute:
+    1. Make constructors for `Attribute` GADT.
+    2. Make render functions.
+    3. Modify `ValidElementsFor`.
+2. Add safe builder functions for any HXML elements with complex conditions for
+   its permitted content. Go through the entire list of elements again to
+   determine what qualifies for this.
+3. Consider `Default` type class that returns the default value for a given
+   type or attribute.
 
 ### Possible optimizations
 
