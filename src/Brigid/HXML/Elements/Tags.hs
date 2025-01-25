@@ -19,6 +19,8 @@ module Brigid.HXML.Elements.Tags
   , List
   , Modifier
   , Navigator
+  , NavigatorStack
+  , NavigatorTab
   , NavRoute
   , Option
   , PickerField
@@ -100,6 +102,14 @@ type Modifier = 'TagType.Modifier
 
 -- | This type synonym represents the @\<navigator>@ element.
 type Navigator = 'TagType.Navigator
+
+-- | This type synonym represents the @\<navigator>@ element with the @stack@
+-- type.
+type NavigatorStack = 'TagType.NavigatorStack
+
+-- | This type synonym represents the @\<navigator>@ element with the @tab@
+-- type.
+type NavigatorTab = 'TagType.NavigatorTab
 
 -- | This type synonym represents the @\<nav-route>@ element.
 type NavRoute = 'TagType.NavRoute

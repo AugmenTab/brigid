@@ -25,6 +25,8 @@ module Brigid.HXML.Attributes.Internal
       , Attr_KeyboardShouldPersistTaps
       , Attr_KeyboardType
       , Attr_Mask
+      , Attr_Merge
+      , Attr_Modal
       , Attr_Multiline
       , Attr_Name
       , Attr_NumberOfLines
@@ -47,6 +49,7 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Sticky
       , Attr_StickySectionTitles
       , Attr_Style
+      , Attr_Type
       , Attr_Url
       , Attr_Value
       , Attr_XMLNS
@@ -167,6 +170,16 @@ data Attribute (tag :: TagType) where
     => Types.Mask
     -> Attribute tag
 
+  Attr_Merge
+    :: ValidAttribute 'Merge tag
+    => Bool
+    -> Attribute tag
+
+  Attr_Modal
+    :: ValidAttribute 'Modal tag
+    => Bool
+    -> Attribute tag
+
   Attr_Multiline
     :: ValidAttribute 'Multiline tag
     => Bool
@@ -277,6 +290,11 @@ data Attribute (tag :: TagType) where
     => [Types.Id]
     -> Attribute tag
 
+  Attr_Type
+    :: ValidAttribute 'Type tag
+    => Types.NavigatorType
+    -> Attribute tag
+
   Attr_Url
     :: ValidAttribute 'Url tag
     => Types.URL
@@ -358,6 +376,12 @@ attributeText attr =
     Attr_Mask _mask ->
       "mask"
 
+    Attr_Merge _merge ->
+      "merge"
+
+    Attr_Modal _modal ->
+      "modal"
+
     Attr_Multiline _multiline ->
       "multiline"
 
@@ -423,6 +447,9 @@ attributeText attr =
 
     Attr_Style _style ->
       "style"
+
+    Attr_Type _type ->
+      "type"
 
     Attr_Url _url ->
       "url"

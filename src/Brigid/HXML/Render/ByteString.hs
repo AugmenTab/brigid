@@ -260,6 +260,12 @@ renderAttribute attr =
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToBytes mask
 
+    Attr_Merge merge ->
+      Just . buildAttribute "merge" $ Render.enumBoolToBytes merge
+
+    Attr_Modal modal ->
+      Just . buildAttribute "modal" $ Render.enumBoolToBytes modal
+
     Attr_Multiline multiline ->
       Just . buildAttribute "multiline" $ Render.enumBoolToBytes multiline
 
@@ -347,6 +353,9 @@ renderAttribute attr =
       Just
         . buildAttribute "style"
         $ Render.foldToBytesWithSeparator Types.idToBytes " " style
+
+    Attr_Type type_ ->
+      Just . buildAttribute "type" $ Types.navigatorTypeToBytes type_
 
     Attr_Url url ->
       Just . buildAttribute "url" $ Types.urlToBytes url

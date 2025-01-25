@@ -23,6 +23,8 @@ module Brigid.HXML.Attributes
   , keyboardShouldPersistTaps
   , keyboardType
   , mask
+  , merge
+  , modal
   , multiline
   , name
   , numberOfLines
@@ -45,6 +47,7 @@ module Brigid.HXML.Attributes
   , sticky
   , stickySectionTitles
   , style
+  , type_
   , url
   , value
   , xmlns
@@ -143,6 +146,12 @@ keyboardType = Attr_KeyboardType
 mask :: ValidAttribute 'Mask tag => Types.Mask -> Attribute tag
 mask = Attr_Mask
 
+merge :: ValidAttribute 'Merge tag => Bool -> Attribute tag
+merge = Attr_Merge
+
+modal :: ValidAttribute 'Modal tag => Bool -> Attribute tag
+modal = Attr_Modal
+
 multiline :: ValidAttribute 'Multiline tag => Bool -> Attribute tag
 multiline = Attr_Multiline
 
@@ -233,6 +242,9 @@ stickySectionTitles = Attr_StickySectionTitles
 
 style :: ValidAttribute 'Style tag => [Types.Id] -> Attribute tag
 style = Attr_Style
+
+type_ :: ValidAttribute 'Type tag => Types.NavigatorType -> Attribute tag
+type_ = Attr_Type
 
 url :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes

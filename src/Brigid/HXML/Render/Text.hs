@@ -255,6 +255,12 @@ renderAttribute attr =
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToText mask
 
+    Attr_Merge merge ->
+      Just . buildAttribute "merge" $ Render.enumBoolToText merge
+
+    Attr_Modal modal ->
+      Just . buildAttribute "modal" $ Render.enumBoolToText modal
+
     Attr_Multiline multiline ->
       Just . buildAttribute "multiline" $ Render.enumBoolToText multiline
 
@@ -342,6 +348,9 @@ renderAttribute attr =
       Just
         . buildAttribute "style"
         $ Render.foldToTextWithSeparator Types.idToText " " style
+
+    Attr_Type type_ ->
+      Just . buildAttribute "type" $ Types.navigatorTypeToText type_
 
     Attr_Url url ->
       Just . buildAttribute "url" $ Types.urlToText url

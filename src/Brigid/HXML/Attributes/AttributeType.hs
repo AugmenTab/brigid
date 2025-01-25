@@ -23,6 +23,8 @@ module Brigid.HXML.Attributes.AttributeType
       , KeyboardShouldPersistTaps
       , KeyboardType
       , Mask
+      , Merge
+      , Modal
       , Multiline
       , Name
       , NumberOfLines
@@ -45,6 +47,7 @@ module Brigid.HXML.Attributes.AttributeType
       , Sticky
       , StickySectionTitles
       , Style
+      , Type
       , Url
       , Value
       , XMLNS
@@ -73,6 +76,8 @@ data AttributeType
   | KeyboardShouldPersistTaps
   | KeyboardType
   | Mask
+  | Merge
+  | Modal
   | Multiline
   | Name
   | NumberOfLines
@@ -95,6 +100,7 @@ data AttributeType
   | Sticky
   | StickySectionTitles
   | Style
+  | Type
   | Url
   | Value
   | XMLNS
@@ -119,6 +125,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'KeyboardShouldPersistTaps = 'Text "KeyboardShouldPersistTaps (keyboard-should-persist-taps)"
   AttributeErrorMessage 'KeyboardType              = 'Text "KeyboardType (keyboard-type)"
   AttributeErrorMessage 'Mask                      = 'Text "Mask (mask)"
+  AttributeErrorMessage 'Merge                     = 'Text "Merge (merge)"
+  AttributeErrorMessage 'Modal                     = 'Text "Modal (modal)"
   AttributeErrorMessage 'Multiline                 = 'Text "Multiline (multiline)"
   AttributeErrorMessage 'Name                      = 'Text "Name (name)"
   AttributeErrorMessage 'NumberOfLines             = 'Text "NumberOfLines (numberOfLines)"
@@ -141,6 +149,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'Sticky                    = 'Text "Sticky (sticky)"
   AttributeErrorMessage 'StickySectionTitles       = 'Text "StickySectionTitles (sticky-section-titles)"
   AttributeErrorMessage 'Style                     = 'Text "Style (style)"
+  AttributeErrorMessage 'Type                      = 'Text "Type (type)"
   AttributeErrorMessage 'Url                       = 'Text "Url (url)"
   AttributeErrorMessage 'Value                     = 'Text "Value (value)"
   AttributeErrorMessage 'XMLNS                     = 'Text "XMLNS (xmlns)"

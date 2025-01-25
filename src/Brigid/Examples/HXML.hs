@@ -1,5 +1,6 @@
 module Brigid.Examples.HXML
-  ( documentExample
+  ( navigatorExample
+  , documentExample
   ) where
 
 import Data.Coerce (coerce)
@@ -9,6 +10,17 @@ import Brigid.HXML.Attributes qualified as A
 import Brigid.HXML.Elements qualified as E
 import Brigid.HXML.Entities qualified as Entity
 import Brigid.HXML.Types qualified as HXML
+
+navigatorExample :: E.HXML
+navigatorExample =
+  E.doc [ A.xmlns hyperviewNamespace ]
+    [ E.navigator [ A.merge True
+                  , A.modal False
+                  , A.type_ HXML.Stack
+                  ]
+        [ E.navRoute []
+        ]
+    ]
 
 documentExample :: E.HXML
 documentExample =

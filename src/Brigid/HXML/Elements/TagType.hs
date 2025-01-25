@@ -22,6 +22,8 @@ module Brigid.HXML.Elements.TagType
       , List
       , Modifier
       , Navigator
+      , NavigatorStack
+      , NavigatorTab
       , NavRoute
       , Option
       , PickerField
@@ -65,6 +67,8 @@ data TagType
   | List
   | Modifier
   | Navigator
+  | NavigatorStack
+  | NavigatorTab
   | NavRoute
   | Option
   | PickerField
@@ -103,6 +107,8 @@ type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
   TagErrorMessage List           = 'TypeLits.Text "List <list>"
   TagErrorMessage Modifier       = 'TypeLits.Text "Modifier <modifier>"
   TagErrorMessage Navigator      = 'TypeLits.Text "Navigator <navigator>"
+  TagErrorMessage NavigatorStack = 'TypeLits.Text "Stack Navigator <navigator type=\"stack\">"
+  TagErrorMessage NavigatorTab   = 'TypeLits.Text "Tab Navigator <navigator> type=\"tab\""
   TagErrorMessage NavRoute       = 'TypeLits.Text "NavRoute <nav-route>"
   TagErrorMessage Option         = 'TypeLits.Text "Option <option>"
   TagErrorMessage PickerField    = 'TypeLits.Text "PickerField <picker-field>"
