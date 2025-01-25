@@ -174,7 +174,7 @@ style :: ValidChild Tags.Style parent
 style = Tag_Style
 
 styles :: ValidChild Tags.Styles parent
-       => [Attribute Tags.Styles] -> [ChildHXML Tags.Styles] -> ChildHXML parent
+       => [ChildHXML Tags.Styles] -> ChildHXML parent
 styles = Tag_Styles
 
 switch :: [Attribute Tags.Switch] -> ChildHXML parent

@@ -123,8 +123,8 @@ renderTag hxml =
     Tag_Style attrs content ->
       buildTag "style" attrs $ contentOrSelfClosing content
 
-    Tag_Styles attrs content ->
-      buildTag "styles" attrs $ contentOrSelfClosing content
+    Tag_Styles content ->
+      buildTag "styles" [] $ contentOrSelfClosing content
 
     Tag_Switch attrs ->
       buildTag "switch" attrs $ Left Types.OmitTag

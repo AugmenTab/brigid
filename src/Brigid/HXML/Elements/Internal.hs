@@ -214,8 +214,7 @@ data ChildHXML (parent :: TagType) where
 
   Tag_Styles
     :: ValidChild 'Styles parent
-    => [Attribute 'Styles]
-    -> [ChildHXML 'Styles]
+    => [ChildHXML 'Styles]
     -> ChildHXML parent
 
   Tag_Switch
