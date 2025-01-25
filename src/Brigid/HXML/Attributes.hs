@@ -6,9 +6,11 @@ module Brigid.HXML.Attributes
   , customAttribute
   , activityIndicatorColor
   , adjustsFontSizeToFit
+  , autoFocus
   , avoidKeyboard
   , color
   , contentContainerStyle
+  , cursorColor
   , hide
   , html
   , id
@@ -17,13 +19,22 @@ module Brigid.HXML.Attributes
   , key
   , keyboardDismissMode
   , keyboardShouldPersistTaps
+  , keyboardType
+  , mask
+  , multiline
+  , name
   , numberOfLines
+  , placeholder
+  , placeholderTextColor
   , preformatted
   , safeArea
   , scroll
   , scrollOrientation
   , scrollToInputOffset
+  , secureText
   , selectable
+  , selectionColor
+  , selectionHandleColor
   , showLoadingIndicator
   , showsScrollIndicator
   , source
@@ -32,6 +43,7 @@ module Brigid.HXML.Attributes
   , style
   , styles
   , url
+  , value
   , xmlns
   ) where
 
@@ -67,6 +79,9 @@ adjustsFontSizeToFit :: ValidAttribute 'AdjustsFontSizeToFit tag
                      => Bool -> Attribute tag
 adjustsFontSizeToFit = Attr_AdjustsFontSizeToFit
 
+autoFocus :: ValidAttribute 'AutoFocus tag => Bool -> Attribute tag
+autoFocus = Attr_AutoFocus
+
 avoidKeyboard :: ValidAttribute 'AvoidKeyboard tag => Bool -> Attribute tag
 avoidKeyboard = Attr_AvoidKeyboard
 
@@ -76,6 +91,14 @@ color = Attr_Color
 contentContainerStyle :: ValidAttribute 'ContentContainerStyle tag
                       => [Types.Id] -> Attribute tag
 contentContainerStyle = Attr_ContentContainerStyle
+
+cursorColor :: ( KnownNat branchIndex
+               , branchIndex ~ FirstIndexOf color Types.ColorTypes
+               , ValidAttribute 'CursorColor tag
+               )
+            => color -> Attribute tag
+cursorColor =
+  Attr_CursorColor . Types.mkColor
 
 hide :: ValidAttribute 'Hide tag => Bool -> Attribute tag
 hide = Attr_Hide
@@ -105,8 +128,32 @@ keyboardShouldPersistTaps :: ValidAttribute 'KeyboardShouldPersistTaps tag
                           => Types.KeyboardShouldPersistTaps -> Attribute tag
 keyboardShouldPersistTaps = Attr_KeyboardShouldPersistTaps
 
+keyboardType :: ValidAttribute 'KeyboardType tag
+             => Types.KeyboardType -> Attribute tag
+keyboardType = Attr_KeyboardType
+
+mask :: ValidAttribute 'Mask tag => Types.Mask -> Attribute tag
+mask = Attr_Mask
+
+multiline :: ValidAttribute 'Multiline tag => Bool -> Attribute tag
+multiline = Attr_Multiline
+
+name :: ValidAttribute 'Name tag => Types.Name -> Attribute tag
+name = Attr_Name
+
 numberOfLines :: ValidAttribute 'NumberOfLines tag => Positive -> Attribute tag
 numberOfLines = Attr_NumberOfLines
+
+placeholder :: ValidAttribute 'Placeholder tag => T.Text -> Attribute tag
+placeholder = Attr_Placeholder
+
+placeholderTextColor :: ( KnownNat branchIndex
+                        , branchIndex ~ FirstIndexOf color Types.ColorTypes
+                        , ValidAttribute 'PlaceholderTextColor tag
+                        )
+                     => color -> Attribute tag
+placeholderTextColor =
+  Attr_PlaceholderTextColor . Types.mkColor
 
 preformatted :: ValidAttribute 'Preformatted tag => Bool -> Attribute tag
 preformatted = Attr_Preformatted
@@ -125,8 +172,27 @@ scrollToInputOffset :: ValidAttribute 'ScrollToInputOffset tag
                     => Integer -> Attribute tag
 scrollToInputOffset = Attr_ScrollToInputOffset
 
+secureText :: ValidAttribute 'SecureText tag => Bool -> Attribute tag
+secureText = Attr_SecureText
+
 selectable :: ValidAttribute 'Selectable tag => Bool -> Attribute tag
 selectable = Attr_Selectable
+
+selectionColor :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf color Types.ColorTypes
+                  , ValidAttribute 'SelectionColor tag
+                  )
+               => color -> Attribute tag
+selectionColor =
+  Attr_SelectionColor . Types.mkColor
+
+selectionHandleColor :: ( KnownNat branchIndex
+                        , branchIndex ~ FirstIndexOf color Types.ColorTypes
+                        , ValidAttribute 'SelectionHandleColor tag
+                        )
+                     => color -> Attribute tag
+selectionHandleColor =
+  Attr_SelectionHandleColor . Types.mkColor
 
 showLoadingIndicator :: ValidAttribute 'ShowLoadingIndicator tag
                      => Types.ShowLoadingIndicator -> Attribute tag
@@ -164,6 +230,9 @@ url :: ( KnownNat branchIndex
     => url -> Attribute tag
 url =
   Attr_Url . Types.mkURL
+
+value :: ValidAttribute 'Value tag => T.Text -> Attribute tag
+value = Attr_Value
 
 xmlns :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf url Types.URLTypes

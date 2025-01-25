@@ -163,6 +163,8 @@ library
       Brigid.HXML.Types.Key
       Brigid.HXML.Types.KeyboardDismissMode
       Brigid.HXML.Types.KeyboardShouldPersistTaps
+      Brigid.HXML.Types.KeyboardType
+      Brigid.HXML.Types.Mask
       Brigid.HXML.Types.ScrollOrientation
       Brigid.HXML.Types.ShowLoadingIndicator
       Brigid.Internal.Entities

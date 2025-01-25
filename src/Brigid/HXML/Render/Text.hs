@@ -186,6 +186,9 @@ renderAttribute attr =
         . buildAttribute "adjustsFontSizeToFit"
         $ Render.enumBoolToText adjustsFontSizeToFit
 
+    Attr_AutoFocus autoFocus ->
+      Just . buildAttribute "auto-focus" $ Render.enumBoolToText autoFocus
+
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
         . buildAttribute "avoid-keyboard"
@@ -199,6 +202,9 @@ renderAttribute attr =
         . buildAttribute "content-container-style"
         . Render.foldToTextWithSeparator Types.idToText " "
         $ contentContainerStyle
+
+    Attr_CursorColor cursorColor ->
+      Just . buildAttribute "cursorColor" $ Types.colorToText cursorColor
 
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToText hide
@@ -233,10 +239,32 @@ renderAttribute attr =
         . buildAttribute "keyboard-should-persist-taps"
         $ Types.keyboardShouldPersistTapsToText keyboardShouldPersistTaps
 
+    Attr_KeyboardType keyboardType ->
+      Just
+        . buildAttribute "keyboard-type"
+        $ Types.keyboardTypeToText keyboardType
+
+    Attr_Mask mask ->
+      Just . buildAttribute "mask" $ Types.maskToText mask
+
+    Attr_Multiline multiline ->
+      Just . buildAttribute "multiline" $ Render.enumBoolToText multiline
+
+    Attr_Name name ->
+      Just . buildAttribute "name" $ Types.nameToText name
+
     Attr_NumberOfLines numberOfLines ->
       Just
         . buildAttribute "numberOfLines"
         $ Render.showText numberOfLines
+
+    Attr_Placeholder placeholder ->
+      Just $ buildAttribute "placeholder" placeholder
+
+    Attr_PlaceholderTextColor placeholderTextColor ->
+      Just
+        . buildAttribute "placeholderTextColor"
+        $ Types.colorToText placeholderTextColor
 
     Attr_Preformatted preformatted ->
       Just
@@ -259,8 +287,21 @@ renderAttribute attr =
         . buildAttribute "scroll-orientation"
         $ Render.showText scrollToInputOffset
 
+    Attr_SecureText secureText ->
+      Just . buildAttribute "secure-text" $ Render.enumBoolToText secureText
+
     Attr_Selectable selectable ->
       Just . buildAttribute "selectable" $ Render.enumBoolToText selectable
+
+    Attr_SelectionColor selectionColor ->
+      Just
+        . buildAttribute "selectionColor"
+        $ Types.colorToText selectionColor
+
+    Attr_SelectionHandleColor selectionHandleColor ->
+      Just
+        . buildAttribute "selectionHandleColor"
+        $ Types.colorToText selectionHandleColor
 
     Attr_ShowLoadingIndicator showLoadingIndicator ->
       Just
@@ -290,6 +331,9 @@ renderAttribute attr =
 
     Attr_Url url ->
       Just . buildAttribute "url" $ Types.urlToText url
+
+    Attr_Value value ->
+      Just $ buildAttribute "value" value
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToText xmlns

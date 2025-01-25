@@ -8,9 +8,11 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Custom
       , Attr_ActivityIndicatorColor
       , Attr_AdjustsFontSizeToFit
+      , Attr_AutoFocus
       , Attr_AvoidKeyboard
       , Attr_Color
       , Attr_ContentContainerStyle
+      , Attr_CursorColor
       , Attr_Hide
       , Attr_Html
       , Attr_Id
@@ -19,13 +21,22 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Key
       , Attr_KeyboardDismissMode
       , Attr_KeyboardShouldPersistTaps
+      , Attr_KeyboardType
+      , Attr_Mask
+      , Attr_Multiline
+      , Attr_Name
       , Attr_NumberOfLines
+      , Attr_Placeholder
+      , Attr_PlaceholderTextColor
       , Attr_Preformatted
       , Attr_SafeArea
       , Attr_Scroll
       , Attr_ScrollOrientation
       , Attr_ScrollToInputOffset
+      , Attr_SecureText
       , Attr_Selectable
+      , Attr_SelectionColor
+      , Attr_SelectionHandleColor
       , Attr_ShowLoadingIndicator
       , Attr_ShowsScrollIndicator
       , Attr_Source
@@ -33,6 +44,7 @@ module Brigid.HXML.Attributes.Internal
       , Attr_StickySectionTitles
       , Attr_Style
       , Attr_Url
+      , Attr_Value
       , Attr_XMLNS
       )
   , attributeText
@@ -66,6 +78,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_AutoFocus
+    :: ValidAttribute 'AutoFocus tag
+    => Bool
+    -> Attribute tag
+
   Attr_AvoidKeyboard
     :: ValidAttribute 'AvoidKeyboard tag
     => Bool
@@ -79,6 +96,11 @@ data Attribute (tag :: TagType) where
   Attr_ContentContainerStyle
     :: ValidAttribute 'ContentContainerStyle tag
     => [Types.Id]
+    -> Attribute tag
+
+  Attr_CursorColor
+    :: ValidAttribute 'CursorColor tag
+    => Types.Color
     -> Attribute tag
 
   Attr_Hide
@@ -121,9 +143,39 @@ data Attribute (tag :: TagType) where
     => Types.KeyboardShouldPersistTaps
     -> Attribute tag
 
+  Attr_KeyboardType
+    :: ValidAttribute 'KeyboardType tag
+    => Types.KeyboardType
+    -> Attribute tag
+
+  Attr_Mask
+    :: ValidAttribute 'Mask tag
+    => Types.Mask
+    -> Attribute tag
+
+  Attr_Multiline
+    :: ValidAttribute 'Multiline tag
+    => Bool
+    -> Attribute tag
+
+  Attr_Name
+    :: ValidAttribute 'Name tag
+    => Types.Name
+    -> Attribute tag
+
   Attr_NumberOfLines
     :: ValidAttribute 'NumberOfLines tag
     => Positive
+    -> Attribute tag
+
+  Attr_Placeholder
+    :: ValidAttribute 'Placeholder tag
+    => T.Text
+    -> Attribute tag
+
+  Attr_PlaceholderTextColor
+    :: ValidAttribute 'PlaceholderTextColor tag
+    => Types.Color
     -> Attribute tag
 
   Attr_Preformatted
@@ -151,9 +203,24 @@ data Attribute (tag :: TagType) where
     => Integer
     -> Attribute tag
 
+  Attr_SecureText
+    :: ValidAttribute 'SecureText tag
+    => Bool
+    -> Attribute tag
+
   Attr_Selectable
     :: ValidAttribute 'Selectable tag
     => Bool
+    -> Attribute tag
+
+  Attr_SelectionColor
+    :: ValidAttribute 'SelectionColor tag
+    => Types.Color
+    -> Attribute tag
+
+  Attr_SelectionHandleColor
+    :: ValidAttribute 'SelectionHandleColor tag
+    => Types.Color
     -> Attribute tag
 
   Attr_ShowLoadingIndicator
@@ -191,6 +258,11 @@ data Attribute (tag :: TagType) where
     => Types.URL
     -> Attribute tag
 
+  Attr_Value
+    :: ValidAttribute 'Value tag
+    => T.Text
+    -> Attribute tag
+
   Attr_XMLNS
     :: ValidAttribute 'XMLNS tag
     => Types.URL
@@ -211,6 +283,9 @@ attributeText attr =
     Attr_AdjustsFontSizeToFit _adjustsFontSizeToFit ->
       "adjustsFontSizeToFit"
 
+    Attr_AutoFocus _autoFocus ->
+      "auto-focus"
+
     Attr_AvoidKeyboard _avoidKeyboard ->
       "avoid-keyboard"
 
@@ -219,6 +294,9 @@ attributeText attr =
 
     Attr_ContentContainerStyle _contentContainerStyle ->
       "content-container-style"
+
+    Attr_CursorColor _cursorColor ->
+      "cursorColor"
 
     Attr_Hide _hide ->
       "hide"
@@ -244,8 +322,26 @@ attributeText attr =
     Attr_KeyboardShouldPersistTaps _keyboardShouldPersistTaps ->
       "keyboard-should-persist-taps"
 
+    Attr_KeyboardType _keyboardType ->
+      "keyboard-type"
+
+    Attr_Mask _mask ->
+      "mask"
+
+    Attr_Multiline _multiline ->
+      "multiline"
+
+    Attr_Name _name ->
+      "name"
+
     Attr_NumberOfLines _numberOfLines ->
       "numberOfLines"
+
+    Attr_Placeholder _placeholder ->
+      "placeholder"
+
+    Attr_PlaceholderTextColor _placeholderTextColor ->
+      "placeholderTextColor"
 
     Attr_Preformatted _preformatted ->
       "preformatted"
@@ -262,8 +358,17 @@ attributeText attr =
     Attr_ScrollToInputOffset _scrollToInputOffset ->
       "scroll-to-input-offset"
 
+    Attr_SecureText _secureText ->
+      "secure-text"
+
     Attr_Selectable _selectable ->
       "selectable"
+
+    Attr_SelectionColor _selectionColor ->
+      "selectionColor"
+
+    Attr_SelectionHandleColor _selectionHandleColor ->
+      "selectionHandleColor"
 
     Attr_ShowLoadingIndicator _showLoadingIndicator ->
       "show-loading-indicator"
@@ -285,6 +390,9 @@ attributeText attr =
 
     Attr_Url _url ->
       "url"
+
+    Attr_Value _value ->
+      "value"
 
     Attr_XMLNS _xmlns ->
       "xmlns"

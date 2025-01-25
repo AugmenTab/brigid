@@ -80,6 +80,23 @@ documentExample =
                             , A.showLoadingIndicator HXML.DocumentOnly
                             , A.url hyperviewNamespace
                             ]
+                , E.form []
+                    [ E.textField [ A.name $ HXML.Name "random-text"
+                                  , A.value "Existing value"
+                                  , A.placeholder "Type something..."
+                                  , A.placeholderTextColor blue
+                                  , A.selectionColor red
+                                  , A.selectionHandleColor green
+                                  , A.cursorColor yellow
+                                  , A.multiline True
+                                  , A.keyboardType HXML.NumbersAndPunctuation
+                                  , case HXML.mkMask "AA (999) 999-9999 S*S*" of
+                                      Left  _err -> A.noAttribute
+                                      Right mask -> A.mask mask
+                                  , A.autoFocus False
+                                  , A.secureText True
+                                  ]
+                    ]
                 ]
             ]
         ]
@@ -91,3 +108,15 @@ hyperviewNamespace =
 
 myStyleId :: HXML.Id
 myStyleId = HXML.Id "MyStyle"
+
+blue :: HXML.ColorName
+blue = HXML.ColorName "blue"
+
+red :: HXML.ColorName
+red = HXML.ColorName "red"
+
+green :: HXML.ColorName
+green = HXML.ColorName "green"
+
+yellow :: HXML.ColorName
+yellow = HXML.ColorName "yellow"

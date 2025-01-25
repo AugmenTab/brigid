@@ -194,6 +194,9 @@ renderAttribute attr =
         . buildAttribute "adjustsFontSizeToFit"
         $ Render.enumBoolToBytes adjustsFontSizeToFit
 
+    Attr_AutoFocus autoFocus ->
+      Just . buildAttribute "auto-focus" $ Render.enumBoolToBytes autoFocus
+
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
         . buildAttribute "avoid-keyboard"
@@ -207,6 +210,9 @@ renderAttribute attr =
         . buildAttribute "content-container-style"
         . Render.foldToBytesWithSeparator Types.idToBytes " "
         $ contentContainerStyle
+
+    Attr_CursorColor cursorColor ->
+      Just . buildAttribute "cursorColor" $ Types.colorToBytes cursorColor
 
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToBytes hide
@@ -238,10 +244,32 @@ renderAttribute attr =
         . buildAttribute "keyboard-should-persist-taps"
         $ Types.keyboardShouldPersistTapsToBytes keyboardShouldPersistTaps
 
+    Attr_KeyboardType keyboardType ->
+      Just
+        . buildAttribute "keyboard-type"
+        $ Types.keyboardTypeToBytes keyboardType
+
+    Attr_Mask mask ->
+      Just . buildAttribute "mask" $ Types.maskToBytes mask
+
+    Attr_Multiline multiline ->
+      Just . buildAttribute "multiline" $ Render.enumBoolToBytes multiline
+
+    Attr_Name name ->
+      Just . buildAttribute "name" $ Types.nameToBytes name
+
     Attr_NumberOfLines numberOfLines ->
       Just
         . buildAttribute "numberOfLines"
         $ Render.showBytes numberOfLines
+
+    Attr_Placeholder placeholder ->
+      Just . buildAttribute "placeholder" $ Render.textToBytes placeholder
+
+    Attr_PlaceholderTextColor placeholderTextColor ->
+      Just
+        . buildAttribute "placeholderTextColor"
+        $ Types.colorToBytes placeholderTextColor
 
     Attr_Preformatted preformatted ->
       Just
@@ -264,8 +292,21 @@ renderAttribute attr =
         . buildAttribute "scroll-orientation"
         $ Render.showBytes scrollToInputOffset
 
+    Attr_SecureText secureText ->
+      Just . buildAttribute "secure-text" $ Render.enumBoolToBytes secureText
+
     Attr_Selectable selectable ->
       Just . buildAttribute "selectable" $ Render.enumBoolToBytes selectable
+
+    Attr_SelectionColor selectionColor ->
+      Just
+        . buildAttribute "selectionColor"
+        $ Types.colorToBytes selectionColor
+
+    Attr_SelectionHandleColor selectionHandleColor ->
+      Just
+        . buildAttribute "selectionHandleColor"
+        $ Types.colorToBytes selectionHandleColor
 
     Attr_ShowLoadingIndicator showLoadingIndicator ->
       Just
@@ -295,6 +336,9 @@ renderAttribute attr =
 
     Attr_Url url ->
       Just . buildAttribute "url" $ Types.urlToBytes url
+
+    Attr_Value value ->
+      Just . buildAttribute "value" $ Render.textToBytes value
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns
