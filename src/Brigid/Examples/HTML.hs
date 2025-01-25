@@ -163,6 +163,7 @@ example =
         , E.input [ A.type_ HTML.InputFile
                   , A.capture Nothing
                   , A.multiple
+                  , A.autocomplete HTML.Off
                   ]
         , E.input [ A.type_ HTML.InputFile
                   , A.capture $ Just HTML.User

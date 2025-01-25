@@ -16,13 +16,13 @@ import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
 import Brigid.HTML.Internal.TagOperations (Add, Elem, Remove)
 import Brigid.HTML.Types.AutocompleteToken qualified as ACT
+import Brigid.HTML.Types.OnOff (OnOff (..))
 
 type ValidAutocomplete token tag =
   AlertToken (Elem tag (ValidTagsFor token)) token tag ~ 'True
 
 type family ValidTagsFor (token :: Type) :: [TagType] where
-  ValidTagsFor ACT.Off                       = TagGroups.AutocompletableTags
-  ValidTagsFor ACT.On                        = TagGroups.AutocompletableTags
+  ValidTagsFor OnOff                         = TagGroups.AutocompletableTags
   ValidTagsFor (ACT.Modifier nested)         = ValidTagsFor nested
   ValidTagsFor ACT.FullName                  = TextFields
   ValidTagsFor ACT.HonorificPrefix           = TextFields
@@ -93,8 +93,7 @@ type family AlertToken (member :: Bool) (token :: Type) (tag :: TagType) :: Bool
       )
 
 type family TokenTypeErrorMessage (token :: Type) :: ErrorMessage where
-  TokenTypeErrorMessage ACT.Off                       = 'Text "Off"
-  TokenTypeErrorMessage ACT.On                        = 'Text "On"
+  TokenTypeErrorMessage OnOff                         = 'Text "On/Off"
   TokenTypeErrorMessage (ACT.Modifier nested)         = TokenTypeErrorMessage nested
   TokenTypeErrorMessage ACT.FullName                  = 'Text "FullName"
   TokenTypeErrorMessage ACT.HonorificPrefix           = 'Text "HonorificPrefix"

@@ -11,8 +11,6 @@ module Brigid.HTML.Types.AutocompleteToken
   , mkAutocompleteToken
   , autocompleteTokenToBytes
   , autocompleteTokenToText
-  , Off (Off)
-  , On (On)
   , Modifier
   , section
   , home
@@ -86,6 +84,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
+import Brigid.HTML.Types.OnOff (OnOff, onOffToBytes, onOffToText)
+
 newtype AutocompleteToken =
   AutocompleteToken (Shrubbery.Union AutocompleteTokenTypes)
 
@@ -93,8 +93,7 @@ instance Show AutocompleteToken where
   show (AutocompleteToken token) =
     ( Shrubbery.dissect
         . Shrubbery.branchBuild
-        . Shrubbery.branch @Off                                   show
-        . Shrubbery.branch @On                                    show
+        . Shrubbery.branch @OnOff                                 show
         . Shrubbery.branch @(Modifier FullName)                   show
         . Shrubbery.branch @(Modifier HonorificPrefix)            show
         . Shrubbery.branch @(Modifier GivenName)                  show
@@ -207,8 +206,7 @@ instance Show AutocompleteToken where
     ) token
 
 type AutocompleteTokenTypes =
-  [ Off
-  , On
+  [ OnOff
   , Modifier FullName
   , Modifier HonorificPrefix
   , Modifier GivenName
@@ -330,8 +328,7 @@ autocompleteTokenToBytes :: AutocompleteToken -> LBS.ByteString
 autocompleteTokenToBytes (AutocompleteToken token) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Off                                  offToBytes
-      . Shrubbery.branch @On                                   onToBytes
+      . Shrubbery.branch @OnOff                                onOffToBytes
       . Shrubbery.branch @(Modifier FullName)                  (modifierToBytes fullNameToBytes)
       . Shrubbery.branch @(Modifier HonorificPrefix)           (modifierToBytes honorificPrefixToBytes)
       . Shrubbery.branch @(Modifier GivenName)                 (modifierToBytes givenNameToBytes)
@@ -447,8 +444,7 @@ autocompleteTokenToText :: AutocompleteToken -> T.Text
 autocompleteTokenToText (AutocompleteToken token) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Off                                  offToText
-      . Shrubbery.branch @On                                   onToText
+      . Shrubbery.branch @OnOff                               onOffToText
       . Shrubbery.branch @(Modifier FullName)                 (modifierToText fullNameToText)
       . Shrubbery.branch @(Modifier HonorificPrefix)          (modifierToText honorificPrefixToText)
       . Shrubbery.branch @(Modifier GivenName)                (modifierToText givenNameToText)
@@ -559,26 +555,6 @@ autocompleteTokenToText (AutocompleteToken token) =
       . Shrubbery.branch @Photo                                photoToText
       $ Shrubbery.branchEnd
   ) token
-
--- On / Off
---
-data Off = Off
-  deriving (Eq, Show)
-
-offToBytes :: Off -> LBS.ByteString
-offToBytes Off = "off"
-
-offToText :: Off -> T.Text
-offToText Off = "off"
-
-data On = On
-  deriving (Eq, Show)
-
-onToBytes :: On -> LBS.ByteString
-onToBytes On = "on"
-
-onToText :: On -> T.Text
-onToText On = "on"
 
 type family Elem (x :: Type) (xs :: [Type]) :: Bool where
   Elem e '[]       = 'False

@@ -115,6 +115,7 @@ library
       Brigid.HTML.Types.Number
       Brigid.HTML.Types.NumberingType
       Brigid.HTML.Types.Once
+      Brigid.HTML.Types.OnOff
       Brigid.HTML.Types.Part
       Brigid.HTML.Types.Phone
       Brigid.HTML.Types.PopoverState
