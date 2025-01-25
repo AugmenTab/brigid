@@ -20,7 +20,14 @@ documentExample =
                 [
                 ]
             , E.style [] []
-            , E.style [] []
+            , E.style []
+                [ E.modifier [ A.focused True
+                             , A.pressed True
+                             , A.selected True
+                             ]
+                    [ E.style [] []
+                    ]
+                ]
             ]
         , E.header [ A.hide True
                    , A.safeArea False

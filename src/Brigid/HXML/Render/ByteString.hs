@@ -219,6 +219,9 @@ renderAttribute attr =
     Attr_CursorColor cursorColor ->
       Just . buildAttribute "cursorColor" $ Types.colorToBytes cursorColor
 
+    Attr_Focused focused ->
+      Just . buildAttribute "focused" $ Render.enumBoolToBytes focused
+
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToBytes hide
 
@@ -281,6 +284,9 @@ renderAttribute attr =
         . buildAttribute "preformatted"
         $ Render.enumBoolToBytes preformatted
 
+    Attr_Pressed pressed ->
+      Just . buildAttribute "pressed" $ Render.enumBoolToBytes pressed
+
     Attr_SafeArea safeArea ->
       Just . buildAttribute "safe-area" $ Render.enumBoolToBytes safeArea
 
@@ -302,6 +308,9 @@ renderAttribute attr =
 
     Attr_Selectable selectable ->
       Just . buildAttribute "selectable" $ Render.enumBoolToBytes selectable
+
+    Attr_Selected selected ->
+      Just . buildAttribute "selected" $ Render.enumBoolToBytes selected
 
     Attr_SelectionColor selectionColor ->
       Just

@@ -12,6 +12,7 @@ module Brigid.HXML.Attributes.AttributeType
       , Color
       , ContentContainerStyle
       , CursorColor
+      , Focused
       , Hide
       , Html
       , Id
@@ -28,12 +29,14 @@ module Brigid.HXML.Attributes.AttributeType
       , Placeholder
       , PlaceholderTextColor
       , Preformatted
+      , Pressed
       , SafeArea
       , Scroll
       , ScrollOrientation
       , ScrollToInputOffset
       , SecureText
       , Selectable
+      , Selected
       , SelectionColor
       , SelectionHandleColor
       , ShowLoadingIndicator
@@ -59,6 +62,7 @@ data AttributeType
   | Color
   | ContentContainerStyle
   | CursorColor
+  | Focused
   | Hide
   | Html
   | Id
@@ -75,12 +79,14 @@ data AttributeType
   | Placeholder
   | PlaceholderTextColor
   | Preformatted
+  | Pressed
   | SafeArea
   | Scroll
   | ScrollOrientation
   | ScrollToInputOffset
   | SecureText
   | Selectable
+  | Selected
   | SelectionColor
   | SelectionHandleColor
   | ShowLoadingIndicator
@@ -102,6 +108,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'Color                     = 'Text "Color (color)"
   AttributeErrorMessage 'ContentContainerStyle     = 'Text "ContentContainerStyle (content-container-style)"
   AttributeErrorMessage 'CursorColor               = 'Text "CursorColor (cursorColor)"
+  AttributeErrorMessage 'Focused                   = 'Text "Focused (focused)"
   AttributeErrorMessage 'Hide                      = 'Text "Hide (hide)"
   AttributeErrorMessage 'Html                      = 'Text "Html (html)"
   AttributeErrorMessage 'Id                        = 'Text "Id (id)"
@@ -118,14 +125,16 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'Placeholder               = 'Text "Placeholder (placeholder)"
   AttributeErrorMessage 'PlaceholderTextColor      = 'Text "PlaceholderTextColor (placeholderTextColor)"
   AttributeErrorMessage 'Preformatted              = 'Text "Preformatted (preformatted)"
+  AttributeErrorMessage 'Pressed                   = 'Text "Pressed (pressed)"
   AttributeErrorMessage 'SafeArea                  = 'Text "SafeArea (safe-area)"
   AttributeErrorMessage 'Scroll                    = 'Text "Scroll (scroll)"
   AttributeErrorMessage 'ScrollOrientation         = 'Text "ScrollOrientation (scroll-orientation)"
   AttributeErrorMessage 'ScrollToInputOffset       = 'Text "ScrollToInputOffset (scroll-to-input-offset)"
   AttributeErrorMessage 'SecureText                = 'Text "SecureText (secure-text)"
+  AttributeErrorMessage 'Selectable                = 'Text "Selectable (selectable)"
+  AttributeErrorMessage 'Selected                  = 'Text "Selected (selected)"
   AttributeErrorMessage 'SelectionColor            = 'Text "SelectionColor (selectionColor)"
   AttributeErrorMessage 'SelectionHandleColor      = 'Text "SelectionHandleColor (selectionHandleColor)"
-  AttributeErrorMessage 'Selectable                = 'Text "Selectable (selectable)"
   AttributeErrorMessage 'ShowLoadingIndicator      = 'Text "ShowLoadingIndicator (show-loading-indicator)"
   AttributeErrorMessage 'ShowsScrollIndicator      = 'Text "ShowsScrollIndicator (shows-scroll-indicator)"
   AttributeErrorMessage 'Source                    = 'Text "Source (source)"

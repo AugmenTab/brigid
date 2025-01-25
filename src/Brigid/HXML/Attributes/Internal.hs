@@ -14,6 +14,7 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Color
       , Attr_ContentContainerStyle
       , Attr_CursorColor
+      , Attr_Focused
       , Attr_Hide
       , Attr_Html
       , Attr_Id
@@ -30,12 +31,14 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Placeholder
       , Attr_PlaceholderTextColor
       , Attr_Preformatted
+      , Attr_Pressed
       , Attr_SafeArea
       , Attr_Scroll
       , Attr_ScrollOrientation
       , Attr_ScrollToInputOffset
       , Attr_SecureText
       , Attr_Selectable
+      , Attr_Selected
       , Attr_SelectionColor
       , Attr_SelectionHandleColor
       , Attr_ShowLoadingIndicator
@@ -107,6 +110,11 @@ data Attribute (tag :: TagType) where
   Attr_CursorColor
     :: ValidAttribute 'CursorColor tag
     => Types.Color
+    -> Attribute tag
+
+  Attr_Focused
+    :: ValidAttribute 'Focused tag
+    => Bool
     -> Attribute tag
 
   Attr_Hide
@@ -189,6 +197,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_Pressed
+    :: ValidAttribute 'Pressed tag
+    => Bool
+    -> Attribute tag
+
   Attr_SafeArea
     :: ValidAttribute 'SafeArea tag
     => Bool
@@ -216,6 +229,11 @@ data Attribute (tag :: TagType) where
 
   Attr_Selectable
     :: ValidAttribute 'Selectable tag
+    => Bool
+    -> Attribute tag
+
+  Attr_Selected
+    :: ValidAttribute 'Selected tag
     => Bool
     -> Attribute tag
 
@@ -307,6 +325,9 @@ attributeText attr =
     Attr_CursorColor _cursorColor ->
       "cursorColor"
 
+    Attr_Focused _focused ->
+      "focused"
+
     Attr_Hide _hide ->
       "hide"
 
@@ -355,6 +376,9 @@ attributeText attr =
     Attr_Preformatted _preformatted ->
       "preformatted"
 
+    Attr_Pressed _pressed ->
+      "pressed"
+
     Attr_SafeArea _safeArea ->
       "safe-area"
 
@@ -372,6 +396,9 @@ attributeText attr =
 
     Attr_Selectable _selectable ->
       "selectable"
+
+    Attr_Selected _selected ->
+      "selected"
 
     Attr_SelectionColor _selectionColor ->
       "selectionColor"

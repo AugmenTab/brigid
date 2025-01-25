@@ -12,6 +12,7 @@ module Brigid.HXML.Attributes
   , color
   , contentContainerStyle
   , cursorColor
+  , focused
   , hide
   , html
   , id
@@ -28,12 +29,14 @@ module Brigid.HXML.Attributes
   , placeholder
   , placeholderTextColor
   , preformatted
+  , pressed
   , safeArea
   , scroll
   , scrollOrientation
   , scrollToInputOffset
   , secureText
   , selectable
+  , selected
   , selectionColor
   , selectionHandleColor
   , showLoadingIndicator
@@ -102,6 +105,9 @@ cursorColor :: ( KnownNat branchIndex
 cursorColor =
   Attr_CursorColor . Types.mkColor
 
+focused :: ValidAttribute 'Focused tag => Bool -> Attribute tag
+focused = Attr_Focused
+
 hide :: ValidAttribute 'Hide tag => Bool -> Attribute tag
 hide = Attr_Hide
 
@@ -160,6 +166,9 @@ placeholderTextColor =
 preformatted :: ValidAttribute 'Preformatted tag => Bool -> Attribute tag
 preformatted = Attr_Preformatted
 
+pressed :: ValidAttribute 'Pressed tag => Bool -> Attribute tag
+pressed = Attr_Pressed
+
 safeArea :: ValidAttribute 'SafeArea tag => Bool -> Attribute tag
 safeArea = Attr_SafeArea
 
@@ -179,6 +188,9 @@ secureText = Attr_SecureText
 
 selectable :: ValidAttribute 'Selectable tag => Bool -> Attribute tag
 selectable = Attr_Selectable
+
+selected :: ValidAttribute 'Selected tag => Bool -> Attribute tag
+selected = Attr_Selected
 
 selectionColor :: ( KnownNat branchIndex
                   , branchIndex ~ FirstIndexOf color Types.ColorTypes
