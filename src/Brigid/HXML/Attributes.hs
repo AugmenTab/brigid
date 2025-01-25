@@ -6,6 +6,7 @@ module Brigid.HXML.Attributes
   , customAttribute
   , activityIndicatorColor
   , adjustsFontSizeToFit
+  , allowDeselect
   , autoFocus
   , avoidKeyboard
   , color
@@ -78,6 +79,9 @@ activityIndicatorColor =
 adjustsFontSizeToFit :: ValidAttribute 'AdjustsFontSizeToFit tag
                      => Bool -> Attribute tag
 adjustsFontSizeToFit = Attr_AdjustsFontSizeToFit
+
+allowDeselect :: ValidAttribute 'AllowDeselect tag => Bool -> Attribute tag
+allowDeselect = Attr_AllowDeselect
 
 autoFocus :: ValidAttribute 'AutoFocus tag => Bool -> Attribute tag
 autoFocus = Attr_AutoFocus

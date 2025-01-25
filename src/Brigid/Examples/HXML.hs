@@ -96,6 +96,24 @@ documentExample =
                                   , A.autoFocus False
                                   , A.secureText True
                                   ]
+                    , E.selectSingle [ A.allowDeselect True
+                                     ]
+                        [ E.option []
+                            [ E.text []
+                                [ E.content "Option 1"
+                                ]
+                            ]
+                        , E.option []
+                            [ E.text []
+                                [ E.content "Option 2"
+                                ]
+                            ]
+                        , E.option []
+                            [ E.text []
+                                [ E.content "Option 3"
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]

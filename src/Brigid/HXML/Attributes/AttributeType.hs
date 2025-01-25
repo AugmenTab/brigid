@@ -6,6 +6,7 @@ module Brigid.HXML.Attributes.AttributeType
   , AttributeType
       ( ActivityIndicatorColor
       , AdjustsFontSizeToFit
+      , AllowDeselect
       , AutoFocus
       , AvoidKeyboard
       , Color
@@ -52,6 +53,7 @@ import GHC.TypeLits (ErrorMessage (..))
 data AttributeType
   = ActivityIndicatorColor
   | AdjustsFontSizeToFit
+  | AllowDeselect
   | AutoFocus
   | AvoidKeyboard
   | Color
@@ -94,6 +96,7 @@ data AttributeType
 type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'ActivityIndicatorColor    = 'Text "ActivityIndicatorColor (activity-indicator-color)"
   AttributeErrorMessage 'AdjustsFontSizeToFit      = 'Text "AdjustsFontSizeToFit (adjustsFontSizeToFit)"
+  AttributeErrorMessage 'AllowDeselect             = 'Text "AllowDeselect (allow-deselect)"
   AttributeErrorMessage 'AutoFocus                 = 'Text "AutoFocus (auto-focus)"
   AttributeErrorMessage 'AvoidKeyboard             = 'Text "AvoidKeyboard (avoid-keyboard)"
   AttributeErrorMessage 'Color                     = 'Text "Color (color)"

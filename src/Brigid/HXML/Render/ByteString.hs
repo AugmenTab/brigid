@@ -194,6 +194,11 @@ renderAttribute attr =
         . buildAttribute "adjustsFontSizeToFit"
         $ Render.enumBoolToBytes adjustsFontSizeToFit
 
+    Attr_AllowDeselect allowDeselect ->
+      Just
+        . buildAttribute "allow-deselect"
+        $ Render.enumBoolToBytes allowDeselect
+
     Attr_AutoFocus autoFocus ->
       Just . buildAttribute "auto-focus" $ Render.enumBoolToBytes autoFocus
 
