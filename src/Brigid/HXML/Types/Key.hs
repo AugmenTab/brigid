@@ -12,7 +12,10 @@ import Brigid.Internal.Render qualified as Render
 newtype Key =
   Key
     { keyToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show Key where
+  show = mappend "Key " . T.unpack . keyToText
 
 keyToBytes :: Key -> LBS.ByteString
 keyToBytes = Render.textToBytes . keyToText

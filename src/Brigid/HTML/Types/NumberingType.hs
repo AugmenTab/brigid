@@ -19,6 +19,7 @@ data NumberingType
   | LowercaseLatinLetters
   | UppercaseRomanNumerals
   | LowercaseRomanNumerals
+  deriving (Bounded, Enum, Eq, Show)
 
 numberingTypeToBytes :: NumberingType -> LBS8.ByteString
 numberingTypeToBytes nt =

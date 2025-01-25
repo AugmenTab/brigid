@@ -26,6 +26,16 @@ import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, num
 
 newtype TypeOption = TypeOption (Shrubbery.Union TypeOptionTypes)
 
+instance Show TypeOption where
+  show (TypeOption typeOption) =
+    ( Shrubbery.dissect
+        . Shrubbery.branchBuild
+        . Shrubbery.branch @InputType     show
+        . Shrubbery.branch @NumberingType show
+        . Shrubbery.branch @RawTypeOption show
+        $ Shrubbery.branchEnd
+    ) typeOption
+
 type TypeOptionTypes =
   [ InputType
   , NumberingType
@@ -62,7 +72,10 @@ typeOptionToText (TypeOption typeOption) =
 newtype RawTypeOption =
   RawTypeOption
     { rawTypeOptionToText :: T.Text
-    }
+    } deriving (Eq)
+
+instance Show RawTypeOption where
+  show = mappend "RawTypeOption " . show
 
 mkRawTypeOption :: T.Text -> RawTypeOption
 mkRawTypeOption = RawTypeOption

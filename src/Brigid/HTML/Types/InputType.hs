@@ -53,6 +53,7 @@ data InputType
   | InputTime
   | InputUrl
   | InputWeek
+  deriving (Bounded, Enum, Eq, Show)
 
 inputTypeToBytes :: InputType -> LBS.ByteString
 inputTypeToBytes input =

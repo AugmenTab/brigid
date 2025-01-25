@@ -88,7 +88,10 @@ rangeBoundToText (RangeBound rangeBound) =
 newtype RawRangeBound =
   RawRangeBound
     { rawRangeBoundToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show RawRangeBound where
+  show = mappend "RawRangeBound " . show
 
 mkRawRangeBound :: T.Text -> RawRangeBound
 mkRawRangeBound = RawRangeBound

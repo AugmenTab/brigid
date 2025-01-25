@@ -14,7 +14,10 @@ import Brigid.Internal.Render qualified as Render
 newtype Mask =
   Mask
     { maskToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show Mask where
+  show = mappend "Mask " . T.unpack . maskToText
 
 mkMask :: T.Text -> Either String Mask
 mkMask txt =

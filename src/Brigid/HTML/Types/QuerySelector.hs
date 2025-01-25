@@ -616,6 +616,7 @@ import Numeric.Natural (Natural)
 import Ogma (BCP_47, bcp_47ToText)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
+import Text.Show qualified as Show
 
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
@@ -737,7 +738,10 @@ querySelectorToText =
 newtype RawSelector =
   RawSelector
     { rawSelectorToText :: T.Text
-    }
+    } deriving (Eq)
+
+instance Show.Show RawSelector where
+  show = mappend "RawSelector " . Show.show
 
 rawSelectorToBytes :: RawSelector -> LBS.ByteString
 rawSelectorToBytes =
@@ -3449,7 +3453,10 @@ swapDisplayViewToText view =
 newtype RawSwap =
   RawSwap
     { rawSwapToText :: T.Text
-    }
+    } deriving (Eq)
+
+instance Show.Show RawSwap where
+  show = mappend "RawSwap " . Show.show
 
 rawSwapToBytes :: RawSwap -> LBS.ByteString
 rawSwapToBytes = Render.textToBytes . rawSwapToText
@@ -4196,7 +4203,10 @@ customTriggerToText (CustomTrigger trigger) =
 newtype RawTrigger =
   RawTrigger
     { rawTriggerToText :: T.Text
-    }
+    } deriving (Eq)
+
+instance Show.Show RawTrigger where
+  show = mappend "RawTrigger " . Show.show
 
 rawTriggerToBytes :: RawTrigger -> LBS.ByteString
 rawTriggerToBytes =

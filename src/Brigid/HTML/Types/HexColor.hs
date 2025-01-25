@@ -15,13 +15,16 @@ import Brigid.Internal.Render qualified as Render
 newtype HexColor =
   HexColor
     { hexColorToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show HexColor where
+  show = mappend "HexColor " . T.unpack . hexColorToText
 
 hexColorFromText :: T.Text -> Either String HexColor
 hexColorFromText txt = do
   let hexChars = Set.fromList $ [ '0'..'9' ] <> [ 'a'..'f' ]
       isValidCode c =
-        if T.length c == 2 && T.all (flip Set.member hexChars) c
+        if T.length c == 2 && T.all (`Set.member` hexChars) c
            then Right ()
            else Left $ "Invalid hexadecimal number: " <> T.unpack c
 

@@ -70,7 +70,10 @@ colorToText (Color color) =
 newtype ColorName =
   ColorName
     { colorNameToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show ColorName where
+  show = mappend "ColorName " . T.unpack . colorNameToText
 
 colorNameToBytes :: ColorName -> LBS.ByteString
 colorNameToBytes = Render.textToBytes . colorNameToText

@@ -12,7 +12,10 @@ import Brigid.Internal.Render qualified as Render
 newtype Id =
   Id
     { idToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show Id where
+  show = mappend "Id " . T.unpack . idToText
 
 idToBytes :: Id -> LBS.ByteString
 idToBytes = Render.textToBytes . idToText

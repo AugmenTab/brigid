@@ -14,7 +14,10 @@ import Brigid.Internal.Render qualified as Render
 newtype EmailAddress =
   EmailAddress
     { emailAddressToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show EmailAddress where
+  show = mappend "EmailAddress " . T.unpack . emailAddressToText
 
 emailAddressFromText :: T.Text -> Either String EmailAddress
 emailAddressFromText txt =

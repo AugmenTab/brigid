@@ -25,7 +25,10 @@ import Brigid.Internal.Render qualified as Render
 newtype Name =
   Name
     { nameToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show Name where
+  show = mappend "Name " . T.unpack . nameToText
 
 nameToBytes :: Name -> LBS.ByteString
 nameToBytes = Render.textToBytes . nameToText

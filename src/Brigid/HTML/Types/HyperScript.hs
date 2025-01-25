@@ -12,7 +12,10 @@ import Brigid.Internal.Render qualified as Render
 newtype HyperScript =
   HyperScript
     { hyperScriptToText :: T.Text
-    }
+    } deriving (Eq)
+
+instance Show HyperScript where
+  show = mappend "HyperScript " . show
 
 hyperScriptToBytes :: HyperScript -> LBS.ByteString
 hyperScriptToBytes =

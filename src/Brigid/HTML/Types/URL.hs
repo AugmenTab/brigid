@@ -57,7 +57,14 @@ instance Eq URL where
   (==) = (==) `on` urlToText
 
 instance Show URL where
-  show = T.unpack . urlToText
+  show (URL url) =
+    ( Shrubbery.dissect
+        . Shrubbery.branchBuild
+        . Shrubbery.branch @AbsoluteURL       show
+        . Shrubbery.branch @(RelativeURL Get) show
+        . Shrubbery.branch @RawURL            show
+        $ Shrubbery.branchEnd
+    ) url
 
 type URLTypes =
   [ AbsoluteURL
@@ -93,7 +100,10 @@ urlToText (URL url) =
   ) url
 
 newtype AbsoluteURL = AbsoluteURL B.BaseURI
-  deriving (Eq, Show)
+  deriving (Eq)
+
+instance Show AbsoluteURL where
+  show = mappend "AbsoluteURL " . T.unpack . absoluteURLToText
 
 absoluteURLFromText :: T.Text -> Either String AbsoluteURL
 absoluteURLFromText =
@@ -118,7 +128,13 @@ instance Eq (RelativeURL method) where
   (==) = (==) `on` relativeURLToText
 
 instance Show (RelativeURL method) where
-  show = T.unpack . relativeURLToText
+  show relativeURL =
+    case relativeURL of
+      Relative_Get    url -> mappend "RelativeURL GET "    $ T.unpack url
+      Relative_Post   url -> mappend "RelativeURL POST "   $ T.unpack url
+      Relative_Delete url -> mappend "RelativeURL DELETE " $ T.unpack url
+      Relative_Put    url -> mappend "RelativeURL PUT "    $ T.unpack url
+      Relative_Patch  url -> mappend "RelativeURL PATCH "  $ T.unpack url
 
 get :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Get
 get route =
@@ -160,7 +176,10 @@ relativeURLToText url =
 newtype RawURL =
   RawURL
     { rawURLToText :: T.Text
-    } deriving (Eq, Show)
+    } deriving (Eq)
+
+instance Show RawURL where
+  show = mappend "RawURL " . T.unpack . rawURLToText
 
 mkRawURL :: T.Text -> RawURL
 mkRawURL = RawURL
