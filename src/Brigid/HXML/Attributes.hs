@@ -42,14 +42,12 @@ module Brigid.HXML.Attributes
   , sticky
   , stickySectionTitles
   , style
-  , styles
   , url
   , value
   , xmlns
   ) where
 
 import Prelude hiding (id)
-import Data.List qualified as L
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Integer (Positive)
@@ -221,11 +219,8 @@ stickySectionTitles :: ValidAttribute 'StickySectionTitles tag
                     => Bool -> Attribute tag
 stickySectionTitles = Attr_StickySectionTitles
 
-style :: ValidAttribute 'Style tag => Types.Id -> Attribute tag
-style = styles . L.singleton
-
-styles :: ValidAttribute 'Style tag => [Types.Id] -> Attribute tag
-styles = Attr_Style
+style :: ValidAttribute 'Style tag => [Types.Id] -> Attribute tag
+style = Attr_Style
 
 url :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes

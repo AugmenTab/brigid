@@ -24,7 +24,7 @@ documentExample =
             ]
         , E.header [ A.hide True
                    , A.safeArea False
-                   , A.style myStyleId
+                   , A.style [ myStyleId ]
                    ]
             [
             ]
