@@ -26,6 +26,7 @@ module Brigid.HXML.Attributes
   , keyboardDismissMode
   , keyboardShouldPersistTaps
   , keyboardType
+  , label
   , mask
   , merge
   , modal
@@ -161,6 +162,9 @@ keyboardShouldPersistTaps = Attr_KeyboardShouldPersistTaps
 keyboardType :: ValidAttribute 'KeyboardType tag
              => Types.KeyboardType -> Attribute tag
 keyboardType = Attr_KeyboardType
+
+label :: ValidAttribute 'Label tag => T.Text -> Attribute tag
+label = Attr_Label
 
 mask :: ValidAttribute 'Mask tag => Types.Mask -> Attribute tag
 mask = Attr_Mask

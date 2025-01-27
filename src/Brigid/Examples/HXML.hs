@@ -140,7 +140,12 @@ documentExample =
                                     , A.modalStyle [ myStyleId ]
                                     , A.modalTextStyle [ myStyleId ]
                                     ]
-                        [
+                        [ E.pickerItem [ A.label "Choice 1"
+                                       , A.value "1"
+                                       ]
+                        , E.pickerItem [ A.label "Choice 2"
+                                       , A.value "2"
+                                       ]
                         ]
                     ]
                 ]

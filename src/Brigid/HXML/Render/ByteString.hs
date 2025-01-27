@@ -275,6 +275,9 @@ renderAttribute attr =
         . buildAttribute "keyboard-type"
         $ Types.keyboardTypeToBytes keyboardType
 
+    Attr_Label label ->
+      Just . buildAttribute "label" $ Render.textToBytes label
+
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToBytes mask
 

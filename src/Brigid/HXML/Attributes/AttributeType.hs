@@ -26,6 +26,7 @@ module Brigid.HXML.Attributes.AttributeType
       , KeyboardDismissMode
       , KeyboardShouldPersistTaps
       , KeyboardType
+      , Label
       , Mask
       , Merge
       , Modal
@@ -85,6 +86,7 @@ data AttributeType
   | KeyboardDismissMode
   | KeyboardShouldPersistTaps
   | KeyboardType
+  | Label
   | Mask
   | Merge
   | Modal
@@ -140,6 +142,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'KeyboardDismissMode       = 'Text "KeyboardDismissMode (keyboard-dismiss-mode)"
   AttributeErrorMessage 'KeyboardShouldPersistTaps = 'Text "KeyboardShouldPersistTaps (keyboard-should-persist-taps)"
   AttributeErrorMessage 'KeyboardType              = 'Text "KeyboardType (keyboard-type)"
+  AttributeErrorMessage 'Label                     = 'Text "Label (label)"
   AttributeErrorMessage 'Mask                      = 'Text "Mask (mask)"
   AttributeErrorMessage 'Merge                     = 'Text "Merge (merge)"
   AttributeErrorMessage 'Modal                     = 'Text "Modal (modal)"

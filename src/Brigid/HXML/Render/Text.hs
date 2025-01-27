@@ -270,6 +270,9 @@ renderAttribute attr =
         . buildAttribute "keyboard-type"
         $ Types.keyboardTypeToText keyboardType
 
+    Attr_Label label ->
+      Just $ buildAttribute "label" label
+
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToText mask
 
