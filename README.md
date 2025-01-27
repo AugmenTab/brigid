@@ -23,6 +23,9 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 7. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
 8. Consider `Default` type class that returns the default value for a given
    type or attribute.
+9. Review common classes (`Id`, `Class`, `Name`, etc) and maybe make smart
+   constructors that prevent users from creating them with invalid characters,
+   rather than escaping them after the fact.
 
 ### TODO (XML)
 
