@@ -207,6 +207,9 @@ renderAttribute attr =
         . buildAttribute "avoid-keyboard"
         $ Render.enumBoolToBytes avoidKeyboard
 
+    Attr_CancelLabel cancelLabel ->
+      Just . buildAttribute "cancel-label" $ Render.textToBytes cancelLabel
+
     Attr_Color color ->
       Just . buildAttribute "color" $ Types.hexColorToBytes color
 
@@ -218,6 +221,21 @@ renderAttribute attr =
 
     Attr_CursorColor cursorColor ->
       Just . buildAttribute "cursorColor" $ Types.colorToBytes cursorColor
+
+    Attr_DoneLabel doneLabel ->
+      Just . buildAttribute "done-label" $ Render.textToBytes doneLabel
+
+    Attr_FieldStyle fieldStyle ->
+      Just
+        . buildAttribute "field-style"
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        $ fieldStyle
+
+    Attr_FieldTextStyle fieldTextStyle ->
+      Just
+        . buildAttribute "field-text-style"
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        $ fieldTextStyle
 
     Attr_Focused focused ->
       Just . buildAttribute "focused" $ Render.enumBoolToBytes focused
@@ -265,6 +283,18 @@ renderAttribute attr =
 
     Attr_Modal modal ->
       Just . buildAttribute "modal" $ Render.enumBoolToBytes modal
+
+    Attr_ModalStyle modalStyle ->
+      Just
+        . buildAttribute "modal-style"
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        $ modalStyle
+
+    Attr_ModalTextStyle modalTextStyle ->
+      Just
+        . buildAttribute "modal-text-style"
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        $ modalTextStyle
 
     Attr_Multiline multiline ->
       Just . buildAttribute "multiline" $ Render.enumBoolToBytes multiline

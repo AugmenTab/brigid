@@ -133,6 +133,15 @@ documentExample =
                                 ]
                             ]
                         ]
+                    , E.pickerField [ A.cancelLabel "Cancel"
+                                    , A.doneLabel "Done"
+                                    , A.fieldStyle [ myStyleId ]
+                                    , A.fieldTextStyle [ myStyleId ]
+                                    , A.modalStyle [ myStyleId ]
+                                    , A.modalTextStyle [ myStyleId ]
+                                    ]
+                        [
+                        ]
                     ]
                 ]
             ]

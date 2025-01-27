@@ -9,9 +9,13 @@ module Brigid.HXML.Attributes
   , allowDeselect
   , autoFocus
   , avoidKeyboard
+  , cancelLabel
   , color
   , contentContainerStyle
   , cursorColor
+  , doneLabel
+  , fieldStyle
+  , fieldTextStyle
   , focused
   , hide
   , html
@@ -25,6 +29,8 @@ module Brigid.HXML.Attributes
   , mask
   , merge
   , modal
+  , modalStyle
+  , modalTextStyle
   , multiline
   , name
   , numberOfLines
@@ -93,6 +99,9 @@ autoFocus = Attr_AutoFocus
 avoidKeyboard :: ValidAttribute 'AvoidKeyboard tag => Bool -> Attribute tag
 avoidKeyboard = Attr_AvoidKeyboard
 
+cancelLabel :: ValidAttribute 'CancelLabel tag => T.Text -> Attribute tag
+cancelLabel = Attr_CancelLabel
+
 color :: ValidAttribute 'Color tag => Types.HexColor -> Attribute tag
 color = Attr_Color
 
@@ -107,6 +116,16 @@ cursorColor :: ( KnownNat branchIndex
             => color -> Attribute tag
 cursorColor =
   Attr_CursorColor . Types.mkColor
+
+doneLabel :: ValidAttribute 'DoneLabel tag => T.Text -> Attribute tag
+doneLabel = Attr_DoneLabel
+
+fieldStyle :: ValidAttribute 'FieldStyle tag => [Types.Id] -> Attribute tag
+fieldStyle = Attr_FieldStyle
+
+fieldTextStyle :: ValidAttribute 'FieldTextStyle tag
+               => [Types.Id] -> Attribute tag
+fieldTextStyle = Attr_FieldTextStyle
 
 focused :: ValidAttribute 'Focused tag => Bool -> Attribute tag
 focused = Attr_Focused
@@ -151,6 +170,13 @@ merge = Attr_Merge
 
 modal :: ValidAttribute 'Modal tag => Bool -> Attribute tag
 modal = Attr_Modal
+
+modalStyle :: ValidAttribute 'ModalStyle tag => [Types.Id] -> Attribute tag
+modalStyle = Attr_ModalStyle
+
+modalTextStyle :: ValidAttribute 'ModalTextStyle tag
+               => [Types.Id] -> Attribute tag
+modalTextStyle = Attr_ModalTextStyle
 
 multiline :: ValidAttribute 'Multiline tag => Bool -> Attribute tag
 multiline = Attr_Multiline

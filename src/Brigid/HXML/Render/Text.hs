@@ -199,6 +199,9 @@ renderAttribute attr =
         . buildAttribute "avoid-keyboard"
         $ Render.enumBoolToText avoidKeyboard
 
+    Attr_CancelLabel cancelLabel ->
+      Just $ buildAttribute "cancel-label" cancelLabel
+
     Attr_Color color ->
       Just . buildAttribute "color" $ Types.hexColorToText color
 
@@ -210,6 +213,21 @@ renderAttribute attr =
 
     Attr_CursorColor cursorColor ->
       Just . buildAttribute "cursorColor" $ Types.colorToText cursorColor
+
+    Attr_DoneLabel doneLabel ->
+      Just $ buildAttribute "done-label" doneLabel
+
+    Attr_FieldStyle fieldStyle ->
+      Just
+        . buildAttribute "field-style"
+        . Render.foldToTextWithSeparator Types.idToText " "
+        $ fieldStyle
+
+    Attr_FieldTextStyle fieldTextStyle ->
+      Just
+        . buildAttribute "field-text-style"
+        . Render.foldToTextWithSeparator Types.idToText " "
+        $ fieldTextStyle
 
     Attr_Focused focused ->
       Just . buildAttribute "focused" $ Render.enumBoolToText focused
@@ -260,6 +278,18 @@ renderAttribute attr =
 
     Attr_Modal modal ->
       Just . buildAttribute "modal" $ Render.enumBoolToText modal
+
+    Attr_ModalStyle modalStyle ->
+      Just
+        . buildAttribute "modal-style"
+        . Render.foldToTextWithSeparator Types.idToText " "
+        $ modalStyle
+
+    Attr_ModalTextStyle modalTextStyle ->
+      Just
+        . buildAttribute "modal-text-style"
+        . Render.foldToTextWithSeparator Types.idToText " "
+        $ modalTextStyle
 
     Attr_Multiline multiline ->
       Just . buildAttribute "multiline" $ Render.enumBoolToText multiline

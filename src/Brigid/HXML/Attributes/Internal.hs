@@ -11,9 +11,13 @@ module Brigid.HXML.Attributes.Internal
       , Attr_AllowDeselect
       , Attr_AutoFocus
       , Attr_AvoidKeyboard
+      , Attr_CancelLabel
       , Attr_Color
       , Attr_ContentContainerStyle
       , Attr_CursorColor
+      , Attr_DoneLabel
+      , Attr_FieldStyle
+      , Attr_FieldTextStyle
       , Attr_Focused
       , Attr_Hide
       , Attr_Html
@@ -27,6 +31,8 @@ module Brigid.HXML.Attributes.Internal
       , Attr_Mask
       , Attr_Merge
       , Attr_Modal
+      , Attr_ModalStyle
+      , Attr_ModalTextStyle
       , Attr_Multiline
       , Attr_Name
       , Attr_NumberOfLines
@@ -100,6 +106,11 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_CancelLabel
+    :: ValidAttribute 'CancelLabel tag
+    => T.Text
+    -> Attribute tag
+
   Attr_Color
     :: ValidAttribute 'Color tag
     => Types.HexColor
@@ -113,6 +124,21 @@ data Attribute (tag :: TagType) where
   Attr_CursorColor
     :: ValidAttribute 'CursorColor tag
     => Types.Color
+    -> Attribute tag
+
+  Attr_DoneLabel
+    :: ValidAttribute 'DoneLabel tag
+    => T.Text
+    -> Attribute tag
+
+  Attr_FieldStyle
+    :: ValidAttribute 'FieldStyle tag
+    => [Types.Id]
+    -> Attribute tag
+
+  Attr_FieldTextStyle
+    :: ValidAttribute 'FieldTextStyle tag
+    => [Types.Id]
     -> Attribute tag
 
   Attr_Focused
@@ -178,6 +204,16 @@ data Attribute (tag :: TagType) where
   Attr_Modal
     :: ValidAttribute 'Modal tag
     => Bool
+    -> Attribute tag
+
+  Attr_ModalStyle
+    :: ValidAttribute 'ModalStyle tag
+    => [Types.Id]
+    -> Attribute tag
+
+  Attr_ModalTextStyle
+    :: ValidAttribute 'ModalTextStyle tag
+    => [Types.Id]
     -> Attribute tag
 
   Attr_Multiline
@@ -334,6 +370,9 @@ attributeText attr =
     Attr_AvoidKeyboard _avoidKeyboard ->
       "avoid-keyboard"
 
+    Attr_CancelLabel _cancelLabel ->
+      "cancel-label"
+
     Attr_Color _color ->
       "color"
 
@@ -342,6 +381,15 @@ attributeText attr =
 
     Attr_CursorColor _cursorColor ->
       "cursorColor"
+
+    Attr_DoneLabel _doneLabel ->
+      "done-label"
+
+    Attr_FieldStyle _fieldStyle ->
+      "field-style"
+
+    Attr_FieldTextStyle _fieldTextStyle ->
+      "field-text-style"
 
     Attr_Focused _focused ->
       "focused"
@@ -381,6 +429,12 @@ attributeText attr =
 
     Attr_Modal _modal ->
       "modal"
+
+    Attr_ModalStyle _modalStyle ->
+      "modal-style"
+
+    Attr_ModalTextStyle _modalTextStyle ->
+      "modal-text-style"
 
     Attr_Multiline _multiline ->
       "multiline"

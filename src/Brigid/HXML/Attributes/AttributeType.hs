@@ -9,9 +9,13 @@ module Brigid.HXML.Attributes.AttributeType
       , AllowDeselect
       , AutoFocus
       , AvoidKeyboard
+      , CancelLabel
       , Color
       , ContentContainerStyle
       , CursorColor
+      , DoneLabel
+      , FieldStyle
+      , FieldTextStyle
       , Focused
       , Hide
       , Html
@@ -25,6 +29,8 @@ module Brigid.HXML.Attributes.AttributeType
       , Mask
       , Merge
       , Modal
+      , ModalStyle
+      , ModalTextStyle
       , Multiline
       , Name
       , NumberOfLines
@@ -62,9 +68,13 @@ data AttributeType
   | AllowDeselect
   | AutoFocus
   | AvoidKeyboard
+  | CancelLabel
   | Color
   | ContentContainerStyle
   | CursorColor
+  | DoneLabel
+  | FieldStyle
+  | FieldTextStyle
   | Focused
   | Hide
   | Html
@@ -78,6 +88,8 @@ data AttributeType
   | Mask
   | Merge
   | Modal
+  | ModalStyle
+  | ModalTextStyle
   | Multiline
   | Name
   | NumberOfLines
@@ -111,9 +123,13 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'AllowDeselect             = 'Text "AllowDeselect (allow-deselect)"
   AttributeErrorMessage 'AutoFocus                 = 'Text "AutoFocus (auto-focus)"
   AttributeErrorMessage 'AvoidKeyboard             = 'Text "AvoidKeyboard (avoid-keyboard)"
+  AttributeErrorMessage 'CancelLabel               = 'Text "CancelLabel (cancel-label)"
   AttributeErrorMessage 'Color                     = 'Text "Color (color)"
   AttributeErrorMessage 'ContentContainerStyle     = 'Text "ContentContainerStyle (content-container-style)"
   AttributeErrorMessage 'CursorColor               = 'Text "CursorColor (cursorColor)"
+  AttributeErrorMessage 'DoneLabel                 = 'Text "DoneLabel (done-label)"
+  AttributeErrorMessage 'FieldStyle                = 'Text "FieldStyle (field-style)"
+  AttributeErrorMessage 'FieldTextStyle            = 'Text "FieldTextStyle (field-text-style)"
   AttributeErrorMessage 'Focused                   = 'Text "Focused (focused)"
   AttributeErrorMessage 'Hide                      = 'Text "Hide (hide)"
   AttributeErrorMessage 'Html                      = 'Text "Html (html)"
@@ -127,6 +143,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'Mask                      = 'Text "Mask (mask)"
   AttributeErrorMessage 'Merge                     = 'Text "Merge (merge)"
   AttributeErrorMessage 'Modal                     = 'Text "Modal (modal)"
+  AttributeErrorMessage 'ModalStyle                = 'Text "ModalStyle (modal-style)"
+  AttributeErrorMessage 'ModalTextStyle            = 'Text "ModalTextStyle (modal-text-style)"
   AttributeErrorMessage 'Multiline                 = 'Text "Multiline (multiline)"
   AttributeErrorMessage 'Name                      = 'Text "Name (name)"
   AttributeErrorMessage 'NumberOfLines             = 'Text "NumberOfLines (numberOfLines)"
