@@ -18,6 +18,7 @@ module Brigid.HXML.Attributes
   , fieldTextStyle
   , focused
   , hide
+  , href
   , html
   , id
   , injectedJavaScript
@@ -134,6 +135,14 @@ focused = Attr_Focused
 
 hide :: ValidAttribute 'Hide tag => Bool -> Attribute tag
 hide = Attr_Hide
+
+href :: ( KnownNat branchIndex
+        , branchIndex ~ FirstIndexOf url Types.URLTypes
+        , ValidAttribute 'Href tag
+        )
+     => url -> Attribute tag
+href =
+  Attr_Href . Types.mkURL
 
 html :: ValidAttribute 'Html tag
      => ChildHTML parent grandparent -> Attribute tag

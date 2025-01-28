@@ -19,7 +19,11 @@ navigatorExample =
                   , A.modal False
                   , A.type_ HXML.Stack
                   ]
-        [ E.navRoute []
+        [ E.navRoute [ A.href hyperviewNamespace ]
+            [ E.navigator []
+                [
+                ]
+            ]
         ]
     ]
 

@@ -18,6 +18,7 @@ module Brigid.HXML.Attributes.AttributeType
       , FieldTextStyle
       , Focused
       , Hide
+      , Href
       , Html
       , Id
       , InjectedJavaScript
@@ -78,6 +79,7 @@ data AttributeType
   | FieldTextStyle
   | Focused
   | Hide
+  | Href
   | Html
   | Id
   | InjectedJavaScript
@@ -134,6 +136,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage 'FieldTextStyle            = 'Text "FieldTextStyle (field-text-style)"
   AttributeErrorMessage 'Focused                   = 'Text "Focused (focused)"
   AttributeErrorMessage 'Hide                      = 'Text "Hide (hide)"
+  AttributeErrorMessage 'Href                      = 'Text "Href (href)"
   AttributeErrorMessage 'Html                      = 'Text "Html (html)"
   AttributeErrorMessage 'Id                        = 'Text "Id (id)"
   AttributeErrorMessage 'InjectedJavaScript        = 'Text "InjectedJavaScript (injected-java-script)"

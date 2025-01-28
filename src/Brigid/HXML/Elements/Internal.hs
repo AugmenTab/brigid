@@ -147,7 +147,9 @@ data ChildHXML (parent :: TagType) where
     -> ChildHXML parent
 
   Tag_NavRoute
-    :: [Attribute 'NavRoute]
+    :: ValidChild 'NavRoute parent
+    => [Attribute 'NavRoute]
+    -> [ChildHXML 'NavRoute]
     -> ChildHXML parent
 
   Tag_Option

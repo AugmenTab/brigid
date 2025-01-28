@@ -36,6 +36,7 @@ type family ValidChildrenFor (parent :: TagType) :: [TagType] where
   ValidChildrenFor 'Navigator      = [ 'Behavior, 'NavRoute ]
   ValidChildrenFor 'NavigatorStack = [ 'Behavior, 'NavRoute ]
   ValidChildrenFor 'NavigatorTab   = [ 'Behavior, 'NavRoute ]
+  ValidChildrenFor 'NavRoute       = '[ 'Navigator ]
   ValidChildrenFor 'Option         = [ 'Image, 'Text, 'View ]
   ValidChildrenFor 'PickerField    = '[ 'PickerItem ]
   ValidChildrenFor 'Screen         = [ 'Body, 'Header, 'Styles ]

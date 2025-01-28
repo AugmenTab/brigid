@@ -88,8 +88,8 @@ renderTag hxml =
     Tag_Navigator attrs content ->
       buildTag "navigator" attrs $ contentOrSelfClosing content
 
-    Tag_NavRoute attrs ->
-      buildTag "nav-route" attrs $ Left Types.OmitTag
+    Tag_NavRoute attrs content ->
+      buildTag "nav-route" attrs $ contentOrSelfClosing content
 
     Tag_Option attrs content ->
       buildTag "option" attrs $ contentOrSelfClosing content
@@ -243,6 +243,9 @@ renderAttribute attr =
 
     Attr_Hide hide ->
       Just . buildAttribute "hide" $ Render.enumBoolToBytes hide
+
+    Attr_Href href ->
+      Just . buildAttribute "href" $ Types.urlToBytes href
 
     Attr_Html html ->
       Just . buildAttribute "html" $ Escape.attributeBytes html

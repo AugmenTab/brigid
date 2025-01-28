@@ -20,6 +20,7 @@ module Brigid.HXML.Attributes.Internal
       , Attr_FieldTextStyle
       , Attr_Focused
       , Attr_Hide
+      , Attr_Href
       , Attr_Html
       , Attr_Id
       , Attr_InjectedJavaScript
@@ -151,6 +152,11 @@ data Attribute (tag :: TagType) where
   Attr_Hide
     :: ValidAttribute 'Hide tag
     => Bool
+    -> Attribute tag
+
+  Attr_Href
+    :: ValidAttribute 'Href tag
+    => Types.URL
     -> Attribute tag
 
   Attr_Html
@@ -403,6 +409,9 @@ attributeText attr =
 
     Attr_Hide _hide ->
       "hide"
+
+    Attr_Href _href ->
+      "href"
 
     Attr_Html _html ->
       "html"

@@ -116,7 +116,10 @@ navigator :: ValidChild Tags.Navigator parent
           -> ChildHXML parent
 navigator = Tag_Navigator
 
-navRoute :: [Attribute Tags.NavRoute] -> ChildHXML parent
+navRoute :: ValidChild Tags.NavRoute parent
+         => [Attribute Tags.NavRoute]
+         -> [ChildHXML Tags.NavRoute]
+         -> ChildHXML parent
 navRoute = Tag_NavRoute
 
 option :: ValidChild Tags.Option parent
