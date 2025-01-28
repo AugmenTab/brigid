@@ -70,8 +70,8 @@ renderTag hxml =
     Tag_Header attrs content ->
       buildTag "header" attrs $ contentOrSelfClosing content
 
-    Tag_Image attrs ->
-      buildTag "image" attrs $ Left Types.OmitTag
+    Tag_Image attrs content ->
+      buildTag "image" attrs $ contentOrSelfClosing content
 
     Tag_Item attrs content ->
       buildTag "item" attrs $ contentOrClosingTag content

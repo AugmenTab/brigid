@@ -86,6 +86,8 @@ documentExample =
                         ]
                     ]
                 , E.image [ A.source hyperviewNamespace ]
+                    [
+                    ]
                 , E.sectionList [ A.stickySectionTitles True
                                 ]
                     [ E.section []

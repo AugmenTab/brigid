@@ -89,7 +89,10 @@ header :: ValidChild Tags.Header parent
        => [Attribute Tags.Header] -> [ChildHXML Tags.Header] -> ChildHXML parent
 header = Tag_Header
 
-image :: [Attribute Tags.Image] -> ChildHXML parent
+image :: ValidChild Tags.Image parent
+      => [Attribute Tags.Image]
+      -> [ChildHXML Tags.Image]
+      -> ChildHXML parent
 image = Tag_Image
 
 item :: ValidChild Tags.Item parent

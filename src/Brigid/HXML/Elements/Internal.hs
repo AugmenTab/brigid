@@ -113,7 +113,9 @@ data ChildHXML (parent :: TagType) where
     -> ChildHXML parent
 
   Tag_Image
-    :: [Attribute 'Image]
+    :: ValidChild 'Image parent
+    => [Attribute 'Image]
+    -> [ChildHXML 'Image]
     -> ChildHXML parent
 
   Tag_Item
