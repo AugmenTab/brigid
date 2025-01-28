@@ -45,7 +45,7 @@ import Brigid.HXML.Attributes.Internal (Attribute)
 import Brigid.HXML.Elements.Children (ValidChild)
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Elements.Tags qualified as Tags
-import Brigid.HXML.Types (NoContent)
+import Brigid.Types.NoContent (NoContent)
 
 type HXML = ChildHXML Tags.HXML
 

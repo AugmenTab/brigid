@@ -1,4 +1,4 @@
-module Brigid.HTML.Types.HexColor
+module Brigid.Types.HexColor
   ( HexColor
   , hexColorFromText
   , hexColorToBytes

@@ -25,10 +25,10 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
-import Brigid.HTML.Types.Id (Id, idToBytes, idToText)
-import Brigid.HTML.Types.Method (Get, Post)
 import Brigid.HTML.Types.Phone (PhoneNumber)
-import Brigid.HTML.Types.URL qualified as URL
+import Brigid.Types.Id (Id, idToBytes, idToText)
+import Brigid.Types.Method (Get, Post)
+import Brigid.Types.URL qualified as URL
 
 newtype Href method =
   Href
@@ -120,4 +120,3 @@ hrefSelectorToText =
       . Shrubbery.branch @URL.RawURL             URL.rawURLToText
       $ Shrubbery.branchEnd
   ) . unHrefSelector
-

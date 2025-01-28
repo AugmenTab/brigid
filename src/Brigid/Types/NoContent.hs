@@ -1,4 +1,4 @@
-module Brigid.HTML.Types.NoContent
+module Brigid.Types.NoContent
   ( NoContent
       ( OmitTag
       , WithTag
@@ -13,4 +13,3 @@ data NoContent
   -- | WithTag means the tag requires an explicit closing tag despite not being
   -- able to contain child elements.
   | WithTag
-

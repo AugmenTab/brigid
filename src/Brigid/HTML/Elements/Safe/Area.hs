@@ -32,6 +32,7 @@ import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 area :: ValidChild Tags.Area parent grandparent
      => Area -> E.ChildHTML parent grandparent

@@ -76,7 +76,7 @@ def create_shared_file(entities):
         for entity in entities[1:]:
             write_import(",", entity['name'])
 
-        f.write("\n" + indent(2) + ") where\n")
+        f.write("\n" + indent(2) + ") where")
 
         for entity in entities:
             f.write("\n\n" + "-- | The " + entity['comment'] + " HTML entity")

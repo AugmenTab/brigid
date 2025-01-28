@@ -72,6 +72,7 @@ import Brigid.HXML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HXML.Attributes.Elements (ValidAttribute)
 import Brigid.HXML.Elements.TagType (TagType)
 import Brigid.HXML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 data Attribute (tag :: TagType) where
   Attr_NoAttribute

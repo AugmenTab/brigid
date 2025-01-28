@@ -154,7 +154,7 @@ import Data.Text qualified as T
 import Brigid.HTML.Attributes.Internal (Attribute)
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.TagType (TagType (..))
-import Brigid.HTML.Types (NoContent)
+import Brigid.Types.NoContent (NoContent)
 
 data ChildHTML (parent :: TagType) (grandparent :: TagType) where
   Tag_NoElement

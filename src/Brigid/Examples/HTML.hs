@@ -9,7 +9,7 @@ module Brigid.Examples.HTML
   ) where
 
 import Prelude hiding (head)
-import Beeline.HTTP.Client qualified as B
+import Beeline.HTTP.Client (NoPathParams (NoPathParams))
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
 import Data.Coerce (coerce)
@@ -31,6 +31,7 @@ import Brigid.HTML.Elements.Safe qualified as Safe
 import Brigid.HTML.Entities qualified as Entity
 import Brigid.HTML.HTMX.Config qualified as HTMX
 import Brigid.HTML.Types qualified as HTML
+import Brigid.Types qualified as B
 
 documentExample :: E.HTML
 documentExample =
@@ -84,9 +85,9 @@ newtype GetCustomer =
     { getCustomerId :: Int
     }
 
-exampleURL :: GetCustomer -> HTML.RelativeURL HTML.Get
+exampleURL :: GetCustomer -> B.RelativeURL B.Get
 exampleURL route =
-  HTML.get route exampleRoute
+  B.get route exampleRoute
 
 exampleRoute :: R.Router r => R.Builder r GetCustomer GetCustomer
 exampleRoute =
@@ -94,12 +95,12 @@ exampleRoute =
     /- "customers"
     /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
 
-divId :: HTML.Id
-divId = HTML.Id "div1"
+divId :: B.Id
+divId = B.Id "div1"
 
-fakeJavaScriptLink :: HTML.RawURL
+fakeJavaScriptLink :: B.RawURL
 fakeJavaScriptLink =
-  HTML.mkRawURL "my/endpoint/file.js"
+  B.mkRawURL "my/endpoint/file.js"
 
 exampleDate :: Time.Day
 exampleDate =
@@ -107,18 +108,18 @@ exampleDate =
 
 data Ping = Ping
 
-pingURL :: HTML.RelativeURL HTML.Post
+pingURL :: B.RelativeURL B.Post
 pingURL =
-  HTML.post Ping $
+  B.post Ping $
     R.make Ping
       /- "customers"
       /- "log_access"
 
-formId :: HTML.Id
-formId = HTML.Id "my_form"
+formId :: B.Id
+formId = B.Id "my_form"
 
-numberId :: HTML.Id
-numberId = HTML.Id "number"
+numberId :: B.Id
+numberId = B.Id "number"
 
 example :: E.ChildHTML E.Body grandparent
 example =
@@ -146,7 +147,7 @@ example =
              , A.hxValidate
              , A.acceptCharset
              , A.validate False
-             , A.method HTML.FormPOST
+             , A.method B.FormPOST
              ]
         [ E.button [ A.hyperscript sampleHyperScript ]
             [ E.text "log 'Do HyperScript'" ]
@@ -188,7 +189,7 @@ example =
      -- , Safe.checkbox [ A.value fakeJavaScriptLink ] -- This fails because RawURL is not a valid value for InputCheckbox.
      -- , E.input [ A.hxValidate ] -- This fails, because hx-validate is only valid on form elements.
      -- , E.form [] [] -- This fails, because `form` is removed from flow content for valid children of form.
-        , Safe.submit [ A.formmethod HTML.FormGET ]
+        , Safe.submit [ A.formmethod B.FormGET ]
         ]
     , E.textarea [ A.cols 80
                  , A.rows 5
@@ -217,7 +218,7 @@ example =
             , E.comment "Second comment"
             , E.customHTML
                 "my-custom-element"
-                [ A.id $ HTML.Id "my-custom-elem-id" ]
+                [ A.id $ B.Id "my-custom-elem-id" ]
                   ( Right
                       [ E.script [ A.src fakeJavaScriptLink
                                  , A.customData "my-custom-elem-attr" "test"
@@ -240,7 +241,7 @@ example =
                           (Just "Your browser does not support this element.")
                           (Just HTML.Rel_Bookmark)
                           (Just HTML.Parent)
-                  , Safe.areaOtherAttributes = [ A.id $ HTML.Id "safe-area" ]
+                  , Safe.areaOtherAttributes = [ A.id $ B.Id "safe-area" ]
                   }
             ]
         , safeScriptExample
@@ -268,7 +269,7 @@ example =
                 ]
             , E.li []
                 [ E.a [ A.href divId
-                      , A.ping . NEL.singleton $ HTML.mkPing pingURL
+                      , A.ping . NEL.singleton $ B.mkPing pingURL
                       ]
                     [ E.text "Back to top"
                     ]
@@ -447,7 +448,7 @@ tableExample content =
             ]
 
    in Safe.table
-        [ A.id $ HTML.Id "body-table" ]
+        [ A.id $ B.Id "body-table" ]
         caption
         colgroups
         head
@@ -459,9 +460,9 @@ newtype DeleteCustomer =
     { deleteCustomerId :: Int
     }
 
-deleteCustomer :: DeleteCustomer -> HTML.RelativeURL HTML.Delete
+deleteCustomer :: DeleteCustomer -> B.RelativeURL B.Delete
 deleteCustomer route =
-  HTML.delete route $
+  B.delete route $
     R.make DeleteCustomer
       /- "customers"
       /+ R.Param (R.coerceParam $ R.intParam customerIdParam) deleteCustomerId
@@ -505,8 +506,8 @@ htmxExample =
                    "Customer 3 doesn't like to be disturbed."
                      <> " Really think about what you're doing here."
                , A.hxPushURL
-                   . HTML.get B.NoPathParams
-                   $ R.make B.NoPathParams /- "time_out"
+                   . B.get NoPathParams
+                   $ R.make NoPathParams /- "time_out"
                , A.hxParams $ HTML.Not [ customerIdParam ]
                , A.hxOn HTML.HtmxLoad "alert(\"Loaded!\")"
                , A.hxTarget idQuerySelectorExample
@@ -527,8 +528,8 @@ htmxExample =
                    "Customer 4 is essential to our future."
                      <> " Are you sure you want to do this?"
                , A.hxReplaceURL
-                   . HTML.get B.NoPathParams
-                   $ R.make B.NoPathParams /- "doom_page"
+                   . B.get NoPathParams
+                   $ R.make NoPathParams /- "doom_page"
                , A.hxDisable $ 'a' < 'T'
                ]
         [ E.text "Delete Customer 4"
@@ -536,7 +537,7 @@ htmxExample =
             [ E.comment "Disinherit all"
             ]
         ]
-    , E.button [ A.id $ HTML.Id "worthless"
+    , E.button [ A.id $ B.Id "worthless"
                , A.hxDisabled
                ]
         [ E.text "I Do Nothing"
@@ -570,7 +571,7 @@ myClass = HTML.Class "myClass"
 
 idQuerySelectorExample :: HTML.QuerySelector
 idQuerySelectorExample =
-  HTML.mkQuerySelector $ HTML.Id "myId"
+  HTML.mkQuerySelector $ B.Id "myId"
 
 classQuerySelectorExample :: HTML.QuerySelector
 classQuerySelectorExample =

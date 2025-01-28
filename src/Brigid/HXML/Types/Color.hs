@@ -20,8 +20,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
 import Brigid.Internal.Render qualified as Render
+import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
 
 newtype Color = Color (Shrubbery.Union ColorTypes)
 

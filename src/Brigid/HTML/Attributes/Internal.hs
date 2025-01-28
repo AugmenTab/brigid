@@ -173,6 +173,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 data Attribute (tag :: TagType) where
   -- No Attribute

@@ -72,6 +72,7 @@ import Brigid.HXML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Attributes.Elements (ValidAttribute)
 import Brigid.HXML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 noAttribute :: Attribute tag
 noAttribute = Attr_NoAttribute

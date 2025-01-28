@@ -16,6 +16,7 @@ import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
 import Brigid.HTML.Internal.TagOperations (Elem)
 import Brigid.HTML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 type ValidHref href tag =
   AlertHref (Elem tag (ValidHrefsFor href)) href tag ~ 'True

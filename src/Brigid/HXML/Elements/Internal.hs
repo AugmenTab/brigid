@@ -50,7 +50,7 @@ import Data.Text qualified as T
 import Brigid.HXML.Attributes.Internal (Attribute)
 import Brigid.HXML.Elements.Children (ValidChild)
 import Brigid.HXML.Elements.TagType (TagType (..))
-import Brigid.HXML.Types (NoContent)
+import Brigid.Types.NoContent (NoContent)
 
 data ChildHXML (parent :: TagType) where
   Tag_NoElement

@@ -643,13 +643,9 @@ import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScro
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
 import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import Brigid.HTML.Types.HttpEquivToken (HttpEquivToken, httpEquivTokenToText)
-import Brigid.HTML.Types.Id qualified as Id
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
-import Brigid.HTML.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
-import Brigid.HTML.Types.Name (Name, NameOptionTypes, mkNameOption, nameOptionToText, nameToText)
-import Brigid.HTML.Types.NoContent (NoContent)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
@@ -676,12 +672,16 @@ import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttle
 import Brigid.HTML.Types.TrackKind (TrackKind, trackKindToText)
 import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
 import Brigid.HTML.Types.TypeOption (TypeOptionTypes, mkTypeOption, typeOptionToText)
-import Brigid.HTML.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Value (ValueTypes, mkValue, valueToText)
 import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
 import Brigid.HTML.Types.Wrap (Wrap, wrapToText)
 import Brigid.Internal.Render qualified as Render
+import Brigid.Types.Id qualified as Id
+import Brigid.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
+import Brigid.Types.Name (Name, NameOptionTypes, mkNameOption, nameOptionToText, nameToText)
+import Brigid.Types.NoContent (NoContent)
+import Brigid.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
 
 newtype QuerySelector =
   QuerySelector

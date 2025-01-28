@@ -1894,7 +1894,6 @@ module Brigid.Internal.Entities
   , mathematicalDoubleStruckSmallZ
   ) where
 
-
 -- | The null character HTML entity ('^@').
 nullCharacter :: String
 nullCharacter = "&#0;"

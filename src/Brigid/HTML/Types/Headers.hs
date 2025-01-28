@@ -27,8 +27,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.RawJavaScript qualified as JS
 import Brigid.Internal.Render qualified as Render
+import Brigid.Types.RawJavaScript qualified as JS
 
 newtype HtmxHeaders = HtmxHeaders (Shrubbery.Union HtmxHeadersTypes)
 

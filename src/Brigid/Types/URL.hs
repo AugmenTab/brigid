@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Brigid.HTML.Types.URL
+module Brigid.Types.URL
   ( URL
   , URLTypes
   , mkURL
@@ -49,7 +49,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Method (Method, Get, Post, Delete, Put, Patch)
+import Brigid.Types.Method (Method, Get, Post, Delete, Put, Patch)
 
 newtype URL = URL (Shrubbery.Union URLTypes)
 

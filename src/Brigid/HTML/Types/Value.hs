@@ -17,13 +17,13 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
-import Brigid.HTML.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
-import Brigid.HTML.Types.Method (Get, Post)
 import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.HTML.Types.Phone (PhoneNumber, phoneNumberToBytes, phoneNumberToText)
 import Brigid.HTML.Types.Time qualified as BTime
-import Brigid.HTML.Types.URL qualified as URL
 import Brigid.Internal.Render qualified as Render
+import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
+import Brigid.Types.Method (Get, Post)
+import Brigid.Types.URL qualified as URL
 
 newtype Value = Value (Shrubbery.Union ValueTypes)
 

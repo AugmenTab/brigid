@@ -47,6 +47,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 -- Core Attributes
 --

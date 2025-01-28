@@ -17,7 +17,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.InlineJSON (InlineJSON, inlineJSONToBytes, inlineJSONToText)
-import Brigid.HTML.Types.RawJavaScript qualified as RawJS
+import Brigid.Types.RawJavaScript qualified as RawJS
 
 newtype HtmxVals = HtmxVals (Shrubbery.Union HtmxValsTypes)
 

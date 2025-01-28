@@ -129,6 +129,7 @@ import Brigid.HTML.Attributes.Value (ValidValue)
 import Brigid.HTML.Elements.Internal (ChildHTML)
 import Brigid.HTML.Render.ByteString (renderLazyHTML)
 import Brigid.HTML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 -- Scoped Attributes
 --

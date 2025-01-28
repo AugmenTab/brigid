@@ -1,4 +1,4 @@
-module Brigid.HTML.Types.Id
+module Brigid.Types.Id
   ( Id (Id)
   , idToBytes
   , idToText

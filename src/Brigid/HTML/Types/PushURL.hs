@@ -16,8 +16,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Method (Get)
-import Brigid.HTML.Types.URL qualified as URL
+import Brigid.Types.Method (Get)
+import Brigid.Types.URL qualified as URL
 
 newtype PushURL =
   PushURL

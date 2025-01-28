@@ -10,6 +10,7 @@ import Brigid.HXML.Attributes qualified as A
 import Brigid.HXML.Elements qualified as E
 import Brigid.HXML.Entities qualified as Entity
 import Brigid.HXML.Types qualified as HXML
+import Brigid.Types qualified as B
 
 navigatorExample :: E.HXML
 navigatorExample =
@@ -25,7 +26,7 @@ navigatorExample =
 documentExample :: E.HXML
 documentExample =
   E.doc [ A.xmlns hyperviewNamespace ]
-    [ E.screen [ A.id $ HXML.Id "my-screen" ]
+    [ E.screen [ A.id $ B.Id "my-screen" ]
         [ E.styles
             [ E.style [ -- TODO: A.id myStyleId
                       ]
@@ -51,7 +52,7 @@ documentExample =
                  , A.scrollOrientation HXML.Horizontal
                  , A.showsScrollIndicator True
                  ]
-            [ E.spinner [ case HXML.hexColorFromText "#FFFFFF" of
+            [ E.spinner [ case B.hexColorFromText "#FFFFFF" of
                             Left  _err  -> A.noAttribute
                             Right color -> A.color color
                         ]
@@ -94,13 +95,13 @@ documentExample =
                 , E.webView [ A.activityIndicatorColor $ HXML.ColorName "blue"
                             , A.html HTML.documentExample
                             , A.injectedJavaScript
-                                . HXML.RawJavaScript
+                                . B.RawJavaScript
                                 $ "alert('Hello Hyperview user!')"
                             , A.showLoadingIndicator HXML.DocumentOnly
                             , A.url hyperviewNamespace
                             ]
                 , E.form []
-                    [ E.textField [ A.name $ HXML.Name "random-text"
+                    [ E.textField [ A.name $ B.Name "random-text"
                                   , A.value "Existing value"
                                   , A.placeholder "Type something..."
                                   , A.placeholderTextColor blue
@@ -153,12 +154,12 @@ documentExample =
         ]
     ]
 
-hyperviewNamespace :: HXML.RawURL
+hyperviewNamespace :: B.RawURL
 hyperviewNamespace =
-  HXML.mkRawURL "https://hyperview.org/hyperview"
+  B.mkRawURL "https://hyperview.org/hyperview"
 
-myStyleId :: HXML.Id
-myStyleId = HXML.Id "MyStyle"
+myStyleId :: B.Id
+myStyleId = B.Id "MyStyle"
 
 blue :: HXML.ColorName
 blue = HXML.ColorName "blue"

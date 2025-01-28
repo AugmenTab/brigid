@@ -16,6 +16,7 @@ import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
 import Brigid.HTML.Internal.TagOperations (Elem, Remove)
 import Brigid.HTML.Types qualified as Types
+import Brigid.Types qualified as Types
 
 type ValidName name tag =
   AlertName (Elem tag (ValidNamesFor name)) name tag ~ 'True

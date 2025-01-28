@@ -1,6 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 
-module Brigid.HTML.Types.Method
+module Brigid.Types.Method
   ( Method
       ( GET
       , POST

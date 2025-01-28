@@ -49,6 +49,7 @@ import Ogma qualified
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Types qualified as Types
 import Brigid.Internal.Render qualified as Render
+import Brigid.Types qualified as Types
 
 accesskey :: Char -> Attribute tag
 accesskey = Attr_AccessKey

@@ -18,11 +18,11 @@ import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Types.Class (Class (Class))
-import Brigid.HTML.Types.Method (Method, methodFromText, methodToText)
 import Brigid.HTML.Types.QuerySelector qualified as QS
 import Brigid.HTML.Types.ScrollBehavior qualified as SB
 import Brigid.HTML.Types.Swap (SwapStyle, swapStyleFromText, swapStyleToText)
 import Brigid.HTML.Types.WebsocketBinaryType qualified as WBT
+import Brigid.Types.Method (Method, methodFromText, methodToText)
 
 data Config =
   Config

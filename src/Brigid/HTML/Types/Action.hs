@@ -19,8 +19,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Method (Get, Post)
-import Brigid.HTML.Types.URL qualified as URL
+import Brigid.Types.Method (Get, Post)
+import Brigid.Types.URL qualified as URL
 
 newtype Action = Action (Shrubbery.Union ActionTypes)
 

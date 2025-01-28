@@ -20,6 +20,7 @@ import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
 import Brigid.Internal.Escape qualified as Escape
 import Brigid.Internal.Render qualified as Render
+import Brigid.Types qualified as Types
 
 renderHXML :: ChildHXML parent -> T.Text
 renderHXML = TL.toStrict . renderLazyHXML

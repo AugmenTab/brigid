@@ -1,4 +1,4 @@
-module Brigid.HTML.Types.RawJavaScript
+module Brigid.Types.RawJavaScript
   ( RawJavaScript (RawJavaScript)
   , rawJavaScriptToBytes
   , rawJavaScriptToText

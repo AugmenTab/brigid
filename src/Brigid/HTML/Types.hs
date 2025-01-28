@@ -1,31 +1,5 @@
 module Brigid.HTML.Types
   ( module Export
-  , URL
-  , URLTypes
-  , mkURL
-  , urlToBytes
-  , urlToText
-  , AbsoluteURL
-  , absoluteURLFromText
-  , absoluteURLToBytes
-  , absoluteURLToText
-  , RelativeURL
-  , get
-  , post
-  , delete
-  , put
-  , patch
-  , relativeURLToBytes
-  , relativeURLToText
-  , RawURL
-  , mkRawURL
-  , rawURLToBytes
-  , rawURLToText
-  , Ping
-  , PingTypes
-  , mkPing
-  , pingToBytes
-  , pingToText
   ) where
 
 import Brigid.HTML.Types.Action as Export
@@ -52,20 +26,15 @@ import Brigid.HTML.Types.FeaturePolicyDirective as Export
 import Brigid.HTML.Types.For as Export
 import Brigid.HTML.Types.FocusScroll as Export
 import Brigid.HTML.Types.Headers as Export
-import Brigid.HTML.Types.HexColor as Export
 import Brigid.HTML.Types.Href as Export
 import Brigid.HTML.Types.HttpEquivToken as Export
 import Brigid.HTML.Types.HyperScript as Export
-import Brigid.HTML.Types.Id as Export
 import Brigid.HTML.Types.IgnoreTitle as Export
 import Brigid.HTML.Types.InlineJSON as Export
 import Brigid.HTML.Types.InputMode as Export
 import Brigid.HTML.Types.InputType as Export
 import Brigid.HTML.Types.KeyHint as Export
 import Brigid.HTML.Types.MetadataName as Export
-import Brigid.HTML.Types.Method as Export
-import Brigid.HTML.Types.Name as Export
-import Brigid.HTML.Types.NoContent as Export
 import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Number as Export
 import Brigid.HTML.Types.NumberingType as Export
@@ -79,7 +48,6 @@ import Brigid.HTML.Types.PushURL as Export
 import Brigid.HTML.Types.QuerySelector as Export
 import Brigid.HTML.Types.QueueOption as Export
 import Brigid.HTML.Types.RangeBound as Export
-import Brigid.HTML.Types.RawJavaScript as Export
 import Brigid.HTML.Types.Reachability as Export
 import Brigid.HTML.Types.ReferrerPolicy as Export
 import Brigid.HTML.Types.Relationship as Export
@@ -100,33 +68,6 @@ import Brigid.HTML.Types.Time as Export
 import Brigid.HTML.Types.TrackKind as Export
 import Brigid.HTML.Types.TriggerFilter as Export
 import Brigid.HTML.Types.TypeOption as Export
-import Brigid.HTML.Types.URL ( URL
-                             , URLTypes
-                             , mkURL
-                             , urlToBytes
-                             , urlToText
-                             , AbsoluteURL
-                             , absoluteURLFromText
-                             , absoluteURLToBytes
-                             , absoluteURLToText
-                             , RelativeURL
-                             , get
-                             , post
-                             , delete
-                             , put
-                             , patch
-                             , relativeURLToBytes
-                             , relativeURLToText
-                             , RawURL
-                             , mkRawURL
-                             , rawURLToBytes
-                             , rawURLToText
-                             , Ping
-                             , PingTypes
-                             , mkPing
-                             , pingToBytes
-                             , pingToText
-                             )
 import Brigid.HTML.Types.Vals as Export
 import Brigid.HTML.Types.Value as Export
 import Brigid.HTML.Types.WebsocketBinaryType as Export

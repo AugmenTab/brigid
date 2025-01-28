@@ -42,6 +42,7 @@ library
       Brigid.HXML.Render.String
       Brigid.HXML.Render.Text
       Brigid.HXML.Types
+      Brigid.Types
   other-modules:
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Autocomplete
@@ -97,20 +98,15 @@ library
       Brigid.HTML.Types.FocusScroll
       Brigid.HTML.Types.For
       Brigid.HTML.Types.Headers
-      Brigid.HTML.Types.HexColor
       Brigid.HTML.Types.Href
       Brigid.HTML.Types.HttpEquivToken
       Brigid.HTML.Types.HyperScript
-      Brigid.HTML.Types.Id
       Brigid.HTML.Types.IgnoreTitle
       Brigid.HTML.Types.InlineJSON
       Brigid.HTML.Types.InputMode
       Brigid.HTML.Types.InputType
       Brigid.HTML.Types.KeyHint
       Brigid.HTML.Types.MetadataName
-      Brigid.HTML.Types.Method
-      Brigid.HTML.Types.Name
-      Brigid.HTML.Types.NoContent
       Brigid.HTML.Types.None
       Brigid.HTML.Types.Number
       Brigid.HTML.Types.NumberingType
@@ -124,7 +120,6 @@ library
       Brigid.HTML.Types.QuerySelector
       Brigid.HTML.Types.QueueOption
       Brigid.HTML.Types.RangeBound
-      Brigid.HTML.Types.RawJavaScript
       Brigid.HTML.Types.Reachability
       Brigid.HTML.Types.ReferrerPolicy
       Brigid.HTML.Types.Relationship
@@ -145,7 +140,6 @@ library
       Brigid.HTML.Types.TrackKind
       Brigid.HTML.Types.TriggerFilter
       Brigid.HTML.Types.TypeOption
-      Brigid.HTML.Types.URL
       Brigid.HTML.Types.Vals
       Brigid.HTML.Types.Value
       Brigid.HTML.Types.WebsocketBinaryType
@@ -172,6 +166,13 @@ library
       Brigid.Internal.Entities
       Brigid.Internal.Escape
       Brigid.Internal.Render
+      Brigid.Types.HexColor
+      Brigid.Types.Id
+      Brigid.Types.Method
+      Brigid.Types.Name
+      Brigid.Types.NoContent
+      Brigid.Types.RawJavaScript
+      Brigid.Types.URL
       Paths_brigid
   autogen-modules:
       Paths_brigid

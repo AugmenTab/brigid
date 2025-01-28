@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Brigid.HTML.Types.Name
+module Brigid.Types.Name
   ( Name (Name)
   , nameToBytes
   , nameToText
