@@ -25,7 +25,7 @@ import Brigid.Internal.Render qualified as Render
 newtype Name =
   Name
     { nameToText :: T.Text
-    } deriving (Eq)
+    } deriving (Eq, Ord)
 
 instance Show Name where
   show = mappend "Name " . T.unpack . nameToText
