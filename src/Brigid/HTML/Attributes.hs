@@ -1,5 +1,6 @@
 module Brigid.HTML.Attributes
-  ( noAttribute
+  ( Attribute
+  , noAttribute
   , customAttribute
   , module Global
   , module HTMX
