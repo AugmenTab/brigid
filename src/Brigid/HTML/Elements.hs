@@ -3,7 +3,7 @@
 module Brigid.HTML.Elements
   ( HTML
   , ChildHTML
-  , noElement
+  , Tags.NoElement, noElement
   , Tags.Comment, comment
   , Tags.Text, text, texts
   , Tags.RawHTML, rawHTML
