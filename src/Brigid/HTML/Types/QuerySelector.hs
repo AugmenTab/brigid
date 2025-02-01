@@ -3817,30 +3817,30 @@ data TargetSelector =
     }
 
 htmx_closest :: ( KnownNat branchIndex
-           , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
-           )
-        => querySelector -> TargetSelector
+                , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                )
+             => querySelector -> TargetSelector
 htmx_closest =
   TargetSelector TargetSelector_Closest . mkQuerySelector
 
 htmx_find :: ( KnownNat branchIndex
-        , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
-        )
-     => querySelector -> TargetSelector
+             , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+             )
+          => querySelector -> TargetSelector
 htmx_find =
   TargetSelector TargetSelector_Find . mkQuerySelector
 
 htmx_next :: ( KnownNat branchIndex
-        , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
-        )
-     => querySelector -> TargetSelector
+             , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+             )
+          => querySelector -> TargetSelector
 htmx_next =
   TargetSelector TargetSelector_Next . mkQuerySelector
 
 htmx_previous :: ( KnownNat branchIndex
-            , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
-            )
-         => querySelector -> TargetSelector
+                 , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
+                 )
+              => querySelector -> TargetSelector
 htmx_previous =
   TargetSelector TargetSelector_Previous . mkQuerySelector
 
