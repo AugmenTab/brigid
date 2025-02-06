@@ -29,6 +29,7 @@ module Brigid.Types
   ) where
 
 import Brigid.Types.Conversions as Export
+import Brigid.Types.EmailAddress as Export
 import Brigid.Types.HexColor as Export
 import Brigid.Types.Id as Export
 import Brigid.Types.Method as Export

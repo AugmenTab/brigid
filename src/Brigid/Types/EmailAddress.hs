@@ -1,4 +1,4 @@
-module Brigid.HTML.Types.EmailAddress
+module Brigid.Types.EmailAddress
   ( EmailAddress
   , emailAddressFromText
   , emailAddressToBytes

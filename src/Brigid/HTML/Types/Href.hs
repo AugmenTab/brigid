@@ -24,8 +24,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
 import Brigid.HTML.Types.Phone (PhoneNumber)
+import Brigid.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
 import Brigid.Types.Id (Id, idToBytes, idToText)
 import Brigid.Types.Method (Get, Post)
 import Brigid.Types.URL qualified as URL

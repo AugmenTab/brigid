@@ -26,6 +26,7 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 9. Review common classes (`Id`, `Class`, `Name`, etc) and maybe make smart
    constructors that prevent users from creating them with invalid characters,
    rather than escaping them after the fact.
+10. Consider writing Aeson instances and Fleece schemas for common types.
 
 ### TODO (XML)
 
