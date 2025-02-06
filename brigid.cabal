@@ -166,6 +166,7 @@ library
       Brigid.Internal.Entities
       Brigid.Internal.Escape
       Brigid.Internal.Render
+      Brigid.Types.Conversions
       Brigid.Types.HexColor
       Brigid.Types.Id
       Brigid.Types.Method

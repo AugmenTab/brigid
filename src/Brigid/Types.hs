@@ -28,6 +28,7 @@ module Brigid.Types
   , pingToText
   ) where
 
+import Brigid.Types.Conversions as Export
 import Brigid.Types.HexColor as Export
 import Brigid.Types.Id as Export
 import Brigid.Types.Method as Export
