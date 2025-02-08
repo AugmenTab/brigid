@@ -75,7 +75,7 @@ module Brigid.HTML.Elements.TagGroups
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
-import Brigid.HTML.Internal.TagOperations (Remove, Union)
+import Brigid.HTML.Internal.TagOperations (Add, Remove, Union)
 
 type AllElements =
   [ 'Comment
@@ -1019,16 +1019,4 @@ type ValuableTags =
     ]
 
 type TextValueTags =
-  [ 'Button
-  , 'Input
-  , 'InputButton
-  , 'InputCheckbox
-  , 'InputHidden
-  , 'InputImage
-  , 'InputPassword
-  , 'InputRadio
-  , 'InputReset
-  , 'InputSearch
-  , 'InputSubmit
-  , 'InputText
-  ]
+  Add 'Button InputTags
