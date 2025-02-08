@@ -3,8 +3,8 @@ module Brigid.HTML.Attributes
   , noAttribute
   , customAttribute
   , module Global
-  , module HTMX
   , module Scoped
+  , module HTMX
   , module Other
   ) where
 

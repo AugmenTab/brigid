@@ -58,6 +58,7 @@ library
       Brigid.HTML.Attributes.Relationship
       Brigid.HTML.Attributes.Scoped
       Brigid.HTML.Attributes.Source
+      Brigid.HTML.Attributes.Tags
       Brigid.HTML.Attributes.Type
       Brigid.HTML.Attributes.Value
       Brigid.HTML.Elements.Category

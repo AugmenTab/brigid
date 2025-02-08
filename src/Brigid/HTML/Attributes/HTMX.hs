@@ -2,40 +2,40 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.HTMX
-  ( htmx
-  , hxGet
-  , hxPost
-  , hxPushURL
-  , hxSelect
-  , hxSelectOOB
-  , hxSwap
-  , hxSwapOOB
-  , hxTarget
-  , hxTrigger
-  , hxVals
-  , hxBoost
-  , hxConfirm
-  , hxDelete
-  , hxDisable
+  ( AttributeTags.Htmx, htmx
+  , AttributeTags.HxGet, hxGet
+  , AttributeTags.HxPost, hxPost
+  , AttributeTags.HxPushURL, hxPushURL
+  , AttributeTags.HxSelect, hxSelect
+  , AttributeTags.HxSelectOOB, hxSelectOOB
+  , AttributeTags.HxSwap, hxSwap
+  , AttributeTags.HxSwapOOB, hxSwapOOB
+  , AttributeTags.HxTarget, hxTarget
+  , AttributeTags.HxTrigger, hxTrigger
+  , AttributeTags.HxVals, hxVals
+  , AttributeTags.HxBoost, hxBoost
+  , AttributeTags.HxConfirm, hxConfirm
+  , AttributeTags.HxDelete, hxDelete
+  , AttributeTags.HxDisable, hxDisable
   , hxDisabled
-  , hxDisabledElt
-  , hxDisinherit
-  , hxEncoding
-  , hxExt
-  , hxHeaders
-  , hxHistory
-  , hxHistoryElt
-  , hxInclude
-  , hxIndicator
-  , hxOn
-  , hxParams
-  , hxPatch
-  , hxPreserve
+  , AttributeTags.HxDisabledElt, hxDisabledElt
+  , AttributeTags.HxDisinherit, hxDisinherit
+  , AttributeTags.HxEncoding, hxEncoding
+  , AttributeTags.HxExt, hxExt
+  , AttributeTags.HxHeaders, hxHeaders
+  , AttributeTags.HxHistory, hxHistory
+  , AttributeTags.HxHistoryElt, hxHistoryElt
+  , AttributeTags.HxInclude, hxInclude
+  , AttributeTags.HxIndicator, hxIndicator
+  , AttributeTags.HxOn, hxOn
+  , AttributeTags.HxParams, hxParams
+  , AttributeTags.HxPatch, hxPatch
+  , AttributeTags.HxPreserve, hxPreserve
   , hxPreserved
-  , hxPrompt
-  , hxPut
-  , hxReplaceURL
-  , hxValidate
+  , AttributeTags.HxPrompt, hxPrompt
+  , AttributeTags.HxPut, hxPut
+  , AttributeTags.HxReplaceURL, hxReplaceURL
+  , AttributeTags.HxValidate, hxValidate
   ) where
 
 import Data.List.NonEmpty qualified as NEL
@@ -43,9 +43,9 @@ import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
+import Brigid.HTML.Attributes.Tags qualified as AttributeTags
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
 
@@ -189,5 +189,5 @@ hxReplaceURL =
 
 -- hx-sync
 
-hxValidate :: ValidAttribute 'HxValidate tag => Attribute tag
+hxValidate :: ValidAttribute AttributeTags.HxValidate tag => Attribute tag
 hxValidate = Attr_HxValidate

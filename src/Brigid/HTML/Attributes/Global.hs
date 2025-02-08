@@ -1,40 +1,40 @@
 module Brigid.HTML.Attributes.Global
-  ( accesskey
-  , autocapitalize
-  , autofocus
-  , class_
+  ( AttributeTags.AccessKey, accesskey
+  , AttributeTags.Autocapitalize, autocapitalize
+  , AttributeTags.Autofocus, autofocus
+  , AttributeTags.Class, class_
   , classes
-  , contenteditable
-  , customData
-  , dir
-  , draggable
-  , enterkeyhint
-  , exportparts
-  , hide
+  , AttributeTags.ContentEditable, contenteditable
+  , AttributeTags.CustomData, customData
+  , AttributeTags.Dir, dir
+  , AttributeTags.Draggable, draggable
+  , AttributeTags.EnterKeyHint, enterkeyhint
+  , AttributeTags.ExportParts, exportparts
+  , AttributeTags.Hidden, hide
   , hidden
-  , id
-  , inert
-  , inputmode
-  , is
-  -- , item
-  -- , itemid
-  -- , itemprop
-  -- , itemscope
-  -- , itemtype
-  , lang
-  -- , nonce
-  , part
-  , popover
-  -- , role
-  -- , slot
-  , spellcheck
-  , style
+  , AttributeTags.Id, id
+  , AttributeTags.Inert, inert
+  , AttributeTags.InputMode, inputmode
+  , AttributeTags.Is, is
+  -- , AttributeTags.Item, item
+  -- , AttributeTags.ItemId, itemid
+  -- , AttributeTags.ItemProp, itemprop
+  -- , AttributeTags.ItemScope, itemscope
+  -- , AttributeTags.ItemType, itemtype
+  , AttributeTags.Lang, lang
+  -- , AttributeTags.Nonce, nonce
+  , AttributeTags.Part, part
+  , AttributeTags.Popover, popover
+  -- , AttributeTags.Role, role
+  -- , AttributeTags.Slot, slot
+  , AttributeTags.Spellcheck, spellcheck
+  , AttributeTags.Style, style
   , styles
-  , tabindex
+  , AttributeTags.TabIndex, tabindex
   , unsafeTabIndex
-  , title
-  , translate
-  , writingsuggestions
+  , AttributeTags.Title, title
+  , AttributeTags.Translate, translate
+  , AttributeTags.WritingSuggestions, writingsuggestions
   ) where
 
 -- Global Attributes
@@ -47,6 +47,7 @@ import Data.Text qualified as T
 import Ogma qualified
 
 import Brigid.HTML.Attributes.Internal (Attribute (..))
+import Brigid.HTML.Attributes.Tags qualified as AttributeTags
 import Brigid.HTML.Types qualified as Types
 import Brigid.Internal.Render qualified as Render
 import Brigid.Types qualified as Types

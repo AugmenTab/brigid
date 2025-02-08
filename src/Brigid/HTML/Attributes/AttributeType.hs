@@ -134,7 +134,40 @@ module Brigid.HTML.Attributes.AttributeType
       , Wrap
       , XMLNS
 
+      , Htmx
+      , HxGet
+      , HxPost
+      , HxPushURL
+      , HxSelect
+      , HxSelectOOB
+      , HxSwap
+      , HxSwapOOB
+      , HxTarget
+      , HxTrigger
+      , HxVals
+      , HxBoost
+      , HxConfirm
+      , HxDelete
+      , HxDisable
+      , HxDisabledElt
+      , HxDisinherit
+      , HxEncoding
+      , HxExt
+      , HxHeaders
+      , HxHistory
+      , HxHistoryElt
+      , HxInclude
+      , HxIndicator
+      , HxOn
+      , HxParams
+      , HxPatch
+      , HxPreserve
+      , HxPrompt
+      , HxPut
+      , HxReplaceURL
       , HxValidate
+
+      , HyperScript
       )
   ) where
 
@@ -230,10 +263,10 @@ data AttributeType
   | Low
   | Max
   | MaxLength
-  | MinLength
   | Media
   | Method
   | Min
+  | MinLength
   | Multiple
   | Muted
   | Name
@@ -277,7 +310,42 @@ data AttributeType
 
   -- HTMX Attributes
   --
+  | Htmx
+  | HxGet
+  | HxPost
+  | HxPushURL
+  | HxSelect
+  | HxSelectOOB
+  | HxSwap
+  | HxSwapOOB
+  | HxTarget
+  | HxTrigger
+  | HxVals
+  | HxBoost
+  | HxConfirm
+  | HxDelete
+  | HxDisable
+  | HxDisabledElt
+  | HxDisinherit
+  | HxEncoding
+  | HxExt
+  | HxHeaders
+  | HxHistory
+  | HxHistoryElt
+  | HxInclude
+  | HxIndicator
+  | HxOn
+  | HxParams
+  | HxPatch
+  | HxPreserve
+  | HxPrompt
+  | HxPut
+  | HxReplaceURL
   | HxValidate
+
+  -- HyperScript
+  --
+  | HyperScript
 
 type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage AccessKey               = 'Text "AccessKey (accesskey)"
@@ -365,10 +433,10 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Low                     = 'Text "Low (low)"
   AttributeErrorMessage Max                     = 'Text "Max (max)"
   AttributeErrorMessage MaxLength               = 'Text "MaxLength (maxlength)"
-  AttributeErrorMessage MinLength               = 'Text "MinLength (minlength)"
   AttributeErrorMessage Media                   = 'Text "Media (media)"
   AttributeErrorMessage Method                  = 'Text "Method (method)"
   AttributeErrorMessage Min                     = 'Text "Min (min)"
+  AttributeErrorMessage MinLength               = 'Text "MinLength (minlength)"
   AttributeErrorMessage Multiple                = 'Text "Multiple (multiple)"
   AttributeErrorMessage Muted                   = 'Text "Muted (muted)"
   AttributeErrorMessage Name                    = 'Text "Name (name)"
@@ -410,4 +478,37 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Wrap                    = 'Text "Wrap (wrap)"
   AttributeErrorMessage XMLNS                   = 'Text "XMLNS (xmlns)"
 
+  AttributeErrorMessage Htmx                    = 'Text "HTMX (htmx)"
+  AttributeErrorMessage HxGet                   = 'Text "HTMX Get (hx-get)"
+  AttributeErrorMessage HxPost                  = 'Text "HTMX Post (hx-post)"
+  AttributeErrorMessage HxPushURL               = 'Text "HTMX Push URL (hx-push-url)"
+  AttributeErrorMessage HxSelect                = 'Text "HTMX Select (hx-select)"
+  AttributeErrorMessage HxSelectOOB             = 'Text "HTMX Out-of-Band Select (hx-select-oob)"
+  AttributeErrorMessage HxSwap                  = 'Text "HTMX Swap (hx-swap)"
+  AttributeErrorMessage HxSwapOOB               = 'Text "HTMX Out-of-Band Swap (hx-swap-oob)"
+  AttributeErrorMessage HxTarget                = 'Text "HTMX Target (hx-target)"
+  AttributeErrorMessage HxTrigger               = 'Text "HTMX Trigger (hx-trigger)"
+  AttributeErrorMessage HxVals                  = 'Text "HTMX Vals (hx-vals)"
+  AttributeErrorMessage HxBoost                 = 'Text "HTMX Boost (hx-boost)"
+  AttributeErrorMessage HxConfirm               = 'Text "HTMX Confirm (hx-confirm)"
+  AttributeErrorMessage HxDelete                = 'Text "HTMX Delete (hx-delete)"
+  AttributeErrorMessage HxDisable               = 'Text "HTMX Disable (hx-disable)"
+  AttributeErrorMessage HxDisabledElt           = 'Text "HTMX Disabled Elt (hx-disabled-elt)"
+  AttributeErrorMessage HxDisinherit            = 'Text "HTMX Disinherit (hx-disinherit)"
+  AttributeErrorMessage HxEncoding              = 'Text "HTMX Encoding (hx-encoding)"
+  AttributeErrorMessage HxExt                   = 'Text "HTMX Extensions (hx-ext)"
+  AttributeErrorMessage HxHeaders               = 'Text "HTMX Headers (hx-headers)"
+  AttributeErrorMessage HxHistory               = 'Text "HTMX History (hx-history)"
+  AttributeErrorMessage HxHistoryElt            = 'Text "HTMX History Elt (hx-history-elt)"
+  AttributeErrorMessage HxInclude               = 'Text "HTMX Include (hx-include)"
+  AttributeErrorMessage HxIndicator             = 'Text "HTMX Indicator (hx-indicator)"
+  AttributeErrorMessage HxOn                    = 'Text "HTMX On* (hx-on)"
+  AttributeErrorMessage HxParams                = 'Text "HTMX Params (hx-params)"
+  AttributeErrorMessage HxPatch                 = 'Text "HTMX Patch (hx-patch)"
+  AttributeErrorMessage HxPreserve              = 'Text "HTMX Preserve (hx-preserve)"
+  AttributeErrorMessage HxPrompt                = 'Text "HTMX Prompt (hx-prompt)"
+  AttributeErrorMessage HxPut                   = 'Text "HTMX Put (hx-put)"
+  AttributeErrorMessage HxReplaceURL            = 'Text "HTMX Replace URL (hx-replace-url)"
   AttributeErrorMessage HxValidate              = 'Text "HTMX Validate (hx-validate)"
+
+  AttributeErrorMessage HyperScript             = 'Text "HyperScript (_)"

@@ -2,103 +2,113 @@
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.Scoped
-  ( acceptCharset
-  , action
-  , allow
-  , alt
-  , async
-  , autocomplete
-  , autoplay
-  , capture
-  , charset
-  , check
+  ( ValidAttribute
+  , AttributeTags.AcceptCharset, acceptCharset
+  , AttributeTags.Action, action
+  , AttributeTags.Allow, allow
+  , AttributeTags.Alt, alt
+  , AttributeTags.Async, async
+  , ValidAutocomplete
+  , AttributeTags.Autocomplete, autocomplete
+  , AttributeTags.Autoplay, autoplay
+  , AttributeTags.Capture, capture
+  , AttributeTags.Charset, charset
+  , AttributeTags.Checked, check
   , checked
-  , cite
-  , cols
-  , colspan
-  , content
-  , controls
-  , controlslist
-  , coords
-  , crossorigin
-  , data_
-  , datetime
+  , AttributeTags.Cite, cite
+  , AttributeTags.Cols, cols
+  , AttributeTags.Colspan, colspan
+  , AttributeTags.Content, content
+  , AttributeTags.Controls, controls
+  , AttributeTags.ControlsList, controlslist
+  , AttributeTags.Coords, coords
+  , AttributeTags.CrossOrigin, crossorigin
+  , AttributeTags.Data, data_
+  , AttributeTags.Datetime, datetime
   , datetimeWithFormat
-  , decoding
-  , default_
-  , defer
-  , dirname
-  , disable
+  , AttributeTags.Decoding, decoding
+  , AttributeTags.Default, default_
+  , AttributeTags.Defer, defer
+  , AttributeTags.Dirname, dirname
+  , AttributeTags.Disabled, disable
   , disabled
-  , disablepictureinpicture
-  , disableremoteplayback
-  , download
-  , for
-  , form
-  , formaction
-  , formmethod
-  , formnovalidate
-  , formtarget
-  , headers
-  , height
-  , high
-  , href
-  , hreflang
-  , httpEquiv
-  , ismap
-  , kind
-  , label
-  , list
-  , loop
-  , low
-  , max
-  , maxlength
-  , method
-  , min
-  , minlength
-  , multiple
-  , mute
+  , AttributeTags.DisablePictureInPicture, disablepictureinpicture
+  , AttributeTags.DisableRemotePlayback, disableremoteplayback
+  , AttributeTags.Download, download
+  , ValidFor
+  , AttributeTags.For, for
+  , AttributeTags.Form, form
+  , AttributeTags.FormAction, formaction
+  , AttributeTags.FormMethod, formmethod
+  , AttributeTags.FormNoValidate, formnovalidate
+  , AttributeTags.FormTarget, formtarget
+  , AttributeTags.Headers, headers
+  , AttributeTags.Height, height
+  , AttributeTags.High, high
+  , ValidHref
+  , AttributeTags.Href, href
+  , AttributeTags.HrefLang, hreflang
+  , AttributeTags.HttpEquiv, httpEquiv
+  , AttributeTags.IsMap, ismap
+  , AttributeTags.Kind, kind
+  , AttributeTags.Label, label
+  , AttributeTags.List, list
+  , AttributeTags.Loop, loop
+  , AttributeTags.Low, low
+  , ValidRangeBound
+  , AttributeTags.Max, max
+  , AttributeTags.MaxLength, maxlength
+  , AttributeTags.Method, method
+  , AttributeTags.Min, min
+  , AttributeTags.MinLength, minlength
+  , AttributeTags.Multiple, multiple
+  , AttributeTags.Muted, mute
   , muted
-  , name
-  , nomodule
-  , novalidate
-  , open
-  , optimum
-  , pattern
-  , ping
-  , placeholder
-  , playInline
-  , playsinline
-  , poster
-  , preload
-  , readonly
-  , referrerpolicy
-  , rel
-  , require
-  , required
-  , reverse
-  , reversed
-  , rows
-  , rowspan
-  , sandbox
-  , scope
-  , select
-  , selected
-  , shape
-  , size
-  , span
-  , src
-  , srcdoc
-  , srclang
-  , start
-  , target
-  , type_
-  , usemap
+  , ValidName
+  , AttributeTags.Name, name
+  , AttributeTags.NoModule, nomodule
+  , AttributeTags.NoValidate, novalidate
   , validate
-  , value
-  , width
-  , wrap
-  , xmlns
+  , AttributeTags.Open, open
+  , AttributeTags.Optimum, optimum
+  , AttributeTags.Pattern, pattern
+  , AttributeTags.Ping, ping
+  , AttributeTags.Placeholder, placeholder
+  , AttributeTags.PlaysInline, playInline
+  , playsinline
+  , AttributeTags.Poster, poster
+  , AttributeTags.Preload, preload
+  , AttributeTags.ReadOnly, readonly
+  , AttributeTags.ReferrerPolicy, referrerpolicy
+  , ValidRelationship
+  , AttributeTags.Rel, rel
+  , AttributeTags.Required, require
+  , required
+  , AttributeTags.Reversed, reverse
+  , reversed
+  , AttributeTags.Rows, rows
+  , AttributeTags.Rowspan, rowspan
+  , AttributeTags.Sandbox, sandbox
+  , AttributeTags.Scope, scope
+  , AttributeTags.Selected, select
+  , selected
+  , AttributeTags.Shape, shape
+  , AttributeTags.Size, size
+  , AttributeTags.Span, span
+  , ValidSource
+  , AttributeTags.Src, src
+  , AttributeTags.SrcDoc, srcdoc
+  , AttributeTags.SrcLang, srclang
+  , AttributeTags.Start, start
+  , AttributeTags.Target, target
+  , ValidTypeOption
+  , AttributeTags.Type, type_
+  , AttributeTags.UseMap, usemap
+  , ValidValue
+  , AttributeTags.Value, value
+  , AttributeTags.Width, width
+  , AttributeTags.Wrap, wrap
+  , AttributeTags.XMLNS, xmlns
   ) where
 
 import Prelude hiding (max, min, reverse, span)
@@ -114,7 +124,6 @@ import Numeric.Natural (Natural)
 import Ogma qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Autocomplete (ValidAutocomplete)
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Attributes.For (ValidFor)
@@ -124,6 +133,7 @@ import Brigid.HTML.Attributes.Name (ValidName)
 import Brigid.HTML.Attributes.RangeBound (ValidRangeBound)
 import Brigid.HTML.Attributes.Relationship (ValidRelationship)
 import Brigid.HTML.Attributes.Source (ValidSource)
+import Brigid.HTML.Attributes.Tags qualified as AttributeTags
 import Brigid.HTML.Attributes.Type (ValidTypeOption)
 import Brigid.HTML.Attributes.Value (ValidValue)
 import Brigid.HTML.Elements.Internal (ChildHTML)
@@ -143,66 +153,68 @@ import Brigid.Types qualified as Types
 --
 -- If you must specify multiple encodings, create a custom attribute instead.
 --
-acceptCharset :: ValidAttribute 'AcceptCharset tag => Attribute tag
+acceptCharset :: ValidAttribute AttributeTags.AcceptCharset tag
+              => Attribute tag
 acceptCharset = Attr_AcceptCharset
 
 action :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf action Types.ActionTypes
-          , ValidAttribute 'Action tag
+          , ValidAttribute AttributeTags.Action tag
           )
        => action -> Attribute tag
 action =
   Attr_Action . Types.mkAction
 
-allow :: ValidAttribute 'Allow tag
+allow :: ValidAttribute AttributeTags.Allow tag
       => [Types.FeaturePolicyDirective] -> Attribute tag
 allow = Attr_Allow . nubOrdOn fromEnum
 
-alt :: ValidAttribute 'Alt tag => T.Text -> Attribute tag
+alt :: ValidAttribute AttributeTags.Alt tag => T.Text -> Attribute tag
 alt = Attr_Alt
 
-async :: ValidAttribute 'Async tag => Attribute tag
+async :: ValidAttribute AttributeTags.Async tag => Attribute tag
 async = Attr_Async
 
 autocomplete :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf token Types.AutocompleteTokenTypes
                 , ValidAutocomplete token tag
-                , ValidAttribute 'Autocomplete tag
+                , ValidAttribute AttributeTags.Autocomplete tag
                 )
              => token -> Attribute tag
 autocomplete =
   Attr_Autocomplete . Types.mkAutocompleteToken
 
-autoplay :: ValidAttribute 'Autoplay tag => Attribute tag
+autoplay :: ValidAttribute AttributeTags.Autoplay tag => Attribute tag
 autoplay = Attr_Autoplay
 
-capture :: ValidAttribute 'Capture tag
+capture :: ValidAttribute AttributeTags.Capture tag
         => Maybe Types.CaptureMethod -> Attribute tag
 capture = Attr_Capture
 
 -- | Limited to UTF-8, since that is the only valid option for HTML5.
 --
-charset :: ValidAttribute 'Charset tag => Attribute tag
+charset :: ValidAttribute AttributeTags.Charset tag => Attribute tag
 charset = Attr_Charset
 
-check :: ValidAttribute 'Checked tag => Bool -> Attribute tag
+check :: ValidAttribute AttributeTags.Checked tag => Bool -> Attribute tag
 check = Attr_Checked
 
-checked :: ValidAttribute 'Checked tag => Attribute tag
+checked :: ValidAttribute AttributeTags.Checked tag => Attribute tag
 checked = check True
 
 cite :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf cite Types.URLTypes
-        , ValidAttribute 'Cite tag
+        , ValidAttribute AttributeTags.Cite tag
         )
      => cite -> Attribute tag
 cite =
   Attr_Cite . Types.mkURL
 
-cols :: ValidAttribute 'Cols tag => Natural -> Attribute tag
+cols :: ValidAttribute AttributeTags.Cols tag => Natural -> Attribute tag
 cols = Attr_Cols
 
-colspan :: ValidAttribute 'Colspan tag => Positive -> Attribute tag
+colspan :: ValidAttribute AttributeTags.Colspan tag
+        => Positive -> Attribute tag
 colspan = Attr_Colspan
 
 -- | The `content` attribute is left as simple 'T.Text' because its value is
@@ -212,13 +224,13 @@ colspan = Attr_Colspan
 -- together with its dependencies on a `meta` tag, use
 -- 'Brigid.HTML.Elements.Safe.Meta'.
 --
-content :: ValidAttribute 'Content tag => T.Text -> Attribute tag
+content :: ValidAttribute AttributeTags.Content tag => T.Text -> Attribute tag
 content = Attr_Content
 
-controls :: ValidAttribute 'Controls tag => Attribute tag
+controls :: ValidAttribute AttributeTags.Controls tag => Attribute tag
 controls = Attr_Controls
 
-controlslist :: ValidAttribute 'ControlsList tag
+controlslist :: ValidAttribute AttributeTags.ControlsList tag
              => Types.ControlsList -> Attribute tag
 controlslist = Attr_ControlsList
 
@@ -227,7 +239,8 @@ controlslist = Attr_ControlsList
 -- construction of the `coords` and `shape` attributes on an `area` tag, use
 -- `Brigid.HTML.Elements.Safe.Area`.
 --
-coords :: ValidAttribute 'Coords tag => NEL.NonEmpty Integer -> Attribute tag
+coords :: ValidAttribute AttributeTags.Coords tag
+       => NEL.NonEmpty Integer -> Attribute tag
 coords = Attr_Coords
 
 {-|
@@ -238,113 +251,120 @@ coords = Attr_Coords
    header), preventing its non-tainted usage. If invalid, it is handled as if
    the enumerated keyword @anonymous@ was used.
 -}
-crossorigin :: ValidAttribute 'CrossOrigin tag
+crossorigin :: ValidAttribute AttributeTags.CrossOrigin tag
             => Types.CrossOriginFetch -> Attribute tag
 crossorigin = Attr_CrossOrigin
 
 data_ :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf _data Types.URLTypes
-          , ValidAttribute 'Data tag
+          , ValidAttribute AttributeTags.Data tag
           )
        => _data -> Attribute tag
 data_ =
   Attr_Data . Types.mkURL
 
-datetime :: (ISO8601 t, ValidAttribute 'Datetime tag) => t -> Attribute tag
+datetime :: (ISO8601 t, ValidAttribute AttributeTags.Datetime tag)
+         => t -> Attribute tag
 datetime = Attr_Datetime . iso8601Show
 
 -- | This option is provided for users that want to supply their own 'datetime'
 -- encodings besides the common standards, and are willing to accept the risks
 -- of using a potentially unsupported encoding.
 --
-datetimeWithFormat :: (Time.FormatTime t, ValidAttribute 'Datetime tag)
+datetimeWithFormat :: (Time.FormatTime t
+                      , ValidAttribute AttributeTags.Datetime tag
+                      )
                    => String -> t -> Attribute tag
 datetimeWithFormat format =
   Attr_Datetime . Time.formatTime Time.defaultTimeLocale format
 
-decoding :: ValidAttribute 'Decoding tag => Types.Decoding -> Attribute tag
+decoding :: ValidAttribute AttributeTags.Decoding tag
+         => Types.Decoding -> Attribute tag
 decoding = Attr_Decoding
 
-default_ :: ValidAttribute 'Default tag => Attribute tag
+default_ :: ValidAttribute AttributeTags.Default tag => Attribute tag
 default_ = Attr_Default
 
-defer :: ValidAttribute 'Defer tag => Attribute tag
+defer :: ValidAttribute AttributeTags.Defer tag => Attribute tag
 defer = Attr_Defer
 
-dirname :: ValidAttribute 'Dirname tag => T.Text -> Attribute tag
+dirname :: ValidAttribute AttributeTags.Dirname tag => T.Text -> Attribute tag
 dirname = Attr_Dirname
 
-disable :: ValidAttribute 'Disabled tag => Bool -> Attribute tag
+disable :: ValidAttribute AttributeTags.Disabled tag => Bool -> Attribute tag
 disable = Attr_Disabled
 
-disabled :: ValidAttribute 'Disabled tag => Attribute tag
+disabled :: ValidAttribute AttributeTags.Disabled tag => Attribute tag
 disabled = disable True
 
-disablepictureinpicture :: ValidAttribute 'DisablePictureInPicture tag
+disablepictureinpicture :: ValidAttribute AttributeTags.DisablePictureInPicture tag
                         => Attribute tag
 disablepictureinpicture = Attr_DisablePictureInPicture
 
-disableremoteplayback :: ValidAttribute 'DisableRemotePlayback tag
+disableremoteplayback :: ValidAttribute AttributeTags.DisableRemotePlayback tag
                       => Attribute tag
 disableremoteplayback = Attr_DisableRemotePlayback
 
-download :: ValidAttribute 'Download tag
+download :: ValidAttribute AttributeTags.Download tag
          => Maybe NET.NonEmptyText -> Attribute tag
 download = Attr_Download
 
 for :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf for Types.ForOptionTypes
        , ValidFor for tag
-       , ValidAttribute 'For tag
+       , ValidAttribute AttributeTags.For tag
        )
     => for -> Attribute tag
 for =
   Attr_For . Types.mkForOption
 
-form :: ValidAttribute 'Form tag => Types.Id -> Attribute tag
+form :: ValidAttribute AttributeTags.Form tag => Types.Id -> Attribute tag
 form = Attr_Form
 
 formaction :: ( KnownNat branchIndex
               , branchIndex ~ FirstIndexOf action Types.ActionTypes
-              , ValidAttribute 'FormAction tag
+              , ValidAttribute AttributeTags.FormAction tag
               )
            => action -> Attribute tag
 formaction =
   Attr_FormAction . Types.mkAction
 
-formmethod :: ValidAttribute 'FormMethod tag
+formmethod :: ValidAttribute AttributeTags.FormMethod tag
            => Types.FormMethod -> Attribute tag
 formmethod = Attr_FormMethod
 
-formnovalidate :: ValidAttribute 'FormNoValidate tag => Attribute tag
+formnovalidate :: ValidAttribute AttributeTags.FormNoValidate tag
+               => Attribute tag
 formnovalidate = Attr_FormNoValidate
 
-formtarget :: ValidAttribute 'FormTarget tag => Types.Target -> Attribute tag
+formtarget :: ValidAttribute AttributeTags.FormTarget tag
+           => Types.Target -> Attribute tag
 formtarget = Attr_FormTarget
 
-headers :: ValidAttribute 'Headers tag
+headers :: ValidAttribute AttributeTags.Headers tag
         => NEL.NonEmpty Types.Id -> Attribute tag
 headers = Attr_Headers
 
-height :: ValidAttribute 'Height tag => Positive -> Attribute tag
+height :: ValidAttribute AttributeTags.Height tag => Positive -> Attribute tag
 height = Attr_Height
 
-high :: ValidAttribute 'High tag => Types.Number -> Attribute tag
+high :: ValidAttribute AttributeTags.High tag => Types.Number -> Attribute tag
 high = Attr_High
 
 href :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
         , ValidHref href tag
-        , ValidAttribute 'Href tag
+        , ValidAttribute AttributeTags.Href tag
         )
      => href -> Attribute tag
 href =
   Attr_Href . Types.mkHref
 
-hreflang :: ValidAttribute 'HrefLang tag => Ogma.BCP_47 -> Attribute tag
+hreflang :: ValidAttribute AttributeTags.HrefLang tag
+         => Ogma.BCP_47 -> Attribute tag
 hreflang = Attr_HrefLang
 
-httpEquiv :: ValidAttribute 'HttpEquiv tag
+httpEquiv :: ValidAttribute AttributeTags.HttpEquiv tag
           => Types.HttpEquivToken -> Attribute tag
 httpEquiv = Attr_HttpEquiv
 
@@ -352,26 +372,27 @@ httpEquiv = Attr_HttpEquiv
 -- an <a> tag. For safe construction of the `ismap` attribute, use
 -- 'Brigid.HTML.Elements.Safe.Image'.
 --
-ismap :: ValidAttribute 'IsMap tag => Attribute tag
+ismap :: ValidAttribute AttributeTags.IsMap tag => Attribute tag
 ismap = Attr_IsMap
 
-kind :: ValidAttribute 'Kind tag => Types.TrackKind -> Attribute tag
+kind :: ValidAttribute AttributeTags.Kind tag
+     => Types.TrackKind -> Attribute tag
 kind = Attr_Kind
 
-label :: ValidAttribute 'Label tag => T.Text -> Attribute tag
+label :: ValidAttribute AttributeTags.Label tag => T.Text -> Attribute tag
 label = Attr_Label
 
 -- TODO: A Safe module could build inputs and datalists in tandom, taking an Id
 -- to ensure proper list application and that the values are valid for the
 -- input type.
 --
-list :: ValidAttribute 'List tag => Types.Id -> Attribute tag
+list :: ValidAttribute AttributeTags.List tag => Types.Id -> Attribute tag
 list = Attr_List
 
-loop :: ValidAttribute 'Loop tag => Attribute tag
+loop :: ValidAttribute AttributeTags.Loop tag => Attribute tag
 loop = Attr_Loop
 
-low :: ValidAttribute 'Low tag => Types.Number -> Attribute tag
+low :: ValidAttribute AttributeTags.Low tag => Types.Number -> Attribute tag
 low = Attr_Low
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
@@ -381,7 +402,7 @@ low = Attr_Low
 max :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf max Types.RangeBoundTypes
        , ValidRangeBound max tag
-       , ValidAttribute 'Max tag
+       , ValidAttribute AttributeTags.Max tag
        )
     => max -> Attribute tag
 max =
@@ -391,13 +412,15 @@ max =
 -- applies, a comparison of min/maxlength should be done to ensure that the
 -- bounds are applied appropriately.
 --
-maxlength :: ValidAttribute 'MaxLength tag => Natural -> Attribute tag
+maxlength :: ValidAttribute AttributeTags.MaxLength tag
+          => Natural -> Attribute tag
 maxlength = Attr_MaxLength
 
 -- TODO: This should be derived from the RelativeURL given in the action
 -- attribute in the Safe.Form module.
 --
-method :: ValidAttribute 'Method tag => Types.FormMethod -> Attribute tag
+method :: ValidAttribute AttributeTags.Method tag
+       => Types.FormMethod -> Attribute tag
 method = Attr_Method
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
@@ -407,7 +430,7 @@ method = Attr_Method
 min :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf min Types.RangeBoundTypes
        , ValidRangeBound min tag
-       , ValidAttribute 'Max tag
+       , ValidAttribute AttributeTags.Max tag
        )
     => min -> Attribute tag
 min =
@@ -417,40 +440,42 @@ min =
 -- applies, a comparison of min/maxlength should be done to ensure that the
 -- bounds are applied appropriately.
 --
-minlength :: ValidAttribute 'MinLength tag => Natural -> Attribute tag
+minlength :: ValidAttribute AttributeTags.MinLength tag
+          => Natural -> Attribute tag
 minlength = Attr_MinLength
 
-multiple :: ValidAttribute 'Multiple tag => Attribute tag
+multiple :: ValidAttribute AttributeTags.Multiple tag => Attribute tag
 multiple = Attr_Multiple
 
-mute :: ValidAttribute 'Muted tag => Bool -> Attribute tag
+mute :: ValidAttribute AttributeTags.Muted tag => Bool -> Attribute tag
 mute = Attr_Muted
 
-muted :: ValidAttribute 'Muted tag => Attribute tag
+muted :: ValidAttribute AttributeTags.Muted tag => Attribute tag
 muted = mute True
 
 name :: ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf name Types.NameOptionTypes
         , ValidName name tag
-        , ValidAttribute 'Name tag
+        , ValidAttribute AttributeTags.Name tag
         )
      => name -> Attribute tag
 name =
   Attr_Name . Types.mkNameOption
 
-nomodule :: ValidAttribute 'NoModule tag => Bool -> Attribute tag
+nomodule :: ValidAttribute AttributeTags.NoModule tag => Bool -> Attribute tag
 nomodule = Attr_NoModule
 
 -- TODO: A Safe module could take a Maybe of form validation attributes, and
 -- use this attribute otherwise.
 --
-novalidate :: ValidAttribute 'NoValidate tag => Attribute tag
+novalidate :: ValidAttribute AttributeTags.NoValidate tag => Attribute tag
 novalidate = validate False
 
-open :: ValidAttribute 'Open tag => Attribute tag
+open :: ValidAttribute AttributeTags.Open tag => Attribute tag
 open = Attr_Open
 
-optimum :: ValidAttribute 'Optimum tag => Types.Number -> Attribute tag
+optimum :: ValidAttribute AttributeTags.Optimum tag
+        => Types.Number -> Attribute tag
 optimum = Attr_Optimum
 
 -- | This attribute takes a simple 'T.Text' because there's no way to validate
@@ -460,113 +485,121 @@ optimum = Attr_Optimum
 -- risk that the provided pattern may still be invalid in actual practice when
 -- using this function.
 --
-pattern :: ValidAttribute 'Pattern tag => T.Text -> Attribute tag
+pattern :: ValidAttribute AttributeTags.Pattern tag => T.Text -> Attribute tag
 pattern = Attr_Pattern
 
-ping :: ValidAttribute 'Ping tag => NEL.NonEmpty Types.Ping -> Attribute tag
+ping :: ValidAttribute AttributeTags.Ping tag
+     => NEL.NonEmpty Types.Ping -> Attribute tag
 ping = Attr_Ping
 
-placeholder :: ValidAttribute 'Placeholder tag => T.Text -> Attribute tag
+placeholder :: ValidAttribute AttributeTags.Placeholder tag
+            => T.Text -> Attribute tag
 placeholder = Attr_Placeholder
 
-playInline :: ValidAttribute 'PlaysInline tag => Bool -> Attribute tag
+playInline :: ValidAttribute AttributeTags.PlaysInline tag
+           => Bool -> Attribute tag
 playInline = Attr_PlaysInline
 
-playsinline :: ValidAttribute 'PlaysInline tag => Attribute tag
+playsinline :: ValidAttribute AttributeTags.PlaysInline tag => Attribute tag
 playsinline = playInline True
 
 poster :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf poster Types.URLTypes
-          , ValidAttribute 'Poster tag
+          , ValidAttribute AttributeTags.Poster tag
           )
        => poster -> Attribute tag
 poster =
   Attr_Poster . Types.mkURL
 
-preload :: ValidAttribute 'Preload tag => Types.Preload -> Attribute tag
+preload :: ValidAttribute AttributeTags.Preload tag
+        => Types.Preload -> Attribute tag
 preload = Attr_Preload
 
-readonly :: ValidAttribute 'ReadOnly tag => Attribute tag
+readonly :: ValidAttribute AttributeTags.ReadOnly tag => Attribute tag
 readonly = Attr_ReadOnly
 
-referrerpolicy :: ValidAttribute 'ReferrerPolicy tag
+referrerpolicy :: ValidAttribute AttributeTags.ReferrerPolicy tag
                => Types.ReferrerPolicy -> Attribute tag
 referrerpolicy = Attr_ReferrerPolicy
 
 rel :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf rel Types.RelationshipTypes
        , ValidRelationship rel tag
-       , ValidAttribute 'Rel tag
+       , ValidAttribute AttributeTags.Rel tag
        )
     => rel -> Attribute tag
 rel =
   Attr_Rel . Types.mkRelationship
 
-require :: ValidAttribute 'Required tag => Bool -> Attribute tag
+require :: ValidAttribute AttributeTags.Required tag => Bool -> Attribute tag
 require = Attr_Required
 
-required :: ValidAttribute 'Required tag => Attribute tag
+required :: ValidAttribute AttributeTags.Required tag => Attribute tag
 required = require True
 
-reverse :: ValidAttribute 'Reversed tag => Bool -> Attribute tag
+reverse :: ValidAttribute AttributeTags.Reversed tag => Bool -> Attribute tag
 reverse = Attr_Reversed
 
-reversed :: ValidAttribute 'Reversed tag => Attribute tag
+reversed :: ValidAttribute AttributeTags.Reversed tag => Attribute tag
 reversed = reverse True
 
-rows :: ValidAttribute 'Rows tag => Natural -> Attribute tag
+rows :: ValidAttribute AttributeTags.Rows tag => Natural -> Attribute tag
 rows = Attr_Rows
 
-rowspan :: ValidAttribute 'Rowspan tag => Positive -> Attribute tag
+rowspan :: ValidAttribute AttributeTags.Rowspan tag
+        => Positive -> Attribute tag
 rowspan = Attr_Rowspan
 
-sandbox :: ValidAttribute 'Sandbox tag => [Types.SandboxToken] -> Attribute tag
+sandbox :: ValidAttribute AttributeTags.Sandbox tag
+        => [Types.SandboxToken] -> Attribute tag
 sandbox = Attr_Sandbox
 
-scope :: ValidAttribute 'Scope tag => Types.Scope -> Attribute tag
+scope :: ValidAttribute AttributeTags.Scope tag => Types.Scope -> Attribute tag
 scope = Attr_Scope
 
-select :: ValidAttribute 'Selected tag => Bool -> Attribute tag
+select :: ValidAttribute AttributeTags.Selected tag => Bool -> Attribute tag
 select = Attr_Selected
 
-selected :: ValidAttribute 'Selected tag => Attribute tag
+selected :: ValidAttribute AttributeTags.Selected tag => Attribute tag
 selected = select True
 
-shape :: ValidAttribute 'Shape tag => Types.Shape -> Attribute tag
+shape :: ValidAttribute AttributeTags.Shape tag => Types.Shape -> Attribute tag
 shape = Attr_Shape
 
-size :: ValidAttribute 'Size tag => Positive -> Attribute tag
+size :: ValidAttribute AttributeTags.Size tag => Positive -> Attribute tag
 size = Attr_Size
 
-span :: ValidAttribute 'Span tag => Positive -> Attribute tag
+span :: ValidAttribute AttributeTags.Span tag => Positive -> Attribute tag
 span = Attr_Span
 
 src :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes
        , ValidSource url tag
-       , ValidAttribute 'Src tag
+       , ValidAttribute AttributeTags.Src tag
        )
     => url -> Attribute tag
 src =
   Attr_Src . Types.mkURL
 
-srcdoc :: ValidAttribute 'SrcDoc tag
+srcdoc :: ValidAttribute AttributeTags.SrcDoc tag
        => ChildHTML parent grandparent -> Attribute tag
 srcdoc = Attr_SrcDoc . renderLazyHTML
 
-srclang :: ValidAttribute 'SrcLang tag => Ogma.BCP_47 -> Attribute tag
+srclang :: ValidAttribute AttributeTags.SrcLang tag
+        => Ogma.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang
 
-start :: ValidAttribute 'Start tag => Integer -> Attribute tag
+start :: ValidAttribute AttributeTags.Start tag => Integer -> Attribute tag
 start = Attr_Start
 
-target :: ValidAttribute 'Target tag => Types.Target -> Attribute tag
+target :: ValidAttribute AttributeTags.Target tag
+       => Types.Target -> Attribute tag
 target = Attr_Target
 
 type_ :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf type_ Types.TypeOptionTypes
          , ValidTypeOption type_ tag
-         , ValidAttribute 'Type tag
+         , ValidAttribute AttributeTags.Type tag
          )
       => type_ -> Attribute tag
 type_ =
@@ -576,33 +609,35 @@ type_ =
 -- and name on the <map> element with the same value. When making a `Safe`
 -- module, the id and name attributes will be the same.
 --
-usemap :: ValidAttribute 'UseMap tag => Types.Name -> Attribute tag
+usemap :: ValidAttribute AttributeTags.UseMap tag
+       => Types.Name -> Attribute tag
 usemap = Attr_UseMap
 
 -- | This function permits an inline argument to determine whether validation
 -- should be enabled. If 'False', the @novalidate@ attribute will be added.
 --
-validate :: ValidAttribute 'NoValidate tag => Bool -> Attribute tag
+validate :: ValidAttribute AttributeTags.NoValidate tag
+         => Bool -> Attribute tag
 validate = Attr_NoValidate . not
 
 value :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf value Types.ValueTypes
          , ValidValue value tag
-         , ValidAttribute 'Value tag
+         , ValidAttribute AttributeTags.Value tag
          )
       => value -> Attribute tag
 value =
   Attr_Value . Types.mkValue
 
-width :: ValidAttribute 'Width tag => Positive -> Attribute tag
+width :: ValidAttribute AttributeTags.Width tag => Positive -> Attribute tag
 width = Attr_Width
 
-wrap :: ValidAttribute 'Wrap tag => Types.Wrap -> Attribute tag
+wrap :: ValidAttribute AttributeTags.Wrap tag => Types.Wrap -> Attribute tag
 wrap = Attr_Wrap
 
 xmlns :: ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf url Types.URLTypes
-         , ValidAttribute 'XMLNS tag
+         , ValidAttribute AttributeTags.XMLNS tag
          )
       => url -> Attribute tag
 xmlns =
