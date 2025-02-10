@@ -8,6 +8,7 @@ module Brigid.HTML.Elements
   , Tags.Text, text, texts
   , Tags.RawHTML, rawHTML
   , Tags.CustomHTML, customHTML
+  , ValidChild
   , Tags.Anchor, a
   , Tags.Abbreviation, abbr
   , Tags.ContactAddress, address

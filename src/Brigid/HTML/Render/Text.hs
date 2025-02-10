@@ -922,7 +922,7 @@ renderAttribute attr =
               Relative_Put    path -> ("hx-put", path)
               Relative_Patch  path -> ("hx-patch", path)
 
-       in Just . buildAttribute hxAttr $ Escape.urlText hxPath
+       in Just $ buildAttribute hxAttr hxPath
 
     Attr_HxBoost boosted ->
       Just . buildAttribute "hx-boost" $ Render.enumBoolToText boosted
