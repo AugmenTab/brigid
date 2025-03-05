@@ -92,3 +92,15 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - brigid
+
+benchmarks:
+  brigid-bench:
+    main:        Bench.hs
+    source-dirs: bench
+    ghc-options:
+      - -fproc-alignment=64
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts "-N -T -A32m"
+    dependencies:
+      - tasty-bench
