@@ -51,6 +51,7 @@ import Brigid.HTML.Types.Reachability as Export
 import Brigid.HTML.Types.ReferrerPolicy as Export
 import Brigid.HTML.Types.Relationship as Export
 import Brigid.HTML.Types.RequestParams as Export
+import Brigid.HTML.Types.Role as Export
 import Brigid.HTML.Types.SandboxToken as Export
 import Brigid.HTML.Types.Scope as Export
 import Brigid.HTML.Types.ScrollBehavior as Export

@@ -600,7 +600,8 @@ renderAttribute attr =
         . buildAttribute "popover"
         $ Types.popoverStateToBytes state
 
-    -- Attr_Role
+    Attr_Role role ->
+      Just . buildAttribute "role" $ Types.roleToBytes role
 
     -- Attr_Slot
 

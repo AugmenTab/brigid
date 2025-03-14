@@ -658,6 +658,7 @@ import Brigid.HTML.Types.RangeBound (RangeBound, rangeBoundToText)
 import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
 import Brigid.HTML.Types.Relationship (RelationshipTypes, mkRelationship, relationshipToText)
+import Brigid.HTML.Types.Role (Role, roleToText)
 import Brigid.HTML.Types.SandboxToken (SandboxToken, sandboxTokenToText)
 import Brigid.HTML.Types.Scope (Scope, scopeToText)
 import Brigid.HTML.Types.Shape (Shape, shapeToText)
@@ -2626,9 +2627,8 @@ attr_part =
 attr_popover :: PopoverState -> AttributeSelector
 attr_popover = (,) Attr_Popover . Just . popoverStateToText
 
--- TODO
-attr_role :: T.Text -> AttributeSelector
-attr_role = (,) Attr_Role . Just
+attr_role :: Role -> AttributeSelector
+attr_role = (,) Attr_Role . Just . roleToText
 
 -- TODO
 attr_slot :: T.Text -> AttributeSelector

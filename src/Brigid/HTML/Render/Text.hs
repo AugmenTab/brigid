@@ -586,7 +586,8 @@ renderAttribute attr =
         . buildAttribute "popover"
         $ Types.popoverStateToText state
 
-    -- Attr_Role
+    Attr_Role role ->
+      Just . buildAttribute "role" $ Types.roleToText role
 
     -- Attr_Slot
 

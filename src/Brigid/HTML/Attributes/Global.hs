@@ -25,7 +25,7 @@ module Brigid.HTML.Attributes.Global
   -- , AttributeTags.Nonce, nonce
   , AttributeTags.Part, part
   , AttributeTags.Popover, popover
-  -- , AttributeTags.Role, role
+  , AttributeTags.Role, role
   -- , AttributeTags.Slot, slot
   , AttributeTags.Spellcheck, spellcheck
   , AttributeTags.Style, style
@@ -131,7 +131,8 @@ part = Attr_Part
 popover :: Types.PopoverState -> Attribute tag
 popover = Attr_Popover
 
--- role
+role :: Types.Role -> Attribute tag
+role = Attr_Role
 
 -- slot
 

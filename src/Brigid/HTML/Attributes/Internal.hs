@@ -30,7 +30,7 @@ module Brigid.HTML.Attributes.Internal
    -- , Attr_Nonce
       , Attr_Part
       , Attr_Popover
-   -- , Attr_Role
+      , Attr_Role
    -- , Attr_Slot
       , Attr_Spellcheck
       , Attr_Style
@@ -287,9 +287,9 @@ data Attribute (tag :: TagType) where
     :: Types.PopoverState
     -> Attribute tag
 
-  -- Attr_Role
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Role
+    :: Types.Role
+    -> Attribute tag
 
   -- Attr_Slot
   --   :: T.Text -- TODO
@@ -984,7 +984,8 @@ attributeText attr =
     Attr_Popover _state ->
       "popover"
 
-    -- Attr_Role
+    Attr_Role _role ->
+      "role"
 
     -- Attr_Slot
 
