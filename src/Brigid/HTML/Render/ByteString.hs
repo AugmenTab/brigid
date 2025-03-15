@@ -603,7 +603,8 @@ renderAttribute attr =
     Attr_Role role ->
       Just . buildAttribute "role" $ Types.roleToBytes role
 
-    -- Attr_Slot
+    Attr_Slot slot ->
+      Just . buildAttribute "slot" $ Types.nameToBytes slot
 
     Attr_Spellcheck spellcheck ->
       Just . buildAttribute "spellcheck" $ Render.enumBoolToBytes spellcheck

@@ -26,7 +26,7 @@ module Brigid.HTML.Attributes.Global
   , AttributeTags.Part, part
   , AttributeTags.Popover, popover
   , AttributeTags.Role, role
-  -- , AttributeTags.Slot, slot
+  , AttributeTags.Slot, slot
   , AttributeTags.Spellcheck, spellcheck
   , AttributeTags.Style, style
   , styles
@@ -134,7 +134,8 @@ popover = Attr_Popover
 role :: Types.Role -> Attribute tag
 role = Attr_Role
 
--- slot
+slot :: Types.Name -> Attribute tag
+slot = Attr_Slot
 
 spellcheck :: Bool -> Attribute tag
 spellcheck = Attr_Spellcheck

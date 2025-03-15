@@ -31,7 +31,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Part
       , Attr_Popover
       , Attr_Role
-   -- , Attr_Slot
+      , Attr_Slot
       , Attr_Spellcheck
       , Attr_Style
       , Attr_TabIndex
@@ -291,9 +291,9 @@ data Attribute (tag :: TagType) where
     :: Types.Role
     -> Attribute tag
 
-  -- Attr_Slot
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Slot
+    :: Types.Name
+    -> Attribute tag
 
   Attr_Spellcheck
     :: Bool -- Note: NOT a boolean attribute; prints string true/false
@@ -987,7 +987,8 @@ attributeText attr =
     Attr_Role _role ->
       "role"
 
-    -- Attr_Slot
+    Attr_Slot _slot ->
+      "slot"
 
     Attr_Spellcheck _spellcheck ->
       "spellcheck"

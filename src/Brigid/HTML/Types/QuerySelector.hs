@@ -2630,9 +2630,8 @@ attr_popover = (,) Attr_Popover . Just . popoverStateToText
 attr_role :: Role -> AttributeSelector
 attr_role = (,) Attr_Role . Just . roleToText
 
--- TODO
-attr_slot :: T.Text -> AttributeSelector
-attr_slot = (,) Attr_Slot . Just
+attr_slot :: Name -> AttributeSelector
+attr_slot = (,) Attr_Slot . Just . nameToText
 
 attr_spellcheck :: Bool -> AttributeSelector
 attr_spellcheck = (,) Attr_Spellcheck . Just . Render.enumBoolToText

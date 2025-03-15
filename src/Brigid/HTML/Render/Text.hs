@@ -589,7 +589,8 @@ renderAttribute attr =
     Attr_Role role ->
       Just . buildAttribute "role" $ Types.roleToText role
 
-    -- Attr_Slot
+    Attr_Slot slot ->
+      Just . buildAttribute "slot" $ Types.nameToText slot
 
     Attr_Spellcheck spellcheck ->
       Just . buildAttribute "spellcheck" $ Render.enumBoolToText spellcheck
