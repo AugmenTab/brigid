@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 def indent(n):
     return " " * n
 
+
 def create_file(module, tag, entities):
     if module == "HTML":
         argument = " grandparent"

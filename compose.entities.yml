@@ -1,0 +1,7 @@
+services:
+  entities:
+    image: logiqx/python-bs4
+    volumes:
+      - .:${PROJECT_DIR}
+    working_dir: ${PROJECT_DIR}
+    command: python3 eigse/entity_maker.py

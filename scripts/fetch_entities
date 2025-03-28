@@ -4,5 +4,5 @@ echo "===================================="
 echo "====== Fetching HTML Entities ======"
 echo "===================================="
 
-docker compose --file compose.entity.yml up --abort-on-container-exit
+docker compose --file compose.entities.yml up --abort-on-container-exit
 
