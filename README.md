@@ -2,6 +2,12 @@
 
 A library for constructing type-safe and (mostly) spec-compliant HTML.
 
+### TODO
+
+1. Remove Fleece dependency.
+2. Switch to Haskell2010.
+3. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
+
 ### TODO (HTML)
 
 1. For each of global, HTMX, event listeners, arias, and scoped attributes:
@@ -26,7 +32,8 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 9. Review common classes (`Id`, `Class`, `Name`, etc) and maybe make smart
    constructors that prevent users from creating them with invalid characters,
    rather than escaping them after the fact.
-10. Consider writing Aeson instances and Fleece schemas for common types.
+10. Consider writing Aeson instances for common types.
+11. Move de-duplication of attributes to combinators instead of rendering.
 
 ### TODO (XML)
 
