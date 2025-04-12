@@ -8,7 +8,6 @@ module Brigid.HTML.Render.Text
 
 import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
-import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
@@ -19,7 +18,7 @@ import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 import Ogma qualified
 import Shrubbery qualified
 
-import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
+import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Types qualified as Types
 import Brigid.Internal.Escape qualified as Escape
@@ -472,8 +471,7 @@ buildTag tag attrs content =
     , fromText . B.bool " " T.empty $ L.null attrs
     , mconcat
         . L.intersperse (fromText " ")
-        . mapMaybe renderAttribute
-        $ nubOrdOn attributeText attrs
+        $ mapMaybe renderAttribute attrs
     , case content of
         Left  Types.OmitTag -> fromText "/>"
         Left  Types.WithTag -> fromText ">"

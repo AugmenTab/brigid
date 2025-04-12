@@ -8,14 +8,13 @@ module Brigid.HXML.Render.Text
 
 import Prelude hiding (id)
 import Data.Bool qualified as B
-import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
 
-import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
+import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
 import Brigid.Internal.Escape qualified as Escape
@@ -153,8 +152,7 @@ buildTag tag attrs content =
     , fromText . B.bool " " T.empty $ L.null attrs
     , mconcat
         . L.intersperse (fromText " ")
-        . mapMaybe renderAttribute
-        $ nubOrdOn attributeText attrs
+        $ mapMaybe renderAttribute attrs
     , case content of
         Left  Types.OmitTag -> fromText "/>"
         Left  Types.WithTag -> fromText ">"

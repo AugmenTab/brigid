@@ -12,11 +12,10 @@ import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
-import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.Maybe (mapMaybe)
 
-import Brigid.HXML.Attributes.Internal (Attribute (..), attributeText)
+import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
 import Brigid.HXML.Types qualified as Types
 import Brigid.Internal.Escape qualified as Escape
@@ -156,8 +155,7 @@ buildTag tag attrs content =
     , lazyByteString . B.bool " " LBS.empty $ L.null attrs
     , mconcat
         . L.intersperse (lazyByteString " ")
-        . mapMaybe renderAttribute
-        $ nubOrdOn attributeText attrs
+        $ mapMaybe renderAttribute attrs
     , case content of
         Left  Types.OmitTag -> lazyByteString "/>"
         Left  Types.WithTag -> lazyByteString ">"

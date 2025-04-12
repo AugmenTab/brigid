@@ -12,7 +12,6 @@ import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
-import Data.Containers.ListUtils (nubOrdOn)
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
@@ -20,7 +19,7 @@ import Data.NonEmptyText qualified as NET
 import Ogma qualified
 import Shrubbery qualified
 
-import Brigid.HTML.Attributes.Internal (Attribute (..), attributeText)
+import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Types qualified as Types
 import Brigid.Internal.Escape qualified as Escape
@@ -478,8 +477,7 @@ buildTag tag attrs content =
     , lazyByteString . B.bool " " LBS.empty $ L.null attrs
     , mconcat
         . L.intersperse (lazyByteString " ")
-        . mapMaybe renderAttribute
-        $ nubOrdOn attributeText attrs
+        $ mapMaybe renderAttribute attrs
     , case content of
         Left  Types.OmitTag -> lazyByteString "/>"
         Left  Types.WithTag -> lazyByteString ">"
