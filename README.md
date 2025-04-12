@@ -5,8 +5,7 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 ### TODO
 
 1. Remove Fleece dependency.
-2. Switch to Haskell2010.
-3. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
+2. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
 
 ### TODO (HTML)
 

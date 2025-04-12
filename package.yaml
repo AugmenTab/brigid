@@ -6,6 +6,8 @@ author:              "Tyler Baum"
 maintainer:          "tyler.baum@protonmail.com"
 copyright:           "2023 Tyler Baum"
 
+language: Haskell2010
+
 extra-source-files:
 - README.md
 
@@ -19,12 +21,7 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
 
 default-extensions:
-- DeriveDataTypeable
-- DerivingStrategies
-- FlexibleContexts
-- GeneralizedNewtypeDeriving
 - ImportQualifiedPost
-- MultiParamTypeClasses
 - OverloadedStrings
 
 dependencies:

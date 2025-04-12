@@ -183,12 +183,7 @@ library
   hs-source-dirs:
       src
   default-extensions:
-      DeriveDataTypeable
-      DerivingStrategies
-      FlexibleContexts
-      GeneralizedNewtypeDeriving
       ImportQualifiedPost
-      MultiParamTypeClasses
       OverloadedStrings
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
   build-depends:
@@ -223,12 +218,7 @@ test-suite brigid-test
   hs-source-dirs:
       test
   default-extensions:
-      DeriveDataTypeable
-      DerivingStrategies
-      FlexibleContexts
-      GeneralizedNewtypeDeriving
       ImportQualifiedPost
-      MultiParamTypeClasses
       OverloadedStrings
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
   build-depends:
@@ -264,12 +254,7 @@ benchmark brigid-bench
   hs-source-dirs:
       bench
   default-extensions:
-      DeriveDataTypeable
-      DerivingStrategies
-      FlexibleContexts
-      GeneralizedNewtypeDeriving
       ImportQualifiedPost
-      MultiParamTypeClasses
       OverloadedStrings
   ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -fproc-alignment=64 -threaded -rtsopts -with-rtsopts "-N -T -A32m"
   build-depends:

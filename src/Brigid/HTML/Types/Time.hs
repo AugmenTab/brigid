@@ -1,3 +1,5 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module Brigid.HTML.Types.Time
   ( Date
   , mkDate
@@ -73,7 +75,6 @@ datetimeLocalToBytes = LBS8.pack . datetimeLocalToString
 
 datetimeLocalToString :: DatetimeLocal -> String
 datetimeLocalToString = format "%Y-%m-%dT%H:%M"
-
 
 datetimeLocalToText :: DatetimeLocal -> T.Text
 datetimeLocalToText = T.pack . datetimeLocalToString
