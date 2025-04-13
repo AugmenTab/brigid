@@ -140,8 +140,7 @@ type HTML = ChildHTML Tags.Document Tags.NoElement
 noElement :: ChildHTML parent grandparent
 noElement = Tag_NoElement
 
-comment :: T.Text
-        -> ChildHTML parent grandparent
+comment :: T.Text -> ChildHTML parent grandparent
 comment = Tag_Comment
 
 text :: ValidChild Tags.Text parent grandparent
@@ -183,7 +182,7 @@ address :: ValidChild Tags.ContactAddress parent grandparent
 address = Tag_ContactAddress . nubOrdOn attributeText
 
 -- | The <area> tag must be a descendent of a <map> tag, but it need not be a
--- direct descendent. Checking for this isn't possible with in Brigid, so the
+-- direct descendent. Checking for this isn't possible within Brigid, so the
 -- user is responsible for ensuring the correct use of this tag.
 --
 area :: ValidChild Tags.Area parent grandparent

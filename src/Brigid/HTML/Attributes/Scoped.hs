@@ -271,7 +271,7 @@ datetime = Attr_Datetime . iso8601Show
 -- encodings besides the common standards, and are willing to accept the risks
 -- of using a potentially unsupported encoding.
 --
-datetimeWithFormat :: (Time.FormatTime t
+datetimeWithFormat :: ( Time.FormatTime t
                       , ValidAttribute AttributeTags.Datetime tag
                       )
                    => String -> t -> Attribute tag
@@ -430,11 +430,11 @@ method = Attr_Method
 min :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf min Types.RangeBoundTypes
        , ValidRangeBound min tag
-       , ValidAttribute AttributeTags.Max tag
+       , ValidAttribute AttributeTags.Min tag
        )
     => min -> Attribute tag
 min =
-  Attr_Max . Types.mkRangeBound
+  Attr_Min . Types.mkRangeBound
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the
