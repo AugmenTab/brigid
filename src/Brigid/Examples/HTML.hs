@@ -196,8 +196,7 @@ example =
                  , A.writingsuggestions False
                  , A.wrap HTML.WrapHard
                  ]
-        [
-        ]
+        "Here's some text!"
     , E.div [ A.tabindex HTML.NotReachable ]
         [ E.output [ A.for $ divId :| [ numberId ] ]
             [

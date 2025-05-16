@@ -6,6 +6,9 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 
 1. Remove Fleece dependency.
 2. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
+3. Change HTML entities to an ADT. Change the `ChildHTML` constructor to accept
+   this, and add use `ToText` and `ToBytes`. Decide between either an `entity`
+   combinator and the ADT exposed, or combinator functions that do this.
 
 ### TODO (HTML)
 

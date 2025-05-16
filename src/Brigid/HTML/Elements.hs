@@ -860,9 +860,10 @@ template = Tag_ContentTemplate . nubOrdOn attributeText
 
 textarea :: ValidChild Tags.TextArea parent grandparent
          => [Attribute Tags.TextArea]
-         -> [ChildHTML Tags.TextArea parent]
+         -> T.Text
          -> ChildHTML parent grandparent
-textarea = Tag_TextArea . nubOrdOn attributeText
+textarea attrs =
+  Tag_TextArea (nubOrdOn attributeText attrs) . L.singleton . Tag_Text
 
 tfoot :: ValidChild Tags.TableFoot parent grandparent
       => [Attribute Tags.TableFoot]

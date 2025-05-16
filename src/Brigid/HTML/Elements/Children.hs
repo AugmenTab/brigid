@@ -108,10 +108,10 @@ type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [Ta
   ValidChildrenFor TableBody              grandparent = '[ TableRow ]
   ValidChildrenFor TableDataCell          grandparent = TagGroups.FlowContent
   ValidChildrenFor ContentTemplate        grandparent = TagGroups.AllElements
-  ValidChildrenFor TextArea               grandparent = '[ Text ]
   ValidChildrenFor TableFoot              grandparent = '[ TableRow ]
   ValidChildrenFor TableHeader            grandparent = Filter TagGroups.TableHeaderExcluded TagGroups.FlowContent
   ValidChildrenFor TableHead              grandparent = '[ TableRow ]
+  ValidChildrenFor TextArea               grandparent = '[ Text ]
   ValidChildrenFor Time                   grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Title                  grandparent = '[ Text ]
   ValidChildrenFor TableRow               grandparent = TagGroups.TableRowContent
