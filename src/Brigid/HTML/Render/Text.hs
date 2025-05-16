@@ -579,7 +579,8 @@ renderAttribute attr =
     Attr_Lang lang ->
       Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToText lang
 
-    -- Attr_Nonce
+    Attr_Nonce nonce ->
+      Just $ buildAttribute "nonce" nonce
 
     Attr_Part parts ->
       Just

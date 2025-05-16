@@ -2613,7 +2613,6 @@ attr_lang :: Maybe BCP_47 -> AttributeSelector
 attr_lang =
   (,) Attr_Lang . Just . maybe "" bcp_47ToText
 
--- TODO
 attr_nonce :: T.Text -> AttributeSelector
 attr_nonce = (,) Attr_Nonce . Just
 

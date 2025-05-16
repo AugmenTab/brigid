@@ -22,7 +22,7 @@ module Brigid.HTML.Attributes.Global
   , AttributeTags.ItemScope, itemscope
   , AttributeTags.ItemType, itemtype
   , AttributeTags.Lang, lang
-  -- , AttributeTags.Nonce, nonce
+  , AttributeTags.Nonce, nonce
   , AttributeTags.Part, part
   , AttributeTags.Popover, popover
   , AttributeTags.Role, role
@@ -123,7 +123,8 @@ itemtype = Attr_ItemType
 lang :: Maybe Ogma.BCP_47 -> Attribute tag
 lang = Attr_Lang
 
--- nonce
+nonce :: T.Text -> Attribute tag
+nonce = Attr_Nonce
 
 part :: NEL.NonEmpty Types.Part -> Attribute tag
 part = Attr_Part

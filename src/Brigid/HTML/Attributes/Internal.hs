@@ -27,7 +27,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_ItemScope
       , Attr_ItemType
       , Attr_Lang
-   -- , Attr_Nonce
+      , Attr_Nonce
       , Attr_Part
       , Attr_Popover
       , Attr_Role
@@ -278,9 +278,9 @@ data Attribute (tag :: TagType) where
     :: Maybe Ogma.BCP_47
     -> Attribute tag
 
-  -- Attr_Nonce
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Nonce
+    :: T.Text
+    -> Attribute tag
 
   Attr_Part
     :: NEL.NonEmpty Types.Part
@@ -984,7 +984,8 @@ attributeText attr =
     Attr_Lang _lang ->
       "lang"
 
-    -- Attr_Nonce
+    Attr_Nonce _nonce ->
+      "nonce"
 
     Attr_Part _part ->
       "part"
