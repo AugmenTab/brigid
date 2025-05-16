@@ -2778,9 +2778,8 @@ attr_disableremoteplayback = (Attr_DisableRemotePlayback, Nothing)
 attr_download :: Maybe NET.NonEmptyText -> AttributeSelector
 attr_download = (,) Attr_Download . fmap NET.toText
 
--- TODO
-attr_enctype :: T.Text -> AttributeSelector
-attr_enctype = (,) Attr_Enctype . Just
+attr_enctype :: BS.ByteString -> AttributeSelector
+attr_enctype = (,) Attr_Enctype . Just . Render.bytesToText
 
 attr_for :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf for ForOptionTypes
@@ -2799,10 +2798,8 @@ attr_formaction :: ( KnownNat branchIndex
 attr_formaction =
   (,) Attr_FormAction . Just . actionToText . mkAction
 
-
--- TODO
-attr_formenctype :: T.Text -> AttributeSelector
-attr_formenctype = (,) Attr_FormEnctype . Just
+attr_formenctype :: BS.ByteString -> AttributeSelector
+attr_formenctype = (,) Attr_FormEnctype . Just . Render.bytesToText
 
 attr_formmethod :: FormMethod -> AttributeSelector
 attr_formmethod = (,) Attr_FormMethod . Just . formMethodToText

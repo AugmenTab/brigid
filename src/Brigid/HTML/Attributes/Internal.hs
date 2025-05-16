@@ -68,9 +68,11 @@ module Brigid.HTML.Attributes.Internal
       , Attr_DisablePictureInPicture
       , Attr_DisableRemotePlayback
       , Attr_Download
+      , Attr_Enctype
       , Attr_For
       , Attr_Form
       , Attr_FormAction
+      , Attr_FormEnctype
       , Attr_FormMethod
       , Attr_FormNoValidate
       , Attr_FormTarget
@@ -459,10 +461,10 @@ data Attribute (tag :: TagType) where
     => Maybe NET.NonEmptyText
     -> Attribute tag
 
-  -- Attr_Enctype
-  --   :: ValidAttribute 'Enctype tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Enctype
+    :: ValidAttribute 'Enctype tag
+    => BS.ByteString
+    -> Attribute tag
 
   Attr_For
     :: ValidAttribute 'For tag
@@ -479,10 +481,10 @@ data Attribute (tag :: TagType) where
     => Types.Action
     -> Attribute tag
 
-  -- Attr_FormEnctype
-  --   :: ValidAttribute 'FormEnctype tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_FormEnctype
+    :: ValidAttribute 'FormEnctype tag
+    => BS.ByteString
+    -> Attribute tag
 
   Attr_FormMethod
     :: ValidAttribute 'FormMethod tag
@@ -1099,6 +1101,9 @@ attributeText attr =
     Attr_Download _download ->
       "download"
 
+    Attr_Enctype _enctype ->
+      "enctype"
+
     Attr_For _for ->
       "for"
 
@@ -1107,6 +1112,9 @@ attributeText attr =
 
     Attr_FormAction _formaction ->
       "formaction"
+
+    Attr_FormEnctype _enctype ->
+      "formenctype"
 
     Attr_FormMethod _formmethod ->
       "formmethod"

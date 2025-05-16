@@ -717,6 +717,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . NET.toText)
         download
 
+    Attr_Enctype enctype ->
+      Just . buildAttribute "enctype" $ Render.bytesToText enctype
+
     Attr_For for ->
       Just . buildAttribute "for" $ Types.forOptionToText for
 
@@ -725,6 +728,9 @@ renderAttribute attr =
 
     Attr_FormAction formaction ->
       Just . buildAttribute "formaction" $ Types.actionToText formaction
+
+    Attr_FormEnctype formenctype ->
+      Just . buildAttribute "formenctype" $ Render.bytesToText formenctype
 
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod

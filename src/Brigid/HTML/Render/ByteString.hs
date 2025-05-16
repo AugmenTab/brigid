@@ -737,6 +737,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . Render.textToLazyBytes . NET.toText)
         download
 
+    Attr_Enctype enctype ->
+      Just . buildAttribute "enctype" $ Render.bytesToLazyBytes enctype
+
     Attr_For for ->
       Just . buildAttribute "for" $ Types.forOptionToBytes for
 
@@ -745,6 +748,9 @@ renderAttribute attr =
 
     Attr_FormAction formaction ->
       Just . buildAttribute "formaction" $ Types.actionToBytes formaction
+
+    Attr_FormEnctype formenctype ->
+      Just . buildAttribute "formenctype" $ Render.bytesToLazyBytes formenctype
 
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToBytes formmethod

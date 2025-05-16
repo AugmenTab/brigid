@@ -12,7 +12,7 @@ import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType (TagType)
-import Brigid.HTML.Internal.TagOperations (Add, AlertAttribute, Elem)
+import Brigid.HTML.Internal.TagOperations (Add, AlertAttribute, Elem, Remove)
 
 type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
@@ -47,9 +47,11 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'DisablePictureInPicture = '[ Tags.Video ]
   ValidElementsFor 'DisableRemotePlayback   = TagGroups.MediaContent
   ValidElementsFor 'Download                = '[ Tags.Anchor ]
+  ValidElementsFor 'Enctype                 = '[ Tags.Form ]
   ValidElementsFor 'For                     = [ Tags.Label, Tags.Output ]
   ValidElementsFor 'Form                    = TagGroups.InputTags
   ValidElementsFor 'FormAction              = TagGroups.FormSubmitTags
+  ValidElementsFor 'FormEnctype             = Remove Tags.InputImage TagGroups.FormSubmitTags
   ValidElementsFor 'FormMethod              = TagGroups.FormMethodTags
   ValidElementsFor 'FormNoValidate          = TagGroups.FormNoValidateTags
   ValidElementsFor 'FormTarget              = TagGroups.FormSubmitTags
