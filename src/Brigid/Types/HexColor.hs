@@ -52,4 +52,4 @@ hexColorFromText txt = do
   Right $ HexColor txt
 
 hexColorToBytes :: HexColor -> LBS.ByteString
-hexColorToBytes = Render.textToBytes . hexColorToText
+hexColorToBytes = Render.textToLazyBytes . hexColorToText

@@ -76,4 +76,4 @@ instance Show ColorName where
   show = mappend "ColorName " . T.unpack . colorNameToText
 
 colorNameToBytes :: ColorName -> LBS.ByteString
-colorNameToBytes = Render.textToBytes . colorNameToText
+colorNameToBytes = Render.textToLazyBytes . colorNameToText

@@ -19,4 +19,4 @@ instance Show HyperScript where
 
 hyperScriptToBytes :: HyperScript -> LBS.ByteString
 hyperScriptToBytes =
-  Render.textToBytes . hyperScriptToText
+  Render.textToLazyBytes . hyperScriptToText

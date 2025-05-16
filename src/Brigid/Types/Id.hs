@@ -18,4 +18,4 @@ instance Show Id where
   show = mappend "Id " . T.unpack . idToText
 
 idToBytes :: Id -> LBS.ByteString
-idToBytes = Render.textToBytes . idToText
+idToBytes = Render.textToLazyBytes . idToText

@@ -35,14 +35,14 @@ requestParamsToBytes requestParams =
       LBS8.unwords
         [ "not"
         , Render.foldToBytesWithSeparator
-            Render.textToBytes
+            Render.textToLazyBytes
             ","
             params
         ]
 
     Params params ->
       Render.foldToBytesWithSeparator
-        Render.textToBytes
+        Render.textToLazyBytes
         ","
         params
 

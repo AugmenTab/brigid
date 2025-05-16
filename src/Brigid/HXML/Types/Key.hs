@@ -18,4 +18,4 @@ instance Show Key where
   show = mappend "Key " . T.unpack . keyToText
 
 keyToBytes :: Key -> LBS.ByteString
-keyToBytes = Render.textToBytes . keyToText
+keyToBytes = Render.textToLazyBytes . keyToText

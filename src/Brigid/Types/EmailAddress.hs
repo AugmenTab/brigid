@@ -26,4 +26,4 @@ emailAddressFromText txt =
     Right email -> Right . EmailAddress $ Validate.emailToText email
 
 emailAddressToBytes :: EmailAddress -> LBS.ByteString
-emailAddressToBytes = Render.textToBytes . emailAddressToText
+emailAddressToBytes = Render.textToLazyBytes . emailAddressToText

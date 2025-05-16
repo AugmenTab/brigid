@@ -30,4 +30,4 @@ mkMask txt =
          else Left $ "Not a valid mask string: " <> T.unpack txt
 
 maskToBytes :: Mask -> LBS.ByteString
-maskToBytes = Render.textToBytes . maskToText
+maskToBytes = Render.textToLazyBytes . maskToText

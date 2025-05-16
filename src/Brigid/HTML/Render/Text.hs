@@ -612,6 +612,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Accept accept ->
+      Just . buildAttribute "accept" $ Render.bytesToText accept
+
     Attr_AcceptCharset ->
       Just $ buildAttribute "accept-charset" "UTF-8"
 
@@ -881,7 +884,7 @@ renderAttribute attr =
     Attr_SrcDoc srcdoc ->
       Just
         . buildAttribute "srcdoc"
-        . Render.bytesToText
+        . Render.lazyBytesToText
         $ Escape.attributeBytes srcdoc
 
     Attr_SrcLang srclang ->

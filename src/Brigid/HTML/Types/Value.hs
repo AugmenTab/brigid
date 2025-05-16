@@ -83,7 +83,7 @@ valueToBytes (Value value) =
       . Shrubbery.branch @BTime.Month            BTime.monthToBytes
       . Shrubbery.branch @Number                 numberToBytes
       . Shrubbery.branch @PhoneNumber            phoneNumberToBytes
-      . Shrubbery.branch @T.Text                 Render.textToBytes
+      . Shrubbery.branch @T.Text                 Render.textToLazyBytes
       . Shrubbery.branch @BTime.Time             BTime.timeToBytes
       . Shrubbery.branch @URL.AbsoluteURL        URL.absoluteURLToBytes
       . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToBytes

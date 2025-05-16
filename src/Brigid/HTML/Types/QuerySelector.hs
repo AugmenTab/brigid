@@ -601,6 +601,7 @@ module Brigid.HTML.Types.QuerySelector
   ) where
 
 import Prelude hiding (Show, div, head, map, max, min, show, span)
+import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Containers.ListUtils (nubOrd)
@@ -746,7 +747,7 @@ instance Show.Show RawSelector where
 
 rawSelectorToBytes :: RawSelector -> LBS.ByteString
 rawSelectorToBytes =
-  Render.textToBytes . rawSelectorToText
+  Render.textToLazyBytes . rawSelectorToText
 
 data ElementSelector =
   ElementSelector
@@ -1534,7 +1535,7 @@ data ElementType
 elementTypeToBytes :: ElementType -> LBS.ByteString
 elementTypeToBytes element =
   case element of
-    Tag_CustomElement tagName  -> Render.textToBytes tagName
+    Tag_CustomElement tagName  -> Render.textToLazyBytes tagName
     Tag_Anchor                 -> "a"
     Tag_Abbreviation           -> "abbr"
     Tag_ContactAddress         -> "address"
@@ -1772,7 +1773,7 @@ attributeSelectorToBytes (attr, mbVal) =
   LBS.concat
     [ "["
     , attributeTypeToBytes attr
-    , maybe "" (\v -> "='" <> Render.textToBytes v <> "'") mbVal
+    , maybe "" (\v -> "='" <> Render.textToLazyBytes v <> "'") mbVal
     , "]"
     ]
 
@@ -1964,7 +1965,7 @@ attributeTypeToBytes :: AttributeType -> LBS.ByteString
 attributeTypeToBytes attr =
   case attr of
     -- Custom Attribute
-    Attr_CustomAttribute attrName -> Render.textToBytes attrName
+    Attr_CustomAttribute attrName -> Render.textToLazyBytes attrName
 
     -- Global Attributes
     --
@@ -1973,7 +1974,7 @@ attributeTypeToBytes attr =
     Attr_Autofocus           -> "autofocus"
     Attr_Class               -> "class"
     Attr_ContentEditable     -> "contenteditable"
-    Attr_CustomData attrName -> "data-" <> Render.textToBytes attrName
+    Attr_CustomData attrName -> "data-" <> Render.textToLazyBytes attrName
     Attr_Dir                 -> "dir"
     Attr_Draggable           -> "draggable"
     Attr_EnterKeyHint        -> "enterkeyhint"
@@ -2655,9 +2656,8 @@ attr_writingsuggestions =
 -- Scoped Attributes
 --
 
--- TODO
-attr_accept :: T.Text -> AttributeSelector
-attr_accept = (,) Attr_Accept . Just
+attr_accept :: BS.ByteString -> AttributeSelector
+attr_accept = (,) Attr_Accept . Just . Render.bytesToText
 
 attr_acceptCharset :: AttributeSelector
 attr_acceptCharset = (Attr_AcceptCharset, Just "UTF-8")
@@ -3458,7 +3458,7 @@ instance Show.Show RawSwap where
   show = mappend "RawSwap " . Show.show
 
 rawSwapToBytes :: RawSwap -> LBS.ByteString
-rawSwapToBytes = Render.textToBytes . rawSwapToText
+rawSwapToBytes = Render.textToLazyBytes . rawSwapToText
 
 -- Swap Selector
 --
@@ -4191,7 +4191,7 @@ customTrigger = mkTrigger . CustomTrigger
 
 customTriggerToBytes :: CustomTrigger -> LBS.ByteString
 customTriggerToBytes (CustomTrigger trigger) =
-  Render.textToBytes trigger <> " from:body"
+  Render.textToLazyBytes trigger <> " from:body"
 
 customTriggerToText :: CustomTrigger -> T.Text
 customTriggerToText (CustomTrigger trigger) =
@@ -4209,7 +4209,7 @@ instance Show.Show RawTrigger where
 
 rawTriggerToBytes :: RawTrigger -> LBS.ByteString
 rawTriggerToBytes =
-  Render.textToBytes . rawTriggerToText
+  Render.textToLazyBytes . rawTriggerToText
 
 -- Helpers
 --

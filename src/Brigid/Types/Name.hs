@@ -31,7 +31,7 @@ instance Show Name where
   show = mappend "Name " . T.unpack . nameToText
 
 nameToBytes :: Name -> LBS.ByteString
-nameToBytes = Render.textToBytes . nameToText
+nameToBytes = Render.textToLazyBytes . nameToText
 
 newtype NameOption = NameOption (Shrubbery.Union NameOptionTypes)
 

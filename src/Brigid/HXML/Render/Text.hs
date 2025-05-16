@@ -240,7 +240,7 @@ renderAttribute attr =
     Attr_Html html ->
       Just
         . buildAttribute "html"
-        . Render.bytesToText
+        . Render.lazyBytesToText
         $ Escape.attributeBytes html
 
     Attr_Id id ->

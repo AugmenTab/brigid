@@ -36,20 +36,20 @@ renderTag hxml =
 
     Tag_Comment comment ->
       lazyByteString "<!-- "
-        <> lazyByteString (Render.textToBytes comment)
+        <> lazyByteString (Render.textToLazyBytes comment)
         <> lazyByteString " -->"
 
     Tag_Content content ->
-      lazyByteString $ Render.textToBytes content
+      lazyByteString $ Render.textToLazyBytes content
 
     Tag_Entity entity ->
       lazyByteString $ LBS8.pack entity
 
     Tag_RawHXML content ->
-      lazyByteString $ Render.textToBytes content
+      lazyByteString $ Render.textToLazyBytes content
 
     Tag_CustomHXML elemName attrs eiCloserOrContent ->
-      buildTag (Render.textToBytes elemName) attrs eiCloserOrContent
+      buildTag (Render.textToLazyBytes elemName) attrs eiCloserOrContent
 
     Tag_Behavior attrs ->
       buildTag "behavior" attrs $ Left Types.OmitTag
@@ -181,7 +181,7 @@ renderAttribute attr =
       Just $ lazyByteString LBS.empty
 
     Attr_Custom name value ->
-      Just $ buildAttribute (Render.textToBytes name) (Render.textToBytes value)
+      Just $ buildAttribute (Render.textToLazyBytes name) (Render.textToLazyBytes value)
 
     Attr_ActivityIndicatorColor activityIndicatorColor ->
       Just
@@ -207,7 +207,7 @@ renderAttribute attr =
         $ Render.enumBoolToBytes avoidKeyboard
 
     Attr_CancelLabel cancelLabel ->
-      Just . buildAttribute "cancel-label" $ Render.textToBytes cancelLabel
+      Just . buildAttribute "cancel-label" $ Render.textToLazyBytes cancelLabel
 
     Attr_Color color ->
       Just . buildAttribute "color" $ Types.hexColorToBytes color
@@ -222,7 +222,7 @@ renderAttribute attr =
       Just . buildAttribute "cursorColor" $ Types.colorToBytes cursorColor
 
     Attr_DoneLabel doneLabel ->
-      Just . buildAttribute "done-label" $ Render.textToBytes doneLabel
+      Just . buildAttribute "done-label" $ Render.textToLazyBytes doneLabel
 
     Attr_FieldStyle fieldStyle ->
       Just
@@ -278,7 +278,7 @@ renderAttribute attr =
         $ Types.keyboardTypeToBytes keyboardType
 
     Attr_Label label ->
-      Just . buildAttribute "label" $ Render.textToBytes label
+      Just . buildAttribute "label" $ Render.textToLazyBytes label
 
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToBytes mask
@@ -313,7 +313,7 @@ renderAttribute attr =
         $ Render.showBytes numberOfLines
 
     Attr_Placeholder placeholder ->
-      Just . buildAttribute "placeholder" $ Render.textToBytes placeholder
+      Just . buildAttribute "placeholder" $ Render.textToLazyBytes placeholder
 
     Attr_PlaceholderTextColor placeholderTextColor ->
       Just
@@ -396,7 +396,7 @@ renderAttribute attr =
       Just . buildAttribute "url" $ Types.urlToBytes url
 
     Attr_Value value ->
-      Just . buildAttribute "value" $ Render.textToBytes value
+      Just . buildAttribute "value" $ Render.textToLazyBytes value
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns

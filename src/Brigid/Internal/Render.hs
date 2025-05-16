@@ -1,5 +1,8 @@
 module Brigid.Internal.Render
-  ( bytesToText
+  ( bytesToLazyBytes
+  , lazyBytesToBytes
+  , bytesToText
+  , lazyBytesToText
   , enumBoolToBytes
   , enumBoolToText
   , foldToBytesWithSeparator
@@ -7,16 +10,27 @@ module Brigid.Internal.Render
   , showBytes
   , showText
   , textToBytes
+  , textToLazyBytes
   ) where
 
 import Data.Bool qualified as B
+import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 
-bytesToText :: LBS.ByteString -> T.Text
-bytesToText = TE.decodeUtf8 . LBS.toStrict
+bytesToLazyBytes :: BS.ByteString -> LBS.ByteString
+bytesToLazyBytes = LBS.fromStrict
+
+lazyBytesToBytes :: LBS.ByteString -> BS.ByteString
+lazyBytesToBytes = LBS.toStrict
+
+bytesToText :: BS.ByteString -> T.Text
+bytesToText = TE.decodeUtf8
+
+lazyBytesToText :: LBS.ByteString -> T.Text
+lazyBytesToText = bytesToText . lazyBytesToBytes
 
 enumBoolToBytes :: Bool -> LBS.ByteString
 enumBoolToBytes = B.bool "false" "true"
@@ -57,6 +71,8 @@ showBytes = LBS8.pack . show
 showText :: Show s => s -> T.Text
 showText = T.pack . show
 
-textToBytes :: T.Text -> LBS.ByteString
-textToBytes = LBS.fromStrict . TE.encodeUtf8
+textToBytes :: T.Text -> BS.ByteString
+textToBytes = TE.encodeUtf8
 
+textToLazyBytes :: T.Text -> LBS.ByteString
+textToLazyBytes = bytesToLazyBytes . textToBytes

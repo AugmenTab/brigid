@@ -41,20 +41,20 @@ renderTag html =
 
     Tag_Comment comment ->
       lazyByteString "<!-- "
-        <> lazyByteString (Render.textToBytes comment)
+        <> lazyByteString (Render.textToLazyBytes comment)
         <> lazyByteString " -->"
 
     Tag_Text content ->
-      lazyByteString . Render.textToBytes $ Escape.escape content
+      lazyByteString . Render.textToLazyBytes $ Escape.escape content
 
     Tag_Entity entity ->
       lazyByteString $ LBS8.pack entity
 
     Tag_RawHTML content ->
-      lazyByteString $ Render.textToBytes content
+      lazyByteString $ Render.textToLazyBytes content
 
     Tag_CustomHTML elemName attrs eiCloserOrContent ->
-      buildTag (Render.textToBytes elemName) attrs eiCloserOrContent
+      buildTag (Render.textToLazyBytes elemName) attrs eiCloserOrContent
 
     Tag_Anchor attrs content ->
       buildTag "a" attrs $ Right content
@@ -507,8 +507,8 @@ renderAttribute attr =
     Attr_Custom name value ->
       Just $
         buildAttribute
-          (Render.textToBytes name)
-          (Render.textToBytes $ Escape.attributeText value)
+          (Render.textToLazyBytes name)
+          (Render.textToLazyBytes $ Escape.attributeText value)
 
     Attr_AccessKey key ->
       Just . buildAttribute "accesskey" $ Escape.attributeCharBytes key
@@ -535,8 +535,8 @@ renderAttribute attr =
     Attr_CustomData data_ value ->
       Just $
         buildAttribute
-          ("data-" <> Render.textToBytes data_)
-          (Render.textToBytes $ Escape.attributeText value)
+          ("data-" <> Render.textToLazyBytes data_)
+          (Render.textToLazyBytes $ Escape.attributeText value)
 
     Attr_Dir directionality ->
       Just
@@ -570,7 +570,7 @@ renderAttribute attr =
       Just . buildAttribute "inputmode" $ Types.inputModeToBytes mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" . Render.textToBytes $ Escape.attributeText is
+      Just . buildAttribute "is" . Render.textToLazyBytes $ Escape.attributeText is
 
     -- Attr_ItemId
 
@@ -610,7 +610,7 @@ renderAttribute attr =
     Attr_Style style ->
       Just
         . buildAttribute "style"
-        . Render.textToBytes
+        . Render.textToLazyBytes
         $ Escape.attributeText style
 
     Attr_TabIndex tabindex ->
@@ -619,7 +619,7 @@ renderAttribute attr =
     Attr_Title title ->
       Just
         . buildAttribute "title"
-        . Render.textToBytes
+        . Render.textToLazyBytes
         $ Escape.attributeText title
 
     Attr_Translate translate ->
@@ -632,6 +632,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Accept accept ->
+      Just . buildAttribute "accept" $ Render.bytesToLazyBytes accept
+
     Attr_AcceptCharset ->
       Just $ buildAttribute "accept-charset" "UTF-8"
 
@@ -645,7 +648,7 @@ renderAttribute attr =
         $ allow
 
     Attr_Alt alt ->
-      Just . buildAttribute "alt" $ Render.textToBytes alt
+      Just . buildAttribute "alt" $ Render.textToLazyBytes alt
 
     Attr_Async ->
       buildBooleanAttribute "async" True
@@ -686,7 +689,7 @@ renderAttribute attr =
         $ NEL.toList coords
 
     Attr_Content content ->
-      Just . buildAttribute "content" $ Render.textToBytes content
+      Just . buildAttribute "content" $ Render.textToLazyBytes content
 
     Attr_Controls ->
       buildBooleanAttribute "controls" True
@@ -717,7 +720,7 @@ renderAttribute attr =
       buildBooleanAttribute "defer" True
 
     Attr_Dirname dirname ->
-      Just . buildAttribute "dirname" $ Render.textToBytes dirname
+      Just . buildAttribute "dirname" $ Render.textToLazyBytes dirname
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
@@ -731,7 +734,7 @@ renderAttribute attr =
     Attr_Download download ->
       maybe
         (buildBooleanAttribute "download" True)
-        (Just . buildAttribute "download" . Render.textToBytes . NET.toText)
+        (Just . buildAttribute "download" . Render.textToLazyBytes . NET.toText)
         download
 
     Attr_For for ->
@@ -782,7 +785,7 @@ renderAttribute attr =
       Just . buildAttribute "kind" $ Types.trackKindToBytes kind
 
     Attr_Label label ->
-      Just . buildAttribute "label" $ Render.textToBytes label
+      Just . buildAttribute "label" $ Render.textToLazyBytes label
 
     Attr_List list ->
       Just . buildAttribute "label" $ Types.idToBytes list
@@ -830,7 +833,7 @@ renderAttribute attr =
       Just . buildAttribute "optimum" $ Types.numberToBytes optimum
 
     Attr_Pattern pattern ->
-      Just . buildAttribute "pattern" $ Render.textToBytes pattern
+      Just . buildAttribute "pattern" $ Render.textToLazyBytes pattern
 
     Attr_Ping pings ->
       Just
@@ -839,7 +842,7 @@ renderAttribute attr =
         $ NEL.toList pings
 
     Attr_Placeholder placeholder ->
-      Just . buildAttribute "placeholder" $ Render.textToBytes placeholder
+      Just . buildAttribute "placeholder" $ Render.textToLazyBytes placeholder
 
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
@@ -941,7 +944,7 @@ renderAttribute attr =
               Relative_Put    path -> ("hx-put", path)
               Relative_Patch  path -> ("hx-patch", path)
 
-       in Just . buildAttribute hxAttr $ Render.textToBytes hxPath
+       in Just . buildAttribute hxAttr $ Render.textToLazyBytes hxPath
 
     Attr_HxBoost boosted ->
       Just . buildAttribute "hx-boost" $ Render.enumBoolToBytes boosted
@@ -949,7 +952,7 @@ renderAttribute attr =
     Attr_HxConfirm confirmation ->
       Just
         . buildAttribute "hx-confirm"
-        . Render.textToBytes
+        . Render.textToLazyBytes
         $ Escape.attributeText confirmation
 
     Attr_HxDisable disabled ->
@@ -993,7 +996,7 @@ renderAttribute attr =
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventBytes event)
-        . Render.textToBytes
+        . Render.textToLazyBytes
         $ Escape.attributeText action
 
     Attr_HxParams params ->
@@ -1008,7 +1011,7 @@ renderAttribute attr =
     Attr_HxPrompt prompt ->
       Just
         . buildAttribute "hx-prompt"
-        . Render.textToBytes
+        . Render.textToLazyBytes
         $ Escape.attributeText prompt
 
     Attr_HxPushURL url ->

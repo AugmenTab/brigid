@@ -16,7 +16,7 @@ newtype RawJavaScript =
 
 rawJavaScriptToBytes :: RawJavaScript -> LBS.ByteString
 rawJavaScriptToBytes =
-  ("js:" <>) . Render.textToBytes . unRawJavaScript
+  ("js:" <>) . Render.textToLazyBytes . unRawJavaScript
 
 rawJavaScriptToText :: RawJavaScript -> T.Text
 rawJavaScriptToText =

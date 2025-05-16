@@ -215,9 +215,9 @@ customRequestHeaderToBytes :: CustomRequestHeader -> LBS.ByteString
 customRequestHeaderToBytes header =
   LBS.concat
     [ "\""
-    , Render.textToBytes $ customRequestHeaderName header
+    , Render.textToLazyBytes $ customRequestHeaderName header
     , "\" : \""
-    , Render.textToBytes $ customRequestHeaderValue header
+    , Render.textToLazyBytes $ customRequestHeaderValue header
     , "\""
     ]
 customRequestHeaderToText :: CustomRequestHeader -> T.Text

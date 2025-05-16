@@ -19,7 +19,7 @@ import Brigid.Internal.Render qualified as Render
 newtype Part = Part T.Text
 
 partToBytes :: Part -> LBS.ByteString
-partToBytes = Render.textToBytes . partToText
+partToBytes = Render.textToLazyBytes . partToText
 
 partToText :: Part -> T.Text
 partToText (Part part) = part
@@ -27,7 +27,7 @@ partToText (Part part) = part
 data ExportPart = ExportPart Part (Maybe T.Text)
 
 exportPartToBytes :: ExportPart -> LBS.ByteString
-exportPartToBytes = Render.textToBytes . exportPartToText
+exportPartToBytes = Render.textToLazyBytes . exportPartToText
 
 exportPartToText :: ExportPart -> T.Text
 exportPartToText (ExportPart part mbExposed) =

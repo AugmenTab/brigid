@@ -19,4 +19,4 @@ instance Show TriggerFilter where
 
 triggerFilterToBytes :: TriggerFilter -> LBS.ByteString
 triggerFilterToBytes =
-  Render.textToBytes . triggerFilterToText
+  Render.textToLazyBytes . triggerFilterToText

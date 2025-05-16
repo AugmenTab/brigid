@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Translate
       , Attr_WritingSuggestions
 
+      , Attr_Accept
       , Attr_AcceptCharset
       , Attr_Action
       , Attr_Allow
@@ -161,6 +162,7 @@ module Brigid.HTML.Attributes.Internal
   , attributeText
   ) where
 
+import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
@@ -321,10 +323,10 @@ data Attribute (tag :: TagType) where
 
   -- Scoped Attributes
   --
-  -- Attr_Accept
-  --   :: ValidAttribute 'Accept tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Accept
+    :: ValidAttribute 'Accept tag
+    => BS.ByteString
+    -> Attribute tag
 
   Attr_AcceptCharset
     :: ValidAttribute 'AcceptCharset tag
@@ -1010,6 +1012,9 @@ attributeText attr =
 
     -- Scoped Attributes
     --
+    Attr_Accept _accept ->
+      "accept"
+
     Attr_AcceptCharset ->
       "accept-charset"
 

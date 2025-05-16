@@ -3,6 +3,7 @@
 
 module Brigid.HTML.Attributes.Scoped
   ( ValidAttribute
+  , AttributeTags.Accept, accept
   , AttributeTags.AcceptCharset, acceptCharset
   , AttributeTags.Action, action
   , AttributeTags.Allow, allow
@@ -112,6 +113,7 @@ module Brigid.HTML.Attributes.Scoped
   ) where
 
 import Prelude hiding (max, min, reverse, span)
+import Data.ByteString qualified as BS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
@@ -143,6 +145,10 @@ import Brigid.Types qualified as Types
 
 -- Scoped Attributes
 --
+
+accept :: ValidAttribute AttributeTags.Accept tag
+       => BS.ByteString -> Attribute tag
+accept = Attr_Accept
 
 -- | This will default to using "UTF-8" as the only supported encoding.
 --
