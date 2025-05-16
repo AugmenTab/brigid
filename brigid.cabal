@@ -248,6 +248,11 @@ benchmark brigid-bench
   type: exitcode-stdio-1.0
   main-is: Bench.hs
   other-modules:
+      Generate
+      Generation.Analysis
+      Generation.Attribute
+      Generation.Element
+      Generation.Generators
       Paths_brigid
   autogen-modules:
       Paths_brigid
@@ -261,9 +266,11 @@ benchmark brigid-bench
       base
     , beeline-http-client
     , beeline-routing
+    , brigid
     , bytestring
     , containers
     , foldable1-classes-compat
+    , hedgehog
     , html-email-validate
     , http-types
     , integer-types

@@ -84,11 +84,11 @@ tests:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - brigid
+      - brigid
 
 benchmarks:
   brigid-bench:
@@ -100,4 +100,6 @@ benchmarks:
       - -rtsopts
       - -with-rtsopts "-N -T -A32m"
     dependencies:
+      - brigid
+      - hedgehog
       - tasty-bench

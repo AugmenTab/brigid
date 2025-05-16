@@ -1,0 +1,143 @@
+module Generation.Attribute
+  ( Attribute (..)
+  ) where
+
+-- This is effectively just `Brigid.HTML.Attributes.AttributeType`, but we
+-- don't want to expose that ADT, and this has fewer constructors because we
+-- don't particularly care to generate HTMX or HyperScript for benchmarking.
+--
+data Attribute
+  -- Global Attributes
+  --
+  = AccessKey
+  | Autocapitalize
+  | Autofocus
+  | Class
+  | ContentEditable
+  | CustomData
+  | Dir
+  | Draggable
+  | EnterKeyHint
+  | ExportParts
+  | Hidden
+  | Id
+  | Inert
+  | InputMode
+  | Is
+  | ItemId
+  | ItemProp
+  | ItemRef
+  | ItemScope
+  | ItemType
+  | Lang
+  | Nonce
+  | Part
+  | Popover
+  | Role
+  | Slot
+  | Spellcheck
+  | Style
+  | TabIndex
+  | Title
+  | Translate
+  | WritingSuggestions
+
+  -- Scoped Attributes
+  --
+  | Accept
+  | AcceptCharset
+  | Action
+  | Allow
+  | Alt
+  | Async
+  | Autocomplete
+  | Autoplay
+  | Capture
+  | Charset
+  | Checked
+  | Cite
+  | Cols
+  | Colspan
+  | Content
+  | Controls
+  | ControlsList
+  | Coords
+  | CrossOrigin
+  | Data
+  | Datetime
+  | Decoding
+  | Default
+  | Defer
+  | Dirname
+  | Disabled
+  | DisablePictureInPicture
+  | DisableRemotePlayback
+  | Download
+  | Enctype
+  | For
+  | Form
+  | FormAction
+  | FormEnctype
+  | FormMethod
+  | FormNoValidate
+  | FormTarget
+  | Headers
+  | Height
+  | High
+  | Href
+  | HrefLang
+  | HttpEquiv
+  | Integrity
+  | IsMap
+  | Kind
+  | Label
+  | List
+  | Loop
+  | Low
+  | Max
+  | MaxLength
+  | Media
+  | Method
+  | Min
+  | MinLength
+  | Multiple
+  | Muted
+  | Name
+  | NoModule
+  | NoValidate
+  | Open
+  | Optimum
+  | Pattern
+  | Ping
+  | Placeholder
+  | PlaysInline
+  | Poster
+  | Preload
+  | ReadOnly
+  | ReferrerPolicy
+  | Rel
+  | Required
+  | Reversed
+  | Rows
+  | Rowspan
+  | Sandbox
+  | Scope
+  | Selected
+  | Shape
+  | Size
+  | Sizes
+  | Span
+  | Src
+  | SrcDoc
+  | SrcLang
+  | SrcSet
+  | Start
+  | Step
+  | Target
+  | Type
+  | UseMap
+  | Value
+  | Width
+  | Wrap
+  | XMLNS
+  deriving Show
