@@ -172,7 +172,6 @@ library
       Brigid.Types.HexColor
       Brigid.Types.Id
       Brigid.Types.Method
-      Brigid.Types.MIME_Types
       Brigid.Types.Name
       Brigid.Types.NoContent
       Brigid.Types.RawJavaScript

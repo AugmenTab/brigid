@@ -1,8 +1,0 @@
-#!/bin/bash
-
-echo "================================="
-echo "====== Fetching MIME Types ======"
-echo "================================="
-
-docker compose --file compose.mime-types.yml up --abort-on-container-exit
-

@@ -33,7 +33,6 @@ import Brigid.Types.EmailAddress as Export
 import Brigid.Types.HexColor as Export
 import Brigid.Types.Id as Export
 import Brigid.Types.Method as Export
-import Brigid.Types.MIME_Types as Export
 import Brigid.Types.Name as Export
 import Brigid.Types.NoContent as Export
 import Brigid.Types.RawJavaScript as Export
