@@ -16,11 +16,11 @@ module Brigid.HTML.Attributes.Global
   , AttributeTags.Inert, inert
   , AttributeTags.InputMode, inputmode
   , AttributeTags.Is, is
-  -- , AttributeTags.Item, item
-  -- , AttributeTags.ItemId, itemid
-  -- , AttributeTags.ItemProp, itemprop
-  -- , AttributeTags.ItemScope, itemscope
-  -- , AttributeTags.ItemType, itemtype
+  , AttributeTags.ItemId, itemid
+  , AttributeTags.ItemProp, itemprop
+  , AttributeTags.ItemRef, itemref
+  , AttributeTags.ItemScope, itemscope
+  , AttributeTags.ItemType, itemtype
   , AttributeTags.Lang, lang
   -- , AttributeTags.Nonce, nonce
   , AttributeTags.Part, part
@@ -103,20 +103,20 @@ inputmode = Attr_InputMode
 is :: T.Text -> Attribute tag
 is = Attr_Is
 
-{-
--- Helper to ensure proper construction of item attributes
-item
+itemid :: T.Text -> Attribute tag
+itemid = Attr_ItemId
 
-itemid
+itemprop :: T.Text -> Attribute tag
+itemprop = Attr_ItemProp
 
-itemprop
+itemref :: NEL.NonEmpty Types.Id -> Attribute tag
+itemref = Attr_ItemRef
 
-itemref
+itemscope :: Attribute tag
+itemscope = Attr_ItemScope
 
-itemscope
-
-itemtype
--}
+itemtype :: Types.AbsoluteURL -> Attribute tag
+itemtype = Attr_ItemType
 
 -- | Use `Nothing` to represent an unknown language.
 --

@@ -21,11 +21,11 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Inert
       , Attr_InputMode
       , Attr_Is
-   -- , Attr_ItemId
-   -- , Attr_ItemProp
-   -- , Attr_ItemRef
-   -- , Attr_ItemScope
-   -- , Attr_ItemType
+      , Attr_ItemId
+      , Attr_ItemProp
+      , Attr_ItemRef
+      , Attr_ItemScope
+      , Attr_ItemType
       , Attr_Lang
    -- , Attr_Nonce
       , Attr_Part
@@ -255,25 +255,24 @@ data Attribute (tag :: TagType) where
     :: T.Text
     -> Attribute tag
 
-  -- Attr_ItemId
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ItemId
+    :: T.Text
+    -> Attribute tag
 
-  -- Attr_ItemProp
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ItemProp
+    :: T.Text
+    -> Attribute tag
 
-  -- Attr_ItemRef
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ItemRef
+    :: NEL.NonEmpty Types.Id
+    -> Attribute tag
 
-  -- Attr_ItemScope
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ItemScope
+    :: Attribute tag
 
-  -- Attr_ItemType
-  --   :: T.Text -- TODO
-  --   -> Attribute tag
+  Attr_ItemType
+    :: Types.AbsoluteURL
+    -> Attribute tag
 
   Attr_Lang
     :: Maybe Ogma.BCP_47
@@ -967,15 +966,20 @@ attributeText attr =
     Attr_Is _is ->
       "is"
 
-    -- Attr_ItemId
+    Attr_ItemId _itemid ->
+      "itemid"
 
-    -- Attr_ItemProp
+    Attr_ItemProp _itemprop ->
+      "itemprop"
 
-    -- Attr_ItemRef
+    Attr_ItemRef _itemref ->
+      "itemref"
 
-    -- Attr_ItemScope
+    Attr_ItemScope ->
+      "itemscope"
 
-    -- Attr_ItemType
+    Attr_ItemType _itemtype ->
+      "itemtype"
 
     Attr_Lang _lang ->
       "lang"

@@ -558,15 +558,23 @@ renderAttribute attr =
     Attr_Is is ->
       Just . buildAttribute "is" $ Escape.attributeText is
 
-    -- Attr_ItemId
+    Attr_ItemId itemid ->
+      Just $ buildAttribute "itemid" itemid
 
-    -- Attr_ItemProp
+    Attr_ItemProp itemprop ->
+      Just $ buildAttribute "itemprop" itemprop
 
-    -- Attr_ItemRef
+    Attr_ItemRef itemref ->
+      Just
+        . buildAttribute "itemref"
+        . Render.foldToTextWithSeparator Types.idToText " "
+        $ NEL.toList itemref
 
-    -- Attr_ItemScope
+    Attr_ItemScope ->
+      buildBooleanAttribute "itemscope" True
 
-    -- Attr_ItemType
+    Attr_ItemType itemtype ->
+      Just . buildAttribute "itemtype" $ Types.absoluteURLToText itemtype
 
     Attr_Lang lang ->
       Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToText lang

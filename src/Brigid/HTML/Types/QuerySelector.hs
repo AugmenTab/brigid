@@ -683,7 +683,7 @@ import Brigid.Types.Id qualified as Id
 import Brigid.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
 import Brigid.Types.Name (Name, NameOptionTypes, mkNameOption, nameOptionToText, nameToText)
 import Brigid.Types.NoContent (NoContent)
-import Brigid.Types.URL (Ping, RelativeURL, URLTypes, mkURL, pingToText, relativeURLToText, urlToText)
+import Brigid.Types.URL (AbsoluteURL, Ping, RelativeURL, URLTypes, absoluteURLToText, mkURL, pingToText, relativeURLToText, urlToText)
 
 newtype QuerySelector =
   QuerySelector
@@ -2590,25 +2590,24 @@ attr_inputmode = (,) Attr_InputMode . Just . inputModeToText
 attr_is :: T.Text -> AttributeSelector
 attr_is = (,) Attr_Is . Just
 
--- TODO
 attr_itemid :: T.Text -> AttributeSelector
 attr_itemid = (,) Attr_ItemId . Just
 
--- TODO
 attr_itemprop :: T.Text -> AttributeSelector
 attr_itemprop = (,) Attr_ItemProp . Just
 
--- TODO
-attr_itemref :: T.Text -> AttributeSelector
-attr_itemref = (,) Attr_ItemRef . Just
+attr_itemref :: NEL.NonEmpty Id.Id -> AttributeSelector
+attr_itemref =
+  (,) Attr_ItemRef
+    . Just
+    . Render.foldToTextWithSeparator Id.idToText " "
+    . NEL.toList
 
--- TODO
-attr_itemscope :: T.Text -> AttributeSelector
-attr_itemscope = (,) Attr_ItemScope . Just
+attr_itemscope :: AttributeSelector
+attr_itemscope = (Attr_ItemScope, Nothing)
 
--- TODO
-attr_itemtype :: T.Text -> AttributeSelector
-attr_itemtype = (,) Attr_ItemType . Just
+attr_itemtype :: AbsoluteURL -> AttributeSelector
+attr_itemtype = (,) Attr_ItemType . Just . absoluteURLToText
 
 attr_lang :: Maybe BCP_47 -> AttributeSelector
 attr_lang =

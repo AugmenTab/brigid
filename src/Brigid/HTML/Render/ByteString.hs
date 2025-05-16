@@ -572,15 +572,23 @@ renderAttribute attr =
     Attr_Is is ->
       Just . buildAttribute "is" . Render.textToLazyBytes $ Escape.attributeText is
 
-    -- Attr_ItemId
+    Attr_ItemId itemid ->
+      Just . buildAttribute "itemid" $ Render.textToLazyBytes itemid
 
-    -- Attr_ItemProp
+    Attr_ItemProp itemprop ->
+      Just . buildAttribute "itemprop" $ Render.textToLazyBytes itemprop
 
-    -- Attr_ItemRef
+    Attr_ItemRef itemref ->
+      Just
+        . buildAttribute "itemref"
+        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        $ NEL.toList itemref
 
-    -- Attr_ItemScope
+    Attr_ItemScope ->
+      buildBooleanAttribute "itemscope" True
 
-    -- Attr_ItemType
+    Attr_ItemType itemtype ->
+      Just . buildAttribute "itemtype" $ Types.absoluteURLToBytes itemtype
 
     Attr_Lang lang ->
       Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToBytes lang
