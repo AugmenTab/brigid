@@ -67,6 +67,7 @@ module Brigid.HTML.Elements.TagGroups
   , RequireableTags
   , SizableTags
   , SrcTags
+  , SteppableTags
   , TargetableTags
   , TimestampableTags
   , TypeableTags
@@ -963,6 +964,17 @@ type SrcTags =
   , 'Source
   , 'Track
   , 'Video
+  ]
+
+type SteppableTags =
+  [ 'Input
+  , 'InputDate
+  , 'InputDatetimeLocal
+  , 'InputMonth
+  , 'InputNumber
+  , 'InputRange
+  , 'InputTime
+  , 'InputWeek
   ]
 
 type TargetableTags =

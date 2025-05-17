@@ -930,6 +930,9 @@ renderAttribute attr =
     Attr_Start start ->
       Just . buildAttribute "start" $ Render.showBytes start
 
+    Attr_Step step ->
+      Just . buildAttribute "step" $ Types.stepToBytes step
+
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToBytes target
 

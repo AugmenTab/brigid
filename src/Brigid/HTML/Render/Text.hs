@@ -911,6 +911,9 @@ renderAttribute attr =
     Attr_Start start ->
       Just . buildAttribute "start" $ Render.showText start
 
+    Attr_Step step ->
+      Just . buildAttribute "step" $ Types.stepToText step
+
     Attr_Target target ->
       Just . buildAttribute "target" $ Types.targetToText target
 

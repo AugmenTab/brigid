@@ -124,6 +124,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_SrcDoc
       , Attr_SrcLang
       , Attr_Start
+      , Attr_Step
       , Attr_Target
       , Attr_Type
       , Attr_UseMap
@@ -757,10 +758,10 @@ data Attribute (tag :: TagType) where
     => Integer
     -> Attribute tag
 
-  -- Attr_Step
-  --   :: ValidAttribute 'Step tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Step
+    :: ValidAttribute 'Step tag
+    => Types.Step
+    -> Attribute tag
 
   Attr_Target
     :: ValidAttribute 'Target tag
@@ -1275,6 +1276,9 @@ attributeText attr =
 
     Attr_Start _start ->
       "start"
+
+    Attr_Step _step ->
+      "step"
 
     Attr_Target _target ->
       "target"

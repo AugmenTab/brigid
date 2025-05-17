@@ -664,6 +664,7 @@ import Brigid.HTML.Types.Role (Role, roleToText)
 import Brigid.HTML.Types.SandboxToken (SandboxToken, sandboxTokenToText)
 import Brigid.HTML.Types.Scope (Scope, scopeToText)
 import Brigid.HTML.Types.Shape (Shape, shapeToText)
+import Brigid.HTML.Types.Step (Step, stepToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
 import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
@@ -3001,9 +3002,8 @@ attr_srcset = (,) Attr_SrcSet . Just
 attr_start :: Integer -> AttributeSelector
 attr_start = (,) Attr_Start . Just . Render.showText
 
--- TODO
-attr_step :: T.Text -> AttributeSelector
-attr_step = (,) Attr_Step . Just
+attr_step :: Step -> AttributeSelector
+attr_step = (,) Attr_Step . Just . stepToText
 
 attr_target :: Target -> AttributeSelector
 attr_target = (,) Attr_Target . Just . targetToText

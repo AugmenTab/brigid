@@ -104,6 +104,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.SrcDoc, srcdoc
   , AttributeTags.SrcLang, srclang
   , AttributeTags.Start, start
+  , AttributeTags.Step, step
   , AttributeTags.Target, target
   , ValidTypeOption
   , AttributeTags.Type, type_
@@ -612,6 +613,9 @@ srclang = Attr_SrcLang
 
 start :: ValidAttribute AttributeTags.Start tag => Integer -> Attribute tag
 start = Attr_Start
+
+step :: ValidAttribute AttributeTags.Step tag => Types.Step -> Attribute tag
+step = Attr_Step
 
 target :: ValidAttribute AttributeTags.Target tag
        => Types.Target -> Attribute tag
