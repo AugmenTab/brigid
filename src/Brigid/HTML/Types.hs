@@ -34,6 +34,7 @@ import Brigid.HTML.Types.InputMode as Export
 import Brigid.HTML.Types.InputType as Export
 import Brigid.HTML.Types.Integrity as Export
 import Brigid.HTML.Types.KeyHint as Export
+import Brigid.HTML.Types.MediaFeature as Export
 import Brigid.HTML.Types.MetadataName as Export
 import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Number as Export
