@@ -61,6 +61,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Href                    = TagGroups.HrefTags
   ValidElementsFor 'HrefLang                = TagGroups.HrefLangTags
   ValidElementsFor 'HttpEquiv               = '[ Tags.Meta ]
+  ValidElementsFor 'Integrity               = TagGroups.IntegrityTags
   ValidElementsFor 'IsMap                   = '[ Tags.Image ]
   ValidElementsFor 'Kind                    = '[ Tags.Track ]
   ValidElementsFor 'Label                   = TagGroups.LabelableTags

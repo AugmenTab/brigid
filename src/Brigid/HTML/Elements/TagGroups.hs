@@ -57,6 +57,7 @@ module Brigid.HTML.Elements.TagGroups
   , HrefTags
   , HrefLangTags
   , InputTags
+  , IntegrityTags
   , LabelableTags
   , NameTags
   , RangedNumberTags
@@ -845,6 +846,14 @@ type InputTags =
   , 'InputTime
   , 'InputUrl
   , 'InputWeek
+  ]
+
+type IntegrityTags =
+  [ 'Audio
+  , 'Image
+  , 'Link
+  , 'Script
+  , 'Video
   ]
 
 type LabelableTags =

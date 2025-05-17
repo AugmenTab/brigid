@@ -646,6 +646,7 @@ import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSele
 import Brigid.HTML.Types.HttpEquivToken (HttpEquivToken, httpEquivTokenToText)
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
 import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
+import Brigid.HTML.Types.Integrity (IntegrityEncoding, integrityToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
@@ -2833,9 +2834,8 @@ attr_hreflang = (,) Attr_HrefLang . Just . Ogma.bcp_47ToText
 attr_httpEquiv :: HttpEquivToken -> AttributeSelector
 attr_httpEquiv = (,) Attr_HttpEquiv . Just . httpEquivTokenToText
 
--- TODO
-attr_integrity :: T.Text -> AttributeSelector
-attr_integrity = (,) Attr_Integrity . Just
+attr_integrity :: IntegrityEncoding -> BS.ByteString -> AttributeSelector
+attr_integrity sha = (,) Attr_Integrity . Just . integrityToText sha
 
 attr_ismap :: AttributeSelector
 attr_ismap = (Attr_IsMap, Nothing)

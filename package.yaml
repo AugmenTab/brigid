@@ -30,6 +30,7 @@ dependencies:
 - beeline-routing
 - bytestring
 - containers
+- crypton
 - foldable1-classes-compat
 - html-email-validate
 - http-types
@@ -38,6 +39,7 @@ dependencies:
 - json-fleece-aeson
 - json-fleece-core
 - libphonenumber
+- memory
 - non-empty-text
 - ogma
 - scientific

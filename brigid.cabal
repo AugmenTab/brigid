@@ -105,6 +105,7 @@ library
       Brigid.HTML.Types.InlineJSON
       Brigid.HTML.Types.InputMode
       Brigid.HTML.Types.InputType
+      Brigid.HTML.Types.Integrity
       Brigid.HTML.Types.KeyHint
       Brigid.HTML.Types.MetadataName
       Brigid.HTML.Types.None
@@ -191,6 +192,7 @@ library
     , beeline-routing
     , bytestring
     , containers
+    , crypton
     , foldable1-classes-compat
     , html-email-validate
     , http-types
@@ -199,6 +201,7 @@ library
     , json-fleece-aeson
     , json-fleece-core
     , libphonenumber
+    , memory
     , non-empty-text
     , ogma
     , scientific
@@ -227,6 +230,7 @@ test-suite brigid-test
     , brigid
     , bytestring
     , containers
+    , crypton
     , foldable1-classes-compat
     , html-email-validate
     , http-types
@@ -235,6 +239,7 @@ test-suite brigid-test
     , json-fleece-aeson
     , json-fleece-core
     , libphonenumber
+    , memory
     , non-empty-text
     , ogma
     , scientific
@@ -268,6 +273,7 @@ benchmark brigid-bench
     , brigid
     , bytestring
     , containers
+    , crypton
     , foldable1-classes-compat
     , hedgehog
     , html-email-validate
@@ -277,6 +283,7 @@ benchmark brigid-bench
     , json-fleece-aeson
     , json-fleece-core
     , libphonenumber
+    , memory
     , non-empty-text
     , ogma
     , scientific

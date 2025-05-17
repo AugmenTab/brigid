@@ -793,6 +793,9 @@ renderAttribute attr =
         . buildAttribute "http-equiv"
         $ Types.httpEquivTokenToBytes httpEquiv
 
+    Attr_Integrity sha content ->
+      Just . buildAttribute "integrity" $ Types.integrityToBytes sha content
+
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 

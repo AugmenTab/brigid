@@ -52,6 +52,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Href, href
   , AttributeTags.HrefLang, hreflang
   , AttributeTags.HttpEquiv, httpEquiv
+  , AttributeTags.Integrity, integrity
   , AttributeTags.IsMap, ismap
   , AttributeTags.Kind, kind
   , AttributeTags.Label, label
@@ -383,6 +384,10 @@ hreflang = Attr_HrefLang
 httpEquiv :: ValidAttribute AttributeTags.HttpEquiv tag
           => Types.HttpEquivToken -> Attribute tag
 httpEquiv = Attr_HttpEquiv
+
+integrity :: ValidAttribute AttributeTags.Integrity tag
+          => Types.IntegrityEncoding -> BS.ByteString -> Attribute tag
+integrity = Attr_Integrity
 
 -- | The `ismap` attribute is only valid on <img> tags that are nested within
 -- an <a> tag. For safe construction of the `ismap` attribute, use
