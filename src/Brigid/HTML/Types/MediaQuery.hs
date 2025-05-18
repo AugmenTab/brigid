@@ -1,5 +1,18 @@
-module Brigid.HTML.Types.MediaFeature
-  ( MediaFeature
+module Brigid.HTML.Types.MediaQuery
+  ( MediaQuery (..)
+  , mediaQueryToBytes
+  , mediaQueryToText
+  , MediaQueryModifier
+      ( MediaNot
+      , MediaOnly
+      )
+  , MediaQueryType
+      ( MediaAll
+      , MediaScreen
+      , MediaPrint
+      , MediaSpeech
+      )
+  , MediaFeature
       ( Width
       , Height
       , DeviceWidth
@@ -26,8 +39,6 @@ module Brigid.HTML.Types.MediaFeature
       , AnyPointer
       , Update
       )
-  , mediaFeatureToBytes
-  , mediaFeatureToText
   , MediaFeatureType
       ( Min
       , Max
@@ -79,12 +90,99 @@ module Brigid.HTML.Types.MediaFeature
 
 import Data.Bool qualified as B
 import Data.ByteString.Lazy qualified as LBS
+import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Maybe (catMaybes)
 import Data.Ratio (Ratio, denominator, numerator)
 import Data.Text qualified as T
 import Integer (Positive)
 
 import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.Internal.Render qualified as Render
+
+data MediaQuery =
+  MediaQuery
+    { mediaQueryModifier :: Maybe MediaQueryModifier
+    , mediaQueryType :: Maybe MediaQueryType
+    , mediaQueryConditions :: [MediaFeature]
+    }
+
+mediaQueryToBytes :: MediaQuery -> LBS.ByteString
+mediaQueryToBytes query =
+  LBS8.unwords $
+    catMaybes
+      [ mediaQueryModifierToBytes <$> mediaQueryModifier query
+      , Just $
+          Render.foldToBytesWithSeparator id " and " $
+            catMaybes
+              [ mediaQueryTypeToBytes <$> mediaQueryType query
+              , case mediaQueryConditions query of
+                  [] -> Nothing
+                  conds ->
+                    Just $
+                      Render.foldToBytesWithSeparator
+                        mediaFeatureToBytes
+                        " and "
+                        conds
+              ]
+      ]
+
+mediaQueryToText :: MediaQuery -> T.Text
+mediaQueryToText query =
+  T.unwords $
+    catMaybes
+      [ mediaQueryModifierToText <$> mediaQueryModifier query
+      , Just $
+          Render.foldToTextWithSeparator id " and " $
+            catMaybes
+              [ mediaQueryTypeToText <$> mediaQueryType query
+              , case mediaQueryConditions query of
+                  [] -> Nothing
+                  conds ->
+                    Just $
+                      Render.foldToTextWithSeparator
+                        mediaFeatureToText
+                        " and "
+                        conds
+              ]
+      ]
+
+data MediaQueryModifier
+  = MediaNot
+  | MediaOnly
+
+mediaQueryModifierToBytes :: MediaQueryModifier -> LBS.ByteString
+mediaQueryModifierToBytes mqm =
+  case mqm of
+    MediaNot -> "not"
+    MediaOnly -> "only"
+
+mediaQueryModifierToText :: MediaQueryModifier -> T.Text
+mediaQueryModifierToText mqm =
+  case mqm of
+    MediaNot -> "not"
+    MediaOnly -> "only"
+
+data MediaQueryType
+  = MediaAll
+  | MediaScreen
+  | MediaPrint
+  | MediaSpeech
+
+mediaQueryTypeToBytes :: MediaQueryType -> LBS.ByteString
+mediaQueryTypeToBytes mt =
+  case mt of
+    MediaAll -> "all"
+    MediaScreen -> "screen"
+    MediaPrint -> "print"
+    MediaSpeech -> "speech"
+
+mediaQueryTypeToText :: MediaQueryType -> T.Text
+mediaQueryTypeToText mt =
+  case mt of
+    MediaAll -> "all"
+    MediaScreen -> "screen"
+    MediaPrint -> "print"
+    MediaSpeech -> "speech"
 
 data MediaFeature
   = Width MediaFeatureType MediaLength
