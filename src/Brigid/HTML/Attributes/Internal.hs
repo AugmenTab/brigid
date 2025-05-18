@@ -237,7 +237,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_ExportParts
-    :: NEL.NonEmpty Types.ExportPart
+    :: [Types.ExportPart]
     -> Attribute tag
 
   Attr_Hidden

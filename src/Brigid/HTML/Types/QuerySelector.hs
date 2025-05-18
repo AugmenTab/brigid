@@ -2573,12 +2573,11 @@ attr_draggable = (,) Attr_Draggable . Just . Render.enumBoolToText
 attr_enterkeyhint :: KeyHintOption -> AttributeSelector
 attr_enterkeyhint = (,) Attr_EnterKeyHint . Just . keyHintOptionToText
 
-attr_exportparts :: NEL.NonEmpty ExportPart -> AttributeSelector
+attr_exportparts :: [ExportPart] -> AttributeSelector
 attr_exportparts =
   (,) Attr_ExportParts
     . Just
     . Render.foldToTextWithSeparator exportPartToText ", "
-    . NEL.toList
 
 attr_hidden :: AttributeSelector
 attr_hidden = (Attr_Hidden, Nothing)

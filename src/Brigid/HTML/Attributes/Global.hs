@@ -82,7 +82,7 @@ draggable = Attr_Draggable
 enterkeyhint :: Types.KeyHintOption -> Attribute tag
 enterkeyhint = Attr_EnterKeyHint
 
-exportparts :: NEL.NonEmpty Types.ExportPart -> Attribute tag
+exportparts :: [Types.ExportPart] -> Attribute tag
 exportparts = Attr_ExportParts
 
 hide :: Bool -> Attribute tag

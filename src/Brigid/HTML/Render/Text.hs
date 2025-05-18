@@ -541,7 +541,7 @@ renderAttribute attr =
       Just
         . buildAttribute "exportparts"
         . Render.foldToTextWithSeparator Types.exportPartToText ", "
-        $ NEL.toList parts
+        $ parts
 
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
