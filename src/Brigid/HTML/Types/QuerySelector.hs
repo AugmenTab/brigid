@@ -665,6 +665,7 @@ import Brigid.HTML.Types.Role (Role, roleToText)
 import Brigid.HTML.Types.SandboxToken (SandboxToken, sandboxTokenToText)
 import Brigid.HTML.Types.Scope (Scope, scopeToText)
 import Brigid.HTML.Types.Shape (Shape, shapeToText)
+import Brigid.HTML.Types.SrcsetCandidate (SrcsetCandidate, srcsetCandidateToText)
 import Brigid.HTML.Types.Step (Step, stepToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
 import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
@@ -2999,9 +3000,12 @@ attr_srcdoc = (,) Attr_SrcDoc . Just
 attr_srclang :: BCP_47 -> AttributeSelector
 attr_srclang = (,) Attr_SrcLang . Just . bcp_47ToText
 
--- TODO
-attr_srcset :: T.Text -> AttributeSelector
-attr_srcset = (,) Attr_SrcSet . Just
+attr_srcset :: NEL.NonEmpty SrcsetCandidate -> AttributeSelector
+attr_srcset =
+  (,) Attr_SrcSet
+    . Just
+    . Render.foldToTextWithSeparator srcsetCandidateToText ", "
+    . NEL.toList
 
 attr_start :: Integer -> AttributeSelector
 attr_start = (,) Attr_Start . Just . Render.showText

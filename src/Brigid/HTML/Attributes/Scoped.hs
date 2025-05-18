@@ -104,6 +104,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Src, src
   , AttributeTags.SrcDoc, srcdoc
   , AttributeTags.SrcLang, srclang
+  , AttributeTags.SrcSet, srcset
   , AttributeTags.Start, start
   , AttributeTags.Step, step
   , AttributeTags.Target, target
@@ -615,6 +616,10 @@ srcdoc = Attr_SrcDoc . renderLazyHTML
 srclang :: ValidAttribute AttributeTags.SrcLang tag
         => Ogma.BCP_47 -> Attribute tag
 srclang = Attr_SrcLang
+
+srcset :: ValidAttribute AttributeTags.SrcSet tag
+       => NEL.NonEmpty Types.SrcsetCandidate -> Attribute tag
+srcset = Attr_SrcSet
 
 start :: ValidAttribute AttributeTags.Start tag => Integer -> Attribute tag
 start = Attr_Start

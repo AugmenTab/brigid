@@ -103,6 +103,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Src                     = TagGroups.SrcTags
   ValidElementsFor 'SrcDoc                  = '[ Tags.IFrame ]
   ValidElementsFor 'SrcLang                 = '[ Tags.Track ]
+  ValidElementsFor 'SrcSet                  = '[ Tags.Image, Tags.Source ]
   ValidElementsFor 'Start                   = '[ Tags.OrderedList ]
   ValidElementsFor 'Step                    = TagGroups.SteppableTags
   ValidElementsFor 'Target                  = TagGroups.TargetableTags

@@ -124,6 +124,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Src
       , Attr_SrcDoc
       , Attr_SrcLang
+      , Attr_SrcSet
       , Attr_Start
       , Attr_Step
       , Attr_Target
@@ -749,10 +750,10 @@ data Attribute (tag :: TagType) where
     => Ogma.BCP_47
     -> Attribute tag
 
-  -- Attr_SrcSet
-  --   :: ValidAttribute 'SrcSet tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_SrcSet
+    :: ValidAttribute 'SrcSet tag
+    => NEL.NonEmpty Types.SrcsetCandidate
+    -> Attribute tag
 
   Attr_Start
     :: ValidAttribute 'Start tag
@@ -1277,6 +1278,9 @@ attributeText attr =
 
     Attr_SrcLang _srclang ->
       "srclang"
+
+    Attr_SrcSet _srcset ->
+      "srcset"
 
     Attr_Start _start ->
       "start"

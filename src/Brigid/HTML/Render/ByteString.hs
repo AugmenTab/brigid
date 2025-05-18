@@ -933,6 +933,12 @@ renderAttribute attr =
     Attr_SrcLang srclang ->
       Just . buildAttribute "srclang" $ Ogma.bcp_47ToBytes srclang
 
+    Attr_SrcSet srcset ->
+      Just
+        . buildAttribute "srcset"
+        . Render.foldToBytesWithSeparator Types.srcsetCandidateToBytes ", "
+        $ NEL.toList srcset
+
     Attr_Start start ->
       Just . buildAttribute "start" $ Render.showBytes start
 
