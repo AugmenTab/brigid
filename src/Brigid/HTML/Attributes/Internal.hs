@@ -91,6 +91,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Low
       , Attr_Max
       , Attr_MaxLength
+      , Attr_Media
       , Attr_Method
       , Attr_Min
       , Attr_MinLength
@@ -575,10 +576,10 @@ data Attribute (tag :: TagType) where
     => Natural
     -> Attribute tag
 
-  -- Attr_Media
-  --   :: ValidAttribute 'Media tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Media
+    :: ValidAttribute 'Media tag
+    => NEL.NonEmpty Types.MediaQuery
+    -> Attribute tag
 
   Attr_Method
     :: ValidAttribute 'Method tag
@@ -1177,6 +1178,9 @@ attributeText attr =
 
     Attr_MaxLength _maxlength ->
       "maxlength"
+
+    Attr_Media _media ->
+      "media"
 
     Attr_Method _method ->
       "method"

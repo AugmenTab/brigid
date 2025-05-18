@@ -62,6 +62,7 @@ module Brigid.HTML.Attributes.Scoped
   , ValidRangeBound
   , AttributeTags.Max, max
   , AttributeTags.MaxLength, maxlength
+  , AttributeTags.Media, media
   , AttributeTags.Method, method
   , AttributeTags.Min, min
   , AttributeTags.MinLength, minlength
@@ -437,6 +438,10 @@ max =
 maxlength :: ValidAttribute AttributeTags.MaxLength tag
           => Natural -> Attribute tag
 maxlength = Attr_MaxLength
+
+media :: ValidAttribute AttributeTags.Media tag
+      => NEL.NonEmpty Types.MediaQuery -> Attribute tag
+media = Attr_Media
 
 -- TODO: This should be derived from the RelativeURL given in the action
 -- attribute in the Safe.Form module.

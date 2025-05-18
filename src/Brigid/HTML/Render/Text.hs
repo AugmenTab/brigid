@@ -798,6 +798,12 @@ renderAttribute attr =
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" $ Render.showText maxlength
 
+    Attr_Media media ->
+      Just
+        . buildAttribute "media"
+        . Render.foldToTextWithSeparator Types.mediaQueryToText ", "
+        $ NEL.toList media
+
     Attr_Method method ->
       Just . buildAttribute "method" $ Types.formMethodToText method
 

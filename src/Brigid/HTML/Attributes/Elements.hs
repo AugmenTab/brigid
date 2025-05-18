@@ -70,6 +70,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Low                     = '[ Tags.Meter ]
   ValidElementsFor 'Max                     = TagGroups.RangedTags
   ValidElementsFor 'MaxLength               = Add Tags.TextArea TagGroups.FreeTextInputTags
+  ValidElementsFor 'Media                   = TagGroups.MediaTags
   ValidElementsFor 'Method                  = '[ Tags.Form ]
   ValidElementsFor 'Min                     = TagGroups.RangedTags
   ValidElementsFor 'MinLength               = Add Tags.TextArea TagGroups.FreeTextInputTags

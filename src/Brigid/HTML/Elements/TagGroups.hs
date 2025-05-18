@@ -59,6 +59,7 @@ module Brigid.HTML.Elements.TagGroups
   , InputTags
   , IntegrityTags
   , LabelableTags
+  , MediaTags
   , NameTags
   , RangedNumberTags
   , RangedTags
@@ -860,6 +861,13 @@ type IntegrityTags =
 type LabelableTags =
   [ 'OptionGroup
   , 'Track
+  ]
+
+type MediaTags =
+  [ 'Anchor
+  , 'Link
+  , 'Source
+  , 'Style
   ]
 
 type NameTags =

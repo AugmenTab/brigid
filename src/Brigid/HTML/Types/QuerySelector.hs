@@ -648,6 +648,7 @@ import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTit
 import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
 import Brigid.HTML.Types.Integrity (IntegrityEncoding, integrityToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
+import Brigid.HTML.Types.MediaQuery (MediaQuery, mediaQueryToText)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
@@ -2862,9 +2863,12 @@ attr_max = (,) Attr_Max . Just . rangeBoundToText
 attr_maxlength :: Natural -> AttributeSelector
 attr_maxlength = (,) Attr_MaxLength . Just . Render.showText
 
--- TODO
-attr_media :: T.Text -> AttributeSelector
-attr_media = (,) Attr_Media . Just
+attr_media :: NEL.NonEmpty MediaQuery -> AttributeSelector
+attr_media =
+  (,) Attr_Media
+    . Just
+    . Render.foldToTextWithSeparator mediaQueryToText ", "
+    . NEL.toList
 
 attr_method :: FormMethod -> AttributeSelector
 attr_method = (,) Attr_Method . Just . formMethodToText

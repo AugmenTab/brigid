@@ -820,6 +820,12 @@ renderAttribute attr =
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" $ Render.showBytes maxlength
 
+    Attr_Media media ->
+      Just
+        . buildAttribute "media"
+        . Render.foldToBytesWithSeparator Types.mediaQueryToBytes ", "
+        $ NEL.toList media
+
     Attr_Method method ->
       Just . buildAttribute "method" $ Types.formMethodToBytes method
 
