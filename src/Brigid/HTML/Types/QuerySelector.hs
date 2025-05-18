@@ -665,6 +665,7 @@ import Brigid.HTML.Types.Role (Role, roleToText)
 import Brigid.HTML.Types.SandboxToken (SandboxToken, sandboxTokenToText)
 import Brigid.HTML.Types.Scope (Scope, scopeToText)
 import Brigid.HTML.Types.Shape (Shape, shapeToText)
+import Brigid.HTML.Types.Size (Size, sizeToText)
 import Brigid.HTML.Types.SrcsetCandidate (SrcsetCandidate, srcsetCandidateToText)
 import Brigid.HTML.Types.Step (Step, stepToText)
 import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
@@ -2975,9 +2976,12 @@ attr_shape = (,) Attr_Shape . Just . shapeToText
 attr_size :: Positive -> AttributeSelector
 attr_size = (,) Attr_Size . Just . Render.showText
 
--- TODO
-attr_sizes :: T.Text -> AttributeSelector
-attr_sizes = (,) Attr_Sizes . Just
+attr_sizes :: NEL.NonEmpty Size -> AttributeSelector
+attr_sizes =
+  (,) Attr_Sizes
+    . Just
+    . Render.foldToTextWithSeparator sizeToText ", "
+    . NEL.toList
 
 attr_span :: Positive -> AttributeSelector
 attr_span = (,) Attr_Span . Just . Render.showText

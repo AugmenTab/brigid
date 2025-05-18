@@ -899,6 +899,12 @@ renderAttribute attr =
     Attr_Size size ->
       Just . buildAttribute "size" $ Render.showText size
 
+    Attr_Sizes sizes ->
+      Just
+        . buildAttribute "sizes"
+        . Render.foldToTextWithSeparator Types.sizeToText ", "
+        $ NEL.toList sizes
+
     Attr_Span span ->
       Just . buildAttribute "span" $ Render.showText span
 

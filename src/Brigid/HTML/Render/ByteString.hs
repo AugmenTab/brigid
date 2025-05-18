@@ -921,6 +921,12 @@ renderAttribute attr =
     Attr_Size size ->
       Just . buildAttribute "size" $ Render.showBytes size
 
+    Attr_Sizes sizes ->
+      Just
+        . buildAttribute "sizes"
+        . Render.foldToBytesWithSeparator Types.sizeToBytes ", "
+        $ NEL.toList sizes
+
     Attr_Span span ->
       Just . buildAttribute "span" $ Render.showBytes span
 

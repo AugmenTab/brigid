@@ -39,27 +39,29 @@ module Brigid.HTML.Types.MediaQuery
       , AnyPointer
       , Update
       )
+  , mediaFeatureToBytes
+  , mediaFeatureToText
   , MediaFeatureType
       ( Min
       , Max
       , Exact
       )
   , MediaLength
-      ( Px
-      , In
-      , Cm
-      , Mm
-      , Pt
-      , Pc
+      ( MediaPx
+      , MediaIn
+      , MediaCm
+      , MediaMm
+      , MediaPt
+      , MediaPc
       )
   , MediaOrientation
       ( Portrait
       , Landscape
       )
   , MediaResolution
-      ( Dpi
-      , Dpcm
-      , Dppx
+      ( MediaDpi
+      , MediaDpcm
+      , MediaDppx
       )
   , MediaScanType
       ( Interlace
@@ -455,32 +457,32 @@ mediaFeatureTypeToText mft =
     Exact -> T.empty
 
 data MediaLength
-  = Px Number
-  | In Number
-  | Cm Number
-  | Mm Number
-  | Pt Number
-  | Pc Number
+  = MediaPx Number
+  | MediaIn Number
+  | MediaCm Number
+  | MediaMm Number
+  | MediaPt Number
+  | MediaPc Number
 
 mediaLengthToBytes :: MediaLength -> LBS.ByteString
 mediaLengthToBytes ml =
   case ml of
-    Px n -> numberToBytes n <> "px"
-    In n -> numberToBytes n <> "in"
-    Cm n -> numberToBytes n <> "cm"
-    Mm n -> numberToBytes n <> "mm"
-    Pt n -> numberToBytes n <> "pt"
-    Pc n -> numberToBytes n <> "pc"
+    MediaPx n -> numberToBytes n <> "px"
+    MediaIn n -> numberToBytes n <> "in"
+    MediaCm n -> numberToBytes n <> "cm"
+    MediaMm n -> numberToBytes n <> "mm"
+    MediaPt n -> numberToBytes n <> "pt"
+    MediaPc n -> numberToBytes n <> "pc"
 
 mediaLengthToText :: MediaLength -> T.Text
 mediaLengthToText ml =
   case ml of
-    Px n -> numberToText n <> "px"
-    In n -> numberToText n <> "in"
-    Cm n -> numberToText n <> "cm"
-    Mm n -> numberToText n <> "mm"
-    Pt n -> numberToText n <> "pt"
-    Pc n -> numberToText n <> "pc"
+    MediaPx n -> numberToText n <> "px"
+    MediaIn n -> numberToText n <> "in"
+    MediaCm n -> numberToText n <> "cm"
+    MediaMm n -> numberToText n <> "mm"
+    MediaPt n -> numberToText n <> "pt"
+    MediaPc n -> numberToText n <> "pc"
 
 data MediaOrientation
   = Portrait
@@ -499,23 +501,23 @@ mediaOrientationToText mo =
     Landscape -> "landscape"
 
 data MediaResolution
-  = Dpi Number
-  | Dpcm Number
-  | Dppx Number
+  = MediaDpi Number
+  | MediaDpcm Number
+  | MediaDppx Number
 
 mediaResolutionToBytes :: MediaResolution -> LBS.ByteString
 mediaResolutionToBytes mr =
   case mr of
-    Dpi n -> numberToBytes n <> "dpi"
-    Dpcm n -> numberToBytes n <> "dpcm"
-    Dppx n -> numberToBytes n <> "dppx"
+    MediaDpi n -> numberToBytes n <> "dpi"
+    MediaDpcm n -> numberToBytes n <> "dpcm"
+    MediaDppx n -> numberToBytes n <> "dppx"
 
 mediaResolutionToText :: MediaResolution -> T.Text
 mediaResolutionToText mr =
   case mr of
-    Dpi n -> numberToText n <> "dpi"
-    Dpcm n -> numberToText n <> "dpcm"
-    Dppx n -> numberToText n <> "dppx"
+    MediaDpi n -> numberToText n <> "dpi"
+    MediaDpcm n -> numberToText n <> "dpcm"
+    MediaDppx n -> numberToText n <> "dppx"
 
 data MediaScanType
   = Interlace

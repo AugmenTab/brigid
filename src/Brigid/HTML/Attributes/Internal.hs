@@ -120,6 +120,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Selected
       , Attr_Shape
       , Attr_Size
+      , Attr_Sizes
       , Attr_Span
       , Attr_Src
       , Attr_SrcDoc
@@ -725,10 +726,10 @@ data Attribute (tag :: TagType) where
     => Positive
     -> Attribute tag
 
-  -- Attr_Sizes
-  --   :: ValidAttribute 'Sizes tag
-  --   => T.Text -- TODO
-  --   -> Attribute tag
+  Attr_Sizes
+    :: ValidAttribute 'Sizes tag
+    => NEL.NonEmpty Types.Size
+    -> Attribute tag
 
   Attr_Span
     :: ValidAttribute 'Span tag
@@ -1266,6 +1267,9 @@ attributeText attr =
 
     Attr_Size _size ->
       "size"
+
+    Attr_Sizes _sizes ->
+      "sizes"
 
     Attr_Span _span ->
       "span"

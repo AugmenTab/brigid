@@ -131,6 +131,7 @@ library
       Brigid.HTML.Types.Scope
       Brigid.HTML.Types.ScrollBehavior
       Brigid.HTML.Types.Shape
+      Brigid.HTML.Types.Size
       Brigid.HTML.Types.SrcsetCandidate
       Brigid.HTML.Types.Step
       Brigid.HTML.Types.Swap

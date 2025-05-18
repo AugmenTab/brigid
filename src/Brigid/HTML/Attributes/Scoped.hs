@@ -99,6 +99,7 @@ module Brigid.HTML.Attributes.Scoped
   , selected
   , AttributeTags.Shape, shape
   , AttributeTags.Size, size
+  , AttributeTags.Sizes, sizes
   , AttributeTags.Span, span
   , ValidSource
   , AttributeTags.Src, src
@@ -596,6 +597,10 @@ shape = Attr_Shape
 
 size :: ValidAttribute AttributeTags.Size tag => Positive -> Attribute tag
 size = Attr_Size
+
+sizes :: ValidAttribute AttributeTags.Sizes tag
+      => NEL.NonEmpty Types.Size -> Attribute tag
+sizes = Attr_Sizes
 
 span :: ValidAttribute AttributeTags.Span tag => Positive -> Attribute tag
 span = Attr_Span

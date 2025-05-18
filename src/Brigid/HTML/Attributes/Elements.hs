@@ -99,6 +99,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Selected                = '[ Tags.Option ]
   ValidElementsFor 'Shape                   = '[ Tags.Area ]
   ValidElementsFor 'Size                    = Add Tags.Select TagGroups.FreeTextInputTags
+  ValidElementsFor 'Sizes                   = '[ Tags.Image ]
   ValidElementsFor 'Span                    = [ Tags.TableColumn, Tags.TableColumnGroup ]
   ValidElementsFor 'Src                     = TagGroups.SrcTags
   ValidElementsFor 'SrcDoc                  = '[ Tags.IFrame ]
