@@ -17,6 +17,7 @@ data Shape
   | Rect
   | Circle
   | Poly
+  deriving (Bounded, Enum, Eq, Show)
 
 shapeToBytes :: Shape -> LBS.ByteString
 shapeToBytes shape =

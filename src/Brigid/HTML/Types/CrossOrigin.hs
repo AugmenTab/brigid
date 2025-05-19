@@ -26,6 +26,7 @@ data CrossOriginFetch
   -- credentials to the origin site (through @Access-Control-Allow-Credentials@
   -- HTTP header), the resource will be tainted and its usage restricted.
   | UseCredentials
+  deriving (Bounded, Enum, Eq, Show)
 
 crossoriginFetchToBytes :: CrossOriginFetch -> LBS.ByteString
 crossoriginFetchToBytes cors =

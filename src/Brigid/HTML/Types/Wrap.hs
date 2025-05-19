@@ -15,6 +15,7 @@ data Wrap
   = WrapHard
   | WrapSoft
   | WrapOff
+  deriving (Bounded, Enum, Eq, Show)
 
 wrapToBytes :: Wrap -> LBS.ByteString
 wrapToBytes wrap =

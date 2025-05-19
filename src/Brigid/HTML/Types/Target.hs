@@ -4,14 +4,16 @@ module Brigid.HTML.Types.Target
       , Blank
       , Parent
       , Top
+      , CustomTarget
       )
   , targetToBytes
   , targetToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+
+import Brigid.Internal.Render qualified as Render
 
 data Target
   = Self
@@ -19,6 +21,7 @@ data Target
   | Parent
   | Top
   | CustomTarget T.Text
+  deriving (Eq, Show)
 
 targetToBytes :: Target -> LBS.ByteString
 targetToBytes target =
@@ -27,7 +30,7 @@ targetToBytes target =
     Blank          -> "_blank"
     Parent         -> "_parent"
     Top            -> "_top"
-    CustomTarget t -> LBS8.pack $ T.unpack t
+    CustomTarget t -> Render.textToLazyBytes t
 
 targetToText :: Target -> T.Text
 targetToText target =

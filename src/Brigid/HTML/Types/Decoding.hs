@@ -15,6 +15,7 @@ data Decoding
   = DecodeAuto
   | DecodeSync
   | DecodeAsync
+  deriving (Bounded, Enum, Eq, Show)
 
 decodingToBytes :: Decoding -> LBS.ByteString
 decodingToBytes decoding =

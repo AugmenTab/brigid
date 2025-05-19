@@ -15,6 +15,7 @@ data Directionality
   = LeftToRight
   | RightToLeft
   | AutoDirection
+  deriving (Bounded, Enum, Eq, Show)
 
 directionalityToBytes :: Directionality -> LBS.ByteString
 directionalityToBytes option =

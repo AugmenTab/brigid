@@ -26,7 +26,7 @@ data SrcsetCandidate =
   SrcsetCandidate
     { srcsetCandidateURL :: URL
     , srcsetCandidateDescriptor :: SrcsetDescriptor
-    }
+    } deriving (Eq, Show)
 
 mkSrcsetCandidate :: ( KnownNat branchIndex
                      , branchIndex ~ FirstIndexOf url URLTypes
@@ -55,6 +55,7 @@ srcsetCandidateToText ssc =
 data SrcsetDescriptor
   = SrcsetWidth Positive
   | SrcsetDensity Number
+  deriving (Eq, Show)
 
 srcsetDescriptorToBytes :: SrcsetDescriptor -> LBS.ByteString
 srcsetDescriptorToBytes ssd =

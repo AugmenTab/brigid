@@ -30,7 +30,7 @@ data Size =
   Size
     { sizeCondition :: Maybe MediaFeature
     , sizeLength :: SizeLength
-    }
+    } deriving (Eq, Show)
 
 sizeToBytes :: Size -> LBS.ByteString
 sizeToBytes size =
@@ -60,6 +60,7 @@ data SizeLength
   | SizeVmin Number
   | SizeVmax Number
   | SizeCalc T.Text
+  deriving (Eq, Show)
 
 sizeLengthToBytes :: SizeLength -> LBS.ByteString
 sizeLengthToBytes sl =

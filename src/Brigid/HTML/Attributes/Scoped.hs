@@ -363,7 +363,7 @@ formtarget :: ValidAttribute AttributeTags.FormTarget tag
 formtarget = Attr_FormTarget
 
 headers :: ValidAttribute AttributeTags.Headers tag
-        => NEL.NonEmpty Types.Id -> Attribute tag
+        => [Types.Id] -> Attribute tag
 headers = Attr_Headers
 
 height :: ValidAttribute AttributeTags.Height tag => Positive -> Attribute tag

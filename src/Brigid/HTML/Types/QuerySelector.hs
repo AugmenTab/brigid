@@ -2620,12 +2620,11 @@ attr_lang =
 attr_nonce :: T.Text -> AttributeSelector
 attr_nonce = (,) Attr_Nonce . Just
 
-attr_part :: NEL.NonEmpty Part -> AttributeSelector
+attr_part :: [Part] -> AttributeSelector
 attr_part =
   (,) Attr_Part
     . Just
     . Render.foldToTextWithSeparator partToText " "
-    . NEL.toList
 
 attr_popover :: PopoverState -> AttributeSelector
 attr_popover = (,) Attr_Popover . Just . popoverStateToText
@@ -2812,12 +2811,11 @@ attr_formnovalidate = (Attr_FormNoValidate, Nothing)
 attr_formtarget :: Target -> AttributeSelector
 attr_formtarget = (,) Attr_FormTarget . Just . targetToText
 
-attr_headers :: NEL.NonEmpty Id.Id -> AttributeSelector
+attr_headers :: [Id.Id] -> AttributeSelector
 attr_headers =
   (,) Attr_Headers
     . Just
     . Render.foldToTextWithSeparator Id.idToText " "
-    . NEL.toList
 
 attr_height :: Positive -> AttributeSelector
 attr_height = (,) Attr_Height . Just . Render.showText

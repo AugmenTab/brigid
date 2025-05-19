@@ -13,6 +13,7 @@ import Data.Text qualified as T
 data PopoverState
   = AutoPopover
   | ManualPopover
+  deriving (Bounded, Enum, Eq, Show)
 
 popoverStateToBytes :: PopoverState -> LBS.ByteString
 popoverStateToBytes pos =

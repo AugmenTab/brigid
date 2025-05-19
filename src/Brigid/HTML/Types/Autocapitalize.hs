@@ -17,6 +17,7 @@ data AutocapitalizeOption
   | Sentences
   | Words
   | Characters
+  deriving (Bounded, Enum, Eq, Show)
 
 autocapitalizeOptionToBytes :: AutocapitalizeOption -> LBS.ByteString
 autocapitalizeOptionToBytes option =

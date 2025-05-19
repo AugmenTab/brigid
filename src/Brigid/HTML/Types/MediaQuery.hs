@@ -106,7 +106,7 @@ data MediaQuery =
     { mediaQueryModifier :: Maybe MediaQueryModifier
     , mediaQueryType :: Maybe MediaQueryType
     , mediaQueryConditions :: [MediaFeature]
-    }
+    } deriving (Eq, Show)
 
 mediaQueryToBytes :: MediaQuery -> LBS.ByteString
 mediaQueryToBytes query =
@@ -151,6 +151,7 @@ mediaQueryToText query =
 data MediaQueryModifier
   = MediaNot
   | MediaOnly
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaQueryModifierToBytes :: MediaQueryModifier -> LBS.ByteString
 mediaQueryModifierToBytes mqm =
@@ -169,6 +170,7 @@ data MediaQueryType
   | MediaScreen
   | MediaPrint
   | MediaSpeech
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaQueryTypeToBytes :: MediaQueryType -> LBS.ByteString
 mediaQueryTypeToBytes mt =
@@ -212,6 +214,7 @@ data MediaFeature
   | AnyHover Bool
   | AnyPointer MediaPointerAccuracy
   | Update MediaUpdateFrequency
+  deriving (Eq, Show)
 
 mediaFeatureToBytes :: MediaFeature -> LBS.ByteString
 mediaFeatureToBytes mf =
@@ -441,6 +444,7 @@ data MediaFeatureType
   = Min
   | Max
   | Exact
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaFeatureTypeToBytes :: MediaFeatureType -> LBS.ByteString
 mediaFeatureTypeToBytes mft =
@@ -463,6 +467,7 @@ data MediaLength
   | MediaMm Number
   | MediaPt Number
   | MediaPc Number
+  deriving (Eq, Show)
 
 mediaLengthToBytes :: MediaLength -> LBS.ByteString
 mediaLengthToBytes ml =
@@ -487,6 +492,7 @@ mediaLengthToText ml =
 data MediaOrientation
   = Portrait
   | Landscape
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaOrientationToBytes :: MediaOrientation -> LBS.ByteString
 mediaOrientationToBytes mo =
@@ -504,6 +510,7 @@ data MediaResolution
   = MediaDpi Number
   | MediaDpcm Number
   | MediaDppx Number
+  deriving (Eq, Show)
 
 mediaResolutionToBytes :: MediaResolution -> LBS.ByteString
 mediaResolutionToBytes mr =
@@ -522,6 +529,7 @@ mediaResolutionToText mr =
 data MediaScanType
   = Interlace
   | Progressive
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaScanTypeToBytes :: MediaScanType -> LBS.ByteString
 mediaScanTypeToBytes mst =
@@ -539,6 +547,7 @@ data MediaColorScheme
   = ColorNoPreference
   | ColorLight
   | ColorDark
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaColorSchemeToBytes :: MediaColorScheme -> LBS.ByteString
 mediaColorSchemeToBytes mcs =
@@ -559,6 +568,7 @@ data MediaPrefersContrast
   | ContrastMore
   | ConstastLess
   | ContrastCustom
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaPrefersContrastToBytes :: MediaPrefersContrast -> LBS.ByteString
 mediaPrefersContrastToBytes mpc =
@@ -580,6 +590,7 @@ data MediaPointerAccuracy
   = PointerNone
   | PointerCoarse
   | PointerFine
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaPointerAccuracyToBytes :: MediaPointerAccuracy -> LBS.ByteString
 mediaPointerAccuracyToBytes mpa =
@@ -599,6 +610,7 @@ data MediaUpdateFrequency
   = UpdateNone
   | UpdateSlow
   | UpdateFast
+  deriving (Bounded, Enum, Eq, Show)
 
 mediaUpdateFrequencyToBytes :: MediaUpdateFrequency -> LBS.ByteString
 mediaUpdateFrequencyToBytes muf =

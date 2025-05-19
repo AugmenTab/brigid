@@ -15,6 +15,7 @@ data ContentEditableOption
   = Editable
   | NotEditable
   | PlaintextOnly
+  deriving (Bounded, Enum, Eq, Show)
 
 contentEditableOptionToBytes :: ContentEditableOption -> LBS.ByteString
 contentEditableOptionToBytes option =

@@ -15,6 +15,7 @@ data Preload
   = PreloadNone
   | PreloadMetadata
   | PreloadAuto
+  deriving (Bounded, Enum, Eq, Show)
 
 preloadToBytes :: Preload -> LBS.ByteString
 preloadToBytes preload =

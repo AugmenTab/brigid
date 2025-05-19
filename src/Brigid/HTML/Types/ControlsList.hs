@@ -15,6 +15,7 @@ data ControlsList
   = NoDownload
   | NoFullscreen
   | NoRemotePlayback
+  deriving (Bounded, Enum, Eq, Show)
 
 controlslistToBytes :: ControlsList -> LBS.ByteString
 controlslistToBytes controlslist =

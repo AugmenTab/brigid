@@ -67,7 +67,7 @@ data FeaturePolicyDirective
   | USB
   | WebShare
   | XRSpatialTracking
-  deriving (Bounded, Enum, Eq)
+  deriving (Bounded, Enum, Eq, Show)
 
 featurePolicyDirectiveToBytes :: FeaturePolicyDirective -> LBS.ByteString
 featurePolicyDirectiveToBytes directive =

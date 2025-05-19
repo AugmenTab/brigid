@@ -17,6 +17,7 @@ data TrackKind
   | Captions
   | Chapters
   | Metadata
+  deriving (Bounded, Enum, Eq, Show)
 
 trackKindToBytes :: TrackKind -> LBS.ByteString
 trackKindToBytes trackKind =

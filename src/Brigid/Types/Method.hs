@@ -75,6 +75,7 @@ type Patch = 'PATCH
 data FormMethod
   = FormGET
   | FormPOST
+  deriving (Bounded, Enum, Eq, Show)
 
 formMethodToBytes :: FormMethod -> LBS.ByteString
 formMethodToBytes method =

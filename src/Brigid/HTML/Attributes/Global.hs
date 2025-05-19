@@ -126,7 +126,7 @@ lang = Attr_Lang
 nonce :: T.Text -> Attribute tag
 nonce = Attr_Nonce
 
-part :: NEL.NonEmpty Types.Part -> Attribute tag
+part :: [Types.Part] -> Attribute tag
 part = Attr_Part
 
 popover :: Types.PopoverState -> Attribute tag

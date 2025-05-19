@@ -600,7 +600,7 @@ renderAttribute attr =
       Just
         . buildAttribute "part"
         . Render.foldToBytesWithSeparator Types.partToBytes " "
-        $ NEL.toList parts
+        $ parts
 
     Attr_Popover state ->
       Just
@@ -774,7 +774,7 @@ renderAttribute attr =
       Just
         . buildAttribute "headers"
         . Render.foldToBytesWithSeparator Types.idToBytes " "
-        $ NEL.toList headers
+        $ headers
 
     Attr_Height height ->
       Just . buildAttribute "height" $ Render.showBytes height

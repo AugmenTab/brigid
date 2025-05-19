@@ -23,6 +23,7 @@ data KeyHintOption
   | KeyHintPrevious
   | KeyHintSearch
   | KeyHintSend
+  deriving (Bounded, Enum, Eq, Show)
 
 keyHintOptionToBytes :: KeyHintOption -> LBS.ByteString
 keyHintOptionToBytes option =

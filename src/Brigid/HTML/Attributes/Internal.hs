@@ -288,7 +288,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_Part
-    :: NEL.NonEmpty Types.Part
+    :: [Types.Part]
     -> Attribute tag
 
   Attr_Popover
@@ -506,7 +506,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Headers
     :: ValidAttribute 'Headers tag
-    => NEL.NonEmpty Types.Id
+    => [Types.Id]
     -> Attribute tag
 
   Attr_Height

@@ -586,7 +586,7 @@ renderAttribute attr =
       Just
         . buildAttribute "part"
         . Render.foldToTextWithSeparator Types.partToText " "
-        $ NEL.toList parts
+        $ parts
 
     Attr_Popover state ->
       Just
@@ -754,7 +754,7 @@ renderAttribute attr =
       Just
         . buildAttribute "headers"
         . Render.foldToTextWithSeparator Types.idToText " "
-        $ NEL.toList headers
+        $ headers
 
     Attr_Height height ->
       Just . buildAttribute "height" $ Render.showText height

@@ -161,6 +161,7 @@ data Role
   | RoleTimer
   | RoleToolbar
   | RoleTooltip
+  deriving (Bounded, Enum, Eq, Show)
 
 roleToBytes :: Role -> LBS.ByteString
 roleToBytes role =
