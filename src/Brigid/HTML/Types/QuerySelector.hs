@@ -232,6 +232,8 @@ module Brigid.HTML.Types.QuerySelector
   , attr_ping
   , attr_placeholder
   , attr_playsinline
+  , attr_popovertarget
+  , attr_popovertargetaction
   , attr_poster
   , attr_preload
   , attr_readonly
@@ -398,6 +400,8 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Ping
       , Attr_Placeholder
       , Attr_PlaysInline
+      , Attr_PopoverTarget
+      , Attr_PopoverTargetAction
       , Attr_Poster
       , Attr_Preload
       , Attr_ReadOnly
@@ -654,6 +658,7 @@ import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
 import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
+import Brigid.HTML.Types.PopoverTargetAction (PopoverTargetAction, popoverTargetActionToText)
 import Brigid.HTML.Types.Preload (Preload, preloadToText)
 import Brigid.HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
 import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
@@ -1899,6 +1904,8 @@ data AttributeType
   | Attr_Ping
   | Attr_Placeholder
   | Attr_PlaysInline
+  | Attr_PopoverTarget
+  | Attr_PopoverTargetAction
   | Attr_Poster
   | Attr_Preload
   | Attr_ReadOnly
@@ -2080,6 +2087,8 @@ attributeTypeToBytes attr =
     Attr_Ping                    -> "ping"
     Attr_Placeholder             -> "placeholder"
     Attr_PlaysInline             -> "playsinline"
+    Attr_PopoverTarget           -> "popovertarget"
+    Attr_PopoverTargetAction     -> "popovertargetaction"
     Attr_Poster                  -> "poster"
     Attr_Preload                 -> "preload"
     Attr_ReadOnly                -> "readonly"
@@ -2260,6 +2269,8 @@ attributeTypeFromText attr =
     "ping"                    -> Right Attr_Ping
     "placeholder"             -> Right Attr_Placeholder
     "playsinline"             -> Right Attr_PlaysInline
+    "popovertarget"           -> Right Attr_PopoverTarget
+    "popovertargetaction"     -> Right Attr_PopoverTargetAction
     "poster"                  -> Right Attr_Poster
     "preload"                 -> Right Attr_Preload
     "readonly"                -> Right Attr_ReadOnly
@@ -2467,6 +2478,8 @@ attributeTypeToText attr =
     Attr_Ping                    -> "ping"
     Attr_Placeholder             -> "placeholder"
     Attr_PlaysInline             -> "playsinline"
+    Attr_PopoverTarget           -> "popovertarget"
+    Attr_PopoverTargetAction     -> "popovertargetaction"
     Attr_Poster                  -> "poster"
     Attr_Preload                 -> "preload"
     Attr_ReadOnly                -> "readonly"
@@ -2918,6 +2931,13 @@ attr_placeholder = (,) Attr_Placeholder . Just
 
 attr_playsinline :: AttributeSelector
 attr_playsinline = (Attr_PlaysInline, Nothing)
+
+attr_popovertarget :: Id.Id -> AttributeSelector
+attr_popovertarget = (,) Attr_PopoverTarget . Just . Id.idToText
+
+attr_popovertargetaction :: PopoverTargetAction -> AttributeSelector
+attr_popovertargetaction =
+  (,) Attr_PopoverTarget . Just . popoverTargetActionToText
 
 attr_poster :: ( KnownNat branchIndex
                , branchIndex ~ FirstIndexOf poster URLTypes

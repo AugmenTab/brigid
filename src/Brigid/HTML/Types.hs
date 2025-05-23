@@ -44,6 +44,7 @@ import Brigid.HTML.Types.OnOff as Export
 import Brigid.HTML.Types.Part as Export
 import Brigid.HTML.Types.Phone as Export
 import Brigid.HTML.Types.PopoverState as Export
+import Brigid.HTML.Types.PopoverTargetAction as Export
 import Brigid.HTML.Types.Preload as Export
 import Brigid.HTML.Types.PushURL as Export
 import Brigid.HTML.Types.QuerySelector as Export

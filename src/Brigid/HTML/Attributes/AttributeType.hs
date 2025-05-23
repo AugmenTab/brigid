@@ -104,6 +104,8 @@ module Brigid.HTML.Attributes.AttributeType
       , Ping
       , Placeholder
       , PlaysInline
+      , PopoverTarget
+      , PopoverTargetAction
       , Poster
       , Preload
       , ReadOnly
@@ -278,6 +280,8 @@ data AttributeType
   | Ping
   | Placeholder
   | PlaysInline
+  | PopoverTarget
+  | PopoverTargetAction
   | Poster
   | Preload
   | ReadOnly
@@ -448,6 +452,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Ping                    = 'Text "Ping (ping)"
   AttributeErrorMessage Placeholder             = 'Text "Placeholder (placeholder)"
   AttributeErrorMessage PlaysInline             = 'Text "PlaysInline (playsinline)"
+  AttributeErrorMessage PopoverTarget           = 'Text "PopoverTarget (popovertarget)"
+  AttributeErrorMessage PopoverTargetAction     = 'Text "PopoverTargetAction (popovertargetaction)"
   AttributeErrorMessage Poster                  = 'Text "Poster (poster)"
   AttributeErrorMessage Preload                 = 'Text "Preload (preload)"
   AttributeErrorMessage ReadOnly                = 'Text "ReadOnly (readonly)"

@@ -871,6 +871,14 @@ renderAttribute attr =
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
 
+    Attr_PopoverTarget popovertarget ->
+      Just . buildAttribute "popovertarget" $ Types.idToBytes popovertarget
+
+    Attr_PopoverTargetAction popovertargetaction ->
+      Just
+        . buildAttribute "popovertargetaction"
+        $ Types.popoverTargetActionToBytes popovertargetaction
+
     Attr_Poster poster ->
       Just . buildAttribute "poster" $ Types.urlToBytes poster
 

@@ -106,6 +106,8 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Ping
       , Attr_Placeholder
       , Attr_PlaysInline
+      , Attr_PopoverTarget
+      , Attr_PopoverTargetAction
       , Attr_Poster
       , Attr_Preload
       , Attr_ReadOnly
@@ -655,6 +657,16 @@ data Attribute (tag :: TagType) where
   Attr_PlaysInline
     :: ValidAttribute 'PlaysInline tag
     => Bool
+    -> Attribute tag
+
+  Attr_PopoverTarget
+    :: ValidAttribute 'PopoverTarget tag
+    => Types.Id
+    -> Attribute tag
+
+  Attr_PopoverTargetAction
+    :: ValidAttribute 'PopoverTargetAction tag
+    => Types.PopoverTargetAction
     -> Attribute tag
 
   Attr_Poster
@@ -1225,6 +1237,12 @@ attributeText attr =
 
     Attr_PlaysInline _playsinline ->
       "playsinline"
+
+    Attr_PopoverTarget _popovertarget ->
+      "popovertarget"
+
+    Attr_PopoverTargetAction _popovertargetaction ->
+      "popovertargetaction"
 
     Attr_Poster _poster ->
       "poster"

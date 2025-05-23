@@ -101,6 +101,8 @@ module Brigid.HTML.Attributes.Tags
   , Ping
   , Placeholder
   , PlaysInline
+  , PopoverTarget
+  , PopoverTargetAction
   , Poster
   , Preload
   , ReadOnly
@@ -269,6 +271,8 @@ type Pattern = 'AttributeType.Pattern
 type Ping = 'AttributeType.Ping
 type Placeholder = 'AttributeType.Placeholder
 type PlaysInline = 'AttributeType.PlaysInline
+type PopoverTarget = 'AttributeType.PopoverTarget
+type PopoverTargetAction = 'AttributeType.PopoverTargetAction
 type Poster = 'AttributeType.Poster
 type Preload = 'AttributeType.Preload
 type ReadOnly = 'AttributeType.ReadOnly

@@ -86,6 +86,8 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Placeholder             = Add Tags.TextArea TagGroups.FreeTextInputTags
   ValidElementsFor 'PlaysInline             = '[ Tags.Video ]
   ValidElementsFor 'Poster                  = '[ Tags.Video ]
+  ValidElementsFor 'PopoverTarget           = Add Tags.Button TagGroups.InputTags
+  ValidElementsFor 'PopoverTargetAction     = Add Tags.Button TagGroups.InputTags
   ValidElementsFor 'Preload                 = TagGroups.MediaContent
   ValidElementsFor 'ReadOnly                = TagGroups.ReadOnlyTags
   ValidElementsFor 'ReferrerPolicy          = '[ Tags.Script ]

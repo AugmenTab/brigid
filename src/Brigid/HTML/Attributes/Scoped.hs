@@ -81,6 +81,8 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Placeholder, placeholder
   , AttributeTags.PlaysInline, playInline
   , playsinline
+  , AttributeTags.PopoverTarget, popovertarget
+  , AttributeTags.PopoverTargetAction, popovertargetaction
   , AttributeTags.Poster, poster
   , AttributeTags.Preload, preload
   , AttributeTags.ReadOnly, readonly
@@ -531,6 +533,14 @@ playInline = Attr_PlaysInline
 
 playsinline :: ValidAttribute AttributeTags.PlaysInline tag => Attribute tag
 playsinline = playInline True
+
+popovertarget :: ValidAttribute AttributeTags.PopoverTarget tag
+              => Types.Id -> Attribute tag
+popovertarget = Attr_PopoverTarget
+
+popovertargetaction :: ValidAttribute AttributeTags.PopoverTargetAction tag
+                    => Types.PopoverTargetAction -> Attribute tag
+popovertargetaction = Attr_PopoverTargetAction
 
 poster :: ( KnownNat branchIndex
           , branchIndex ~ FirstIndexOf poster Types.URLTypes

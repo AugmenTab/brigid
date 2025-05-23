@@ -117,6 +117,7 @@ library
       Brigid.HTML.Types.Part
       Brigid.HTML.Types.Phone
       Brigid.HTML.Types.PopoverState
+      Brigid.HTML.Types.PopoverTargetAction
       Brigid.HTML.Types.Preload
       Brigid.HTML.Types.PushURL
       Brigid.HTML.Types.QuerySelector
