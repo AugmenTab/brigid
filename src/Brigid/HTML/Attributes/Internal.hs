@@ -45,6 +45,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Action
       , Attr_Allow
       , Attr_Alt
+      , Attr_As
       , Attr_Async
       , Attr_Autocomplete
       , Attr_Autoplay
@@ -360,6 +361,11 @@ data Attribute (tag :: TagType) where
   Attr_Alt
     :: ValidAttribute 'Alt tag
     => T.Text
+    -> Attribute tag
+
+  Attr_As
+    :: ValidAttribute 'As tag
+    => Types.As
     -> Attribute tag
 
   Attr_Async
@@ -1066,6 +1072,9 @@ attributeText attr =
 
     Attr_Alt _alt ->
       "alt"
+
+    Attr_As _as ->
+      "as"
 
     Attr_Async ->
       "async"

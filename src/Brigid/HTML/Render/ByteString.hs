@@ -662,6 +662,9 @@ renderAttribute attr =
     Attr_Alt alt ->
       Just . buildAttribute "alt" $ Render.textToLazyBytes alt
 
+    Attr_As as ->
+      Just . buildAttribute "as" $ Types.asToBytes as
+
     Attr_Async ->
       buildBooleanAttribute "async" True
 

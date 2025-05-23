@@ -170,6 +170,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_action
   , attr_allow
   , attr_alt
+  , attr_as
   , attr_async
   , attr_autocomplete
   , attr_autoplay
@@ -338,6 +339,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Action
       , Attr_Allow
       , Attr_Alt
+      , Attr_As
       , Attr_Async
       , Attr_Autocomplete
       , Attr_Autoplay
@@ -628,6 +630,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
 
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
+import Brigid.HTML.Types.As (As, asToText)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
@@ -1844,6 +1847,7 @@ data AttributeType
   | Attr_Action
   | Attr_Allow
   | Attr_Alt
+  | Attr_As
   | Attr_Async
   | Attr_Autocomplete
   | Attr_Autoplay
@@ -2029,6 +2033,7 @@ attributeTypeToBytes attr =
     Attr_Action                  -> "action"
     Attr_Allow                   -> "allow"
     Attr_Alt                     -> "alt"
+    Attr_As                      -> "as"
     Attr_Async                   -> "async"
     Attr_Autocomplete            -> "autocomplete"
     Attr_Autoplay                -> "autoplay"
@@ -2214,6 +2219,7 @@ attributeTypeFromText attr =
     "action"                  -> Right Attr_Action
     "allow"                   -> Right Attr_Allow
     "alt"                     -> Right Attr_Alt
+    "as"                      -> Right Attr_As
     "async"                   -> Right Attr_Async
     "autocomplete"            -> Right Attr_Autocomplete
     "autoplay"                -> Right Attr_Autoplay
@@ -2424,6 +2430,7 @@ attributeTypeToText attr =
     Attr_Action                  -> "action"
     Attr_Allow                   -> "allow"
     Attr_Alt                     -> "alt"
+    Attr_As                      -> "as"
     Attr_Async                   -> "async"
     Attr_Autocomplete            -> "autocomplete"
     Attr_Autoplay                -> "autoplay"
@@ -2709,6 +2716,9 @@ attr_allow =
 
 attr_alt :: T.Text -> AttributeSelector
 attr_alt = (,) Attr_Alt . Just
+
+attr_as :: As -> AttributeSelector
+attr_as = (,) Attr_As . Just . asToText
 
 attr_async :: AttributeSelector
 attr_async = (Attr_Async, Nothing)

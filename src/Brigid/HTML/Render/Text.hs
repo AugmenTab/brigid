@@ -642,6 +642,9 @@ renderAttribute attr =
     Attr_Alt alt ->
       Just $ buildAttribute "alt" alt
 
+    Attr_As as ->
+      Just . buildAttribute "as" $ Types.asToText as
+
     Attr_Async ->
       buildBooleanAttribute "async" True
 

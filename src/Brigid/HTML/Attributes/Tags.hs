@@ -40,6 +40,7 @@ module Brigid.HTML.Attributes.Tags
   , Action
   , Allow
   , Alt
+  , As
   , Async
   , Autocomplete
   , Autoplay
@@ -212,6 +213,7 @@ type AcceptCharset = 'AttributeType.AcceptCharset
 type Action = 'AttributeType.Action
 type Allow = 'AttributeType.Allow
 type Alt = 'AttributeType.Alt
+type As = 'AttributeType.As
 type Async = 'AttributeType.Async
 type Autocomplete = 'AttributeType.Autocomplete
 type Autoplay = 'AttributeType.Autoplay

@@ -76,6 +76,7 @@ library
       Brigid.HTML.Elements.TagType
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Types.Action
+      Brigid.HTML.Types.As
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
       Brigid.HTML.Types.CaptureMethod

@@ -9,6 +9,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Action, action
   , AttributeTags.Allow, allow
   , AttributeTags.Alt, alt
+  , AttributeTags.As, as
   , AttributeTags.Async, async
   , ValidAutocomplete
   , AttributeTags.Autocomplete, autocomplete
@@ -192,6 +193,9 @@ allow = Attr_Allow . nubOrdOn fromEnum
 
 alt :: ValidAttribute AttributeTags.Alt tag => T.Text -> Attribute tag
 alt = Attr_Alt
+
+as :: ValidAttribute AttributeTags.As tag => Types.As -> Attribute tag
+as = Attr_As
 
 async :: ValidAttribute AttributeTags.Async tag => Attribute tag
 async = Attr_Async

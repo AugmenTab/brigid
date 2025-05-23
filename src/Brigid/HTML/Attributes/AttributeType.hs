@@ -43,6 +43,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Action
       , Allow
       , Alt
+      , As
       , Async
       , Autocomplete
       , Autoplay
@@ -221,6 +222,7 @@ data AttributeType
   | Action
   | Allow
   | Alt
+  | As
   | Async
   | Autocomplete
   | Autoplay
@@ -395,6 +397,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Action                  = 'Text "Action (action)"
   AttributeErrorMessage Allow                   = 'Text "Allow (allow)"
   AttributeErrorMessage Alt                     = 'Text "Alt (alt)"
+  AttributeErrorMessage As                      = 'Text "As (as)"
   AttributeErrorMessage Async                   = 'Text "Async (async)"
   AttributeErrorMessage Autocomplete            = 'Text "Autocomplete (autocomplete)"
   AttributeErrorMessage Autoplay                = 'Text "Autoplay (autoplay)"

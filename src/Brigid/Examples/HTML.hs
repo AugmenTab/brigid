@@ -53,6 +53,7 @@ documentExample =
         , E.link
             [ A.rel HTML.Rel_Stylesheet
             , A.href . exampleURL $ GetCustomer 1
+            , A.as HTML.AsStyle
             ]
         , HTMX.setConfig $
             HTMX.defaultConfig

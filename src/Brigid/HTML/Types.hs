@@ -3,6 +3,7 @@ module Brigid.HTML.Types
   ) where
 
 import Brigid.HTML.Types.Action as Export
+import Brigid.HTML.Types.As as Export
 import Brigid.HTML.Types.Autocapitalize as Export
 import Brigid.HTML.Types.AutocompleteToken as Export
 import Brigid.HTML.Types.CaptureMethod as Export

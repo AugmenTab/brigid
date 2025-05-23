@@ -24,6 +24,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Action                  = '[ Tags.Form ]
   ValidElementsFor 'Allow                   = '[ Tags.IFrame ]
   ValidElementsFor 'Alt                     = TagGroups.AltTags
+  ValidElementsFor 'As                      = '[ Tags.Link ]
   ValidElementsFor 'Async                   = '[ Tags.Script ]
   ValidElementsFor 'Autocomplete            = TagGroups.AutocompletableTags
   ValidElementsFor 'Autoplay                = TagGroups.MediaContent
