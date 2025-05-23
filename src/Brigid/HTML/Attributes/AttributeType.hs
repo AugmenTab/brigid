@@ -69,6 +69,7 @@ module Brigid.HTML.Attributes.AttributeType
       , DisableRemotePlayback
       , Download
       , Enctype
+      , FetchPriority
       , For
       , Form
       , FormAction
@@ -248,6 +249,7 @@ data AttributeType
   | DisableRemotePlayback
   | Download
   | Enctype
+  | FetchPriority
   | For
   | Form
   | FormAction
@@ -423,6 +425,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage DisableRemotePlayback   = 'Text "DisableRemotePlayback (disableremoteplayback)"
   AttributeErrorMessage Download                = 'Text "Download (download)"
   AttributeErrorMessage Enctype                 = 'Text "Enctype (enctype)"
+  AttributeErrorMessage FetchPriority           = 'Text "FetchPriority (fetchpriority)"
   AttributeErrorMessage For                     = 'Text "For (for)"
   AttributeErrorMessage Form                    = 'Text "Form (form)"
   AttributeErrorMessage FormAction              = 'Text "FormAction (formaction)"

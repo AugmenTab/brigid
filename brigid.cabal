@@ -96,6 +96,7 @@ library
       Brigid.HTML.Types.Every
       Brigid.HTML.Types.Extension
       Brigid.HTML.Types.FeaturePolicyDirective
+      Brigid.HTML.Types.FetchPriority
       Brigid.HTML.Types.FocusScroll
       Brigid.HTML.Types.For
       Brigid.HTML.Types.Headers

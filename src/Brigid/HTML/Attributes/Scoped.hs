@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.DisableRemotePlayback, disableremoteplayback
   , AttributeTags.Download, download
   , AttributeTags.Enctype, enctype
+  , AttributeTags.FetchPriority, fetchpriority
   , ValidFor
   , AttributeTags.For, for
   , AttributeTags.Form, form
@@ -337,6 +338,10 @@ download = Attr_Download
 enctype :: ValidAttribute AttributeTags.Enctype tag
         => BS.ByteString -> Attribute tag
 enctype = Attr_Enctype
+
+fetchpriority :: ValidAttribute AttributeTags.FetchPriority tag
+              => Types.FetchPriority -> Attribute tag
+fetchpriority = Attr_FetchPriority
 
 for :: ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf for Types.ForOptionTypes

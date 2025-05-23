@@ -735,6 +735,11 @@ renderAttribute attr =
     Attr_Enctype enctype ->
       Just . buildAttribute "enctype" $ Render.bytesToText enctype
 
+    Attr_FetchPriority fetchpriority ->
+      Just
+        . buildAttribute "fetchpriority"
+        $ Types.fetchPriorityToText fetchpriority
+
     Attr_For for ->
       Just . buildAttribute "for" $ Types.forOptionToText for
 

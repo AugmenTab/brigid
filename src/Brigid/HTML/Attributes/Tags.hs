@@ -66,6 +66,7 @@ module Brigid.HTML.Attributes.Tags
   , DisableRemotePlayback
   , Download
   , Enctype
+  , FetchPriority
   , For
   , Form
   , FormAction
@@ -239,6 +240,7 @@ type Disabled = 'AttributeType.Disabled
 type DisableRemotePlayback = 'AttributeType.DisableRemotePlayback
 type Download = 'AttributeType.Download
 type Enctype = 'AttributeType.Enctype
+type FetchPriority = 'AttributeType.FetchPriority
 type For = 'AttributeType.For
 type Form = 'AttributeType.Form
 type FormAction = 'AttributeType.FormAction

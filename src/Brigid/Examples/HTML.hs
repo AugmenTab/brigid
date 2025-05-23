@@ -308,6 +308,7 @@ listExample =
               , A.alt "This describes the image."
               , A.decoding HTML.DecodeAsync
               , A.usemap $ coerce divId
+              , A.fetchpriority HTML.FetchHigh
               ]
    -- , Safe.imgMap [] -- This fails because `imgMap` must be used inside an Anchor tag.
       ]

@@ -755,6 +755,11 @@ renderAttribute attr =
     Attr_Enctype enctype ->
       Just . buildAttribute "enctype" $ Render.bytesToLazyBytes enctype
 
+    Attr_FetchPriority fetchpriority ->
+      Just
+        . buildAttribute "fetchpriority"
+        $ Types.fetchPriorityToBytes fetchpriority
+
     Attr_For for ->
       Just . buildAttribute "for" $ Types.forOptionToBytes for
 

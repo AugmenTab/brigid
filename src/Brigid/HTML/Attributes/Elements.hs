@@ -19,7 +19,7 @@ type ValidAttribute attr tag =
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Abbreviation            = '[ Tags.TableHeader ]
-  ValidElementsFor 'Accept                  = '[ Tags.Input, Tags.InputFile ]
+  ValidElementsFor 'Accept                  = [ Tags.Input, Tags.InputFile ]
   ValidElementsFor 'AcceptCharset           = '[ Tags.Form ]
   ValidElementsFor 'Action                  = '[ Tags.Form ]
   ValidElementsFor 'Allow                   = '[ Tags.IFrame ]
@@ -50,6 +50,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'DisableRemotePlayback   = TagGroups.MediaContent
   ValidElementsFor 'Download                = '[ Tags.Anchor ]
   ValidElementsFor 'Enctype                 = '[ Tags.Form ]
+  ValidElementsFor 'FetchPriority           = [ Tags.Image, Tags.Link, Tags.Script ]
   ValidElementsFor 'For                     = [ Tags.Label, Tags.Output ]
   ValidElementsFor 'Form                    = TagGroups.InputTags
   ValidElementsFor 'FormAction              = TagGroups.FormSubmitTags

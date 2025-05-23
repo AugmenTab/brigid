@@ -197,6 +197,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_disableremoteplayback
   , attr_download
   , attr_enctype
+  , attr_fetchpriority
   , attr_for
   , attr_form
   , attr_formaction
@@ -369,6 +370,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_DisableRemotePlayback
       , Attr_Download
       , Attr_Enctype
+      , Attr_FetchPriority
       , Attr_For
       , Attr_Form
       , Attr_FormAction
@@ -650,6 +652,7 @@ import Brigid.HTML.Types.Event qualified as Event
 import Brigid.HTML.Types.Every (Every, everyToBytes, everyToText)
 import Brigid.HTML.Types.Extension (Extension, extensionToText)
 import Brigid.HTML.Types.FeaturePolicyDirective (FeaturePolicyDirective, featurePolicyDirectiveToText)
+import Brigid.HTML.Types.FetchPriority (FetchPriority, fetchPriorityToText)
 import Brigid.HTML.Types.For (ForOptionTypes, forOptionToText, mkForOption)
 import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
@@ -1877,6 +1880,7 @@ data AttributeType
   | Attr_DisableRemotePlayback
   | Attr_Download
   | Attr_Enctype
+  | Attr_FetchPriority
   | Attr_For
   | Attr_Form
   | Attr_FormAction
@@ -2063,6 +2067,7 @@ attributeTypeToBytes attr =
     Attr_DisableRemotePlayback   -> "disabled"
     Attr_Download                -> "download"
     Attr_Enctype                 -> "enctype"
+    Attr_FetchPriority           -> "fetchpriority"
     Attr_For                     -> "for"
     Attr_Form                    -> "form"
     Attr_FormAction              -> "formaction"
@@ -2248,6 +2253,7 @@ attributeTypeFromText attr =
     "disableremoteplayback"   -> Right Attr_DisableRemotePlayback
     "download"                -> Right Attr_Download
     "enctype"                 -> Right Attr_Enctype
+    "fetchpriority"           -> Right Attr_FetchPriority
     "for"                     -> Right Attr_For
     "form"                    -> Right Attr_Form
     "formaction"              -> Right Attr_FormAction
@@ -2460,6 +2466,7 @@ attributeTypeToText attr =
     Attr_DisableRemotePlayback   -> "disableremoteplayback"
     Attr_Download                -> "download"
     Attr_Enctype                 -> "enctype"
+    Attr_FetchPriority           -> "fetchpriority"
     Attr_For                     -> "for"
     Attr_Form                    -> "form"
     Attr_FormAction              -> "formaction"
@@ -2820,6 +2827,9 @@ attr_download = (,) Attr_Download . fmap NET.toText
 
 attr_enctype :: BS.ByteString -> AttributeSelector
 attr_enctype = (,) Attr_Enctype . Just . Render.bytesToText
+
+attr_fetchpriority :: FetchPriority -> AttributeSelector
+attr_fetchpriority = (,) Attr_FetchPriority . Just . fetchPriorityToText
 
 attr_for :: ( KnownNat branchIndex
             , branchIndex ~ FirstIndexOf for ForOptionTypes

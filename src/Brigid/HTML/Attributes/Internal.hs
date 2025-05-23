@@ -71,6 +71,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_DisableRemotePlayback
       , Attr_Download
       , Attr_Enctype
+      , Attr_FetchPriority
       , Attr_For
       , Attr_Form
       , Attr_FormAction
@@ -483,6 +484,11 @@ data Attribute (tag :: TagType) where
   Attr_Enctype
     :: ValidAttribute 'Enctype tag
     => BS.ByteString
+    -> Attribute tag
+
+  Attr_FetchPriority
+    :: ValidAttribute 'FetchPriority tag
+    => Types.FetchPriority
     -> Attribute tag
 
   Attr_For
@@ -1150,6 +1156,9 @@ attributeText attr =
 
     Attr_Enctype _enctype ->
       "enctype"
+
+    Attr_FetchPriority _fetchpriority ->
+      "fetchpriority"
 
     Attr_For _for ->
       "for"

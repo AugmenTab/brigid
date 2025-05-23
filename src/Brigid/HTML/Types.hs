@@ -23,6 +23,7 @@ import Brigid.HTML.Types.Event as Export
 import Brigid.HTML.Types.Every as Export
 import Brigid.HTML.Types.Extension as Export
 import Brigid.HTML.Types.FeaturePolicyDirective as Export
+import Brigid.HTML.Types.FetchPriority as Export
 import Brigid.HTML.Types.For as Export
 import Brigid.HTML.Types.FocusScroll as Export
 import Brigid.HTML.Types.Headers as Export
