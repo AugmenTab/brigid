@@ -804,6 +804,18 @@ renderAttribute attr =
         . buildAttribute "http-equiv"
         $ Types.httpEquivTokenToBytes httpEquiv
 
+    Attr_ImageSizes imagesizes ->
+      Just
+        . buildAttribute "imagesizes"
+        . Render.foldToBytesWithSeparator Types.sizeToBytes ", "
+        $ NEL.toList imagesizes
+
+    Attr_ImageSrcset imagesrcset ->
+      Just
+        . buildAttribute "imagesrcset"
+        . Render.foldToBytesWithSeparator Types.srcsetCandidateToBytes ", "
+        $ NEL.toList imagesrcset
+
     Attr_Integrity sha content ->
       Just . buildAttribute "integrity" $ Types.integrityToBytes sha content
 

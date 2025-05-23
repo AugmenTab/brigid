@@ -211,6 +211,8 @@ module Brigid.HTML.Types.QuerySelector
   , attr_href
   , attr_hreflang
   , attr_httpEquiv
+  , attr_imagesizes
+  , attr_imagesrcset
   , attr_integrity
   , attr_ismap
   , attr_kind
@@ -384,6 +386,8 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Href
       , Attr_HrefLang
       , Attr_HttpEquiv
+      , Attr_ImageSizes
+      , Attr_ImageSrcset
       , Attr_Integrity
       , Attr_IsMap
       , Attr_Kind
@@ -1894,6 +1898,8 @@ data AttributeType
   | Attr_Href
   | Attr_HrefLang
   | Attr_HttpEquiv
+  | Attr_ImageSizes
+  | Attr_ImageSrcset
   | Attr_Integrity
   | Attr_IsMap
   | Attr_Kind
@@ -2081,6 +2087,8 @@ attributeTypeToBytes attr =
     Attr_Href                    -> "href"
     Attr_HrefLang                -> "hreflang"
     Attr_HttpEquiv               -> "http-equiv"
+    Attr_ImageSizes              -> "imagesizes"
+    Attr_ImageSrcset             -> "imagesrcset"
     Attr_Integrity               -> "integrity"
     Attr_IsMap                   -> "ismap"
     Attr_Kind                    -> "kind"
@@ -2267,6 +2275,8 @@ attributeTypeFromText attr =
     "href"                    -> Right Attr_Href
     "hreflang"                -> Right Attr_HrefLang
     "http-equiv"              -> Right Attr_HttpEquiv
+    "imagesizes"              -> Right Attr_ImageSizes
+    "imagesrcset"             -> Right Attr_ImageSrcset
     "integrity"               -> Right Attr_Integrity
     "ismap"                   -> Right Attr_IsMap
     "kind"                    -> Right Attr_Kind
@@ -2480,6 +2490,8 @@ attributeTypeToText attr =
     Attr_Href                    -> "href"
     Attr_HrefLang                -> "hreflang"
     Attr_HttpEquiv               -> "http-equiv"
+    Attr_ImageSizes              -> "imagesizes"
+    Attr_ImageSrcset             -> "imagesrcset"
     Attr_Integrity               -> "integrity"
     Attr_IsMap                   -> "ismap"
     Attr_Kind                    -> "kind"
@@ -2883,6 +2895,20 @@ attr_hreflang = (,) Attr_HrefLang . Just . Ogma.bcp_47ToText
 
 attr_httpEquiv :: HttpEquivToken -> AttributeSelector
 attr_httpEquiv = (,) Attr_HttpEquiv . Just . httpEquivTokenToText
+
+attr_imagesizes :: NEL.NonEmpty Size -> AttributeSelector
+attr_imagesizes =
+  (,) Attr_ImageSizes
+    . Just
+    . Render.foldToTextWithSeparator sizeToText ", "
+    . NEL.toList
+
+attr_imagesrcset :: NEL.NonEmpty SrcsetCandidate -> AttributeSelector
+attr_imagesrcset =
+  (,) Attr_ImageSrcset
+    . Just
+    . Render.foldToTextWithSeparator srcsetCandidateToText ", "
+    . NEL.toList
 
 attr_integrity :: IntegrityEncoding -> BS.ByteString -> AttributeSelector
 attr_integrity sha = (,) Attr_Integrity . Just . integrityToText sha

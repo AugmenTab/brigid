@@ -80,6 +80,8 @@ module Brigid.HTML.Attributes.Tags
   , Href
   , HrefLang
   , HttpEquiv
+  , ImageSizes
+  , ImageSrcset
   , Integrity
   , IsMap
   , Kind
@@ -254,6 +256,8 @@ type High = 'AttributeType.High
 type Href = 'AttributeType.Href
 type HrefLang = 'AttributeType.HrefLang
 type HttpEquiv = 'AttributeType.HttpEquiv
+type ImageSizes = 'AttributeType.ImageSizes
+type ImageSrcset = 'AttributeType.ImageSrcset
 type Integrity = 'AttributeType.Integrity
 type IsMap = 'AttributeType.IsMap
 type Kind = 'AttributeType.Kind

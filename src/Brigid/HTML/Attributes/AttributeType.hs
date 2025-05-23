@@ -83,6 +83,8 @@ module Brigid.HTML.Attributes.AttributeType
       , Href
       , HrefLang
       , HttpEquiv
+      , ImageSizes
+      , ImageSrcset
       , Integrity
       , IsMap
       , Kind
@@ -263,6 +265,8 @@ data AttributeType
   | Href
   | HrefLang
   | HttpEquiv
+  | ImageSizes
+  | ImageSrcset
   | Integrity
   | IsMap
   | Kind
@@ -439,6 +443,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Href                    = 'Text "Href (href)"
   AttributeErrorMessage HrefLang                = 'Text "HrefLang (hreflang)"
   AttributeErrorMessage HttpEquiv               = 'Text "HttpEquiv (http-equiv)"
+  AttributeErrorMessage ImageSizes              = 'Text "ImageSizes (imagesizes)"
+  AttributeErrorMessage ImageSrcset             = 'Text "ImageSrcset (imagesrcset)"
   AttributeErrorMessage Integrity               = 'Text "Integrity (integrity)"
   AttributeErrorMessage IsMap                   = 'Text "IsMap (ismap)"
   AttributeErrorMessage Kind                    = 'Text "Kind (kind)"

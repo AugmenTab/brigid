@@ -55,6 +55,8 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Href, href
   , AttributeTags.HrefLang, hreflang
   , AttributeTags.HttpEquiv, httpEquiv
+  , AttributeTags.ImageSizes, imagesizes
+  , AttributeTags.ImageSrcset, imagesrcset
   , AttributeTags.Integrity, integrity
   , AttributeTags.IsMap, ismap
   , AttributeTags.Kind, kind
@@ -405,6 +407,14 @@ hreflang = Attr_HrefLang
 httpEquiv :: ValidAttribute AttributeTags.HttpEquiv tag
           => Types.HttpEquivToken -> Attribute tag
 httpEquiv = Attr_HttpEquiv
+
+imagesizes :: ValidAttribute AttributeTags.ImageSizes tag
+           => NEL.NonEmpty Types.Size -> Attribute tag
+imagesizes = Attr_ImageSizes
+
+imagesrcset :: ValidAttribute AttributeTags.ImageSrcset tag
+            => NEL.NonEmpty Types.SrcsetCandidate -> Attribute tag
+imagesrcset = Attr_ImageSrcset
 
 integrity :: ValidAttribute AttributeTags.Integrity tag
           => Types.IntegrityEncoding -> BS.ByteString -> Attribute tag

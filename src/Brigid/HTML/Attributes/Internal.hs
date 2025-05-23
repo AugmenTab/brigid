@@ -85,6 +85,8 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Href
       , Attr_HrefLang
       , Attr_HttpEquiv
+      , Attr_ImageSizes
+      , Attr_ImageSrcset
       , Attr_Integrity
       , Attr_IsMap
       , Attr_Kind
@@ -553,6 +555,16 @@ data Attribute (tag :: TagType) where
   Attr_HttpEquiv
     :: ValidAttribute 'HttpEquiv tag
     => Types.HttpEquivToken
+    -> Attribute tag
+
+  Attr_ImageSizes
+    :: ValidAttribute 'ImageSizes tag
+    => NEL.NonEmpty Types.Size
+    -> Attribute tag
+
+  Attr_ImageSrcset
+    :: ValidAttribute 'ImageSrcset tag
+    => NEL.NonEmpty Types.SrcsetCandidate
     -> Attribute tag
 
   Attr_Integrity
@@ -1198,6 +1210,12 @@ attributeText attr =
 
     Attr_HttpEquiv _httpEquiv ->
       "http-equiv"
+
+    Attr_ImageSizes _imagesizes ->
+      "imagesizes"
+
+    Attr_ImageSrcset _imagesrcset ->
+      "imagesrcset"
 
     Attr_Integrity _sha _content ->
       "integrity"
