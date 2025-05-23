@@ -107,6 +107,7 @@ library
       Brigid.HTML.Types.InputType
       Brigid.HTML.Types.Integrity
       Brigid.HTML.Types.KeyHint
+      Brigid.HTML.Types.LoadOption
       Brigid.HTML.Types.MediaQuery
       Brigid.HTML.Types.MetadataName
       Brigid.HTML.Types.None

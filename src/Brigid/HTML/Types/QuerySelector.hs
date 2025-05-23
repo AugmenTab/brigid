@@ -213,6 +213,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_kind
   , attr_label
   , attr_list
+  , attr_loading
   , attr_loop
   , attr_low
   , attr_max
@@ -382,6 +383,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Kind
       , Attr_Label
       , Attr_List
+      , Attr_Loading
       , Attr_Loop
       , Attr_Low
       , Attr_Max
@@ -652,6 +654,7 @@ import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTit
 import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
 import Brigid.HTML.Types.Integrity (IntegrityEncoding, integrityToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
+import Brigid.HTML.Types.LoadOption (LoadOption, loadOptionToText)
 import Brigid.HTML.Types.MediaQuery (MediaQuery, mediaQueryToText)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
@@ -1885,6 +1888,7 @@ data AttributeType
   | Attr_Kind
   | Attr_Label
   | Attr_List
+  | Attr_Loading
   | Attr_Loop
   | Attr_Low
   | Attr_Max
@@ -2068,6 +2072,7 @@ attributeTypeToBytes attr =
     Attr_Kind                    -> "kind"
     Attr_Label                   -> "label"
     Attr_List                    -> "list"
+    Attr_Loading                 -> "loading"
     Attr_Loop                    -> "loop"
     Attr_Low                     -> "low"
     Attr_Max                     -> "max"
@@ -2250,6 +2255,7 @@ attributeTypeFromText attr =
     "kind"                    -> Right Attr_Kind
     "label"                   -> Right Attr_Label
     "list"                    -> Right Attr_List
+    "loading"                 -> Right Attr_Loading
     "loop"                    -> Right Attr_Loop
     "low"                     -> Right Attr_Low
     "max"                     -> Right Attr_Max
@@ -2459,6 +2465,7 @@ attributeTypeToText attr =
     Attr_Kind                    -> "kind"
     Attr_Label                   -> "label"
     Attr_List                    -> "list"
+    Attr_Loading                 -> "loading"
     Attr_Loop                    -> "loop"
     Attr_Low                     -> "low"
     Attr_Max                     -> "max"
@@ -2862,6 +2869,9 @@ attr_label = (,) Attr_Label . Just
 
 attr_list :: Id.Id -> AttributeSelector
 attr_list = (,) Attr_List . Just . Id.idToText
+
+attr_loading :: LoadOption -> AttributeSelector
+attr_loading = (,) Attr_Loading . Just . loadOptionToText
 
 attr_loop :: AttributeSelector
 attr_loop = (Attr_Loop, Nothing)

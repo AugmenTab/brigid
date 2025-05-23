@@ -85,6 +85,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Kind
       , Label
       , List
+      , Loading
       , Loop
       , Low
       , Max
@@ -261,6 +262,7 @@ data AttributeType
   | Kind
   | Label
   | List
+  | Loading
   | Loop
   | Low
   | Max
@@ -433,6 +435,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Kind                    = 'Text "Kind (kind)"
   AttributeErrorMessage Label                   = 'Text "Label (label)"
   AttributeErrorMessage List                    = 'Text "List (list)"
+  AttributeErrorMessage Loading                 = 'Text "Loading (loading)"
   AttributeErrorMessage Loop                    = 'Text "Loop (loop)"
   AttributeErrorMessage Low                     = 'Text "Low (low)"
   AttributeErrorMessage Max                     = 'Text "Max (max)"

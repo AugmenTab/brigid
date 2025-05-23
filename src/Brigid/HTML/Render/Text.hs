@@ -786,6 +786,9 @@ renderAttribute attr =
     Attr_List list ->
       Just . buildAttribute "label" $ Types.idToText list
 
+    Attr_Loading loading ->
+      Just . buildAttribute "loading" $ Types.loadOptionToText loading
+
     Attr_Loop ->
       buildBooleanAttribute "loop" True
 

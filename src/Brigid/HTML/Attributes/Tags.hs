@@ -82,6 +82,7 @@ module Brigid.HTML.Attributes.Tags
   , Kind
   , Label
   , List
+  , Loading
   , Loop
   , Low
   , Max
@@ -252,6 +253,7 @@ type IsMap = 'AttributeType.IsMap
 type Kind = 'AttributeType.Kind
 type Label = 'AttributeType.Label
 type List = 'AttributeType.List
+type Loading = 'AttributeType.Loading
 type Loop = 'AttributeType.Loop
 type Low = 'AttributeType.Low
 type Max = 'AttributeType.Max

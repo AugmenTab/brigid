@@ -87,6 +87,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Kind
       , Attr_Label
       , Attr_List
+      , Attr_Loading
       , Attr_Loop
       , Attr_Low
       , Attr_Max
@@ -559,6 +560,11 @@ data Attribute (tag :: TagType) where
   Attr_List
     :: ValidAttribute 'List tag
     => Types.Id
+    -> Attribute tag
+
+  Attr_Loading
+    :: ValidAttribute 'Loading tag
+    => Types.LoadOption
     -> Attribute tag
 
   Attr_Loop
@@ -1180,6 +1186,9 @@ attributeText attr =
 
     Attr_List _list ->
       "list"
+
+    Attr_Loading _loading ->
+      "loading"
 
     Attr_Loop ->
       "loop"

@@ -66,6 +66,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Kind                    = '[ Tags.Track ]
   ValidElementsFor 'Label                   = TagGroups.LabelableTags
   ValidElementsFor 'List                    = TagGroups.InputTags
+  ValidElementsFor 'Loading                 = '[ Tags.Image, Tags.IFrame ]
   ValidElementsFor 'Loop                    = TagGroups.MediaContent
   ValidElementsFor 'Low                     = '[ Tags.Meter ]
   ValidElementsFor 'Max                     = TagGroups.RangedTags

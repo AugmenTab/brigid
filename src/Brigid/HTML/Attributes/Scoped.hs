@@ -57,6 +57,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Kind, kind
   , AttributeTags.Label, label
   , AttributeTags.List, list
+  , AttributeTags.Loading, loading
   , AttributeTags.Loop, loop
   , AttributeTags.Low, low
   , ValidRangeBound
@@ -415,6 +416,10 @@ label = Attr_Label
 --
 list :: ValidAttribute AttributeTags.List tag => Types.Id -> Attribute tag
 list = Attr_List
+
+loading :: ValidAttribute AttributeTags.Loading tag
+        => Types.LoadOption -> Attribute tag
+loading = Attr_Loading
 
 loop :: ValidAttribute AttributeTags.Loop tag => Attribute tag
 loop = Attr_Loop
