@@ -18,6 +18,7 @@ type ValidAttribute attr tag =
   AlertAttribute (Elem tag (ValidElementsFor attr)) attr tag ~ 'True
 
 type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
+  ValidElementsFor 'Abbreviation            = '[ Tags.TableHeader ]
   ValidElementsFor 'Accept                  = '[ Tags.Input, Tags.InputFile ]
   ValidElementsFor 'AcceptCharset           = '[ Tags.Form ]
   ValidElementsFor 'Action                  = '[ Tags.Form ]

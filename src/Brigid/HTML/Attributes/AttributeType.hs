@@ -37,6 +37,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Translate
       , WritingSuggestions
 
+      , Abbreviation
       , Accept
       , AcceptCharset
       , Action
@@ -214,6 +215,7 @@ data AttributeType
 
   -- Scoped Attributes
   --
+  | Abbreviation
   | Accept
   | AcceptCharset
   | Action
@@ -387,6 +389,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Translate               = 'Text "Translate (translate)"
   AttributeErrorMessage WritingSuggestions      = 'Text "WritingSuggestions (writingsuggestions)"
 
+  AttributeErrorMessage Abbreviation            = 'Text "Abbreviation (abbr)"
   AttributeErrorMessage Accept                  = 'Text "Accept (accept)"
   AttributeErrorMessage AcceptCharset           = 'Text "AcceptCharset (accept-charset)"
   AttributeErrorMessage Action                  = 'Text "Action (action)"

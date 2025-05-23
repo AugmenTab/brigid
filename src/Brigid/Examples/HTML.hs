@@ -421,7 +421,7 @@ tableExample content =
         Just $
           Safe.thead []
             [ Safe.tr []
-                [ E.th [ A.scope HTML.Col ] [ E.text "1" ]
+                [ E.th [ A.scope HTML.Col, A.abbr "Example" ] [ E.text "1" ]
                 , E.th [ A.scope HTML.Col ] [ E.text "2", E.noElement ]
                 , E.th [ A.scope HTML.Col ] [ E.text "3" ]
                 , E.th [ A.scope HTML.Col ] [ E.text "4" ]

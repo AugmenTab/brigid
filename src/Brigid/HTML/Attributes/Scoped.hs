@@ -3,6 +3,7 @@
 
 module Brigid.HTML.Attributes.Scoped
   ( ValidAttribute
+  , AttributeTags.Abbreviation, abbr
   , AttributeTags.Accept, accept
   , AttributeTags.AcceptCharset, acceptCharset
   , AttributeTags.Action, action
@@ -155,6 +156,10 @@ import Brigid.Types qualified as Types
 
 -- Scoped Attributes
 --
+
+abbr :: ValidAttribute AttributeTags.Abbreviation tag
+     => T.Text -> Attribute tag
+abbr = Attr_Abbreviation
 
 accept :: ValidAttribute AttributeTags.Accept tag
        => BS.ByteString -> Attribute tag

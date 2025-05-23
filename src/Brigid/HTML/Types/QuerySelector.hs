@@ -164,6 +164,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_title
   , attr_translate
   , attr_writingsuggestions
+  , attr_abbr
   , attr_accept
   , attr_acceptCharset
   , attr_action
@@ -331,6 +332,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Title
       , Attr_Translate
       , Attr_WritingSuggestions
+      , Attr_Abbreviation
       , Attr_Accept
       , Attr_AcceptCharset
       , Attr_Action
@@ -1836,6 +1838,7 @@ data AttributeType
 
   -- Scoped Attributes
   --
+  | Attr_Abbreviation
   | Attr_Accept
   | Attr_AcceptCharset
   | Attr_Action
@@ -2020,6 +2023,7 @@ attributeTypeToBytes attr =
 
     -- Scoped Attributes
     --
+    Attr_Abbreviation            -> "abbr"
     Attr_Accept                  -> "accept"
     Attr_AcceptCharset           -> "accept-charset"
     Attr_Action                  -> "action"
@@ -2204,6 +2208,7 @@ attributeTypeFromText attr =
 
     -- Scoped Attributes
     --
+    "abbr"                    -> Right Attr_Abbreviation
     "accept"                  -> Right Attr_Accept
     "accept-charset"          -> Right Attr_AcceptCharset
     "action"                  -> Right Attr_Action
@@ -2413,6 +2418,7 @@ attributeTypeToText attr =
 
     -- Scoped Attributes
     --
+    Attr_Abbreviation            -> "abbr"
     Attr_Accept                  -> "accept"
     Attr_AcceptCharset           -> "accept-charset"
     Attr_Action                  -> "action"
@@ -2676,6 +2682,9 @@ attr_writingsuggestions =
 
 -- Scoped Attributes
 --
+
+attr_abbr :: T.Text -> AttributeSelector
+attr_abbr = (,) Attr_Abbreviation . Just
 
 attr_accept :: BS.ByteString -> AttributeSelector
 attr_accept = (,) Attr_Accept . Just . Render.bytesToText

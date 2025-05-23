@@ -34,6 +34,7 @@ module Brigid.HTML.Attributes.Tags
   , Translate
   , WritingSuggestions
 
+  , Abbreviation
   , Accept
   , AcceptCharset
   , Action
@@ -205,6 +206,7 @@ type Title = 'AttributeType.Title
 type Translate = 'AttributeType.Translate
 type WritingSuggestions = 'AttributeType.WritingSuggestions
 
+type Abbreviation = 'AttributeType.Abbreviation
 type Accept = 'AttributeType.Accept
 type AcceptCharset = 'AttributeType.AcceptCharset
 type Action = 'AttributeType.Action

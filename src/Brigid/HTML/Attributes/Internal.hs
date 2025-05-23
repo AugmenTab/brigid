@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Translate
       , Attr_WritingSuggestions
 
+      , Attr_Abbreviation
       , Attr_Accept
       , Attr_AcceptCharset
       , Attr_Action
@@ -332,6 +333,11 @@ data Attribute (tag :: TagType) where
 
   -- Scoped Attributes
   --
+  Attr_Abbreviation
+    :: ValidAttribute 'Abbreviation tag
+    => T.Text
+    -> Attribute tag
+
   Attr_Accept
     :: ValidAttribute 'Accept tag
     => BS.ByteString
@@ -1043,6 +1049,9 @@ attributeText attr =
 
     -- Scoped Attributes
     --
+    Attr_Abbreviation _abbr ->
+      "abbr"
+
     Attr_Accept _accept ->
       "accept"
 

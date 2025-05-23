@@ -641,6 +641,9 @@ renderAttribute attr =
 
     -- Scoped Attributes
     --
+    Attr_Abbreviation abbr ->
+      Just $ buildAttribute "abbr" $ Render.textToLazyBytes abbr
+
     Attr_Accept accept ->
       Just . buildAttribute "accept" $ Render.bytesToLazyBytes accept
 
