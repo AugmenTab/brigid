@@ -15,6 +15,7 @@ data PopoverTargetAction
   = PopoverShow
   | PopoverHide
   | PopoverToggle
+  deriving (Bounded, Enum, Eq, Show)
 
 popoverTargetActionToBytes :: PopoverTargetAction -> LBS.ByteString
 popoverTargetActionToBytes pta =

@@ -33,6 +33,7 @@ data As
   | AsTrack
   | AsVideo
   | AsWorker
+  deriving (Bounded, Enum, Eq, Show)
 
 asToBytes :: As -> LBS.ByteString
 asToBytes as =
