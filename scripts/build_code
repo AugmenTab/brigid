@@ -8,4 +8,4 @@ echo "=============================="
 echo "====== Building  Brigid ======"
 echo "=============================="
 
-stack build --fast --test "$@"
+stack build --fast --test --bench "$@"

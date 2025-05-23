@@ -260,7 +260,6 @@ benchmark brigid-bench
   type: exitcode-stdio-1.0
   main-is: Bench.hs
   other-modules:
-      Generate
       Generation.Analysis
       Generation.Attribute
       Generation.Element

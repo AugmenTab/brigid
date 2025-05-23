@@ -1,6 +1,117 @@
 module Generation.Element
   ( Element (..)
+  , comment
+  , text
+  , a
+  , abbr
+  , address
+  , area
+  , article
+  , aside
+  , audio
+  , b
+  , base
+  , bdi
+  , bdo
+  , blockquote
+  , body
+  , br
+  , button
+  , canvas
+  , caption
+  , cite
+  , code
+  , col
+  , colgroup
+  , data_
+  , datalist
+  , dd
+  , del
+  , details
+  , dfn
+  , dialog
+  , div
+  , dl
+  , dt
+  , em
+  , embed
+  , fieldset
+  , figcaption
+  , figure
+  , footer
+  , form
+  , h1
+  , h2
+  , h3
+  , h4
+  , h5
+  , h6
+  , head
+  , header
+  , hgroup
+  , hr
   , html
+  , i
+  , iframe
+  , img
+  , input
+  , ins
+  , kbd
+  , label
+  , legend
+  , li
+  , link
+  , main
+  , map
+  , mark
+  , menu
+  , meta
+  , meter
+  , nav
+  , noscript
+  , object
+  , ol
+  , optgroup
+  , option
+  , output
+  , p
+  , picture
+  , pre
+  , progress
+  , q
+  , ruby
+  , s
+  , samp
+  , script
+  , search
+  , section
+  , select
+  , slot
+  , small
+  , source
+  , span
+  , strong
+  , style
+  , sub
+  , summary
+  , sup
+  , table
+  , tbody
+  , td
+  , template
+  , textarea
+  , tfoot
+  , th
+  , thead
+  , time
+  , title
+  , tr
+  , track
+  , u
+  , ul
+  , var
+  , video
+  , wbr
   ) where
 
 import Data.List.NonEmpty (NonEmpty((:|)))
@@ -140,8 +251,8 @@ text :: Gen Element
 text =
   Text <$> Generators.text
 
-anchor :: Int -> Int -> Gen Element
-anchor maxAttrs maxChildren = do
+a :: Int -> Int -> Gen Element
+a maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -167,8 +278,8 @@ anchorAttrs =
 anchorContent :: NonEmpty (Gen Element)
 anchorContent = NEL.singleton text
 
-abbreviation :: Int -> Int -> Gen Element
-abbreviation maxAttrs maxChildren = do
+abbr :: Int -> Int -> Gen Element
+abbr maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -182,8 +293,8 @@ abbreviation maxAttrs maxChildren = do
 abbreviationContent :: Int -> Int -> NonEmpty (Gen Element)
 abbreviationContent = phrasingContent
 
-contactAddress :: Int -> Int -> Gen Element
-contactAddress maxAttrs maxChildren = do
+address :: Int -> Int -> Gen Element
+address maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -199,74 +310,74 @@ contactAddressContent :: Int -> Int -> NonEmpty (Gen Element)
 contactAddressContent maxAttrs maxChildren =
   text
     :| [ comment
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
        , figure maxAttrs maxChildren
        , form maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , menu maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
+       , ol maxAttrs maxChildren
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , search maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 area :: Int -> Gen Element
@@ -344,8 +455,8 @@ audioAttrs =
 audioContent :: Int -> NonEmpty (Gen Element)
 audioContent = audioVideoContent
 
-bringAttentionTo :: Int -> Int -> Gen Element
-bringAttentionTo maxAttrs maxChildren = do
+b :: Int -> Int -> Gen Element
+b maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -370,8 +481,8 @@ baseAttrs =
   , A.target
   ]
 
-bidirectionalIsolation :: Int -> Int -> Gen Element
-bidirectionalIsolation maxAttrs maxChildren = do
+bdi :: Int -> Int -> Gen Element
+bdi maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -385,8 +496,8 @@ bidirectionalIsolation maxAttrs maxChildren = do
 bidirectionalIsolationContent :: Int -> Int -> NonEmpty (Gen Element)
 bidirectionalIsolationContent = phrasingContent
 
-bidirectionalOverride :: Int -> Int -> Gen Element
-bidirectionalOverride maxAttrs maxChildren = do
+bdo :: Int -> Int -> Gen Element
+bdo maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -430,8 +541,8 @@ body maxAttrs maxChildren = do
 bodyContent :: Int -> Int -> NonEmpty (Gen Element)
 bodyContent = flowContent
 
-lineBreak :: Int -> Gen Element
-lineBreak maxAttrs = do
+br :: Int -> Gen Element
+br maxAttrs = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   LineBreak <$> withGlobalAttrs attrs []
 
@@ -468,47 +579,47 @@ buttonContent :: Int -> Int -> NonEmpty (Gen Element)
 buttonContent maxAttrs maxChildren =
   text
     :| [ comment
-       , abbreviation maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , area maxAttrs
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
+       , br maxAttrs
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , definition maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
-       , idiomaticText maxAttrs maxChildren
-       , image maxAttrs
-       , keyboardInput maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
+       , em maxAttrs maxChildren
+       , i maxAttrs maxChildren
+       , img maxAttrs
+       , kbd maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , output maxAttrs maxChildren
        , picture maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
+       , template maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 canvas :: Int -> Int -> Gen Element
@@ -532,8 +643,8 @@ canvasAttrs =
 canvasContent :: NonEmpty (Gen Element)
 canvasContent = NEL.singleton text
 
-tableCaption :: Int -> Int -> Gen Element
-tableCaption maxAttrs maxChildren = do
+caption :: Int -> Int -> Gen Element
+caption maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -547,8 +658,8 @@ tableCaption maxAttrs maxChildren = do
 tableCaptionContent :: Int -> Int -> NonEmpty (Gen Element)
 tableCaptionContent = flowContent
 
-citation :: Int -> Int -> Gen Element
-citation maxAttrs maxChildren = do
+cite :: Int -> Int -> Gen Element
+cite maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -577,13 +688,13 @@ code maxAttrs maxChildren = do
 codeContent :: Int -> Int -> NonEmpty (Gen Element)
 codeContent = phrasingContent
 
-tableColumn :: Int -> Gen Element
-tableColumn maxAttrs = do
+col :: Int -> Gen Element
+col maxAttrs = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   TableColumn <$> withGlobalAttrs attrs [A.span]
 
-tableColumnGroup :: Int -> Int -> Gen Element
-tableColumnGroup maxAttrs maxChildren = do
+colgroup :: Int -> Int -> Gen Element
+colgroup maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -596,7 +707,7 @@ tableColumnGroup maxAttrs maxChildren = do
 
 tableColumnGroupContent :: Int -> NonEmpty (Gen Element)
 tableColumnGroupContent maxAttrs =
-  comment :| [ tableColumn maxAttrs ]
+  comment :| [ col maxAttrs ]
 
 data_ :: Int -> Int -> Gen Element
 data_ maxAttrs maxChildren = do
@@ -613,8 +724,8 @@ data_ maxAttrs maxChildren = do
 dataContent :: Int -> Int -> NonEmpty (Gen Element)
 dataContent = phrasingContent
 
-dataList :: Int -> Int -> Gen Element
-dataList maxAttrs maxChildren = do
+datalist :: Int -> Int -> Gen Element
+datalist maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -631,8 +742,8 @@ dataListContent maxAttrs maxChildren =
     (option maxAttrs)
     (phrasingContent maxAttrs maxChildren)
 
-descriptionDetails :: Int -> Int -> Gen Element
-descriptionDetails maxAttrs maxChildren = do
+dd :: Int -> Int -> Gen Element
+dd maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -646,8 +757,8 @@ descriptionDetails maxAttrs maxChildren = do
 descriptionDetailsContent :: Int -> Int -> NonEmpty (Gen Element)
 descriptionDetailsContent = flowContent
 
-deletedText :: Int -> Int -> Gen Element
-deletedText maxAttrs maxChildren = do
+del :: Int -> Int -> Gen Element
+del maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -685,8 +796,8 @@ detailsContent maxAttrs maxChildren =
     (summary maxAttrs maxChildren)
     (flowContent maxAttrs maxChildren)
 
-definition :: Int -> Int -> Gen Element
-definition maxAttrs maxChildren = do
+dfn :: Int -> Int -> Gen Element
+dfn maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -701,53 +812,53 @@ definitionContent :: Int -> Int -> NonEmpty (Gen Element)
 definitionContent maxAttrs maxChildren =
   text
     :| [ comment
-       , abbreviation maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , area maxAttrs
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , keyboardInput maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , output maxAttrs maxChildren
        , picture maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 dialog :: Int -> Int -> Gen Element
@@ -765,8 +876,8 @@ dialog maxAttrs maxChildren = do
 dialogContent :: Int -> Int -> NonEmpty (Gen Element)
 dialogContent = flowContent
 
-division :: Int -> Int -> Gen Element
-division maxAttrs maxChildren = do
+div :: Int -> Int -> Gen Element
+div maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -780,8 +891,8 @@ division maxAttrs maxChildren = do
 divisionContent :: Int -> Int -> NonEmpty (Gen Element)
 divisionContent = flowContent
 
-descriptionList :: Int -> Int -> Gen Element
-descriptionList maxAttrs maxChildren = do
+dl :: Int -> Int -> Gen Element
+dl maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -794,13 +905,13 @@ descriptionList maxAttrs maxChildren = do
 
 descriptionListContent :: Int -> Int -> NonEmpty (Gen Element)
 descriptionListContent maxAttrs maxChildren =
-  NEL.cons (descriptionTerm maxAttrs maxChildren)
-    . NEL.cons (descriptionDetails maxAttrs maxChildren)
-    . NEL.cons (division maxAttrs maxChildren)
+  NEL.cons (dt maxAttrs maxChildren)
+    . NEL.cons (dd maxAttrs maxChildren)
+    . NEL.cons (div maxAttrs maxChildren)
     $ scriptSupportingContent maxAttrs maxChildren
 
-descriptionTerm :: Int -> Int -> Gen Element
-descriptionTerm maxAttrs maxChildren = do
+dt :: Int -> Int -> Gen Element
+dt maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -816,79 +927,79 @@ descriptionTermContent :: Int -> Int -> NonEmpty (Gen Element)
 descriptionTermContent maxAttrs maxChildren =
   text
     :| [ comment
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
-       , contactAddress maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
+       , address maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
        , figure maxAttrs maxChildren
        , form maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , menu maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
+       , ol maxAttrs maxChildren
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , search maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
-emphasis :: Int -> Int -> Gen Element
-emphasis maxAttrs maxChildren = do
+em :: Int -> Int -> Gen Element
+em maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -940,8 +1051,8 @@ fieldsetContent maxAttrs maxChildren =
     (legend maxAttrs maxChildren)
     (flowContent maxAttrs maxChildren)
 
-figureCaption :: Int -> Int -> Gen Element
-figureCaption maxAttrs maxChildren = do
+figcaption :: Int -> Int -> Gen Element
+figcaption maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -970,7 +1081,7 @@ figure maxAttrs maxChildren = do
 figureContent :: Int -> Int -> NonEmpty (Gen Element)
 figureContent maxAttrs maxChildren =
   NEL.cons
-    (figureCaption maxAttrs maxChildren)
+    (figcaption maxAttrs maxChildren)
     (flowContent maxAttrs maxChildren)
 
 footer :: Int -> Int -> Gen Element
@@ -1017,30 +1128,30 @@ formContent :: Int -> Int -> NonEmpty (Gen Element)
 formContent maxAttrs maxChildren =
   text
     :| [ comment
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
-       , contactAddress maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
+       , address maxAttrs maxChildren
        , article maxAttrs maxChildren
        , aside maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
        , figure maxAttrs maxChildren
@@ -1052,14 +1163,14 @@ formContent maxAttrs maxChildren =
        , h5 maxAttrs maxChildren
        , h6 maxAttrs maxChildren
        , header maxAttrs maxChildren
-       , headingGroup maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hgroup maxAttrs maxChildren
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
@@ -1067,37 +1178,37 @@ formContent maxAttrs maxChildren =
        , menu maxAttrs maxChildren
        , meter maxAttrs maxChildren
        , nav maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
+       , ol maxAttrs maxChildren
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , search maxAttrs maxChildren
        , script maxAttrs
        , section maxAttrs maxChildren
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 h1 :: Int -> Int -> Gen Element
@@ -1208,7 +1319,7 @@ headContent maxAttrs maxChildren =
     :| [ base maxAttrs
        , link maxAttrs
        , meta maxAttrs
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , script maxAttrs
        , style maxAttrs
        , title maxAttrs
@@ -1229,8 +1340,8 @@ header maxAttrs maxChildren = do
 headerContent :: Int -> Int -> NonEmpty (Gen Element)
 headerContent = marginalContent
 
-headingGroup :: Int -> Int -> Gen Element
-headingGroup maxAttrs maxChildren = do
+hgroup :: Int -> Int -> Gen Element
+hgroup maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1244,11 +1355,11 @@ headingGroup maxAttrs maxChildren = do
 headingGroupContent :: Int -> Int -> NonEmpty (Gen Element)
 headingGroupContent maxAttrs maxChildren =
   NEL.cons comment
-    . NEL.cons (paragraph maxAttrs maxChildren)
+    . NEL.cons (p maxAttrs maxChildren)
     $ headings maxAttrs maxChildren
 
-horizontalRule :: Int -> Gen Element
-horizontalRule maxAttrs = do
+hr :: Int -> Gen Element
+hr maxAttrs = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   HorizontalRule <$> withGlobalAttrs attrs []
 
@@ -1260,8 +1371,8 @@ html maxAttrs maxChildren = do
     <$> withGlobalAttrs attrs []
     <*> sequence [ head maxAttrs maxChildren, body maxAttrs maxChildren ]
 
-idiomaticText :: Int -> Int -> Gen Element
-idiomaticText maxAttrs maxChildren = do
+i :: Int -> Int -> Gen Element
+i maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1275,8 +1386,8 @@ idiomaticText maxAttrs maxChildren = do
 idiomaticTextContent :: Int -> Int -> NonEmpty (Gen Element)
 idiomaticTextContent = phrasingContent
 
-iFrame :: Int -> Gen Element
-iFrame maxAttrs = do
+iframe :: Int -> Gen Element
+iframe maxAttrs = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   IFrame <$> withGlobalAttrs attrs iFrameAttrs
 
@@ -1293,8 +1404,8 @@ iFrameAttrs =
   , A.referrerpolicy
   ]
 
-image :: Int -> Gen Element
-image maxAttrs = do
+img :: Int -> Gen Element
+img maxAttrs = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   Image <$> withGlobalAttrs attrs imageAttrs
 
@@ -1358,8 +1469,8 @@ inputAttrs =
   , A.width
   ]
 
-insertedText :: Int -> Int -> Gen Element
-insertedText maxAttrs maxChildren = do
+ins :: Int -> Int -> Gen Element
+ins maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1379,8 +1490,8 @@ insertedTextAttrs =
 insertedTextContent :: NonEmpty (Gen Element)
 insertedTextContent = NEL.singleton text
 
-keyboardInput :: Int -> Int -> Gen Element
-keyboardInput maxAttrs maxChildren = do
+kbd :: Int -> Int -> Gen Element
+kbd maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1410,53 +1521,53 @@ labelContent :: Int -> Int -> NonEmpty (Gen Element)
 labelContent maxAttrs maxChildren =
   text
     :| [ comment
-       , abbreviation maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , area maxAttrs
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , definition maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , keyboardInput maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , output maxAttrs maxChildren
        , picture maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 legend :: Int -> Int -> Gen Element
@@ -1476,8 +1587,8 @@ legendContent maxAttrs maxChildren =
   headings maxAttrs maxChildren
     <> phrasingContent maxAttrs maxChildren
 
-listItem :: Int -> Int -> Gen Element
-listItem maxAttrs maxChildren = do
+li :: Int -> Int -> Gen Element
+li maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1545,13 +1656,13 @@ map maxAttrs maxChildren = do
 mapContent :: Int -> Int -> NonEmpty (Gen Element)
 mapContent maxAttrs maxChildren =
   comment
-    :| [ anchor maxAttrs maxChildren
+    :| [ a maxAttrs maxChildren
        , audio maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
-       , insertedText maxAttrs maxChildren
+       , del maxAttrs maxChildren
+       , ins maxAttrs maxChildren
        , map maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , slot maxAttrs maxChildren
        , video maxAttrs maxChildren
@@ -1628,53 +1739,53 @@ meterContent :: Int -> Int -> NonEmpty (Gen Element)
 meterContent maxAttrs maxChildren =
   text
     :| [ comment
-       , abbreviation maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , area maxAttrs
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , definition maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , keyboardInput maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , mark maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , output maxAttrs maxChildren
        , picture maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 nav :: Int -> Int -> Gen Element
@@ -1692,8 +1803,8 @@ nav maxAttrs maxChildren = do
 navContent :: Int -> Int -> NonEmpty (Gen Element)
 navContent = flowContent
 
-noScript :: Int -> Int -> Gen Element
-noScript maxAttrs maxChildren = do
+noscript :: Int -> Int -> Gen Element
+noscript maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1732,8 +1843,8 @@ objectAttrs =
 objectContent :: NonEmpty (Gen Element)
 objectContent = NEL.singleton text
 
-orderedList :: Int -> Int -> Gen Element
-orderedList maxAttrs maxChildren = do
+ol :: Int -> Int -> Gen Element
+ol maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1754,8 +1865,8 @@ orderedListAttrs =
 orderedListContent :: Int -> Int -> NonEmpty (Gen Element)
 orderedListContent = listContent
 
-optionGroup :: Int -> Int -> Gen Element
-optionGroup maxAttrs maxChildren = do
+optgroup :: Int -> Int -> Gen Element
+optgroup maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1814,8 +1925,8 @@ outputAttrs =
 outputContent :: Int -> Int -> NonEmpty (Gen Element)
 outputContent = phrasingContent
 
-paragraph :: Int -> Int -> Gen Element
-paragraph maxAttrs maxChildren = do
+p :: Int -> Int -> Gen Element
+p maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1845,11 +1956,11 @@ pictureContent :: Int -> Int -> NonEmpty (Gen Element)
 pictureContent maxAttrs maxChildren =
   NEL.cons comment
     . NEL.cons (source maxAttrs)
-    . NEL.cons (image maxAttrs)
+    . NEL.cons (img maxAttrs)
     $ scriptSupportingContent maxAttrs maxChildren
 
-preformattedText :: Int -> Int -> Gen Element
-preformattedText maxAttrs maxChildren = do
+pre :: Int -> Int -> Gen Element
+pre maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1885,57 +1996,57 @@ progressContent :: Int -> Int -> NonEmpty (Gen Element)
 progressContent maxAttrs maxChildren =
   text
     :| [ comment
-       , abbreviation maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , area maxAttrs
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , definition maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , keyboardInput maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , output maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
-quotation :: Int -> Int -> Gen Element
-quotation maxAttrs maxChildren = do
+q :: Int -> Int -> Gen Element
+q maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1983,8 +2094,8 @@ ruby maxAttrs maxChildren = do
     <$> withGlobalAttrs attrs []
     <*> pure (concatMap addParens $ zip rubyContent rubyTexts)
 
-strikethrough :: Int -> Int -> Gen Element
-strikethrough maxAttrs maxChildren = do
+s :: Int -> Int -> Gen Element
+s maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -1998,8 +2109,8 @@ strikethrough maxAttrs maxChildren = do
 strikethroughContent :: Int -> Int -> NonEmpty (Gen Element)
 strikethroughContent = phrasingContent
 
-sample :: Int -> Int -> Gen Element
-sample maxAttrs maxChildren = do
+samp :: Int -> Int -> Gen Element
+samp maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2092,7 +2203,7 @@ selectContent :: Int -> Int -> NonEmpty (Gen Element)
 selectContent maxAttrs maxChildren =
   comment
     :| [ option maxAttrs
-       , optionGroup maxAttrs maxChildren
+       , optgroup maxAttrs maxChildren
        ]
 
 slot :: Int -> Int -> Gen Element
@@ -2110,8 +2221,8 @@ slot maxAttrs maxChildren = do
 slotContent :: NonEmpty (Gen Element)
 slotContent = NEL.singleton text
 
-sideComment :: Int -> Int -> Gen Element
-sideComment maxAttrs maxChildren = do
+small :: Int -> Int -> Gen Element
+small maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2183,8 +2294,8 @@ styleAttrs =
   , A.title
   ]
 
-subscript :: Int -> Int -> Gen Element
-subscript maxAttrs maxChildren = do
+sub :: Int -> Int -> Gen Element
+sub maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2212,12 +2323,12 @@ summary maxAttrs maxChildren = do
 
 summaryContent :: Int -> Int -> NonEmpty (Gen Element)
 summaryContent maxAttrs maxChildren =
-  NEL.cons (headingGroup maxAttrs maxChildren) $
+  NEL.cons (hgroup maxAttrs maxChildren) $
     headings maxAttrs maxChildren
       <> phrasingContent maxAttrs maxChildren
 
-superscript :: Int -> Int -> Gen Element
-superscript maxAttrs maxChildren = do
+sup :: Int -> Int -> Gen Element
+sup maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2245,16 +2356,16 @@ table maxAttrs maxChildren = do
 
 tableContent :: Int -> Int -> NonEmpty (Gen Element)
 tableContent maxAttrs maxChildren =
-  tableCaption maxAttrs maxChildren
-    :| [ tableColumnGroup maxAttrs maxChildren
-       , tableHead maxAttrs maxChildren
-       , tableBody maxAttrs maxChildren
-       , tableRow maxAttrs maxChildren
-       , tableFoot maxAttrs maxChildren
+  caption maxAttrs maxChildren
+    :| [ colgroup maxAttrs maxChildren
+       , thead maxAttrs maxChildren
+       , tbody maxAttrs maxChildren
+       , tr maxAttrs maxChildren
+       , tfoot maxAttrs maxChildren
        ]
 
-tableBody :: Int -> Int -> Gen Element
-tableBody maxAttrs maxChildren = do
+tbody :: Int -> Int -> Gen Element
+tbody maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2267,10 +2378,10 @@ tableBody maxAttrs maxChildren = do
 
 tableBodyContent :: Int -> Int -> NonEmpty (Gen Element)
 tableBodyContent maxAttrs maxChildren =
-  comment :| [ tableRow maxAttrs maxChildren ]
+  comment :| [ tr maxAttrs maxChildren ]
 
-tableDataCell :: Int -> Int -> Gen Element
-tableDataCell maxAttrs maxChildren = do
+td :: Int -> Int -> Gen Element
+td maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2291,8 +2402,8 @@ tableDataCellAttrs =
 tableDataCellContent :: Int -> Int -> NonEmpty (Gen Element)
 tableDataCellContent = flowContent
 
-contentTemplate :: Int -> Int -> Gen Element
-contentTemplate maxAttrs maxChildren = do
+template :: Int -> Int -> Gen Element
+template maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2306,8 +2417,8 @@ contentTemplate maxAttrs maxChildren = do
 contentTemplateContent :: Int -> Int -> NonEmpty (Gen Element)
 contentTemplateContent = allElements
 
-textArea :: Int -> Int -> Gen Element
-textArea maxAttrs maxChildren = do
+textarea :: Int -> Int -> Gen Element
+textarea maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2335,8 +2446,8 @@ textAreaAttrs =
   , A.wrap
   ]
 
-tableFoot :: Int -> Int -> Gen Element
-tableFoot maxAttrs maxChildren = do
+tfoot :: Int -> Int -> Gen Element
+tfoot maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2349,10 +2460,10 @@ tableFoot maxAttrs maxChildren = do
 
 tableFootContent :: Int -> Int -> NonEmpty (Gen Element)
 tableFootContent maxAttrs maxChildren =
-  comment :| [ tableRow maxAttrs maxChildren ]
+  comment :| [ tr maxAttrs maxChildren ]
 
-tableHeader :: Int -> Int -> Gen Element
-tableHeader maxAttrs maxChildren = do
+th :: Int -> Int -> Gen Element
+th maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2376,79 +2487,79 @@ tableHeaderContent :: Int -> Int -> NonEmpty (Gen Element)
 tableHeaderContent maxAttrs maxChildren =
   text
     :| [ comment
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
-       , contactAddress maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
+       , address maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
        , figure maxAttrs maxChildren
        , form maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , menu maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
+       , ol maxAttrs maxChildren
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , search maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
-tableHead :: Int -> Int -> Gen Element
-tableHead maxAttrs maxChildren = do
+thead :: Int -> Int -> Gen Element
+thead maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2461,7 +2572,7 @@ tableHead maxAttrs maxChildren = do
 
 tableHeadContent :: Int -> Int -> NonEmpty (Gen Element)
 tableHeadContent maxAttrs maxChildren =
-  comment :| [ tableRow maxAttrs maxChildren ]
+  comment :| [ tr maxAttrs maxChildren ]
 
 time :: Int -> Int -> Gen Element
 time maxAttrs maxChildren = do
@@ -2486,8 +2597,8 @@ title maxAttrs = do
     <$> withGlobalAttrs attrs []
     <*> Generators.text
 
-tableRow :: Int -> Int -> Gen Element
-tableRow maxAttrs maxChildren = do
+tr :: Int -> Int -> Gen Element
+tr maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2500,8 +2611,8 @@ tableRow maxAttrs maxChildren = do
 
 tableRowContent :: Int -> Int -> NonEmpty (Gen Element)
 tableRowContent maxAttrs maxChildren =
-  NEL.cons (tableDataCell maxAttrs maxChildren)
-    . NEL.cons (tableHeader maxAttrs maxChildren)
+  NEL.cons (td maxAttrs maxChildren)
+    . NEL.cons (th maxAttrs maxChildren)
     $ scriptSupportingContent maxAttrs maxChildren
 
 track :: Int -> Gen Element
@@ -2518,8 +2629,8 @@ trackAttrs =
   , A.srclang
   ]
 
-underline :: Int -> Int -> Gen Element
-underline maxAttrs maxChildren = do
+u :: Int -> Int -> Gen Element
+u maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2533,8 +2644,8 @@ underline maxAttrs maxChildren = do
 underlineContent :: Int -> Int -> NonEmpty (Gen Element)
 underlineContent = phrasingContent
 
-unorderedList :: Int -> Int -> Gen Element
-unorderedList maxAttrs maxChildren = do
+ul :: Int -> Int -> Gen Element
+ul maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2548,8 +2659,8 @@ unorderedList maxAttrs maxChildren = do
 unorderedListContent :: Int -> Int -> NonEmpty (Gen Element)
 unorderedListContent = listContent
 
-variable :: Int -> Int -> Gen Element
-variable maxAttrs maxChildren = do
+var :: Int -> Int -> Gen Element
+var maxAttrs maxChildren = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
   children <- Gen.int (Range.linear 0 maxChildren)
 
@@ -2596,8 +2707,8 @@ videoAttrs =
 videoContent :: Int -> NonEmpty (Gen Element)
 videoContent = audioVideoContent
 
-wordBreakOpportunity :: Int -> Gen Element
-wordBreakOpportunity maxAttrs = do
+wbr :: Int -> Gen Element
+wbr maxAttrs = do
   attrs <- Gen.int (Range.linear 0 maxAttrs)
 
   WordBreakOpportunity <$> withGlobalAttrs attrs []
@@ -2609,41 +2720,41 @@ allElements :: Int -> Int -> NonEmpty (Gen Element)
 allElements maxAttrs maxChildren =
   comment
     :| [ text
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
-       , contactAddress maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
+       , address maxAttrs maxChildren
        , area maxAttrs
        , article maxAttrs maxChildren
        , aside maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
+       , b maxAttrs maxChildren
        , base maxAttrs
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
        , body maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , tableCaption maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , caption maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
-       , tableColumn maxAttrs
-       , tableColumnGroup maxAttrs maxChildren
+       , col maxAttrs
+       , colgroup maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , descriptionDetails maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , dd maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , descriptionTerm maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , dt maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
-       , figureCaption maxAttrs maxChildren
+       , figcaption maxAttrs maxChildren
        , figure maxAttrs maxChildren
        , footer maxAttrs maxChildren
        , form maxAttrs maxChildren
@@ -2655,17 +2766,17 @@ allElements maxAttrs maxChildren =
        , h6 maxAttrs maxChildren
        , head maxAttrs maxChildren
        , header maxAttrs maxChildren
-       , headingGroup maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hgroup maxAttrs maxChildren
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , legend maxAttrs maxChildren
-       , listItem maxAttrs maxChildren
+       , li maxAttrs maxChildren
        , link maxAttrs
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
@@ -2674,50 +2785,50 @@ allElements maxAttrs maxChildren =
        , meta maxAttrs
        , meter maxAttrs maxChildren
        , nav maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
-       , optionGroup maxAttrs maxChildren
+       , ol maxAttrs maxChildren
+       , optgroup maxAttrs maxChildren
        , option maxAttrs
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , search maxAttrs maxChildren
        , section maxAttrs maxChildren
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , source maxAttrs
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
        , style maxAttrs
-       , subscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
        , summary maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , tableBody maxAttrs maxChildren
-       , tableDataCell maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
-       , tableFoot maxAttrs maxChildren
-       , tableHeader maxAttrs maxChildren
-       , tableHead maxAttrs maxChildren
+       , tbody maxAttrs maxChildren
+       , td maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
+       , tfoot maxAttrs maxChildren
+       , th maxAttrs maxChildren
+       , thead maxAttrs maxChildren
        , time maxAttrs maxChildren
        , title maxAttrs
-       , tableRow maxAttrs maxChildren
+       , tr maxAttrs maxChildren
        , track maxAttrs
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 audioVideoContent :: Int -> NonEmpty (Gen Element)
@@ -2731,30 +2842,30 @@ flowContent :: Int -> Int -> NonEmpty (Gen Element)
 flowContent maxAttrs maxChildren =
   text
     :| [ comment
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
-       , contactAddress maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
+       , address maxAttrs maxChildren
        , article maxAttrs maxChildren
        , aside maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
        , figure maxAttrs maxChildren
@@ -2767,14 +2878,14 @@ flowContent maxAttrs maxChildren =
        , h5 maxAttrs maxChildren
        , h6 maxAttrs maxChildren
        , header maxAttrs maxChildren
-       , headingGroup maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hgroup maxAttrs maxChildren
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
@@ -2782,37 +2893,37 @@ flowContent maxAttrs maxChildren =
        , menu maxAttrs maxChildren
        , meter maxAttrs maxChildren
        , nav maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
+       , ol maxAttrs maxChildren
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , search maxAttrs maxChildren
        , script maxAttrs
        , section maxAttrs maxChildren
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 headings :: Int -> Int -> NonEmpty (Gen Element)
@@ -2829,37 +2940,37 @@ headings maxAttrs maxChildren =
 listContent :: Int -> Int -> NonEmpty (Gen Element)
 listContent maxAttrs maxChildren =
   NEL.cons
-    (listItem maxAttrs maxChildren)
+    (li maxAttrs maxChildren)
     (scriptSupportingContent maxAttrs maxChildren)
 
 marginalContent :: Int -> Int -> NonEmpty (Gen Element)
 marginalContent maxAttrs maxChildren =
   text
     :| [ comment
-       , anchor maxAttrs maxChildren
-       , abbreviation maxAttrs maxChildren
-       , contactAddress maxAttrs maxChildren
+       , a maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
+       , address maxAttrs maxChildren
        , article maxAttrs maxChildren
        , aside maxAttrs maxChildren
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
        , blockquote maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , deletedText maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , del maxAttrs maxChildren
        , details maxAttrs maxChildren
-       , definition maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
        , dialog maxAttrs maxChildren
-       , division maxAttrs maxChildren
-       , descriptionList maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , div maxAttrs maxChildren
+       , dl maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
        , fieldset maxAttrs maxChildren
        , figure maxAttrs maxChildren
@@ -2870,14 +2981,14 @@ marginalContent maxAttrs maxChildren =
        , h4 maxAttrs maxChildren
        , h5 maxAttrs maxChildren
        , h6 maxAttrs maxChildren
-       , headingGroup maxAttrs maxChildren
-       , horizontalRule maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , hgroup maxAttrs maxChildren
+       , hr maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , insertedText maxAttrs maxChildren
-       , keyboardInput maxAttrs maxChildren
+       , ins maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , main maxAttrs maxChildren
        , map maxAttrs maxChildren
@@ -2885,98 +2996,98 @@ marginalContent maxAttrs maxChildren =
        , menu maxAttrs maxChildren
        , meter maxAttrs maxChildren
        , nav maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
-       , orderedList maxAttrs maxChildren
+       , ol maxAttrs maxChildren
        , output maxAttrs maxChildren
-       , paragraph maxAttrs maxChildren
+       , p maxAttrs maxChildren
        , picture maxAttrs maxChildren
-       , preformattedText maxAttrs maxChildren
+       , pre maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , search maxAttrs maxChildren
        , script maxAttrs
        , section maxAttrs maxChildren
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
        , table maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , unorderedList maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , ul maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 phrasingContent :: Int -> Int -> NonEmpty (Gen Element)
 phrasingContent maxAttrs maxChildren =
   text
     :| [ comment
-       , abbreviation maxAttrs maxChildren
+       , abbr maxAttrs maxChildren
        , area maxAttrs
        , audio maxAttrs maxChildren
-       , bringAttentionTo maxAttrs maxChildren
-       , bidirectionalIsolation maxAttrs maxChildren
-       , bidirectionalOverride maxAttrs maxChildren
-       , lineBreak maxAttrs
+       , b maxAttrs maxChildren
+       , bdi maxAttrs maxChildren
+       , bdo maxAttrs maxChildren
+       , br maxAttrs
        , button maxAttrs maxChildren
        , canvas maxAttrs maxChildren
-       , citation maxAttrs maxChildren
+       , cite maxAttrs maxChildren
        , code maxAttrs maxChildren
        , data_ maxAttrs maxChildren
-       , dataList maxAttrs maxChildren
-       , definition maxAttrs maxChildren
-       , emphasis maxAttrs maxChildren
+       , datalist maxAttrs maxChildren
+       , dfn maxAttrs maxChildren
+       , em maxAttrs maxChildren
        , embed maxAttrs
-       , idiomaticText maxAttrs maxChildren
-       , iFrame maxAttrs
-       , image maxAttrs
+       , i maxAttrs maxChildren
+       , iframe maxAttrs
+       , img maxAttrs
        , input maxAttrs
-       , keyboardInput maxAttrs maxChildren
+       , kbd maxAttrs maxChildren
        , label maxAttrs maxChildren
        , mark maxAttrs maxChildren
        , meter maxAttrs maxChildren
-       , noScript maxAttrs maxChildren
+       , noscript maxAttrs maxChildren
        , object maxAttrs maxChildren
        , output maxAttrs maxChildren
        , picture maxAttrs maxChildren
        , progress maxAttrs maxChildren
-       , quotation maxAttrs maxChildren
+       , q maxAttrs maxChildren
        , ruby maxAttrs maxChildren
-       , strikethrough maxAttrs maxChildren
-       , sample maxAttrs maxChildren
+       , s maxAttrs maxChildren
+       , samp maxAttrs maxChildren
        , script maxAttrs
        , select maxAttrs maxChildren
        , slot maxAttrs maxChildren
-       , sideComment maxAttrs maxChildren
+       , small maxAttrs maxChildren
        , span maxAttrs maxChildren
        , strong maxAttrs maxChildren
-       , subscript maxAttrs maxChildren
-       , superscript maxAttrs maxChildren
-       , contentTemplate maxAttrs maxChildren
-       , textArea maxAttrs maxChildren
+       , sub maxAttrs maxChildren
+       , sup maxAttrs maxChildren
+       , template maxAttrs maxChildren
+       , textarea maxAttrs maxChildren
        , time maxAttrs maxChildren
-       , underline maxAttrs maxChildren
-       , variable maxAttrs maxChildren
+       , u maxAttrs maxChildren
+       , var maxAttrs maxChildren
        , video maxAttrs maxChildren
-       , wordBreakOpportunity maxAttrs
+       , wbr maxAttrs
        ]
 
 scriptSupportingContent :: Int -> Int -> NonEmpty (Gen Element)
 scriptSupportingContent maxAttrs maxChildren =
   comment
     :| [ script maxAttrs
-       , contentTemplate maxAttrs maxChildren
+       , template maxAttrs maxChildren
        ]
 
 withGlobalAttrs :: Int -> [Gen A.Attribute] -> Gen [A.Attribute]
