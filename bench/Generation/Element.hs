@@ -1,269 +1,337 @@
 module Generation.Element
   ( Element (..)
-  , comment
-  , text
-  , a
-  , abbr
-  , address
-  , area
-  , article
-  , aside
-  , audio
-  , b
-  , base
-  , bdi
-  , bdo
-  , blockquote
-  , body
-  , br
-  , button
-  , canvas
-  , caption
-  , cite
-  , code
-  , col
-  , colgroup
-  , data_
-  , datalist
-  , dd
-  , del
-  , details
-  , dfn
-  , dialog
-  , div
-  , dl
-  , dt
-  , em
-  , embed
-  , fieldset
-  , figcaption
-  , figure
-  , footer
-  , form
-  , h1
-  , h2
-  , h3
-  , h4
-  , h5
-  , h6
-  , head
-  , header
-  , hgroup
-  , hr
-  , html
-  , i
-  , iframe
-  , img
-  , input
-  , ins
-  , kbd
-  , label
-  , legend
-  , li
-  , link
-  , main
-  , map
-  , mark
-  , menu
-  , meta
-  , meter
-  , nav
-  , noscript
-  , object
-  , ol
-  , optgroup
-  , option
-  , output
-  , p
-  , picture
-  , pre
-  , progress
-  , q
-  , ruby
-  , s
-  , samp
-  , script
-  , search
-  , section
-  , select
-  , slot
-  , small
-  , source
-  , span
-  , strong
-  , style
-  , sub
-  , summary
-  , sup
-  , table
-  , tbody
-  , td
-  , template
-  , textarea
-  , tfoot
-  , th
-  , thead
-  , time
-  , title
-  , tr
-  , track
-  , u
-  , ul
-  , var
-  , video
-  , wbr
+  , ElementType (..)
+  , elementGenerator
   ) where
 
+import Control.Monad (replicateM, when)
+import Control.Monad.Reader (ask, liftIO, local)
+import Control.Monad.Trans.Class (lift)
+import Data.IORef (atomicModifyIORef')
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
-import Data.Text qualified as T
-import Hedgehog (Gen)
+import Hedgehog (GenT)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
 import Prelude hiding (div, head, map, span)
 
 import Generation.Attribute qualified as A
 import Generation.Generators qualified as Generators
+import Generation.Types (GenM, GenContext (..), consumeNode)
 
-data Element
-  = Comment T.Text
-  | Text T.Text
-  | Anchor [A.Attribute] [Element]
-  | Abbreviation [A.Attribute] [Element]
-  | ContactAddress [A.Attribute] [Element]
-  | Area [A.Attribute]
-  | Article [A.Attribute] [Element]
-  | Aside [A.Attribute] [Element]
-  | Audio [A.Attribute] [Element]
-  | BringAttentionTo [A.Attribute] [Element]
-  | Base [A.Attribute]
-  | BidirectionalIsolation [A.Attribute] [Element]
-  | BidirectionalOverride [A.Attribute] [Element]
-  | Blockquote [A.Attribute] [Element]
-  | Body [A.Attribute] [Element]
-  | LineBreak [A.Attribute]
-  | Button [A.Attribute] [Element]
-  | Canvas [A.Attribute] [Element]
-  | TableCaption [A.Attribute] [Element]
-  | Citation [A.Attribute] [Element]
-  | Code [A.Attribute] [Element]
-  | TableColumn [A.Attribute]
-  | TableColumnGroup [A.Attribute] [Element]
-  | Data [A.Attribute] [Element]
-  | DataList [A.Attribute] [Element]
-  | DescriptionDetails [A.Attribute] [Element]
-  | DeletedText [A.Attribute] [Element]
-  | Details [A.Attribute] [Element]
-  | Definition [A.Attribute] [Element]
-  | Dialog [A.Attribute] [Element]
-  | Division [A.Attribute] [Element]
-  | DescriptionList [A.Attribute] [Element]
-  | DescriptionTerm [A.Attribute] [Element]
-  | Emphasis [A.Attribute] [Element]
-  | Embed [A.Attribute]
-  | Fieldset [A.Attribute] [Element]
-  | FigureCaption [A.Attribute] [Element]
-  | Figure [A.Attribute] [Element]
-  | Footer [A.Attribute] [Element]
-  | Form [A.Attribute] [Element]
-  | H1 [A.Attribute] [Element]
-  | H2 [A.Attribute] [Element]
-  | H3 [A.Attribute] [Element]
-  | H4 [A.Attribute] [Element]
-  | H5 [A.Attribute] [Element]
-  | H6 [A.Attribute] [Element]
-  | Head [A.Attribute] [Element]
-  | Header [A.Attribute] [Element]
-  | HeadingGroup [A.Attribute] [Element]
-  | HorizontalRule [A.Attribute]
-  | Html [A.Attribute] [Element]
-  | IdiomaticText [A.Attribute] [Element]
-  | IFrame [A.Attribute]
-  | Image [A.Attribute]
-  | Input [A.Attribute]
-  | InsertedText [A.Attribute] [Element]
-  | KeyboardInput [A.Attribute] [Element]
-  | Label [A.Attribute] [Element]
-  | Legend [A.Attribute] [Element]
-  | ListItem [A.Attribute] [Element]
-  | Link [A.Attribute]
-  | Main [A.Attribute] [Element]
-  | Map [A.Attribute] [Element]
-  | Mark [A.Attribute] [Element]
-  | Menu [A.Attribute] [Element]
-  | Meta [A.Attribute]
-  | Meter [A.Attribute] [Element]
-  | Nav [A.Attribute] [Element]
-  | NoScript [A.Attribute] [Element]
-  | Object [A.Attribute] [Element]
-  | OrderedList [A.Attribute] [Element]
-  | OptionGroup [A.Attribute] [Element]
-  | Option [A.Attribute] T.Text
-  | Output [A.Attribute] [Element]
-  | Paragraph [A.Attribute] [Element]
-  | Picture [A.Attribute] [Element]
-  | PreformattedText [A.Attribute] [Element]
-  | Progress [A.Attribute] [Element]
-  | Quotation [A.Attribute] [Element]
-  | RubyParenthesis [A.Attribute] T.Text
-  | RubyText [A.Attribute] [Element]
-  | Ruby [A.Attribute] [Element]
-  | Strikethrough [A.Attribute] [Element]
-  | Sample [A.Attribute] [Element]
-  | Script [A.Attribute] NET.NonEmptyText
-  | Search [A.Attribute] [Element]
-  | Section [A.Attribute] [Element]
-  | Select [A.Attribute] [Element]
-  | Slot [A.Attribute] [Element]
-  | SideComment [A.Attribute] [Element]
-  | Source [A.Attribute]
-  | Span [A.Attribute] [Element]
-  | Strong [A.Attribute] [Element]
-  | Style [A.Attribute]
-  | Subscript [A.Attribute] [Element]
-  | Summary [A.Attribute] [Element]
-  | Superscript [A.Attribute] [Element]
-  | Table [A.Attribute] [Element]
-  | TableBody [A.Attribute] [Element]
-  | TableDataCell [A.Attribute] [Element]
-  | ContentTemplate [A.Attribute] [Element]
-  | TextArea [A.Attribute] [Element]
-  | TableFoot [A.Attribute] [Element]
-  | TableHeader [A.Attribute] [Element]
-  | TableHead [A.Attribute] [Element]
-  | Time [A.Attribute] [Element]
-  | Title [A.Attribute] T.Text
-  | TableRow [A.Attribute] [Element]
-  | Track [A.Attribute]
-  | Underline [A.Attribute] [Element]
-  | UnorderedList [A.Attribute] [Element]
-  | Variable [A.Attribute] [Element]
-  | Video [A.Attribute] [Element]
-  | WordBreakOpportunity [A.Attribute]
+data Element =
+  Element
+    { elementType :: ElementType
+    , elementAttrs :: [A.Attribute]
+    , elementChildren :: Either NET.NonEmptyText [Element]
+    }
+
+instance Show Element where
+  show e =
+    unwords
+      [ show (elementType e)
+      , show (elementAttrs e)
+      , either show show (elementChildren e)
+      ]
+
+-- This is effectively just `Brigid.HTML.Elements.TagType`, but we don't want
+-- to expose that ADT, and this has fewer constructors because we don't
+-- particularly care to generate the CustomHTML constructor of that type.
+--
+data ElementType
+  = Comment
+  | Text
+  | Anchor
+  | Abbreviation
+  | ContactAddress
+  | Area
+  | Article
+  | Aside
+  | Audio
+  | BringAttentionTo
+  | Base
+  | BidirectionalIsolation
+  | BidirectionalOverride
+  | Blockquote
+  | Body
+  | LineBreak
+  | Button
+  | Canvas
+  | TableCaption
+  | Citation
+  | Code
+  | TableColumn
+  | TableColumnGroup
+  | Data
+  | DataList
+  | DescriptionDetails
+  | DeletedText
+  | Details
+  | Definition
+  | Dialog
+  | Division
+  | DescriptionList
+  | DescriptionTerm
+  | Emphasis
+  | Embed
+  | Fieldset
+  | FigureCaption
+  | Figure
+  | Footer
+  | Form
+  | H1
+  | H2
+  | H3
+  | H4
+  | H5
+  | H6
+  | Head
+  | Header
+  | HeadingGroup
+  | HorizontalRule
+  | Html
+  | IdiomaticText
+  | IFrame
+  | Image
+  | Input
+  | InsertedText
+  | KeyboardInput
+  | Label
+  | Legend
+  | ListItem
+  | Link
+  | Main
+  | Map
+  | Mark
+  | Menu
+  | Meta
+  | Meter
+  | Nav
+  | NoScript
+  | Object
+  | OrderedList
+  | OptionGroup
+  | Option
+  | Output
+  | Paragraph
+  | Picture
+  | PreformattedText
+  | Progress
+  | Quotation
+  | RubyParenthesis
+  | RubyText
+  | Ruby
+  | Strikethrough
+  | Sample
+  | Script
+  | Search
+  | Section
+  | Select
+  | Slot
+  | SideComment
+  | Source
+  | Span
+  | Strong
+  | Style
+  | Subscript
+  | Summary
+  | Superscript
+  | Table
+  | TableBody
+  | TableDataCell
+  | ContentTemplate
+  | TextArea
+  | TableFoot
+  | TableHeader
+  | TableHead
+  | Time
+  | Title
+  | TableRow
+  | Track
+  | Underline
+  | UnorderedList
+  | Variable
+  | Video
+  | WordBreakOpportunity
   deriving Show
 
-comment :: Gen Element
+elementGenerator :: ElementType -> GenM Element
+elementGenerator element =
+  case element of
+    Comment -> comment
+    Text -> text
+    Anchor -> a
+    Abbreviation -> abbr
+    ContactAddress -> address
+    Area -> area
+    Article -> article
+    Aside -> aside
+    Audio -> audio
+    BringAttentionTo -> b
+    Base -> base
+    BidirectionalIsolation -> bdi
+    BidirectionalOverride -> bdo
+    Blockquote -> blockquote
+    Body -> body
+    LineBreak -> br
+    Button -> button
+    Canvas -> canvas
+    TableCaption -> caption
+    Citation -> cite
+    Code -> code
+    TableColumn -> col
+    TableColumnGroup -> colgroup
+    Data -> data_
+    DataList -> datalist
+    DescriptionDetails -> dd
+    DeletedText -> del
+    Details -> details
+    Definition -> dfn
+    Dialog -> dialog
+    Division -> div
+    DescriptionList -> dl
+    DescriptionTerm -> dt
+    Emphasis -> em
+    Embed -> embed
+    Fieldset -> fieldset
+    FigureCaption -> figcaption
+    Figure -> figure
+    Footer -> footer
+    Form -> form
+    H1 -> h1
+    H2 -> h2
+    H3 -> h3
+    H4 -> h4
+    H5 -> h5
+    H6 -> h6
+    Head -> head
+    Header -> header
+    HeadingGroup -> hgroup
+    HorizontalRule -> hr
+    Html -> html
+    IdiomaticText -> i
+    IFrame -> iframe
+    Image -> img
+    Input -> input
+    InsertedText -> ins
+    KeyboardInput -> kbd
+    Label -> label
+    Legend -> legend
+    ListItem -> li
+    Link -> link
+    Main -> main
+    Map -> map
+    Mark -> mark
+    Menu -> menu
+    Meta -> meta
+    Meter -> meter
+    Nav -> nav
+    NoScript -> noscript
+    Object -> object
+    OrderedList -> ol
+    OptionGroup -> optgroup
+    Option -> option
+    Output -> output
+    Paragraph -> p
+    Picture -> picture
+    PreformattedText -> pre
+    Progress -> progress
+    Quotation -> q
+    RubyParenthesis -> rp
+    RubyText -> rt
+    Ruby -> ruby
+    Strikethrough -> s
+    Sample -> samp
+    Script -> script
+    Search -> search
+    Section -> section
+    Select -> select
+    Slot -> slot
+    SideComment -> small
+    Source -> source
+    Span -> span
+    Strong -> strong
+    Style -> style
+    Subscript -> sub
+    Summary -> summary
+    Superscript -> sup
+    Table -> table
+    TableBody -> tbody
+    TableDataCell -> td
+    ContentTemplate -> template
+    TextArea -> textarea
+    TableFoot -> tfoot
+    TableHeader -> th
+    TableHead -> thead
+    Time -> time
+    Title -> title
+    TableRow -> tr
+    Track -> track
+    Underline -> u
+    UnorderedList -> ul
+    Variable -> var
+    Video -> video
+    WordBreakOpportunity -> wbr
+
+data ContentType
+  = NoContent
+  | TextContent NET.NonEmptyText
+  | ElementContent (NonEmpty (GenM Element))
+
+mkElement :: ElementType
+          -> [GenT IO A.Attribute]
+          -> ContentType
+          -> GenM Element
+mkElement element attrs content = do
+  ok <- consumeNode
+  when (not ok) $ lift Gen.discard
+
+  ctx <- ask
+
+  children <-
+    case content of
+      NoContent -> pure $ Right []
+      TextContent net -> pure $ Left net
+      ElementContent elementContent ->
+        if currentDepth ctx >= maxDepth ctx
+          then pure $ Right []
+          else do
+            n <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
+
+            let
+              bumpDepth =
+                ctx
+                  { currentDepth = currentDepth ctx + 1
+                  }
+
+            fmap Right
+              . replicateM n
+              . local (const bumpDepth)
+              $ chooseAndRun elementContent
+
+  Element
+    <$> pure element
+    <*> withGlobalAttrs attrs
+    <*> pure children
+
+chooseAndRun :: NonEmpty (GenM a) -> GenM a
+chooseAndRun xs =
+  id =<< lift (Gen.element $ NEL.toList xs)
+
+comment :: GenM Element
 comment =
-  Comment <$> Generators.text
+  mkElement Comment [] NoContent
 
-text :: Gen Element
+text :: GenM Element
 text =
-  Text <$> Generators.text
+  mkElement Text [] NoContent
 
-a :: Int -> Int -> Gen Element
-a maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+a :: GenM Element
+a =
+  mkElement Anchor anchorAttrs $ ElementContent anchorContent
 
-  let
-    aChildren = NEL.toList anchorContent
-
-  Anchor
-    <$> withGlobalAttrs attrs anchorAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice aChildren)
-
-anchorAttrs :: [Gen A.Attribute]
+anchorAttrs :: [GenT IO A.Attribute]
 anchorAttrs =
   [ A.href
   , A.target
@@ -275,117 +343,99 @@ anchorAttrs =
   , A.referrerpolicy
   ]
 
-anchorContent :: NonEmpty (Gen Element)
+anchorContent :: NonEmpty (GenM Element)
 anchorContent = NEL.singleton text
 
-abbr :: Int -> Int -> Gen Element
-abbr maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+abbr :: GenM Element
+abbr =
+  mkElement Abbreviation [] $ ElementContent abbreviationContent
 
-  let
-    abbrChildren = NEL.toList $ abbreviationContent maxAttrs maxChildren
-
-  Abbreviation
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice abbrChildren)
-
-abbreviationContent :: Int -> Int -> NonEmpty (Gen Element)
+abbreviationContent :: NonEmpty (GenM Element)
 abbreviationContent = phrasingContent
 
-address :: Int -> Int -> Gen Element
-address maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+address :: GenM Element
+address =
+  mkElement ContactAddress [] $ ElementContent contactAddressContent
 
-  let
-    contactAddressChildren =
-      NEL.toList $ contactAddressContent maxAttrs maxChildren
-
-  ContactAddress
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice contactAddressChildren)
-
-contactAddressContent :: Int -> Int -> NonEmpty (Gen Element)
-contactAddressContent maxAttrs maxChildren =
+contactAddressContent :: NonEmpty (GenM Element)
+contactAddressContent =
   text
     :| [ comment
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , form maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , search maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , audio
+       , b
+       , bdi
+       , bdo
+       , blockquote
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , em
+       , embed
+       , fieldset
+       , figure
+       , form
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , main
+       , map
+       , mark
+       , menu
+       , meter
+       , noscript
+       , object
+       , ol
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , search
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , table
+       , template
+       , textarea
+       , time
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-area :: Int -> Gen Element
-area maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Area <$> withGlobalAttrs attrs areaAttrs
+area :: GenM Element
+area =
+  mkElement Area areaAttrs NoContent
 
-areaAttrs :: [Gen A.Attribute]
+areaAttrs :: [GenT IO A.Attribute]
 areaAttrs =
   [ A.alt
   , A.coords
@@ -398,49 +448,25 @@ areaAttrs =
   , A.referrerpolicy
   ]
 
-article :: Int -> Int -> Gen Element
-article maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+article :: GenM Element
+article =
+  mkElement Article [] $ ElementContent articleContent
 
-  let
-    articleChildren = NEL.toList $ articleContent maxAttrs maxChildren
-
-  Article
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice articleChildren)
-
-articleContent :: Int -> Int -> NonEmpty (Gen Element)
+articleContent :: NonEmpty (GenM Element)
 articleContent = flowContent
 
-aside :: Int -> Int -> Gen Element
-aside maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+aside :: GenM Element
+aside =
+  mkElement Aside [] $ ElementContent asideContent
 
-  let
-    asideChildren = NEL.toList $ asideContent maxAttrs maxChildren
-
-  Aside
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice asideChildren)
-
-asideContent :: Int -> Int -> NonEmpty (Gen Element)
+asideContent :: NonEmpty (GenM Element)
 asideContent = flowContent
 
-audio :: Int -> Int -> Gen Element
-audio maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+audio :: GenM Element
+audio =
+  mkElement Audio audioAttrs $ ElementContent audioContent
 
-  let
-    audioChildren = NEL.toList $ audioContent maxAttrs
-
-  Audio
-    <$> withGlobalAttrs attrs audioAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice audioChildren)
-
-audioAttrs :: [Gen A.Attribute]
+audioAttrs :: [GenT IO A.Attribute]
 audioAttrs =
   [ A.src
   , A.preload
@@ -452,113 +478,69 @@ audioAttrs =
   , A.controlslist
   ]
 
-audioContent :: Int -> NonEmpty (Gen Element)
+audioContent :: NonEmpty (GenM Element)
 audioContent = audioVideoContent
 
-b :: Int -> Int -> Gen Element
-b maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+b :: GenM Element
+b =
+  mkElement BringAttentionTo [] $ ElementContent bringAttentionToContent
 
-  let
-    bChildren = NEL.toList $ bringAttentionToContent maxAttrs maxChildren
-
-  BringAttentionTo
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice bChildren)
-
-bringAttentionToContent :: Int -> Int -> NonEmpty (Gen Element)
+bringAttentionToContent :: NonEmpty (GenM Element)
 bringAttentionToContent = phrasingContent
 
-base :: Int -> Gen Element
-base maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Base <$> withGlobalAttrs attrs baseAttrs
+base :: GenM Element
+base =
+  mkElement Base baseAttrs NoContent
 
-baseAttrs :: [Gen A.Attribute]
+baseAttrs :: [GenT IO A.Attribute]
 baseAttrs =
   [ A.href
   , A.target
   ]
 
-bdi :: Int -> Int -> Gen Element
-bdi maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+bdi :: GenM Element
+bdi =
+  mkElement
+    BidirectionalIsolation
+    []
+    (ElementContent bidirectionalIsolationContent)
 
-  let
-    bdiChildren = NEL.toList $ bidirectionalIsolationContent maxAttrs maxChildren
-
-  BidirectionalIsolation
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice bdiChildren)
-
-bidirectionalIsolationContent :: Int -> Int -> NonEmpty (Gen Element)
+bidirectionalIsolationContent :: NonEmpty (GenM Element)
 bidirectionalIsolationContent = phrasingContent
 
-bdo :: Int -> Int -> Gen Element
-bdo maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+bdo :: GenM Element
+bdo =
+  mkElement
+    BidirectionalOverride
+    []
+    (ElementContent bidirectionalOverrideContent)
 
-  let
-    bdoChildren = NEL.toList $ bidirectionalOverrideContent maxAttrs maxChildren
-
-  BidirectionalOverride
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice bdoChildren)
-
-bidirectionalOverrideContent :: Int -> Int -> NonEmpty (Gen Element)
+bidirectionalOverrideContent :: NonEmpty (GenM Element)
 bidirectionalOverrideContent = phrasingContent
 
-blockquote :: Int -> Int -> Gen Element
-blockquote maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+blockquote :: GenM Element
+blockquote =
+  mkElement Blockquote [A.cite] $ ElementContent blockquoteContent
 
-  let
-    blockquoteChildren = NEL.toList $ blockquoteContent maxAttrs maxChildren
-
-  Blockquote
-    <$> withGlobalAttrs attrs [A.cite]
-    <*> Gen.list (Range.singleton children) (Gen.choice blockquoteChildren)
-
-blockquoteContent :: Int -> Int -> NonEmpty (Gen Element)
+blockquoteContent :: NonEmpty (GenM Element)
 blockquoteContent = flowContent
 
-body :: Int -> Int -> Gen Element
-body maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+body :: GenM Element
+body =
+  mkElement Body [] $ ElementContent bodyContent
 
-  let
-    bodyChildren = NEL.toList $ bodyContent maxAttrs maxChildren
-
-  Body
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice bodyChildren)
-
-bodyContent :: Int -> Int -> NonEmpty (Gen Element)
+bodyContent :: NonEmpty (GenM Element)
 bodyContent = flowContent
 
-br :: Int -> Gen Element
-br maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  LineBreak <$> withGlobalAttrs attrs []
+br :: GenM Element
+br =
+  mkElement LineBreak [] NoContent
 
-button :: Int -> Int -> Gen Element
-button maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+button :: GenM Element
+button =
+  mkElement Button buttonAttrs $ ElementContent buttonContent
 
-  let
-    buttonChildren = NEL.toList $ buttonContent maxAttrs maxChildren
-
-  Button
-    <$> withGlobalAttrs attrs buttonAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice buttonChildren)
-
-buttonAttrs :: [Gen A.Attribute]
+buttonAttrs :: [GenT IO A.Attribute]
 buttonAttrs =
   [ A.autofocus
   , A.disabled
@@ -575,450 +557,315 @@ buttonAttrs =
   , A.popovertargetaction
   ]
 
-buttonContent :: Int -> Int -> NonEmpty (Gen Element)
-buttonContent maxAttrs maxChildren =
+buttonContent :: NonEmpty (GenM Element)
+buttonContent =
   text
     :| [ comment
-       , abbr maxAttrs maxChildren
-       , area maxAttrs
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , br maxAttrs
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , i maxAttrs maxChildren
-       , img maxAttrs
-       , kbd maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , abbr
+       , area
+       , audio
+       , b
+       , bdi
+       , bdo
+       , br
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , dfn
+       , em
+       , i
+       , img
+       , kbd
+       , mark
+       , meter
+       , noscript
+       , object
+       , output
+       , picture
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , template
+       , time
+       , u
+       , var
+       , video
+       , wbr
        ]
 
-canvas :: Int -> Int -> Gen Element
-canvas maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+canvas :: GenM Element
+canvas =
+  mkElement Canvas canvasAttrs $ ElementContent canvasContent
 
-  let
-    canvasChildren = NEL.toList canvasContent
-
-  Canvas
-    <$> withGlobalAttrs attrs canvasAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice canvasChildren)
-
-canvasAttrs :: [Gen A.Attribute]
+canvasAttrs :: [GenT IO A.Attribute]
 canvasAttrs =
   [ A.height
   , A.width
   ]
 
-canvasContent :: NonEmpty (Gen Element)
+canvasContent :: NonEmpty (GenM Element)
 canvasContent = NEL.singleton text
 
-caption :: Int -> Int -> Gen Element
-caption maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+caption :: GenM Element
+caption =
+  mkElement TableCaption [] $ ElementContent tableCaptionContent
 
-  let
-    tableCaptionChildren = NEL.toList $ tableCaptionContent maxAttrs maxChildren
-
-  TableCaption
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice tableCaptionChildren)
-
-tableCaptionContent :: Int -> Int -> NonEmpty (Gen Element)
+tableCaptionContent :: NonEmpty (GenM Element)
 tableCaptionContent = flowContent
 
-cite :: Int -> Int -> Gen Element
-cite maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+cite :: GenM Element
+cite =
+  mkElement Citation [] $ ElementContent citationContent
 
-  let
-    citeChildren = NEL.toList $ citationContent maxAttrs maxChildren
-
-  Citation
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice citeChildren)
-
-citationContent :: Int -> Int -> NonEmpty (Gen Element)
+citationContent :: NonEmpty (GenM Element)
 citationContent = phrasingContent
 
-code :: Int -> Int -> Gen Element
-code maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+code :: GenM Element
+code =
+  mkElement Code [] $ ElementContent codeContent
 
-  let
-    codeChildren = NEL.toList $ codeContent maxAttrs maxChildren
-
-  Code
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice codeChildren)
-
-codeContent :: Int -> Int -> NonEmpty (Gen Element)
+codeContent :: NonEmpty (GenM Element)
 codeContent = phrasingContent
 
-col :: Int -> Gen Element
-col maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  TableColumn <$> withGlobalAttrs attrs [A.span]
+col :: GenM Element
+col =
+  mkElement TableColumn [A.span] NoContent
 
-colgroup :: Int -> Int -> Gen Element
-colgroup maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+colgroup :: GenM Element
+colgroup =
+  mkElement TableColumnGroup [A.span] $ ElementContent tableColumnGroupContent
 
-  let
-    colgroupChildren = NEL.toList $ tableColumnGroupContent maxAttrs
+tableColumnGroupContent :: NonEmpty (GenM Element)
+tableColumnGroupContent =
+  comment :| [ col ]
 
-  TableColumnGroup
-    <$> withGlobalAttrs attrs [A.span]
-    <*> Gen.list (Range.singleton children) (Gen.choice colgroupChildren)
+data_ :: GenM Element
+data_ =
+  mkElement Data [A.data_] $ ElementContent dataContent
 
-tableColumnGroupContent :: Int -> NonEmpty (Gen Element)
-tableColumnGroupContent maxAttrs =
-  comment :| [ col maxAttrs ]
-
-data_ :: Int -> Int -> Gen Element
-data_ maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    dataChildren = NEL.toList $ dataContent maxAttrs maxChildren
-
-  Data
-    <$> withGlobalAttrs attrs [A.data_]
-    <*> Gen.list (Range.singleton children) (Gen.choice dataChildren)
-
-dataContent :: Int -> Int -> NonEmpty (Gen Element)
+dataContent :: NonEmpty (GenM Element)
 dataContent = phrasingContent
 
-datalist :: Int -> Int -> Gen Element
-datalist maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+datalist :: GenM Element
+datalist =
+  mkElement DataList [] $ ElementContent dataListContent
 
-  let
-    datalistChildren = NEL.toList $ dataListContent maxAttrs maxChildren
+dataListContent :: NonEmpty (GenM Element)
+dataListContent =
+  NEL.cons option phrasingContent
 
-  DataList
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice datalistChildren)
+dd :: GenM Element
+dd =
+  mkElement DescriptionDetails [] $ ElementContent descriptionDetailsContent
 
-dataListContent :: Int -> Int -> NonEmpty (Gen Element)
-dataListContent maxAttrs maxChildren =
-  NEL.cons
-    (option maxAttrs)
-    (phrasingContent maxAttrs maxChildren)
-
-dd :: Int -> Int -> Gen Element
-dd maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    ddChildren = NEL.toList $ descriptionDetailsContent maxAttrs maxChildren
-
-  DescriptionDetails
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice ddChildren)
-
-descriptionDetailsContent :: Int -> Int -> NonEmpty (Gen Element)
+descriptionDetailsContent :: NonEmpty (GenM Element)
 descriptionDetailsContent = flowContent
 
-del :: Int -> Int -> Gen Element
-del maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+del :: GenM Element
+del =
+  mkElement DeletedText deletedTextAttrs $ ElementContent deletedTextContent
 
-  let
-    delChildren = NEL.toList deletedTextContent
-
-  DeletedText
-    <$> withGlobalAttrs attrs deletedTextAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice delChildren)
-
-deletedTextAttrs :: [Gen A.Attribute]
+deletedTextAttrs :: [GenT IO A.Attribute]
 deletedTextAttrs =
   [ A.cite
   , A.datetime
   ]
 
-deletedTextContent :: NonEmpty (Gen Element)
+deletedTextContent :: NonEmpty (GenM Element)
 deletedTextContent = NEL.singleton text
 
-details :: Int -> Int -> Gen Element
-details maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+details :: GenM Element
+details =
+  mkElement Details [A.open] $ ElementContent detailsContent
 
-  let
-    detailsChildren = NEL.toList $ detailsContent maxAttrs maxChildren
+detailsContent :: NonEmpty (GenM Element)
+detailsContent =
+  NEL.cons summary flowContent
 
-  Details
-    <$> withGlobalAttrs attrs [A.open]
-    <*> Gen.list (Range.singleton children) (Gen.choice detailsChildren)
+dfn :: GenM Element
+dfn =
+  mkElement Definition [] $ ElementContent definitionContent
 
-detailsContent :: Int -> Int -> NonEmpty (Gen Element)
-detailsContent maxAttrs maxChildren =
-  NEL.cons
-    (summary maxAttrs maxChildren)
-    (flowContent maxAttrs maxChildren)
-
-dfn :: Int -> Int -> Gen Element
-dfn maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    dfnChildren = NEL.toList $ definitionContent maxAttrs maxChildren
-
-  Definition
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice dfnChildren)
-
-definitionContent :: Int -> Int -> NonEmpty (Gen Element)
-definitionContent maxAttrs maxChildren =
+definitionContent :: NonEmpty (GenM Element)
+definitionContent =
   text
     :| [ comment
-       , abbr maxAttrs maxChildren
-       , area maxAttrs
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , abbr
+       , area
+       , audio
+       , b
+       , bdi
+       , bdo
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , em
+       , embed
+       , i
+       , iframe
+       , img
+       , input
+       , kbd
+       , label
+       , mark
+       , meter
+       , noscript
+       , object
+       , output
+       , picture
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , template
+       , textarea
+       , time
+       , u
+       , var
+       , video
+       , wbr
        ]
 
-dialog :: Int -> Int -> Gen Element
-dialog maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+dialog :: GenM Element
+dialog =
+  mkElement Dialog [A.open] $ ElementContent dialogContent
 
-  let
-    dialogChildren = NEL.toList $ dialogContent maxAttrs maxChildren
-
-  Dialog
-    <$> withGlobalAttrs attrs [A.open]
-    <*> Gen.list (Range.singleton children) (Gen.choice dialogChildren)
-
-dialogContent :: Int -> Int -> NonEmpty (Gen Element)
+dialogContent :: NonEmpty (GenM Element)
 dialogContent = flowContent
 
-div :: Int -> Int -> Gen Element
-div maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+div :: GenM Element
+div =
+  mkElement Division [] $ ElementContent divisionContent
 
-  let
-    divChildren = NEL.toList $ divisionContent maxAttrs maxChildren
-
-  Division
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice divChildren)
-
-divisionContent :: Int -> Int -> NonEmpty (Gen Element)
+divisionContent :: NonEmpty (GenM Element)
 divisionContent = flowContent
 
-dl :: Int -> Int -> Gen Element
-dl maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+dl :: GenM Element
+dl =
+  mkElement DescriptionList [] $ ElementContent descriptionListContent
 
-  let
-    dlChildren = NEL.toList $ descriptionListContent maxAttrs maxChildren
+descriptionListContent :: NonEmpty (GenM Element)
+descriptionListContent =
+  NEL.cons dt
+    . NEL.cons dd
+    . NEL.cons div
+    $ scriptSupportingContent
 
-  DescriptionList
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice dlChildren)
+dt :: GenM Element
+dt =
+  mkElement DescriptionTerm [] $ ElementContent descriptionTermContent
 
-descriptionListContent :: Int -> Int -> NonEmpty (Gen Element)
-descriptionListContent maxAttrs maxChildren =
-  NEL.cons (dt maxAttrs maxChildren)
-    . NEL.cons (dd maxAttrs maxChildren)
-    . NEL.cons (div maxAttrs maxChildren)
-    $ scriptSupportingContent maxAttrs maxChildren
-
-dt :: Int -> Int -> Gen Element
-dt maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    dtChildren =
-      NEL.toList $ descriptionTermContent maxAttrs maxChildren
-
-  DescriptionTerm
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice dtChildren)
-
-descriptionTermContent :: Int -> Int -> NonEmpty (Gen Element)
-descriptionTermContent maxAttrs maxChildren =
+descriptionTermContent :: NonEmpty (GenM Element)
+descriptionTermContent =
   text
     :| [ comment
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , address maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , form maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , search maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , address
+       , audio
+       , b
+       , bdi
+       , bdo
+       , blockquote
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , em
+       , embed
+       , fieldset
+       , figure
+       , form
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , main
+       , map
+       , mark
+       , menu
+       , meter
+       , noscript
+       , object
+       , ol
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , search
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , table
+       , template
+       , textarea
+       , time
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-em :: Int -> Int -> Gen Element
-em maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+em :: GenM Element
+em =
+  mkElement Emphasis [] $ ElementContent emphasisContent
 
-  let
-    emChildren = NEL.toList $ emphasisContent maxAttrs maxChildren
-
-  Emphasis
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice emChildren)
-
-emphasisContent :: Int -> Int -> NonEmpty (Gen Element)
+emphasisContent :: NonEmpty (GenM Element)
 emphasisContent = phrasingContent
 
-embed :: Int -> Gen Element
-embed maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Embed <$> withGlobalAttrs attrs embedAttrs
+embed :: GenM Element
+embed =
+  mkElement Embed embedAttrs NoContent
 
-embedAttrs :: [Gen A.Attribute]
+embedAttrs :: [GenT IO A.Attribute]
 embedAttrs =
   [ A.src
   , A.type_
@@ -1026,92 +873,48 @@ embedAttrs =
   , A.height
   ]
 
-fieldset :: Int -> Int -> Gen Element
-fieldset maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+fieldset :: GenM Element
+fieldset =
+  mkElement Fieldset fieldsetAttrs $ ElementContent fieldsetContent
 
-  let
-    fieldsetChildren = NEL.toList $ fieldsetContent maxAttrs maxChildren
-
-  Fieldset
-    <$> withGlobalAttrs attrs fieldsetAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice fieldsetChildren)
-
-fieldsetAttrs :: [Gen A.Attribute]
+fieldsetAttrs :: [GenT IO A.Attribute]
 fieldsetAttrs =
   [ A.disabled
   , A.form
   , A.name
   ]
 
-fieldsetContent :: Int -> Int -> NonEmpty (Gen Element)
-fieldsetContent maxAttrs maxChildren =
-  NEL.cons
-    (legend maxAttrs maxChildren)
-    (flowContent maxAttrs maxChildren)
+fieldsetContent :: NonEmpty (GenM Element)
+fieldsetContent =
+  NEL.cons legend flowContent
 
-figcaption :: Int -> Int -> Gen Element
-figcaption maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+figcaption :: GenM Element
+figcaption =
+  mkElement FigureCaption [] $ ElementContent figureCaptionContent
 
-  let
-    figcaptionChildren = NEL.toList $ figureCaptionContent maxAttrs maxChildren
-
-  FigureCaption
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice figcaptionChildren)
-
-figureCaptionContent :: Int -> Int -> NonEmpty (Gen Element)
+figureCaptionContent :: NonEmpty (GenM Element)
 figureCaptionContent = flowContent
 
-figure :: Int -> Int -> Gen Element
-figure maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+figure :: GenM Element
+figure =
+  mkElement Figure [] $ ElementContent figureContent
 
-  let
-    figureChildren = NEL.toList $ figureContent maxAttrs maxChildren
+figureContent :: NonEmpty (GenM Element)
+figureContent =
+  NEL.cons figcaption flowContent
 
-  Figure
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice figureChildren)
+footer :: GenM Element
+footer =
+  mkElement Footer [] $ ElementContent footerContent
 
-figureContent :: Int -> Int -> NonEmpty (Gen Element)
-figureContent maxAttrs maxChildren =
-  NEL.cons
-    (figcaption maxAttrs maxChildren)
-    (flowContent maxAttrs maxChildren)
-
-footer :: Int -> Int -> Gen Element
-footer maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    footerChildren = NEL.toList $ footerContent maxAttrs maxChildren
-
-  Footer
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice footerChildren)
-
-footerContent :: Int -> Int -> NonEmpty (Gen Element)
+footerContent :: NonEmpty (GenM Element)
 footerContent = marginalContent
 
-form :: Int -> Int -> Gen Element
-form maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+form :: GenM Element
+form =
+  mkElement Form formAttrs $ ElementContent formContent
 
-  let
-    formChildren = NEL.toList $ formContent maxAttrs maxChildren
-
-  Form
-    <$> withGlobalAttrs attrs formAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice formChildren)
-
-formAttrs :: [Gen A.Attribute]
+formAttrs :: [GenT IO A.Attribute]
 formAttrs =
   [ A.acceptcharset
   , A.autocomplete
@@ -1124,274 +927,221 @@ formAttrs =
   , A.target
   ]
 
-formContent :: Int -> Int -> NonEmpty (Gen Element)
-formContent maxAttrs maxChildren =
+formContent :: NonEmpty (GenM Element)
+formContent =
   text
     :| [ comment
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , address maxAttrs maxChildren
-       , article maxAttrs maxChildren
-       , aside maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , footer maxAttrs maxChildren
-       , h1 maxAttrs maxChildren
-       , h2 maxAttrs maxChildren
-       , h3 maxAttrs maxChildren
-       , h4 maxAttrs maxChildren
-       , h5 maxAttrs maxChildren
-       , h6 maxAttrs maxChildren
-       , header maxAttrs maxChildren
-       , hgroup maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , nav maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , search maxAttrs maxChildren
-       , script maxAttrs
-       , section maxAttrs maxChildren
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , address
+       , article
+       , aside
+       , audio
+       , b
+       , bdi
+       , bdo
+       , blockquote
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , em
+       , embed
+       , fieldset
+       , figure
+       , footer
+       , h1
+       , h2
+       , h3
+       , h4
+       , h5
+       , h6
+       , header
+       , hgroup
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , main
+       , map
+       , mark
+       , menu
+       , meter
+       , nav
+       , noscript
+       , object
+       , ol
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , search
+       , script
+       , section
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , table
+       , template
+       , textarea
+       , time
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-h1 :: Int -> Int -> Gen Element
-h1 maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+h1 :: GenM Element
+h1 =
+  mkElement H1 [] $ ElementContent h1Content
 
-  let
-    h1Children = NEL.toList $ h1Content maxAttrs maxChildren
-
-  H1
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice h1Children)
-
-h1Content :: Int -> Int -> NonEmpty (Gen Element)
+h1Content :: NonEmpty (GenM Element)
 h1Content = phrasingContent
 
-h2 :: Int -> Int -> Gen Element
-h2 maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+h2 :: GenM Element
+h2 =
+  mkElement H2 [] $ ElementContent h2Content
 
-  let
-    h2Children = NEL.toList $ h2Content maxAttrs maxChildren
-
-  H2
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice h2Children)
-
-h2Content :: Int -> Int -> NonEmpty (Gen Element)
+h2Content :: NonEmpty (GenM Element)
 h2Content = phrasingContent
 
-h3 :: Int -> Int -> Gen Element
-h3 maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+h3 :: GenM Element
+h3 =
+  mkElement H3 [] $ ElementContent h3Content
 
-  let
-    h3Children = NEL.toList $ h3Content maxAttrs maxChildren
-
-  H3
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice h3Children)
-
-h3Content :: Int -> Int -> NonEmpty (Gen Element)
+h3Content :: NonEmpty (GenM Element)
 h3Content = phrasingContent
 
-h4 :: Int -> Int -> Gen Element
-h4 maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+h4 :: GenM Element
+h4 =
+  mkElement H4 [] $ ElementContent h4Content
 
-  let
-    h4Children = NEL.toList $ h4Content maxAttrs maxChildren
-
-  H4
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice h4Children)
-
-h4Content :: Int -> Int -> NonEmpty (Gen Element)
+h4Content :: NonEmpty (GenM Element)
 h4Content = phrasingContent
 
-h5 :: Int -> Int -> Gen Element
-h5 maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+h5 :: GenM Element
+h5 =
+  mkElement H5 [] $ ElementContent h5Content
 
-  let
-    h5Children = NEL.toList $ h5Content maxAttrs maxChildren
-
-  H5
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice h5Children)
-
-h5Content :: Int -> Int -> NonEmpty (Gen Element)
+h5Content :: NonEmpty (GenM Element)
 h5Content = phrasingContent
 
-h6 :: Int -> Int -> Gen Element
-h6 maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+h6 :: GenM Element
+h6 =
+  mkElement H6 [] $ ElementContent h6Content
 
-  let
-    h6Children = NEL.toList $ h6Content maxAttrs maxChildren
-
-  H6
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice h6Children)
-
-h6Content :: Int -> Int -> NonEmpty (Gen Element)
+h6Content :: NonEmpty (GenM Element)
 h6Content = phrasingContent
 
-head :: Int -> Int -> Gen Element
-head maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+head :: GenM Element
+head =
+  mkElement Head [] $ ElementContent headContent
 
-  let
-    headChildren = NEL.toList $ headContent maxAttrs maxChildren
-
-  Head
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice headChildren)
-
-headContent :: Int -> Int -> NonEmpty (Gen Element)
-headContent maxAttrs maxChildren =
+headContent :: NonEmpty (GenM Element)
+headContent =
   comment
-    :| [ base maxAttrs
-       , link maxAttrs
-       , meta maxAttrs
-       , noscript maxAttrs maxChildren
-       , script maxAttrs
-       , style maxAttrs
-       , title maxAttrs
+    :| [ base
+       , link
+       , meta
+       , noscript
+       , script
+       , style
+       , title
        ]
 
-header :: Int -> Int -> Gen Element
-header maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+header :: GenM Element
+header =
+  mkElement Header [] $ ElementContent headerContent
 
-  let
-    headerChildren = NEL.toList $ headerContent maxAttrs maxChildren
-
-  Header
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice headerChildren)
-
-headerContent :: Int -> Int -> NonEmpty (Gen Element)
+headerContent :: NonEmpty (GenM Element)
 headerContent = marginalContent
 
-hgroup :: Int -> Int -> Gen Element
-hgroup maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+hgroup :: GenM Element
+hgroup =
+  mkElement HeadingGroup [] $ ElementContent headingGroupContent
 
-  let
-    hgroupChildren = NEL.toList $ headingGroupContent maxAttrs maxChildren
-
-  HeadingGroup
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice hgroupChildren)
-
-headingGroupContent :: Int -> Int -> NonEmpty (Gen Element)
-headingGroupContent maxAttrs maxChildren =
+headingGroupContent :: NonEmpty (GenM Element)
+headingGroupContent =
   NEL.cons comment
-    . NEL.cons (p maxAttrs maxChildren)
-    $ headings maxAttrs maxChildren
+    . NEL.cons p
+    $ headings
 
-hr :: Int -> Gen Element
-hr maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  HorizontalRule <$> withGlobalAttrs attrs []
+hr :: GenM Element
+hr =
+  mkElement HorizontalRule [] NoContent
 
-html :: Int -> Int -> Gen Element
-html maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
+html :: GenM Element
+html = do
+  ok <- consumeNode
+  when (not ok) $ lift Gen.discard
 
-  Html
-    <$> withGlobalAttrs attrs []
-    <*> sequence [ head maxAttrs maxChildren, body maxAttrs maxChildren ]
+  ctx <- ask
 
-i :: Int -> Int -> Gen Element
-i maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+  children <-
+    if currentDepth ctx >= maxDepth ctx
+      then pure []
+      else do
+        n <-
+          lift
+            . Gen.int
+            . Range.singleton
+            . min 2
+            $ maxChildrenPerNode ctx
 
-  let
-    iChildren = NEL.toList $ idiomaticTextContent maxAttrs maxChildren
+        let
+          bumpDepth =
+            ctx
+              { currentDepth = currentDepth ctx + 1
+              }
 
-  IdiomaticText
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice iChildren)
+        replicateM n
+          . local (const bumpDepth)
+          $ chooseAndRun htmlContent
 
-idiomaticTextContent :: Int -> Int -> NonEmpty (Gen Element)
+  Element
+    <$> pure Html
+    <*> withGlobalAttrs []
+    <*> pure (Right children)
+
+htmlContent :: NonEmpty (GenM Element)
+htmlContent =
+  head :| [ body ]
+
+i :: GenM Element
+i =
+  mkElement IdiomaticText [] $ ElementContent idiomaticTextContent
+
+idiomaticTextContent :: NonEmpty (GenM Element)
 idiomaticTextContent = phrasingContent
 
-iframe :: Int -> Gen Element
-iframe maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  IFrame <$> withGlobalAttrs attrs iFrameAttrs
+iframe :: GenM Element
+iframe =
+  mkElement IFrame iFrameAttrs NoContent
 
-iFrameAttrs :: [Gen A.Attribute]
+iFrameAttrs :: [GenT IO A.Attribute]
 iFrameAttrs =
   [ A.src
   , A.srcdoc
@@ -1404,12 +1154,11 @@ iFrameAttrs =
   , A.referrerpolicy
   ]
 
-img :: Int -> Gen Element
-img maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Image <$> withGlobalAttrs attrs imageAttrs
+img :: GenM Element
+img =
+  mkElement Image imageAttrs NoContent
 
-imageAttrs :: [Gen A.Attribute]
+imageAttrs :: [GenT IO A.Attribute]
 imageAttrs =
   [ A.alt
   , A.crossorigin
@@ -1426,12 +1175,11 @@ imageAttrs =
   , A.usemap
   ]
 
-input :: Int -> Gen Element
-input maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Input <$> withGlobalAttrs attrs inputAttrs
+input :: GenM Element
+input =
+  mkElement Input inputAttrs NoContent
 
-inputAttrs :: [Gen A.Attribute]
+inputAttrs :: [GenT IO A.Attribute]
 inputAttrs =
   [ A.accept
   , A.alt
@@ -1469,145 +1217,103 @@ inputAttrs =
   , A.width
   ]
 
-ins :: Int -> Int -> Gen Element
-ins maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+ins :: GenM Element
+ins =
+  mkElement InsertedText insertedTextAttrs $ ElementContent insertedTextContent
 
-  let
-    insChildren = NEL.toList insertedTextContent
-
-  InsertedText
-    <$> withGlobalAttrs attrs insertedTextAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice insChildren)
-
-insertedTextAttrs :: [Gen A.Attribute]
+insertedTextAttrs :: [GenT IO A.Attribute]
 insertedTextAttrs =
   [ A.cite
   , A.datetime
   ]
 
-insertedTextContent :: NonEmpty (Gen Element)
+insertedTextContent :: NonEmpty (GenM Element)
 insertedTextContent = NEL.singleton text
 
-kbd :: Int -> Int -> Gen Element
-kbd maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+kbd :: GenM Element
+kbd =
+  mkElement KeyboardInput [] $ ElementContent keyboardInputContent
 
-  let
-    kbdChildren = NEL.toList $ keyboardInputContent maxAttrs maxChildren
-
-  KeyboardInput
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice kbdChildren)
-
-keyboardInputContent :: Int -> Int -> NonEmpty (Gen Element)
+keyboardInputContent :: NonEmpty (GenM Element)
 keyboardInputContent = phrasingContent
 
-label :: Int -> Int -> Gen Element
-label maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+label :: GenM Element
+label =
+  mkElement Label [A.forLabel] $ ElementContent labelContent
 
-  let
-    labelChildren = NEL.toList $ labelContent maxAttrs maxChildren
-
-  Label
-    <$> withGlobalAttrs attrs [A.forLabel]
-    <*> Gen.list (Range.singleton children) (Gen.choice labelChildren)
-
-labelContent :: Int -> Int -> NonEmpty (Gen Element)
-labelContent maxAttrs maxChildren =
+labelContent :: NonEmpty (GenM Element)
+labelContent =
   text
     :| [ comment
-       , abbr maxAttrs maxChildren
-       , area maxAttrs
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , kbd maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , abbr
+       , area
+       , audio
+       , b
+       , bdi
+       , bdo
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , dfn
+       , em
+       , embed
+       , i
+       , iframe
+       , img
+       , input
+       , kbd
+       , mark
+       , meter
+       , noscript
+       , object
+       , output
+       , picture
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , template
+       , textarea
+       , time
+       , u
+       , var
+       , video
+       , wbr
        ]
 
-legend :: Int -> Int -> Gen Element
-legend maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+legend :: GenM Element
+legend =
+  mkElement Legend [] $ ElementContent legendContent
 
-  let
-    legendChildren = NEL.toList $ legendContent maxAttrs maxChildren
+legendContent :: NonEmpty (GenM Element)
+legendContent =
+  headings <> phrasingContent
 
-  Legend
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice legendChildren)
+li :: GenM Element
+li =
+  mkElement ListItem [A.value] $ ElementContent listItemContent
 
-legendContent :: Int -> Int -> NonEmpty (Gen Element)
-legendContent maxAttrs maxChildren =
-  headings maxAttrs maxChildren
-    <> phrasingContent maxAttrs maxChildren
-
-li :: Int -> Int -> Gen Element
-li maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    liChildren = NEL.toList $ listItemContent maxAttrs maxChildren
-
-  ListItem
-    <$> withGlobalAttrs attrs [A.value]
-    <*> Gen.list (Range.singleton children) (Gen.choice liChildren)
-
-listItemContent :: Int -> Int -> NonEmpty (Gen Element)
+listItemContent :: NonEmpty (GenM Element)
 listItemContent = flowContent
 
-link :: Int -> Gen Element
-link maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Link <$> withGlobalAttrs attrs linkAttrs
+link :: GenM Element
+link =
+  mkElement Link linkAttrs NoContent
 
-linkAttrs :: [Gen A.Attribute]
+linkAttrs :: [GenT IO A.Attribute]
 linkAttrs =
   [ A.as
   , A.crossorigin
@@ -1626,84 +1332,51 @@ linkAttrs =
   , A.type_
   ]
 
-main :: Int -> Int -> Gen Element
-main maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+main :: GenM Element
+main =
+  mkElement Main [] $ ElementContent mainContent
 
-  let
-    mainChildren = NEL.toList $ mainContent maxAttrs maxChildren
-
-  Main
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice mainChildren)
-
-mainContent :: Int -> Int -> NonEmpty (Gen Element)
+mainContent :: NonEmpty (GenM Element)
 mainContent = flowContent
 
-map :: Int -> Int -> Gen Element
-map maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+map :: GenM Element
+map =
+  mkElement Map [A.name] $ ElementContent mapContent
 
-  let
-    mapChildren = NEL.toList $ mapContent maxAttrs maxChildren
-
-  Map
-    <$> withGlobalAttrs attrs [A.name]
-    <*> Gen.list (Range.singleton children) (Gen.choice mapChildren)
-
-mapContent :: Int -> Int -> NonEmpty (Gen Element)
-mapContent maxAttrs maxChildren =
+mapContent :: NonEmpty (GenM Element)
+mapContent =
   comment
-    :| [ a maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , ins maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , video maxAttrs maxChildren
+    :| [ a
+       , audio
+       , canvas
+       , del
+       , ins
+       , map
+       , noscript
+       , object
+       , slot
+       , video
        ]
 
-mark :: Int -> Int -> Gen Element
-mark maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+mark :: GenM Element
+mark =
+  mkElement Mark [] $ ElementContent markContent
 
-  let
-    markChildren = NEL.toList $ markContent maxAttrs maxChildren
-
-  Mark
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice markChildren)
-
-markContent :: Int -> Int -> NonEmpty (Gen Element)
+markContent :: NonEmpty (GenM Element)
 markContent = phrasingContent
 
-menu :: Int -> Int -> Gen Element
-menu maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+menu :: GenM Element
+menu =
+  mkElement Menu [] $ ElementContent menuContent
 
-  let
-    menuChildren = NEL.toList $ menuContent maxAttrs maxChildren
-
-  Menu
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice menuChildren)
-
-menuContent :: Int -> Int -> NonEmpty (Gen Element)
+menuContent :: NonEmpty (GenM Element)
 menuContent = listContent
 
-meta :: Int -> Gen Element
-meta maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Meta <$> withGlobalAttrs attrs metaAttrs
+meta :: GenM Element
+meta =
+  mkElement Meta metaAttrs NoContent
 
-metaAttrs :: [Gen A.Attribute]
+metaAttrs :: [GenT IO A.Attribute]
 metaAttrs =
   [ A.charset
   , A.content
@@ -1712,19 +1385,11 @@ metaAttrs =
   , A.nameMeta
   ]
 
-meter :: Int -> Int -> Gen Element
-meter maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+meter :: GenM Element
+meter =
+  mkElement Meter meterAttrs $ ElementContent meterContent
 
-  let
-    meterChildren = NEL.toList $ meterContent maxAttrs maxChildren
-
-  Meter
-    <$> withGlobalAttrs attrs meterAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice meterChildren)
-
-meterAttrs :: [Gen A.Attribute]
+meterAttrs :: [GenT IO A.Attribute]
 meterAttrs =
   [ A.value
   , A.min
@@ -1735,102 +1400,78 @@ meterAttrs =
   , A.form
   ]
 
-meterContent :: Int -> Int -> NonEmpty (Gen Element)
-meterContent maxAttrs maxChildren =
+meterContent :: NonEmpty (GenM Element)
+meterContent =
   text
     :| [ comment
-       , abbr maxAttrs maxChildren
-       , area maxAttrs
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , abbr
+       , area
+       , audio
+       , b
+       , bdi
+       , bdo
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , dfn
+       , em
+       , embed
+       , i
+       , iframe
+       , img
+       , input
+       , kbd
+       , label
+       , mark
+       , noscript
+       , object
+       , output
+       , picture
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , template
+       , textarea
+       , time
+       , u
+       , var
+       , video
+       , wbr
        ]
 
-nav :: Int -> Int -> Gen Element
-nav maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+nav :: GenM Element
+nav =
+  mkElement Nav [] $ ElementContent navContent
 
-  let
-    navChildren = NEL.toList $ navContent maxAttrs maxChildren
-
-  Nav
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice navChildren)
-
-navContent :: Int -> Int -> NonEmpty (Gen Element)
+navContent :: NonEmpty (GenM Element)
 navContent = flowContent
 
-noscript :: Int -> Int -> Gen Element
-noscript maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+noscript :: GenM Element
+noscript =
+  mkElement NoScript [] $ ElementContent noScriptContent
 
-  let
-    noScriptChildren = NEL.toList noScriptContent
-
-  NoScript
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice noScriptChildren)
-
-noScriptContent :: NonEmpty (Gen Element)
+noScriptContent :: NonEmpty (GenM Element)
 noScriptContent = NEL.singleton text
 
-object :: Int -> Int -> Gen Element
-object maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+object :: GenM Element
+object =
+  mkElement Object objectAttrs $ ElementContent objectContent
 
-  let
-    objectChildren = NEL.toList objectContent
-
-  Object
-    <$> withGlobalAttrs attrs objectAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice objectChildren)
-
-objectAttrs :: [Gen A.Attribute]
+objectAttrs :: [GenT IO A.Attribute]
 objectAttrs =
   [ A.data_
   , A.form
@@ -1840,62 +1481,42 @@ objectAttrs =
   , A.width
   ]
 
-objectContent :: NonEmpty (Gen Element)
+objectContent :: NonEmpty (GenM Element)
 objectContent = NEL.singleton text
 
-ol :: Int -> Int -> Gen Element
-ol maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+ol :: GenM Element
+ol =
+  mkElement OrderedList orderedListAttrs $ ElementContent orderedListContent
 
-  let
-    olChildren = NEL.toList $ orderedListContent maxAttrs maxChildren
-
-  OrderedList
-    <$> withGlobalAttrs attrs orderedListAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice olChildren)
-
-orderedListAttrs :: [Gen A.Attribute]
+orderedListAttrs :: [GenT IO A.Attribute]
 orderedListAttrs =
   [ A.reversed
   , A.start
   , A.type_
   ]
 
-orderedListContent :: Int -> Int -> NonEmpty (Gen Element)
+orderedListContent :: NonEmpty (GenM Element)
 orderedListContent = listContent
 
-optgroup :: Int -> Int -> Gen Element
-optgroup maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+optgroup :: GenM Element
+optgroup =
+  mkElement OptionGroup optionGroupAttrs $ ElementContent optionGroupContent
 
-  let
-    optGroupChildren = NEL.toList $ optionGroupContent maxAttrs
-
-  OptionGroup
-    <$> withGlobalAttrs attrs optionGroupAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice optGroupChildren)
-
-optionGroupAttrs :: [Gen A.Attribute]
+optionGroupAttrs :: [GenT IO A.Attribute]
 optionGroupAttrs =
   [ A.disabled
   , A.label
   ]
 
-optionGroupContent :: Int -> NonEmpty (Gen Element)
-optionGroupContent maxAttrs =
-  comment :| [ option maxAttrs ]
+optionGroupContent :: NonEmpty (GenM Element)
+optionGroupContent =
+  comment :| [ option ]
 
-option :: Int -> Gen Element
-option maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
+option :: GenM Element
+option =
+  mkElement Option optionAttrs . TextContent =<< Generators.nonEmptyText
 
-  Option
-    <$> withGlobalAttrs attrs optionAttrs
-    <*> Generators.text
-
-optionAttrs :: [Gen A.Attribute]
+optionAttrs :: [GenT IO A.Attribute]
 optionAttrs =
   [ A.disabled
   , A.label
@@ -1903,235 +1524,181 @@ optionAttrs =
   , A.value
   ]
 
-output :: Int -> Int -> Gen Element
-output maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+output :: GenM Element
+output =
+  mkElement Output outputAttrs $ ElementContent outputContent
 
-  let
-    outputChildren = NEL.toList $ outputContent maxAttrs maxChildren
-
-  Output
-    <$> withGlobalAttrs attrs outputAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice outputChildren)
-
-outputAttrs :: [Gen A.Attribute]
+outputAttrs :: [GenT IO A.Attribute]
 outputAttrs =
   [ A.forOutput
   , A.form
   , A.name
   ]
 
-outputContent :: Int -> Int -> NonEmpty (Gen Element)
+outputContent :: NonEmpty (GenM Element)
 outputContent = phrasingContent
 
-p :: Int -> Int -> Gen Element
-p maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+p :: GenM Element
+p =
+  mkElement Paragraph [] $ ElementContent paragraphContent
 
-  let
-    pChildren = NEL.toList $ paragraphContent maxAttrs maxChildren
-
-  Paragraph
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice pChildren)
-
-paragraphContent :: Int -> Int -> NonEmpty (Gen Element)
+paragraphContent :: NonEmpty (GenM Element)
 paragraphContent = phrasingContent
 
-picture :: Int -> Int -> Gen Element
-picture maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+picture :: GenM Element
+picture =
+  mkElement Picture [] $ ElementContent pictureContent
 
-  let
-    pictureChildren = NEL.toList $ pictureContent maxAttrs maxChildren
-
-  Picture
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice pictureChildren)
-
-pictureContent :: Int -> Int -> NonEmpty (Gen Element)
-pictureContent maxAttrs maxChildren =
+pictureContent :: NonEmpty (GenM Element)
+pictureContent =
   NEL.cons comment
-    . NEL.cons (source maxAttrs)
-    . NEL.cons (img maxAttrs)
-    $ scriptSupportingContent maxAttrs maxChildren
+    . NEL.cons source
+    . NEL.cons img
+    $ scriptSupportingContent
 
-pre :: Int -> Int -> Gen Element
-pre maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+pre :: GenM Element
+pre =
+  mkElement PreformattedText [] $ ElementContent preformattedTextContent
 
-  let
-    preChildren = NEL.toList $ preformattedTextContent maxAttrs maxChildren
-
-  PreformattedText
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice preChildren)
-
-preformattedTextContent :: Int -> Int -> NonEmpty (Gen Element)
+preformattedTextContent :: NonEmpty (GenM Element)
 preformattedTextContent = phrasingContent
 
-progress :: Int -> Int -> Gen Element
-progress maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+progress :: GenM Element
+progress =
+  mkElement Progress progressAttrs $ ElementContent progressContent
 
-  let
-    progressChildren = NEL.toList $ progressContent maxAttrs maxChildren
-
-  Progress
-    <$> withGlobalAttrs attrs progressAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice progressChildren)
-
-progressAttrs :: [Gen A.Attribute]
+progressAttrs :: [GenT IO A.Attribute]
 progressAttrs =
   [ A.max
   , A.value
   ]
 
-progressContent :: Int -> Int -> NonEmpty (Gen Element)
-progressContent maxAttrs maxChildren =
+progressContent :: NonEmpty (GenM Element)
+progressContent =
   text
     :| [ comment
-       , abbr maxAttrs maxChildren
-       , area maxAttrs
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , abbr
+       , area
+       , audio
+       , b
+       , bdi
+       , bdo
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , dfn
+       , em
+       , embed
+       , i
+       , iframe
+       , img
+       , input
+       , kbd
+       , label
+       , mark
+       , meter
+       , noscript
+       , object
+       , output
+       , picture
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , template
+       , textarea
+       , time
+       , u
+       , var
+       , video
+       , wbr
        ]
 
-q :: Int -> Int -> Gen Element
-q maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+q :: GenM Element
+q =
+  mkElement Quotation [A.cite] $ ElementContent quotationContent
 
-  let
-    qChildren = NEL.toList $ quotationContent maxAttrs maxChildren
-
-  Quotation
-    <$> withGlobalAttrs attrs [A.cite]
-    <*> Gen.list (Range.singleton children) (Gen.choice qChildren)
-
-quotationContent :: Int -> Int -> NonEmpty (Gen Element)
+quotationContent :: NonEmpty (GenM Element)
 quotationContent = phrasingContent
 
-rubyText :: Int -> Int -> Gen Element
-rubyText maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+rp :: GenM Element
+rp =
+  mkElement RubyParenthesis [] . TextContent =<< Generators.nonEmptyText
 
-  let
-    rtChildren = NEL.toList $ rubyTextContent maxAttrs maxChildren
+rt :: GenM Element
+rt =
+  mkElement RubyText [] $ ElementContent rubyTextContent
 
-  RubyText
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice rtChildren)
-
-rubyTextContent :: Int -> Int -> NonEmpty (Gen Element)
+rubyTextContent :: NonEmpty (GenM Element)
 rubyTextContent = phrasingContent
 
-ruby :: Int -> Int -> Gen Element
-ruby maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-  rubyContent <- Gen.list (Range.singleton children) text
-  rubyTexts <- Gen.list (Range.singleton children) (rubyText maxAttrs maxChildren)
+ruby :: GenM Element
+ruby = do
+  ok <- consumeNode
+  when (not ok) $ lift Gen.discard
+
+  ctx <- ask
+  nPairs <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
 
   let
-    addParens (content, rt) =
+    totalChildNodes = 4 * nPairs
+    addParents (content, rubyText) =
       [ content
-      , RubyParenthesis [] "("
-      , rt
-      , RubyParenthesis [] ")"
+      , Element RubyParenthesis [] . Left $ NET.singleton '('
+      , rubyText
+      , Element RubyParenthesis [] . Left $ NET.singleton ')'
       ]
 
-  Ruby
-    <$> withGlobalAttrs attrs []
-    <*> pure (concatMap addParens $ zip rubyContent rubyTexts)
 
-s :: Int -> Int -> Gen Element
-s maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+  canProceed <-
+    liftIO $
+      atomicModifyIORef' (remainingNodes ctx) $
+        \remaining ->
+          if remaining < totalChildNodes
+            then (remaining, False)
+            else (remaining - totalChildNodes, True)
 
-  let
-    sChildren = NEL.toList $ strikethroughContent maxAttrs maxChildren
+  when (not canProceed) $ lift Gen.discard
 
-  Strikethrough
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice sChildren)
+  rubyContent <- replicateM nPairs text
+  rubyTexts <- replicateM nPairs rt
 
-strikethroughContent :: Int -> Int -> NonEmpty (Gen Element)
+  Element
+    <$> pure Ruby
+    <*> withGlobalAttrs []
+    <*> pure (Right . concatMap addParents $ zip rubyContent rubyTexts)
+
+s :: GenM Element
+s =
+  mkElement Strikethrough [] $ ElementContent strikethroughContent
+
+strikethroughContent :: NonEmpty (GenM Element)
 strikethroughContent = phrasingContent
 
-samp :: Int -> Int -> Gen Element
-samp maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+samp :: GenM Element
+samp =
+  mkElement Sample [] $ ElementContent sampleContent
 
-  let
-    sampleChildren = NEL.toList $ sampleContent maxAttrs maxChildren
-
-  Sample
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice sampleChildren)
-
-sampleContent :: Int -> Int -> NonEmpty (Gen Element)
+sampleContent :: NonEmpty (GenM Element)
 sampleContent = phrasingContent
 
-script :: Int -> Gen Element
-script maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Script
-    <$> withGlobalAttrs attrs scriptAttrs
-    <*> Generators.nonEmptyText
+script :: GenM Element
+script =
+  mkElement Script scriptAttrs . TextContent =<< Generators.nonEmptyText
 
-scriptAttrs :: [Gen A.Attribute]
+scriptAttrs :: [GenT IO A.Attribute]
 scriptAttrs =
   [ A.async
   , A.crossorigin
@@ -2145,49 +1712,25 @@ scriptAttrs =
   , A.type_
   ]
 
-search :: Int -> Int -> Gen Element
-search maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+search :: GenM Element
+search =
+  mkElement Search [] $ ElementContent searchContent
 
-  let
-    searchChildren = NEL.toList $ searchContent maxAttrs maxChildren
-
-  Search
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice searchChildren)
-
-searchContent :: Int -> Int -> NonEmpty (Gen Element)
+searchContent :: NonEmpty (GenM Element)
 searchContent = flowContent
 
-section :: Int -> Int -> Gen Element
-section maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+section :: GenM Element
+section =
+  mkElement Section [] $ ElementContent sectionContent
 
-  let
-    sectionChildren = NEL.toList $ sectionContent maxAttrs maxChildren
-
-  Section
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice sectionChildren)
-
-sectionContent :: Int -> Int -> NonEmpty (Gen Element)
+sectionContent :: NonEmpty (GenM Element)
 sectionContent = flowContent
 
-select :: Int -> Int -> Gen Element
-select maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+select :: GenM Element
+select =
+  mkElement Select selectAttrs $ ElementContent selectContent
 
-  let
-    selectChildren = NEL.toList $ selectContent maxAttrs maxChildren
-
-  Select
-    <$> withGlobalAttrs attrs selectAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice selectChildren)
-
-selectAttrs :: [Gen A.Attribute]
+selectAttrs :: [GenT IO A.Attribute]
 selectAttrs =
   [ A.autocomplete
   , A.autofocus
@@ -2199,49 +1742,32 @@ selectAttrs =
   , A.size
   ]
 
-selectContent :: Int -> Int -> NonEmpty (Gen Element)
-selectContent maxAttrs maxChildren =
+selectContent :: NonEmpty (GenM Element)
+selectContent =
   comment
-    :| [ option maxAttrs
-       , optgroup maxAttrs maxChildren
+    :| [ option
+       , optgroup
        ]
 
-slot :: Int -> Int -> Gen Element
-slot maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+slot :: GenM Element
+slot =
+  mkElement Slot [A.name] $ ElementContent slotContent
 
-  let
-    slotChildren = NEL.toList slotContent
-
-  Slot
-    <$> withGlobalAttrs attrs [A.name]
-    <*> Gen.list (Range.singleton children) (Gen.choice slotChildren)
-
-slotContent :: NonEmpty (Gen Element)
+slotContent :: NonEmpty (GenM Element)
 slotContent = NEL.singleton text
 
-small :: Int -> Int -> Gen Element
-small maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+small :: GenM Element
+small =
+  mkElement SideComment [] $ ElementContent sideCommentContent
 
-  let
-    smallChildren = NEL.toList $ sideCommentContent maxAttrs maxChildren
-
-  SideComment
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice smallChildren)
-
-sideCommentContent :: Int -> Int -> NonEmpty (Gen Element)
+sideCommentContent :: NonEmpty (GenM Element)
 sideCommentContent = phrasingContent
 
-source :: Int -> Gen Element
-source maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Source <$> withGlobalAttrs attrs sourceAttrs
+source :: GenM Element
+source =
+  mkElement Source sourceAttrs NoContent
 
-sourceAttrs :: [Gen A.Attribute]
+sourceAttrs :: [GenT IO A.Attribute]
 sourceAttrs =
   [ A.type_
   , A.src
@@ -2252,181 +1778,104 @@ sourceAttrs =
   , A.width
   ]
 
-span :: Int -> Int -> Gen Element
-span maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+span :: GenM Element
+span =
+  mkElement Span [] $ ElementContent spanContent
 
-  let
-    spanChildren = NEL.toList $ spanContent maxAttrs maxChildren
-
-  Span
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice spanChildren)
-
-spanContent :: Int -> Int -> NonEmpty (Gen Element)
+spanContent :: NonEmpty (GenM Element)
 spanContent = phrasingContent
 
-strong :: Int -> Int -> Gen Element
-strong maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+strong :: GenM Element
+strong =
+  mkElement Strong [] $ ElementContent strongContent
 
-  let
-    strongChildren = NEL.toList $ strongContent maxAttrs maxChildren
-
-  Strong
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice strongChildren)
-
-strongContent :: Int -> Int -> NonEmpty (Gen Element)
+strongContent :: NonEmpty (GenM Element)
 strongContent = phrasingContent
 
-style :: Int -> Gen Element
-style maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Style <$> withGlobalAttrs attrs styleAttrs
+style :: GenM Element
+style =
+  mkElement Style styleAttrs NoContent
 
-styleAttrs :: [Gen A.Attribute]
+styleAttrs :: [GenT IO A.Attribute]
 styleAttrs =
   [ A.media
   , A.nonce
   , A.title
   ]
 
-sub :: Int -> Int -> Gen Element
-sub maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+sub :: GenM Element
+sub =
+  mkElement Subscript [] $ ElementContent subscriptContent
 
-  let
-    subChildren = NEL.toList $ subscriptContent maxAttrs maxChildren
-
-  Subscript
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice subChildren)
-
-subscriptContent :: Int -> Int -> NonEmpty (Gen Element)
+subscriptContent :: NonEmpty (GenM Element)
 subscriptContent = phrasingContent
 
-summary :: Int -> Int -> Gen Element
-summary maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+summary :: GenM Element
+summary =
+  mkElement Summary [] $ ElementContent summaryContent
 
-  let
-    summaryChildren = NEL.toList $ summaryContent maxAttrs maxChildren
+summaryContent :: NonEmpty (GenM Element)
+summaryContent =
+  NEL.cons hgroup $ headings <> phrasingContent
 
-  Summary
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice summaryChildren)
+sup :: GenM Element
+sup =
+  mkElement Superscript [] $ ElementContent superscriptContent
 
-summaryContent :: Int -> Int -> NonEmpty (Gen Element)
-summaryContent maxAttrs maxChildren =
-  NEL.cons (hgroup maxAttrs maxChildren) $
-    headings maxAttrs maxChildren
-      <> phrasingContent maxAttrs maxChildren
-
-sup :: Int -> Int -> Gen Element
-sup maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    supChildren = NEL.toList $ superscriptContent maxAttrs maxChildren
-
-  Superscript
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice supChildren)
-
-superscriptContent :: Int -> Int -> NonEmpty (Gen Element)
+superscriptContent :: NonEmpty (GenM Element)
 superscriptContent = phrasingContent
 
-table :: Int -> Int -> Gen Element
-table maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+table :: GenM Element
+table =
+  mkElement Table [] $ ElementContent tableContent
 
-  let
-    tableChildren = NEL.toList $ tableContent maxAttrs maxChildren
-
-  Table
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice tableChildren)
-
-tableContent :: Int -> Int -> NonEmpty (Gen Element)
-tableContent maxAttrs maxChildren =
-  caption maxAttrs maxChildren
-    :| [ colgroup maxAttrs maxChildren
-       , thead maxAttrs maxChildren
-       , tbody maxAttrs maxChildren
-       , tr maxAttrs maxChildren
-       , tfoot maxAttrs maxChildren
+tableContent :: NonEmpty (GenM Element)
+tableContent =
+  caption
+    :| [ colgroup
+       , thead
+       , tbody
+       , tr
+       , tfoot
        ]
 
-tbody :: Int -> Int -> Gen Element
-tbody maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+tbody :: GenM Element
+tbody =
+  mkElement TableBody [] $ ElementContent tableBodyContent
 
-  let
-    tbodyChildren = NEL.toList $ tableBodyContent maxAttrs maxChildren
+tableBodyContent :: NonEmpty (GenM Element)
+tableBodyContent =
+  comment :| [ tr ]
 
-  TableBody
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice tbodyChildren)
+td :: GenM Element
+td =
+  mkElement
+    TableDataCell
+    tableDataCellAttrs
+    (ElementContent tableDataCellContent)
 
-tableBodyContent :: Int -> Int -> NonEmpty (Gen Element)
-tableBodyContent maxAttrs maxChildren =
-  comment :| [ tr maxAttrs maxChildren ]
-
-td :: Int -> Int -> Gen Element
-td maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    tdChildren = NEL.toList $ tableDataCellContent maxAttrs maxChildren
-
-  TableDataCell
-    <$> withGlobalAttrs attrs tableDataCellAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice tdChildren)
-
-tableDataCellAttrs :: [Gen A.Attribute]
+tableDataCellAttrs :: [GenT IO A.Attribute]
 tableDataCellAttrs =
   [ A.colspan
   , A.headers
   , A.rowspan
   ]
 
-tableDataCellContent :: Int -> Int -> NonEmpty (Gen Element)
+tableDataCellContent :: NonEmpty (GenM Element)
 tableDataCellContent = flowContent
 
-template :: Int -> Int -> Gen Element
-template maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+template :: GenM Element
+template =
+  mkElement ContentTemplate [] $ ElementContent contentTemplateContent
 
-  let
-    contentTemplateChildren = NEL.toList $ contentTemplateContent maxAttrs maxChildren
-
-  ContentTemplate
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice contentTemplateChildren)
-
-contentTemplateContent :: Int -> Int -> NonEmpty (Gen Element)
+contentTemplateContent :: NonEmpty (GenM Element)
 contentTemplateContent = allElements
 
-textarea :: Int -> Int -> Gen Element
-textarea maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+textarea :: GenM Element
+textarea =
+  mkElement TextArea textAreaAttrs . ElementContent $ NEL.singleton text
 
-  TextArea
-    <$> withGlobalAttrs attrs textAreaAttrs
-    <*> Gen.list (Range.singleton children) text
-
-textAreaAttrs :: [Gen A.Attribute]
+textAreaAttrs :: [GenT IO A.Attribute]
 textAreaAttrs =
   [ A.autocapitalize
   , A.autocomplete
@@ -2446,35 +1895,19 @@ textAreaAttrs =
   , A.wrap
   ]
 
-tfoot :: Int -> Int -> Gen Element
-tfoot maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+tfoot :: GenM Element
+tfoot =
+  mkElement TableFoot [] $ ElementContent tableFootContent
 
-  let
-    tfootChildren = NEL.toList $ tableFootContent maxAttrs maxChildren
+tableFootContent :: NonEmpty (GenM Element)
+tableFootContent =
+  comment :| [ tr ]
 
-  TableFoot
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice tfootChildren)
+th :: GenM Element
+th =
+  mkElement TableHeader tableHeaderAttrs $ ElementContent tableHeaderContent
 
-tableFootContent :: Int -> Int -> NonEmpty (Gen Element)
-tableFootContent maxAttrs maxChildren =
-  comment :| [ tr maxAttrs maxChildren ]
-
-th :: Int -> Int -> Gen Element
-th maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    theadChildren = NEL.toList $ tableHeaderContent maxAttrs maxChildren
-
-  TableHeader
-    <$> withGlobalAttrs attrs tableHeaderAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice theadChildren)
-
-tableHeaderAttrs :: [Gen A.Attribute]
+tableHeaderAttrs :: [GenT IO A.Attribute]
 tableHeaderAttrs =
   [ A.abbr
   , A.colspan
@@ -2483,144 +1916,115 @@ tableHeaderAttrs =
   , A.scope
   ]
 
-tableHeaderContent :: Int -> Int -> NonEmpty (Gen Element)
-tableHeaderContent maxAttrs maxChildren =
+tableHeaderContent :: NonEmpty (GenM Element)
+tableHeaderContent =
   text
     :| [ comment
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , address maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , form maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , search maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , address
+       , audio
+       , b
+       , bdi
+       , bdo
+       , blockquote
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , em
+       , embed
+       , fieldset
+       , figure
+       , form
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , main
+       , map
+       , mark
+       , menu
+       , meter
+       , noscript
+       , object
+       , ol
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , search
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , table
+       , template
+       , textarea
+       , time
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-thead :: Int -> Int -> Gen Element
-thead maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+thead :: GenM Element
+thead =
+  mkElement TableHead [] $ ElementContent tableHeadContent
 
-  let
-    thChildren = NEL.toList $ tableHeadContent maxAttrs maxChildren
+tableHeadContent :: NonEmpty (GenM Element)
+tableHeadContent =
+  comment :| [ tr ]
 
-  TableHead
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice thChildren)
+time :: GenM Element
+time =
+  mkElement Time [A.datetime] $ ElementContent timeContent
 
-tableHeadContent :: Int -> Int -> NonEmpty (Gen Element)
-tableHeadContent maxAttrs maxChildren =
-  comment :| [ tr maxAttrs maxChildren ]
-
-time :: Int -> Int -> Gen Element
-time maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
-
-  let
-    timeChildren = NEL.toList $ timeContent maxAttrs maxChildren
-
-  Time
-    <$> withGlobalAttrs attrs [A.datetime]
-    <*> Gen.list (Range.singleton children) (Gen.choice timeChildren)
-
-timeContent :: Int -> Int -> NonEmpty (Gen Element)
+timeContent :: NonEmpty (GenM Element)
 timeContent = phrasingContent
 
-title :: Int -> Gen Element
-title maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
+title :: GenM Element
+title =
+  mkElement Title [] . TextContent =<< Generators.nonEmptyText
 
-  Title
-    <$> withGlobalAttrs attrs []
-    <*> Generators.text
+tr :: GenM Element
+tr =
+  mkElement TableRow [] $ ElementContent tableRowContent
 
-tr :: Int -> Int -> Gen Element
-tr maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+tableRowContent :: NonEmpty (GenM Element)
+tableRowContent =
+  NEL.cons td
+    . NEL.cons th
+    $ scriptSupportingContent
 
-  let
-    tableRowChildren = NEL.toList $ tableRowContent maxAttrs maxChildren
+track :: GenM Element
+track =
+  mkElement Track trackAttrs NoContent
 
-  TableRow
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice tableRowChildren)
-
-tableRowContent :: Int -> Int -> NonEmpty (Gen Element)
-tableRowContent maxAttrs maxChildren =
-  NEL.cons (td maxAttrs maxChildren)
-    . NEL.cons (th maxAttrs maxChildren)
-    $ scriptSupportingContent maxAttrs maxChildren
-
-track :: Int -> Gen Element
-track maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  Track <$> withGlobalAttrs attrs trackAttrs
-
-trackAttrs :: [Gen A.Attribute]
+trackAttrs :: [GenT IO A.Attribute]
 trackAttrs =
   [ A.default_
   , A.kind
@@ -2629,64 +2033,32 @@ trackAttrs =
   , A.srclang
   ]
 
-u :: Int -> Int -> Gen Element
-u maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+u :: GenM Element
+u =
+  mkElement Underline [] $ ElementContent underlineContent
 
-  let
-    uChildren = NEL.toList $ underlineContent maxAttrs maxChildren
-
-  Underline
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice uChildren)
-
-underlineContent :: Int -> Int -> NonEmpty (Gen Element)
+underlineContent :: NonEmpty (GenM Element)
 underlineContent = phrasingContent
 
-ul :: Int -> Int -> Gen Element
-ul maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+ul :: GenM Element
+ul =
+  mkElement UnorderedList [] $ ElementContent unorderedListContent
 
-  let
-    ulChildren = NEL.toList $ unorderedListContent maxAttrs maxChildren
-
-  UnorderedList
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice ulChildren)
-
-unorderedListContent :: Int -> Int -> NonEmpty (Gen Element)
+unorderedListContent :: NonEmpty (GenM Element)
 unorderedListContent = listContent
 
-var :: Int -> Int -> Gen Element
-var maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+var :: GenM Element
+var =
+  mkElement Variable [] $ ElementContent variableContent
 
-  let
-    varChildren = NEL.toList $ variableContent maxAttrs maxChildren
-
-  Variable
-    <$> withGlobalAttrs attrs []
-    <*> Gen.list (Range.singleton children) (Gen.choice varChildren)
-
-variableContent :: Int -> Int -> NonEmpty (Gen Element)
+variableContent :: NonEmpty (GenM Element)
 variableContent = phrasingContent
 
-video :: Int -> Int -> Gen Element
-video maxAttrs maxChildren = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-  children <- Gen.int (Range.linear 0 maxChildren)
+video :: GenM Element
+video =
+  mkElement Video videoAttrs $ ElementContent videoContent
 
-  let
-    videoChildren = NEL.toList $ videoContent maxAttrs
-
-  Video
-    <$> withGlobalAttrs attrs videoAttrs
-    <*> Gen.list (Range.singleton children) (Gen.choice videoChildren)
-
-videoAttrs :: [Gen A.Attribute]
+videoAttrs :: [GenT IO A.Attribute]
 videoAttrs =
   [ A.autoplay
   , A.controls
@@ -2704,426 +2076,425 @@ videoAttrs =
   , A.width
   ]
 
-videoContent :: Int -> NonEmpty (Gen Element)
+videoContent :: NonEmpty (GenM Element)
 videoContent = audioVideoContent
 
-wbr :: Int -> Gen Element
-wbr maxAttrs = do
-  attrs <- Gen.int (Range.linear 0 maxAttrs)
-
-  WordBreakOpportunity <$> withGlobalAttrs attrs []
+wbr :: GenM Element
+wbr =
+  mkElement WordBreakOpportunity [] NoContent
 
 -- Content Categories
 --
 
-allElements :: Int -> Int -> NonEmpty (Gen Element)
-allElements maxAttrs maxChildren =
+allElements :: NonEmpty (GenM Element)
+allElements =
   comment
     :| [ text
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , address maxAttrs maxChildren
-       , area maxAttrs
-       , article maxAttrs maxChildren
-       , aside maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , base maxAttrs
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , body maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , caption maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , col maxAttrs
-       , colgroup maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , dd maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , dt maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figcaption maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , footer maxAttrs maxChildren
-       , form maxAttrs maxChildren
-       , h1 maxAttrs maxChildren
-       , h2 maxAttrs maxChildren
-       , h3 maxAttrs maxChildren
-       , h4 maxAttrs maxChildren
-       , h5 maxAttrs maxChildren
-       , h6 maxAttrs maxChildren
-       , head maxAttrs maxChildren
-       , header maxAttrs maxChildren
-       , hgroup maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , legend maxAttrs maxChildren
-       , li maxAttrs maxChildren
-       , link maxAttrs
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meta maxAttrs
-       , meter maxAttrs maxChildren
-       , nav maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , optgroup maxAttrs maxChildren
-       , option maxAttrs
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , search maxAttrs maxChildren
-       , section maxAttrs maxChildren
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , source maxAttrs
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , style maxAttrs
-       , sub maxAttrs maxChildren
-       , summary maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , tbody maxAttrs maxChildren
-       , td maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , tfoot maxAttrs maxChildren
-       , th maxAttrs maxChildren
-       , thead maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , title maxAttrs
-       , tr maxAttrs maxChildren
-       , track maxAttrs
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , address
+       , area
+       , article
+       , aside
+       , audio
+       , b
+       , base
+       , bdi
+       , bdo
+       , blockquote
+       , body
+       , br
+       , button
+       , canvas
+       , caption
+       , cite
+       , code
+       , col
+       , colgroup
+       , data_
+       , datalist
+       , dd
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , dt
+       , em
+       , embed
+       , fieldset
+       , figcaption
+       , figure
+       , footer
+       , form
+       , h1
+       , h2
+       , h3
+       , h4
+       , h5
+       , h6
+       , head
+       , header
+       , hgroup
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , legend
+       , li
+       , link
+       , main
+       , map
+       , mark
+       , menu
+       , meta
+       , meter
+       , nav
+       , noscript
+       , object
+       , ol
+       , optgroup
+       , option
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , search
+       , section
+       , select
+       , slot
+       , small
+       , source
+       , span
+       , strong
+       , style
+       , sub
+       , summary
+       , sup
+       , table
+       , tbody
+       , td
+       , template
+       , textarea
+       , tfoot
+       , th
+       , thead
+       , time
+       , title
+       , tr
+       , track
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-audioVideoContent :: Int -> NonEmpty (Gen Element)
-audioVideoContent maxAttrs =
+audioVideoContent :: NonEmpty (GenM Element)
+audioVideoContent =
   comment
-    :| [ source maxAttrs
-       , track maxAttrs
+    :| [ source
+       , track
        ]
 
-flowContent :: Int -> Int -> NonEmpty (Gen Element)
-flowContent maxAttrs maxChildren =
+flowContent :: NonEmpty (GenM Element)
+flowContent =
   text
     :| [ comment
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , address maxAttrs maxChildren
-       , article maxAttrs maxChildren
-       , aside maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , footer maxAttrs maxChildren
-       , form maxAttrs maxChildren
-       , h1 maxAttrs maxChildren
-       , h2 maxAttrs maxChildren
-       , h3 maxAttrs maxChildren
-       , h4 maxAttrs maxChildren
-       , h5 maxAttrs maxChildren
-       , h6 maxAttrs maxChildren
-       , header maxAttrs maxChildren
-       , hgroup maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , nav maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , search maxAttrs maxChildren
-       , script maxAttrs
-       , section maxAttrs maxChildren
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , address
+       , article
+       , aside
+       , audio
+       , b
+       , bdi
+       , bdo
+       , blockquote
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , em
+       , embed
+       , fieldset
+       , figure
+       , footer
+       , form
+       , h1
+       , h2
+       , h3
+       , h4
+       , h5
+       , h6
+       , header
+       , hgroup
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , main
+       , map
+       , mark
+       , menu
+       , meter
+       , nav
+       , noscript
+       , object
+       , ol
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , search
+       , script
+       , section
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , table
+       , template
+       , textarea
+       , time
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-headings :: Int -> Int -> NonEmpty (Gen Element)
-headings maxAttrs maxChildren =
+headings :: NonEmpty (GenM Element)
+headings =
   comment
-    :| [ h1 maxAttrs maxChildren
-       , h2 maxAttrs maxChildren
-       , h3 maxAttrs maxChildren
-       , h4 maxAttrs maxChildren
-       , h5 maxAttrs maxChildren
-       , h6 maxAttrs maxChildren
+    :| [ h1
+       , h2
+       , h3
+       , h4
+       , h5
+       , h6
        ]
 
-listContent :: Int -> Int -> NonEmpty (Gen Element)
-listContent maxAttrs maxChildren =
-  NEL.cons
-    (li maxAttrs maxChildren)
-    (scriptSupportingContent maxAttrs maxChildren)
+listContent :: NonEmpty (GenM Element)
+listContent =
+  NEL.cons li scriptSupportingContent
 
-marginalContent :: Int -> Int -> NonEmpty (Gen Element)
-marginalContent maxAttrs maxChildren =
+marginalContent :: NonEmpty (GenM Element)
+marginalContent =
   text
     :| [ comment
-       , a maxAttrs maxChildren
-       , abbr maxAttrs maxChildren
-       , address maxAttrs maxChildren
-       , article maxAttrs maxChildren
-       , aside maxAttrs maxChildren
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , blockquote maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , del maxAttrs maxChildren
-       , details maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , dialog maxAttrs maxChildren
-       , div maxAttrs maxChildren
-       , dl maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , fieldset maxAttrs maxChildren
-       , figure maxAttrs maxChildren
-       , form maxAttrs maxChildren
-       , h1 maxAttrs maxChildren
-       , h2 maxAttrs maxChildren
-       , h3 maxAttrs maxChildren
-       , h4 maxAttrs maxChildren
-       , h5 maxAttrs maxChildren
-       , h6 maxAttrs maxChildren
-       , hgroup maxAttrs maxChildren
-       , hr maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , ins maxAttrs maxChildren
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , main maxAttrs maxChildren
-       , map maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , menu maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , nav maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , ol maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , p maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , pre maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , search maxAttrs maxChildren
-       , script maxAttrs
-       , section maxAttrs maxChildren
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , table maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , ul maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , a
+       , abbr
+       , address
+       , article
+       , aside
+       , audio
+       , b
+       , bdi
+       , bdo
+       , blockquote
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , del
+       , details
+       , dfn
+       , dialog
+       , div
+       , dl
+       , em
+       , embed
+       , fieldset
+       , figure
+       , form
+       , h1
+       , h2
+       , h3
+       , h4
+       , h5
+       , h6
+       , hgroup
+       , hr
+       , i
+       , iframe
+       , img
+       , input
+       , ins
+       , kbd
+       , label
+       , main
+       , map
+       , mark
+       , menu
+       , meter
+       , nav
+       , noscript
+       , object
+       , ol
+       , output
+       , p
+       , picture
+       , pre
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , search
+       , script
+       , section
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , table
+       , template
+       , textarea
+       , time
+       , u
+       , ul
+       , var
+       , video
+       , wbr
        ]
 
-phrasingContent :: Int -> Int -> NonEmpty (Gen Element)
-phrasingContent maxAttrs maxChildren =
+phrasingContent :: NonEmpty (GenM Element)
+phrasingContent =
   text
     :| [ comment
-       , abbr maxAttrs maxChildren
-       , area maxAttrs
-       , audio maxAttrs maxChildren
-       , b maxAttrs maxChildren
-       , bdi maxAttrs maxChildren
-       , bdo maxAttrs maxChildren
-       , br maxAttrs
-       , button maxAttrs maxChildren
-       , canvas maxAttrs maxChildren
-       , cite maxAttrs maxChildren
-       , code maxAttrs maxChildren
-       , data_ maxAttrs maxChildren
-       , datalist maxAttrs maxChildren
-       , dfn maxAttrs maxChildren
-       , em maxAttrs maxChildren
-       , embed maxAttrs
-       , i maxAttrs maxChildren
-       , iframe maxAttrs
-       , img maxAttrs
-       , input maxAttrs
-       , kbd maxAttrs maxChildren
-       , label maxAttrs maxChildren
-       , mark maxAttrs maxChildren
-       , meter maxAttrs maxChildren
-       , noscript maxAttrs maxChildren
-       , object maxAttrs maxChildren
-       , output maxAttrs maxChildren
-       , picture maxAttrs maxChildren
-       , progress maxAttrs maxChildren
-       , q maxAttrs maxChildren
-       , ruby maxAttrs maxChildren
-       , s maxAttrs maxChildren
-       , samp maxAttrs maxChildren
-       , script maxAttrs
-       , select maxAttrs maxChildren
-       , slot maxAttrs maxChildren
-       , small maxAttrs maxChildren
-       , span maxAttrs maxChildren
-       , strong maxAttrs maxChildren
-       , sub maxAttrs maxChildren
-       , sup maxAttrs maxChildren
-       , template maxAttrs maxChildren
-       , textarea maxAttrs maxChildren
-       , time maxAttrs maxChildren
-       , u maxAttrs maxChildren
-       , var maxAttrs maxChildren
-       , video maxAttrs maxChildren
-       , wbr maxAttrs
+       , abbr
+       , area
+       , audio
+       , b
+       , bdi
+       , bdo
+       , br
+       , button
+       , canvas
+       , cite
+       , code
+       , data_
+       , datalist
+       , dfn
+       , em
+       , embed
+       , i
+       , iframe
+       , img
+       , input
+       , kbd
+       , label
+       , mark
+       , meter
+       , noscript
+       , object
+       , output
+       , picture
+       , progress
+       , q
+       , ruby
+       , s
+       , samp
+       , script
+       , select
+       , slot
+       , small
+       , span
+       , strong
+       , sub
+       , sup
+       , template
+       , textarea
+       , time
+       , u
+       , var
+       , video
+       , wbr
        ]
 
-scriptSupportingContent :: Int -> Int -> NonEmpty (Gen Element)
-scriptSupportingContent maxAttrs maxChildren =
+scriptSupportingContent :: NonEmpty (GenM Element)
+scriptSupportingContent =
   comment
-    :| [ script maxAttrs
-       , template maxAttrs maxChildren
+    :| [ script
+       , template
        ]
 
-withGlobalAttrs :: Int -> [Gen A.Attribute] -> Gen [A.Attribute]
-withGlobalAttrs attrs =
-  Gen.list (Range.singleton attrs)
+withGlobalAttrs :: [GenT IO A.Attribute] -> GenM [A.Attribute]
+withGlobalAttrs attrs = do
+  ctx <- ask
+
+  lift
+    . Gen.list (Range.linear 0 $ maxAttributesPerNode ctx)
     . Gen.choice
-    . mappend
-        [ A.accessKey
-        , A.autocapitalize
-        , A.autofocus
-        , A.class_
-        , A.contentEditable
-        , A.dir
-        , A.draggable
-        , A.enterKeyHint
-        , A.exportParts
-        , A.hidden
-        , A.id
-        , A.inert
-        , A.inputMode
-        , A.is
-        , A.itemId
-        , A.itemProp
-        , A.itemRef
-        , A.itemScope
-        , A.itemType
-        , A.lang
-        , A.nonce
-        , A.part
-        , A.popover
-        , A.role
-        , A.slot
-        , A.spellcheck
-        , A.style
-        , A.tabIndex
-        , A.title
-        , A.translate
-        , A.writingSuggestions
-        ]
+    . mappend attrs
+    $ [ A.accessKey
+      , A.autocapitalize
+      , A.autofocus
+      , A.class_
+      , A.contentEditable
+      , A.dir
+      , A.draggable
+      , A.enterKeyHint
+      , A.exportParts
+      , A.hidden
+      , A.id
+      , A.inert
+      , A.inputMode
+      , A.is
+      , A.itemId
+      , A.itemProp
+      , A.itemRef
+      , A.itemScope
+      , A.itemType
+      , A.lang
+      , A.nonce
+      , A.part
+      , A.popover
+      , A.role
+      , A.slot
+      , A.spellcheck
+      , A.style
+      , A.tabIndex
+      , A.title
+      , A.translate
+      , A.writingSuggestions
+      ]

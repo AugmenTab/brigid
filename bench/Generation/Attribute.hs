@@ -144,7 +144,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
-import Hedgehog (Gen)
+import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
 import Integer (Positive)
@@ -305,550 +305,550 @@ data Attribute
   | XMLNS Types.RawURL
   deriving Show
 
-accessKey :: Gen Attribute
+accessKey :: MonadGen m => m Attribute
 accessKey =
   AccessKey <$> Generators.char
 
-autocapitalize :: Gen Attribute
+autocapitalize :: MonadGen m => m Attribute
 autocapitalize =
   Autocapitalize <$> Gen.enumBounded
 
-autofocus :: Gen Attribute
+autofocus :: MonadGen m => m Attribute
 autofocus =
   Autofocus <$> Gen.bool
 
-class_ :: Gen Attribute
+class_ :: MonadGen m => m Attribute
 class_ =
   Class <$> Generators.class_
 
-contentEditable :: Gen Attribute
+contentEditable :: MonadGen m => m Attribute
 contentEditable =
   ContentEditable <$> Gen.enumBounded
 
-dir :: Gen Attribute
+dir :: MonadGen m => m Attribute
 dir =
   Dir <$> Gen.enumBounded
 
-draggable :: Gen Attribute
+draggable :: MonadGen m => m Attribute
 draggable =
   Draggable <$> Gen.bool
 
-enterKeyHint :: Gen Attribute
+enterKeyHint :: MonadGen m => m Attribute
 enterKeyHint =
   EnterKeyHint <$> Gen.enumBounded
 
-exportParts :: Gen Attribute
+exportParts :: MonadGen m => m Attribute
 exportParts =
   ExportParts <$> Gen.list (Range.linear 0 6) Generators.exportPart
 
-hidden :: Gen Attribute
+hidden :: MonadGen m => m Attribute
 hidden =
   Hidden <$> Gen.bool
 
-id :: Gen Attribute
+id :: MonadGen m => m Attribute
 id =
   Id <$> Generators.id
 
-inert :: Gen Attribute
+inert :: MonadGen m => m Attribute
 inert =
   Inert <$> Gen.bool
 
-inputMode :: Gen Attribute
+inputMode :: MonadGen m => m Attribute
 inputMode =
   InputMode <$> Gen.enumBounded
 
-is :: Gen Attribute
+is :: MonadGen m => m Attribute
 is =
   Is <$> Generators.text
 
-itemId :: Gen Attribute
+itemId :: MonadGen m => m Attribute
 itemId =
   ItemId <$> Generators.text
 
-itemProp :: Gen Attribute
+itemProp :: MonadGen m => m Attribute
 itemProp =
   ItemProp <$> Generators.text
 
-itemRef :: Gen Attribute
+itemRef :: MonadGen m => m Attribute
 itemRef =
   ItemRef <$> Gen.nonEmpty (Range.linear 1 6) Generators.id
 
-itemScope :: Gen Attribute
+itemScope :: MonadGen m => m Attribute
 itemScope =
   pure ItemScope
 
-itemType :: Gen Attribute
+itemType :: MonadGen m => m Attribute
 itemType =
   ItemType <$> Generators.url
 
-lang :: Gen Attribute
+lang :: MonadGen m => m Attribute
 lang =
   Lang <$> Gen.maybe Generators.bcp47
 
-nonce :: Gen Attribute
+nonce :: MonadGen m => m Attribute
 nonce =
   Nonce <$> Generators.text
 
-part :: Gen Attribute
+part :: MonadGen m => m Attribute
 part =
   Part <$> Gen.list (Range.linear 0 5) Generators.part
 
-popover :: Gen Attribute
+popover :: MonadGen m => m Attribute
 popover =
   Popover <$> Gen.enumBounded
 
-role :: Gen Attribute
+role :: MonadGen m => m Attribute
 role =
   Role <$> Gen.enumBounded
 
-slot :: Gen Attribute
+slot :: MonadGen m => m Attribute
 slot =
   Slot <$> Generators.name
 
-spellcheck :: Gen Attribute
+spellcheck :: MonadGen m => m Attribute
 spellcheck =
   Spellcheck <$> Gen.bool
 
-style :: Gen Attribute
+style :: MonadGen m => m Attribute
 style =
   Style <$> Generators.text
 
-tabIndex :: Gen Attribute
+tabIndex :: MonadGen m => m Attribute
 tabIndex =
   TabIndex <$> Generators.integer
 
-title :: Gen Attribute
+title :: MonadGen m => m Attribute
 title =
   Title <$> Generators.text
 
-translate :: Gen Attribute
+translate :: MonadGen m => m Attribute
 translate =
   Translate <$> Gen.bool
 
-writingSuggestions :: Gen Attribute
+writingSuggestions :: MonadGen m => m Attribute
 writingSuggestions =
   WritingSuggestions <$> Gen.bool
 
-abbr :: Gen Attribute
+abbr :: MonadGen m => m Attribute
 abbr =
   Abbreviation <$> Generators.text
 
-accept :: Gen Attribute
+accept :: MonadGen m => m Attribute
 accept =
   Accept <$> Generators.byteString
 
-acceptcharset :: Gen Attribute
+acceptcharset :: MonadGen m => m Attribute
 acceptcharset =
   pure AcceptCharset
 
-action :: Gen Attribute
+action :: MonadGen m => m Attribute
 action =
   Action <$> Generators.url
 
-allow :: Gen Attribute
+allow :: MonadGen m => m Attribute
 allow =
   Allow <$> Gen.list (Range.linear 0 6) Gen.enumBounded
 
-alt :: Gen Attribute
+alt :: MonadGen m => m Attribute
 alt =
   Alt <$> Generators.text
 
-as :: Gen Attribute
+as :: MonadGen m => m Attribute
 as =
   As <$> Gen.enumBounded
 
-async :: Gen Attribute
+async :: MonadGen m => m Attribute
 async =
   pure Async
 
-autocomplete :: Gen Attribute
+autocomplete :: MonadGen m => m Attribute
 autocomplete =
   Autocomplete <$> Generators.onOff
 
-autoplay :: Gen Attribute
+autoplay :: MonadGen m => m Attribute
 autoplay =
   pure Autoplay
 
-capture :: Gen Attribute
+capture :: MonadGen m => m Attribute
 capture =
   Capture <$> Gen.maybe Gen.enumBounded
 
-charset :: Gen Attribute
+charset :: MonadGen m => m Attribute
 charset =
   pure Charset
 
-checked :: Gen Attribute
+checked :: MonadGen m => m Attribute
 checked =
   Checked <$> Gen.bool
 
-cite :: Gen Attribute
+cite :: MonadGen m => m Attribute
 cite =
   Cite <$> Generators.url
 
-cols :: Gen Attribute
+cols :: MonadGen m => m Attribute
 cols =
   Cols <$> Generators.natural
 
-colspan :: Gen Attribute
+colspan :: MonadGen m => m Attribute
 colspan =
   Colspan <$> Generators.positive
 
-content :: Gen Attribute
+content :: MonadGen m => m Attribute
 content =
   Content <$> Generators.text
 
-controls :: Gen Attribute
+controls :: MonadGen m => m Attribute
 controls =
   pure Controls
 
-controlslist :: Gen Attribute
+controlslist :: MonadGen m => m Attribute
 controlslist =
   ControlsList <$> Gen.enumBounded
 
-coords :: Gen Attribute
+coords :: MonadGen m => m Attribute
 coords =
   Coords <$> Gen.nonEmpty (Range.linear 1 10) Generators.integer
 
-crossorigin :: Gen Attribute
+crossorigin :: MonadGen m => m Attribute
 crossorigin =
   CrossOrigin <$> Gen.enumBounded
 
-data_ :: Gen Attribute
+data_ :: MonadGen m => m Attribute
 data_ =
   Data <$> Generators.url
 
-datetime :: Gen Attribute
+datetime :: MonadGen m => m Attribute
 datetime =
   Datetime <$> Generators.string
 
-decoding :: Gen Attribute
+decoding :: MonadGen m => m Attribute
 decoding =
   Decoding <$> Gen.enumBounded
 
-default_ :: Gen Attribute
+default_ :: MonadGen m => m Attribute
 default_ =
   pure Default
 
-defer :: Gen Attribute
+defer :: MonadGen m => m Attribute
 defer =
   pure Defer
 
-dirname :: Gen Attribute
+dirname :: MonadGen m => m Attribute
 dirname =
   Dirname <$> Generators.text
 
-disabled :: Gen Attribute
+disabled :: MonadGen m => m Attribute
 disabled =
   Disabled <$> Gen.bool
 
-disablepictureinpicture :: Gen Attribute
+disablepictureinpicture :: MonadGen m => m Attribute
 disablepictureinpicture =
   pure DisablePictureInPicture
 
-disableremoteplayback :: Gen Attribute
+disableremoteplayback :: MonadGen m => m Attribute
 disableremoteplayback =
   pure DisableRemotePlayback
 
-download :: Gen Attribute
+download :: MonadGen m => m Attribute
 download =
   Download <$> Gen.maybe Generators.nonEmptyText
 
-enctype :: Gen Attribute
+enctype :: MonadGen m => m Attribute
 enctype =
   Enctype <$> Generators.byteString
 
-fetchpriority :: Gen Attribute
+fetchpriority :: MonadGen m => m Attribute
 fetchpriority =
   FetchPriority <$> Gen.enumBounded
 
-forLabel :: Gen Attribute
+forLabel :: MonadGen m => m Attribute
 forLabel =
   ForLabel <$> Generators.id
 
-forOutput :: Gen Attribute
+forOutput :: MonadGen m => m Attribute
 forOutput =
   ForOutput <$> Gen.nonEmpty (Range.linear 1 10) Generators.id
 
-form :: Gen Attribute
+form :: MonadGen m => m Attribute
 form =
   Form <$> Generators.id
 
-formaction :: Gen Attribute
+formaction :: MonadGen m => m Attribute
 formaction =
   FormAction <$> Generators.url
 
-formenctype :: Gen Attribute
+formenctype :: MonadGen m => m Attribute
 formenctype =
   FormEnctype <$> Generators.byteString
 
-formmethod :: Gen Attribute
+formmethod :: MonadGen m => m Attribute
 formmethod =
   FormMethod <$> Gen.enumBounded
 
-formnovalidate :: Gen Attribute
+formnovalidate :: MonadGen m => m Attribute
 formnovalidate =
   pure FormNoValidate
 
-formtarget :: Gen Attribute
+formtarget :: MonadGen m => m Attribute
 formtarget =
   FormTarget <$> Generators.target
 
-headers :: Gen Attribute
+headers :: MonadGen m => m Attribute
 headers =
   Headers <$> Gen.list (Range.linear 0 5) Generators.id
 
-height :: Gen Attribute
+height :: MonadGen m => m Attribute
 height =
   Height <$> Generators.positive
 
-high :: Gen Attribute
+high :: MonadGen m => m Attribute
 high =
   High <$> Generators.number
 
-href :: Gen Attribute
+href :: MonadGen m => m Attribute
 href =
   Href <$> Generators.url
 
-hreflang :: Gen Attribute
+hreflang :: MonadGen m => m Attribute
 hreflang =
   HrefLang <$> Generators.bcp47
 
-httpEquiv :: Gen Attribute
+httpEquiv :: MonadGen m => m Attribute
 httpEquiv =
   HttpEquiv <$> Gen.enumBounded
 
-imagesizes :: Gen Attribute
+imagesizes :: MonadGen m => m Attribute
 imagesizes =
   ImageSizes <$> Gen.nonEmpty (Range.linear 1 5) Generators.size
 
-imagesrcset :: Gen Attribute
+imagesrcset :: MonadGen m => m Attribute
 imagesrcset =
   ImageSrcset <$> Gen.nonEmpty (Range.linear 1 6) Generators.srcsetCandidate
 
-integrity :: Gen Attribute
+integrity :: MonadGen m => m Attribute
 integrity =
   Integrity <$> Generators.byteString
 
-ismap :: Gen Attribute
+ismap :: MonadGen m => m Attribute
 ismap =
   pure IsMap
 
-kind :: Gen Attribute
+kind :: MonadGen m => m Attribute
 kind =
   Kind <$> Gen.enumBounded
 
-label :: Gen Attribute
+label :: MonadGen m => m Attribute
 label =
   Label <$> Generators.text
 
-list :: Gen Attribute
+list :: MonadGen m => m Attribute
 list =
   List <$> Generators.id
 
-loading :: Gen Attribute
+loading :: MonadGen m => m Attribute
 loading =
   Loading <$> Gen.enumBounded
 
-loop :: Gen Attribute
+loop :: MonadGen m => m Attribute
 loop =
   pure Loop
 
-low :: Gen Attribute
+low :: MonadGen m => m Attribute
 low =
   Low <$> Generators.number
 
-max :: Gen Attribute
+max :: MonadGen m => m Attribute
 max =
   Max <$> Generators.rangeBound
 
-maxlength :: Gen Attribute
+maxlength :: MonadGen m => m Attribute
 maxlength =
   MaxLength <$> Generators.natural
 
-media :: Gen Attribute
+media :: MonadGen m => m Attribute
 media =
   Media <$> Gen.nonEmpty (Range.linear 1 5) Generators.mediaQuery
 
-method :: Gen Attribute
+method :: MonadGen m => m Attribute
 method =
   Method <$> Gen.enumBounded
 
-min :: Gen Attribute
+min :: MonadGen m => m Attribute
 min =
   Min <$> Generators.rangeBound
 
-minlength :: Gen Attribute
+minlength :: MonadGen m => m Attribute
 minlength =
   MinLength <$> Generators.natural
 
-multiple :: Gen Attribute
+multiple :: MonadGen m => m Attribute
 multiple =
   pure Multiple
 
-muted :: Gen Attribute
+muted :: MonadGen m => m Attribute
 muted =
   Muted <$> Gen.bool
 
-name :: Gen Attribute
+name :: MonadGen m => m Attribute
 name =
   Name <$> Generators.name
 
-nameMeta :: Gen Attribute
+nameMeta :: MonadGen m => m Attribute
 nameMeta =
   NameMeta <$> Gen.enumBounded
 
-nomodule :: Gen Attribute
+nomodule :: MonadGen m => m Attribute
 nomodule =
   NoModule <$> Gen.bool
 
-novalidate :: Gen Attribute
+novalidate :: MonadGen m => m Attribute
 novalidate =
   NoValidate <$> Gen.bool
 
-open :: Gen Attribute
+open :: MonadGen m => m Attribute
 open =
   pure Open
 
-optimum :: Gen Attribute
+optimum :: MonadGen m => m Attribute
 optimum =
   Optimum <$> Generators.number
 
-pattern :: Gen Attribute
+pattern :: MonadGen m => m Attribute
 pattern =
   Pattern <$> Generators.text
 
-ping :: Gen Attribute
+ping :: MonadGen m => m Attribute
 ping =
   Ping <$> Gen.nonEmpty (Range.linear 1 5) Generators.url
 
-placeholder :: Gen Attribute
+placeholder :: MonadGen m => m Attribute
 placeholder =
   Placeholder <$> Generators.text
 
-playsinline :: Gen Attribute
+playsinline :: MonadGen m => m Attribute
 playsinline =
   PlaysInline <$> Gen.bool
 
-popovertarget :: Gen Attribute
+popovertarget :: MonadGen m => m Attribute
 popovertarget =
   PopoverTarget <$> Generators.id
 
-popovertargetaction :: Gen Attribute
+popovertargetaction :: MonadGen m => m Attribute
 popovertargetaction =
   PopoverTargetAction <$> Gen.enumBounded
 
-poster :: Gen Attribute
+poster :: MonadGen m => m Attribute
 poster =
   Poster <$> Generators.url
 
-preload :: Gen Attribute
+preload :: MonadGen m => m Attribute
 preload =
   Preload <$> Gen.enumBounded
 
-readonly :: Gen Attribute
+readonly :: MonadGen m => m Attribute
 readonly =
   pure ReadOnly
 
-referrerpolicy :: Gen Attribute
+referrerpolicy :: MonadGen m => m Attribute
 referrerpolicy =
   ReferrerPolicy <$> Gen.enumBounded
 
-rel :: Gen Attribute
+rel :: MonadGen m => m Attribute
 rel =
   Rel <$> Generators.help
 
-required :: Gen Attribute
+required :: MonadGen m => m Attribute
 required =
   Required <$> Gen.bool
 
-reversed :: Gen Attribute
+reversed :: MonadGen m => m Attribute
 reversed =
   Reversed <$> Gen.bool
 
-rows :: Gen Attribute
+rows :: MonadGen m => m Attribute
 rows =
   Rows <$> Generators.natural
 
-rowspan :: Gen Attribute
+rowspan :: MonadGen m => m Attribute
 rowspan =
   Rowspan <$> Generators.positive
 
-sandbox :: Gen Attribute
+sandbox :: MonadGen m => m Attribute
 sandbox =
   Sandbox <$> Gen.list (Range.linear 0 5) Gen.enumBounded
 
-scope :: Gen Attribute
+scope :: MonadGen m => m Attribute
 scope =
   Scope <$> Gen.enumBounded
 
-selected :: Gen Attribute
+selected :: MonadGen m => m Attribute
 selected =
   Selected <$> Gen.bool
 
-shape :: Gen Attribute
+shape :: MonadGen m => m Attribute
 shape =
   Shape <$> Gen.enumBounded
 
-size :: Gen Attribute
+size :: MonadGen m => m Attribute
 size =
   Size <$> Generators.positive
 
-sizes :: Gen Attribute
+sizes :: MonadGen m => m Attribute
 sizes =
   Sizes <$> Gen.nonEmpty (Range.linear 1 5) Generators.size
 
-span :: Gen Attribute
+span :: MonadGen m => m Attribute
 span =
   Span <$> Generators.positive
 
-src :: Gen Attribute
+src :: MonadGen m => m Attribute
 src =
   Src <$> Generators.url
 
-srcdoc :: Gen Attribute
+srcdoc :: MonadGen m => m Attribute
 srcdoc =
   SrcDoc <$> Generators.lazyByteString
 
-srclang :: Gen Attribute
+srclang :: MonadGen m => m Attribute
 srclang =
   SrcLang <$> Generators.bcp47
 
-srcset :: Gen Attribute
+srcset :: MonadGen m => m Attribute
 srcset =
   SrcSet <$> Gen.nonEmpty (Range.linear 1 6) Generators.srcsetCandidate
 
-start :: Gen Attribute
+start :: MonadGen m => m Attribute
 start =
   Start <$> Generators.integer
 
-step :: Gen Attribute
+step :: MonadGen m => m Attribute
 step =
   Step <$> Generators.step
 
-target :: Gen Attribute
+target :: MonadGen m => m Attribute
 target =
   Target <$> Generators.target
 
-type_ :: Gen Attribute
+type_ :: MonadGen m => m Attribute
 type_ =
   Type <$> Generators.type_
 
-usemap :: Gen Attribute
+usemap :: MonadGen m => m Attribute
 usemap =
   UseMap <$> Generators.name
 
-value :: Gen Attribute
+value :: MonadGen m => m Attribute
 value =
   Value <$> Generators.text
 
-width :: Gen Attribute
+width :: MonadGen m => m Attribute
 width =
   Width <$> Generators.positive
 
-wrap :: Gen Attribute
+wrap :: MonadGen m => m Attribute
 wrap =
   Wrap <$> Gen.enumBounded
 
-xmlns :: Gen Attribute
+xmlns :: MonadGen m => m Attribute
 xmlns =
   XMLNS <$> Generators.url

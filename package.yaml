@@ -104,4 +104,6 @@ benchmarks:
     dependencies:
       - brigid
       - hedgehog
+      - mtl
       - tasty-bench
+      - transformers

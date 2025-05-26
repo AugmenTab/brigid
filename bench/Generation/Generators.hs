@@ -34,7 +34,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Ratio (Ratio, (%))
 import Data.Text qualified as T
-import Hedgehog (Gen)
+import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
 import Integer (Positive)
@@ -45,49 +45,49 @@ import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
 import Ogma qualified
 
-bcp47 :: Gen Ogma.BCP_47
+bcp47  :: MonadGen m => m Ogma.BCP_47
 bcp47 =
   Ogma.simpleBCP_47 <$> Gen.enumBounded
 
-byteString :: Gen BS.ByteString
+byteString  :: MonadGen m => m BS.ByteString
 byteString =
   Gen.utf8 (Range.linear 1 100) Gen.ascii
 
-char :: Gen Char
+char  :: MonadGen m => m Char
 char =
   Gen.enumBounded
 
-class_ :: Gen Types.Class
+class_  :: MonadGen m => m Types.Class
 class_ =
   Types.Class <$> text
 
-exportPart :: Gen Types.ExportPart
+exportPart  :: MonadGen m => m Types.ExportPart
 exportPart =
   Types.ExportPart
     <$> part
     <*> Gen.maybe text
 
-help :: Gen Types.Rel_Help
+help  :: MonadGen m => m Types.Rel_Help
 help =
   pure Types.Rel_Help
 
-id :: Gen Types.Id
+id  :: MonadGen m => m Types.Id
 id =
   Types.Id <$> text
 
-int :: Gen Int
+int  :: MonadGen m => m Int
 int =
   Gen.integral (Range.linear 1 1000)
 
-integer :: Gen Integer
+integer  :: MonadGen m => m Integer
 integer =
   Gen.integral (Range.linear 1 1000)
 
-lazyByteString :: Gen LBS.ByteString
+lazyByteString  :: MonadGen m => m LBS.ByteString
 lazyByteString =
   LBS.fromStrict <$> byteString
 
-mediaFeature :: Gen Types.MediaFeature
+mediaFeature  :: MonadGen m => m Types.MediaFeature
 mediaFeature =
   Gen.choice
     [ Types.Width
@@ -131,11 +131,11 @@ mediaFeature =
     , Types.Update <$> mediaUpdateFrequency
     ]
 
-mediaFeatureType :: Gen Types.MediaFeatureType
+mediaFeatureType  :: MonadGen m => m Types.MediaFeatureType
 mediaFeatureType =
   Gen.enumBounded
 
-mediaLength :: Gen Types.MediaLength
+mediaLength  :: MonadGen m => m Types.MediaLength
 mediaLength =
   Gen.choice
     [ Types.MediaPx <$> number
@@ -146,11 +146,11 @@ mediaLength =
     , Types.MediaPc <$> number
     ]
 
-mediaOrientation :: Gen Types.MediaOrientation
+mediaOrientation  :: MonadGen m => m Types.MediaOrientation
 mediaOrientation =
   Gen.enumBounded
 
-mediaResolution :: Gen Types.MediaResolution
+mediaResolution  :: MonadGen m => m Types.MediaResolution
 mediaResolution =
   Gen.choice
     [ Types.MediaDpi <$> number
@@ -158,88 +158,88 @@ mediaResolution =
     , Types.MediaDppx <$> number
     ]
 
-mediaScanType :: Gen Types.MediaScanType
+mediaScanType  :: MonadGen m => m Types.MediaScanType
 mediaScanType =
   Gen.enumBounded
 
-mediaColor :: Gen (Types.MediaFeatureType, Positive)
+mediaColor  :: MonadGen m => m (Types.MediaFeatureType, Positive)
 mediaColor =
   (,)
     <$> mediaFeatureType
     <*> Gen.integral (Range.linear 0 65536)
 
-mediaColorScheme :: Gen Types.MediaColorScheme
+mediaColorScheme  :: MonadGen m => m Types.MediaColorScheme
 mediaColorScheme =
   Gen.enumBounded
 
-mediaPrefersContrast :: Gen Types.MediaPrefersContrast
+mediaPrefersContrast  :: MonadGen m => m Types.MediaPrefersContrast
 mediaPrefersContrast =
   Gen.enumBounded
 
-mediaPointerAccuracy :: Gen Types.MediaPointerAccuracy
+mediaPointerAccuracy  :: MonadGen m => m Types.MediaPointerAccuracy
 mediaPointerAccuracy =
   Gen.enumBounded
 
-mediaUpdateFrequency :: Gen Types.MediaUpdateFrequency
+mediaUpdateFrequency  :: MonadGen m => m Types.MediaUpdateFrequency
 mediaUpdateFrequency =
   Gen.enumBounded
 
-mediaQuery :: Gen Types.MediaQuery
+mediaQuery  :: MonadGen m => m Types.MediaQuery
 mediaQuery =
   Types.MediaQuery
     <$> Gen.maybe Gen.enumBounded
     <*> Gen.maybe Gen.enumBounded
     <*> Gen.list (Range.linear 0 4) mediaFeature
 
-name :: Gen Types.Name
+name  :: MonadGen m => m Types.Name
 name =
   Types.Name <$> text
 
-natural :: Gen Natural
+natural  :: MonadGen m => m Natural
 natural =
   Gen.integral (Range.linear 1 1000)
 
-nonEmptyText :: Gen NET.NonEmptyText
+nonEmptyText  :: MonadGen m => m NET.NonEmptyText
 nonEmptyText =
   NET.new
     <$> char
     <*> text
 
-number :: Gen Types.Number
+number  :: MonadGen m => m Types.Number
 number =
   Types.numberFromFractional
     <$> Gen.double (Range.linearFrac 0.0 100.0)
     <*> Gen.word16 (Range.linear 0 4)
 
-onOff :: Gen Types.OnOff
+onOff  :: MonadGen m => m Types.OnOff
 onOff =
   Gen.enumBounded
 
-part :: Gen Types.Part
+part  :: MonadGen m => m Types.Part
 part =
   Types.Part <$> text
 
-positive :: Gen Positive
+positive  :: MonadGen m => m Positive
 positive =
   Gen.integral (Range.linear 1 1000)
 
-rangeBound :: Gen Types.RawRangeBound
+rangeBound  :: MonadGen m => m Types.RawRangeBound
 rangeBound =
   Types.mkRawRangeBound <$> text
 
-ratio :: Integral a => Gen (Ratio a)
+ratio :: (Integral a, MonadGen m) => m (Ratio a)
 ratio =
   (%)
     <$> Gen.integral (Range.linear 0 1000)
     <*> Gen.integral (Range.linear 0 1000)
 
-size :: Gen Types.Size
+size  :: MonadGen m => m Types.Size
 size =
   Types.Size
     <$> Gen.maybe mediaFeature
     <*> sizeLength
 
-sizeLength :: Gen Types.SizeLength
+sizeLength  :: MonadGen m => m Types.SizeLength
 sizeLength =
   Gen.choice
     [ Types.SizePx <$> int
@@ -255,31 +255,31 @@ sizeLength =
     , Types.SizeCalc <$> text
     ]
 
-srcsetCandidate :: Gen Types.SrcsetCandidate
+srcsetCandidate  :: MonadGen m => m Types.SrcsetCandidate
 srcsetCandidate =
   Types.SrcsetCandidate
     <$> fmap Types.mkURL url
     <*> srcsetDescriptor
 
-srcsetDescriptor :: Gen Types.SrcsetDescriptor
+srcsetDescriptor  :: MonadGen m => m Types.SrcsetDescriptor
 srcsetDescriptor =
   Gen.choice
     [ Types.SrcsetWidth <$> positive
     , Types.SrcsetDensity <$> number
     ]
 
-step :: Gen Types.Step
+step  :: MonadGen m => m Types.Step
 step =
   Gen.choice
     [ pure Types.Any
     , Types.Step <$> number
     ]
 
-string :: Gen String
+string  :: MonadGen m => m String
 string =
   Gen.string (Range.linear 1 100) Gen.ascii
 
-target :: Gen Types.Target
+target  :: MonadGen m => m Types.Target
 target =
   Gen.choice
     [ pure Types.Self
@@ -289,14 +289,14 @@ target =
     , Types.CustomTarget <$> text
     ]
 
-text :: Gen T.Text
+text  :: MonadGen m => m T.Text
 text =
   Gen.text (Range.linear 1 100) Gen.ascii
 
-type_ :: Gen Types.RawTypeOption
+type_  :: MonadGen m => m Types.RawTypeOption
 type_ =
   Types.mkRawTypeOption <$> text
 
-url :: Gen Types.RawURL
+url  :: MonadGen m => m Types.RawURL
 url =
   Types.mkRawURL <$> text
