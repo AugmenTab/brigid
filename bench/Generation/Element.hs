@@ -4,10 +4,10 @@ module Generation.Element
   , elementGenerator
   ) where
 
-import Control.Monad (replicateM, when)
-import Control.Monad.Reader (ask, liftIO, local)
+import Control.Monad (replicateM, void, when)
+import Control.Monad.Reader (ask, liftIO, runReaderT)
 import Control.Monad.Trans.Class (lift)
-import Data.IORef (atomicModifyIORef')
+import Data.IORef (atomicModifyIORef', newIORef, readIORef)
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
@@ -17,8 +17,7 @@ import Hedgehog.Range qualified as Range
 import Prelude hiding (div, head, map, span)
 
 import Generation.Attribute qualified as A
-import Generation.Generators qualified as Generators
-import Generation.Types (GenM, GenContext (..), consumeNode)
+import Generation.Types (GenM, GenContext (..), consumeNode, consumeNodes)
 
 data Element =
   Element
@@ -274,62 +273,97 @@ elementGenerator element =
     Video -> video
     WordBreakOpportunity -> wbr
 
-data ContentType
-  = NoContent
-  | TextContent NET.NonEmptyText
-  | ElementContent (NonEmpty (GenM Element))
-
 mkElement :: ElementType
           -> [GenT IO A.Attribute]
-          -> ContentType
+          -> Maybe (NonEmpty (GenM Element))
           -> GenM Element
-mkElement element attrs content = do
-  ok <- consumeNode
-  when (not ok) $ lift Gen.discard
-
+mkElement element attrs mbContent = do
   ctx <- ask
 
-  children <-
-    case content of
-      NoContent -> pure $ Right []
-      TextContent net -> pure $ Left net
-      ElementContent elementContent ->
-        if currentDepth ctx >= maxDepth ctx
-          then pure $ Right []
-          else do
-            n <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
+  case mbContent of
+    Nothing ->
+      emptyElement
+        <$> pure element
+        <*> withGlobalAttrs attrs
 
-            let
-              bumpDepth =
-                ctx
-                  { currentDepth = currentDepth ctx + 1
-                  }
+    Just elementContent ->
+      if currentDepth ctx >= maxDepth ctx
+        then do
+          ok <- consumeNode
+          when (not ok) $ lift Gen.discard
 
-            fmap Right
-              . replicateM n
-              . local (const bumpDepth)
-              $ chooseAndRun elementContent
+          emptyElement
+            <$> pure element
+            <*> withGlobalAttrs attrs
 
+        else do
+          n <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
+          selectedChildren <-
+            traverse trySubtree
+              =<< lift (replicateM n . Gen.element $ NEL.toList elementContent)
+
+          case sequence selectedChildren of
+            Just children -> do
+              ok <- consumeNode
+              when (not ok) $ lift Gen.discard
+
+              Element
+                <$> pure element
+                <*> withGlobalAttrs attrs
+                <*> pure (Right children)
+
+            Nothing ->
+              lift Gen.discard
+
+trySubtree :: GenM Element -> GenM (Maybe Element)
+trySubtree gen = do
+  ctx <- ask
+  orig <- liftIO . readIORef $ remainingNodes ctx
+  tempRef <- liftIO $ newIORef orig
+
+  let
+    sandbox =
+      ctx
+        { remainingNodes = tempRef
+        }
+
+  result <- lift . Gen.maybe $ runReaderT gen sandbox
+
+  case result of
+    Just val -> do
+      new <- liftIO $ readIORef tempRef
+
+      let
+        delta = orig - new
+
+      void
+        . liftIO
+        $ atomicModifyIORef' (remainingNodes ctx) (\n -> (n - delta, ()))
+
+      pure (Just val)
+
+    Nothing ->
+      pure Nothing
+
+emptyElement :: ElementType -> [A.Attribute] -> Element
+emptyElement element attrs =
   Element
-    <$> pure element
-    <*> withGlobalAttrs attrs
-    <*> pure children
-
-chooseAndRun :: NonEmpty (GenM a) -> GenM a
-chooseAndRun xs =
-  id =<< lift (Gen.element $ NEL.toList xs)
+    { elementType = element
+    , elementAttrs = attrs
+    , elementChildren = Right []
+    }
 
 comment :: GenM Element
 comment =
-  mkElement Comment [] NoContent
+  mkElement Comment [] Nothing
 
 text :: GenM Element
 text =
-  mkElement Text [] NoContent
+  mkElement Text [] Nothing
 
 a :: GenM Element
 a =
-  mkElement Anchor anchorAttrs $ ElementContent anchorContent
+  mkElement Anchor anchorAttrs $ Just anchorContent
 
 anchorAttrs :: [GenT IO A.Attribute]
 anchorAttrs =
@@ -348,14 +382,14 @@ anchorContent = NEL.singleton text
 
 abbr :: GenM Element
 abbr =
-  mkElement Abbreviation [] $ ElementContent abbreviationContent
+  mkElement Abbreviation [] $ Just abbreviationContent
 
 abbreviationContent :: NonEmpty (GenM Element)
 abbreviationContent = phrasingContent
 
 address :: GenM Element
 address =
-  mkElement ContactAddress [] $ ElementContent contactAddressContent
+  mkElement ContactAddress [] $ Just contactAddressContent
 
 contactAddressContent :: NonEmpty (GenM Element)
 contactAddressContent =
@@ -433,7 +467,7 @@ contactAddressContent =
 
 area :: GenM Element
 area =
-  mkElement Area areaAttrs NoContent
+  mkElement Area areaAttrs Nothing
 
 areaAttrs :: [GenT IO A.Attribute]
 areaAttrs =
@@ -450,21 +484,21 @@ areaAttrs =
 
 article :: GenM Element
 article =
-  mkElement Article [] $ ElementContent articleContent
+  mkElement Article [] $ Just articleContent
 
 articleContent :: NonEmpty (GenM Element)
 articleContent = flowContent
 
 aside :: GenM Element
 aside =
-  mkElement Aside [] $ ElementContent asideContent
+  mkElement Aside [] $ Just asideContent
 
 asideContent :: NonEmpty (GenM Element)
 asideContent = flowContent
 
 audio :: GenM Element
 audio =
-  mkElement Audio audioAttrs $ ElementContent audioContent
+  mkElement Audio audioAttrs $ Just audioContent
 
 audioAttrs :: [GenT IO A.Attribute]
 audioAttrs =
@@ -483,14 +517,14 @@ audioContent = audioVideoContent
 
 b :: GenM Element
 b =
-  mkElement BringAttentionTo [] $ ElementContent bringAttentionToContent
+  mkElement BringAttentionTo [] $ Just bringAttentionToContent
 
 bringAttentionToContent :: NonEmpty (GenM Element)
 bringAttentionToContent = phrasingContent
 
 base :: GenM Element
 base =
-  mkElement Base baseAttrs NoContent
+  mkElement Base baseAttrs Nothing
 
 baseAttrs :: [GenT IO A.Attribute]
 baseAttrs =
@@ -503,7 +537,7 @@ bdi =
   mkElement
     BidirectionalIsolation
     []
-    (ElementContent bidirectionalIsolationContent)
+    (Just bidirectionalIsolationContent)
 
 bidirectionalIsolationContent :: NonEmpty (GenM Element)
 bidirectionalIsolationContent = phrasingContent
@@ -513,32 +547,32 @@ bdo =
   mkElement
     BidirectionalOverride
     []
-    (ElementContent bidirectionalOverrideContent)
+    (Just bidirectionalOverrideContent)
 
 bidirectionalOverrideContent :: NonEmpty (GenM Element)
 bidirectionalOverrideContent = phrasingContent
 
 blockquote :: GenM Element
 blockquote =
-  mkElement Blockquote [A.cite] $ ElementContent blockquoteContent
+  mkElement Blockquote [A.cite] $ Just blockquoteContent
 
 blockquoteContent :: NonEmpty (GenM Element)
 blockquoteContent = flowContent
 
 body :: GenM Element
 body =
-  mkElement Body [] $ ElementContent bodyContent
+  mkElement Body [] $ Just bodyContent
 
 bodyContent :: NonEmpty (GenM Element)
 bodyContent = flowContent
 
 br :: GenM Element
 br =
-  mkElement LineBreak [] NoContent
+  mkElement LineBreak [] Nothing
 
 button :: GenM Element
 button =
-  mkElement Button buttonAttrs $ ElementContent buttonContent
+  mkElement Button buttonAttrs $ Just buttonContent
 
 buttonAttrs :: [GenT IO A.Attribute]
 buttonAttrs =
@@ -606,7 +640,7 @@ buttonContent =
 
 canvas :: GenM Element
 canvas =
-  mkElement Canvas canvasAttrs $ ElementContent canvasContent
+  mkElement Canvas canvasAttrs $ Just canvasContent
 
 canvasAttrs :: [GenT IO A.Attribute]
 canvasAttrs =
@@ -619,32 +653,32 @@ canvasContent = NEL.singleton text
 
 caption :: GenM Element
 caption =
-  mkElement TableCaption [] $ ElementContent tableCaptionContent
+  mkElement TableCaption [] $ Just tableCaptionContent
 
 tableCaptionContent :: NonEmpty (GenM Element)
 tableCaptionContent = flowContent
 
 cite :: GenM Element
 cite =
-  mkElement Citation [] $ ElementContent citationContent
+  mkElement Citation [] $ Just citationContent
 
 citationContent :: NonEmpty (GenM Element)
 citationContent = phrasingContent
 
 code :: GenM Element
 code =
-  mkElement Code [] $ ElementContent codeContent
+  mkElement Code [] $ Just codeContent
 
 codeContent :: NonEmpty (GenM Element)
 codeContent = phrasingContent
 
 col :: GenM Element
 col =
-  mkElement TableColumn [A.span] NoContent
+  mkElement TableColumn [A.span] Nothing
 
 colgroup :: GenM Element
 colgroup =
-  mkElement TableColumnGroup [A.span] $ ElementContent tableColumnGroupContent
+  mkElement TableColumnGroup [A.span] $ Just tableColumnGroupContent
 
 tableColumnGroupContent :: NonEmpty (GenM Element)
 tableColumnGroupContent =
@@ -652,14 +686,14 @@ tableColumnGroupContent =
 
 data_ :: GenM Element
 data_ =
-  mkElement Data [A.data_] $ ElementContent dataContent
+  mkElement Data [A.data_] $ Just dataContent
 
 dataContent :: NonEmpty (GenM Element)
 dataContent = phrasingContent
 
 datalist :: GenM Element
 datalist =
-  mkElement DataList [] $ ElementContent dataListContent
+  mkElement DataList [] $ Just dataListContent
 
 dataListContent :: NonEmpty (GenM Element)
 dataListContent =
@@ -667,14 +701,14 @@ dataListContent =
 
 dd :: GenM Element
 dd =
-  mkElement DescriptionDetails [] $ ElementContent descriptionDetailsContent
+  mkElement DescriptionDetails [] $ Just descriptionDetailsContent
 
 descriptionDetailsContent :: NonEmpty (GenM Element)
 descriptionDetailsContent = flowContent
 
 del :: GenM Element
 del =
-  mkElement DeletedText deletedTextAttrs $ ElementContent deletedTextContent
+  mkElement DeletedText deletedTextAttrs $ Just deletedTextContent
 
 deletedTextAttrs :: [GenT IO A.Attribute]
 deletedTextAttrs =
@@ -687,7 +721,7 @@ deletedTextContent = NEL.singleton text
 
 details :: GenM Element
 details =
-  mkElement Details [A.open] $ ElementContent detailsContent
+  mkElement Details [A.open] $ Just detailsContent
 
 detailsContent :: NonEmpty (GenM Element)
 detailsContent =
@@ -695,7 +729,7 @@ detailsContent =
 
 dfn :: GenM Element
 dfn =
-  mkElement Definition [] $ ElementContent definitionContent
+  mkElement Definition [] $ Just definitionContent
 
 definitionContent :: NonEmpty (GenM Element)
 definitionContent =
@@ -752,21 +786,21 @@ definitionContent =
 
 dialog :: GenM Element
 dialog =
-  mkElement Dialog [A.open] $ ElementContent dialogContent
+  mkElement Dialog [A.open] $ Just dialogContent
 
 dialogContent :: NonEmpty (GenM Element)
 dialogContent = flowContent
 
 div :: GenM Element
 div =
-  mkElement Division [] $ ElementContent divisionContent
+  mkElement Division [] $ Just divisionContent
 
 divisionContent :: NonEmpty (GenM Element)
 divisionContent = flowContent
 
 dl :: GenM Element
 dl =
-  mkElement DescriptionList [] $ ElementContent descriptionListContent
+  mkElement DescriptionList [] $ Just descriptionListContent
 
 descriptionListContent :: NonEmpty (GenM Element)
 descriptionListContent =
@@ -777,7 +811,7 @@ descriptionListContent =
 
 dt :: GenM Element
 dt =
-  mkElement DescriptionTerm [] $ ElementContent descriptionTermContent
+  mkElement DescriptionTerm [] $ Just descriptionTermContent
 
 descriptionTermContent :: NonEmpty (GenM Element)
 descriptionTermContent =
@@ -856,14 +890,14 @@ descriptionTermContent =
 
 em :: GenM Element
 em =
-  mkElement Emphasis [] $ ElementContent emphasisContent
+  mkElement Emphasis [] $ Just emphasisContent
 
 emphasisContent :: NonEmpty (GenM Element)
 emphasisContent = phrasingContent
 
 embed :: GenM Element
 embed =
-  mkElement Embed embedAttrs NoContent
+  mkElement Embed embedAttrs Nothing
 
 embedAttrs :: [GenT IO A.Attribute]
 embedAttrs =
@@ -875,7 +909,7 @@ embedAttrs =
 
 fieldset :: GenM Element
 fieldset =
-  mkElement Fieldset fieldsetAttrs $ ElementContent fieldsetContent
+  mkElement Fieldset fieldsetAttrs $ Just fieldsetContent
 
 fieldsetAttrs :: [GenT IO A.Attribute]
 fieldsetAttrs =
@@ -890,14 +924,14 @@ fieldsetContent =
 
 figcaption :: GenM Element
 figcaption =
-  mkElement FigureCaption [] $ ElementContent figureCaptionContent
+  mkElement FigureCaption [] $ Just figureCaptionContent
 
 figureCaptionContent :: NonEmpty (GenM Element)
 figureCaptionContent = flowContent
 
 figure :: GenM Element
 figure =
-  mkElement Figure [] $ ElementContent figureContent
+  mkElement Figure [] $ Just figureContent
 
 figureContent :: NonEmpty (GenM Element)
 figureContent =
@@ -905,14 +939,14 @@ figureContent =
 
 footer :: GenM Element
 footer =
-  mkElement Footer [] $ ElementContent footerContent
+  mkElement Footer [] $ Just footerContent
 
 footerContent :: NonEmpty (GenM Element)
 footerContent = marginalContent
 
 form :: GenM Element
 form =
-  mkElement Form formAttrs $ ElementContent formContent
+  mkElement Form formAttrs $ Just formContent
 
 formAttrs :: [GenT IO A.Attribute]
 formAttrs =
@@ -1016,49 +1050,49 @@ formContent =
 
 h1 :: GenM Element
 h1 =
-  mkElement H1 [] $ ElementContent h1Content
+  mkElement H1 [] $ Just h1Content
 
 h1Content :: NonEmpty (GenM Element)
 h1Content = phrasingContent
 
 h2 :: GenM Element
 h2 =
-  mkElement H2 [] $ ElementContent h2Content
+  mkElement H2 [] $ Just h2Content
 
 h2Content :: NonEmpty (GenM Element)
 h2Content = phrasingContent
 
 h3 :: GenM Element
 h3 =
-  mkElement H3 [] $ ElementContent h3Content
+  mkElement H3 [] $ Just h3Content
 
 h3Content :: NonEmpty (GenM Element)
 h3Content = phrasingContent
 
 h4 :: GenM Element
 h4 =
-  mkElement H4 [] $ ElementContent h4Content
+  mkElement H4 [] $ Just h4Content
 
 h4Content :: NonEmpty (GenM Element)
 h4Content = phrasingContent
 
 h5 :: GenM Element
 h5 =
-  mkElement H5 [] $ ElementContent h5Content
+  mkElement H5 [] $ Just h5Content
 
 h5Content :: NonEmpty (GenM Element)
 h5Content = phrasingContent
 
 h6 :: GenM Element
 h6 =
-  mkElement H6 [] $ ElementContent h6Content
+  mkElement H6 [] $ Just h6Content
 
 h6Content :: NonEmpty (GenM Element)
 h6Content = phrasingContent
 
 head :: GenM Element
 head =
-  mkElement Head [] $ ElementContent headContent
+  mkElement Head [] $ Just headContent
 
 headContent :: NonEmpty (GenM Element)
 headContent =
@@ -1074,14 +1108,14 @@ headContent =
 
 header :: GenM Element
 header =
-  mkElement Header [] $ ElementContent headerContent
+  mkElement Header [] $ Just headerContent
 
 headerContent :: NonEmpty (GenM Element)
 headerContent = marginalContent
 
 hgroup :: GenM Element
 hgroup =
-  mkElement HeadingGroup [] $ ElementContent headingGroupContent
+  mkElement HeadingGroup [] $ Just headingGroupContent
 
 headingGroupContent :: NonEmpty (GenM Element)
 headingGroupContent =
@@ -1091,55 +1125,48 @@ headingGroupContent =
 
 hr :: GenM Element
 hr =
-  mkElement HorizontalRule [] NoContent
+  mkElement HorizontalRule [] Nothing
 
 html :: GenM Element
 html = do
-  ok <- consumeNode
-  when (not ok) $ lift Gen.discard
-
   ctx <- ask
 
-  children <-
-    if currentDepth ctx >= maxDepth ctx
-      then pure []
-      else do
-        n <-
-          lift
-            . Gen.int
-            . Range.singleton
-            . min 2
-            $ maxChildrenPerNode ctx
+  if currentDepth ctx >= maxDepth ctx
+    then do
+      ok <- consumeNode
+      when (not ok) $ lift Gen.discard
 
-        let
-          bumpDepth =
-            ctx
-              { currentDepth = currentDepth ctx + 1
-              }
+      Element
+        <$> pure Html
+        <*> withGlobalAttrs []
+        <*> pure (Right [])
 
-        replicateM n
-          . local (const bumpDepth)
-          $ chooseAndRun htmlContent
+    else do
+      selectedChildren <- traverse trySubtree [ head, body ]
 
-  Element
-    <$> pure Html
-    <*> withGlobalAttrs []
-    <*> pure (Right children)
+      case sequence selectedChildren of
+        Just children -> do
+          ok <- consumeNode
+          when (not ok) $ lift Gen.discard
 
-htmlContent :: NonEmpty (GenM Element)
-htmlContent =
-  head :| [ body ]
+          Element
+            <$> pure Html
+            <*> withGlobalAttrs []
+            <*> pure (Right children)
+
+        Nothing ->
+          lift Gen.discard
 
 i :: GenM Element
 i =
-  mkElement IdiomaticText [] $ ElementContent idiomaticTextContent
+  mkElement IdiomaticText [] $ Just idiomaticTextContent
 
 idiomaticTextContent :: NonEmpty (GenM Element)
 idiomaticTextContent = phrasingContent
 
 iframe :: GenM Element
 iframe =
-  mkElement IFrame iFrameAttrs NoContent
+  mkElement IFrame iFrameAttrs Nothing
 
 iFrameAttrs :: [GenT IO A.Attribute]
 iFrameAttrs =
@@ -1156,7 +1183,7 @@ iFrameAttrs =
 
 img :: GenM Element
 img =
-  mkElement Image imageAttrs NoContent
+  mkElement Image imageAttrs Nothing
 
 imageAttrs :: [GenT IO A.Attribute]
 imageAttrs =
@@ -1177,7 +1204,7 @@ imageAttrs =
 
 input :: GenM Element
 input =
-  mkElement Input inputAttrs NoContent
+  mkElement Input inputAttrs Nothing
 
 inputAttrs :: [GenT IO A.Attribute]
 inputAttrs =
@@ -1219,7 +1246,7 @@ inputAttrs =
 
 ins :: GenM Element
 ins =
-  mkElement InsertedText insertedTextAttrs $ ElementContent insertedTextContent
+  mkElement InsertedText insertedTextAttrs $ Just insertedTextContent
 
 insertedTextAttrs :: [GenT IO A.Attribute]
 insertedTextAttrs =
@@ -1232,14 +1259,14 @@ insertedTextContent = NEL.singleton text
 
 kbd :: GenM Element
 kbd =
-  mkElement KeyboardInput [] $ ElementContent keyboardInputContent
+  mkElement KeyboardInput [] $ Just keyboardInputContent
 
 keyboardInputContent :: NonEmpty (GenM Element)
 keyboardInputContent = phrasingContent
 
 label :: GenM Element
 label =
-  mkElement Label [A.forLabel] $ ElementContent labelContent
+  mkElement Label [A.forLabel] $ Just labelContent
 
 labelContent :: NonEmpty (GenM Element)
 labelContent =
@@ -1296,7 +1323,7 @@ labelContent =
 
 legend :: GenM Element
 legend =
-  mkElement Legend [] $ ElementContent legendContent
+  mkElement Legend [] $ Just legendContent
 
 legendContent :: NonEmpty (GenM Element)
 legendContent =
@@ -1304,14 +1331,14 @@ legendContent =
 
 li :: GenM Element
 li =
-  mkElement ListItem [A.value] $ ElementContent listItemContent
+  mkElement ListItem [A.value] $ Just listItemContent
 
 listItemContent :: NonEmpty (GenM Element)
 listItemContent = flowContent
 
 link :: GenM Element
 link =
-  mkElement Link linkAttrs NoContent
+  mkElement Link linkAttrs Nothing
 
 linkAttrs :: [GenT IO A.Attribute]
 linkAttrs =
@@ -1334,14 +1361,14 @@ linkAttrs =
 
 main :: GenM Element
 main =
-  mkElement Main [] $ ElementContent mainContent
+  mkElement Main [] $ Just mainContent
 
 mainContent :: NonEmpty (GenM Element)
 mainContent = flowContent
 
 map :: GenM Element
 map =
-  mkElement Map [A.name] $ ElementContent mapContent
+  mkElement Map [A.name] $ Just mapContent
 
 mapContent :: NonEmpty (GenM Element)
 mapContent =
@@ -1360,21 +1387,21 @@ mapContent =
 
 mark :: GenM Element
 mark =
-  mkElement Mark [] $ ElementContent markContent
+  mkElement Mark [] $ Just markContent
 
 markContent :: NonEmpty (GenM Element)
 markContent = phrasingContent
 
 menu :: GenM Element
 menu =
-  mkElement Menu [] $ ElementContent menuContent
+  mkElement Menu [] $ Just menuContent
 
 menuContent :: NonEmpty (GenM Element)
 menuContent = listContent
 
 meta :: GenM Element
 meta =
-  mkElement Meta metaAttrs NoContent
+  mkElement Meta metaAttrs Nothing
 
 metaAttrs :: [GenT IO A.Attribute]
 metaAttrs =
@@ -1387,7 +1414,7 @@ metaAttrs =
 
 meter :: GenM Element
 meter =
-  mkElement Meter meterAttrs $ ElementContent meterContent
+  mkElement Meter meterAttrs $ Just meterContent
 
 meterAttrs :: [GenT IO A.Attribute]
 meterAttrs =
@@ -1455,21 +1482,21 @@ meterContent =
 
 nav :: GenM Element
 nav =
-  mkElement Nav [] $ ElementContent navContent
+  mkElement Nav [] $ Just navContent
 
 navContent :: NonEmpty (GenM Element)
 navContent = flowContent
 
 noscript :: GenM Element
 noscript =
-  mkElement NoScript [] $ ElementContent noScriptContent
+  mkElement NoScript [] $ Just noScriptContent
 
 noScriptContent :: NonEmpty (GenM Element)
 noScriptContent = NEL.singleton text
 
 object :: GenM Element
 object =
-  mkElement Object objectAttrs $ ElementContent objectContent
+  mkElement Object objectAttrs $ Just objectContent
 
 objectAttrs :: [GenT IO A.Attribute]
 objectAttrs =
@@ -1486,7 +1513,7 @@ objectContent = NEL.singleton text
 
 ol :: GenM Element
 ol =
-  mkElement OrderedList orderedListAttrs $ ElementContent orderedListContent
+  mkElement OrderedList orderedListAttrs $ Just orderedListContent
 
 orderedListAttrs :: [GenT IO A.Attribute]
 orderedListAttrs =
@@ -1500,7 +1527,7 @@ orderedListContent = listContent
 
 optgroup :: GenM Element
 optgroup =
-  mkElement OptionGroup optionGroupAttrs $ ElementContent optionGroupContent
+  mkElement OptionGroup optionGroupAttrs $ Just optionGroupContent
 
 optionGroupAttrs :: [GenT IO A.Attribute]
 optionGroupAttrs =
@@ -1514,7 +1541,7 @@ optionGroupContent =
 
 option :: GenM Element
 option =
-  mkElement Option optionAttrs . TextContent =<< Generators.nonEmptyText
+  mkElement Option optionAttrs . Just $ NEL.singleton text
 
 optionAttrs :: [GenT IO A.Attribute]
 optionAttrs =
@@ -1526,7 +1553,7 @@ optionAttrs =
 
 output :: GenM Element
 output =
-  mkElement Output outputAttrs $ ElementContent outputContent
+  mkElement Output outputAttrs $ Just outputContent
 
 outputAttrs :: [GenT IO A.Attribute]
 outputAttrs =
@@ -1540,14 +1567,14 @@ outputContent = phrasingContent
 
 p :: GenM Element
 p =
-  mkElement Paragraph [] $ ElementContent paragraphContent
+  mkElement Paragraph [] $ Just paragraphContent
 
 paragraphContent :: NonEmpty (GenM Element)
 paragraphContent = phrasingContent
 
 picture :: GenM Element
 picture =
-  mkElement Picture [] $ ElementContent pictureContent
+  mkElement Picture [] $ Just pictureContent
 
 pictureContent :: NonEmpty (GenM Element)
 pictureContent =
@@ -1558,14 +1585,14 @@ pictureContent =
 
 pre :: GenM Element
 pre =
-  mkElement PreformattedText [] $ ElementContent preformattedTextContent
+  mkElement PreformattedText [] $ Just preformattedTextContent
 
 preformattedTextContent :: NonEmpty (GenM Element)
 preformattedTextContent = phrasingContent
 
 progress :: GenM Element
 progress =
-  mkElement Progress progressAttrs $ ElementContent progressContent
+  mkElement Progress progressAttrs $ Just progressContent
 
 progressAttrs :: [GenT IO A.Attribute]
 progressAttrs =
@@ -1628,32 +1655,29 @@ progressContent =
 
 q :: GenM Element
 q =
-  mkElement Quotation [A.cite] $ ElementContent quotationContent
+  mkElement Quotation [A.cite] $ Just quotationContent
 
 quotationContent :: NonEmpty (GenM Element)
 quotationContent = phrasingContent
 
 rp :: GenM Element
 rp =
-  mkElement RubyParenthesis [] . TextContent =<< Generators.nonEmptyText
+  mkElement RubyParenthesis [] . Just $ NEL.singleton text
 
 rt :: GenM Element
 rt =
-  mkElement RubyText [] $ ElementContent rubyTextContent
+  mkElement RubyText [] $ Just rubyTextContent
 
 rubyTextContent :: NonEmpty (GenM Element)
 rubyTextContent = phrasingContent
 
 ruby :: GenM Element
 ruby = do
-  ok <- consumeNode
-  when (not ok) $ lift Gen.discard
-
   ctx <- ask
   nPairs <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
 
   let
-    totalChildNodes = 4 * nPairs
+    totalChildNodes = 1 + (4 * nPairs)
     addParents (content, rubyText) =
       [ content
       , Element RubyParenthesis [] . Left $ NET.singleton '('
@@ -1661,16 +1685,8 @@ ruby = do
       , Element RubyParenthesis [] . Left $ NET.singleton ')'
       ]
 
-
-  canProceed <-
-    liftIO $
-      atomicModifyIORef' (remainingNodes ctx) $
-        \remaining ->
-          if remaining < totalChildNodes
-            then (remaining, False)
-            else (remaining - totalChildNodes, True)
-
-  when (not canProceed) $ lift Gen.discard
+  ok <- consumeNodes totalChildNodes
+  when (not ok) $ lift Gen.discard
 
   rubyContent <- replicateM nPairs text
   rubyTexts <- replicateM nPairs rt
@@ -1682,21 +1698,21 @@ ruby = do
 
 s :: GenM Element
 s =
-  mkElement Strikethrough [] $ ElementContent strikethroughContent
+  mkElement Strikethrough [] $ Just strikethroughContent
 
 strikethroughContent :: NonEmpty (GenM Element)
 strikethroughContent = phrasingContent
 
 samp :: GenM Element
 samp =
-  mkElement Sample [] $ ElementContent sampleContent
+  mkElement Sample [] $ Just sampleContent
 
 sampleContent :: NonEmpty (GenM Element)
 sampleContent = phrasingContent
 
 script :: GenM Element
 script =
-  mkElement Script scriptAttrs . TextContent =<< Generators.nonEmptyText
+  mkElement Script scriptAttrs . Just $ NEL.singleton text
 
 scriptAttrs :: [GenT IO A.Attribute]
 scriptAttrs =
@@ -1714,21 +1730,21 @@ scriptAttrs =
 
 search :: GenM Element
 search =
-  mkElement Search [] $ ElementContent searchContent
+  mkElement Search [] $ Just searchContent
 
 searchContent :: NonEmpty (GenM Element)
 searchContent = flowContent
 
 section :: GenM Element
 section =
-  mkElement Section [] $ ElementContent sectionContent
+  mkElement Section [] $ Just sectionContent
 
 sectionContent :: NonEmpty (GenM Element)
 sectionContent = flowContent
 
 select :: GenM Element
 select =
-  mkElement Select selectAttrs $ ElementContent selectContent
+  mkElement Select selectAttrs $ Just selectContent
 
 selectAttrs :: [GenT IO A.Attribute]
 selectAttrs =
@@ -1751,21 +1767,21 @@ selectContent =
 
 slot :: GenM Element
 slot =
-  mkElement Slot [A.name] $ ElementContent slotContent
+  mkElement Slot [A.name] $ Just slotContent
 
 slotContent :: NonEmpty (GenM Element)
 slotContent = NEL.singleton text
 
 small :: GenM Element
 small =
-  mkElement SideComment [] $ ElementContent sideCommentContent
+  mkElement SideComment [] $ Just sideCommentContent
 
 sideCommentContent :: NonEmpty (GenM Element)
 sideCommentContent = phrasingContent
 
 source :: GenM Element
 source =
-  mkElement Source sourceAttrs NoContent
+  mkElement Source sourceAttrs Nothing
 
 sourceAttrs :: [GenT IO A.Attribute]
 sourceAttrs =
@@ -1780,21 +1796,21 @@ sourceAttrs =
 
 span :: GenM Element
 span =
-  mkElement Span [] $ ElementContent spanContent
+  mkElement Span [] $ Just spanContent
 
 spanContent :: NonEmpty (GenM Element)
 spanContent = phrasingContent
 
 strong :: GenM Element
 strong =
-  mkElement Strong [] $ ElementContent strongContent
+  mkElement Strong [] $ Just strongContent
 
 strongContent :: NonEmpty (GenM Element)
 strongContent = phrasingContent
 
 style :: GenM Element
 style =
-  mkElement Style styleAttrs NoContent
+  mkElement Style styleAttrs Nothing
 
 styleAttrs :: [GenT IO A.Attribute]
 styleAttrs =
@@ -1805,14 +1821,14 @@ styleAttrs =
 
 sub :: GenM Element
 sub =
-  mkElement Subscript [] $ ElementContent subscriptContent
+  mkElement Subscript [] $ Just subscriptContent
 
 subscriptContent :: NonEmpty (GenM Element)
 subscriptContent = phrasingContent
 
 summary :: GenM Element
 summary =
-  mkElement Summary [] $ ElementContent summaryContent
+  mkElement Summary [] $ Just summaryContent
 
 summaryContent :: NonEmpty (GenM Element)
 summaryContent =
@@ -1820,14 +1836,14 @@ summaryContent =
 
 sup :: GenM Element
 sup =
-  mkElement Superscript [] $ ElementContent superscriptContent
+  mkElement Superscript [] $ Just superscriptContent
 
 superscriptContent :: NonEmpty (GenM Element)
 superscriptContent = phrasingContent
 
 table :: GenM Element
 table =
-  mkElement Table [] $ ElementContent tableContent
+  mkElement Table [] $ Just tableContent
 
 tableContent :: NonEmpty (GenM Element)
 tableContent =
@@ -1841,7 +1857,7 @@ tableContent =
 
 tbody :: GenM Element
 tbody =
-  mkElement TableBody [] $ ElementContent tableBodyContent
+  mkElement TableBody [] $ Just tableBodyContent
 
 tableBodyContent :: NonEmpty (GenM Element)
 tableBodyContent =
@@ -1852,7 +1868,7 @@ td =
   mkElement
     TableDataCell
     tableDataCellAttrs
-    (ElementContent tableDataCellContent)
+    (Just tableDataCellContent)
 
 tableDataCellAttrs :: [GenT IO A.Attribute]
 tableDataCellAttrs =
@@ -1866,14 +1882,14 @@ tableDataCellContent = flowContent
 
 template :: GenM Element
 template =
-  mkElement ContentTemplate [] $ ElementContent contentTemplateContent
+  mkElement ContentTemplate [] $ Just contentTemplateContent
 
 contentTemplateContent :: NonEmpty (GenM Element)
 contentTemplateContent = allElements
 
 textarea :: GenM Element
 textarea =
-  mkElement TextArea textAreaAttrs . ElementContent $ NEL.singleton text
+  mkElement TextArea textAreaAttrs . Just $ NEL.singleton text
 
 textAreaAttrs :: [GenT IO A.Attribute]
 textAreaAttrs =
@@ -1897,7 +1913,7 @@ textAreaAttrs =
 
 tfoot :: GenM Element
 tfoot =
-  mkElement TableFoot [] $ ElementContent tableFootContent
+  mkElement TableFoot [] $ Just tableFootContent
 
 tableFootContent :: NonEmpty (GenM Element)
 tableFootContent =
@@ -1905,7 +1921,7 @@ tableFootContent =
 
 th :: GenM Element
 th =
-  mkElement TableHeader tableHeaderAttrs $ ElementContent tableHeaderContent
+  mkElement TableHeader tableHeaderAttrs $ Just tableHeaderContent
 
 tableHeaderAttrs :: [GenT IO A.Attribute]
 tableHeaderAttrs =
@@ -1993,7 +2009,7 @@ tableHeaderContent =
 
 thead :: GenM Element
 thead =
-  mkElement TableHead [] $ ElementContent tableHeadContent
+  mkElement TableHead [] $ Just tableHeadContent
 
 tableHeadContent :: NonEmpty (GenM Element)
 tableHeadContent =
@@ -2001,18 +2017,18 @@ tableHeadContent =
 
 time :: GenM Element
 time =
-  mkElement Time [A.datetime] $ ElementContent timeContent
+  mkElement Time [A.datetime] $ Just timeContent
 
 timeContent :: NonEmpty (GenM Element)
 timeContent = phrasingContent
 
 title :: GenM Element
 title =
-  mkElement Title [] . TextContent =<< Generators.nonEmptyText
+  mkElement Title [] . Just $ NEL.singleton text
 
 tr :: GenM Element
 tr =
-  mkElement TableRow [] $ ElementContent tableRowContent
+  mkElement TableRow [] $ Just tableRowContent
 
 tableRowContent :: NonEmpty (GenM Element)
 tableRowContent =
@@ -2022,7 +2038,7 @@ tableRowContent =
 
 track :: GenM Element
 track =
-  mkElement Track trackAttrs NoContent
+  mkElement Track trackAttrs Nothing
 
 trackAttrs :: [GenT IO A.Attribute]
 trackAttrs =
@@ -2035,28 +2051,28 @@ trackAttrs =
 
 u :: GenM Element
 u =
-  mkElement Underline [] $ ElementContent underlineContent
+  mkElement Underline [] $ Just underlineContent
 
 underlineContent :: NonEmpty (GenM Element)
 underlineContent = phrasingContent
 
 ul :: GenM Element
 ul =
-  mkElement UnorderedList [] $ ElementContent unorderedListContent
+  mkElement UnorderedList [] $ Just unorderedListContent
 
 unorderedListContent :: NonEmpty (GenM Element)
 unorderedListContent = listContent
 
 var :: GenM Element
 var =
-  mkElement Variable [] $ ElementContent variableContent
+  mkElement Variable [] $ Just variableContent
 
 variableContent :: NonEmpty (GenM Element)
 variableContent = phrasingContent
 
 video :: GenM Element
 video =
-  mkElement Video videoAttrs $ ElementContent videoContent
+  mkElement Video videoAttrs $ Just videoContent
 
 videoAttrs :: [GenT IO A.Attribute]
 videoAttrs =
@@ -2081,7 +2097,7 @@ videoContent = audioVideoContent
 
 wbr :: GenM Element
 wbr =
-  mkElement WordBreakOpportunity [] NoContent
+  mkElement WordBreakOpportunity [] Nothing
 
 -- Content Categories
 --

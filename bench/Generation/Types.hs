@@ -2,11 +2,12 @@ module Generation.Types
   ( GenM
   , GenContext (..)
   , consumeNode
+  , consumeNodes
   , GeneratorParams (..)
   ) where
 
 import Control.Monad.Reader (ReaderT, asks, liftIO)
-import Data.IORef (IORef, atomicModifyIORef')
+import Data.IORef (IORef, atomicModifyIORef', readIORef)
 import Hedgehog (GenT, Seed)
 import Hedgehog.Range (Size)
 
@@ -22,14 +23,20 @@ data GenContext =
     }
 
 consumeNode :: GenM Bool
-consumeNode = do
+consumeNode =
+  consumeNodes 1
+
+consumeNodes :: Int -> GenM Bool
+consumeNodes k = do
   ref <- asks remainingNodes
-  liftIO $
+  liftIO $ do
+    remaining <- readIORef ref
+    putStrLn $ "consumeNode: remaining = " <> show remaining
     atomicModifyIORef' ref $
       \n ->
-        if n <= 0
-          then (0, False)
-          else (n - 1, True)
+        if n < k
+          then (n, False)
+          else (n - k, True)
 
 data GeneratorParams =
   GeneratorParams

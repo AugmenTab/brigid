@@ -1,9 +1,8 @@
-{-# LANGUAGE ScopedTypeVariables #-}
-
 module Main
   ( main
   ) where
 
+import Control.Exception (evaluate)
 import Control.Monad.Reader (liftIO, runReaderT)
 import Control.Monad.Trans.Maybe (runMaybeT)
 import Data.IORef (newIORef)
@@ -25,8 +24,8 @@ main = do
         , Types.maxDepthParam = 20
         , Types.maxChildrenPerNodeParam = 5
         , Types.maxAttributesPerElementParam = 8
-        , Types.sizeParam = Size 1000
-        , Types.seedParam = from 1000
+        , Types.sizeParam = Size 10000
+        , Types.seedParam = from 2000
         }
 
   print element
@@ -53,5 +52,5 @@ generate element params = do
           }
 
   case mbNode of
-    Just node -> pure $ nodeValue node
+    Just node -> evaluate (nodeValue node)
     Nothing -> fail "Failed to generate HTML document."

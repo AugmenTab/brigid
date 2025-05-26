@@ -51,7 +51,7 @@ bcp47 =
 
 byteString  :: MonadGen m => m BS.ByteString
 byteString =
-  Gen.utf8 (Range.linear 1 100) Gen.ascii
+  Gen.utf8 (Range.linear 1 100) Gen.alphaNum
 
 char  :: MonadGen m => m Char
 char =
@@ -277,7 +277,7 @@ step =
 
 string  :: MonadGen m => m String
 string =
-  Gen.string (Range.linear 1 100) Gen.ascii
+  Gen.string (Range.linear 1 100) Gen.alphaNum
 
 target  :: MonadGen m => m Types.Target
 target =
@@ -291,7 +291,7 @@ target =
 
 text  :: MonadGen m => m T.Text
 text =
-  Gen.text (Range.linear 1 100) Gen.ascii
+  Gen.text (Range.linear 1 100) Gen.alphaNum
 
 type_  :: MonadGen m => m Types.RawTypeOption
 type_ =
