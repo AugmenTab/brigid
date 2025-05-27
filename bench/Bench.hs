@@ -2,55 +2,31 @@ module Main
   ( main
   ) where
 
-import Control.Exception (evaluate)
-import Control.Monad.Reader (liftIO, runReaderT)
-import Control.Monad.Trans.Maybe (runMaybeT)
-import Data.IORef (newIORef)
-import Hedgehog.Internal.Gen (runGenT)
+import Hedgehog.Internal.Gen (evalGen)
 import Hedgehog.Internal.Seed (from)
-import Hedgehog.Internal.Tree (nodeValue, runTreeT)
+import Hedgehog.Internal.Tree (nodeValue, runTree)
 import Hedgehog.Range (Size (..))
 
-import Generation.Analysis qualified as A
-import Generation.Element qualified as E
-import Generation.Types qualified as Types
+import Generation.Structure (buildHtmlTree, countTotalNodes)
 
 main :: IO ()
 main = do
-  element <-
-    generate E.Html $
-      Types.GeneratorParams
-        { Types.maxTotalNodesParam = 1000
-        , Types.maxDepthParam = 20
-        , Types.maxChildrenPerNodeParam = 5
-        , Types.maxAttributesPerElementParam = 8
-        , Types.sizeParam = Size 10000
-        , Types.seedParam = from 2000
-        }
-
-  print element
-  print $ A.totalNodes element
-
-generate :: E.ElementType -> Types.GeneratorParams -> IO E.Element
-generate element params = do
   let
-    size = Types.sizeParam params
-    seed = Types.seedParam params
+    size = Size 30
+    seed = from 0
 
-  mbNode <-
-    runMaybeT . runTreeT . runGenT size seed $ do
-      ref <- liftIO . newIORef $ Types.maxTotalNodesParam params
+  -- small:          100 |  20 |  20
+  -- medium:        1000 |  25 |  50
+  -- large:        10000 |  50 | 100
+  -- stress test: 100000 | 250 | 500
 
-      runReaderT (E.elementGenerator element) $
-        Types.GenContext
-          { Types.remainingNodes = ref
-          , Types.currentDepth = 0
-          , Types.maxDepth = Types.maxDepthParam params
-          , Types.maxChildrenPerNode = Types.maxChildrenPerNodeParam params
-          , Types.maxAttributesPerNode =
-              Types.maxAttributesPerElementParam params
-          }
+  case evalGen size seed (buildHtmlTree 100 20 20) of
+    Just tree -> do
+      let
+        node = nodeValue $ runTree tree
 
-  case mbNode of
-    Just node -> evaluate (nodeValue node)
-    Nothing -> fail "Failed to generate HTML document."
+      print node
+      print $ countTotalNodes node
+
+    Nothing ->
+      error "Structure generation failed."

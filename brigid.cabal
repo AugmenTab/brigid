@@ -264,6 +264,7 @@ benchmark brigid-bench
       Generation.Attribute
       Generation.Element
       Generation.Generators
+      Generation.Structure
       Generation.Types
       Paths_brigid
   autogen-modules:
