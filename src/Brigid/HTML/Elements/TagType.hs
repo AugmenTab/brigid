@@ -400,7 +400,7 @@ type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
   TagErrorMessage RubyText               = 'TypeLits.Text "RubyText (<rt>)"
   TagErrorMessage Ruby                   = 'TypeLits.Text "Ruby (<ruby>)"
   TagErrorMessage Strikethrough          = 'TypeLits.Text "Strikethrough (<s>)"
-  TagErrorMessage Sample                 = 'TypeLits.Text "Sample (<sample>)"
+  TagErrorMessage Sample                 = 'TypeLits.Text "Sample (<samp>)"
   TagErrorMessage Script                 = 'TypeLits.Text "Script (<script>)"
   TagErrorMessage Search                 = 'TypeLits.Text "Search (<search>)"
   TagErrorMessage Section                = 'TypeLits.Text "Section (<section>)"

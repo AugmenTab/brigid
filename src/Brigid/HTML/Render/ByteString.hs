@@ -367,7 +367,7 @@ renderTag html =
       buildTag "s" attrs $ Right content
 
     Tag_Sample attrs content ->
-      buildTag "sample" attrs $ Right content
+      buildTag "samp" attrs $ Right content
 
     Tag_Script attrs mbScript ->
       buildTag "script" attrs $
