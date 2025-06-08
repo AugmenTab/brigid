@@ -189,18 +189,23 @@ buildTree ctx rootId = do
           attrs <- E.withGlobalAttrs (genParams ctx) elementType
 
           case nodeType of
-            Types.BranchNode ->
+            Types.BranchNode -> do
               let
                 children =
                   mapMaybe (`Map.lookup` acc)
                     . Map.findWithDefault [] nid
                     $ childMap ctx
-              in
-                pure $
-                  Map.insert
-                    nid
-                    (Types.Element elementType attrs $ Types.Branch children)
-                    acc
+
+              content <-
+                if null children && Set.member elementType E.leafBranchElements
+                  then Types.Leaf <$> Generators.nonEmptyText
+                  else pure $ Types.Branch children
+
+              pure $
+                Map.insert
+                  nid
+                  (Types.Element elementType attrs content)
+                  acc
 
             Types.LeafNode -> do
               text <- Generators.nonEmptyText

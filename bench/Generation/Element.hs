@@ -5,6 +5,7 @@ module Generation.Element
   , elementWeight
   , branchElements
   , leafElements
+  , leafBranchElements
   , voidElements
   , withGlobalAttrs
   ) where
@@ -2053,6 +2054,41 @@ leafElements =
     , Style
     , TextArea
     , Title
+    ]
+
+leafBranchElements :: Set ElementType
+leafBranchElements =
+  Set.fromList
+    [ Abbreviation
+    , BringAttentionTo
+    , Button
+    , Citation
+    , Code
+    , DescriptionList
+    , DescriptionTerm
+    , Division
+    , Emphasis
+    , FigureCaption
+    , IdiomaticText
+    , KeyboardInput
+    , Label
+    , ListItem
+    , Mark
+    , Paragraph
+    , Quotation
+    , Sample
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Summary
+    , Superscript
+    , TableCaption
+    , TableDataCell
+    , TableHeader
+    , Time
+    , Underline
+    , Variable
     ]
 
 voidElements :: Set ElementType

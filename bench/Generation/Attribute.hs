@@ -193,7 +193,7 @@ data Attribute
   | Style T.Text
   | TabIndex Integer
   | Title T.Text
-  | Translate Bool
+  | Translate Types.YesNo
   | WritingSuggestions Bool
 
   -- Scoped Attributes
@@ -570,7 +570,7 @@ title =
 
 translate :: MonadGen m => m Attribute
 translate =
-  Translate <$> Gen.bool
+  Translate . Types.yesNoBool <$> Gen.bool
 
 writingSuggestions :: MonadGen m => m Attribute
 writingSuggestions =
