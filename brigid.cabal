@@ -30,6 +30,9 @@ library
       Brigid.HTML.Elements
       Brigid.HTML.Elements.Safe
       Brigid.HTML.Entities
+      Brigid.HTML.Generation
+      Brigid.HTML.Generation.Attributes
+      Brigid.HTML.Generation.Elements
       Brigid.HTML.HTMX.Config
       Brigid.HTML.Render.ByteString
       Brigid.HTML.Render.String
@@ -74,6 +77,12 @@ library
       Brigid.HTML.Elements.TagGroups
       Brigid.HTML.Elements.Tags
       Brigid.HTML.Elements.TagType
+      Brigid.HTML.Generation.Internal.Analysis
+      Brigid.HTML.Generation.Internal.Attributes
+      Brigid.HTML.Generation.Internal.Build
+      Brigid.HTML.Generation.Internal.Elements
+      Brigid.HTML.Generation.Internal.Generators
+      Brigid.HTML.Generation.Internal.Types
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.As
@@ -201,7 +210,9 @@ library
     , bytestring
     , containers
     , crypton
+    , extra
     , foldable1-classes-compat
+    , hedgehog
     , html-email-validate
     , http-types
     , integer-types
@@ -210,12 +221,14 @@ library
     , json-fleece-core
     , libphonenumber
     , memory
+    , mtl
     , non-empty-text
     , ogma
     , scientific
     , shrubbery
     , text
     , time
+    , uuid
   default-language: Haskell2010
 
 test-suite brigid-test
@@ -239,7 +252,9 @@ test-suite brigid-test
     , bytestring
     , containers
     , crypton
+    , extra
     , foldable1-classes-compat
+    , hedgehog
     , html-email-validate
     , http-types
     , integer-types
@@ -248,26 +263,22 @@ test-suite brigid-test
     , json-fleece-core
     , libphonenumber
     , memory
+    , mtl
     , non-empty-text
     , ogma
     , scientific
     , shrubbery
     , text
     , time
+    , uuid
   default-language: Haskell2010
 
 benchmark brigid-bench
   type: exitcode-stdio-1.0
   main-is: Bench.hs
   other-modules:
-      Generation.Analysis
-      Generation.Attribute
-      Generation.Build
       Generation.Convert
       Generation.Convert.Blaze
-      Generation.Element
-      Generation.Generators
-      Generation.Types
       Paths_brigid
   autogen-modules:
       Paths_brigid

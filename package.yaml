@@ -31,7 +31,9 @@ dependencies:
 - bytestring
 - containers
 - crypton
+- extra
 - foldable1-classes-compat
+- hedgehog
 - html-email-validate
 - http-types
 - integer-types
@@ -40,12 +42,14 @@ dependencies:
 - json-fleece-core
 - libphonenumber
 - memory
+- mtl
 - non-empty-text
 - ogma
 - scientific
 - shrubbery
 - text
 - time
+- uuid
 
 ghc-options:
 - -j
@@ -67,6 +71,9 @@ library:
     - Brigid.HTML.Elements
     - Brigid.HTML.Elements.Safe
     - Brigid.HTML.Entities
+    - Brigid.HTML.Generation
+    - Brigid.HTML.Generation.Attributes
+    - Brigid.HTML.Generation.Elements
     - Brigid.HTML.HTMX.Config
     - Brigid.HTML.Render.ByteString
     - Brigid.HTML.Render.String
@@ -104,8 +111,4 @@ benchmarks:
     dependencies:
       - blaze-html
       - brigid
-      - extra
-      - hedgehog
-      - mtl
       - tasty-bench
-      - uuid

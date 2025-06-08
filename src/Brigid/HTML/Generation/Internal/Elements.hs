@@ -1,4 +1,4 @@
-module Generation.Element
+module Brigid.HTML.Generation.Internal.Elements
   ( elementNodeType
   , elementValidAttrs
   , elementValidChildren
@@ -17,8 +17,8 @@ import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
 
-import Generation.Attribute qualified as A
-import Generation.Types (ElementType (..), GeneratorParams (..), NodeType (..), maxRange, minRange)
+import Brigid.HTML.Generation.Internal.Attributes qualified as A
+import Brigid.HTML.Generation.Internal.Types (ElementType (..), GeneratorParams (..), NodeType (..), maxRange, minRange)
 
 elementNodeType :: ElementType -> NodeType
 elementNodeType element =

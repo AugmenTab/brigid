@@ -1,6 +1,5 @@
-module Generation.Types
+module Brigid.HTML.Generation.Internal.Types
   ( Element (..)
-  , prettyPrint
   , ElementType (..)
   , ElementNode (..)
   , NodeType (..)
@@ -14,7 +13,7 @@ module Generation.Types
 import Data.Maybe (catMaybes)
 import Data.NonEmptyText qualified as NET
 
-import Generation.Attribute qualified as A
+import Brigid.HTML.Generation.Internal.Attributes qualified as A
 
 data Element =
   Element
@@ -34,48 +33,6 @@ instance Show Element where
             Leaf net -> Just $ show net
             Void -> Nothing
         ]
-
-prettyPrint :: Element -> String
-prettyPrint =
-  let
-    renderLines :: String -> Bool -> Element -> String
-    renderLines prefix isLast (Element tag attrs children) =
-      let
-        connector =
-          if isLast
-            then "└── "
-            else "├── "
-
-        thisLine = prefix <> connector <> show tag <> " " <> show attrs
-        newPrefix =
-          mconcat
-            [ prefix
-            , if isLast
-                then "    "
-                else "│   "
-            ]
-
-        childLines =
-          case children of
-            Void ->
-              []
-
-            Leaf net ->
-              [ newPrefix <> "└── " <> show (NET.toText net)
-              ]
-
-            Branch es ->
-              let
-                total = length es
-              in
-                zipWith
-                  (\i e -> renderLines newPrefix (i == total - 1) e)
-                  [0 ..]
-                  es
-      in
-        thisLine <> concatMap ('\n' :) childLines
-  in
-    renderLines "" True
 
 -- This is effectively just `Brigid.HTML.Elements.TagType`, but we don't want
 -- to expose that ADT, and this has fewer constructors because we don't
@@ -213,11 +170,10 @@ data NodeType
 data GeneratorParams =
   GeneratorParams
     { startingElement :: ElementType
-    , maxTotalNodes :: Int
-    , maxDepth :: Int
+    , maximumTotalNodes :: Int
+    , maximumDepth :: Int
     , childrenPerNode :: Range
     , attributesPerNode :: Range
-    , enableLogging :: Bool
     } deriving Show
 
 data Range =

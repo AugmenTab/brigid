@@ -1,4 +1,4 @@
-module Generation.Generators
+module Brigid.HTML.Generation.Internal.Generators
   ( as
   , autocapitalizeOption
   , bcp47
@@ -54,6 +54,7 @@ module Generation.Generators
   , url
   , uuid
   , wrap
+  , yesNo
   ) where
 
 import Data.ByteString qualified as BS
@@ -438,3 +439,7 @@ uuid =
 wrap :: MonadGen m => m Types.Wrap
 wrap =
   Gen.enumBounded
+
+yesNo :: MonadGen m => m Types.YesNo
+yesNo =
+  Types.yesNoBool <$> Gen.bool

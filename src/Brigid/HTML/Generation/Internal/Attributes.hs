@@ -1,4 +1,4 @@
-module Generation.Attribute
+module Brigid.HTML.Generation.Internal.Attributes
   ( Attribute (..)
   , attributeText
   , accessKey
@@ -153,9 +153,9 @@ import Numeric.Natural (Natural)
 import Ogma qualified
 import Prelude hiding (div, id, map, max, min, reverse, span)
 
+import Brigid.HTML.Generation.Internal.Generators qualified as Generators
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
-import Generation.Generators qualified as Generators
 
 -- This is effectively just `Brigid.HTML.Attributes.AttributeType`, but we
 -- don't want to expose that ADT, and this has fewer constructors because we
@@ -570,7 +570,7 @@ title =
 
 translate :: MonadGen m => m Attribute
 translate =
-  Translate . Types.yesNoBool <$> Gen.bool
+  Translate <$> Generators.yesNo
 
 writingSuggestions :: MonadGen m => m Attribute
 writingSuggestions =

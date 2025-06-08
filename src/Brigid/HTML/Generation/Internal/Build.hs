@@ -1,6 +1,6 @@
 {-# LANGUAGE TupleSections #-}
 
-module Generation.Build
+module Brigid.HTML.Generation.Internal.Build
   ( generateDOM
   ) where
 
@@ -17,9 +17,9 @@ import Hedgehog (Gen)
 import Hedgehog.Gen qualified as Gen
 import Prelude hiding (head)
 
-import Generation.Element qualified as E
-import Generation.Generators qualified as Generators
-import Generation.Types qualified as Types
+import Brigid.HTML.Generation.Internal.Elements qualified as E
+import Brigid.HTML.Generation.Internal.Generators qualified as Generators
+import Brigid.HTML.Generation.Internal.Types qualified as Types
 
 type LayerMap = IntMap [UUID]
 type ChildMap = Map UUID [UUID]
@@ -53,16 +53,17 @@ generateDOM params =
         generateElement $
           params
             { Types.startingElement = Types.Body
-            , Types.maxTotalNodes = Types.maxTotalNodes params - headNodes - 1
-            , Types.maxDepth = Types.maxDepth params - 1
+            , Types.maximumTotalNodes =
+                Types.maximumTotalNodes params - headNodes - 1
+            , Types.maximumDepth = Types.maximumDepth params - 1
             }
 
       head <-
         generateElement $
           params
             { Types.startingElement = Types.Head
-            , Types.maxTotalNodes = headNodes
-            , Types.maxDepth = Types.maxDepth params - 1
+            , Types.maximumTotalNodes = headNodes
+            , Types.maximumDepth = Types.maximumDepth params - 1
             , Types.childrenPerNode = Types.mkRange headNodes headNodes
             }
 
@@ -97,19 +98,19 @@ buildLayer queue = do
     params = genParams ctx
     nodeCount = Map.size $ nodeInfo ctx
 
-  if nodeCount >= Types.maxTotalNodes params
+  if nodeCount >= Types.maximumTotalNodes params
     then pure ()
     else do
       nextQueue <-
         fmap concat . forM queue $ \(LayerItem nid _parent depth) -> do
-          if depth >= Types.maxDepth params
+          if depth >= Types.maximumDepth params
             then pure []
             else do
               updatedCtx <- get
 
               let
                 currentCount = Map.size (nodeInfo updatedCtx)
-                remaining = Types.maxTotalNodes params - currentCount
+                remaining = Types.maximumTotalNodes params - currentCount
                 range = Types.childrenPerNode params
                 maxAllowed = min (Types.maxRange range) remaining
                 minAllowed = min (Types.minRange range) maxAllowed
@@ -176,7 +177,9 @@ buildTree ctx rootId = do
         then 0
         else fst (IntMap.findMax $ layerMap ctx)
 
-    buildLayerNodes :: Map UUID Types.Element -> Int -> Gen (Map UUID Types.Element)
+    buildLayerNodes :: Map UUID Types.Element
+                    -> Int
+                    -> Gen (Map UUID Types.Element)
     buildLayerNodes acc depth =
       maybe (pure acc) (foldM buildOne acc)
         . IntMap.lookup depth

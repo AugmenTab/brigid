@@ -11,10 +11,11 @@ import Text.Blaze.Html (Html, (!))
 import Text.Blaze.Html5 qualified as H
 import Text.Blaze.Html5.Attributes qualified as A
 
+import Brigid.HTML.Generation (Element (..), ElementNode (..))
+import Brigid.HTML.Generation.Attributes qualified as GA
+import Brigid.HTML.Generation.Elements (ElementType (..))
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
-import Generation.Attribute qualified as GA
-import Generation.Types (Element (..), ElementNode (..), ElementType (..))
 
 toBlaze :: Element -> Html
 toBlaze (Element tag attrs node) =
