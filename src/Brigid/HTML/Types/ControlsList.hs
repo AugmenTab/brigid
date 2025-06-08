@@ -4,8 +4,8 @@ module Brigid.HTML.Types.ControlsList
       , NoFullscreen
       , NoRemotePlayback
       )
-  , controlslistToBytes
-  , controlslistToText
+  , controlsListToBytes
+  , controlsListToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -17,15 +17,15 @@ data ControlsList
   | NoRemotePlayback
   deriving (Bounded, Enum, Eq, Show)
 
-controlslistToBytes :: ControlsList -> LBS.ByteString
-controlslistToBytes controlslist =
+controlsListToBytes :: ControlsList -> LBS.ByteString
+controlsListToBytes controlslist =
   case controlslist of
     NoDownload       -> "nodownload"
     NoFullscreen     -> "nofullscreen"
     NoRemotePlayback -> "noremoteplayback"
 
-controlslistToText :: ControlsList -> T.Text
-controlslistToText controlslist =
+controlsListToText :: ControlsList -> T.Text
+controlsListToText controlslist =
   case controlslist of
     NoDownload       -> "nodownload"
     NoFullscreen     -> "nofullscreen"

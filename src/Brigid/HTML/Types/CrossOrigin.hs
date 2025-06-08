@@ -3,8 +3,8 @@ module Brigid.HTML.Types.CrossOrigin
       ( Anonymous
       , UseCredentials
       )
-  , crossoriginFetchToBytes
-  , crossoriginFetchToText
+  , crossOriginFetchToBytes
+  , crossOriginFetchToText
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -28,14 +28,14 @@ data CrossOriginFetch
   | UseCredentials
   deriving (Bounded, Enum, Eq, Show)
 
-crossoriginFetchToBytes :: CrossOriginFetch -> LBS.ByteString
-crossoriginFetchToBytes cors =
+crossOriginFetchToBytes :: CrossOriginFetch -> LBS.ByteString
+crossOriginFetchToBytes cors =
   case cors of
     Anonymous      -> "anonymous"
     UseCredentials -> "use-credentials"
 
-crossoriginFetchToText :: CrossOriginFetch -> T.Text
-crossoriginFetchToText cors =
+crossOriginFetchToText :: CrossOriginFetch -> T.Text
+crossOriginFetchToText cors =
   case cors of
     Anonymous      -> "anonymous"
     UseCredentials -> "use-credentials"

@@ -645,8 +645,8 @@ import Brigid.HTML.Types.Class qualified as Class
 import Brigid.HTML.Types.ClassSelector qualified as CS
 import Brigid.HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToText)
 import Brigid.HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
-import Brigid.HTML.Types.ControlsList (ControlsList, controlslistToText)
-import Brigid.HTML.Types.CrossOrigin (CrossOriginFetch, crossoriginFetchToText)
+import Brigid.HTML.Types.ControlsList (ControlsList, controlsListToText)
+import Brigid.HTML.Types.CrossOrigin (CrossOriginFetch, crossOriginFetchToText)
 import Brigid.HTML.Types.Decoding (Decoding, decodingToText)
 import Brigid.HTML.Types.Delay (Delay, delay, delayToBytes, delayToText)
 import Brigid.HTML.Types.Directionality (Directionality, directionalityToText)
@@ -2783,7 +2783,7 @@ attr_controls :: AttributeSelector
 attr_controls = (Attr_Controls, Nothing)
 
 attr_controlslist :: ControlsList -> AttributeSelector
-attr_controlslist = (,) Attr_ControlsList . Just . controlslistToText
+attr_controlslist = (,) Attr_ControlsList . Just . controlsListToText
 
 attr_coords :: NEL.NonEmpty Integer -> AttributeSelector
 attr_coords =
@@ -2793,7 +2793,7 @@ attr_coords =
     . NEL.toList
 
 attr_crossorigin :: CrossOriginFetch -> AttributeSelector
-attr_crossorigin = (,) Attr_CrossOrigin . Just . crossoriginFetchToText
+attr_crossorigin = (,) Attr_CrossOrigin . Just . crossOriginFetchToText
 
 attr_data :: ( KnownNat branchIndex
              , branchIndex ~ FirstIndexOf _data URLTypes

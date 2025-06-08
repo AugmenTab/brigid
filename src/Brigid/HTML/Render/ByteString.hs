@@ -712,12 +712,12 @@ renderAttribute attr =
     Attr_ControlsList controlslist ->
       Just
         . buildAttribute "controlslist"
-        $ Types.controlslistToBytes controlslist
+        $ Types.controlsListToBytes controlslist
 
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"
-        $ Types.crossoriginFetchToBytes crossorigin
+        $ Types.crossOriginFetchToBytes crossorigin
 
     Attr_Data _data ->
       Just . buildAttribute "data" $ Types.urlToBytes _data
