@@ -102,6 +102,7 @@ benchmarks:
       - -rtsopts
       - -with-rtsopts "-N -T -A32m"
     dependencies:
+      - blaze-html
       - brigid
       - extra
       - hedgehog

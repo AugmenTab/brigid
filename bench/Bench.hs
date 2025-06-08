@@ -2,13 +2,17 @@ module Main
   ( main
   ) where
 
+import Control.Monad (when)
+import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Hedgehog.Internal.Gen (evalGen)
 import Hedgehog.Internal.Seed (from)
 import Hedgehog.Internal.Tree (nodeValue, runTree)
 import Hedgehog.Range (Size (..))
+import Text.Blaze.Html.Renderer.Utf8 (renderHtml)
 
 import Generation.Analysis qualified as A
 import Generation.Build (generateDOM)
+import Generation.Convert (toBlaze)
 import Generation.Types qualified as Types
 
 main :: IO ()
@@ -34,7 +38,7 @@ main = do
         , Types.maxDepth = 9
         , Types.childrenPerNode = Types.mkRange 0 6
         , Types.attributesPerNode = Types.mkRange 0 10
-        , Types.enableLogging = True
+        , Types.enableLogging = False
         }
 
     _large =
@@ -44,7 +48,7 @@ main = do
         , Types.maxDepth = 10
         , Types.childrenPerNode = Types.mkRange 0 7
         , Types.attributesPerNode = Types.mkRange 0 10
-        , Types.enableLogging = True
+        , Types.enableLogging = False
         }
 
     _stress =
@@ -54,7 +58,17 @@ main = do
         , Types.maxDepth = 11
         , Types.childrenPerNode = Types.mkRange 0 8
         , Types.attributesPerNode = Types.mkRange 0 10
-        , Types.enableLogging = True
+        , Types.enableLogging = False
+        }
+
+    _absurd =
+      Types.GeneratorParams
+        { Types.startingElement = Types.Html
+        , Types.maxTotalNodes = 1000000
+        , Types.maxDepth = 12
+        , Types.childrenPerNode = Types.mkRange 0 10
+        , Types.attributesPerNode = Types.mkRange 0 10
+        , Types.enableLogging = False
         }
 
     testing =
@@ -65,7 +79,13 @@ main = do
       let
         node = nodeValue $ runTree nodeTree
 
-      -- putStrLn $ Types.prettyPrint node
+      when (Types.enableLogging testing) $ do
+        putStrLn $ Types.prettyPrint node
+        putStrLn "\n\n"
+
+      LBS8.putStrLn . renderHtml $ toBlaze node
+      LBS8.putStrLn "\n\n"
+
       putStrLn $
         "Total Nodes: "
           <> show (A.totalNodes node)

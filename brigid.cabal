@@ -263,6 +263,8 @@ benchmark brigid-bench
       Generation.Analysis
       Generation.Attribute
       Generation.Build
+      Generation.Convert
+      Generation.Convert.Blaze
       Generation.Element
       Generation.Generators
       Generation.Types
@@ -279,6 +281,7 @@ benchmark brigid-bench
       base
     , beeline-http-client
     , beeline-routing
+    , blaze-html
     , brigid
     , bytestring
     , containers
