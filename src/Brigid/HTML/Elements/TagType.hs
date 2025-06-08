@@ -383,7 +383,7 @@ type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
   TagErrorMessage Mark                   = 'TypeLits.Text "Mark (<mark>)"
   TagErrorMessage Menu                   = 'TypeLits.Text "Menu (<menu>)"
   TagErrorMessage Meta                   = 'TypeLits.Text "Meta (<meta>)"
-  TagErrorMessage Meter                  = 'TypeLits.Text "Meter (<metere>)"
+  TagErrorMessage Meter                  = 'TypeLits.Text "Meter (<meter>)"
   TagErrorMessage Nav                    = 'TypeLits.Text "Nav (<nav>)"
   TagErrorMessage NoScript               = 'TypeLits.Text "NoScript (<noscript>)"
   TagErrorMessage Object                 = 'TypeLits.Text "Object (<object>)"
