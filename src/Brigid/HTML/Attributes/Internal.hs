@@ -328,7 +328,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_Translate
-    :: Bool -- Note: NOT a boolean attribute; prints string true/false
+    :: Types.YesNo
     -> Attribute tag
 
   Attr_WritingSuggestions

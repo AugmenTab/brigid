@@ -632,7 +632,7 @@ renderAttribute attr =
         $ Escape.attributeText title
 
     Attr_Translate translate ->
-      Just . buildAttribute "translate" $ Render.enumBoolToBytes translate
+      Just . buildAttribute "translate" $ Types.yesNoToBytes translate
 
     Attr_WritingSuggestions writingsuggestions ->
       Just

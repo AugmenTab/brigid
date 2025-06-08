@@ -84,7 +84,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.OnOff (OnOff, onOffToBytes, onOffToText)
+import Brigid.HTML.Types.Boolean (OnOff, onOffToBytes, onOffToText)
 
 newtype AutocompleteToken =
   AutocompleteToken (Shrubbery.Union AutocompleteTokenTypes)

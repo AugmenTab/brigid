@@ -160,7 +160,7 @@ unsafeTabIndex = Attr_TabIndex
 title :: T.Text -> Attribute tag
 title = Attr_Title
 
-translate :: Bool -> Attribute tag
+translate :: Types.YesNo -> Attribute tag
 translate = Attr_Translate
 
 -- | At the time of writing, this attribute is not available on Firefox - see:

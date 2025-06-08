@@ -16,7 +16,7 @@ import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
 import Brigid.HTML.Internal.TagOperations (Add, Elem, Remove)
 import Brigid.HTML.Types.AutocompleteToken qualified as ACT
-import Brigid.HTML.Types.OnOff (OnOff (..))
+import Brigid.HTML.Types.Boolean (OnOff (..))
 
 type ValidAutocomplete token tag =
   AlertToken (Elem tag (ValidTagsFor token)) token tag ~ 'True

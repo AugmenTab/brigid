@@ -6,6 +6,7 @@ import Brigid.HTML.Types.Action as Export
 import Brigid.HTML.Types.As as Export
 import Brigid.HTML.Types.Autocapitalize as Export
 import Brigid.HTML.Types.AutocompleteToken as Export
+import Brigid.HTML.Types.Boolean as Export
 import Brigid.HTML.Types.CaptureMethod as Export
 import Brigid.HTML.Types.Changed as Export
 import Brigid.HTML.Types.Class as Export
@@ -43,7 +44,6 @@ import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Number as Export
 import Brigid.HTML.Types.NumberingType as Export
 import Brigid.HTML.Types.Once as Export
-import Brigid.HTML.Types.OnOff as Export
 import Brigid.HTML.Types.Part as Export
 import Brigid.HTML.Types.Phone as Export
 import Brigid.HTML.Types.PopoverState as Export
