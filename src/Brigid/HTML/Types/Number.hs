@@ -12,14 +12,13 @@ module Brigid.HTML.Types.Number
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
-import Data.Word (Word16)
 import Data.Scientific qualified as Sci
 import Data.Text qualified as T
 
 data Number =
   Number
     { number :: Sci.Scientific
-    , decimalPlaces :: Word16
+    , decimalPlaces :: Int
     }
 
 instance Eq Number where
@@ -38,21 +37,21 @@ numberFromIntegral n =
     , decimalPlaces = 0
     }
 
-numberFromFractional :: RealFloat n => n -> Word16 -> Number
+numberFromFractional :: RealFloat n => n -> Int -> Number
 numberFromFractional n d =
   Number
     { number = Sci.fromFloatDigits n
     , decimalPlaces = d
     }
 
-numberFromReal :: Real n => n -> Word16 -> Number
+numberFromReal :: Real n => n -> Int -> Number
 numberFromReal n d =
   Number
     { number = either fst fst . Sci.fromRationalRepetend Nothing $ toRational n
     , decimalPlaces = d
     }
 
-numberFromScientific :: Sci.Scientific -> Word16 -> Number
+numberFromScientific :: Sci.Scientific -> Int -> Number
 numberFromScientific = Number
 
 numberToBytes :: Number -> LBS.ByteString
@@ -64,7 +63,7 @@ numberToText = T.pack . formatNumber
 formatNumber :: Number -> String
 formatNumber num =
   let s = number num
-      e = fromIntegral $ decimalPlaces num
+      e = decimalPlaces num
    in if Sci.isInteger s
          then Sci.formatScientific Sci.Fixed (Just e) s
          else

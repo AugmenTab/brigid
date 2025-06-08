@@ -1,371 +1,385 @@
 module Generation.Element
-  ( Element (..)
-  , ElementType (..)
-  , elementGenerator
+  ( elementNodeType
+  , elementValidAttrs
+  , elementValidChildren
+  , elementWeight
+  , branchElements
+  , leafElements
+  , voidElements
+  , withGlobalAttrs
   ) where
 
-import Control.Monad (replicateM, void, when)
-import Control.Monad.Reader (ask, liftIO, runReaderT)
-import Control.Monad.Trans.Class (lift)
-import Data.IORef (atomicModifyIORef', newIORef, readIORef)
-import Data.List.NonEmpty (NonEmpty((:|)))
-import Data.List.NonEmpty qualified as NEL
-import Data.NonEmptyText qualified as NET
-import Hedgehog (GenT)
+import Data.Containers.ListUtils (nubOrdOn)
+import Data.Set (Set)
+import Data.Set qualified as Set
+import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
-import Prelude hiding (div, head, map, span)
 
 import Generation.Attribute qualified as A
-import Generation.Types (GenM, GenContext (..), consumeNode, consumeNodes)
+import Generation.Types (ElementType (..), GeneratorParams (..), NodeType (..), maxRange, minRange)
 
-data Element =
-  Element
-    { elementType :: ElementType
-    , elementAttrs :: [A.Attribute]
-    , elementChildren :: Either NET.NonEmptyText [Element]
-    }
+elementNodeType :: ElementType -> NodeType
+elementNodeType element =
+  if Set.member element voidElements
+    then VoidNode
+    else
+      if Set.member element leafElements
+        then LeafNode
+        else BranchNode
 
-instance Show Element where
-  show e =
-    unwords
-      [ show (elementType e)
-      , show (elementAttrs e)
-      , either show show (elementChildren e)
-      ]
-
--- This is effectively just `Brigid.HTML.Elements.TagType`, but we don't want
--- to expose that ADT, and this has fewer constructors because we don't
--- particularly care to generate the CustomHTML constructor of that type.
---
-data ElementType
-  = Comment
-  | Text
-  | Anchor
-  | Abbreviation
-  | ContactAddress
-  | Area
-  | Article
-  | Aside
-  | Audio
-  | BringAttentionTo
-  | Base
-  | BidirectionalIsolation
-  | BidirectionalOverride
-  | Blockquote
-  | Body
-  | LineBreak
-  | Button
-  | Canvas
-  | TableCaption
-  | Citation
-  | Code
-  | TableColumn
-  | TableColumnGroup
-  | Data
-  | DataList
-  | DescriptionDetails
-  | DeletedText
-  | Details
-  | Definition
-  | Dialog
-  | Division
-  | DescriptionList
-  | DescriptionTerm
-  | Emphasis
-  | Embed
-  | Fieldset
-  | FigureCaption
-  | Figure
-  | Footer
-  | Form
-  | H1
-  | H2
-  | H3
-  | H4
-  | H5
-  | H6
-  | Head
-  | Header
-  | HeadingGroup
-  | HorizontalRule
-  | Html
-  | IdiomaticText
-  | IFrame
-  | Image
-  | Input
-  | InsertedText
-  | KeyboardInput
-  | Label
-  | Legend
-  | ListItem
-  | Link
-  | Main
-  | Map
-  | Mark
-  | Menu
-  | Meta
-  | Meter
-  | Nav
-  | NoScript
-  | Object
-  | OrderedList
-  | OptionGroup
-  | Option
-  | Output
-  | Paragraph
-  | Picture
-  | PreformattedText
-  | Progress
-  | Quotation
-  | RubyParenthesis
-  | RubyText
-  | Ruby
-  | Strikethrough
-  | Sample
-  | Script
-  | Search
-  | Section
-  | Select
-  | Slot
-  | SideComment
-  | Source
-  | Span
-  | Strong
-  | Style
-  | Subscript
-  | Summary
-  | Superscript
-  | Table
-  | TableBody
-  | TableDataCell
-  | ContentTemplate
-  | TextArea
-  | TableFoot
-  | TableHeader
-  | TableHead
-  | Time
-  | Title
-  | TableRow
-  | Track
-  | Underline
-  | UnorderedList
-  | Variable
-  | Video
-  | WordBreakOpportunity
-  deriving Show
-
-elementGenerator :: ElementType -> GenM Element
-elementGenerator element =
+elementValidAttrs :: MonadGen m => ElementType -> [m A.Attribute]
+elementValidAttrs element =
   case element of
-    Comment -> comment
-    Text -> text
-    Anchor -> a
-    Abbreviation -> abbr
-    ContactAddress -> address
-    Area -> area
-    Article -> article
-    Aside -> aside
-    Audio -> audio
-    BringAttentionTo -> b
-    Base -> base
-    BidirectionalIsolation -> bdi
-    BidirectionalOverride -> bdo
-    Blockquote -> blockquote
-    Body -> body
-    LineBreak -> br
-    Button -> button
-    Canvas -> canvas
-    TableCaption -> caption
-    Citation -> cite
-    Code -> code
-    TableColumn -> col
-    TableColumnGroup -> colgroup
-    Data -> data_
-    DataList -> datalist
-    DescriptionDetails -> dd
-    DeletedText -> del
-    Details -> details
-    Definition -> dfn
-    Dialog -> dialog
-    Division -> div
-    DescriptionList -> dl
-    DescriptionTerm -> dt
-    Emphasis -> em
-    Embed -> embed
-    Fieldset -> fieldset
-    FigureCaption -> figcaption
-    Figure -> figure
-    Footer -> footer
-    Form -> form
-    H1 -> h1
-    H2 -> h2
-    H3 -> h3
-    H4 -> h4
-    H5 -> h5
-    H6 -> h6
-    Head -> head
-    Header -> header
-    HeadingGroup -> hgroup
-    HorizontalRule -> hr
-    Html -> html
-    IdiomaticText -> i
-    IFrame -> iframe
-    Image -> img
-    Input -> input
-    InsertedText -> ins
-    KeyboardInput -> kbd
-    Label -> label
-    Legend -> legend
-    ListItem -> li
-    Link -> link
-    Main -> main
-    Map -> map
-    Mark -> mark
-    Menu -> menu
-    Meta -> meta
-    Meter -> meter
-    Nav -> nav
-    NoScript -> noscript
-    Object -> object
-    OrderedList -> ol
-    OptionGroup -> optgroup
-    Option -> option
-    Output -> output
-    Paragraph -> p
-    Picture -> picture
-    PreformattedText -> pre
-    Progress -> progress
-    Quotation -> q
-    RubyParenthesis -> rp
-    RubyText -> rt
-    Ruby -> ruby
-    Strikethrough -> s
-    Sample -> samp
-    Script -> script
-    Search -> search
-    Section -> section
-    Select -> select
-    Slot -> slot
-    SideComment -> small
-    Source -> source
-    Span -> span
-    Strong -> strong
-    Style -> style
-    Subscript -> sub
-    Summary -> summary
-    Superscript -> sup
-    Table -> table
-    TableBody -> tbody
-    TableDataCell -> td
-    ContentTemplate -> template
-    TextArea -> textarea
-    TableFoot -> tfoot
-    TableHeader -> th
-    TableHead -> thead
-    Time -> time
-    Title -> title
-    TableRow -> tr
-    Track -> track
-    Underline -> u
-    UnorderedList -> ul
-    Variable -> var
-    Video -> video
-    WordBreakOpportunity -> wbr
+    Comment -> []
+    Anchor -> anchorAttrs
+    Abbreviation -> []
+    ContactAddress -> []
+    Area -> areaAttrs
+    Article -> []
+    Aside -> []
+    Audio -> audioAttrs
+    BringAttentionTo -> []
+    Base -> baseAttrs
+    BidirectionalIsolation -> []
+    BidirectionalOverride -> []
+    Blockquote -> [ A.cite ]
+    Body -> []
+    LineBreak -> []
+    Button -> buttonAttrs
+    Canvas -> canvasAttrs
+    TableCaption -> []
+    Citation -> []
+    Code -> []
+    TableColumn -> [ A.span ]
+    TableColumnGroup -> [ A.span ]
+    Data -> [ A.data_ ]
+    DataList -> []
+    DescriptionDetails -> []
+    DeletedText -> deletedTextAttrs
+    Details -> [ A.open ]
+    Definition -> []
+    Dialog -> [ A.open ]
+    Division -> []
+    DescriptionList -> []
+    DescriptionTerm -> []
+    Emphasis -> []
+    Embed -> embedAttrs
+    Fieldset -> fieldsetAttrs
+    FigureCaption -> []
+    Figure -> []
+    Footer -> []
+    Form -> formAttrs
+    H1 -> []
+    H2 -> []
+    H3 -> []
+    H4 -> []
+    H5 -> []
+    H6 -> []
+    Head -> []
+    Header -> []
+    HeadingGroup -> []
+    HorizontalRule -> []
+    Html -> []
+    IdiomaticText -> []
+    IFrame -> iFrameAttrs
+    Image -> imageAttrs
+    Input -> inputAttrs
+    InsertedText -> insertedTextAttrs
+    KeyboardInput -> []
+    Label -> [ A.forLabel ]
+    Legend -> []
+    ListItem -> [ A.value ]
+    Link -> linkAttrs
+    Main -> []
+    Map -> [ A.name ]
+    Mark -> []
+    Menu -> []
+    Meta -> metaAttrs
+    Meter -> meterAttrs
+    Nav -> []
+    NoScript -> []
+    Object -> objectAttrs
+    OrderedList -> orderedListAttrs
+    OptionGroup -> optionGroupAttrs
+    Option -> optionAttrs
+    Output -> outputAttrs
+    Paragraph -> []
+    Picture -> []
+    PreformattedText -> []
+    Progress -> progressAttrs
+    Quotation -> [ A.cite ]
+    RubyParenthesis -> []
+    RubyText -> []
+    Ruby -> []
+    Strikethrough -> []
+    Sample -> []
+    Script -> scriptAttrs
+    Search -> []
+    Section -> []
+    Select -> selectAttrs
+    Slot -> [ A.name ]
+    SideComment -> []
+    Source -> sourceAttrs
+    Span -> []
+    Strong -> []
+    Style -> styleAttrs
+    Subscript -> []
+    Summary -> []
+    Superscript -> []
+    Table -> []
+    TableBody -> []
+    TableDataCell -> tableDataCellAttrs
+    ContentTemplate -> []
+    TextArea -> textAreaAttrs
+    TableFoot -> []
+    TableHeader -> tableHeaderAttrs
+    TableHead -> []
+    Time -> [ A.datetime ]
+    Title -> []
+    TableRow -> []
+    Track -> trackAttrs
+    Underline -> []
+    UnorderedList -> []
+    Variable -> []
+    Video -> videoAttrs
+    WordBreakOpportunity -> []
 
-mkElement :: ElementType
-          -> [GenT IO A.Attribute]
-          -> Maybe (NonEmpty (GenM Element))
-          -> GenM Element
-mkElement element attrs mbContent = do
-  ctx <- ask
+elementValidChildren :: ElementType -> Set ElementType
+elementValidChildren element =
+  case element of
+    Comment -> Set.empty
+    Anchor -> Set.empty
+    Abbreviation -> abbreviationContent
+    ContactAddress -> contactAddressContent
+    Area -> Set.empty
+    Article -> articleContent
+    Aside -> asideContent
+    Audio -> audioContent
+    BringAttentionTo -> bringAttentionToContent
+    Base -> Set.empty
+    BidirectionalIsolation -> bidirectionalIsolationContent
+    BidirectionalOverride -> bidirectionalOverrideContent
+    Blockquote -> blockquoteContent
+    Body -> bodyContent
+    LineBreak -> Set.empty
+    Button -> buttonContent
+    Canvas -> Set.empty
+    TableCaption -> tableCaptionContent
+    Citation -> citationContent
+    Code -> codeContent
+    TableColumn -> tableColumnGroupContent
+    TableColumnGroup -> tableColumnGroupContent
+    Data -> dataContent
+    DataList -> dataListContent
+    DescriptionDetails -> descriptionDetailsContent
+    DeletedText -> Set.empty
+    Details -> detailsContent
+    Definition -> definitionContent
+    Dialog -> dialogContent
+    Division -> divisionContent
+    DescriptionList -> descriptionListContent
+    DescriptionTerm -> descriptionTermContent
+    Emphasis -> emphasisContent
+    Embed -> Set.empty
+    Fieldset -> fieldsetContent
+    FigureCaption -> figureCaptionContent
+    Figure -> figureContent
+    Footer -> footerContent
+    Form -> formContent
+    H1 -> h1Content
+    H2 -> h2Content
+    H3 -> h3Content
+    H4 -> h4Content
+    H5 -> h5Content
+    H6 -> h6Content
+    Head -> headContent
+    Header -> headerContent
+    HeadingGroup -> headingGroupContent
+    HorizontalRule -> Set.empty
+    Html -> Set.fromList [ Head, Body ]
+    IdiomaticText -> idiomaticTextContent
+    IFrame -> Set.empty
+    Image -> Set.empty
+    Input -> Set.empty
+    InsertedText -> Set.empty
+    KeyboardInput -> keyboardInputContent
+    Label -> labelContent
+    Legend -> legendContent
+    ListItem -> listItemContent
+    Link -> Set.empty
+    Main -> mainContent
+    Map -> mapContent
+    Mark -> markContent
+    Menu -> menuContent
+    Meta -> Set.empty
+    Meter -> meterContent
+    Nav -> navContent
+    NoScript -> Set.empty
+    Object -> Set.empty
+    OrderedList -> orderedListContent
+    OptionGroup -> optionGroupContent
+    Option -> Set.empty
+    Output -> outputContent
+    Paragraph -> paragraphContent
+    Picture -> pictureContent
+    PreformattedText -> preformattedTextContent
+    Progress -> progressContent
+    Quotation -> quotationContent
+    RubyParenthesis -> Set.empty
+    RubyText -> rubyTextContent
+    Ruby -> rubyContent
+    Strikethrough -> strikethroughContent
+    Sample -> sampleContent
+    Script -> Set.empty
+    Search -> searchContent
+    Section -> sectionContent
+    Select -> selectContent
+    Slot -> Set.empty
+    SideComment -> sideCommentContent
+    Source -> Set.empty
+    Span -> spanContent
+    Strong -> strongContent
+    Style -> Set.empty
+    Subscript -> subscriptContent
+    Summary -> summaryContent
+    Superscript -> superscriptContent
+    Table -> tableContent
+    TableBody -> tableBodyContent
+    TableDataCell -> tableDataCellContent
+    ContentTemplate -> contentTemplateContent
+    TextArea -> Set.empty
+    TableFoot -> tableFootContent
+    TableHeader -> tableHeaderContent
+    TableHead -> tableHeadContent
+    Time -> timeContent
+    Title -> Set.empty
+    TableRow -> tableRowContent
+    Track -> Set.empty
+    Underline -> underlineContent
+    UnorderedList -> unorderedListContent
+    Variable -> variableContent
+    Video -> videoContent
+    WordBreakOpportunity -> Set.empty
 
-  case mbContent of
-    Nothing ->
-      emptyElement
-        <$> pure element
-        <*> withGlobalAttrs attrs
+elementWeight :: ElementType -> Maybe Int
+elementWeight et =
+  case et of
+    Comment -> Nothing
+    Anchor -> Just 10
+    Abbreviation -> Just 1
+    ContactAddress -> Just 1
+    Area -> Just 1
+    Article -> Just 8
+    Aside -> Just 1
+    Audio -> Just 2
+    BringAttentionTo -> Just 1
+    Base -> Just 1
+    BidirectionalIsolation -> Just 1
+    BidirectionalOverride -> Just 1
+    Blockquote -> Just 3
+    Body -> Nothing
+    LineBreak -> Just 5
+    Button -> Just 5
+    Canvas -> Just 2
+    TableCaption -> Just 1
+    Citation -> Just 1
+    Code -> Just 4
+    TableColumn -> Just 1
+    TableColumnGroup -> Just 1
+    Data -> Just 1
+    DataList -> Just 1
+    DescriptionDetails -> Just 5
+    DeletedText -> Just 1
+    Details -> Just 1
+    Definition -> Just 1
+    Dialog -> Just 1
+    Division -> Just 25
+    DescriptionList -> Just 4
+    DescriptionTerm -> Just 5
+    Emphasis -> Just 6
+    Embed -> Just 1
+    Fieldset -> Just 3
+    FigureCaption -> Just 2
+    Figure -> Just 3
+    Footer -> Just 6
+    Form -> Just 5
+    H1 -> Just 5
+    H2 -> Just 5
+    H3 -> Just 5
+    H4 -> Just 3
+    H5 -> Just 3
+    H6 -> Just 3
+    Head -> Nothing
+    Header -> Just 6
+    HeadingGroup -> Just 1
+    HorizontalRule -> Just 4
+    Html -> Nothing
+    IdiomaticText -> Just 1
+    IFrame -> Just 1
+    Image -> Just 7
+    Input -> Just 8
+    InsertedText -> Just 1
+    KeyboardInput -> Just 1
+    Label -> Just 6
+    Legend -> Just 2
+    ListItem -> Just 20
+    Link -> Just 1
+    Main -> Just 3
+    Map -> Just 1
+    Mark -> Just 1
+    Menu -> Just 1
+    Meta -> Just 1
+    Meter -> Just 1
+    Nav -> Just 5
+    NoScript -> Just 1
+    Object -> Just 1
+    OrderedList -> Just 8
+    OptionGroup -> Just 1
+    Option -> Just 20
+    Output -> Just 1
+    Paragraph -> Just 15
+    Picture -> Just 1
+    PreformattedText -> Just 3
+    Progress -> Just 1
+    Quotation -> Just 1
+    RubyParenthesis -> Just 1
+    RubyText -> Just 1
+    Ruby -> Just 1
+    Strikethrough -> Just 1
+    Sample -> Just 1
+    Script -> Just 1
+    Search -> Just 1
+    Section -> Just 10
+    Select -> Just 4
+    Slot -> Just 1
+    SideComment -> Just 1
+    Source -> Just 3
+    Span -> Just 12
+    Strong -> Just 6
+    Style -> Just 1
+    Subscript -> Just 1
+    Summary -> Just 1
+    Superscript -> Just 1
+    Table -> Just 4
+    TableBody -> Just 3
+    TableDataCell -> Just 12
+    ContentTemplate -> Just 1
+    TextArea -> Just 4
+    TableFoot -> Just 1
+    TableHeader -> Just 4
+    TableHead -> Just 2
+    Time -> Just 1
+    Title -> Just 1
+    TableRow -> Just 10
+    Track -> Just 1
+    Underline -> Just 1
+    UnorderedList -> Just 12
+    Variable -> Just 1
+    Video -> Just 2
+    WordBreakOpportunity -> Just 1
 
-    Just elementContent ->
-      if currentDepth ctx >= maxDepth ctx
-        then do
-          ok <- consumeNode
-          when (not ok) $ lift Gen.discard
-
-          emptyElement
-            <$> pure element
-            <*> withGlobalAttrs attrs
-
-        else do
-          n <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
-          selectedChildren <-
-            traverse trySubtree
-              =<< lift (replicateM n . Gen.element $ NEL.toList elementContent)
-
-          case sequence selectedChildren of
-            Just children -> do
-              ok <- consumeNode
-              when (not ok) $ lift Gen.discard
-
-              Element
-                <$> pure element
-                <*> withGlobalAttrs attrs
-                <*> pure (Right children)
-
-            Nothing ->
-              lift Gen.discard
-
-trySubtree :: GenM Element -> GenM (Maybe Element)
-trySubtree gen = do
-  ctx <- ask
-  orig <- liftIO . readIORef $ remainingNodes ctx
-  tempRef <- liftIO $ newIORef orig
-
-  let
-    sandbox =
-      ctx
-        { remainingNodes = tempRef
-        }
-
-  result <- lift . Gen.maybe $ runReaderT gen sandbox
-
-  case result of
-    Just val -> do
-      new <- liftIO $ readIORef tempRef
-
-      let
-        delta = orig - new
-
-      void
-        . liftIO
-        $ atomicModifyIORef' (remainingNodes ctx) (\n -> (n - delta, ()))
-
-      pure (Just val)
-
-    Nothing ->
-      pure Nothing
-
-emptyElement :: ElementType -> [A.Attribute] -> Element
-emptyElement element attrs =
-  Element
-    { elementType = element
-    , elementAttrs = attrs
-    , elementChildren = Right []
-    }
-
-comment :: GenM Element
-comment =
-  mkElement Comment [] Nothing
-
-text :: GenM Element
-text =
-  mkElement Text [] Nothing
-
-a :: GenM Element
-a =
-  mkElement Anchor anchorAttrs $ Just anchorContent
-
-anchorAttrs :: [GenT IO A.Attribute]
+anchorAttrs :: MonadGen m => [m A.Attribute]
 anchorAttrs =
   [ A.href
   , A.target
@@ -377,99 +391,83 @@ anchorAttrs =
   , A.referrerpolicy
   ]
 
-anchorContent :: NonEmpty (GenM Element)
-anchorContent = NEL.singleton text
-
-abbr :: GenM Element
-abbr =
-  mkElement Abbreviation [] $ Just abbreviationContent
-
-abbreviationContent :: NonEmpty (GenM Element)
+abbreviationContent :: Set ElementType
 abbreviationContent = phrasingContent
 
-address :: GenM Element
-address =
-  mkElement ContactAddress [] $ Just contactAddressContent
-
-contactAddressContent :: NonEmpty (GenM Element)
+contactAddressContent :: Set ElementType
 contactAddressContent =
-  text
-    :| [ comment
-       , a
-       , abbr
-       , audio
-       , b
-       , bdi
-       , bdo
-       , blockquote
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , em
-       , embed
-       , fieldset
-       , figure
-       , form
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , main
-       , map
-       , mark
-       , menu
-       , meter
-       , noscript
-       , object
-       , ol
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , search
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , table
-       , template
-       , textarea
-       , time
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , Emphasis
+    , Embed
+    , Fieldset
+    , Figure
+    , Form
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , NoScript
+    , Object
+    , OrderedList
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , Table
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-area :: GenM Element
-area =
-  mkElement Area areaAttrs Nothing
-
-areaAttrs :: [GenT IO A.Attribute]
+areaAttrs :: MonadGen m => [m A.Attribute]
 areaAttrs =
   [ A.alt
   , A.coords
@@ -482,25 +480,13 @@ areaAttrs =
   , A.referrerpolicy
   ]
 
-article :: GenM Element
-article =
-  mkElement Article [] $ Just articleContent
-
-articleContent :: NonEmpty (GenM Element)
+articleContent :: Set ElementType
 articleContent = flowContent
 
-aside :: GenM Element
-aside =
-  mkElement Aside [] $ Just asideContent
-
-asideContent :: NonEmpty (GenM Element)
+asideContent :: Set ElementType
 asideContent = flowContent
 
-audio :: GenM Element
-audio =
-  mkElement Audio audioAttrs $ Just audioContent
-
-audioAttrs :: [GenT IO A.Attribute]
+audioAttrs :: MonadGen m => [m A.Attribute]
 audioAttrs =
   [ A.src
   , A.preload
@@ -512,69 +498,31 @@ audioAttrs =
   , A.controlslist
   ]
 
-audioContent :: NonEmpty (GenM Element)
+audioContent :: Set ElementType
 audioContent = audioVideoContent
 
-b :: GenM Element
-b =
-  mkElement BringAttentionTo [] $ Just bringAttentionToContent
-
-bringAttentionToContent :: NonEmpty (GenM Element)
+bringAttentionToContent :: Set ElementType
 bringAttentionToContent = phrasingContent
 
-base :: GenM Element
-base =
-  mkElement Base baseAttrs Nothing
-
-baseAttrs :: [GenT IO A.Attribute]
+baseAttrs :: MonadGen m => [m A.Attribute]
 baseAttrs =
   [ A.href
   , A.target
   ]
 
-bdi :: GenM Element
-bdi =
-  mkElement
-    BidirectionalIsolation
-    []
-    (Just bidirectionalIsolationContent)
-
-bidirectionalIsolationContent :: NonEmpty (GenM Element)
+bidirectionalIsolationContent :: Set ElementType
 bidirectionalIsolationContent = phrasingContent
 
-bdo :: GenM Element
-bdo =
-  mkElement
-    BidirectionalOverride
-    []
-    (Just bidirectionalOverrideContent)
-
-bidirectionalOverrideContent :: NonEmpty (GenM Element)
+bidirectionalOverrideContent :: Set ElementType
 bidirectionalOverrideContent = phrasingContent
 
-blockquote :: GenM Element
-blockquote =
-  mkElement Blockquote [A.cite] $ Just blockquoteContent
-
-blockquoteContent :: NonEmpty (GenM Element)
+blockquoteContent :: Set ElementType
 blockquoteContent = flowContent
 
-body :: GenM Element
-body =
-  mkElement Body [] $ Just bodyContent
-
-bodyContent :: NonEmpty (GenM Element)
+bodyContent :: Set ElementType
 bodyContent = flowContent
 
-br :: GenM Element
-br =
-  mkElement LineBreak [] Nothing
-
-button :: GenM Element
-button =
-  mkElement Button buttonAttrs $ Just buttonContent
-
-buttonAttrs :: [GenT IO A.Attribute]
+buttonAttrs :: MonadGen m => [m A.Attribute]
 buttonAttrs =
   [ A.autofocus
   , A.disabled
@@ -591,315 +539,232 @@ buttonAttrs =
   , A.popovertargetaction
   ]
 
-buttonContent :: NonEmpty (GenM Element)
+buttonContent :: Set ElementType
 buttonContent =
-  text
-    :| [ comment
-       , abbr
-       , area
-       , audio
-       , b
-       , bdi
-       , bdo
-       , br
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , dfn
-       , em
-       , i
-       , img
-       , kbd
-       , mark
-       , meter
-       , noscript
-       , object
-       , output
-       , picture
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , template
-       , time
-       , u
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Abbreviation
+    , Area
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , LineBreak
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , Definition
+    , Emphasis
+    , IdiomaticText
+    , Image
+    , KeyboardInput
+    , Mark
+    , Meter
+    , NoScript
+    , Object
+    , Output
+    , Picture
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , ContentTemplate
+    , Time
+    , Underline
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-canvas :: GenM Element
-canvas =
-  mkElement Canvas canvasAttrs $ Just canvasContent
-
-canvasAttrs :: [GenT IO A.Attribute]
+canvasAttrs :: MonadGen m => [m A.Attribute]
 canvasAttrs =
   [ A.height
   , A.width
   ]
 
-canvasContent :: NonEmpty (GenM Element)
-canvasContent = NEL.singleton text
-
-caption :: GenM Element
-caption =
-  mkElement TableCaption [] $ Just tableCaptionContent
-
-tableCaptionContent :: NonEmpty (GenM Element)
+tableCaptionContent :: Set ElementType
 tableCaptionContent = flowContent
 
-cite :: GenM Element
-cite =
-  mkElement Citation [] $ Just citationContent
-
-citationContent :: NonEmpty (GenM Element)
+citationContent :: Set ElementType
 citationContent = phrasingContent
 
-code :: GenM Element
-code =
-  mkElement Code [] $ Just codeContent
-
-codeContent :: NonEmpty (GenM Element)
+codeContent :: Set ElementType
 codeContent = phrasingContent
 
-col :: GenM Element
-col =
-  mkElement TableColumn [A.span] Nothing
-
-colgroup :: GenM Element
-colgroup =
-  mkElement TableColumnGroup [A.span] $ Just tableColumnGroupContent
-
-tableColumnGroupContent :: NonEmpty (GenM Element)
+tableColumnGroupContent :: Set ElementType
 tableColumnGroupContent =
-  comment :| [ col ]
+  Set.singleton TableColumn
 
-data_ :: GenM Element
-data_ =
-  mkElement Data [A.data_] $ Just dataContent
-
-dataContent :: NonEmpty (GenM Element)
+dataContent :: Set ElementType
 dataContent = phrasingContent
 
-datalist :: GenM Element
-datalist =
-  mkElement DataList [] $ Just dataListContent
-
-dataListContent :: NonEmpty (GenM Element)
+dataListContent :: Set ElementType
 dataListContent =
-  NEL.cons option phrasingContent
+  Set.insert Option phrasingContent
 
-dd :: GenM Element
-dd =
-  mkElement DescriptionDetails [] $ Just descriptionDetailsContent
-
-descriptionDetailsContent :: NonEmpty (GenM Element)
+descriptionDetailsContent :: Set ElementType
 descriptionDetailsContent = flowContent
 
-del :: GenM Element
-del =
-  mkElement DeletedText deletedTextAttrs $ Just deletedTextContent
-
-deletedTextAttrs :: [GenT IO A.Attribute]
+deletedTextAttrs :: MonadGen m => [m A.Attribute]
 deletedTextAttrs =
   [ A.cite
   , A.datetime
   ]
 
-deletedTextContent :: NonEmpty (GenM Element)
-deletedTextContent = NEL.singleton text
-
-details :: GenM Element
-details =
-  mkElement Details [A.open] $ Just detailsContent
-
-detailsContent :: NonEmpty (GenM Element)
+detailsContent :: Set ElementType
 detailsContent =
-  NEL.cons summary flowContent
+  Set.insert Summary flowContent
 
-dfn :: GenM Element
-dfn =
-  mkElement Definition [] $ Just definitionContent
-
-definitionContent :: NonEmpty (GenM Element)
+definitionContent :: Set ElementType
 definitionContent =
-  text
-    :| [ comment
-       , abbr
-       , area
-       , audio
-       , b
-       , bdi
-       , bdo
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , em
-       , embed
-       , i
-       , iframe
-       , img
-       , input
-       , kbd
-       , label
-       , mark
-       , meter
-       , noscript
-       , object
-       , output
-       , picture
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , template
-       , textarea
-       , time
-       , u
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Abbreviation
+    , Area
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , Emphasis
+    , Embed
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , KeyboardInput
+    , Label
+    , Mark
+    , Meter
+    , NoScript
+    , Object
+    , Output
+    , Picture
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-dialog :: GenM Element
-dialog =
-  mkElement Dialog [A.open] $ Just dialogContent
-
-dialogContent :: NonEmpty (GenM Element)
+dialogContent :: Set ElementType
 dialogContent = flowContent
 
-div :: GenM Element
-div =
-  mkElement Division [] $ Just divisionContent
-
-divisionContent :: NonEmpty (GenM Element)
+divisionContent :: Set ElementType
 divisionContent = flowContent
 
-dl :: GenM Element
-dl =
-  mkElement DescriptionList [] $ Just descriptionListContent
-
-descriptionListContent :: NonEmpty (GenM Element)
+descriptionListContent :: Set ElementType
 descriptionListContent =
-  NEL.cons dt
-    . NEL.cons dd
-    . NEL.cons div
-    $ scriptSupportingContent
+  Set.fromList [ DescriptionTerm, DescriptionDetails, Division ]
+    <> scriptSupportingContent
 
-dt :: GenM Element
-dt =
-  mkElement DescriptionTerm [] $ Just descriptionTermContent
-
-descriptionTermContent :: NonEmpty (GenM Element)
+descriptionTermContent :: Set ElementType
 descriptionTermContent =
-  text
-    :| [ comment
-       , a
-       , abbr
-       , address
-       , audio
-       , b
-       , bdi
-       , bdo
-       , blockquote
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , em
-       , embed
-       , fieldset
-       , figure
-       , form
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , main
-       , map
-       , mark
-       , menu
-       , meter
-       , noscript
-       , object
-       , ol
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , search
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , table
-       , template
-       , textarea
-       , time
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , ContactAddress
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , Emphasis
+    , Embed
+    , Fieldset
+    , Figure
+    , Form
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , NoScript
+    , Object
+    , OrderedList
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , Table
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-em :: GenM Element
-em =
-  mkElement Emphasis [] $ Just emphasisContent
-
-emphasisContent :: NonEmpty (GenM Element)
+emphasisContent :: Set ElementType
 emphasisContent = phrasingContent
 
-embed :: GenM Element
-embed =
-  mkElement Embed embedAttrs Nothing
-
-embedAttrs :: [GenT IO A.Attribute]
+embedAttrs :: MonadGen m => [m A.Attribute]
 embedAttrs =
   [ A.src
   , A.type_
@@ -907,48 +772,28 @@ embedAttrs =
   , A.height
   ]
 
-fieldset :: GenM Element
-fieldset =
-  mkElement Fieldset fieldsetAttrs $ Just fieldsetContent
-
-fieldsetAttrs :: [GenT IO A.Attribute]
+fieldsetAttrs :: MonadGen m => [m A.Attribute]
 fieldsetAttrs =
   [ A.disabled
   , A.form
   , A.name
   ]
 
-fieldsetContent :: NonEmpty (GenM Element)
+fieldsetContent :: Set ElementType
 fieldsetContent =
-  NEL.cons legend flowContent
+  Set.insert Legend flowContent
 
-figcaption :: GenM Element
-figcaption =
-  mkElement FigureCaption [] $ Just figureCaptionContent
-
-figureCaptionContent :: NonEmpty (GenM Element)
+figureCaptionContent :: Set ElementType
 figureCaptionContent = flowContent
 
-figure :: GenM Element
-figure =
-  mkElement Figure [] $ Just figureContent
-
-figureContent :: NonEmpty (GenM Element)
+figureContent :: Set ElementType
 figureContent =
-  NEL.cons figcaption flowContent
+  Set.insert FigureCaption flowContent
 
-footer :: GenM Element
-footer =
-  mkElement Footer [] $ Just footerContent
-
-footerContent :: NonEmpty (GenM Element)
+footerContent :: Set ElementType
 footerContent = marginalContent
 
-form :: GenM Element
-form =
-  mkElement Form formAttrs $ Just formContent
-
-formAttrs :: [GenT IO A.Attribute]
+formAttrs :: MonadGen m => [m A.Attribute]
 formAttrs =
   [ A.acceptcharset
   , A.autocomplete
@@ -961,214 +806,133 @@ formAttrs =
   , A.target
   ]
 
-formContent :: NonEmpty (GenM Element)
+formContent :: Set ElementType
 formContent =
-  text
-    :| [ comment
-       , a
-       , abbr
-       , address
-       , article
-       , aside
-       , audio
-       , b
-       , bdi
-       , bdo
-       , blockquote
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , em
-       , embed
-       , fieldset
-       , figure
-       , footer
-       , h1
-       , h2
-       , h3
-       , h4
-       , h5
-       , h6
-       , header
-       , hgroup
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , main
-       , map
-       , mark
-       , menu
-       , meter
-       , nav
-       , noscript
-       , object
-       , ol
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , search
-       , script
-       , section
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , table
-       , template
-       , textarea
-       , time
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , ContactAddress
+    , Article
+    , Aside
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , Emphasis
+    , Embed
+    , Fieldset
+    , Figure
+    , Footer
+    , H1
+    , H2
+    , H3
+    , H4
+    , H5
+    , H6
+    , Header
+    , HeadingGroup
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , Nav
+    , NoScript
+    , Object
+    , OrderedList
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Script
+    , Section
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , Table
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-h1 :: GenM Element
-h1 =
-  mkElement H1 [] $ Just h1Content
-
-h1Content :: NonEmpty (GenM Element)
+h1Content :: Set ElementType
 h1Content = phrasingContent
 
-h2 :: GenM Element
-h2 =
-  mkElement H2 [] $ Just h2Content
-
-h2Content :: NonEmpty (GenM Element)
+h2Content :: Set ElementType
 h2Content = phrasingContent
 
-h3 :: GenM Element
-h3 =
-  mkElement H3 [] $ Just h3Content
-
-h3Content :: NonEmpty (GenM Element)
+h3Content :: Set ElementType
 h3Content = phrasingContent
 
-h4 :: GenM Element
-h4 =
-  mkElement H4 [] $ Just h4Content
-
-h4Content :: NonEmpty (GenM Element)
+h4Content :: Set ElementType
 h4Content = phrasingContent
 
-h5 :: GenM Element
-h5 =
-  mkElement H5 [] $ Just h5Content
-
-h5Content :: NonEmpty (GenM Element)
+h5Content :: Set ElementType
 h5Content = phrasingContent
 
-h6 :: GenM Element
-h6 =
-  mkElement H6 [] $ Just h6Content
-
-h6Content :: NonEmpty (GenM Element)
+h6Content :: Set ElementType
 h6Content = phrasingContent
 
-head :: GenM Element
-head =
-  mkElement Head [] $ Just headContent
-
-headContent :: NonEmpty (GenM Element)
+headContent :: Set ElementType
 headContent =
-  comment
-    :| [ base
-       , link
-       , meta
-       , noscript
-       , script
-       , style
-       , title
-       ]
+  Set.fromList
+    [ Base
+    , Link
+    , Meta
+    , NoScript
+    , Script
+    , Style
+    , Title
+    ]
 
-header :: GenM Element
-header =
-  mkElement Header [] $ Just headerContent
-
-headerContent :: NonEmpty (GenM Element)
+headerContent :: Set ElementType
 headerContent = marginalContent
 
-hgroup :: GenM Element
-hgroup =
-  mkElement HeadingGroup [] $ Just headingGroupContent
-
-headingGroupContent :: NonEmpty (GenM Element)
+headingGroupContent :: Set ElementType
 headingGroupContent =
-  NEL.cons comment
-    . NEL.cons p
-    $ headings
+  Set.insert Paragraph headings
 
-hr :: GenM Element
-hr =
-  mkElement HorizontalRule [] Nothing
-
-html :: GenM Element
-html = do
-  ctx <- ask
-
-  if currentDepth ctx >= maxDepth ctx
-    then do
-      ok <- consumeNode
-      when (not ok) $ lift Gen.discard
-
-      Element
-        <$> pure Html
-        <*> withGlobalAttrs []
-        <*> pure (Right [])
-
-    else do
-      selectedChildren <- traverse trySubtree [ head, body ]
-
-      case sequence selectedChildren of
-        Just children -> do
-          ok <- consumeNode
-          when (not ok) $ lift Gen.discard
-
-          Element
-            <$> pure Html
-            <*> withGlobalAttrs []
-            <*> pure (Right children)
-
-        Nothing ->
-          lift Gen.discard
-
-i :: GenM Element
-i =
-  mkElement IdiomaticText [] $ Just idiomaticTextContent
-
-idiomaticTextContent :: NonEmpty (GenM Element)
+idiomaticTextContent :: Set ElementType
 idiomaticTextContent = phrasingContent
 
-iframe :: GenM Element
-iframe =
-  mkElement IFrame iFrameAttrs Nothing
-
-iFrameAttrs :: [GenT IO A.Attribute]
+iFrameAttrs :: MonadGen m => [m A.Attribute]
 iFrameAttrs =
   [ A.src
   , A.srcdoc
@@ -1181,11 +945,7 @@ iFrameAttrs =
   , A.referrerpolicy
   ]
 
-img :: GenM Element
-img =
-  mkElement Image imageAttrs Nothing
-
-imageAttrs :: [GenT IO A.Attribute]
+imageAttrs :: MonadGen m => [m A.Attribute]
 imageAttrs =
   [ A.alt
   , A.crossorigin
@@ -1195,18 +955,13 @@ imageAttrs =
   , A.ismap
   , A.loading
   , A.referrerpolicy
-  , A.sizes
   , A.src
   , A.srcset
   , A.width
   , A.usemap
   ]
 
-input :: GenM Element
-input =
-  mkElement Input inputAttrs Nothing
-
-inputAttrs :: [GenT IO A.Attribute]
+inputAttrs :: MonadGen m => [m A.Attribute]
 inputAttrs =
   [ A.accept
   , A.alt
@@ -1244,103 +999,75 @@ inputAttrs =
   , A.width
   ]
 
-ins :: GenM Element
-ins =
-  mkElement InsertedText insertedTextAttrs $ Just insertedTextContent
-
-insertedTextAttrs :: [GenT IO A.Attribute]
+insertedTextAttrs :: MonadGen m => [m A.Attribute]
 insertedTextAttrs =
   [ A.cite
   , A.datetime
   ]
 
-insertedTextContent :: NonEmpty (GenM Element)
-insertedTextContent = NEL.singleton text
-
-kbd :: GenM Element
-kbd =
-  mkElement KeyboardInput [] $ Just keyboardInputContent
-
-keyboardInputContent :: NonEmpty (GenM Element)
+keyboardInputContent :: Set ElementType
 keyboardInputContent = phrasingContent
 
-label :: GenM Element
-label =
-  mkElement Label [A.forLabel] $ Just labelContent
-
-labelContent :: NonEmpty (GenM Element)
+labelContent :: Set ElementType
 labelContent =
-  text
-    :| [ comment
-       , abbr
-       , area
-       , audio
-       , b
-       , bdi
-       , bdo
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , dfn
-       , em
-       , embed
-       , i
-       , iframe
-       , img
-       , input
-       , kbd
-       , mark
-       , meter
-       , noscript
-       , object
-       , output
-       , picture
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , template
-       , textarea
-       , time
-       , u
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Abbreviation
+    , Area
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , Definition
+    , Emphasis
+    , Embed
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , KeyboardInput
+    , Mark
+    , Meter
+    , NoScript
+    , Object
+    , Output
+    , Picture
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-legend :: GenM Element
-legend =
-  mkElement Legend [] $ Just legendContent
-
-legendContent :: NonEmpty (GenM Element)
+legendContent :: Set ElementType
 legendContent =
   headings <> phrasingContent
 
-li :: GenM Element
-li =
-  mkElement ListItem [A.value] $ Just listItemContent
-
-listItemContent :: NonEmpty (GenM Element)
+listItemContent :: Set ElementType
 listItemContent = flowContent
 
-link :: GenM Element
-link =
-  mkElement Link linkAttrs Nothing
-
-linkAttrs :: [GenT IO A.Attribute]
+linkAttrs :: MonadGen m => [m A.Attribute]
 linkAttrs =
   [ A.as
   , A.crossorigin
@@ -1351,72 +1078,45 @@ linkAttrs =
   , A.imagesizes
   , A.imagesrcset
   , A.integrity
-  , A.media
   , A.referrerpolicy
   , A.rel
-  , A.sizes
   , A.title
   , A.type_
   ]
 
-main :: GenM Element
-main =
-  mkElement Main [] $ Just mainContent
-
-mainContent :: NonEmpty (GenM Element)
+mainContent :: Set ElementType
 mainContent = flowContent
 
-map :: GenM Element
-map =
-  mkElement Map [A.name] $ Just mapContent
-
-mapContent :: NonEmpty (GenM Element)
+mapContent :: Set ElementType
 mapContent =
-  comment
-    :| [ a
-       , audio
-       , canvas
-       , del
-       , ins
-       , map
-       , noscript
-       , object
-       , slot
-       , video
-       ]
+  Set.fromList
+    [ Anchor
+    , Audio
+    , Canvas
+    , DeletedText
+    , InsertedText
+    , Map
+    , NoScript
+    , Object
+    , Slot
+    , Video
+    ]
 
-mark :: GenM Element
-mark =
-  mkElement Mark [] $ Just markContent
-
-markContent :: NonEmpty (GenM Element)
+markContent :: Set ElementType
 markContent = phrasingContent
 
-menu :: GenM Element
-menu =
-  mkElement Menu [] $ Just menuContent
-
-menuContent :: NonEmpty (GenM Element)
+menuContent :: Set ElementType
 menuContent = listContent
 
-meta :: GenM Element
-meta =
-  mkElement Meta metaAttrs Nothing
-
-metaAttrs :: [GenT IO A.Attribute]
+metaAttrs :: MonadGen m => [m A.Attribute]
 metaAttrs =
   [ A.charset
   , A.content
   , A.httpEquiv
-  , A.media
   , A.nameMeta
   ]
 
-meter :: GenM Element
-meter =
-  mkElement Meter meterAttrs $ Just meterContent
-
-meterAttrs :: [GenT IO A.Attribute]
+meterAttrs :: MonadGen m => [m A.Attribute]
 meterAttrs =
   [ A.value
   , A.min
@@ -1427,78 +1127,62 @@ meterAttrs =
   , A.form
   ]
 
-meterContent :: NonEmpty (GenM Element)
+meterContent :: Set ElementType
 meterContent =
-  text
-    :| [ comment
-       , abbr
-       , area
-       , audio
-       , b
-       , bdi
-       , bdo
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , dfn
-       , em
-       , embed
-       , i
-       , iframe
-       , img
-       , input
-       , kbd
-       , label
-       , mark
-       , noscript
-       , object
-       , output
-       , picture
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , template
-       , textarea
-       , time
-       , u
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Abbreviation
+    , Area
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , Definition
+    , Emphasis
+    , Embed
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , KeyboardInput
+    , Label
+    , Mark
+    , NoScript
+    , Object
+    , Output
+    , Picture
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-nav :: GenM Element
-nav =
-  mkElement Nav [] $ Just navContent
-
-navContent :: NonEmpty (GenM Element)
+navContent :: Set ElementType
 navContent = flowContent
 
-noscript :: GenM Element
-noscript =
-  mkElement NoScript [] $ Just noScriptContent
-
-noScriptContent :: NonEmpty (GenM Element)
-noScriptContent = NEL.singleton text
-
-object :: GenM Element
-object =
-  mkElement Object objectAttrs $ Just objectContent
-
-objectAttrs :: [GenT IO A.Attribute]
+objectAttrs :: MonadGen m => [m A.Attribute]
 objectAttrs =
   [ A.data_
   , A.form
@@ -1508,42 +1192,27 @@ objectAttrs =
   , A.width
   ]
 
-objectContent :: NonEmpty (GenM Element)
-objectContent = NEL.singleton text
-
-ol :: GenM Element
-ol =
-  mkElement OrderedList orderedListAttrs $ Just orderedListContent
-
-orderedListAttrs :: [GenT IO A.Attribute]
+orderedListAttrs :: MonadGen m => [m A.Attribute]
 orderedListAttrs =
   [ A.reversed
   , A.start
   , A.type_
   ]
 
-orderedListContent :: NonEmpty (GenM Element)
+orderedListContent :: Set ElementType
 orderedListContent = listContent
 
-optgroup :: GenM Element
-optgroup =
-  mkElement OptionGroup optionGroupAttrs $ Just optionGroupContent
-
-optionGroupAttrs :: [GenT IO A.Attribute]
+optionGroupAttrs :: MonadGen m => [m A.Attribute]
 optionGroupAttrs =
   [ A.disabled
   , A.label
   ]
 
-optionGroupContent :: NonEmpty (GenM Element)
+optionGroupContent :: Set ElementType
 optionGroupContent =
-  comment :| [ option ]
+  Set.singleton Option
 
-option :: GenM Element
-option =
-  mkElement Option optionAttrs . Just $ NEL.singleton text
-
-optionAttrs :: [GenT IO A.Attribute]
+optionAttrs :: MonadGen m => [m A.Attribute]
 optionAttrs =
   [ A.disabled
   , A.label
@@ -1551,170 +1220,104 @@ optionAttrs =
   , A.value
   ]
 
-output :: GenM Element
-output =
-  mkElement Output outputAttrs $ Just outputContent
-
-outputAttrs :: [GenT IO A.Attribute]
+outputAttrs :: MonadGen m => [m A.Attribute]
 outputAttrs =
   [ A.forOutput
   , A.form
   , A.name
   ]
 
-outputContent :: NonEmpty (GenM Element)
+outputContent :: Set ElementType
 outputContent = phrasingContent
 
-p :: GenM Element
-p =
-  mkElement Paragraph [] $ Just paragraphContent
-
-paragraphContent :: NonEmpty (GenM Element)
+paragraphContent :: Set ElementType
 paragraphContent = phrasingContent
 
-picture :: GenM Element
-picture =
-  mkElement Picture [] $ Just pictureContent
-
-pictureContent :: NonEmpty (GenM Element)
+pictureContent :: Set ElementType
 pictureContent =
-  NEL.cons comment
-    . NEL.cons source
-    . NEL.cons img
-    $ scriptSupportingContent
+  Set.fromList [ Source, Image ] <> scriptSupportingContent
 
-pre :: GenM Element
-pre =
-  mkElement PreformattedText [] $ Just preformattedTextContent
-
-preformattedTextContent :: NonEmpty (GenM Element)
+preformattedTextContent :: Set ElementType
 preformattedTextContent = phrasingContent
 
-progress :: GenM Element
-progress =
-  mkElement Progress progressAttrs $ Just progressContent
-
-progressAttrs :: [GenT IO A.Attribute]
+progressAttrs :: MonadGen m => [m A.Attribute]
 progressAttrs =
   [ A.max
   , A.value
   ]
 
-progressContent :: NonEmpty (GenM Element)
+progressContent :: Set ElementType
 progressContent =
-  text
-    :| [ comment
-       , abbr
-       , area
-       , audio
-       , b
-       , bdi
-       , bdo
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , dfn
-       , em
-       , embed
-       , i
-       , iframe
-       , img
-       , input
-       , kbd
-       , label
-       , mark
-       , meter
-       , noscript
-       , object
-       , output
-       , picture
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , template
-       , textarea
-       , time
-       , u
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Abbreviation
+    , Area
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , Definition
+    , Emphasis
+    , Embed
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , KeyboardInput
+    , Label
+    , Mark
+    , Meter
+    , NoScript
+    , Object
+    , Output
+    , Picture
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-q :: GenM Element
-q =
-  mkElement Quotation [A.cite] $ Just quotationContent
-
-quotationContent :: NonEmpty (GenM Element)
+quotationContent :: Set ElementType
 quotationContent = phrasingContent
 
-rp :: GenM Element
-rp =
-  mkElement RubyParenthesis [] . Just $ NEL.singleton text
-
-rt :: GenM Element
-rt =
-  mkElement RubyText [] $ Just rubyTextContent
-
-rubyTextContent :: NonEmpty (GenM Element)
+rubyTextContent :: Set ElementType
 rubyTextContent = phrasingContent
 
-ruby :: GenM Element
-ruby = do
-  ctx <- ask
-  nPairs <- lift . Gen.int . Range.linear 0 $ maxChildrenPerNode ctx
+rubyContent :: Set ElementType
+rubyContent =
+  Set.fromList
+    [ RubyParenthesis
+    , RubyText
+    ]
 
-  let
-    totalChildNodes = 1 + (4 * nPairs)
-    addParents (content, rubyText) =
-      [ content
-      , Element RubyParenthesis [] . Left $ NET.singleton '('
-      , rubyText
-      , Element RubyParenthesis [] . Left $ NET.singleton ')'
-      ]
-
-  ok <- consumeNodes totalChildNodes
-  when (not ok) $ lift Gen.discard
-
-  rubyContent <- replicateM nPairs text
-  rubyTexts <- replicateM nPairs rt
-
-  Element
-    <$> pure Ruby
-    <*> withGlobalAttrs []
-    <*> pure (Right . concatMap addParents $ zip rubyContent rubyTexts)
-
-s :: GenM Element
-s =
-  mkElement Strikethrough [] $ Just strikethroughContent
-
-strikethroughContent :: NonEmpty (GenM Element)
+strikethroughContent :: Set ElementType
 strikethroughContent = phrasingContent
 
-samp :: GenM Element
-samp =
-  mkElement Sample [] $ Just sampleContent
-
-sampleContent :: NonEmpty (GenM Element)
+sampleContent :: Set ElementType
 sampleContent = phrasingContent
 
-script :: GenM Element
-script =
-  mkElement Script scriptAttrs . Just $ NEL.singleton text
-
-scriptAttrs :: [GenT IO A.Attribute]
+scriptAttrs :: MonadGen m => [m A.Attribute]
 scriptAttrs =
   [ A.async
   , A.crossorigin
@@ -1728,25 +1331,13 @@ scriptAttrs =
   , A.type_
   ]
 
-search :: GenM Element
-search =
-  mkElement Search [] $ Just searchContent
-
-searchContent :: NonEmpty (GenM Element)
+searchContent :: Set ElementType
 searchContent = flowContent
 
-section :: GenM Element
-section =
-  mkElement Section [] $ Just sectionContent
-
-sectionContent :: NonEmpty (GenM Element)
+sectionContent :: Set ElementType
 sectionContent = flowContent
 
-select :: GenM Element
-select =
-  mkElement Select selectAttrs $ Just selectContent
-
-selectAttrs :: [GenT IO A.Attribute]
+selectAttrs :: MonadGen m => [m A.Attribute]
 selectAttrs =
   [ A.autocomplete
   , A.autofocus
@@ -1758,140 +1349,76 @@ selectAttrs =
   , A.size
   ]
 
-selectContent :: NonEmpty (GenM Element)
+selectContent :: Set ElementType
 selectContent =
-  comment
-    :| [ option
-       , optgroup
-       ]
+  Set.fromList
+    [ Option
+    , OptionGroup
+    ]
 
-slot :: GenM Element
-slot =
-  mkElement Slot [A.name] $ Just slotContent
-
-slotContent :: NonEmpty (GenM Element)
-slotContent = NEL.singleton text
-
-small :: GenM Element
-small =
-  mkElement SideComment [] $ Just sideCommentContent
-
-sideCommentContent :: NonEmpty (GenM Element)
+sideCommentContent :: Set ElementType
 sideCommentContent = phrasingContent
 
-source :: GenM Element
-source =
-  mkElement Source sourceAttrs Nothing
-
-sourceAttrs :: [GenT IO A.Attribute]
+sourceAttrs :: MonadGen m => [m A.Attribute]
 sourceAttrs =
   [ A.type_
   , A.src
   , A.srcset
-  , A.sizes
-  , A.media
   , A.height
   , A.width
   ]
 
-span :: GenM Element
-span =
-  mkElement Span [] $ Just spanContent
-
-spanContent :: NonEmpty (GenM Element)
+spanContent :: Set ElementType
 spanContent = phrasingContent
 
-strong :: GenM Element
-strong =
-  mkElement Strong [] $ Just strongContent
-
-strongContent :: NonEmpty (GenM Element)
+strongContent :: Set ElementType
 strongContent = phrasingContent
 
-style :: GenM Element
-style =
-  mkElement Style styleAttrs Nothing
-
-styleAttrs :: [GenT IO A.Attribute]
+styleAttrs :: MonadGen m => [m A.Attribute]
 styleAttrs =
-  [ A.media
-  , A.nonce
+  [ A.nonce
   , A.title
   ]
 
-sub :: GenM Element
-sub =
-  mkElement Subscript [] $ Just subscriptContent
-
-subscriptContent :: NonEmpty (GenM Element)
+subscriptContent :: Set ElementType
 subscriptContent = phrasingContent
 
-summary :: GenM Element
-summary =
-  mkElement Summary [] $ Just summaryContent
-
-summaryContent :: NonEmpty (GenM Element)
+summaryContent :: Set ElementType
 summaryContent =
-  NEL.cons hgroup $ headings <> phrasingContent
+  Set.insert HeadingGroup headings <> phrasingContent
 
-sup :: GenM Element
-sup =
-  mkElement Superscript [] $ Just superscriptContent
-
-superscriptContent :: NonEmpty (GenM Element)
+superscriptContent :: Set ElementType
 superscriptContent = phrasingContent
 
-table :: GenM Element
-table =
-  mkElement Table [] $ Just tableContent
-
-tableContent :: NonEmpty (GenM Element)
+tableContent :: Set ElementType
 tableContent =
-  caption
-    :| [ colgroup
-       , thead
-       , tbody
-       , tr
-       , tfoot
-       ]
+  Set.fromList
+    [ TableCaption
+    , TableColumnGroup
+    , TableHead
+    , TableBody
+    , TableRow
+    , TableFoot
+    ]
 
-tbody :: GenM Element
-tbody =
-  mkElement TableBody [] $ Just tableBodyContent
-
-tableBodyContent :: NonEmpty (GenM Element)
+tableBodyContent :: Set ElementType
 tableBodyContent =
-  comment :| [ tr ]
+  Set.singleton TableRow
 
-td :: GenM Element
-td =
-  mkElement
-    TableDataCell
-    tableDataCellAttrs
-    (Just tableDataCellContent)
-
-tableDataCellAttrs :: [GenT IO A.Attribute]
+tableDataCellAttrs :: MonadGen m => [m A.Attribute]
 tableDataCellAttrs =
   [ A.colspan
   , A.headers
   , A.rowspan
   ]
 
-tableDataCellContent :: NonEmpty (GenM Element)
+tableDataCellContent :: Set ElementType
 tableDataCellContent = flowContent
 
-template :: GenM Element
-template =
-  mkElement ContentTemplate [] $ Just contentTemplateContent
-
-contentTemplateContent :: NonEmpty (GenM Element)
+contentTemplateContent :: Set ElementType
 contentTemplateContent = allElements
 
-textarea :: GenM Element
-textarea =
-  mkElement TextArea textAreaAttrs . Just $ NEL.singleton text
-
-textAreaAttrs :: [GenT IO A.Attribute]
+textAreaAttrs :: MonadGen m => [m A.Attribute]
 textAreaAttrs =
   [ A.autocapitalize
   , A.autocomplete
@@ -1911,19 +1438,11 @@ textAreaAttrs =
   , A.wrap
   ]
 
-tfoot :: GenM Element
-tfoot =
-  mkElement TableFoot [] $ Just tableFootContent
-
-tableFootContent :: NonEmpty (GenM Element)
+tableFootContent :: Set ElementType
 tableFootContent =
-  comment :| [ tr ]
+  Set.singleton TableRow
 
-th :: GenM Element
-th =
-  mkElement TableHeader tableHeaderAttrs $ Just tableHeaderContent
-
-tableHeaderAttrs :: [GenT IO A.Attribute]
+tableHeaderAttrs :: MonadGen m => [m A.Attribute]
 tableHeaderAttrs =
   [ A.abbr
   , A.colspan
@@ -1932,115 +1451,93 @@ tableHeaderAttrs =
   , A.scope
   ]
 
-tableHeaderContent :: NonEmpty (GenM Element)
+tableHeaderContent :: Set ElementType
 tableHeaderContent =
-  text
-    :| [ comment
-       , a
-       , abbr
-       , address
-       , audio
-       , b
-       , bdi
-       , bdo
-       , blockquote
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , em
-       , embed
-       , fieldset
-       , figure
-       , form
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , main
-       , map
-       , mark
-       , menu
-       , meter
-       , noscript
-       , object
-       , ol
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , search
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , table
-       , template
-       , textarea
-       , time
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , ContactAddress
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , Emphasis
+    , Embed
+    , Fieldset
+    , Figure
+    , Form
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , NoScript
+    , Object
+    , OrderedList
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , Table
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-thead :: GenM Element
-thead =
-  mkElement TableHead [] $ Just tableHeadContent
-
-tableHeadContent :: NonEmpty (GenM Element)
+tableHeadContent :: Set ElementType
 tableHeadContent =
-  comment :| [ tr ]
+  Set.singleton TableRow
 
-time :: GenM Element
-time =
-  mkElement Time [A.datetime] $ Just timeContent
-
-timeContent :: NonEmpty (GenM Element)
+timeContent :: Set ElementType
 timeContent = phrasingContent
 
-title :: GenM Element
-title =
-  mkElement Title [] . Just $ NEL.singleton text
-
-tr :: GenM Element
-tr =
-  mkElement TableRow [] $ Just tableRowContent
-
-tableRowContent :: NonEmpty (GenM Element)
+tableRowContent :: Set ElementType
 tableRowContent =
-  NEL.cons td
-    . NEL.cons th
-    $ scriptSupportingContent
+  Set.fromList [ TableDataCell, TableHeader ]
+    <> scriptSupportingContent
 
-track :: GenM Element
-track =
-  mkElement Track trackAttrs Nothing
-
-trackAttrs :: [GenT IO A.Attribute]
+trackAttrs :: MonadGen m => [m A.Attribute]
 trackAttrs =
   [ A.default_
   , A.kind
@@ -2049,32 +1546,16 @@ trackAttrs =
   , A.srclang
   ]
 
-u :: GenM Element
-u =
-  mkElement Underline [] $ Just underlineContent
-
-underlineContent :: NonEmpty (GenM Element)
+underlineContent :: Set ElementType
 underlineContent = phrasingContent
 
-ul :: GenM Element
-ul =
-  mkElement UnorderedList [] $ Just unorderedListContent
-
-unorderedListContent :: NonEmpty (GenM Element)
+unorderedListContent :: Set ElementType
 unorderedListContent = listContent
 
-var :: GenM Element
-var =
-  mkElement Variable [] $ Just variableContent
-
-variableContent :: NonEmpty (GenM Element)
+variableContent :: Set ElementType
 variableContent = phrasingContent
 
-video :: GenM Element
-video =
-  mkElement Video videoAttrs $ Just videoContent
-
-videoAttrs :: [GenT IO A.Attribute]
+videoAttrs :: MonadGen m => [m A.Attribute]
 videoAttrs =
   [ A.autoplay
   , A.controls
@@ -2092,425 +1573,550 @@ videoAttrs =
   , A.width
   ]
 
-videoContent :: NonEmpty (GenM Element)
+videoContent :: Set ElementType
 videoContent = audioVideoContent
-
-wbr :: GenM Element
-wbr =
-  mkElement WordBreakOpportunity [] Nothing
 
 -- Content Categories
 --
 
-allElements :: NonEmpty (GenM Element)
+allElements :: Set ElementType
 allElements =
-  comment
-    :| [ text
-       , a
-       , abbr
-       , address
-       , area
-       , article
-       , aside
-       , audio
-       , b
-       , base
-       , bdi
-       , bdo
-       , blockquote
-       , body
-       , br
-       , button
-       , canvas
-       , caption
-       , cite
-       , code
-       , col
-       , colgroup
-       , data_
-       , datalist
-       , dd
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , dt
-       , em
-       , embed
-       , fieldset
-       , figcaption
-       , figure
-       , footer
-       , form
-       , h1
-       , h2
-       , h3
-       , h4
-       , h5
-       , h6
-       , head
-       , header
-       , hgroup
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , legend
-       , li
-       , link
-       , main
-       , map
-       , mark
-       , menu
-       , meta
-       , meter
-       , nav
-       , noscript
-       , object
-       , ol
-       , optgroup
-       , option
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , search
-       , section
-       , select
-       , slot
-       , small
-       , source
-       , span
-       , strong
-       , style
-       , sub
-       , summary
-       , sup
-       , table
-       , tbody
-       , td
-       , template
-       , textarea
-       , tfoot
-       , th
-       , thead
-       , time
-       , title
-       , tr
-       , track
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , ContactAddress
+    , Area
+    , Article
+    , Aside
+    , Audio
+    , BringAttentionTo
+    , Base
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , TableCaption
+    , Citation
+    , Code
+    , TableColumn
+    , TableColumnGroup
+    , Data
+    , DataList
+    , DescriptionDetails
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , DescriptionTerm
+    , Emphasis
+    , Embed
+    , Fieldset
+    , FigureCaption
+    , Figure
+    , Footer
+    , Form
+    , H1
+    , H2
+    , H3
+    , H4
+    , H5
+    , H6
+    , Header
+    , HeadingGroup
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Legend
+    , ListItem
+    , Link
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meta
+    , Meter
+    , Nav
+    , NoScript
+    , Object
+    , OrderedList
+    , OptionGroup
+    , Option
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Search
+    , Section
+    , Select
+    , Slot
+    , SideComment
+    , Source
+    , Span
+    , Strong
+    , Style
+    , Subscript
+    , Summary
+    , Superscript
+    , Table
+    , TableBody
+    , TableDataCell
+    , ContentTemplate
+    , TextArea
+    , TableFoot
+    , TableHeader
+    , TableHead
+    , Time
+    , Title
+    , TableRow
+    , Track
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-audioVideoContent :: NonEmpty (GenM Element)
+audioVideoContent :: Set ElementType
 audioVideoContent =
-  comment
-    :| [ source
-       , track
-       ]
+  Set.fromList
+    [ Source
+    , Track
+    ]
 
-flowContent :: NonEmpty (GenM Element)
+flowContent :: Set ElementType
 flowContent =
-  text
-    :| [ comment
-       , a
-       , abbr
-       , address
-       , article
-       , aside
-       , audio
-       , b
-       , bdi
-       , bdo
-       , blockquote
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , em
-       , embed
-       , fieldset
-       , figure
-       , footer
-       , form
-       , h1
-       , h2
-       , h3
-       , h4
-       , h5
-       , h6
-       , header
-       , hgroup
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , main
-       , map
-       , mark
-       , menu
-       , meter
-       , nav
-       , noscript
-       , object
-       , ol
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , search
-       , script
-       , section
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , table
-       , template
-       , textarea
-       , time
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , ContactAddress
+    , Article
+    , Aside
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , Emphasis
+    , Embed
+    , Fieldset
+    , Figure
+    , Footer
+    , Form
+    , H1
+    , H2
+    , H3
+    , H4
+    , H5
+    , H6
+    , Header
+    , HeadingGroup
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , Nav
+    , NoScript
+    , Object
+    , OrderedList
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Script
+    , Section
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , Table
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-headings :: NonEmpty (GenM Element)
+headings :: Set ElementType
 headings =
-  comment
-    :| [ h1
-       , h2
-       , h3
-       , h4
-       , h5
-       , h6
-       ]
+  Set.fromList
+    [ H1
+    , H2
+    , H3
+    , H4
+    , H5
+    , H6
+    ]
 
-listContent :: NonEmpty (GenM Element)
+listContent :: Set ElementType
 listContent =
-  NEL.cons li scriptSupportingContent
+  Set.insert ListItem scriptSupportingContent
 
-marginalContent :: NonEmpty (GenM Element)
+marginalContent :: Set ElementType
 marginalContent =
-  text
-    :| [ comment
-       , a
-       , abbr
-       , address
-       , article
-       , aside
-       , audio
-       , b
-       , bdi
-       , bdo
-       , blockquote
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , del
-       , details
-       , dfn
-       , dialog
-       , div
-       , dl
-       , em
-       , embed
-       , fieldset
-       , figure
-       , form
-       , h1
-       , h2
-       , h3
-       , h4
-       , h5
-       , h6
-       , hgroup
-       , hr
-       , i
-       , iframe
-       , img
-       , input
-       , ins
-       , kbd
-       , label
-       , main
-       , map
-       , mark
-       , menu
-       , meter
-       , nav
-       , noscript
-       , object
-       , ol
-       , output
-       , p
-       , picture
-       , pre
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , search
-       , script
-       , section
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , table
-       , template
-       , textarea
-       , time
-       , u
-       , ul
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Anchor
+    , Abbreviation
+    , ContactAddress
+    , Article
+    , Aside
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , DeletedText
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , Emphasis
+    , Embed
+    , Fieldset
+    , Figure
+    , Form
+    , H1
+    , H2
+    , H3
+    , H4
+    , H5
+    , H6
+    , HeadingGroup
+    , HorizontalRule
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , InsertedText
+    , KeyboardInput
+    , Label
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , Nav
+    , NoScript
+    , Object
+    , OrderedList
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Script
+    , Section
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , Table
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-phrasingContent :: NonEmpty (GenM Element)
+phrasingContent :: Set ElementType
 phrasingContent =
-  text
-    :| [ comment
-       , abbr
-       , area
-       , audio
-       , b
-       , bdi
-       , bdo
-       , br
-       , button
-       , canvas
-       , cite
-       , code
-       , data_
-       , datalist
-       , dfn
-       , em
-       , embed
-       , i
-       , iframe
-       , img
-       , input
-       , kbd
-       , label
-       , mark
-       , meter
-       , noscript
-       , object
-       , output
-       , picture
-       , progress
-       , q
-       , ruby
-       , s
-       , samp
-       , script
-       , select
-       , slot
-       , small
-       , span
-       , strong
-       , sub
-       , sup
-       , template
-       , textarea
-       , time
-       , u
-       , var
-       , video
-       , wbr
-       ]
+  Set.fromList
+    [ Abbreviation
+    , Area
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , LineBreak
+    , Button
+    , Canvas
+    , Citation
+    , Code
+    , Data
+    , DataList
+    , Definition
+    , Emphasis
+    , Embed
+    , IdiomaticText
+    , IFrame
+    , Image
+    , Input
+    , KeyboardInput
+    , Label
+    , Mark
+    , Meter
+    , NoScript
+    , Object
+    , Output
+    , Picture
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Script
+    , Select
+    , Slot
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Superscript
+    , ContentTemplate
+    , TextArea
+    , Time
+    , Underline
+    , Variable
+    , Video
+    , WordBreakOpportunity
+    ]
 
-scriptSupportingContent :: NonEmpty (GenM Element)
+scriptSupportingContent :: Set ElementType
 scriptSupportingContent =
-  comment
-    :| [ script
-       , template
-       ]
+  Set.fromList
+    [ Script
+    , ContentTemplate
+    ]
 
-withGlobalAttrs :: [GenT IO A.Attribute] -> GenM [A.Attribute]
-withGlobalAttrs attrs = do
-  ctx <- ask
+-- Node Element Lists
 
-  lift
-    . Gen.list (Range.linear 0 $ maxAttributesPerNode ctx)
-    . Gen.choice
-    . mappend attrs
-    $ [ A.accessKey
-      , A.autocapitalize
-      , A.autofocus
-      , A.class_
-      , A.contentEditable
-      , A.dir
-      , A.draggable
-      , A.enterKeyHint
-      , A.exportParts
-      , A.hidden
-      , A.id
-      , A.inert
-      , A.inputMode
-      , A.is
-      , A.itemId
-      , A.itemProp
-      , A.itemRef
-      , A.itemScope
-      , A.itemType
-      , A.lang
-      , A.nonce
-      , A.part
-      , A.popover
-      , A.role
-      , A.slot
-      , A.spellcheck
-      , A.style
-      , A.tabIndex
-      , A.title
-      , A.translate
-      , A.writingSuggestions
-      ]
+branchElements :: Set ElementType
+branchElements =
+  Set.fromList
+    [ Abbreviation
+    , ContactAddress
+    , Article
+    , Aside
+    , Audio
+    , BringAttentionTo
+    , BidirectionalIsolation
+    , BidirectionalOverride
+    , Blockquote
+    , Body
+    , Button
+    , TableCaption
+    , Citation
+    , Code
+    , TableColumn
+    , TableColumnGroup
+    , Data
+    , DataList
+    , DescriptionDetails
+    , Details
+    , Definition
+    , Dialog
+    , Division
+    , DescriptionList
+    , DescriptionTerm
+    , Emphasis
+    , Fieldset
+    , FigureCaption
+    , Figure
+    , Footer
+    , Form
+    , H1
+    , H2
+    , H3
+    , H4
+    , H5
+    , H6
+    , Head
+    , Header
+    , HeadingGroup
+    , IdiomaticText
+    , KeyboardInput
+    , Label
+    , Legend
+    , ListItem
+    , Main
+    , Map
+    , Mark
+    , Menu
+    , Meter
+    , Nav
+    , OrderedList
+    , OptionGroup
+    , Output
+    , Paragraph
+    , Picture
+    , PreformattedText
+    , Progress
+    , Quotation
+    , Ruby
+    , Strikethrough
+    , Sample
+    , Search
+    , Section
+    , Select
+    , SideComment
+    , Span
+    , Strong
+    , Subscript
+    , Summary
+    , Superscript
+    , Table
+    , TableBody
+    , TableDataCell
+    , ContentTemplate
+    , TableFoot
+    , TableHeader
+    , TableHead
+    , Time
+    , TableRow
+    , Underline
+    , UnorderedList
+    , Variable
+    , Video
+    ]
+
+leafElements :: Set ElementType
+leafElements =
+  Set.fromList
+    [ Anchor
+    , Canvas
+    , DeletedText
+    , InsertedText
+    , NoScript
+    , Object
+    , Option
+    , RubyParenthesis
+    , RubyText
+    , Script
+    , Slot
+    , Style
+    , TextArea
+    , Title
+    ]
+
+voidElements :: Set ElementType
+voidElements =
+  Set.fromList
+    [ Area
+    , Base
+    , LineBreak
+    , TableColumn
+    , Embed
+    , HorizontalRule
+    , IFrame
+    , Image
+    , Input
+    , Link
+    , Meta
+    , Source
+    , Track
+    , WordBreakOpportunity
+    ]
+
+-- Global Attributes
+
+withGlobalAttrs :: MonadGen m
+                => GeneratorParams -> ElementType -> m [A.Attribute]
+withGlobalAttrs params element =
+  let
+    attrsRange = attributesPerNode params
+    minAttrs = minRange attrsRange
+    maxAttrs = maxRange attrsRange
+  in
+    fmap (nubOrdOn A.attributeText)
+      . Gen.list (Range.linear minAttrs maxAttrs)
+      . Gen.choice
+      . mappend (elementValidAttrs element)
+      $ [ A.accessKey
+        , A.autocapitalize
+        , A.autofocus
+        , A.class_
+        , A.contentEditable
+        , A.dir
+        , A.draggable
+        , A.enterKeyHint
+        , A.exportParts
+        , A.hidden
+        , A.id
+        , A.inert
+        , A.inputMode
+        , A.is
+        , A.itemId
+        , A.itemProp
+        , A.itemRef
+        , A.itemScope
+        , A.itemType
+        , A.lang
+        , A.nonce
+        , A.part
+        , A.popover
+        , A.role
+        , A.slot
+        , A.spellcheck
+        , A.style
+        , A.tabIndex
+        , A.title
+        , A.translate
+        , A.writingSuggestions
+        ]

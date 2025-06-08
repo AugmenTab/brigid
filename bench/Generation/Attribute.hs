@@ -1,5 +1,6 @@
 module Generation.Attribute
   ( Attribute (..)
+  , attributeText
   , accessKey
   , autocapitalize
   , autofocus
@@ -305,13 +306,159 @@ data Attribute
   | XMLNS Types.RawURL
   deriving Show
 
+attributeText :: Attribute -> T.Text
+attributeText attr =
+  case attr of
+    -- Global Attributes
+    --
+    AccessKey _ -> "accesskey"
+    Autocapitalize _ -> "autocapitalize"
+    Autofocus _ -> "autofocus"
+    Class _ -> "class"
+    ContentEditable _ -> "contenteditable"
+    Dir _ -> "dir"
+    Draggable _ -> "draggable"
+    EnterKeyHint _ -> "enterkeyhint"
+    ExportParts _ -> "exportparts"
+    Hidden _ -> "hidden"
+    Id _ -> "id"
+    Inert _ -> "inert"
+    InputMode _ -> "inputmode"
+    Is _ -> "is"
+    ItemId _ -> "itemid"
+    ItemProp _ -> "itemprop"
+    ItemRef _ -> "itemref"
+    ItemScope -> "itemscope"
+    ItemType _ -> "itemtype"
+    Lang _ -> "lang"
+    Nonce _ -> "nonce"
+    Part _ -> "part"
+    Popover _ -> "popover"
+    Role _ -> "role"
+    Slot _ -> "slot"
+    Spellcheck _ -> "spellcheck"
+    Style _ -> "style"
+    TabIndex _ -> "tabindex"
+    Title _ -> "title"
+    Translate _ -> "translate"
+    WritingSuggestions _ -> "writingsuggestions"
+
+    -- Scoped Attributes
+    --
+    Abbreviation _ -> "abbreviation"
+    Accept _ -> "accept"
+    AcceptCharset -> "accept-charset"
+    Action _ -> "action"
+    Allow _ -> "allow"
+    As _ -> "as"
+    Alt _ -> "alt"
+    Async -> "async"
+    Autocomplete _ -> "autocomplete"
+    Autoplay -> "autoplay"
+    Capture _ -> "capture"
+    Charset -> "charset"
+    Checked _ -> "checked"
+    Cite _ -> "cite"
+    Cols _ -> "cols"
+    Colspan _ -> "colspan"
+    Content _ -> "content"
+    Controls -> "controls"
+    ControlsList _ -> "constrolslist"
+    Coords _ -> "coords"
+    CrossOrigin _ -> "crossorigin"
+    Data _ -> "data"
+    Datetime _ -> "datetime"
+    Decoding _ -> "decoding"
+    Default -> "default"
+    Defer -> "defer"
+    Dirname _ -> "dirname"
+    Disabled _ -> "disabled"
+    DisablePictureInPicture -> "disablepictureinpicture"
+    DisableRemotePlayback -> "disableremoteplayback"
+    Download _ -> "download"
+    Enctype _ -> "enctype"
+    FetchPriority _ -> "fetchpriority"
+    ForLabel _ -> "for"
+    ForOutput _ -> "for"
+    Form _ -> "form"
+    FormAction _ -> "formaction"
+    FormEnctype _ -> "formenctype"
+    FormMethod _ -> "formmethod"
+    FormNoValidate -> "formnovalidate"
+    FormTarget _ -> "formtarget"
+    Headers _ -> "headers"
+    Height _ -> "height"
+    High _ -> "high"
+    Href _ -> "href"
+    HrefLang _ -> "hreflang"
+    HttpEquiv _ -> "http-equiv"
+    ImageSizes _ -> "imagesizes"
+    ImageSrcset _ -> "imagesrcset"
+    Integrity _ -> "integrity"
+    IsMap -> "ismap"
+    Kind _ -> "kind"
+    Label _ -> "label"
+    List _ -> "list"
+    Loading _ -> "loading"
+    Loop -> "loop"
+    Low _ -> "low"
+    Max _ -> "max"
+    MaxLength _ -> "maxlength"
+    Media _ -> "media"
+    Method _ -> "method"
+    Min _ -> "min"
+    MinLength _ -> "minlength"
+    Multiple -> "multiple"
+    Muted _ -> "muted"
+    Name _ -> "name"
+    NameMeta _ -> "name"
+    NoModule _ -> "nomodule"
+    NoValidate _ -> "novalidate"
+    Open -> "open"
+    Optimum _ -> "optimum"
+    Pattern _ -> "pattern"
+    Ping _ -> "ping"
+    Placeholder _ -> "placeholder"
+    PlaysInline _ -> "playsinline"
+    PopoverTarget _ -> "popovertarget"
+    PopoverTargetAction _ -> "popovertargetaction"
+    Poster _ -> "poster"
+    Preload _ -> "preload"
+    ReadOnly -> "readonly"
+    ReferrerPolicy _ -> "referrerpolicy"
+    Rel _ -> "rel"
+    Required _ -> "required"
+    Reversed _ -> "reversed"
+    Rows _ -> "rows"
+    Rowspan _ -> "rowspan"
+    Sandbox _ -> "sandbox"
+    Scope _ -> "scope"
+    Selected _ -> "selected"
+    Shape _ -> "shape"
+    Size _ -> "size"
+    Sizes _ -> "sizes"
+    Span _ -> "span"
+    Src _ -> "src"
+    SrcDoc _ -> "srcdoc"
+    SrcLang _ -> "srclang"
+    SrcSet _ -> "srcset"
+    Start _ -> "start"
+    Step _ -> "step"
+    Target _ -> "target"
+    Type _ -> "type"
+    UseMap _ -> "usemap"
+    Value _ -> "value"
+    Width _ -> "width"
+    Wrap _ -> "wrap"
+    XMLNS _ -> "xmlns"
+
 accessKey :: MonadGen m => m Attribute
 accessKey =
   AccessKey <$> Generators.char
 
 autocapitalize :: MonadGen m => m Attribute
 autocapitalize =
-  Autocapitalize <$> Gen.enumBounded
+  Autocapitalize <$> Generators.autocapitalizeOption
 
 autofocus :: MonadGen m => m Attribute
 autofocus =
@@ -323,11 +470,11 @@ class_ =
 
 contentEditable :: MonadGen m => m Attribute
 contentEditable =
-  ContentEditable <$> Gen.enumBounded
+  ContentEditable <$> Generators.contentEditableOption
 
 dir :: MonadGen m => m Attribute
 dir =
-  Dir <$> Gen.enumBounded
+  Dir <$> Generators.directionality
 
 draggable :: MonadGen m => m Attribute
 draggable =
@@ -335,7 +482,7 @@ draggable =
 
 enterKeyHint :: MonadGen m => m Attribute
 enterKeyHint =
-  EnterKeyHint <$> Gen.enumBounded
+  EnterKeyHint <$> Generators.keyHintOption
 
 exportParts :: MonadGen m => m Attribute
 exportParts =
@@ -355,7 +502,7 @@ inert =
 
 inputMode :: MonadGen m => m Attribute
 inputMode =
-  InputMode <$> Gen.enumBounded
+  InputMode <$> Generators.inputMode
 
 is :: MonadGen m => m Attribute
 is =
@@ -395,11 +542,11 @@ part =
 
 popover :: MonadGen m => m Attribute
 popover =
-  Popover <$> Gen.enumBounded
+  Popover <$> Generators.popoverState
 
 role :: MonadGen m => m Attribute
 role =
-  Role <$> Gen.enumBounded
+  Role <$> Generators.role
 
 slot :: MonadGen m => m Attribute
 slot =
@@ -447,7 +594,7 @@ action =
 
 allow :: MonadGen m => m Attribute
 allow =
-  Allow <$> Gen.list (Range.linear 0 6) Gen.enumBounded
+  Allow <$> Gen.list (Range.linear 0 6) Generators.featurePolicyDirective
 
 alt :: MonadGen m => m Attribute
 alt =
@@ -455,7 +602,7 @@ alt =
 
 as :: MonadGen m => m Attribute
 as =
-  As <$> Gen.enumBounded
+  As <$> Generators.as
 
 async :: MonadGen m => m Attribute
 async =
@@ -471,7 +618,7 @@ autoplay =
 
 capture :: MonadGen m => m Attribute
 capture =
-  Capture <$> Gen.maybe Gen.enumBounded
+  Capture <$> Gen.maybe Generators.captureMethod
 
 charset :: MonadGen m => m Attribute
 charset =
@@ -503,7 +650,7 @@ controls =
 
 controlslist :: MonadGen m => m Attribute
 controlslist =
-  ControlsList <$> Gen.enumBounded
+  ControlsList <$> Generators.controlsList
 
 coords :: MonadGen m => m Attribute
 coords =
@@ -511,7 +658,7 @@ coords =
 
 crossorigin :: MonadGen m => m Attribute
 crossorigin =
-  CrossOrigin <$> Gen.enumBounded
+  CrossOrigin <$> Generators.crossOriginFetch
 
 data_ :: MonadGen m => m Attribute
 data_ =
@@ -523,7 +670,7 @@ datetime =
 
 decoding :: MonadGen m => m Attribute
 decoding =
-  Decoding <$> Gen.enumBounded
+  Decoding <$> Generators.decoding
 
 default_ :: MonadGen m => m Attribute
 default_ =
@@ -559,7 +706,7 @@ enctype =
 
 fetchpriority :: MonadGen m => m Attribute
 fetchpriority =
-  FetchPriority <$> Gen.enumBounded
+  FetchPriority <$> Generators.fetchPriority
 
 forLabel :: MonadGen m => m Attribute
 forLabel =
@@ -583,7 +730,7 @@ formenctype =
 
 formmethod :: MonadGen m => m Attribute
 formmethod =
-  FormMethod <$> Gen.enumBounded
+  FormMethod <$> Generators.formMethod
 
 formnovalidate :: MonadGen m => m Attribute
 formnovalidate =
@@ -615,7 +762,7 @@ hreflang =
 
 httpEquiv :: MonadGen m => m Attribute
 httpEquiv =
-  HttpEquiv <$> Gen.enumBounded
+  HttpEquiv <$> Generators.httpEquivToken
 
 imagesizes :: MonadGen m => m Attribute
 imagesizes =
@@ -635,7 +782,7 @@ ismap =
 
 kind :: MonadGen m => m Attribute
 kind =
-  Kind <$> Gen.enumBounded
+  Kind <$> Generators.trackKind
 
 label :: MonadGen m => m Attribute
 label =
@@ -647,7 +794,7 @@ list =
 
 loading :: MonadGen m => m Attribute
 loading =
-  Loading <$> Gen.enumBounded
+  Loading <$> Generators.loadOption
 
 loop :: MonadGen m => m Attribute
 loop =
@@ -671,7 +818,7 @@ media =
 
 method :: MonadGen m => m Attribute
 method =
-  Method <$> Gen.enumBounded
+  Method <$> Generators.formMethod
 
 min :: MonadGen m => m Attribute
 min =
@@ -695,7 +842,7 @@ name =
 
 nameMeta :: MonadGen m => m Attribute
 nameMeta =
-  NameMeta <$> Gen.enumBounded
+  NameMeta <$> Generators.metadataName
 
 nomodule :: MonadGen m => m Attribute
 nomodule =
@@ -735,7 +882,7 @@ popovertarget =
 
 popovertargetaction :: MonadGen m => m Attribute
 popovertargetaction =
-  PopoverTargetAction <$> Gen.enumBounded
+  PopoverTargetAction <$> Generators.popoverTargetAction
 
 poster :: MonadGen m => m Attribute
 poster =
@@ -743,7 +890,7 @@ poster =
 
 preload :: MonadGen m => m Attribute
 preload =
-  Preload <$> Gen.enumBounded
+  Preload <$> Generators.preload
 
 readonly :: MonadGen m => m Attribute
 readonly =
@@ -751,7 +898,7 @@ readonly =
 
 referrerpolicy :: MonadGen m => m Attribute
 referrerpolicy =
-  ReferrerPolicy <$> Gen.enumBounded
+  ReferrerPolicy <$> Generators.referrerPolicy
 
 rel :: MonadGen m => m Attribute
 rel =
@@ -775,11 +922,11 @@ rowspan =
 
 sandbox :: MonadGen m => m Attribute
 sandbox =
-  Sandbox <$> Gen.list (Range.linear 0 5) Gen.enumBounded
+  Sandbox <$> Gen.list (Range.linear 0 5) Generators.sandboxToken
 
 scope :: MonadGen m => m Attribute
 scope =
-  Scope <$> Gen.enumBounded
+  Scope <$> Generators.scope
 
 selected :: MonadGen m => m Attribute
 selected =
@@ -787,7 +934,7 @@ selected =
 
 shape :: MonadGen m => m Attribute
 shape =
-  Shape <$> Gen.enumBounded
+  Shape <$> Generators.shape
 
 size :: MonadGen m => m Attribute
 size =
@@ -847,7 +994,7 @@ width =
 
 wrap :: MonadGen m => m Attribute
 wrap =
-  Wrap <$> Gen.enumBounded
+  Wrap <$> Generators.wrap
 
 xmlns :: MonadGen m => m Attribute
 xmlns =

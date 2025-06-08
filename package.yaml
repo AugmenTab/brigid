@@ -103,7 +103,8 @@ benchmarks:
       - -with-rtsopts "-N -T -A32m"
     dependencies:
       - brigid
+      - extra
       - hedgehog
       - mtl
       - tasty-bench
-      - transformers
+      - uuid

@@ -7,7 +7,9 @@ import Hedgehog.Internal.Seed (from)
 import Hedgehog.Internal.Tree (nodeValue, runTree)
 import Hedgehog.Range (Size (..))
 
-import Generation.Structure (buildHtmlTree, countTotalNodes)
+import Generation.Analysis qualified as A
+import Generation.Build (generateDOM)
+import Generation.Types qualified as Types
 
 main :: IO ()
 main = do
@@ -15,18 +17,66 @@ main = do
     size = Size 30
     seed = from 0
 
-  -- small:          100 |  20 |  20
-  -- medium:        1000 |  25 |  50
-  -- large:        10000 |  50 | 100
-  -- stress test: 100000 | 250 | 500
+    small =
+      Types.GeneratorParams
+        { Types.startingElement = Types.Html
+        , Types.maxTotalNodes = 100
+        , Types.maxDepth = 7
+        , Types.childrenPerNode = Types.mkRange 0 5
+        , Types.attributesPerNode = Types.mkRange 0 10
+        , Types.enableLogging = True
+        }
 
-  case evalGen size seed (buildHtmlTree 100 20 20) of
-    Just tree -> do
+    _medium =
+      Types.GeneratorParams
+        { Types.startingElement = Types.Html
+        , Types.maxTotalNodes = 1000
+        , Types.maxDepth = 9
+        , Types.childrenPerNode = Types.mkRange 0 6
+        , Types.attributesPerNode = Types.mkRange 0 10
+        , Types.enableLogging = True
+        }
+
+    _large =
+      Types.GeneratorParams
+        { Types.startingElement = Types.Html
+        , Types.maxTotalNodes = 10000
+        , Types.maxDepth = 10
+        , Types.childrenPerNode = Types.mkRange 0 7
+        , Types.attributesPerNode = Types.mkRange 0 10
+        , Types.enableLogging = True
+        }
+
+    _stress =
+      Types.GeneratorParams
+        { Types.startingElement = Types.Html
+        , Types.maxTotalNodes = 100000
+        , Types.maxDepth = 11
+        , Types.childrenPerNode = Types.mkRange 0 8
+        , Types.attributesPerNode = Types.mkRange 0 10
+        , Types.enableLogging = True
+        }
+
+    testing =
+      small
+
+  case evalGen size seed (generateDOM testing) of
+    Just nodeTree -> do
       let
-        node = nodeValue $ runTree tree
+        node = nodeValue $ runTree nodeTree
 
-      print node
-      print $ countTotalNodes node
+      -- putStrLn $ Types.prettyPrint node
+      putStrLn $
+        "Total Nodes: "
+          <> show (A.totalNodes node)
+          <> " / "
+          <> show (Types.maxTotalNodes testing)
+
+      putStrLn $
+        "Depth: "
+          <> show (A.maxDepth node)
+          <> " / "
+          <> show (Types.maxDepth testing)
 
     Nothing ->
       error "Structure generation failed."
