@@ -111,4 +111,5 @@ benchmarks:
     dependencies:
       - blaze-html
       - brigid
+      - lucid
       - tasty-bench

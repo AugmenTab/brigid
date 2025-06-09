@@ -279,6 +279,7 @@ benchmark brigid-bench
   other-modules:
       Generation.Convert
       Generation.Convert.Blaze
+      Generation.Convert.Lucid
       Paths_brigid
   autogen-modules:
       Paths_brigid
@@ -307,6 +308,7 @@ benchmark brigid-bench
     , json-fleece-aeson
     , json-fleece-core
     , libphonenumber
+    , lucid
     , memory
     , mtl
     , non-empty-text

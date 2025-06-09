@@ -7,11 +7,12 @@ import Hedgehog.Internal.Gen (evalGen)
 import Hedgehog.Internal.Seed (from)
 import Hedgehog.Internal.Tree (nodeValue, runTree)
 import Hedgehog.Range (Size (..))
+import Lucid.Base (renderBS)
 import Text.Blaze.Html.Renderer.Utf8 (renderHtml)
 
 import Brigid.HTML.Generation qualified as G
 import Brigid.HTML.Generation.Elements (ElementType (Html))
-import Generation.Convert (toBlaze)
+import Generation.Convert (toBlaze, toLucid)
 
 main :: IO ()
 main = do
@@ -77,6 +78,10 @@ main = do
 
       putStrLn "Blaze:"
       LBS8.putStrLn . renderHtml $ toBlaze node
+      putStrLn "\n"
+
+      putStrLn "Lucid:"
+      LBS8.putStrLn . renderBS $ toLucid node
       putStrLn "\n"
 
       putStrLn $
