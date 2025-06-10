@@ -18,7 +18,7 @@ import Brigid.HTML.Elements.Safe.Area as Export
 -- import Brigid.HTML.Elements.Safe.Aside as Export
 -- import Brigid.HTML.Elements.Safe.Audio as Export
 -- import Brigid.HTML.Elements.Safe.BringAttentionTo as Export
--- import Brigid.HTML.Elements.Safe.Base as Export
+import Brigid.HTML.Elements.Safe.Base as Export
 -- import Brigid.HTML.Elements.Safe.BidirectionalIsolation as Export
 -- import Brigid.HTML.Elements.Safe.BidirectionalOverride as Export
 -- import Brigid.HTML.Elements.Safe.Blockquote as Export

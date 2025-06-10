@@ -68,6 +68,7 @@ library
       Brigid.HTML.Elements.Children
       Brigid.HTML.Elements.Internal
       Brigid.HTML.Elements.Safe.Area
+      Brigid.HTML.Elements.Safe.Base
       Brigid.HTML.Elements.Safe.Image
       Brigid.HTML.Elements.Safe.Input
       Brigid.HTML.Elements.Safe.Meta
@@ -227,6 +228,7 @@ library
     , scientific
     , shrubbery
     , text
+    , these
     , time
     , uuid
   default-language: Haskell2010
@@ -269,6 +271,7 @@ test-suite brigid-test
     , scientific
     , shrubbery
     , text
+    , these
     , time
     , uuid
   default-language: Haskell2010
@@ -317,6 +320,7 @@ benchmark brigid-bench
     , shrubbery
     , tasty-bench
     , text
+    , these
     , time
     , uuid
   default-language: Haskell2010
