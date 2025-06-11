@@ -45,6 +45,7 @@ module Brigid.HTML.Elements.TagGroups
 
   , AltTags
   , AutocompletableTags
+  , BlockingTags
   , CheckableTags
   , CitableTags
   , CrossOriginTags
@@ -739,6 +740,12 @@ type AutocompletableTags =
   , 'InputUrl
   , 'Select
   , 'TextArea
+  ]
+
+type BlockingTags =
+  [ 'Link
+  , 'Script
+  , 'Style
   ]
 
 type CheckableTags =

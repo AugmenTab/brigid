@@ -285,6 +285,10 @@ toAttribute attr =
     GA.Autoplay ->
       A.autoplay "true"
 
+    GA.Blocking blocking ->
+      H.customAttribute "blocking" $
+        textToBlaze Types.blockOptionToText blocking
+
     GA.Capture capture ->
       H.customAttribute "capture" $
         maybe mempty (textToBlaze Types.captureMethodToText) capture

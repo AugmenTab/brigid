@@ -50,6 +50,7 @@ module Brigid.HTML.Generation
   , async
   , autocomplete
   , autoplay
+  , blocking
   , capture
   , charset
   , checked
@@ -193,6 +194,7 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , async
   , autocomplete
   , autoplay
+  , blocking
   , capture
   , charset
   , checked

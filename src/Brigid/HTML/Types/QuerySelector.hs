@@ -135,6 +135,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_accesskey
   , attr_autocapitalize
   , attr_autofocus
+  , attr_blocking
   , attr_class
   , attr_contenteditable
   , attr_customData
@@ -348,6 +349,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Autoplay
       , Attr_Background
       , Attr_BackgroundColor
+      , Attr_Blocking
       , Attr_Border
       , Attr_Capture
       , Attr_Charset
@@ -639,6 +641,7 @@ import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.As (As, asToText)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
+import Brigid.HTML.Types.BlockOption (BlockOption, blockOptionToText)
 import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
@@ -1860,6 +1863,7 @@ data AttributeType
   | Attr_Autoplay
   | Attr_Background
   | Attr_BackgroundColor
+  | Attr_Blocking
   | Attr_Border
   | Attr_Capture
   | Attr_Charset
@@ -2049,6 +2053,7 @@ attributeTypeToBytes attr =
     Attr_Autoplay                -> "autoplay"
     Attr_Background              -> "background"
     Attr_BackgroundColor         -> "bgcolor"
+    Attr_Blocking                -> "blocking"
     Attr_Border                  -> "border"
     Attr_Capture                 -> "capture"
     Attr_Charset                 -> "charset"
@@ -2238,6 +2243,7 @@ attributeTypeFromText attr =
     "autoplay"                -> Right Attr_Autoplay
     "background"              -> Right Attr_Background
     "bgcolor"                 -> Right Attr_BackgroundColor
+    "blocking"                -> Right Attr_Blocking
     "border"                  -> Right Attr_Border
     "capture"                 -> Right Attr_Capture
     "charset"                 -> Right Attr_Charset
@@ -2452,6 +2458,7 @@ attributeTypeToText attr =
     Attr_Autoplay                -> "autoplay"
     Attr_Background              -> "background"
     Attr_BackgroundColor         -> "bgcolor"
+    Attr_Blocking                -> "blocking"
     Attr_Border                  -> "border"
     Attr_Capture                 -> "capture"
     Attr_Charset                 -> "charset"
@@ -2605,6 +2612,10 @@ attr_autocapitalize =
 
 attr_autofocus :: T.Text -> AttributeSelector
 attr_autofocus = (,) Attr_Autofocus . Just
+
+attr_blocking :: BlockOption -> AttributeSelector
+attr_blocking =
+  (,) Attr_Blocking . Just . blockOptionToText
 
 attr_class :: Class.Class -> AttributeSelector
 attr_class = (,) Attr_Class . Just . Class.classToText

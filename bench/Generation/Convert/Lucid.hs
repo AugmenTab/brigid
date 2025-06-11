@@ -296,6 +296,9 @@ toAttribute attr =
     GA.Autoplay ->
       Just $ H.autoplay_ "true"
 
+    GA.Blocking blocking ->
+      Just . B.makeAttribute "blocking" $ Types.blockOptionToText blocking
+
     GA.Capture capture ->
       Just
         . B.makeAttribute "capture"

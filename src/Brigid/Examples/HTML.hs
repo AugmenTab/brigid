@@ -54,6 +54,7 @@ documentExample =
             [ A.rel HTML.Rel_Stylesheet
             , A.href . exampleURL $ GetCustomer 1
             , A.as HTML.AsStyle
+            , A.blocking HTML.Render
             ]
         , HTMX.setConfig $
             HTMX.defaultConfig

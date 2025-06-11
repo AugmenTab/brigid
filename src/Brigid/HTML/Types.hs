@@ -6,6 +6,7 @@ import Brigid.HTML.Types.Action as Export
 import Brigid.HTML.Types.As as Export
 import Brigid.HTML.Types.Autocapitalize as Export
 import Brigid.HTML.Types.AutocompleteToken as Export
+import Brigid.HTML.Types.BlockOption as Export
 import Brigid.HTML.Types.Boolean as Export
 import Brigid.HTML.Types.CaptureMethod as Export
 import Brigid.HTML.Types.Changed as Export

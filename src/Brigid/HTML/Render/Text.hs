@@ -656,6 +656,9 @@ renderAttribute attr =
     Attr_Autoplay ->
       buildBooleanAttribute "autoplay" True
 
+    Attr_Blocking blocking ->
+      Just . buildAttribute "blocking" $ Types.blockOptionToText blocking
+
     Attr_Capture mbCapture ->
       maybe
         (buildBooleanAttribute "capture" True)

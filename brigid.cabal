@@ -89,6 +89,7 @@ library
       Brigid.HTML.Types.As
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
+      Brigid.HTML.Types.BlockOption
       Brigid.HTML.Types.Boolean
       Brigid.HTML.Types.CaptureMethod
       Brigid.HTML.Types.Changed

@@ -28,6 +28,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Async                   = '[ Tags.Script ]
   ValidElementsFor 'Autocomplete            = TagGroups.AutocompletableTags
   ValidElementsFor 'Autoplay                = TagGroups.MediaContent
+  ValidElementsFor 'Blocking                = TagGroups.BlockingTags
   ValidElementsFor 'Capture                 = [ Tags.Input, Tags.InputFile ]
   ValidElementsFor 'Charset                 = [ Tags.Meta, Tags.Script ]
   ValidElementsFor 'Checked                 = TagGroups.CheckableTags

@@ -42,6 +42,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , async
   , autocomplete
   , autoplay
+  , blocking
   , capture
   , charset
   , checked
@@ -208,6 +209,7 @@ data Attribute
   | Async
   | Autocomplete Types.OnOff
   | Autoplay
+  | Blocking Types.BlockOption
   | Capture (Maybe Types.CaptureMethod)
   | Charset
   | Checked Bool
@@ -355,6 +357,7 @@ attributeText attr =
     Async -> "async"
     Autocomplete _ -> "autocomplete"
     Autoplay -> "autoplay"
+    Blocking _ -> "blocking"
     Capture _ -> "capture"
     Charset -> "charset"
     Checked _ -> "checked"
@@ -615,6 +618,10 @@ autocomplete =
 autoplay :: MonadGen m => m Attribute
 autoplay =
   pure Autoplay
+
+blocking :: MonadGen m => m Attribute
+blocking =
+  Blocking <$> Gen.enumBounded
 
 capture :: MonadGen m => m Attribute
 capture =

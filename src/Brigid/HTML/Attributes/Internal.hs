@@ -49,6 +49,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Async
       , Attr_Autocomplete
       , Attr_Autoplay
+      , Attr_Blocking
       , Attr_Capture
       , Attr_Charset
       , Attr_Checked
@@ -383,6 +384,11 @@ data Attribute (tag :: TagType) where
   Attr_Autoplay
     :: ValidAttribute 'Autoplay tag
     => Attribute tag
+
+  Attr_Blocking
+    :: ValidAttribute 'Blocking tag
+    => Types.BlockOption
+    -> Attribute tag
 
   Attr_Capture
     :: ValidAttribute 'Capture tag
@@ -1102,6 +1108,9 @@ attributeText attr =
 
     Attr_Autoplay ->
       "autoplay"
+
+    Attr_Blocking _blocking ->
+      "blocking"
 
     Attr_Capture _capture ->
       "capture"

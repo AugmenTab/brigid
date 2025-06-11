@@ -47,6 +47,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Async
       , Autocomplete
       , Autoplay
+      , Blocking
       , Capture
       , Charset
       , Checked
@@ -229,6 +230,7 @@ data AttributeType
   | Async
   | Autocomplete
   | Autoplay
+  | Blocking
   | Capture
   | Charset
   | Checked
@@ -407,6 +409,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Async                   = 'Text "Async (async)"
   AttributeErrorMessage Autocomplete            = 'Text "Autocomplete (autocomplete)"
   AttributeErrorMessage Autoplay                = 'Text "Autoplay (autoplay)"
+  AttributeErrorMessage Blocking                = 'Text "Blocking (blocking)"
   AttributeErrorMessage Capture                 = 'Text "Capture (capture)"
   AttributeErrorMessage Charset                 = 'Text "Charset (charset)"
   AttributeErrorMessage Checked                 = 'Text "Checked (checked)"

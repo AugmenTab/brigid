@@ -14,6 +14,7 @@ module Brigid.HTML.Attributes.Scoped
   , ValidAutocomplete
   , AttributeTags.Autocomplete, autocomplete
   , AttributeTags.Autoplay, autoplay
+  , AttributeTags.Blocking, blocking
   , AttributeTags.Capture, capture
   , AttributeTags.Charset, charset
   , AttributeTags.Checked, check
@@ -214,6 +215,11 @@ autocomplete =
 
 autoplay :: ValidAttribute AttributeTags.Autoplay tag => Attribute tag
 autoplay = Attr_Autoplay
+
+blocking :: ValidAttribute AttributeTags.Blocking tag
+         => Types.BlockOption -> Attribute tag
+blocking =
+  Attr_Blocking
 
 capture :: ValidAttribute AttributeTags.Capture tag
         => Maybe Types.CaptureMethod -> Attribute tag

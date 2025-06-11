@@ -1071,6 +1071,7 @@ listItemContent = flowContent
 linkAttrs :: MonadGen m => [m A.Attribute]
 linkAttrs =
   [ A.as
+  , A.blocking
   , A.crossorigin
   , A.disabled
   , A.fetchpriority
@@ -1321,6 +1322,7 @@ sampleContent = phrasingContent
 scriptAttrs :: MonadGen m => [m A.Attribute]
 scriptAttrs =
   [ A.async
+  , A.blocking
   , A.crossorigin
   , A.defer
   , A.fetchpriority
@@ -1377,7 +1379,8 @@ strongContent = phrasingContent
 
 styleAttrs :: MonadGen m => [m A.Attribute]
 styleAttrs =
-  [ A.nonce
+  [ A.blocking
+  , A.nonce
   , A.title
   ]
 

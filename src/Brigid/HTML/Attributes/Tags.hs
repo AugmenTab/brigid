@@ -44,6 +44,7 @@ module Brigid.HTML.Attributes.Tags
   , Async
   , Autocomplete
   , Autoplay
+  , Blocking
   , Capture
   , Charset
   , Checked
@@ -220,6 +221,7 @@ type As = 'AttributeType.As
 type Async = 'AttributeType.Async
 type Autocomplete = 'AttributeType.Autocomplete
 type Autoplay = 'AttributeType.Autoplay
+type Blocking = 'AttributeType.Blocking
 type Capture = 'AttributeType.Capture
 type Charset = 'AttributeType.Charset
 type Checked = 'AttributeType.Checked
