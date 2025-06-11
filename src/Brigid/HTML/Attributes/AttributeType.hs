@@ -69,6 +69,7 @@ module Brigid.HTML.Attributes.AttributeType
       , Disabled
       , DisableRemotePlayback
       , Download
+      , ElementTiming
       , Enctype
       , FetchPriority
       , For
@@ -252,6 +253,7 @@ data AttributeType
   | DisablePictureInPicture
   | DisableRemotePlayback
   | Download
+  | ElementTiming
   | Enctype
   | FetchPriority
   | For
@@ -431,6 +433,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage DisablePictureInPicture = 'Text "Disabled (disabled)"
   AttributeErrorMessage DisableRemotePlayback   = 'Text "DisableRemotePlayback (disableremoteplayback)"
   AttributeErrorMessage Download                = 'Text "Download (download)"
+  AttributeErrorMessage ElementTiming           = 'Text "ElementTiming (elementtiming)"
   AttributeErrorMessage Enctype                 = 'Text "Enctype (enctype)"
   AttributeErrorMessage FetchPriority           = 'Text "FetchPriority (fetchpriority)"
   AttributeErrorMessage For                     = 'Text "For (for)"

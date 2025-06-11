@@ -71,6 +71,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_DisablePictureInPicture
       , Attr_DisableRemotePlayback
       , Attr_Download
+      , Attr_ElementTiming
       , Attr_Enctype
       , Attr_FetchPriority
       , Attr_For
@@ -487,6 +488,11 @@ data Attribute (tag :: TagType) where
   Attr_Download
     :: ValidAttribute 'Download tag
     => Maybe NET.NonEmptyText
+    -> Attribute tag
+
+  Attr_ElementTiming
+    :: ValidAttribute 'ElementTiming tag
+    => T.Text
     -> Attribute tag
 
   Attr_Enctype
@@ -1174,6 +1180,9 @@ attributeText attr =
 
     Attr_Download _download ->
       "download"
+
+    Attr_ElementTiming _elementtiming ->
+      "elementtiming"
 
     Attr_Enctype _enctype ->
       "enctype"

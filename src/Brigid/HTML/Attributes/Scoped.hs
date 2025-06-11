@@ -39,6 +39,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.DisablePictureInPicture, disablepictureinpicture
   , AttributeTags.DisableRemotePlayback, disableremoteplayback
   , AttributeTags.Download, download
+  , AttributeTags.ElementTiming, elementtiming
   , AttributeTags.Enctype, enctype
   , AttributeTags.FetchPriority, fetchpriority
   , ValidFor
@@ -343,6 +344,10 @@ disableremoteplayback = Attr_DisableRemotePlayback
 download :: ValidAttribute AttributeTags.Download tag
          => Maybe NET.NonEmptyText -> Attribute tag
 download = Attr_Download
+
+elementtiming :: ValidAttribute AttributeTags.ElementTiming tag
+              => T.Text -> Attribute tag
+elementtiming = Attr_ElementTiming
 
 enctype :: ValidAttribute AttributeTags.Enctype tag
         => BS.ByteString -> Attribute tag

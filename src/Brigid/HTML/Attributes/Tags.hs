@@ -66,6 +66,7 @@ module Brigid.HTML.Attributes.Tags
   , Disabled
   , DisableRemotePlayback
   , Download
+  , ElementTiming
   , Enctype
   , FetchPriority
   , For
@@ -243,6 +244,7 @@ type DisablePictureInPicture = 'AttributeType.DisablePictureInPicture
 type Disabled = 'AttributeType.Disabled
 type DisableRemotePlayback = 'AttributeType.DisableRemotePlayback
 type Download = 'AttributeType.Download
+type ElementTiming = 'AttributeType.ElementTiming
 type Enctype = 'AttributeType.Enctype
 type FetchPriority = 'AttributeType.FetchPriority
 type For = 'AttributeType.For

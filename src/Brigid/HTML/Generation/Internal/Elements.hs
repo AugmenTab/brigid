@@ -34,99 +34,99 @@ elementValidAttrs element =
   case element of
     Comment -> []
     Anchor -> anchorAttrs
-    Abbreviation -> []
+    Abbreviation -> [ A.elementtiming ]
     ContactAddress -> []
     Area -> areaAttrs
-    Article -> []
-    Aside -> []
+    Article -> [ A.elementtiming ]
+    Aside -> [ A.elementtiming ]
     Audio -> audioAttrs
-    BringAttentionTo -> []
+    BringAttentionTo -> [ A.elementtiming ]
     Base -> baseAttrs
     BidirectionalIsolation -> []
     BidirectionalOverride -> []
-    Blockquote -> [ A.cite ]
+    Blockquote -> blockquoteAttrs
     Body -> []
     LineBreak -> []
     Button -> buttonAttrs
     Canvas -> canvasAttrs
-    TableCaption -> []
-    Citation -> []
-    Code -> []
+    TableCaption -> [ A.elementtiming ]
+    Citation -> [ A.elementtiming ]
+    Code -> [ A.elementtiming ]
     TableColumn -> [ A.span ]
     TableColumnGroup -> [ A.span ]
     Data -> [ A.data_ ]
     DataList -> []
     DescriptionDetails -> []
     DeletedText -> deletedTextAttrs
-    Details -> [ A.open ]
-    Definition -> []
+    Details -> detailsAttrs
+    Definition -> [ A.elementtiming ]
     Dialog -> [ A.open ]
-    Division -> []
-    DescriptionList -> []
-    DescriptionTerm -> []
-    Emphasis -> []
+    Division -> [ A.elementtiming ]
+    DescriptionList -> [ A.elementtiming ]
+    DescriptionTerm -> [ A.elementtiming ]
+    Emphasis -> [ A.elementtiming ]
     Embed -> embedAttrs
     Fieldset -> fieldsetAttrs
-    FigureCaption -> []
+    FigureCaption -> [ A.elementtiming ]
     Figure -> []
-    Footer -> []
+    Footer -> [ A.elementtiming ]
     Form -> formAttrs
-    H1 -> []
-    H2 -> []
-    H3 -> []
-    H4 -> []
-    H5 -> []
-    H6 -> []
+    H1 -> [ A.elementtiming ]
+    H2 -> [ A.elementtiming ]
+    H3 -> [ A.elementtiming ]
+    H4 -> [ A.elementtiming ]
+    H5 -> [ A.elementtiming ]
+    H6 -> [ A.elementtiming ]
     Head -> []
-    Header -> []
+    Header -> [ A.elementtiming ]
     HeadingGroup -> []
     HorizontalRule -> []
     Html -> []
-    IdiomaticText -> []
+    IdiomaticText -> [ A.elementtiming ]
     IFrame -> iFrameAttrs
     Image -> imageAttrs
     Input -> inputAttrs
     InsertedText -> insertedTextAttrs
-    KeyboardInput -> []
-    Label -> [ A.forLabel ]
-    Legend -> []
-    ListItem -> [ A.value ]
+    KeyboardInput -> [ A.elementtiming ]
+    Label -> labelAttrs
+    Legend -> [ A.elementtiming ]
+    ListItem -> listItemAttrs
     Link -> linkAttrs
-    Main -> []
+    Main -> [ A.elementtiming ]
     Map -> [ A.name ]
-    Mark -> []
+    Mark -> [ A.elementtiming ]
     Menu -> []
     Meta -> metaAttrs
     Meter -> meterAttrs
-    Nav -> []
+    Nav -> [ A.elementtiming ]
     NoScript -> []
     Object -> objectAttrs
     OrderedList -> orderedListAttrs
     OptionGroup -> optionGroupAttrs
     Option -> optionAttrs
     Output -> outputAttrs
-    Paragraph -> []
+    Paragraph -> [ A.elementtiming ]
     Picture -> []
-    PreformattedText -> []
+    PreformattedText -> [ A.elementtiming ]
     Progress -> progressAttrs
-    Quotation -> [ A.cite ]
+    Quotation -> quotationAttrs
     RubyParenthesis -> []
     RubyText -> []
     Ruby -> []
     Strikethrough -> []
-    Sample -> []
+    Sample -> [ A.elementtiming ]
     Script -> scriptAttrs
     Search -> []
-    Section -> []
+    Section -> [ A.elementtiming ]
     Select -> selectAttrs
     Slot -> [ A.name ]
-    SideComment -> []
+    SideComment -> [ A.elementtiming ]
     Source -> sourceAttrs
-    Span -> []
-    Strong -> []
+    Span -> [ A.elementtiming ]
+    Strong -> [ A.elementtiming ]
     Style -> styleAttrs
     Subscript -> []
-    Summary -> []
+    Summary -> [ A.elementtiming ]
     Superscript -> []
     Table -> []
     TableBody -> []
@@ -136,13 +136,13 @@ elementValidAttrs element =
     TableFoot -> []
     TableHeader -> tableHeaderAttrs
     TableHead -> []
-    Time -> [ A.datetime ]
+    Time -> timeAttrs
     Title -> []
     TableRow -> []
     Track -> trackAttrs
-    Underline -> []
+    Underline -> [ A.elementtiming ]
     UnorderedList -> []
-    Variable -> []
+    Variable -> [ A.elementtiming ]
     Video -> videoAttrs
     WordBreakOpportunity -> []
 
@@ -382,14 +382,15 @@ elementWeight et =
 
 anchorAttrs :: MonadGen m => [m A.Attribute]
 anchorAttrs =
-  [ A.href
-  , A.target
-  , A.download
-  , A.ping
-  , A.rel
+  [ A.download
+  , A.elementtiming
+  , A.href
   , A.hreflang
-  , A.type_
+  , A.ping
   , A.referrerpolicy
+  , A.rel
+  , A.target
+  , A.type_
   ]
 
 abbreviationContent :: Set ElementType
@@ -520,6 +521,12 @@ bidirectionalOverrideContent = phrasingContent
 blockquoteContent :: Set ElementType
 blockquoteContent = flowContent
 
+blockquoteAttrs :: MonadGen m => [m A.Attribute]
+blockquoteAttrs =
+  [ A.cite
+  , A.elementtiming
+  ]
+
 bodyContent :: Set ElementType
 bodyContent = flowContent
 
@@ -527,6 +534,7 @@ buttonAttrs :: MonadGen m => [m A.Attribute]
 buttonAttrs =
   [ A.autofocus
   , A.disabled
+  , A.elementtiming
   , A.form
   , A.formaction
   , A.formenctype
@@ -534,10 +542,10 @@ buttonAttrs =
   , A.formnovalidate
   , A.formtarget
   , A.name
-  , A.type_
-  , A.value
   , A.popovertarget
   , A.popovertargetaction
+  , A.type_
+  , A.value
   ]
 
 buttonContent :: Set ElementType
@@ -588,7 +596,8 @@ buttonContent =
 
 canvasAttrs :: MonadGen m => [m A.Attribute]
 canvasAttrs =
-  [ A.height
+  [ A.elementtiming
+  , A.height
   , A.width
   ]
 
@@ -624,6 +633,12 @@ deletedTextAttrs =
 detailsContent :: Set ElementType
 detailsContent =
   Set.insert Summary flowContent
+
+detailsAttrs :: MonadGen m => [m A.Attribute]
+detailsAttrs =
+  [ A.elementtiming
+  , A.open
+  ]
 
 definitionContent :: Set ElementType
 definitionContent =
@@ -776,6 +791,7 @@ embedAttrs =
 fieldsetAttrs :: MonadGen m => [m A.Attribute]
 fieldsetAttrs =
   [ A.disabled
+  , A.elementtiming
   , A.form
   , A.name
   ]
@@ -935,15 +951,16 @@ idiomaticTextContent = phrasingContent
 
 iFrameAttrs :: MonadGen m => [m A.Attribute]
 iFrameAttrs =
-  [ A.src
-  , A.srcdoc
-  , A.name
-  , A.width
+  [ A.allow
+  , A.elementtiming
   , A.height
-  , A.sandbox
-  , A.allow
   , A.loading
+  , A.name
   , A.referrerpolicy
+  , A.sandbox
+  , A.src
+  , A.srcdoc
+  , A.width
   ]
 
 imageAttrs :: MonadGen m => [m A.Attribute]
@@ -951,6 +968,7 @@ imageAttrs =
   [ A.alt
   , A.crossorigin
   , A.decoding
+  , A.elementtiming
   , A.fetchpriority
   , A.height
   , A.ismap
@@ -1061,12 +1079,24 @@ labelContent =
     , WordBreakOpportunity
     ]
 
+labelAttrs :: MonadGen m => [m A.Attribute]
+labelAttrs =
+  [ A.elementtiming
+  , A.forLabel
+  ]
+
 legendContent :: Set ElementType
 legendContent =
   headings <> phrasingContent
 
 listItemContent :: Set ElementType
 listItemContent = flowContent
+
+listItemAttrs :: MonadGen m => [m A.Attribute]
+listItemAttrs =
+  [ A.elementtiming
+  , A.value
+  ]
 
 linkAttrs :: MonadGen m => [m A.Attribute]
 linkAttrs =
@@ -1224,7 +1254,8 @@ optionAttrs =
 
 outputAttrs :: MonadGen m => [m A.Attribute]
 outputAttrs =
-  [ A.forOutput
+  [ A.elementtiming
+  , A.forOutput
   , A.form
   , A.name
   ]
@@ -1302,6 +1333,12 @@ progressContent =
 
 quotationContent :: Set ElementType
 quotationContent = phrasingContent
+
+quotationAttrs :: MonadGen m => [m A.Attribute]
+quotationAttrs =
+  [ A.cite
+  , A.elementtiming
+  ]
 
 rubyTextContent :: Set ElementType
 rubyTextContent = phrasingContent
@@ -1412,6 +1449,7 @@ tableBodyContent =
 tableDataCellAttrs :: MonadGen m => [m A.Attribute]
 tableDataCellAttrs =
   [ A.colspan
+  , A.elementtiming
   , A.headers
   , A.rowspan
   ]
@@ -1450,6 +1488,7 @@ tableHeaderAttrs :: MonadGen m => [m A.Attribute]
 tableHeaderAttrs =
   [ A.abbr
   , A.colspan
+  , A.elementtiming
   , A.headers
   , A.rowspan
   , A.scope
@@ -1536,6 +1575,12 @@ tableHeadContent =
 timeContent :: Set ElementType
 timeContent = phrasingContent
 
+timeAttrs :: MonadGen m => [m A.Attribute]
+timeAttrs =
+  [ A.datetime
+  , A.elementtiming
+  ]
+
 tableRowContent :: Set ElementType
 tableRowContent =
   Set.fromList [ TableDataCell, TableHeader ]
@@ -1567,6 +1612,7 @@ videoAttrs =
   , A.crossorigin
   , A.disablepictureinpicture
   , A.disableremoteplayback
+  , A.elementtiming
   , A.height
   , A.loop
   , A.muted

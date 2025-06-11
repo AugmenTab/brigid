@@ -755,6 +755,11 @@ renderAttribute attr =
         (Just . buildAttribute "download" . Render.textToLazyBytes . NET.toText)
         download
 
+    Attr_ElementTiming elementtiming ->
+      Just
+        . buildAttribute "elementtiming"
+        $ Render.textToLazyBytes elementtiming
+
     Attr_Enctype enctype ->
       Just . buildAttribute "enctype" $ Render.bytesToLazyBytes enctype
 

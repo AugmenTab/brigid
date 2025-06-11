@@ -374,6 +374,9 @@ toAttribute attr =
     GA.Download download ->
       Just . H.download_ $ maybe mempty NET.toText download
 
+    GA.ElementTiming elementtiming ->
+      Just $ B.makeAttribute "elementtiming" elementtiming
+
     GA.Enctype enctype ->
       Just . H.enctype_ $ TE.decodeUtf8 enctype
 

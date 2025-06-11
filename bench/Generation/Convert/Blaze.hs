@@ -358,6 +358,9 @@ toAttribute attr =
     GA.Download download ->
       A.download $ maybe mempty (textToBlaze NET.toText) download
 
+    GA.ElementTiming elementtiming ->
+      H.customAttribute "elementtiming" $ textToBlaze id elementtiming
+
     GA.Enctype enctype ->
       A.enctype $ H.unsafeByteStringValue enctype
 

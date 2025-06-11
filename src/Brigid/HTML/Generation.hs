@@ -73,6 +73,7 @@ module Brigid.HTML.Generation
   , disablepictureinpicture
   , disableremoteplayback
   , download
+  , elementtiming
   , enctype
   , fetchpriority
   , forLabel
@@ -218,6 +219,7 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , disablepictureinpicture
   , disableremoteplayback
   , download
+  , elementtiming
   , enctype
   , fetchpriority
   , forLabel

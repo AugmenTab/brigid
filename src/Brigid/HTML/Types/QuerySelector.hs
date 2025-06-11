@@ -197,6 +197,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_disablepictureinpicture
   , attr_disableremoteplayback
   , attr_download
+  , attr_elementtiming
   , attr_enctype
   , attr_fetchpriority
   , attr_for
@@ -373,6 +374,7 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_DisablePictureInPicture
       , Attr_DisableRemotePlayback
       , Attr_Download
+      , Attr_ElementTiming
       , Attr_Enctype
       , Attr_FetchPriority
       , Attr_For
@@ -1887,6 +1889,7 @@ data AttributeType
   | Attr_DisablePictureInPicture
   | Attr_DisableRemotePlayback
   | Attr_Download
+  | Attr_ElementTiming
   | Attr_Enctype
   | Attr_FetchPriority
   | Attr_For
@@ -2077,6 +2080,7 @@ attributeTypeToBytes attr =
     Attr_DisablePictureInPicture -> "disablepictureinpicture"
     Attr_DisableRemotePlayback   -> "disabled"
     Attr_Download                -> "download"
+    Attr_ElementTiming           -> "elementtiming"
     Attr_Enctype                 -> "enctype"
     Attr_FetchPriority           -> "fetchpriority"
     Attr_For                     -> "for"
@@ -2266,6 +2270,7 @@ attributeTypeFromText attr =
     "disablepictureinpicture" -> Right Attr_DisablePictureInPicture
     "disableremoteplayback"   -> Right Attr_DisableRemotePlayback
     "download"                -> Right Attr_Download
+    "elementtiming"           -> Right Attr_ElementTiming
     "enctype"                 -> Right Attr_Enctype
     "fetchpriority"           -> Right Attr_FetchPriority
     "for"                     -> Right Attr_For
@@ -2482,6 +2487,7 @@ attributeTypeToText attr =
     Attr_DisablePictureInPicture -> "disablepictureinpicture"
     Attr_DisableRemotePlayback   -> "disableremoteplayback"
     Attr_Download                -> "download"
+    Attr_ElementTiming           -> "elementtiming"
     Attr_Enctype                 -> "enctype"
     Attr_FetchPriority           -> "fetchpriority"
     Attr_For                     -> "for"
@@ -2847,6 +2853,9 @@ attr_disableremoteplayback = (Attr_DisableRemotePlayback, Nothing)
 
 attr_download :: Maybe NET.NonEmptyText -> AttributeSelector
 attr_download = (,) Attr_Download . fmap NET.toText
+
+attr_elementtiming :: T.Text -> AttributeSelector
+attr_elementtiming = (,) Attr_ElementTiming . Just
 
 attr_enctype :: BS.ByteString -> AttributeSelector
 attr_enctype = (,) Attr_Enctype . Just . Render.bytesToText

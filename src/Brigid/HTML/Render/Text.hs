@@ -735,6 +735,9 @@ renderAttribute attr =
         (Just . buildAttribute "download" . NET.toText)
         download
 
+    Attr_ElementTiming elementtiming ->
+      Just $ buildAttribute "elementtiming" elementtiming
+
     Attr_Enctype enctype ->
       Just . buildAttribute "enctype" $ Render.bytesToText enctype
 

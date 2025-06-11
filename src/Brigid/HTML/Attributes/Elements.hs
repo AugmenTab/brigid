@@ -50,6 +50,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'DisablePictureInPicture = '[ Tags.Video ]
   ValidElementsFor 'DisableRemotePlayback   = TagGroups.MediaContent
   ValidElementsFor 'Download                = '[ Tags.Anchor ]
+  ValidElementsFor 'ElementTiming           = TagGroups.ElementTimingTags
   ValidElementsFor 'Enctype                 = '[ Tags.Form ]
   ValidElementsFor 'FetchPriority           = [ Tags.Image, Tags.Link, Tags.Script ]
   ValidElementsFor 'For                     = [ Tags.Label, Tags.Output ]

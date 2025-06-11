@@ -51,6 +51,7 @@ module Brigid.HTML.Elements.TagGroups
   , CrossOriginTags
   , DirnameableTags
   , DisableableTags
+  , ElementTimingTags
   , FormMethodTags
   , FormNoValidateTags
   , FormSubmitTags
@@ -790,6 +791,62 @@ type DisableableTags =
     , 'Select
     , 'TextArea
     ]
+
+type ElementTimingTags =
+  [ 'Abbreviation
+  , 'Anchor
+  , 'Article
+  , 'Aside
+  , 'Blockquote
+  , 'BringAttentionTo
+  , 'Button
+  , 'Canvas
+  , 'Citation
+  , 'Code
+  , 'Definition
+  , 'DescriptionDetails
+  , 'DescriptionTerm
+  , 'Details
+  , 'Division
+  , 'Emphasis
+  , 'Fieldset
+  , 'FigureCaption
+  , 'Footer
+  , 'H1
+  , 'H2
+  , 'H3
+  , 'H4
+  , 'H5
+  , 'H6
+  , 'Header
+  , 'IFrame
+  , 'IdiomaticText
+  , 'Image
+  , 'KeyboardInput
+  , 'Label
+  , 'Legend
+  , 'ListItem
+  , 'Main
+  , 'Mark
+  , 'Nav
+  , 'Output
+  , 'Paragraph
+  , 'PreformattedText
+  , 'Quotation
+  , 'Sample
+  , 'Section
+  , 'SideComment
+  , 'Span
+  , 'Strong
+  , 'Summary
+  , 'TableCaption
+  , 'TableDataCell
+  , 'TableHeader
+  , 'Time
+  , 'Underline
+  , 'Variable
+  , 'Video
+  ]
 
 type FormMethodTags =
   [ 'Input

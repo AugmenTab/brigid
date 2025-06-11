@@ -65,6 +65,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , disablepictureinpicture
   , disableremoteplayback
   , download
+  , elementtiming
   , enctype
   , fetchpriority
   , forLabel
@@ -233,6 +234,7 @@ data Attribute
   | DisablePictureInPicture
   | DisableRemotePlayback
   | Download (Maybe NET.NonEmptyText)
+  | ElementTiming T.Text
   | Enctype BS.ByteString
   | FetchPriority Types.FetchPriority
   | ForLabel Types.Id
@@ -382,6 +384,7 @@ attributeText attr =
     DisablePictureInPicture -> "disablepictureinpicture"
     DisableRemotePlayback -> "disableremoteplayback"
     Download _ -> "download"
+    ElementTiming _ -> "elementtiming"
     Enctype _ -> "enctype"
     FetchPriority _ -> "fetchpriority"
     ForLabel _ -> "for"
@@ -715,6 +718,10 @@ disableremoteplayback =
 download :: MonadGen m => m Attribute
 download =
   Download <$> Gen.maybe Generators.nonEmptyText
+
+elementtiming :: MonadGen m => m Attribute
+elementtiming =
+  ElementTiming <$> Generators.text
 
 enctype :: MonadGen m => m Attribute
 enctype =
