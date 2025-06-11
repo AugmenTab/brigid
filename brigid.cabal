@@ -81,6 +81,7 @@ library
       Brigid.HTML.Generation.Internal.Analysis
       Brigid.HTML.Generation.Internal.Attributes
       Brigid.HTML.Generation.Internal.Build
+      Brigid.HTML.Generation.Internal.Convert
       Brigid.HTML.Generation.Internal.Elements
       Brigid.HTML.Generation.Internal.Generators
       Brigid.HTML.Generation.Internal.Types

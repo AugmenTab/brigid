@@ -5,21 +5,24 @@ module Brigid.HTML.Generation.Internal.Attributes
   , autocapitalize
   , autofocus
   , class_
+  , command
+  , commandfor
   , contentEditable
+  , customData
   , dir
   , draggable
-  , enterKeyHint
-  , exportParts
+  , enterkeyhint
+  , exportparts
   , hidden
   , id
   , inert
-  , inputMode
+  , inputmode
   , is
-  , itemId
-  , itemProp
-  , itemRef
-  , itemScope
-  , itemType
+  , itemid
+  , itemprop
+  , itemref
+  , itemscope
+  , itemtype
   , lang
   , nonce
   , part
@@ -31,10 +34,10 @@ module Brigid.HTML.Generation.Internal.Attributes
   , tabIndex
   , title
   , translate
-  , writingSuggestions
+  , writingsuggestions
   , abbr
   , accept
-  , acceptcharset
+  , acceptCharset
   , action
   , allow
   , alt
@@ -42,6 +45,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , async
   , autocomplete
   , autoplay
+  , blocking
   , capture
   , charset
   , checked
@@ -63,6 +67,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , disablepictureinpicture
   , disableremoteplayback
   , download
+  , elementtiming
   , enctype
   , fetchpriority
   , forLabel
@@ -168,7 +173,10 @@ data Attribute
   | Autocapitalize Types.AutocapitalizeOption
   | Autofocus Bool
   | Class Types.Class
+  | Command
+  | CommandFor Types.Id
   | ContentEditable Types.ContentEditableOption
+  | CustomData T.Text T.Text
   | Dir Types.Directionality
   | Draggable Bool
   | EnterKeyHint Types.KeyHintOption
@@ -191,7 +199,7 @@ data Attribute
   | Slot Types.Name
   | Spellcheck Bool
   | Style T.Text
-  | TabIndex Integer
+  | TabIndex Types.Reachability
   | Title T.Text
   | Translate Types.YesNo
   | WritingSuggestions Bool
@@ -208,6 +216,7 @@ data Attribute
   | Async
   | Autocomplete Types.OnOff
   | Autoplay
+  | Blocking
   | Capture (Maybe Types.CaptureMethod)
   | Charset
   | Checked Bool
@@ -229,6 +238,7 @@ data Attribute
   | DisablePictureInPicture
   | DisableRemotePlayback
   | Download (Maybe NET.NonEmptyText)
+  | ElementTiming T.Text
   | Enctype BS.ByteString
   | FetchPriority Types.FetchPriority
   | ForLabel Types.Id
@@ -315,7 +325,10 @@ attributeText attr =
     Autocapitalize _ -> "autocapitalize"
     Autofocus _ -> "autofocus"
     Class _ -> "class"
+    Command -> "command"
+    CommandFor _ -> "commandfor"
     ContentEditable _ -> "contenteditable"
+    CustomData d _ -> "data-" <> d
     Dir _ -> "dir"
     Draggable _ -> "draggable"
     EnterKeyHint _ -> "enterkeyhint"
@@ -355,6 +368,7 @@ attributeText attr =
     Async -> "async"
     Autocomplete _ -> "autocomplete"
     Autoplay -> "autoplay"
+    Blocking -> "blocking"
     Capture _ -> "capture"
     Charset -> "charset"
     Checked _ -> "checked"
@@ -376,6 +390,7 @@ attributeText attr =
     DisablePictureInPicture -> "disablepictureinpicture"
     DisableRemotePlayback -> "disableremoteplayback"
     Download _ -> "download"
+    ElementTiming _ -> "elementtiming"
     Enctype _ -> "enctype"
     FetchPriority _ -> "fetchpriority"
     ForLabel _ -> "for"
@@ -468,9 +483,23 @@ class_ :: MonadGen m => m Attribute
 class_ =
   Class <$> Generators.class_
 
+command :: MonadGen m => m Attribute
+command =
+  pure Command -- TODO
+
+commandfor :: MonadGen m => m Attribute
+commandfor =
+  CommandFor <$> Generators.id
+
 contentEditable :: MonadGen m => m Attribute
 contentEditable =
   ContentEditable <$> Generators.contentEditableOption
+
+customData :: MonadGen m => m Attribute
+customData =
+  CustomData
+    <$> Generators.text
+    <*> Generators.text
 
 dir :: MonadGen m => m Attribute
 dir =
@@ -480,12 +509,12 @@ draggable :: MonadGen m => m Attribute
 draggable =
   Draggable <$> Gen.bool
 
-enterKeyHint :: MonadGen m => m Attribute
-enterKeyHint =
+enterkeyhint :: MonadGen m => m Attribute
+enterkeyhint =
   EnterKeyHint <$> Generators.keyHintOption
 
-exportParts :: MonadGen m => m Attribute
-exportParts =
+exportparts :: MonadGen m => m Attribute
+exportparts =
   ExportParts <$> Gen.list (Range.linear 0 6) Generators.exportPart
 
 hidden :: MonadGen m => m Attribute
@@ -500,32 +529,32 @@ inert :: MonadGen m => m Attribute
 inert =
   Inert <$> Gen.bool
 
-inputMode :: MonadGen m => m Attribute
-inputMode =
+inputmode :: MonadGen m => m Attribute
+inputmode =
   InputMode <$> Generators.inputMode
 
 is :: MonadGen m => m Attribute
 is =
   Is <$> Generators.text
 
-itemId :: MonadGen m => m Attribute
-itemId =
+itemid :: MonadGen m => m Attribute
+itemid =
   ItemId <$> Generators.text
 
-itemProp :: MonadGen m => m Attribute
-itemProp =
+itemprop :: MonadGen m => m Attribute
+itemprop =
   ItemProp <$> Generators.text
 
-itemRef :: MonadGen m => m Attribute
-itemRef =
+itemref :: MonadGen m => m Attribute
+itemref =
   ItemRef <$> Gen.nonEmpty (Range.linear 1 6) Generators.id
 
-itemScope :: MonadGen m => m Attribute
-itemScope =
+itemscope :: MonadGen m => m Attribute
+itemscope =
   pure ItemScope
 
-itemType :: MonadGen m => m Attribute
-itemType =
+itemtype :: MonadGen m => m Attribute
+itemtype =
   ItemType <$> Generators.url
 
 lang :: MonadGen m => m Attribute
@@ -562,7 +591,7 @@ style =
 
 tabIndex :: MonadGen m => m Attribute
 tabIndex =
-  TabIndex <$> Generators.integer
+  TabIndex <$> Generators.reachability
 
 title :: MonadGen m => m Attribute
 title =
@@ -572,8 +601,8 @@ translate :: MonadGen m => m Attribute
 translate =
   Translate <$> Generators.yesNo
 
-writingSuggestions :: MonadGen m => m Attribute
-writingSuggestions =
+writingsuggestions :: MonadGen m => m Attribute
+writingsuggestions =
   WritingSuggestions <$> Gen.bool
 
 abbr :: MonadGen m => m Attribute
@@ -584,8 +613,8 @@ accept :: MonadGen m => m Attribute
 accept =
   Accept <$> Generators.byteString
 
-acceptcharset :: MonadGen m => m Attribute
-acceptcharset =
+acceptCharset :: MonadGen m => m Attribute
+acceptCharset =
   pure AcceptCharset
 
 action :: MonadGen m => m Attribute
@@ -615,6 +644,10 @@ autocomplete =
 autoplay :: MonadGen m => m Attribute
 autoplay =
   pure Autoplay
+
+blocking :: MonadGen m => m Attribute
+blocking =
+  pure Blocking -- TODO
 
 capture :: MonadGen m => m Attribute
 capture =
@@ -699,6 +732,10 @@ disableremoteplayback =
 download :: MonadGen m => m Attribute
 download =
   Download <$> Gen.maybe Generators.nonEmptyText
+
+elementtiming :: MonadGen m => m Attribute
+elementtiming =
+  ElementTiming <$> Generators.text
 
 enctype :: MonadGen m => m Attribute
 enctype =

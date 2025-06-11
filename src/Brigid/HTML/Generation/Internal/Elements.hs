@@ -54,11 +54,11 @@ elementValidAttrs element =
     Code -> []
     TableColumn -> [ A.span ]
     TableColumnGroup -> [ A.span ]
-    Data -> [ A.data_ ]
+    Data -> [ A.value ]
     DataList -> []
     DescriptionDetails -> []
     DeletedText -> deletedTextAttrs
-    Details -> [ A.open ]
+    Details -> detailsAttrs
     Definition -> []
     Dialog -> [ A.open ]
     Division -> []
@@ -81,7 +81,7 @@ elementValidAttrs element =
     Header -> []
     HeadingGroup -> []
     HorizontalRule -> []
-    Html -> []
+    Html -> [ A.xmlns ]
     IdiomaticText -> []
     IFrame -> iFrameAttrs
     Image -> imageAttrs
@@ -131,7 +131,7 @@ elementValidAttrs element =
     Table -> []
     TableBody -> []
     TableDataCell -> tableDataCellAttrs
-    ContentTemplate -> []
+    ContentTemplate -> contentTemplateAttrs
     TextArea -> textAreaAttrs
     TableFoot -> []
     TableHeader -> tableHeaderAttrs
@@ -382,14 +382,14 @@ elementWeight et =
 
 anchorAttrs :: MonadGen m => [m A.Attribute]
 anchorAttrs =
-  [ A.href
-  , A.target
-  , A.download
-  , A.ping
-  , A.rel
+  [ A.download
+  , A.href
   , A.hreflang
-  , A.type_
+  , A.ping
   , A.referrerpolicy
+  , A.rel
+  , A.target
+  , A.type_
   ]
 
 abbreviationContent :: Set ElementType
@@ -489,14 +489,15 @@ asideContent = flowContent
 
 audioAttrs :: MonadGen m => [m A.Attribute]
 audioAttrs =
-  [ A.src
-  , A.preload
-  , A.autoplay
+  [ A.autoplay
+  , A.controls
+  , A.controlslist
+  , A.crossorigin
+  , A.disableremoteplayback
   , A.loop
   , A.muted
-  , A.controls
-  , A.crossorigin
-  , A.controlslist
+  , A.preload
+  , A.src
   ]
 
 audioContent :: Set ElementType
@@ -526,6 +527,8 @@ bodyContent = flowContent
 buttonAttrs :: MonadGen m => [m A.Attribute]
 buttonAttrs =
   [ A.autofocus
+  , A.command
+  , A.commandfor
   , A.disabled
   , A.form
   , A.formaction
@@ -534,10 +537,10 @@ buttonAttrs =
   , A.formnovalidate
   , A.formtarget
   , A.name
-  , A.type_
-  , A.value
   , A.popovertarget
   , A.popovertargetaction
+  , A.type_
+  , A.value
   ]
 
 buttonContent :: Set ElementType
@@ -624,6 +627,12 @@ deletedTextAttrs =
 detailsContent :: Set ElementType
 detailsContent =
   Set.insert Summary flowContent
+
+detailsAttrs :: MonadGen m => [m A.Attribute]
+detailsAttrs =
+  [ A.name
+  , A.open
+  ]
 
 definitionContent :: Set ElementType
 definitionContent =
@@ -767,10 +776,10 @@ emphasisContent = phrasingContent
 
 embedAttrs :: MonadGen m => [m A.Attribute]
 embedAttrs =
-  [ A.src
+  [ A.height
+  , A.src
   , A.type_
   , A.width
-  , A.height
   ]
 
 fieldsetAttrs :: MonadGen m => [m A.Attribute]
@@ -796,14 +805,16 @@ footerContent = marginalContent
 
 formAttrs :: MonadGen m => [m A.Attribute]
 formAttrs =
-  [ A.acceptcharset
-  , A.autocomplete
-  , A.name
-  , A.rel
+  [ A.accept
+  , A.acceptCharset
   , A.action
+  , A.autocapitalize
+  , A.autocomplete
   , A.enctype
   , A.method
+  , A.name
   , A.novalidate
+  , A.rel
   , A.target
   ]
 
@@ -935,15 +946,15 @@ idiomaticTextContent = phrasingContent
 
 iFrameAttrs :: MonadGen m => [m A.Attribute]
 iFrameAttrs =
-  [ A.src
-  , A.srcdoc
-  , A.name
-  , A.width
+  [ A.allow
   , A.height
-  , A.sandbox
-  , A.allow
   , A.loading
+  , A.name
   , A.referrerpolicy
+  , A.sandbox
+  , A.src
+  , A.srcdoc
+  , A.width
   ]
 
 imageAttrs :: MonadGen m => [m A.Attribute]
@@ -951,15 +962,17 @@ imageAttrs =
   [ A.alt
   , A.crossorigin
   , A.decoding
+  , A.elementtiming
   , A.fetchpriority
   , A.height
   , A.ismap
   , A.loading
   , A.referrerpolicy
+  , A.sizes
   , A.src
   , A.srcset
-  , A.width
   , A.usemap
+  , A.width
   ]
 
 inputAttrs :: MonadGen m => [m A.Attribute]
@@ -1071,6 +1084,7 @@ listItemContent = flowContent
 linkAttrs :: MonadGen m => [m A.Attribute]
 linkAttrs =
   [ A.as
+  , A.blocking
   , A.crossorigin
   , A.disabled
   , A.fetchpriority
@@ -1079,8 +1093,10 @@ linkAttrs =
   , A.imagesizes
   , A.imagesrcset
   , A.integrity
+  , A.media
   , A.referrerpolicy
   , A.rel
+  , A.sizes
   , A.title
   , A.type_
   ]
@@ -1114,18 +1130,19 @@ metaAttrs =
   [ A.charset
   , A.content
   , A.httpEquiv
+  , A.media
   , A.nameMeta
   ]
 
 meterAttrs :: MonadGen m => [m A.Attribute]
 meterAttrs =
-  [ A.value
-  , A.min
-  , A.max
-  , A.low
+  [ A.form
   , A.high
+  , A.low
+  , A.max
+  , A.min
   , A.optimum
-  , A.form
+  , A.value
   ]
 
 meterContent :: Set ElementType
@@ -1321,6 +1338,7 @@ sampleContent = phrasingContent
 scriptAttrs :: MonadGen m => [m A.Attribute]
 scriptAttrs =
   [ A.async
+  , A.blocking
   , A.crossorigin
   , A.defer
   , A.fetchpriority
@@ -1362,10 +1380,12 @@ sideCommentContent = phrasingContent
 
 sourceAttrs :: MonadGen m => [m A.Attribute]
 sourceAttrs =
-  [ A.type_
+  [ A.height
+  , A.media
+  , A.sizes
   , A.src
   , A.srcset
-  , A.height
+  , A.type_
   , A.width
   ]
 
@@ -1377,7 +1397,9 @@ strongContent = phrasingContent
 
 styleAttrs :: MonadGen m => [m A.Attribute]
 styleAttrs =
-  [ A.nonce
+  [ A.blocking
+  , A.media
+  , A.nonce
   , A.title
   ]
 
@@ -1419,10 +1441,18 @@ tableDataCellContent = flowContent
 contentTemplateContent :: Set ElementType
 contentTemplateContent = allElements
 
+contentTemplateAttrs :: MonadGen m => [m A.Attribute]
+contentTemplateAttrs =
+  [ A.shadowrootmode
+  , A.shadowrootclonable
+  , A.shadowrootdelegatesfocus
+  ]
+
 textAreaAttrs :: MonadGen m => [m A.Attribute]
 textAreaAttrs =
   [ A.autocapitalize
   , A.autocomplete
+  , A.autocorrect
   , A.autofocus
   , A.cols
   , A.dirname
@@ -2126,23 +2156,25 @@ withGlobalAttrs params element =
       . mappend (elementValidAttrs element)
       $ [ A.accessKey
         , A.autocapitalize
+        , A.autocorrect
         , A.autofocus
         , A.class_
         , A.contentEditable
+        , A.customData
         , A.dir
         , A.draggable
-        , A.enterKeyHint
-        , A.exportParts
+        , A.enterkeyhint
+        , A.exportparts
         , A.hidden
         , A.id
         , A.inert
-        , A.inputMode
+        , A.inputmode
         , A.is
-        , A.itemId
-        , A.itemProp
-        , A.itemRef
-        , A.itemScope
-        , A.itemType
+        , A.itemid
+        , A.itemprop
+        , A.itemref
+        , A.itemscope
+        , A.itemtype
         , A.lang
         , A.nonce
         , A.part
@@ -2154,5 +2186,5 @@ withGlobalAttrs params element =
         , A.tabIndex
         , A.title
         , A.translate
-        , A.writingSuggestions
+        , A.writingsuggestions
         ]

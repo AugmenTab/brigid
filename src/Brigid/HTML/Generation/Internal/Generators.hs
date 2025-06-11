@@ -38,6 +38,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , positive
   , preload
   , rangeBound
+  , reachability
   , referrerPolicy
   , role
   , sandboxToken
@@ -337,6 +338,10 @@ ratio =
   (%)
     <$> Gen.integral (Range.linear 0 1000)
     <*> Gen.integral (Range.linear 1 1000)
+
+reachability :: MonadGen m => m Types.Reachability
+reachability =
+  Gen.enumBounded
 
 referrerPolicy :: MonadGen m => m Types.ReferrerPolicy
 referrerPolicy =
