@@ -796,7 +796,7 @@ footerContent = marginalContent
 
 formAttrs :: MonadGen m => [m A.Attribute]
 formAttrs =
-  [ A.acceptcharset
+  [ A.acceptCharset
   , A.autocomplete
   , A.name
   , A.rel
@@ -2127,25 +2127,26 @@ withGlobalAttrs params element =
       . Gen.list (Range.linear minAttrs maxAttrs)
       . Gen.choice
       . mappend (elementValidAttrs element)
-      $ [ A.accessKey
+      $ [ A.accesskey
         , A.autocapitalize
         , A.autofocus
         , A.class_
-        , A.contentEditable
+        , A.contenteditable
+        , A.customData
         , A.dir
         , A.draggable
-        , A.enterKeyHint
-        , A.exportParts
+        , A.enterkeyhint
+        , A.exportparts
         , A.hidden
         , A.id
         , A.inert
-        , A.inputMode
+        , A.inputmode
         , A.is
-        , A.itemId
-        , A.itemProp
-        , A.itemRef
-        , A.itemScope
-        , A.itemType
+        , A.itemid
+        , A.itemprop
+        , A.itemref
+        , A.itemscope
+        , A.itemtype
         , A.lang
         , A.nonce
         , A.part
@@ -2154,8 +2155,8 @@ withGlobalAttrs params element =
         , A.slot
         , A.spellcheck
         , A.style
-        , A.tabIndex
+        , A.tabindex
         , A.title
         , A.translate
-        , A.writingSuggestions
+        , A.writingsuggestions
         ]

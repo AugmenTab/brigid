@@ -173,6 +173,9 @@ toAttribute attr =
         . H.contenteditable_
         $ Types.contentEditableOptionToText contentEditable
 
+    GA.CustomData data_ val ->
+      Just $ H.data_ data_ val
+
     GA.Dir dir ->
       Just . H.dir_ $ Types.directionalityToText dir
 

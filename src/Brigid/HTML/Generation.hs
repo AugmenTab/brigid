@@ -9,25 +9,26 @@ module Brigid.HTML.Generation
   , maxRange
   , module Analysis
   , module Elements
-  , accessKey
+  , accesskey
   , autocapitalize
   , autofocus
   , class_
-  , contentEditable
+  , contenteditable
+  , customData
   , dir
   , draggable
-  , enterKeyHint
-  , exportParts
+  , enterkeyhint
+  , exportparts
   , hidden
   , id
   , inert
-  , inputMode
+  , inputmode
   , is
-  , itemId
-  , itemProp
-  , itemRef
-  , itemScope
-  , itemType
+  , itemid
+  , itemprop
+  , itemref
+  , itemscope
+  , itemtype
   , lang
   , nonce
   , part
@@ -36,13 +37,13 @@ module Brigid.HTML.Generation
   , slot
   , spellcheck
   , style
-  , tabIndex
+  , tabindex
   , title
   , translate
-  , writingSuggestions
+  , writingsuggestions
   , abbr
   , accept
-  , acceptcharset
+  , acceptCharset
   , action
   , allow
   , alt
@@ -153,25 +154,26 @@ import Prelude hiding (div, id, max, min, span)
 
 import Brigid.HTML.Generation.Internal.Analysis as Analysis
 import Brigid.HTML.Generation.Internal.Attributes as Attribute
-  ( accessKey
+  ( accesskey
   , autocapitalize
   , autofocus
   , class_
-  , contentEditable
+  , contenteditable
+  , customData
   , dir
   , draggable
-  , enterKeyHint
-  , exportParts
+  , enterkeyhint
+  , exportparts
   , hidden
   , id
   , inert
-  , inputMode
+  , inputmode
   , is
-  , itemId
-  , itemProp
-  , itemRef
-  , itemScope
-  , itemType
+  , itemid
+  , itemprop
+  , itemref
+  , itemscope
+  , itemtype
   , lang
   , nonce
   , part
@@ -180,13 +182,13 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , slot
   , spellcheck
   , style
-  , tabIndex
+  , tabindex
   , title
   , translate
-  , writingSuggestions
+  , writingsuggestions
   , abbr
   , accept
-  , acceptcharset
+  , acceptCharset
   , action
   , allow
   , alt

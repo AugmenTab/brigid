@@ -166,6 +166,9 @@ toAttribute attr =
       A.contenteditable $
         textToBlaze Types.contentEditableOptionToText contentEditable
 
+    GA.CustomData data_ val ->
+      H.customAttribute (H.textTag $ "data-" <> data_) $ textToBlaze id val
+
     GA.Dir dir ->
       A.dir $ textToBlaze Types.directionalityToText dir
 

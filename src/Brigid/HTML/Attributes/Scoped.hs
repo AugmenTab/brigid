@@ -112,7 +112,7 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Span, span
   , ValidSource
   , AttributeTags.Src, src
-  , AttributeTags.SrcDoc, srcdoc
+  , AttributeTags.SrcDoc, srcdoc, srcdoc'
   , AttributeTags.SrcLang, srclang
   , AttributeTags.SrcSet, srcset
   , AttributeTags.Start, start
@@ -130,6 +130,7 @@ module Brigid.HTML.Attributes.Scoped
 
 import Prelude hiding (max, min, reverse, span)
 import Data.ByteString qualified as BS
+import Data.ByteString.Lazy qualified as LBS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
@@ -661,7 +662,11 @@ src =
 
 srcdoc :: ValidAttribute AttributeTags.SrcDoc tag
        => ChildHTML parent grandparent -> Attribute tag
-srcdoc = Attr_SrcDoc . renderLazyHTML
+srcdoc = srcdoc' . renderLazyHTML
+
+srcdoc' :: ValidAttribute AttributeTags.SrcDoc tag
+        => LBS.ByteString -> Attribute tag
+srcdoc' = Attr_SrcDoc
 
 srclang :: ValidAttribute AttributeTags.SrcLang tag
         => Ogma.BCP_47 -> Attribute tag

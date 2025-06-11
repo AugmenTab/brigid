@@ -90,7 +90,7 @@ module Brigid.HTML.Elements
   , Tags.RubyText, rt
   , Tags.Ruby, ruby
   , Tags.Strikethrough, s
-  , Tags.Sample, sample
+  , Tags.Sample, samp
   , Tags.Script, script
   , Tags.Search, search
   , Tags.Section, section
@@ -741,11 +741,11 @@ s :: ValidChild Tags.Strikethrough parent grandparent
   -> ChildHTML parent grandparent
 s = Tag_Strikethrough . nubOrdOn attributeText
 
-sample :: ValidChild Tags.Sample parent grandparent
-       => [Attribute Tags.Sample]
-       -> [ChildHTML Tags.Sample parent]
-       -> ChildHTML parent grandparent
-sample = Tag_Sample . nubOrdOn attributeText
+samp :: ValidChild Tags.Sample parent grandparent
+     => [Attribute Tags.Sample]
+     -> [ChildHTML Tags.Sample parent]
+     -> ChildHTML parent grandparent
+samp = Tag_Sample . nubOrdOn attributeText
 
 -- This should be changed to take script content instead of children.
 --
