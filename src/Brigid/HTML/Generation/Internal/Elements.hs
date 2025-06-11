@@ -533,6 +533,8 @@ bodyContent = flowContent
 buttonAttrs :: MonadGen m => [m A.Attribute]
 buttonAttrs =
   [ A.autofocus
+  , A.command
+  , A.commandfor
   , A.disabled
   , A.elementtiming
   , A.form

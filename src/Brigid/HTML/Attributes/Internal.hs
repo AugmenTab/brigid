@@ -56,6 +56,8 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Cite
       , Attr_Cols
       , Attr_Colspan
+      , Attr_Command
+      , Attr_CommandFor
       , Attr_Content
       , Attr_Controls
       , Attr_ControlsList
@@ -418,6 +420,16 @@ data Attribute (tag :: TagType) where
   Attr_Colspan
     :: ValidAttribute 'Colspan tag
     => Positive
+    -> Attribute tag
+
+  Attr_Command
+    :: ValidAttribute 'Command tag
+    => Types.CommandOption
+    -> Attribute tag
+
+  Attr_CommandFor
+    :: ValidAttribute 'CommandFor tag
+    => Types.Id
     -> Attribute tag
 
   Attr_Content
@@ -1135,6 +1147,12 @@ attributeText attr =
 
     Attr_Colspan _colspan ->
       "colspan"
+
+    Attr_Command _command ->
+      "command"
+
+    Attr_CommandFor _commandfor ->
+      "commandfor"
 
     Attr_Content _content ->
       "content"

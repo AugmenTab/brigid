@@ -50,6 +50,8 @@ module Brigid.HTML.Generation.Internal.Attributes
   , cite
   , cols
   , colspan
+  , command
+  , commandfor
   , content
   , controls
   , controlslist
@@ -219,6 +221,8 @@ data Attribute
   | Cite Types.RawURL
   | Cols Natural
   | Colspan Positive
+  | Command Types.CommandOption
+  | CommandFor Types.Id
   | Content T.Text
   | Controls
   | ControlsList Types.ControlsList
@@ -369,6 +373,8 @@ attributeText attr =
     Cite _ -> "cite"
     Cols _ -> "cols"
     Colspan _ -> "colspan"
+    Command _ -> "command"
+    CommandFor _ -> "commandfor"
     Content _ -> "content"
     Controls -> "controls"
     ControlsList _ -> "constrolslist"
@@ -658,6 +664,14 @@ cols =
 colspan :: MonadGen m => m Attribute
 colspan =
   Colspan <$> Generators.positive
+
+command :: MonadGen m => m Attribute
+command =
+  Command <$> Generators.commandOption
+
+commandfor :: MonadGen m => m Attribute
+commandfor =
+  CommandFor <$> Generators.id
 
 content :: MonadGen m => m Attribute
 content =

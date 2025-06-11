@@ -58,6 +58,8 @@ module Brigid.HTML.Generation
   , cite
   , cols
   , colspan
+  , command
+  , commandfor
   , content
   , controls
   , controlslist
@@ -204,6 +206,8 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , cite
   , cols
   , colspan
+  , command
+  , commandfor
   , content
   , controls
   , controlslist

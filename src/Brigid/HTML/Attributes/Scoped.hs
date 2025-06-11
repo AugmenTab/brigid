@@ -22,6 +22,8 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Cite, cite
   , AttributeTags.Cols, cols
   , AttributeTags.Colspan, colspan
+  , AttributeTags.Command, command
+  , AttributeTags.CommandFor, commandfor
   , AttributeTags.Content, content
   , AttributeTags.Controls, controls
   , AttributeTags.ControlsList, controlslist
@@ -252,6 +254,14 @@ cols = Attr_Cols
 colspan :: ValidAttribute AttributeTags.Colspan tag
         => Positive -> Attribute tag
 colspan = Attr_Colspan
+
+command :: ValidAttribute AttributeTags.Command tag
+        => Types.CommandOption -> Attribute tag
+command = Attr_Command
+
+commandfor :: ValidAttribute AttributeTags.CommandFor tag
+           => Types.Id -> Attribute tag
+commandfor = Attr_CommandFor
 
 -- | The `content` attribute is left as simple 'T.Text' because its value is
 -- dependent on the `name` or `http-equiv` attributes, and managing the

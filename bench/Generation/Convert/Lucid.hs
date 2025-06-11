@@ -322,6 +322,12 @@ toAttribute attr =
     GA.Colspan colspan ->
       Just . H.colspan_ $ showText colspan
 
+    GA.Command command ->
+      Just . B.makeAttribute "command" $ Types.commandOptionToText command
+
+    GA.CommandFor commandfor ->
+      Just . B.makeAttribute "commandfor" $ Types.idToText commandfor
+
     GA.Content content ->
       Just $ H.content_ content
 

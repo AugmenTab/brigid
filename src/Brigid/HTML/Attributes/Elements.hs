@@ -35,6 +35,8 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Cite                    = TagGroups.CitableTags
   ValidElementsFor 'Cols                    = '[ Tags.TextArea ]
   ValidElementsFor 'Colspan                 = TagGroups.TableCells
+  ValidElementsFor 'Command                 = '[ Tags.Button ]
+  ValidElementsFor 'CommandFor              = '[ Tags.Button ]
   ValidElementsFor 'Coords                  = '[ Tags.Area ]
   ValidElementsFor 'Content                 = '[ Tags.Meta ]
   ValidElementsFor 'Controls                = TagGroups.MediaContent

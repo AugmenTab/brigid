@@ -181,6 +181,8 @@ module Brigid.HTML.Types.QuerySelector
   , attr_cite
   , attr_cols
   , attr_colspan
+  , attr_command
+  , attr_commandfor
   , attr_content
   , attr_controls
   , attr_controlslist
@@ -359,6 +361,8 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Color
       , Attr_Cols
       , Attr_Colspan
+      , Attr_Command
+      , Attr_CommandFor
       , Attr_Content
       , Attr_Controls
       , Attr_ControlsList
@@ -648,6 +652,7 @@ import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
 import Brigid.HTML.Types.ClassSelector qualified as CS
+import Brigid.HTML.Types.CommandOption (CommandOption, commandOptionToText)
 import Brigid.HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToText)
 import Brigid.HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
 import Brigid.HTML.Types.ControlsList (ControlsList, controlsListToText)
@@ -1874,6 +1879,8 @@ data AttributeType
   | Attr_Color
   | Attr_Cols
   | Attr_Colspan
+  | Attr_Command
+  | Attr_CommandFor
   | Attr_Content
   | Attr_Controls
   | Attr_ControlsList
@@ -2065,6 +2072,8 @@ attributeTypeToBytes attr =
     Attr_Color                   -> "color"
     Attr_Cols                    -> "cols"
     Attr_Colspan                 -> "colspan"
+    Attr_Command                 -> "command"
+    Attr_CommandFor              -> "commandfor"
     Attr_Content                 -> "content"
     Attr_Controls                -> "controls"
     Attr_ControlsList            -> "controlslist"
@@ -2256,6 +2265,8 @@ attributeTypeFromText attr =
     "color"                   -> Right Attr_Color
     "cols"                    -> Right Attr_Cols
     "colspan"                 -> Right Attr_Colspan
+    "command"                 -> Right Attr_Command
+    "commandfor"              -> Right Attr_CommandFor
     "content"                 -> Right Attr_Content
     "controls"                -> Right Attr_Controls
     "coords"                  -> Right Attr_Coords
@@ -2472,6 +2483,8 @@ attributeTypeToText attr =
     Attr_Color                   -> "color"
     Attr_Cols                    -> "cols"
     Attr_Colspan                 -> "colspan"
+    Attr_Command                 -> "command"
+    Attr_CommandFor              -> "commandfor"
     Attr_Content                 -> "content"
     Attr_Controls                -> "controls"
     Attr_ControlsList            -> "controlslist"
@@ -2792,6 +2805,12 @@ attr_cols = (,) Attr_Cols . Just . Render.showText
 
 attr_colspan :: Positive -> AttributeSelector
 attr_colspan = (,) Attr_Colspan . Just . Render.showText
+
+attr_command :: CommandOption -> AttributeSelector
+attr_command = (,) Attr_Command . Just . commandOptionToText
+
+attr_commandfor :: Id.Id -> AttributeSelector
+attr_commandfor = (,) Attr_CommandFor . Just . Id.idToText
 
 attr_content :: T.Text -> AttributeSelector
 attr_content = (,) Attr_Content . Just

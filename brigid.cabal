@@ -95,6 +95,7 @@ library
       Brigid.HTML.Types.Changed
       Brigid.HTML.Types.Class
       Brigid.HTML.Types.ClassSelector
+      Brigid.HTML.Types.CommandOption
       Brigid.HTML.Types.Consume
       Brigid.HTML.Types.ContentEditable
       Brigid.HTML.Types.ControlsList

@@ -12,6 +12,7 @@ import Brigid.HTML.Types.CaptureMethod as Export
 import Brigid.HTML.Types.Changed as Export
 import Brigid.HTML.Types.Class as Export
 import Brigid.HTML.Types.ClassSelector as Export
+import Brigid.HTML.Types.CommandOption as Export
 import Brigid.HTML.Types.Consume as Export
 import Brigid.HTML.Types.ContentEditable as Export
 import Brigid.HTML.Types.ControlsList as Export

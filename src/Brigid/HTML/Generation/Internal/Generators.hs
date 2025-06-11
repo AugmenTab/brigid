@@ -6,6 +6,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , captureMethod
   , char
   , class_
+  , commandOption
   , contentEditableOption
   , controlsList
   , crossOriginFetch
@@ -101,6 +102,18 @@ char =
 class_  :: MonadGen m => m Types.Class
 class_ =
   Types.Class <$> text
+
+commandOption :: MonadGen m => m Types.CommandOption
+commandOption =
+  Gen.choice
+    [ pure Types.ShowModal
+    , pure Types.Close
+    , pure Types.RequestClose
+    , pure Types.ShowPopover
+    , pure Types.HidePopover
+    , pure Types.TogglePopover
+    , Types.CustomCommand <$> text
+    ]
 
 contentEditableOption :: MonadGen m => m Types.ContentEditableOption
 contentEditableOption =

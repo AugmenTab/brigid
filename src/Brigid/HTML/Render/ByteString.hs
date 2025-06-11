@@ -700,6 +700,12 @@ renderAttribute attr =
     Attr_Colspan colspan ->
       Just . buildAttribute "colspan" $ Render.showBytes colspan
 
+    Attr_Command command ->
+      Just . buildAttribute "command" $ Types.commandOptionToBytes command
+
+    Attr_CommandFor commandfor ->
+      Just . buildAttribute "commandfor" $ Types.idToBytes commandfor
+
     Attr_Coords coords ->
       Just
         . buildAttribute "coords"

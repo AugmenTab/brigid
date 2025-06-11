@@ -680,6 +680,12 @@ renderAttribute attr =
     Attr_Colspan colspan ->
       Just . buildAttribute "colspan" $ Render.showText colspan
 
+    Attr_Command command ->
+      Just . buildAttribute "command" $ Types.commandOptionToText command
+
+    Attr_CommandFor commandfor ->
+      Just . buildAttribute "commandfor" $ Types.idToText commandfor
+
     Attr_Coords coords ->
       Just
         . buildAttribute "coords"

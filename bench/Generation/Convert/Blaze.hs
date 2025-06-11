@@ -311,6 +311,13 @@ toAttribute attr =
     GA.Colspan colspan ->
       A.colspan $ showBlaze colspan
 
+    GA.Command command ->
+      H.customAttribute "command" $
+        textToBlaze Types.commandOptionToText command
+
+    GA.CommandFor commandfor ->
+      H.customAttribute "commandfor" $ textToBlaze Types.idToText commandfor
+
     GA.Content content ->
       A.content $ textToBlaze id content
 

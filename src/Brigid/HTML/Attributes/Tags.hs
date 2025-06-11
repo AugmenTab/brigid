@@ -51,6 +51,8 @@ module Brigid.HTML.Attributes.Tags
   , Cite
   , Cols
   , Colspan
+  , Command
+  , CommandFor
   , Content
   , Controls
   , ControlsList
@@ -229,6 +231,8 @@ type Checked = 'AttributeType.Checked
 type Cite = 'AttributeType.Cite
 type Cols = 'AttributeType.Cols
 type Colspan = 'AttributeType.Colspan
+type Command = 'AttributeType.Command
+type CommandFor = 'AttributeType.CommandFor
 type Content = 'AttributeType.Content
 type Controls = 'AttributeType.Controls
 type ControlsList = 'AttributeType.ControlsList

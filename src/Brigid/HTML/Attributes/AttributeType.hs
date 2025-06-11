@@ -54,6 +54,8 @@ module Brigid.HTML.Attributes.AttributeType
       , Cite
       , Cols
       , Colspan
+      , Command
+      , CommandFor
       , Content
       , Controls
       , ControlsList
@@ -238,6 +240,8 @@ data AttributeType
   | Cite
   | Cols
   | Colspan
+  | Command
+  | CommandFor
   | Content
   | Controls
   | ControlsList
@@ -418,6 +422,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Cite                    = 'Text "Cite (cite)"
   AttributeErrorMessage Cols                    = 'Text "Cols (cols)"
   AttributeErrorMessage Colspan                 = 'Text "Colspan (colspan)"
+  AttributeErrorMessage Command                 = 'Text "Command (command)"
+  AttributeErrorMessage CommandFor              = 'Text "CommandFor (commandfor)"
   AttributeErrorMessage Content                 = 'Text "Content (content)"
   AttributeErrorMessage Controls                = 'Text "Controls (controls)"
   AttributeErrorMessage ControlsList            = 'Text "ControlsList (controlslist)"
