@@ -60,7 +60,10 @@ documentExample =
             HTMX.defaultConfig
               { HTMX.refreshOnHistoryMiss = Just True
               }
-        -- , E.link [ A.href $ HTML.Id "bad-link" ] -- This fails, because Id is not a valid href type for link.
+        , Safe.baseWithTarget HTML.Self
+            [ A.id $ B.Id "safe-base"
+            ]
+        -- , E.link [ A.href $ B.Id "bad-link" ] -- This fails, because Id is not a valid href type for link.
         -- , E.script [ A.src pingURL ] Nothing -- This fails, because RelativeURL Post is not a valid URL type for the src attribute.
         ]
     , E.body [ A.hxBoost True
