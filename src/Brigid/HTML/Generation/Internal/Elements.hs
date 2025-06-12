@@ -131,7 +131,7 @@ elementValidAttrs element =
     Table -> []
     TableBody -> []
     TableDataCell -> tableDataCellAttrs
-    ContentTemplate -> []
+    ContentTemplate -> contentTemplateAttrs
     TextArea -> textAreaAttrs
     TableFoot -> []
     TableHeader -> tableHeaderAttrs
@@ -1461,6 +1461,13 @@ tableDataCellContent = flowContent
 
 contentTemplateContent :: Set ElementType
 contentTemplateContent = allElements
+
+contentTemplateAttrs :: MonadGen m => [m A.Attribute]
+contentTemplateAttrs =
+  [ A.shadowrootclonable
+  , A.shadowrootdelegatesfocus
+  , A.shadowrootmode
+  ]
 
 textAreaAttrs :: MonadGen m => [m A.Attribute]
 textAreaAttrs =

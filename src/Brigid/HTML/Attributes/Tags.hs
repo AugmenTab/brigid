@@ -126,6 +126,9 @@ module Brigid.HTML.Attributes.Tags
   , Sandbox
   , Scope
   , Selected
+  , ShadowRootMode
+  , ShadowRootDelegatesFocus
+  , ShadowRootClonable
   , Shape
   , Size
   , Sizes
@@ -307,6 +310,9 @@ type Rowspan = 'AttributeType.Rowspan
 type Sandbox = 'AttributeType.Sandbox
 type Scope = 'AttributeType.Scope
 type Selected = 'AttributeType.Selected
+type ShadowRootMode = 'AttributeType.ShadowRootMode
+type ShadowRootDelegatesFocus = 'AttributeType.ShadowRootDelegatesFocus
+type ShadowRootClonable = 'AttributeType.ShadowRootClonable
 type Shape = 'AttributeType.Shape
 type Size = 'AttributeType.Size
 type Sizes = 'AttributeType.Sizes

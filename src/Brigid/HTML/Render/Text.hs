@@ -942,6 +942,17 @@ renderAttribute attr =
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
 
+    Attr_ShadowRootMode shadowrootmode ->
+      Just
+        . buildAttribute "shadowrootmode"
+        $ Types.openClosedToText shadowrootmode
+
+    Attr_ShadowRootDelegatesFocus ->
+      buildBooleanAttribute "shadowrootdelegatesfocus" True
+
+    Attr_ShadowRootClonable ->
+      buildBooleanAttribute "shadowrootclonable" True
+
     Attr_Shape shape ->
       Just . buildAttribute "shape" $ Types.shapeToText shape
 

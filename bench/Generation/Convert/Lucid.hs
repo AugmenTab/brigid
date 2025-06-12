@@ -585,6 +585,16 @@ toAttribute attr =
     GA.Selected selected ->
       booleanToLucid (H.selected_$ boolText selected) selected
 
+    GA.ShadowRootMode shadowrootmode ->
+      Just . B.makeAttribute "shadowrootmode" $
+        Types.openClosedToText shadowrootmode
+
+    GA.ShadowRootDelegatesFocus ->
+      booleanToLucid (B.makeAttribute "shadowrootdelegatesfocus" T.empty) True
+
+    GA.ShadowRootClonable ->
+      booleanToLucid (B.makeAttribute "shadowrootclonable" T.empty) True
+
     GA.Shape shape ->
       Just . H.shape_ $ Types.shapeToText shape
 

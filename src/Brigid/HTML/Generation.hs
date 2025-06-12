@@ -135,6 +135,9 @@ module Brigid.HTML.Generation
   , sandbox
   , scope
   , selected
+  , shadowrootmode
+  , shadowrootdelegatesfocus
+  , shadowrootclonable
   , shape
   , size
   , sizes
@@ -284,6 +287,9 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , sandbox
   , scope
   , selected
+  , shadowrootmode
+  , shadowrootdelegatesfocus
+  , shadowrootclonable
   , shape
   , size
   , sizes

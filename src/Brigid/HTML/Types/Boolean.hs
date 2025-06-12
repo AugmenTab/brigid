@@ -8,6 +8,15 @@ module Brigid.HTML.Types.Boolean
   , onOffBool
   , isOn
   , isOff
+  , OpenClosed
+      ( Open
+      , Closed
+      )
+  , openClosedToBytes
+  , openClosedToText
+  , openClosedBool
+  , isOpen
+  , isClosed
   , YesNo
       ( Yes
       , No
@@ -50,6 +59,35 @@ isOn = (==) On
 
 isOff :: OnOff -> Bool
 isOff = (==) Off
+
+data OpenClosed
+  = Open
+  | Closed
+  deriving (Bounded, Enum, Eq, Show)
+
+openClosedToBytes :: OpenClosed -> LBS.ByteString
+openClosedToBytes openClosed =
+  case openClosed of
+    Open -> "on"
+    Closed -> "off"
+
+openClosedToText :: OpenClosed -> T.Text
+openClosedToText openClosed =
+  case openClosed of
+    Open -> "on"
+    Closed -> "off"
+
+openClosedBool :: Bool -> OpenClosed
+openClosedBool b =
+  if b
+    then Open
+    else Closed
+
+isOpen :: OpenClosed -> Bool
+isOpen = (==) Open
+
+isClosed :: OpenClosed -> Bool
+isClosed = (==) Closed
 
 data YesNo
   = Yes

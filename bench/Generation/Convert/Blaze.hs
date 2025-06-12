@@ -558,6 +558,16 @@ toAttribute attr =
     GA.Selected selected ->
       booleanToBlaze A.selected selected
 
+    GA.ShadowRootMode shadowrootmode ->
+      H.customAttribute "shadowrootmode" $
+        textToBlaze Types.openClosedToText shadowrootmode
+
+    GA.ShadowRootDelegatesFocus ->
+      booleanToBlaze (H.customAttribute "shadowrootdelegatesfocus") True
+
+    GA.ShadowRootClonable ->
+      booleanToBlaze (H.customAttribute "shadowrootclonable") True
+
     GA.Shape shape ->
       A.shape $ textToBlaze Types.shapeToText shape
 

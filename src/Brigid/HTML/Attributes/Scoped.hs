@@ -109,6 +109,9 @@ module Brigid.HTML.Attributes.Scoped
   , AttributeTags.Scope, scope
   , AttributeTags.Selected, select
   , selected
+  , AttributeTags.ShadowRootMode, shadowrootmode
+  , AttributeTags.ShadowRootDelegatesFocus, shadowrootdelegatesfocus
+  , AttributeTags.ShadowRootClonable, shadowrootclonable
   , AttributeTags.Shape, shape
   , AttributeTags.Size, size
   , AttributeTags.Sizes, sizes
@@ -652,6 +655,18 @@ select = Attr_Selected
 
 selected :: ValidAttribute AttributeTags.Selected tag => Attribute tag
 selected = select True
+
+shadowrootmode :: ValidAttribute AttributeTags.ShadowRootMode tag
+               => Types.OpenClosed -> Attribute tag
+shadowrootmode = Attr_ShadowRootMode
+
+shadowrootdelegatesfocus :: ValidAttribute AttributeTags.ShadowRootDelegatesFocus tag
+                         => Attribute tag
+shadowrootdelegatesfocus = Attr_ShadowRootDelegatesFocus
+
+shadowrootclonable :: ValidAttribute AttributeTags.ShadowRootClonable tag
+                   => Attribute tag
+shadowrootclonable = Attr_ShadowRootClonable
 
 shape :: ValidAttribute AttributeTags.Shape tag => Types.Shape -> Attribute tag
 shape = Attr_Shape

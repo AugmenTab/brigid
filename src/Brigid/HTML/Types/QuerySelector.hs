@@ -257,6 +257,9 @@ module Brigid.HTML.Types.QuerySelector
   , attr_sandbox
   , attr_scope
   , attr_selected
+  , attr_shadowrootmode
+  , attr_shadowrootdelegatesfocus
+  , attr_shadowrootclonable
   , attr_shape
   , attr_size
   , attr_sizes
@@ -435,6 +438,9 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_Sandbox
       , Attr_Scope
       , Attr_Selected
+      , Attr_ShadowRootMode
+      , Attr_ShadowRootDelegatesFocus
+      , Attr_ShadowRootClonable
       , Attr_Shape
       , Attr_Size
       , Attr_Sizes
@@ -649,7 +655,7 @@ import Brigid.HTML.Types.As (As, asToText)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import Brigid.HTML.Types.BlockOption (BlockOption, blockOptionToText)
-import Brigid.HTML.Types.Boolean (OnOff, onOffToText)
+import Brigid.HTML.Types.Boolean (OnOff, OpenClosed, onOffToText, openClosedToText)
 import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
@@ -1956,6 +1962,9 @@ data AttributeType
   | Attr_Sandbox
   | Attr_Scope
   | Attr_Selected
+  | Attr_ShadowRootMode
+  | Attr_ShadowRootDelegatesFocus
+  | Attr_ShadowRootClonable
   | Attr_Shape
   | Attr_Size
   | Attr_Sizes
@@ -2055,118 +2064,121 @@ attributeTypeToBytes attr =
 
     -- Scoped Attributes
     --
-    Attr_Abbreviation            -> "abbr"
-    Attr_Accept                  -> "accept"
-    Attr_AcceptCharset           -> "accept-charset"
-    Attr_Action                  -> "action"
-    Attr_Allow                   -> "allow"
-    Attr_Alt                     -> "alt"
-    Attr_As                      -> "as"
-    Attr_Async                   -> "async"
-    Attr_Autocomplete            -> "autocomplete"
-    Attr_Autoplay                -> "autoplay"
-    Attr_Background              -> "background"
-    Attr_BackgroundColor         -> "bgcolor"
-    Attr_Blocking                -> "blocking"
-    Attr_Border                  -> "border"
-    Attr_Capture                 -> "capture"
-    Attr_Charset                 -> "charset"
-    Attr_Checked                 -> "checked"
-    Attr_Cite                    -> "cite"
-    Attr_Color                   -> "color"
-    Attr_Cols                    -> "cols"
-    Attr_Colspan                 -> "colspan"
-    Attr_Command                 -> "command"
-    Attr_CommandFor              -> "commandfor"
-    Attr_Content                 -> "content"
-    Attr_Controls                -> "controls"
-    Attr_ControlsList            -> "controlslist"
-    Attr_Coords                  -> "coords"
-    Attr_CrossOrigin             -> "crossorigin"
-    Attr_Data                    -> "data"
-    Attr_Datetime                -> "datetime"
-    Attr_Decoding                -> "decoding"
-    Attr_Default                 -> "default"
-    Attr_Defer                   -> "defer"
-    Attr_Dirname                 -> "dirname"
-    Attr_Disabled                -> "disabled"
-    Attr_DisablePictureInPicture -> "disablepictureinpicture"
-    Attr_DisableRemotePlayback   -> "disabled"
-    Attr_Download                -> "download"
-    Attr_ElementTiming           -> "elementtiming"
-    Attr_Enctype                 -> "enctype"
-    Attr_FetchPriority           -> "fetchpriority"
-    Attr_For                     -> "for"
-    Attr_Form                    -> "form"
-    Attr_FormAction              -> "formaction"
-    Attr_FormEnctype             -> "formenctype"
-    Attr_FormMethod              -> "formmethod"
-    Attr_FormNoValidate          -> "formnovalidate"
-    Attr_FormTarget              -> "formtarget"
-    Attr_Headers                 -> "headers"
-    Attr_Height                  -> "height"
-    Attr_High                    -> "high"
-    Attr_Href                    -> "href"
-    Attr_HrefLang                -> "hreflang"
-    Attr_HttpEquiv               -> "http-equiv"
-    Attr_ImageSizes              -> "imagesizes"
-    Attr_ImageSrcset             -> "imagesrcset"
-    Attr_Integrity               -> "integrity"
-    Attr_IsMap                   -> "ismap"
-    Attr_Kind                    -> "kind"
-    Attr_Label                   -> "label"
-    Attr_List                    -> "list"
-    Attr_Loading                 -> "loading"
-    Attr_Loop                    -> "loop"
-    Attr_Low                     -> "low"
-    Attr_Max                     -> "max"
-    Attr_MaxLength               -> "maxlength"
-    Attr_MinLength               -> "minlength"
-    Attr_Media                   -> "media"
-    Attr_Method                  -> "method"
-    Attr_Min                     -> "min"
-    Attr_Multiple                -> "multiple"
-    Attr_Muted                   -> "muted"
-    Attr_Name                    -> "name"
-    Attr_NoModule                -> "nomodule"
-    Attr_NoValidate              -> "novalidate"
-    Attr_Open                    -> "open"
-    Attr_Optimum                 -> "optimum"
-    Attr_Pattern                 -> "pattern"
-    Attr_Ping                    -> "ping"
-    Attr_Placeholder             -> "placeholder"
-    Attr_PlaysInline             -> "playsinline"
-    Attr_PopoverTarget           -> "popovertarget"
-    Attr_PopoverTargetAction     -> "popovertargetaction"
-    Attr_Poster                  -> "poster"
-    Attr_Preload                 -> "preload"
-    Attr_ReadOnly                -> "readonly"
-    Attr_ReferrerPolicy          -> "referrerpolicy"
-    Attr_Rel                     -> "rel"
-    Attr_Required                -> "required"
-    Attr_Reversed                -> "reversed"
-    Attr_Rows                    -> "rows"
-    Attr_Rowspan                 -> "rowspan"
-    Attr_Sandbox                 -> "sandbox"
-    Attr_Scope                   -> "scope"
-    Attr_Selected                -> "selected"
-    Attr_Shape                   -> "shape"
-    Attr_Size                    -> "size"
-    Attr_Sizes                   -> "sizes"
-    Attr_Span                    -> "span"
-    Attr_Src                     -> "src"
-    Attr_SrcDoc                  -> "srcdoc"
-    Attr_SrcLang                 -> "srclang"
-    Attr_SrcSet                  -> "srcset"
-    Attr_Start                   -> "start"
-    Attr_Step                    -> "step"
-    Attr_Target                  -> "target"
-    Attr_Type                    -> "type"
-    Attr_UseMap                  -> "usemap"
-    Attr_Value                   -> "value"
-    Attr_Width                   -> "width"
-    Attr_Wrap                    -> "wrap"
-    Attr_XMLNS                   -> "xmlns"
+    Attr_Abbreviation             -> "abbr"
+    Attr_Accept                   -> "accept"
+    Attr_AcceptCharset            -> "accept-charset"
+    Attr_Action                   -> "action"
+    Attr_Allow                    -> "allow"
+    Attr_Alt                      -> "alt"
+    Attr_As                       -> "as"
+    Attr_Async                    -> "async"
+    Attr_Autocomplete             -> "autocomplete"
+    Attr_Autoplay                 -> "autoplay"
+    Attr_Background               -> "background"
+    Attr_BackgroundColor          -> "bgcolor"
+    Attr_Blocking                 -> "blocking"
+    Attr_Border                   -> "border"
+    Attr_Capture                  -> "capture"
+    Attr_Charset                  -> "charset"
+    Attr_Checked                  -> "checked"
+    Attr_Cite                     -> "cite"
+    Attr_Color                    -> "color"
+    Attr_Cols                     -> "cols"
+    Attr_Colspan                  -> "colspan"
+    Attr_Command                  -> "command"
+    Attr_CommandFor               -> "commandfor"
+    Attr_Content                  -> "content"
+    Attr_Controls                 -> "controls"
+    Attr_ControlsList             -> "controlslist"
+    Attr_Coords                   -> "coords"
+    Attr_CrossOrigin              -> "crossorigin"
+    Attr_Data                     -> "data"
+    Attr_Datetime                 -> "datetime"
+    Attr_Decoding                 -> "decoding"
+    Attr_Default                  -> "default"
+    Attr_Defer                    -> "defer"
+    Attr_Dirname                  -> "dirname"
+    Attr_Disabled                 -> "disabled"
+    Attr_DisablePictureInPicture  -> "disablepictureinpicture"
+    Attr_DisableRemotePlayback    -> "disabled"
+    Attr_Download                 -> "download"
+    Attr_ElementTiming            -> "elementtiming"
+    Attr_Enctype                  -> "enctype"
+    Attr_FetchPriority            -> "fetchpriority"
+    Attr_For                      -> "for"
+    Attr_Form                     -> "form"
+    Attr_FormAction               -> "formaction"
+    Attr_FormEnctype              -> "formenctype"
+    Attr_FormMethod               -> "formmethod"
+    Attr_FormNoValidate           -> "formnovalidate"
+    Attr_FormTarget               -> "formtarget"
+    Attr_Headers                  -> "headers"
+    Attr_Height                   -> "height"
+    Attr_High                     -> "high"
+    Attr_Href                     -> "href"
+    Attr_HrefLang                 -> "hreflang"
+    Attr_HttpEquiv                -> "http-equiv"
+    Attr_ImageSizes               -> "imagesizes"
+    Attr_ImageSrcset              -> "imagesrcset"
+    Attr_Integrity                -> "integrity"
+    Attr_IsMap                    -> "ismap"
+    Attr_Kind                     -> "kind"
+    Attr_Label                    -> "label"
+    Attr_List                     -> "list"
+    Attr_Loading                  -> "loading"
+    Attr_Loop                     -> "loop"
+    Attr_Low                      -> "low"
+    Attr_Max                      -> "max"
+    Attr_MaxLength                -> "maxlength"
+    Attr_MinLength                -> "minlength"
+    Attr_Media                    -> "media"
+    Attr_Method                   -> "method"
+    Attr_Min                      -> "min"
+    Attr_Multiple                 -> "multiple"
+    Attr_Muted                    -> "muted"
+    Attr_Name                     -> "name"
+    Attr_NoModule                 -> "nomodule"
+    Attr_NoValidate               -> "novalidate"
+    Attr_Open                     -> "open"
+    Attr_Optimum                  -> "optimum"
+    Attr_Pattern                  -> "pattern"
+    Attr_Ping                     -> "ping"
+    Attr_Placeholder              -> "placeholder"
+    Attr_PlaysInline              -> "playsinline"
+    Attr_PopoverTarget            -> "popovertarget"
+    Attr_PopoverTargetAction      -> "popovertargetaction"
+    Attr_Poster                   -> "poster"
+    Attr_Preload                  -> "preload"
+    Attr_ReadOnly                 -> "readonly"
+    Attr_ReferrerPolicy           -> "referrerpolicy"
+    Attr_Rel                      -> "rel"
+    Attr_Required                 -> "required"
+    Attr_Reversed                 -> "reversed"
+    Attr_Rows                     -> "rows"
+    Attr_Rowspan                  -> "rowspan"
+    Attr_Sandbox                  -> "sandbox"
+    Attr_Scope                    -> "scope"
+    Attr_Selected                 -> "selected"
+    Attr_ShadowRootMode           -> "shadowrootmode"
+    Attr_ShadowRootDelegatesFocus -> "shadowrootdelegatesfocus"
+    Attr_ShadowRootClonable       -> "shadowrootclonable"
+    Attr_Shape                    -> "shape"
+    Attr_Size                     -> "size"
+    Attr_Sizes                    -> "sizes"
+    Attr_Span                     -> "span"
+    Attr_Src                      -> "src"
+    Attr_SrcDoc                   -> "srcdoc"
+    Attr_SrcLang                  -> "srclang"
+    Attr_SrcSet                   -> "srcset"
+    Attr_Start                    -> "start"
+    Attr_Step                     -> "step"
+    Attr_Target                   -> "target"
+    Attr_Type                     -> "type"
+    Attr_UseMap                   -> "usemap"
+    Attr_Value                    -> "value"
+    Attr_Width                    -> "width"
+    Attr_Wrap                     -> "wrap"
+    Attr_XMLNS                    -> "xmlns"
 
     -- HTMX Attributes
     --
@@ -2249,117 +2261,120 @@ attributeTypeFromText attr =
 
     -- Scoped Attributes
     --
-    "abbr"                    -> Right Attr_Abbreviation
-    "accept"                  -> Right Attr_Accept
-    "accept-charset"          -> Right Attr_AcceptCharset
-    "action"                  -> Right Attr_Action
-    "allow"                   -> Right Attr_Allow
-    "alt"                     -> Right Attr_Alt
-    "as"                      -> Right Attr_As
-    "async"                   -> Right Attr_Async
-    "autocomplete"            -> Right Attr_Autocomplete
-    "autoplay"                -> Right Attr_Autoplay
-    "background"              -> Right Attr_Background
-    "bgcolor"                 -> Right Attr_BackgroundColor
-    "blocking"                -> Right Attr_Blocking
-    "border"                  -> Right Attr_Border
-    "capture"                 -> Right Attr_Capture
-    "charset"                 -> Right Attr_Charset
-    "checked"                 -> Right Attr_Checked
-    "cite"                    -> Right Attr_Cite
-    "color"                   -> Right Attr_Color
-    "cols"                    -> Right Attr_Cols
-    "colspan"                 -> Right Attr_Colspan
-    "command"                 -> Right Attr_Command
-    "commandfor"              -> Right Attr_CommandFor
-    "content"                 -> Right Attr_Content
-    "controls"                -> Right Attr_Controls
-    "coords"                  -> Right Attr_Coords
-    "crossorigin"             -> Right Attr_CrossOrigin
-    "data"                    -> Right Attr_Data
-    "datetime"                -> Right Attr_Datetime
-    "decoding"                -> Right Attr_Decoding
-    "default"                 -> Right Attr_Default
-    "defer"                   -> Right Attr_Defer
-    "dirname"                 -> Right Attr_Dirname
-    "disabled"                -> Right Attr_Disabled
-    "disablepictureinpicture" -> Right Attr_DisablePictureInPicture
-    "disableremoteplayback"   -> Right Attr_DisableRemotePlayback
-    "download"                -> Right Attr_Download
-    "elementtiming"           -> Right Attr_ElementTiming
-    "enctype"                 -> Right Attr_Enctype
-    "fetchpriority"           -> Right Attr_FetchPriority
-    "for"                     -> Right Attr_For
-    "form"                    -> Right Attr_Form
-    "formaction"              -> Right Attr_FormAction
-    "formenctype"             -> Right Attr_FormEnctype
-    "formmethod"              -> Right Attr_FormMethod
-    "formnovalidate"          -> Right Attr_FormNoValidate
-    "formtarget"              -> Right Attr_FormTarget
-    "headers"                 -> Right Attr_Headers
-    "height"                  -> Right Attr_Height
-    "high"                    -> Right Attr_High
-    "href"                    -> Right Attr_Href
-    "hreflang"                -> Right Attr_HrefLang
-    "http-equiv"              -> Right Attr_HttpEquiv
-    "imagesizes"              -> Right Attr_ImageSizes
-    "imagesrcset"             -> Right Attr_ImageSrcset
-    "integrity"               -> Right Attr_Integrity
-    "ismap"                   -> Right Attr_IsMap
-    "kind"                    -> Right Attr_Kind
-    "label"                   -> Right Attr_Label
-    "list"                    -> Right Attr_List
-    "loading"                 -> Right Attr_Loading
-    "loop"                    -> Right Attr_Loop
-    "low"                     -> Right Attr_Low
-    "max"                     -> Right Attr_Max
-    "maxlength"               -> Right Attr_MaxLength
-    "minlength"               -> Right Attr_MinLength
-    "media"                   -> Right Attr_Media
-    "method"                  -> Right Attr_Method
-    "min"                     -> Right Attr_Min
-    "multiple"                -> Right Attr_Multiple
-    "muted"                   -> Right Attr_Muted
-    "name"                    -> Right Attr_Name
-    "nomodule"                -> Right Attr_NoModule
-    "novalidate"              -> Right Attr_NoValidate
-    "open"                    -> Right Attr_Open
-    "optimum"                 -> Right Attr_Optimum
-    "pattern"                 -> Right Attr_Pattern
-    "ping"                    -> Right Attr_Ping
-    "placeholder"             -> Right Attr_Placeholder
-    "playsinline"             -> Right Attr_PlaysInline
-    "popovertarget"           -> Right Attr_PopoverTarget
-    "popovertargetaction"     -> Right Attr_PopoverTargetAction
-    "poster"                  -> Right Attr_Poster
-    "preload"                 -> Right Attr_Preload
-    "readonly"                -> Right Attr_ReadOnly
-    "referrerpolicy"          -> Right Attr_ReferrerPolicy
-    "rel"                     -> Right Attr_Rel
-    "required"                -> Right Attr_Required
-    "reversed"                -> Right Attr_Reversed
-    "rows"                    -> Right Attr_Rows
-    "rowspan"                 -> Right Attr_Rowspan
-    "sandbox"                 -> Right Attr_Sandbox
-    "scope"                   -> Right Attr_Scope
-    "selected"                -> Right Attr_Selected
-    "shape"                   -> Right Attr_Shape
-    "size"                    -> Right Attr_Size
-    "sizes"                   -> Right Attr_Sizes
-    "span"                    -> Right Attr_Span
-    "src"                     -> Right Attr_Src
-    "srcdoc"                  -> Right Attr_SrcDoc
-    "srclang"                 -> Right Attr_SrcLang
-    "srcset"                  -> Right Attr_SrcSet
-    "start"                   -> Right Attr_Start
-    "step"                    -> Right Attr_Step
-    "target"                  -> Right Attr_Target
-    "type"                    -> Right Attr_Type
-    "usemap"                  -> Right Attr_UseMap
-    "value"                   -> Right Attr_Value
-    "width"                   -> Right Attr_Width
-    "wrap"                    -> Right Attr_Wrap
-    "xmlns"                   -> Right Attr_XMLNS
+    "abbr"                     -> Right Attr_Abbreviation
+    "accept"                   -> Right Attr_Accept
+    "accept-charset"           -> Right Attr_AcceptCharset
+    "action"                   -> Right Attr_Action
+    "allow"                    -> Right Attr_Allow
+    "alt"                      -> Right Attr_Alt
+    "as"                       -> Right Attr_As
+    "async"                    -> Right Attr_Async
+    "autocomplete"             -> Right Attr_Autocomplete
+    "autoplay"                 -> Right Attr_Autoplay
+    "background"               -> Right Attr_Background
+    "bgcolor"                  -> Right Attr_BackgroundColor
+    "blocking"                 -> Right Attr_Blocking
+    "border"                   -> Right Attr_Border
+    "capture"                  -> Right Attr_Capture
+    "charset"                  -> Right Attr_Charset
+    "checked"                  -> Right Attr_Checked
+    "cite"                     -> Right Attr_Cite
+    "color"                    -> Right Attr_Color
+    "cols"                     -> Right Attr_Cols
+    "colspan"                  -> Right Attr_Colspan
+    "command"                  -> Right Attr_Command
+    "commandfor"               -> Right Attr_CommandFor
+    "content"                  -> Right Attr_Content
+    "controls"                 -> Right Attr_Controls
+    "coords"                   -> Right Attr_Coords
+    "crossorigin"              -> Right Attr_CrossOrigin
+    "data"                     -> Right Attr_Data
+    "datetime"                 -> Right Attr_Datetime
+    "decoding"                 -> Right Attr_Decoding
+    "default"                  -> Right Attr_Default
+    "defer"                    -> Right Attr_Defer
+    "dirname"                  -> Right Attr_Dirname
+    "disabled"                 -> Right Attr_Disabled
+    "disablepictureinpicture"  -> Right Attr_DisablePictureInPicture
+    "disableremoteplayback"    -> Right Attr_DisableRemotePlayback
+    "download"                 -> Right Attr_Download
+    "elementtiming"            -> Right Attr_ElementTiming
+    "enctype"                  -> Right Attr_Enctype
+    "fetchpriority"            -> Right Attr_FetchPriority
+    "for"                      -> Right Attr_For
+    "form"                     -> Right Attr_Form
+    "formaction"               -> Right Attr_FormAction
+    "formenctype"              -> Right Attr_FormEnctype
+    "formmethod"               -> Right Attr_FormMethod
+    "formnovalidate"           -> Right Attr_FormNoValidate
+    "formtarget"               -> Right Attr_FormTarget
+    "headers"                  -> Right Attr_Headers
+    "height"                   -> Right Attr_Height
+    "high"                     -> Right Attr_High
+    "href"                     -> Right Attr_Href
+    "hreflang"                 -> Right Attr_HrefLang
+    "http-equiv"               -> Right Attr_HttpEquiv
+    "imagesizes"               -> Right Attr_ImageSizes
+    "imagesrcset"              -> Right Attr_ImageSrcset
+    "integrity"                -> Right Attr_Integrity
+    "ismap"                    -> Right Attr_IsMap
+    "kind"                     -> Right Attr_Kind
+    "label"                    -> Right Attr_Label
+    "list"                     -> Right Attr_List
+    "loading"                  -> Right Attr_Loading
+    "loop"                     -> Right Attr_Loop
+    "low"                      -> Right Attr_Low
+    "max"                      -> Right Attr_Max
+    "maxlength"                -> Right Attr_MaxLength
+    "minlength"                -> Right Attr_MinLength
+    "media"                    -> Right Attr_Media
+    "method"                   -> Right Attr_Method
+    "min"                      -> Right Attr_Min
+    "multiple"                 -> Right Attr_Multiple
+    "muted"                    -> Right Attr_Muted
+    "name"                     -> Right Attr_Name
+    "nomodule"                 -> Right Attr_NoModule
+    "novalidate"               -> Right Attr_NoValidate
+    "open"                     -> Right Attr_Open
+    "optimum"                  -> Right Attr_Optimum
+    "pattern"                  -> Right Attr_Pattern
+    "ping"                     -> Right Attr_Ping
+    "placeholder"              -> Right Attr_Placeholder
+    "playsinline"              -> Right Attr_PlaysInline
+    "popovertarget"            -> Right Attr_PopoverTarget
+    "popovertargetaction"      -> Right Attr_PopoverTargetAction
+    "poster"                   -> Right Attr_Poster
+    "preload"                  -> Right Attr_Preload
+    "readonly"                 -> Right Attr_ReadOnly
+    "referrerpolicy"           -> Right Attr_ReferrerPolicy
+    "rel"                      -> Right Attr_Rel
+    "required"                 -> Right Attr_Required
+    "reversed"                 -> Right Attr_Reversed
+    "rows"                     -> Right Attr_Rows
+    "rowspan"                  -> Right Attr_Rowspan
+    "sandbox"                  -> Right Attr_Sandbox
+    "scope"                    -> Right Attr_Scope
+    "selected"                 -> Right Attr_Selected
+    "shadowrootmode"           -> Right Attr_ShadowRootMode
+    "shadowrootdelegatesfocus" -> Right Attr_ShadowRootDelegatesFocus
+    "shadowrootclonable"       -> Right Attr_ShadowRootClonable
+    "shape"                    -> Right Attr_Shape
+    "size"                     -> Right Attr_Size
+    "sizes"                    -> Right Attr_Sizes
+    "span"                     -> Right Attr_Span
+    "src"                      -> Right Attr_Src
+    "srcdoc"                   -> Right Attr_SrcDoc
+    "srclang"                  -> Right Attr_SrcLang
+    "srcset"                   -> Right Attr_SrcSet
+    "start"                    -> Right Attr_Start
+    "step"                     -> Right Attr_Step
+    "target"                   -> Right Attr_Target
+    "type"                     -> Right Attr_Type
+    "usemap"                   -> Right Attr_UseMap
+    "value"                    -> Right Attr_Value
+    "width"                    -> Right Attr_Width
+    "wrap"                     -> Right Attr_Wrap
+    "xmlns"                    -> Right Attr_XMLNS
 
     -- HTMX Attributes
     --
@@ -2468,118 +2483,121 @@ attributeTypeToText attr =
 
     -- Scoped Attributes
     --
-    Attr_Abbreviation            -> "abbr"
-    Attr_Accept                  -> "accept"
-    Attr_AcceptCharset           -> "accept-charset"
-    Attr_Action                  -> "action"
-    Attr_Allow                   -> "allow"
-    Attr_Alt                     -> "alt"
-    Attr_As                      -> "as"
-    Attr_Async                   -> "async"
-    Attr_Autocomplete            -> "autocomplete"
-    Attr_Autoplay                -> "autoplay"
-    Attr_Background              -> "background"
-    Attr_BackgroundColor         -> "bgcolor"
-    Attr_Blocking                -> "blocking"
-    Attr_Border                  -> "border"
-    Attr_Capture                 -> "capture"
-    Attr_Charset                 -> "charset"
-    Attr_Checked                 -> "checked"
-    Attr_Cite                    -> "cite"
-    Attr_Color                   -> "color"
-    Attr_Cols                    -> "cols"
-    Attr_Colspan                 -> "colspan"
-    Attr_Command                 -> "command"
-    Attr_CommandFor              -> "commandfor"
-    Attr_Content                 -> "content"
-    Attr_Controls                -> "controls"
-    Attr_ControlsList            -> "controlslist"
-    Attr_Coords                  -> "coords"
-    Attr_CrossOrigin             -> "crossorigin"
-    Attr_Data                    -> "data"
-    Attr_Datetime                -> "datetime"
-    Attr_Decoding                -> "decoding"
-    Attr_Default                 -> "default"
-    Attr_Defer                   -> "defer"
-    Attr_Dirname                 -> "dirname"
-    Attr_Disabled                -> "disabled"
-    Attr_DisablePictureInPicture -> "disablepictureinpicture"
-    Attr_DisableRemotePlayback   -> "disableremoteplayback"
-    Attr_Download                -> "download"
-    Attr_ElementTiming           -> "elementtiming"
-    Attr_Enctype                 -> "enctype"
-    Attr_FetchPriority           -> "fetchpriority"
-    Attr_For                     -> "for"
-    Attr_Form                    -> "form"
-    Attr_FormAction              -> "formaction"
-    Attr_FormEnctype             -> "formenctype"
-    Attr_FormMethod              -> "formmethod"
-    Attr_FormNoValidate          -> "formnovalidate"
-    Attr_FormTarget              -> "formtarget"
-    Attr_Headers                 -> "headers"
-    Attr_Height                  -> "height"
-    Attr_High                    -> "high"
-    Attr_Href                    -> "href"
-    Attr_HrefLang                -> "hreflang"
-    Attr_HttpEquiv               -> "http-equiv"
-    Attr_ImageSizes              -> "imagesizes"
-    Attr_ImageSrcset             -> "imagesrcset"
-    Attr_Integrity               -> "integrity"
-    Attr_IsMap                   -> "ismap"
-    Attr_Kind                    -> "kind"
-    Attr_Label                   -> "label"
-    Attr_List                    -> "list"
-    Attr_Loading                 -> "loading"
-    Attr_Loop                    -> "loop"
-    Attr_Low                     -> "low"
-    Attr_Max                     -> "max"
-    Attr_MaxLength               -> "maxlength"
-    Attr_MinLength               -> "minlength"
-    Attr_Media                   -> "media"
-    Attr_Method                  -> "method"
-    Attr_Min                     -> "min"
-    Attr_Multiple                -> "multiple"
-    Attr_Muted                   -> "muted"
-    Attr_Name                    -> "name"
-    Attr_NoModule                -> "nomodule"
-    Attr_NoValidate              -> "novalidate"
-    Attr_Open                    -> "open"
-    Attr_Optimum                 -> "optimum"
-    Attr_Pattern                 -> "pattern"
-    Attr_Ping                    -> "ping"
-    Attr_Placeholder             -> "placeholder"
-    Attr_PlaysInline             -> "playsinline"
-    Attr_PopoverTarget           -> "popovertarget"
-    Attr_PopoverTargetAction     -> "popovertargetaction"
-    Attr_Poster                  -> "poster"
-    Attr_Preload                 -> "preload"
-    Attr_ReadOnly                -> "readonly"
-    Attr_ReferrerPolicy          -> "referrerpolicy"
-    Attr_Rel                     -> "rel"
-    Attr_Required                -> "required"
-    Attr_Reversed                -> "reversed"
-    Attr_Rows                    -> "rows"
-    Attr_Rowspan                 -> "rowspan"
-    Attr_Sandbox                 -> "sandbox"
-    Attr_Scope                   -> "scope"
-    Attr_Selected                -> "selected"
-    Attr_Shape                   -> "shape"
-    Attr_Size                    -> "size"
-    Attr_Sizes                   -> "sizes"
-    Attr_Span                    -> "span"
-    Attr_Src                     -> "src"
-    Attr_SrcDoc                  -> "srcdoc"
-    Attr_SrcLang                 -> "srclang"
-    Attr_SrcSet                  -> "srcset"
-    Attr_Start                   -> "start"
-    Attr_Step                    -> "step"
-    Attr_Target                  -> "target"
-    Attr_Type                    -> "type"
-    Attr_UseMap                  -> "usemap"
-    Attr_Value                   -> "value"
-    Attr_Width                   -> "width"
-    Attr_Wrap                    -> "wrap"
-    Attr_XMLNS                   -> "xmlns"
+    Attr_Abbreviation             -> "abbr"
+    Attr_Accept                   -> "accept"
+    Attr_AcceptCharset            -> "accept-charset"
+    Attr_Action                   -> "action"
+    Attr_Allow                    -> "allow"
+    Attr_Alt                      -> "alt"
+    Attr_As                       -> "as"
+    Attr_Async                    -> "async"
+    Attr_Autocomplete             -> "autocomplete"
+    Attr_Autoplay                 -> "autoplay"
+    Attr_Background               -> "background"
+    Attr_BackgroundColor          -> "bgcolor"
+    Attr_Blocking                 -> "blocking"
+    Attr_Border                   -> "border"
+    Attr_Capture                  -> "capture"
+    Attr_Charset                  -> "charset"
+    Attr_Checked                  -> "checked"
+    Attr_Cite                     -> "cite"
+    Attr_Color                    -> "color"
+    Attr_Cols                     -> "cols"
+    Attr_Colspan                  -> "colspan"
+    Attr_Command                  -> "command"
+    Attr_CommandFor               -> "commandfor"
+    Attr_Content                  -> "content"
+    Attr_Controls                 -> "controls"
+    Attr_ControlsList             -> "controlslist"
+    Attr_Coords                   -> "coords"
+    Attr_CrossOrigin              -> "crossorigin"
+    Attr_Data                     -> "data"
+    Attr_Datetime                 -> "datetime"
+    Attr_Decoding                 -> "decoding"
+    Attr_Default                  -> "default"
+    Attr_Defer                    -> "defer"
+    Attr_Dirname                  -> "dirname"
+    Attr_Disabled                 -> "disabled"
+    Attr_DisablePictureInPicture  -> "disablepictureinpicture"
+    Attr_DisableRemotePlayback    -> "disableremoteplayback"
+    Attr_Download                 -> "download"
+    Attr_ElementTiming            -> "elementtiming"
+    Attr_Enctype                  -> "enctype"
+    Attr_FetchPriority            -> "fetchpriority"
+    Attr_For                      -> "for"
+    Attr_Form                     -> "form"
+    Attr_FormAction               -> "formaction"
+    Attr_FormEnctype              -> "formenctype"
+    Attr_FormMethod               -> "formmethod"
+    Attr_FormNoValidate           -> "formnovalidate"
+    Attr_FormTarget               -> "formtarget"
+    Attr_Headers                  -> "headers"
+    Attr_Height                   -> "height"
+    Attr_High                     -> "high"
+    Attr_Href                     -> "href"
+    Attr_HrefLang                 -> "hreflang"
+    Attr_HttpEquiv                -> "http-equiv"
+    Attr_ImageSizes               -> "imagesizes"
+    Attr_ImageSrcset              -> "imagesrcset"
+    Attr_Integrity                -> "integrity"
+    Attr_IsMap                    -> "ismap"
+    Attr_Kind                     -> "kind"
+    Attr_Label                    -> "label"
+    Attr_List                     -> "list"
+    Attr_Loading                  -> "loading"
+    Attr_Loop                     -> "loop"
+    Attr_Low                      -> "low"
+    Attr_Max                      -> "max"
+    Attr_MaxLength                -> "maxlength"
+    Attr_MinLength                -> "minlength"
+    Attr_Media                    -> "media"
+    Attr_Method                   -> "method"
+    Attr_Min                      -> "min"
+    Attr_Multiple                 -> "multiple"
+    Attr_Muted                    -> "muted"
+    Attr_Name                     -> "name"
+    Attr_NoModule                 -> "nomodule"
+    Attr_NoValidate               -> "novalidate"
+    Attr_Open                     -> "open"
+    Attr_Optimum                  -> "optimum"
+    Attr_Pattern                  -> "pattern"
+    Attr_Ping                     -> "ping"
+    Attr_Placeholder              -> "placeholder"
+    Attr_PlaysInline              -> "playsinline"
+    Attr_PopoverTarget            -> "popovertarget"
+    Attr_PopoverTargetAction      -> "popovertargetaction"
+    Attr_Poster                   -> "poster"
+    Attr_Preload                  -> "preload"
+    Attr_ReadOnly                 -> "readonly"
+    Attr_ReferrerPolicy           -> "referrerpolicy"
+    Attr_Rel                      -> "rel"
+    Attr_Required                 -> "required"
+    Attr_Reversed                 -> "reversed"
+    Attr_Rows                     -> "rows"
+    Attr_Rowspan                  -> "rowspan"
+    Attr_Sandbox                  -> "sandbox"
+    Attr_Scope                    -> "scope"
+    Attr_Selected                 -> "selected"
+    Attr_ShadowRootMode           -> "shadowrootmode"
+    Attr_ShadowRootDelegatesFocus -> "shadowrootdelegatesfocus"
+    Attr_ShadowRootClonable       -> "shadowrootclonable"
+    Attr_Shape                    -> "shape"
+    Attr_Size                     -> "size"
+    Attr_Sizes                    -> "sizes"
+    Attr_Span                     -> "span"
+    Attr_Src                      -> "src"
+    Attr_SrcDoc                   -> "srcdoc"
+    Attr_SrcLang                  -> "srclang"
+    Attr_SrcSet                   -> "srcset"
+    Attr_Start                    -> "start"
+    Attr_Step                     -> "step"
+    Attr_Target                   -> "target"
+    Attr_Type                     -> "type"
+    Attr_UseMap                   -> "usemap"
+    Attr_Value                    -> "value"
+    Attr_Width                    -> "width"
+    Attr_Wrap                     -> "wrap"
+    Attr_XMLNS                    -> "xmlns"
 
     -- HTMX Attributes
     --
@@ -3100,6 +3118,15 @@ attr_scope = (,) Attr_Scope . Just . scopeToText
 
 attr_selected :: AttributeSelector
 attr_selected = (Attr_Selected, Nothing)
+
+attr_shadowrootmode :: OpenClosed -> AttributeSelector
+attr_shadowrootmode = (,) Attr_ShadowRootMode . Just . openClosedToText
+
+attr_shadowrootdelegatesfocus :: AttributeSelector
+attr_shadowrootdelegatesfocus = (Attr_ShadowRootDelegatesFocus, Nothing)
+
+attr_shadowrootclonable :: AttributeSelector
+attr_shadowrootclonable = (Attr_ShadowRootClonable, Nothing)
 
 attr_shape :: Shape -> AttributeSelector
 attr_shape = (,) Attr_Shape . Just . shapeToText

@@ -33,6 +33,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , nonEmptyText
   , number
   , onOff
+  , openClosed
   , part
   , popoverState
   , popoverTargetAction
@@ -319,6 +320,10 @@ number =
 
 onOff  :: MonadGen m => m Types.OnOff
 onOff =
+  Gen.enumBounded
+
+openClosed  :: MonadGen m => m Types.OpenClosed
+openClosed =
   Gen.enumBounded
 
 part  :: MonadGen m => m Types.Part

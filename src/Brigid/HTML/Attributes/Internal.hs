@@ -131,6 +131,9 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Sandbox
       , Attr_Scope
       , Attr_Selected
+      , Attr_ShadowRootMode
+      , Attr_ShadowRootDelegatesFocus
+      , Attr_ShadowRootClonable
       , Attr_Shape
       , Attr_Size
       , Attr_Sizes
@@ -793,6 +796,19 @@ data Attribute (tag :: TagType) where
     => Bool
     -> Attribute tag
 
+  Attr_ShadowRootMode
+    :: ValidAttribute 'ShadowRootMode tag
+    => Types.OpenClosed
+    -> Attribute tag
+
+  Attr_ShadowRootDelegatesFocus
+    :: ValidAttribute 'ShadowRootDelegatesFocus tag
+    => Attribute tag
+
+  Attr_ShadowRootClonable
+    :: ValidAttribute 'ShadowRootClonable tag
+    => Attribute tag
+
   Attr_Shape
     :: ValidAttribute 'Shape tag
     => Types.Shape
@@ -1377,6 +1393,15 @@ attributeText attr =
 
     Attr_Selected _selected ->
       "selected"
+
+    Attr_ShadowRootMode _shadowrootmode ->
+      "shadowrootmode"
+
+    Attr_ShadowRootDelegatesFocus ->
+      "shadowrootdelegatesfocus"
+
+    Attr_ShadowRootClonable ->
+      "shadowrootclonable"
 
     Attr_Shape _shape ->
       "shape"

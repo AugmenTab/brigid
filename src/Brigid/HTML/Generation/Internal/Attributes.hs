@@ -127,6 +127,9 @@ module Brigid.HTML.Generation.Internal.Attributes
   , sandbox
   , scope
   , selected
+  , shadowrootmode
+  , shadowrootdelegatesfocus
+  , shadowrootclonable
   , shape
   , size
   , sizes
@@ -299,6 +302,9 @@ data Attribute
   | Sandbox [Types.SandboxToken]
   | Scope Types.Scope
   | Selected Bool
+  | ShadowRootMode Types.OpenClosed
+  | ShadowRootDelegatesFocus
+  | ShadowRootClonable
   | Shape Types.Shape
   | Size Positive
   | Sizes (NEL.NonEmpty Types.Size)
@@ -452,6 +458,9 @@ attributeText attr =
     Sandbox _ -> "sandbox"
     Scope _ -> "scope"
     Selected _ -> "selected"
+    ShadowRootMode _ -> "shadowrootmode"
+    ShadowRootDelegatesFocus -> "shadowrootdelegatesfocus"
+    ShadowRootClonable -> "shadowrootclonable"
     Shape _ -> "shape"
     Size _ -> "size"
     Sizes _ -> "sizes"
@@ -975,6 +984,18 @@ scope =
 selected :: MonadGen m => m Attribute
 selected =
   Selected <$> Gen.bool
+
+shadowrootmode :: MonadGen m => m Attribute
+shadowrootmode =
+  ShadowRootMode <$> Generators.openClosed
+
+shadowrootdelegatesfocus :: MonadGen m => m Attribute
+shadowrootdelegatesfocus =
+  pure ShadowRootDelegatesFocus
+
+shadowrootclonable :: MonadGen m => m Attribute
+shadowrootclonable =
+  pure ShadowRootClonable
 
 shape :: MonadGen m => m Attribute
 shape =
