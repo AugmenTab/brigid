@@ -11,6 +11,7 @@ module Brigid.HTML.Generation
   , module Elements
   , accesskey
   , autocapitalize
+  , autocorrect
   , autofocus
   , class_
   , contenteditable
@@ -159,6 +160,7 @@ import Brigid.HTML.Generation.Internal.Analysis as Analysis
 import Brigid.HTML.Generation.Internal.Attributes as Attribute
   ( accesskey
   , autocapitalize
+  , autocorrect
   , autofocus
   , class_
   , contenteditable

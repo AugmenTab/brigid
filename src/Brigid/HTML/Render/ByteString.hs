@@ -518,6 +518,9 @@ renderAttribute attr =
         . buildAttribute "autocapitalize"
         $ Types.autocapitalizeOptionToBytes option
 
+    Attr_Autocorrect autocorrect ->
+      Just . buildAttribute "autocorrect" $ Types.onOffToBytes autocorrect
+
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
 

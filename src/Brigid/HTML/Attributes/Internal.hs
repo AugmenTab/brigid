@@ -8,6 +8,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Custom
       , Attr_AccessKey
       , Attr_Autocapitalize
+      , Attr_Autocorrect
       , Attr_Autofocus
       , Attr_Class
       , Attr_ContentEditable
@@ -217,6 +218,10 @@ data Attribute (tag :: TagType) where
 
   Attr_Autocapitalize
     :: Types.AutocapitalizeOption
+    -> Attribute tag
+
+  Attr_Autocorrect
+    :: Types.OnOff
     -> Attribute tag
 
   Attr_Autofocus
@@ -1004,6 +1009,9 @@ attributeText attr =
 
     Attr_Autocapitalize _option ->
       "autocapitalize"
+
+    Attr_Autocorrect _autocorrect ->
+      "autocorrect"
 
     Attr_Autofocus _autofocus ->
       "autofocus"

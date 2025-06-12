@@ -3,6 +3,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , attributeText
   , accesskey
   , autocapitalize
+  , autocorrect
   , autofocus
   , class_
   , contenteditable
@@ -171,6 +172,7 @@ data Attribute
   --
   = AccessKey Char
   | Autocapitalize Types.AutocapitalizeOption
+  | Autocorrect Types.OnOff
   | Autofocus Bool
   | Class Types.Class
   | ContentEditable Types.ContentEditableOption
@@ -323,6 +325,7 @@ attributeText attr =
     --
     AccessKey _ -> "accesskey"
     Autocapitalize _ -> "autocapitalize"
+    Autocorrect _ -> "autocorrect"
     Autofocus _ -> "autofocus"
     Class _ -> "class"
     ContentEditable _ -> "contenteditable"
@@ -474,6 +477,10 @@ accesskey =
 autocapitalize :: MonadGen m => m Attribute
 autocapitalize =
   Autocapitalize <$> Generators.autocapitalizeOption
+
+autocorrect :: MonadGen m => m Attribute
+autocorrect =
+  Autocorrect <$> Generators.onOff
 
 autofocus :: MonadGen m => m Attribute
 autofocus =

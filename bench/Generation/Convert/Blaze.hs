@@ -156,6 +156,10 @@ toAttribute attr =
       H.customAttribute "autocapitalize" $
         textToBlaze Types.autocapitalizeOptionToText autocapitalize
 
+    GA.Autocorrect autocorrect ->
+      H.customAttribute "autocorrect" $
+        textToBlaze Types.onOffToText autocorrect
+
     GA.Autofocus autofocus ->
       booleanToBlaze A.autofocus autofocus
 

@@ -1,6 +1,7 @@
 module Brigid.HTML.Attributes.Global
   ( AttributeTags.AccessKey, accesskey
   , AttributeTags.Autocapitalize, autocapitalize
+  , AttributeTags.Autocorrect, autocorrect
   , AttributeTags.Autofocus, autofocus
   , AttributeTags.Class, class_
   , classes
@@ -57,6 +58,9 @@ accesskey = Attr_AccessKey
 
 autocapitalize :: Types.AutocapitalizeOption -> Attribute tag
 autocapitalize = Attr_Autocapitalize
+
+autocorrect :: Types.OnOff -> Attribute tag
+autocorrect = Attr_Autocorrect
 
 autofocus :: Bool -> Attribute tag
 autofocus = Attr_Autofocus

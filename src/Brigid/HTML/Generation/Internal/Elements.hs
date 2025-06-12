@@ -2177,6 +2177,7 @@ withGlobalAttrs params element =
       . mappend (elementValidAttrs element)
       $ [ A.accesskey
         , A.autocapitalize
+        , A.autocorrect
         , A.autofocus
         , A.class_
         , A.contenteditable

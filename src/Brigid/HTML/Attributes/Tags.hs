@@ -3,6 +3,7 @@
 module Brigid.HTML.Attributes.Tags
   ( AccessKey
   , Autocapitalize
+  , Autocorrect
   , Autofocus
   , Class
   , ContentEditable
@@ -183,6 +184,7 @@ import Brigid.HTML.Attributes.AttributeType as AttributeType
 
 type AccessKey = 'AttributeType.AccessKey
 type Autocapitalize = 'AttributeType.Autocapitalize
+type Autocorrect = 'AttributeType.Autocorrect
 type Autofocus = 'AttributeType.Autofocus
 type Class = 'AttributeType.Class
 type ContentEditable = 'AttributeType.ContentEditable

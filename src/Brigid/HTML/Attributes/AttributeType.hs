@@ -6,6 +6,7 @@ module Brigid.HTML.Attributes.AttributeType
   , AttributeType
       ( AccessKey
       , Autocapitalize
+      , Autocorrect
       , Autofocus
       , Class
       , ContentEditable
@@ -190,6 +191,7 @@ data AttributeType
   --
   = AccessKey
   | Autocapitalize
+  | Autocorrect
   | Autofocus
   | Class
   | ContentEditable
@@ -374,6 +376,7 @@ data AttributeType
 type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage AccessKey               = 'Text "AccessKey (accesskey)"
   AttributeErrorMessage Autocapitalize          = 'Text "Autocapitalize (autocapitalize)"
+  AttributeErrorMessage Autocorrect             = 'Text "Autocorrect (autocorrect)"
   AttributeErrorMessage Autofocus               = 'Text "Autofocus (autofocus)"
   AttributeErrorMessage Class                   = 'Text "Class (class)"
   AttributeErrorMessage ContentEditable         = 'Text "ContentEditable (contenteditable)"

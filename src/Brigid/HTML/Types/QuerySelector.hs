@@ -134,6 +134,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_custom
   , attr_accesskey
   , attr_autocapitalize
+  , attr_autocorrect
   , attr_autofocus
   , attr_blocking
   , attr_class
@@ -648,6 +649,7 @@ import Brigid.HTML.Types.As (As, asToText)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
 import Brigid.HTML.Types.BlockOption (BlockOption, blockOptionToText)
+import Brigid.HTML.Types.Boolean (OnOff, onOffToText)
 import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
 import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
@@ -1825,6 +1827,7 @@ data AttributeType
   --
   | Attr_AccessKey
   | Attr_Autocapitalize
+  | Attr_Autocorrect
   | Attr_Autofocus
   | Attr_Class
   | Attr_ContentEditable
@@ -2018,6 +2021,7 @@ attributeTypeToBytes attr =
     --
     Attr_AccessKey           -> "accesskey"
     Attr_Autocapitalize      -> "autocapitalize"
+    Attr_Autocorrect         -> "autocorrect"
     Attr_Autofocus           -> "autofocus"
     Attr_Class               -> "class"
     Attr_ContentEditable     -> "contenteditable"
@@ -2212,6 +2216,7 @@ attributeTypeFromText attr =
     --
     "accesskey"          -> Right Attr_AccessKey
     "autocapitalize"     -> Right Attr_Autocapitalize
+    "autocorrect"        -> Right Attr_Autocorrect
     "autofocus"          -> Right Attr_Autofocus
     "class"              -> Right Attr_Class
     "contenteditable"    -> Right Attr_ContentEditable
@@ -2429,6 +2434,7 @@ attributeTypeToText attr =
     --
     Attr_AccessKey           -> "accesskey"
     Attr_Autocapitalize      -> "autocapitalize"
+    Attr_Autocorrect         -> "autocorrect"
     Attr_Autofocus           -> "autofocus"
     Attr_Class               -> "class"
     Attr_ContentEditable     -> "contenteditable"
@@ -2628,6 +2634,10 @@ attr_accesskey = (,) Attr_AccessKey . Just . T.singleton
 attr_autocapitalize :: AutocapitalizeOption -> AttributeSelector
 attr_autocapitalize =
   (,) Attr_Autocapitalize . Just . autocapitalizeOptionToText
+
+attr_autocorrect :: OnOff -> AttributeSelector
+attr_autocorrect =
+  (,) Attr_Autocorrect . Just . onOffToText
 
 attr_autofocus :: T.Text -> AttributeSelector
 attr_autofocus = (,) Attr_Autofocus . Just

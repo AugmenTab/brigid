@@ -162,6 +162,9 @@ toAttribute attr =
         . B.makeAttribute "autocapitalize"
         $ Types.autocapitalizeOptionToText autocapitalize
 
+    GA.Autocorrect autocorrect ->
+      Just . B.makeAttribute "autocorrect" $ Types.onOffToText autocorrect
+
     GA.Autofocus autofocus ->
       booleanToLucid H.autofocus_ autofocus
 

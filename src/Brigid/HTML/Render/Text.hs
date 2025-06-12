@@ -504,6 +504,9 @@ renderAttribute attr =
         . buildAttribute "autocapitalize"
         $ Types.autocapitalizeOptionToText option
 
+    Attr_Autocorrect autocorrect ->
+      Just . buildAttribute "autocorrect" $ Types.onOffToText autocorrect
+
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
 
