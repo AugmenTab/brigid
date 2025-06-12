@@ -21,6 +21,7 @@ data IntegrityEncoding
   = SHA256
   | SHA384
   | SHA512
+  deriving (Bounded, Enum, Eq, Show)
 
 integrityEncodingToBytes :: IntegrityEncoding -> LBS.ByteString
 integrityEncodingToBytes sha =

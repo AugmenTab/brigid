@@ -144,16 +144,20 @@ module Brigid.HTML.Generation.Internal.Attributes
   , type_
   , usemap
   , value
+  , valueInteger
+  , valueNumber
   , width
   , wrap
   , xmlns
   ) where
 
+import Beeline.HTTP.Client qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Time qualified as Time
 import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
@@ -193,7 +197,7 @@ data Attribute
   | ItemProp T.Text
   | ItemRef (NEL.NonEmpty Types.Id)
   | ItemScope
-  | ItemType Types.RawURL
+  | ItemType Types.AbsoluteURL
   | Lang (Maybe Ogma.BCP_47)
   | Nonce T.Text
   | Part [Types.Part]
@@ -234,7 +238,7 @@ data Attribute
   | Coords (NEL.NonEmpty Integer)
   | CrossOrigin Types.CrossOriginFetch
   | Data Types.RawURL
-  | Datetime String
+  | Datetime Time.Day
   | Decoding Types.Decoding
   | Default
   | Defer
@@ -262,7 +266,7 @@ data Attribute
   | HttpEquiv Types.HttpEquivToken
   | ImageSizes (NEL.NonEmpty Types.Size)
   | ImageSrcset (NEL.NonEmpty Types.SrcsetCandidate)
-  | Integrity BS.ByteString
+  | Integrity Types.IntegrityEncoding BS.ByteString
   | IsMap
   | Kind Types.TrackKind
   | Label T.Text
@@ -285,7 +289,7 @@ data Attribute
   | Open
   | Optimum Types.Number
   | Pattern T.Text
-  | Ping (NEL.NonEmpty Types.RawURL)
+  | Ping (NEL.NonEmpty Types.Ping)
   | Placeholder T.Text
   | PlaysInline Bool
   | PopoverTarget Types.Id
@@ -319,6 +323,8 @@ data Attribute
   | Type Types.RawTypeOption
   | UseMap Types.Name
   | Value T.Text
+  | ValueInteger Integer
+  | ValueNumber Types.Number
   | Width Positive
   | Wrap Types.Wrap
   | XMLNS Types.RawURL
@@ -418,7 +424,7 @@ attributeText attr =
     HttpEquiv _ -> "http-equiv"
     ImageSizes _ -> "imagesizes"
     ImageSrcset _ -> "imagesrcset"
-    Integrity _ -> "integrity"
+    Integrity _ _ -> "integrity"
     IsMap -> "ismap"
     Kind _ -> "kind"
     Label _ -> "label"
@@ -475,6 +481,8 @@ attributeText attr =
     Type _ -> "type"
     UseMap _ -> "usemap"
     Value _ -> "value"
+    ValueInteger _ -> "value"
+    ValueNumber _ -> "value"
     Width _ -> "width"
     Wrap _ -> "wrap"
     XMLNS _ -> "xmlns"
@@ -563,7 +571,7 @@ itemscope =
 
 itemtype :: MonadGen m => m Attribute
 itemtype =
-  ItemType <$> Generators.url
+  pure . ItemType $ Types.mkAbsoluteURL B.defaultBaseURI
 
 lang :: MonadGen m => m Attribute
 lang =
@@ -715,7 +723,7 @@ data_ =
 
 datetime :: MonadGen m => m Attribute
 datetime =
-  Datetime <$> Generators.string
+  Datetime <$> Generators.day
 
 decoding :: MonadGen m => m Attribute
 decoding =
@@ -827,7 +835,9 @@ imagesrcset =
 
 integrity :: MonadGen m => m Attribute
 integrity =
-  Integrity <$> Generators.byteString
+  Integrity
+    <$> Generators.integrityEncoding
+    <*> Generators.byteString
 
 ismap :: MonadGen m => m Attribute
 ismap =
@@ -919,7 +929,7 @@ pattern =
 
 ping :: MonadGen m => m Attribute
 ping =
-  Ping <$> Gen.nonEmpty (Range.linear 1 5) Generators.url
+  Ping <$> Gen.nonEmpty (Range.linear 1 5) Generators.ping
 
 placeholder :: MonadGen m => m Attribute
 placeholder =
@@ -1052,6 +1062,14 @@ usemap =
 value :: MonadGen m => m Attribute
 value =
   Value <$> Generators.text
+
+valueInteger :: MonadGen m => m Attribute
+valueInteger =
+  ValueInteger <$> Generators.integer
+
+valueNumber :: MonadGen m => m Attribute
+valueNumber =
+  ValueNumber <$> Generators.number
 
 width :: MonadGen m => m Attribute
 width =

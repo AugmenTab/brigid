@@ -152,6 +152,8 @@ module Brigid.HTML.Generation
   , type_
   , usemap
   , value
+  , valueInteger
+  , valueNumber
   , width
   , wrap
   , xmlns
@@ -304,6 +306,8 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , type_
   , usemap
   , value
+  , valueInteger
+  , valueNumber
   , width
   , wrap
   , xmlns

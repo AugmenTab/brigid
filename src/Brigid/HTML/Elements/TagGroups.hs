@@ -52,6 +52,7 @@ module Brigid.HTML.Elements.TagGroups
   , DirnameableTags
   , DisableableTags
   , ElementTimingTags
+  , FormTags
   , FormMethodTags
   , FormNoValidateTags
   , FormSubmitTags
@@ -66,6 +67,7 @@ module Brigid.HTML.Elements.TagGroups
   , RangedNumberTags
   , RangedTags
   , ReadOnlyTags
+  , ReferrerPolicyTags
   , RelTags
   , RequireableTags
   , SizableTags
@@ -80,7 +82,7 @@ module Brigid.HTML.Elements.TagGroups
   ) where
 
 import Brigid.HTML.Elements.TagType (TagType(..))
-import Brigid.HTML.Internal.TagOperations (Add, Remove, Union)
+import Brigid.HTML.Internal.TagOperations (Remove, Union)
 
 type AllElements =
   [ 'Comment
@@ -786,6 +788,7 @@ type DisableableTags =
     [ 'Button
     , 'CustomHTML
     , 'Fieldset
+    , 'Link
     , 'OptionGroup
     , 'Option
     , 'Select
@@ -848,8 +851,20 @@ type ElementTimingTags =
   , 'Video
   ]
 
+type FormTags =
+  Union InputTags
+    [ 'Button
+    , 'Fieldset
+    , 'Meter
+    , 'Object
+    , 'Output
+    , 'Select
+    , 'TextArea
+    ]
+
 type FormMethodTags =
-  [ 'Input
+  [ 'Button
+  , 'Input
   , 'InputImage
   , 'InputSubmit
   ]
@@ -924,12 +939,13 @@ type IntegrityTags =
 
 type LabelableTags =
   [ 'OptionGroup
+  , 'Option
   , 'Track
   ]
 
 type MediaTags =
-  [ 'Anchor
-  , 'Link
+  [ 'Link
+  , 'Meta
   , 'Source
   , 'Style
   ]
@@ -937,6 +953,7 @@ type MediaTags =
 type NameTags =
   Union InputTags
     [ 'Button
+    , 'Details
     , 'Fieldset
     , 'Form
     , 'IFrame
@@ -984,6 +1001,16 @@ type ReadOnlyTags =
   , 'InputTime
   , 'InputUrl
   , 'InputWeek
+  , 'TextArea
+  ]
+
+type ReferrerPolicyTags =
+  [ 'Anchor
+  , 'Area
+  , 'IFrame
+  , 'Image
+  , 'Link
+  , 'Script
   ]
 
 type RelTags =
@@ -1022,6 +1049,7 @@ type SizableTags =
   , 'Input
   , 'InputImage
   , 'Object
+  , 'Source
   , 'Video
   ]
 
@@ -1105,11 +1133,16 @@ type URLTags =
 type ValuableTags =
   Union (Remove 'InputFile InputTags)
     [ 'Button
-    , 'Meter
+    , 'Data
     , 'ListItem
+    , 'Meter
     , 'Option
     , 'Progress
     ]
 
 type TextValueTags =
-  Add 'Button InputTags
+  Union InputTags
+    [ 'Button
+    , 'Data
+    , 'Option
+    ]

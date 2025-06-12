@@ -6,6 +6,7 @@ module Brigid.Types
   , urlToBytes
   , urlToText
   , AbsoluteURL
+  , mkAbsoluteURL
   , absoluteURLFromText
   , absoluteURLToBytes
   , absoluteURLToText
@@ -42,6 +43,7 @@ import Brigid.Types.URL ( URL
                         , urlToBytes
                         , urlToText
                         , AbsoluteURL
+                        , mkAbsoluteURL
                         , absoluteURLFromText
                         , absoluteURLToBytes
                         , absoluteURLToText

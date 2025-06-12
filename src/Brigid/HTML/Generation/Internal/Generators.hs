@@ -10,6 +10,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , contentEditableOption
   , controlsList
   , crossOriginFetch
+  , day
   , decoding
   , directionality
   , exportPart
@@ -22,6 +23,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , inputMode
   , int
   , integer
+  , integrityEncoding
   , keyHintOption
   , lazyByteString
   , loadOption
@@ -35,6 +37,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , onOff
   , openClosed
   , part
+  , ping
   , popoverState
   , popoverTargetAction
   , positive
@@ -64,6 +67,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Ratio (Ratio, (%))
 import Data.Text qualified as T
+import Data.Time.Calendar.OrdinalDate qualified as Time
 import Data.UUID (UUID, fromWords64)
 import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
@@ -128,6 +132,12 @@ crossOriginFetch :: MonadGen m => m Types.CrossOriginFetch
 crossOriginFetch =
   Gen.enumBounded
 
+day :: MonadGen m => m Time.Day
+day =
+  Time.fromOrdinalDate
+    <$> Gen.integral (Range.linear 1 40000)
+    <*> Gen.int (Range.linear 1 365)
+
 decoding :: MonadGen m => m Types.Decoding
 decoding =
   Gen.enumBounded
@@ -177,6 +187,10 @@ int =
 integer  :: MonadGen m => m Integer
 integer =
   Gen.integral (Range.linear 1 1000)
+
+integrityEncoding :: MonadGen m => m Types.IntegrityEncoding
+integrityEncoding =
+  Gen.enumBounded
 
 keyHintOption :: MonadGen m => m Types.KeyHintOption
 keyHintOption =
@@ -329,6 +343,10 @@ openClosed =
 part  :: MonadGen m => m Types.Part
 part =
   Types.Part <$> text
+
+ping :: MonadGen m => m Types.Ping
+ping =
+  Types.mkPing <$> url
 
 popoverState :: MonadGen m => m Types.PopoverState
 popoverState =

@@ -27,8 +27,9 @@ type family ValidValuesFor (val :: Type) :: [TagType] where
   ValidValuesFor Types.Date                     = [ Tags.Input, Tags.InputDate ]
   ValidValuesFor Types.DatetimeLocal            = [ Tags.Input, Tags.InputDatetimeLocal ]
   ValidValuesFor Types.EmailAddress             = [ Tags.Input, Tags.InputEmail ]
+  ValidValuesFor Integer                        = '[ Tags.ListItem ]
   ValidValuesFor Types.Month                    = [ Tags.Input, Tags.InputMonth ]
-  ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber, Tags.InputRange ]
+  ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber, Tags.InputRange, Tags.Meter, Tags.Progress ]
   ValidValuesFor Types.PhoneNumber              = [ Tags.Input, Tags.InputTel ]
   ValidValuesFor T.Text                         = TagGroups.TextValueTags
   ValidValuesFor Types.Time                     = [ Tags.Input, Tags.InputTime ]

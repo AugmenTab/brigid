@@ -11,6 +11,7 @@ module Brigid.Types.URL
   , urlToBytes
   , urlToText
   , AbsoluteURL
+  , mkAbsoluteURL
   , absoluteURLFromText
   , absoluteURLToBytes
   , absoluteURLToText
@@ -105,6 +106,9 @@ newtype AbsoluteURL = AbsoluteURL B.BaseURI
 instance Show AbsoluteURL where
   show = mappend "AbsoluteURL " . T.unpack . absoluteURLToText
 
+mkAbsoluteURL :: B.BaseURI -> AbsoluteURL
+mkAbsoluteURL = AbsoluteURL
+
 absoluteURLFromText :: T.Text -> Either String AbsoluteURL
 absoluteURLFromText =
   fmap AbsoluteURL . B.parseBaseURI . T.unpack
@@ -189,6 +193,19 @@ rawURLToBytes =
   LBS8.pack . T.unpack . rawURLToText
 
 newtype Ping = Ping (Shrubbery.Union PingTypes)
+
+instance Eq Ping where
+  (==) = (==) `on` pingToText
+
+instance Show Ping where
+  show (Ping ping) =
+    ( Shrubbery.dissect
+        . Shrubbery.branchBuild
+        . Shrubbery.branch @AbsoluteURL        show
+        . Shrubbery.branch @(RelativeURL Post) show
+        . Shrubbery.branch @RawURL             show
+        $ Shrubbery.branchEnd
+    ) ping
 
 type PingTypes =
   [ AbsoluteURL

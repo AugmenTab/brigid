@@ -35,6 +35,7 @@ instance Show Value where
         . Shrubbery.branch @BTime.Date             show
         . Shrubbery.branch @BTime.DatetimeLocal    show
         . Shrubbery.branch @EmailAddress           show
+        . Shrubbery.branch @Integer                show
         . Shrubbery.branch @BTime.Month            show
         . Shrubbery.branch @Number                 show
         . Shrubbery.branch @PhoneNumber            show
@@ -53,6 +54,7 @@ type ValueTypes =
   , BTime.Date
   , BTime.DatetimeLocal
   , EmailAddress
+  , Integer
   , BTime.Month
   , Number
   , PhoneNumber
@@ -80,6 +82,7 @@ valueToBytes (Value value) =
       . Shrubbery.branch @BTime.Date             BTime.dateToBytes
       . Shrubbery.branch @BTime.DatetimeLocal    BTime.datetimeLocalToBytes
       . Shrubbery.branch @EmailAddress           emailAddressToBytes
+      . Shrubbery.branch @Integer                Render.showBytes
       . Shrubbery.branch @BTime.Month            BTime.monthToBytes
       . Shrubbery.branch @Number                 numberToBytes
       . Shrubbery.branch @PhoneNumber            phoneNumberToBytes
@@ -101,6 +104,7 @@ valueToText (Value value) =
       . Shrubbery.branch @BTime.Date             BTime.dateToText
       . Shrubbery.branch @BTime.DatetimeLocal    BTime.datetimeLocalToText
       . Shrubbery.branch @EmailAddress           emailAddressToText
+      . Shrubbery.branch @Integer                Render.showText
       . Shrubbery.branch @BTime.Month            BTime.monthToText
       . Shrubbery.branch @Number                 numberToText
       . Shrubbery.branch @PhoneNumber            phoneNumberToText

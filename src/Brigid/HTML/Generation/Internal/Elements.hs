@@ -54,15 +54,15 @@ elementValidAttrs element =
     Code -> [ A.elementtiming ]
     TableColumn -> [ A.span ]
     TableColumnGroup -> [ A.span ]
-    Data -> [ A.data_ ]
+    Data -> [ A.value ]
     DataList -> []
-    DescriptionDetails -> []
+    DescriptionDetails -> [ A.elementtiming ]
     DeletedText -> deletedTextAttrs
     Details -> detailsAttrs
     Definition -> [ A.elementtiming ]
     Dialog -> [ A.open ]
     Division -> [ A.elementtiming ]
-    DescriptionList -> [ A.elementtiming ]
+    DescriptionList -> []
     DescriptionTerm -> [ A.elementtiming ]
     Emphasis -> [ A.elementtiming ]
     Embed -> embedAttrs
@@ -81,7 +81,7 @@ elementValidAttrs element =
     Header -> [ A.elementtiming ]
     HeadingGroup -> []
     HorizontalRule -> []
-    Html -> []
+    Html -> [ A.xmlns ]
     IdiomaticText -> [ A.elementtiming ]
     IFrame -> iFrameAttrs
     Image -> imageAttrs
@@ -473,13 +473,13 @@ areaAttrs :: MonadGen m => [m A.Attribute]
 areaAttrs =
   [ A.alt
   , A.coords
-  , A.shape
-  , A.href
-  , A.target
   , A.download
+  , A.href
   , A.ping
-  , A.rel
   , A.referrerpolicy
+  , A.rel
+  , A.shape
+  , A.target
   ]
 
 articleContent :: Set ElementType
@@ -490,14 +490,15 @@ asideContent = flowContent
 
 audioAttrs :: MonadGen m => [m A.Attribute]
 audioAttrs =
-  [ A.src
-  , A.preload
-  , A.autoplay
+  [ A.autoplay
+  , A.controls
+  , A.controlslist
+  , A.crossorigin
+  , A.disableremoteplayback
   , A.loop
   , A.muted
-  , A.controls
-  , A.crossorigin
-  , A.controlslist
+  , A.preload
+  , A.src
   ]
 
 audioContent :: Set ElementType
@@ -532,8 +533,7 @@ bodyContent = flowContent
 
 buttonAttrs :: MonadGen m => [m A.Attribute]
 buttonAttrs =
-  [ A.autofocus
-  , A.command
+  [ A.command
   , A.commandfor
   , A.disabled
   , A.elementtiming
@@ -639,6 +639,7 @@ detailsContent =
 detailsAttrs :: MonadGen m => [m A.Attribute]
 detailsAttrs =
   [ A.elementtiming
+  , A.name
   , A.open
   ]
 
@@ -784,10 +785,10 @@ emphasisContent = phrasingContent
 
 embedAttrs :: MonadGen m => [m A.Attribute]
 embedAttrs =
-  [ A.src
+  [ A.height
+  , A.src
   , A.type_
   , A.width
-  , A.height
   ]
 
 fieldsetAttrs :: MonadGen m => [m A.Attribute]
@@ -815,13 +816,13 @@ footerContent = marginalContent
 formAttrs :: MonadGen m => [m A.Attribute]
 formAttrs =
   [ A.acceptCharset
-  , A.autocomplete
-  , A.name
-  , A.rel
   , A.action
+  , A.autocomplete
   , A.enctype
   , A.method
+  , A.name
   , A.novalidate
+  , A.rel
   , A.target
   ]
 
@@ -976,17 +977,17 @@ imageAttrs =
   , A.ismap
   , A.loading
   , A.referrerpolicy
+  , A.sizes
   , A.src
   , A.srcset
-  , A.width
   , A.usemap
+  , A.width
   ]
 
 inputAttrs :: MonadGen m => [m A.Attribute]
 inputAttrs =
   [ A.accept
   , A.alt
-  , A.autocapitalize
   , A.autocomplete
   , A.capture
   , A.checked
@@ -1097,7 +1098,7 @@ listItemContent = flowContent
 listItemAttrs :: MonadGen m => [m A.Attribute]
 listItemAttrs =
   [ A.elementtiming
-  , A.value
+  , A.valueInteger
   ]
 
 linkAttrs :: MonadGen m => [m A.Attribute]
@@ -1112,9 +1113,10 @@ linkAttrs =
   , A.imagesizes
   , A.imagesrcset
   , A.integrity
+  , A.media
   , A.referrerpolicy
   , A.rel
-  , A.title
+  , A.sizes
   , A.type_
   ]
 
@@ -1147,18 +1149,19 @@ metaAttrs =
   [ A.charset
   , A.content
   , A.httpEquiv
+  , A.media
   , A.nameMeta
   ]
 
 meterAttrs :: MonadGen m => [m A.Attribute]
 meterAttrs =
-  [ A.value
-  , A.min
-  , A.max
-  , A.low
+  [ A.form
   , A.high
+  , A.low
+  , A.max
+  , A.min
   , A.optimum
-  , A.form
+  , A.value
   ]
 
 meterContent :: Set ElementType
@@ -1367,7 +1370,6 @@ scriptAttrs =
   , A.fetchpriority
   , A.integrity
   , A.nomodule
-  , A.nonce
   , A.referrerpolicy
   , A.src
   , A.type_
@@ -1382,7 +1384,6 @@ sectionContent = flowContent
 selectAttrs :: MonadGen m => [m A.Attribute]
 selectAttrs =
   [ A.autocomplete
-  , A.autofocus
   , A.disabled
   , A.form
   , A.multiple
@@ -1403,10 +1404,12 @@ sideCommentContent = phrasingContent
 
 sourceAttrs :: MonadGen m => [m A.Attribute]
 sourceAttrs =
-  [ A.type_
+  [ A.height
+  , A.media
+  , A.sizes
   , A.src
   , A.srcset
-  , A.height
+  , A.type_
   , A.width
   ]
 
@@ -1419,8 +1422,7 @@ strongContent = phrasingContent
 styleAttrs :: MonadGen m => [m A.Attribute]
 styleAttrs =
   [ A.blocking
-  , A.nonce
-  , A.title
+  , A.media
   ]
 
 subscriptContent :: Set ElementType
@@ -1471,9 +1473,7 @@ contentTemplateAttrs =
 
 textAreaAttrs :: MonadGen m => [m A.Attribute]
 textAreaAttrs =
-  [ A.autocapitalize
-  , A.autocomplete
-  , A.autofocus
+  [ A.autocomplete
   , A.cols
   , A.dirname
   , A.disabled
@@ -1485,7 +1485,6 @@ textAreaAttrs =
   , A.readonly
   , A.required
   , A.rows
-  , A.spellcheck
   , A.wrap
   ]
 

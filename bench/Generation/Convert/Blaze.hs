@@ -5,6 +5,7 @@ module Generation.Convert.Blaze
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Time.Format.ISO8601 (iso8601Show)
 import Ogma qualified
 import Prelude hiding (div, max, min, span)
 import Text.Blaze.Html (Html, (!))
@@ -218,7 +219,7 @@ toAttribute attr =
       A.itemscope mempty
 
     GA.ItemType itemtype ->
-      A.itemtype $ textToBlaze Types.rawURLToText itemtype
+      A.itemtype $ textToBlaze Types.absoluteURLToText itemtype
 
     GA.Lang lang ->
       A.lang $ maybe mempty (textToBlaze Ogma.bcp_47ToText) lang
@@ -343,7 +344,8 @@ toAttribute attr =
       A.data_ $ textToBlaze Types.rawURLToText data_
 
     GA.Datetime datetime ->
-      H.customAttribute "datetime" $ H.stringValue datetime
+      H.customAttribute "datetime" $
+        textToBlaze (T.pack . iso8601Show) datetime
 
     GA.Decoding decoding ->
       H.customAttribute "decoding" $ textToBlaze Types.decodingToText decoding
@@ -431,8 +433,9 @@ toAttribute attr =
         . foldToBlazeWithSeparator Types.srcsetCandidateToText ", "
         $ NEL.toList imagesrcset
 
-    GA.Integrity integrity ->
-      H.customAttribute "integrity" $ H.unsafeByteStringValue integrity
+    GA.Integrity sha content ->
+      H.customAttribute "integrity" $
+        textToBlaze (Types.integrityToText sha) content
 
     GA.IsMap ->
       A.ismap "true"
@@ -504,7 +507,7 @@ toAttribute attr =
 
     GA.Ping ping ->
       A.ping
-        . foldToBlazeWithSeparator Types.rawURLToText " "
+        . foldToBlazeWithSeparator Types.pingToText " "
         $ NEL.toList ping
 
     GA.Placeholder placeholder ->
@@ -614,6 +617,12 @@ toAttribute attr =
 
     GA.Value value ->
       A.value $ textToBlaze id value
+
+    GA.ValueInteger value ->
+      A.value $ showBlaze value
+
+    GA.ValueNumber value ->
+      A.value $ textToBlaze Types.numberToText value
 
     GA.Width width ->
       A.width $ showBlaze width

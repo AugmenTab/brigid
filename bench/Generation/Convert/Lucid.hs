@@ -8,6 +8,7 @@ import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
+import Data.Time.Format.ISO8601 (iso8601Show)
 import Lucid qualified
 import Lucid.Base qualified as B
 import Lucid.Html5 qualified as H
@@ -226,7 +227,7 @@ toAttribute attr =
       Just $ B.makeAttribute "itemscope" mempty
 
     GA.ItemType itemtype ->
-      Just . B.makeAttribute "itemtype" $ Types.rawURLToText itemtype
+      Just . B.makeAttribute "itemtype" $ Types.absoluteURLToText itemtype
 
     GA.Lang lang ->
       Just . H.lang_ $ maybe "" Ogma.bcp_47ToText lang
@@ -357,7 +358,7 @@ toAttribute attr =
       Just . B.makeAttribute "data" $ Types.rawURLToText data_
 
     GA.Datetime datetime ->
-      Just . H.datetime_ $ T.pack datetime
+      Just . H.datetime_ . T.pack $ iso8601Show datetime
 
     GA.Decoding decoding ->
       Just . B.makeAttribute "decoding" $ Types.decodingToText decoding
@@ -451,8 +452,8 @@ toAttribute attr =
         . foldToLucidWithSeparator Types.srcsetCandidateToText ", "
         $ NEL.toList imagesrcset
 
-    GA.Integrity integrity ->
-      Just . H.integrity_ $ TE.decodeUtf8 integrity
+    GA.Integrity sha content ->
+      Just . H.integrity_ $ Types.integrityToText sha content
 
     GA.IsMap ->
       Just $ H.ismap_ "true"
@@ -526,7 +527,7 @@ toAttribute attr =
     GA.Ping ping ->
       Just
         . H.ping_
-        . foldToLucidWithSeparator Types.rawURLToText " "
+        . foldToLucidWithSeparator Types.pingToText " "
         $ NEL.toList ping
 
     GA.Placeholder placeholder ->
@@ -642,6 +643,12 @@ toAttribute attr =
 
     GA.Value value ->
       Just $ H.value_ value
+
+    GA.ValueInteger value ->
+      Just . H.value_ $ showText value
+
+    GA.ValueNumber value ->
+      Just . H.value_ $ Types.numberToText value
 
     GA.Width width ->
       Just . H.width_ $ showText width
