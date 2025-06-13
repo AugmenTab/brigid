@@ -13,7 +13,7 @@ import GHC.TypeLits (ErrorMessage (..), TypeError)
 
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
-import Brigid.HTML.Elements.Tags (OrderedList)
+import Brigid.HTML.Elements.Tags (CustomHTML, OrderedList)
 import Brigid.HTML.Internal.TagOperations (Elem)
 import Brigid.HTML.Types qualified as Types
 
@@ -22,7 +22,7 @@ type ValidTypeOption type_ tag =
 
 type family ValidTypeOptionsFor (type_ :: Type) :: [TagType] where
   ValidTypeOptionsFor Types.InputType     = TagGroups.InputTags
-  ValidTypeOptionsFor Types.NumberingType = '[ OrderedList ]
+  ValidTypeOptionsFor Types.NumberingType = [ CustomHTML, OrderedList ]
   ValidTypeOptionsFor Types.RawTypeOption = TagGroups.TypeableTags
 
 type family AlertTypeOption (member :: Bool) (type_ :: Type) (tag :: TagType) :: Bool where

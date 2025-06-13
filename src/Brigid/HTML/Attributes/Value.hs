@@ -23,21 +23,21 @@ type ValidValue val tag =
   AlertValue (Elem tag (ValidValuesFor val)) val tag ~ 'True
 
 type family ValidValuesFor (val :: Type) :: [TagType] where
-  ValidValuesFor Types.HexColor                 = [ Tags.Input, Tags.InputColor ]
-  ValidValuesFor Types.Date                     = [ Tags.Input, Tags.InputDate ]
-  ValidValuesFor Types.DatetimeLocal            = [ Tags.Input, Tags.InputDatetimeLocal ]
-  ValidValuesFor Types.EmailAddress             = [ Tags.Input, Tags.InputEmail ]
-  ValidValuesFor Integer                        = '[ Tags.ListItem ]
-  ValidValuesFor Types.Month                    = [ Tags.Input, Tags.InputMonth ]
-  ValidValuesFor Types.Number                   = [ Tags.Input, Tags.InputNumber, Tags.InputRange, Tags.Meter, Tags.Progress ]
-  ValidValuesFor Types.PhoneNumber              = [ Tags.Input, Tags.InputTel ]
+  ValidValuesFor Types.HexColor                 = [ Tags.CustomHTML, Tags.Input, Tags.InputColor ]
+  ValidValuesFor Types.Date                     = [ Tags.CustomHTML, Tags.Input, Tags.InputDate ]
+  ValidValuesFor Types.DatetimeLocal            = [ Tags.CustomHTML, Tags.Input, Tags.InputDatetimeLocal ]
+  ValidValuesFor Types.EmailAddress             = [ Tags.CustomHTML, Tags.Input, Tags.InputEmail ]
+  ValidValuesFor Integer                        = [ Tags.CustomHTML, Tags.ListItem ]
+  ValidValuesFor Types.Month                    = [ Tags.CustomHTML, Tags.Input, Tags.InputMonth ]
+  ValidValuesFor Types.Number                   = [ Tags.CustomHTML, Tags.Input, Tags.InputNumber, Tags.InputRange, Tags.Meter, Tags.Progress ]
+  ValidValuesFor Types.PhoneNumber              = [ Tags.CustomHTML, Tags.Input, Tags.InputTel ]
   ValidValuesFor T.Text                         = TagGroups.TextValueTags
-  ValidValuesFor Types.Time                     = [ Tags.Input, Tags.InputTime ]
-  ValidValuesFor Types.AbsoluteURL              = [ Tags.Input, Tags.InputUrl ]
-  ValidValuesFor (Types.RelativeURL Types.Get)  = [ Tags.Input, Tags.InputUrl ]
-  ValidValuesFor (Types.RelativeURL Types.Post) = [ Tags.Input, Tags.InputUrl ]
-  ValidValuesFor Types.RawURL                   = [ Tags.Input, Tags.InputUrl ]
-  ValidValuesFor Types.Week                     = [ Tags.Input, Tags.InputWeek ]
+  ValidValuesFor Types.Time                     = [ Tags.CustomHTML, Tags.Input, Tags.InputTime ]
+  ValidValuesFor Types.AbsoluteURL              = [ Tags.CustomHTML, Tags.Input, Tags.InputUrl ]
+  ValidValuesFor (Types.RelativeURL Types.Get)  = [ Tags.CustomHTML, Tags.Input, Tags.InputUrl ]
+  ValidValuesFor (Types.RelativeURL Types.Post) = [ Tags.CustomHTML, Tags.Input, Tags.InputUrl ]
+  ValidValuesFor Types.RawURL                   = [ Tags.CustomHTML, Tags.Input, Tags.InputUrl ]
+  ValidValuesFor Types.Week                     = [ Tags.CustomHTML, Tags.Input, Tags.InputWeek ]
 
 type family AlertValue (member :: Bool) (val :: Type) (tag :: TagType) :: Bool where
   AlertValue 'True val tag =

@@ -21,12 +21,12 @@ type ValidRangeBound rangeBound tag =
   AlertRangeBound (Elem tag (ValidRangeBoundsFor rangeBound)) rangeBound tag ~ 'True
 
 type family ValidRangeBoundsFor (rangeBound :: Type) :: [TagType] where
-  ValidRangeBoundsFor Types.Date          = [ Tags.Input, Tags.InputDate ]
-  ValidRangeBoundsFor Types.DatetimeLocal = [ Tags.Input, Tags.InputDatetimeLocal ]
-  ValidRangeBoundsFor Types.Month         = [ Tags.Input, Tags.InputMonth ]
+  ValidRangeBoundsFor Types.Date          = [ Tags.CustomHTML, Tags.Input, Tags.InputDate ]
+  ValidRangeBoundsFor Types.DatetimeLocal = [ Tags.CustomHTML, Tags.Input, Tags.InputDatetimeLocal ]
+  ValidRangeBoundsFor Types.Month         = [ Tags.CustomHTML, Tags.Input, Tags.InputMonth ]
   ValidRangeBoundsFor Types.Number        = TagGroups.RangedNumberTags
-  ValidRangeBoundsFor Types.Time          = [ Tags.Input, Tags.InputTime ]
-  ValidRangeBoundsFor Types.Week          = [ Tags.Input, Tags.InputWeek ]
+  ValidRangeBoundsFor Types.Time          = [ Tags.CustomHTML, Tags.Input, Tags.InputTime ]
+  ValidRangeBoundsFor Types.Week          = [ Tags.CustomHTML, Tags.Input, Tags.InputWeek ]
   ValidRangeBoundsFor Types.RawRangeBound = TagGroups.RangedTags
 
 type family AlertRangeBound (member :: Bool) (rangeBound :: Type) (tag :: TagType) :: Bool where

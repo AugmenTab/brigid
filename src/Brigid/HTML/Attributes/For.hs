@@ -21,8 +21,8 @@ type ValidFor for tag =
   AlertFor (Elem tag (ValidForsFor for)) for tag ~ 'True
 
 type family ValidForsFor (for :: Type) :: [TagType] where
-  ValidForsFor Types.Id            = '[ Tags.Label ]
-  ValidForsFor (NonEmpty Types.Id) = '[ Tags.Output ]
+  ValidForsFor Types.Id            = [ Tags.CustomHTML, Tags.Label ]
+  ValidForsFor (NonEmpty Types.Id) = [ Tags.CustomHTML, Tags.Output ]
 
 type family AlertFor (member :: Bool) (for :: Type) (tag :: TagType) :: Bool where
   AlertFor 'True for tag =

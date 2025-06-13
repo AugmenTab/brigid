@@ -31,9 +31,9 @@ type family ValidTagsFor (token :: Type) :: [TagType] where
   ValidTagsFor ACT.FamilyName                = TextFields
   ValidTagsFor ACT.HonorificSuffix           = TextFields
   ValidTagsFor ACT.Nickname                  = TextFields
-  ValidTagsFor ACT.Username                  = [ Tags.Input, Tags.InputEmail, Tags.InputText ]
-  ValidTagsFor ACT.NewPassword               = [ Tags.Input, Tags.InputPassword ]
-  ValidTagsFor ACT.CurrentPassword           = [ Tags.Input, Tags.InputPassword ]
+  ValidTagsFor ACT.Username                  = [ Tags.CustomHTML, Tags.Input, Tags.InputEmail, Tags.InputText ]
+  ValidTagsFor ACT.NewPassword               = [ Tags.CustomHTML, Tags.Input, Tags.InputPassword ]
+  ValidTagsFor ACT.CurrentPassword           = [ Tags.CustomHTML, Tags.Input, Tags.InputPassword ]
   ValidTagsFor ACT.OneTimeCode               = Add Tags.InputNumber TelephoneFields
   ValidTagsFor ACT.Email                     = Add Tags.InputEmail TextFields
   ValidTagsFor ACT.InstantMessagingProtocol  = Add Tags.InputUrl TextFields
@@ -62,20 +62,20 @@ type family ValidTagsFor (token :: Type) :: [TagType] where
   ValidTagsFor ACT.CreditCardGivenName       = TextFields
   ValidTagsFor ACT.CreditCardAdditionalName  = TextFields
   ValidTagsFor ACT.CreditCardFamilyName      = TextFields
-  ValidTagsFor ACT.CreditCardNumber          = [ Tags.Input, Tags.InputNumber, Tags.InputTel, Tags.InputText ]
-  ValidTagsFor ACT.CreditCardExpiration      = [ Tags.Input, Tags.InputMonth, Tags.InputText ]
-  ValidTagsFor ACT.CreditCardExpirationMonth = [ Tags.Input, Tags.InputNumber, Tags.InputText ]
-  ValidTagsFor ACT.CreditCardExpirationYear  = [ Tags.Input, Tags.InputNumber, Tags.InputText ]
-  ValidTagsFor ACT.CreditCardSecurityCode    = [ Tags.Input, Tags.InputPassword, Tags.InputText ]
-  ValidTagsFor ACT.CreditCardType            = [ Tags.Input, Tags.InputText, Tags.Select ]
+  ValidTagsFor ACT.CreditCardNumber          = [ Tags.CustomHTML, Tags.Input, Tags.InputNumber, Tags.InputTel, Tags.InputText ]
+  ValidTagsFor ACT.CreditCardExpiration      = [ Tags.CustomHTML, Tags.Input, Tags.InputMonth, Tags.InputText ]
+  ValidTagsFor ACT.CreditCardExpirationMonth = [ Tags.CustomHTML, Tags.Input, Tags.InputNumber, Tags.InputText ]
+  ValidTagsFor ACT.CreditCardExpirationYear  = [ Tags.CustomHTML, Tags.Input, Tags.InputNumber, Tags.InputText ]
+  ValidTagsFor ACT.CreditCardSecurityCode    = [ Tags.CustomHTML, Tags.Input, Tags.InputPassword, Tags.InputText ]
+  ValidTagsFor ACT.CreditCardType            = [ Tags.CustomHTML, Tags.Input, Tags.InputText, Tags.Select ]
   ValidTagsFor ACT.TransactionCurrency       = Remove Tags.TextArea TextFields
-  ValidTagsFor ACT.TransactionAmount         = [ Tags.Input, Tags.InputNumber, Tags.InputText ]
+  ValidTagsFor ACT.TransactionAmount         = [ Tags.CustomHTML, Tags.Input, Tags.InputNumber, Tags.InputText ]
   ValidTagsFor ACT.Birthday                  = Remove Tags.InputNumber BirthdayFields
   ValidTagsFor ACT.BirthdayDay               = BirthdayFields
   ValidTagsFor ACT.BirthdayMonth             = BirthdayFields
   ValidTagsFor ACT.BirthdayYear              = BirthdayFields
   ValidTagsFor ACT.Language                  = Remove Tags.TextArea TextFields
-  ValidTagsFor ACT.Sex                       = [ Tags.Input, Tags.InputText, Tags.Select ]
+  ValidTagsFor ACT.Sex                       = [ Tags.CustomHTML, Tags.Input, Tags.InputText, Tags.Select ]
   ValidTagsFor ACT.Url                       = UrlFields
   ValidTagsFor ACT.Photo                     = UrlFields
 
@@ -151,25 +151,29 @@ type family TokenTypeErrorMessage (token :: Type) :: ErrorMessage where
   TokenTypeErrorMessage ACT.Photo                     = 'Text "Photo"
 
 type BirthdayFields =
-  [ Tags.Input
+  [ Tags.CustomHTML
+  , Tags.Input
   , Tags.InputNumber
   , Tags.InputText
   ]
 
 type TelephoneFields =
-  [ Tags.Input
+  [ Tags.CustomHTML
+  , Tags.Input
   , Tags.InputTel
   , Tags.InputText
   ]
 
 type TextFields =
-  [ Tags.Input
+  [ Tags.CustomHTML
+  , Tags.Input
   , Tags.InputText
   , Tags.TextArea
   ]
 
 type UrlFields =
-  [ Tags.Input
+  [ Tags.CustomHTML
+  , Tags.Input
   , Tags.InputText
   , Tags.InputUrl
   ]

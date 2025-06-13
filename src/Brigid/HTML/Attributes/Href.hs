@@ -14,6 +14,7 @@ import GHC.TypeLits (ErrorMessage (..), TypeError)
 
 import Brigid.HTML.Elements.TagGroups qualified as TagGroups
 import Brigid.HTML.Elements.TagType (TagErrorMessage, TagType)
+import Brigid.HTML.Elements.Tags (CustomHTML)
 import Brigid.HTML.Internal.TagOperations (Elem)
 import Brigid.Types qualified as Types
 
@@ -23,7 +24,7 @@ type ValidHref href tag =
 type family ValidHrefsFor (href :: Type) :: [TagType] where
   ValidHrefsFor Types.AbsoluteURL             = TagGroups.HrefTags
   ValidHrefsFor (Types.RelativeURL Types.Get) = TagGroups.HrefTags
-  ValidHrefsFor (Types.RelativeURL method)    = '[]
+  ValidHrefsFor (Types.RelativeURL method)    = '[ CustomHTML ]
   ValidHrefsFor Types.Id                      = TagGroups.URLTags
   ValidHrefsFor Types.EmailAddress            = TagGroups.URLTags
   ValidHrefsFor Types.RawURL                  = TagGroups.HrefTags

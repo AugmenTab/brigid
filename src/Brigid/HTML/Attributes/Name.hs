@@ -23,7 +23,7 @@ type ValidName name tag =
 
 type family ValidNamesFor (name :: Type) :: [TagType] where
   ValidNamesFor Types.Name         = Remove Tags.Meta TagGroups.NameTags
-  ValidNamesFor Types.MetadataName = '[ Tags.Meta ]
+  ValidNamesFor Types.MetadataName = [ Tags.CustomHTML, Tags.Meta ]
 
 type family AlertName (member :: Bool) (name :: Type) (tag :: TagType) :: Bool where
   AlertName 'True name tag =

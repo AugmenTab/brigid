@@ -440,6 +440,7 @@ type MarginalContent =
 --
 type MediaContent =
   [ 'Audio
+  , 'CustomHTML
   , 'Video
   ]
 
@@ -709,7 +710,8 @@ type TableContent =
   ]
 
 type TableCells =
-  [ 'TableDataCell
+  [ 'CustomHTML
+  , 'TableDataCell
   , 'TableHeader
   ]
 
@@ -725,13 +727,15 @@ type TableRowContent =
 
 type AltTags =
   [ 'Area
+  , 'CustomHTML
   , 'Image
   , 'Input
   , 'InputImage
   ]
 
 type AutocompletableTags =
-  [ 'Form
+  [ 'CustomHTML
+  , 'Form
   , 'Input
   , 'InputDate
   , 'InputEmail
@@ -746,19 +750,22 @@ type AutocompletableTags =
   ]
 
 type BlockingTags =
-  [ 'Link
+  [ 'CustomHTML
+  , 'Link
   , 'Script
   , 'Style
   ]
 
 type CheckableTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputCheckbox
   , 'InputRadio
   ]
 
 type CitableTags =
   [ 'Blockquote
+  , 'CustomHTML
   , 'DeletedText
   , 'InsertedText
   , 'Quotation
@@ -774,7 +781,8 @@ type CrossOriginTags =
   ]
 
 type DirnameableTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputEmail
   , 'InputSearch
   , 'InputTel
@@ -786,7 +794,6 @@ type DirnameableTags =
 type DisableableTags =
   Union InputTags
     [ 'Button
-    , 'CustomHTML
     , 'Fieldset
     , 'Link
     , 'OptionGroup
@@ -806,6 +813,7 @@ type ElementTimingTags =
   , 'Canvas
   , 'Citation
   , 'Code
+  , 'CustomHTML
   , 'Definition
   , 'DescriptionDetails
   , 'DescriptionTerm
@@ -864,6 +872,7 @@ type FormTags =
 
 type FormMethodTags =
   [ 'Button
+  , 'CustomHTML
   , 'Input
   , 'InputImage
   , 'InputSubmit
@@ -871,19 +880,22 @@ type FormMethodTags =
 
 type FormNoValidateTags =
   [ 'Button
+  , 'CustomHTML
   , 'Input
   , 'InputSubmit
   ]
 
 type FormSubmitTags =
   [ 'Button
+  , 'CustomHTML
   , 'Input
   , 'InputImage
   , 'InputSubmit
   ]
 
 type FreeTextInputTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputEmail
   , 'InputPassword
   , 'InputSearch
@@ -900,11 +912,13 @@ type HrefTags =
 type HrefLangTags =
   [ 'Anchor
   , 'Area
+  , 'CustomHTML
   , 'Link
   ]
 
 type InputTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputButton
   , 'InputCheckbox
   , 'InputColor
@@ -931,6 +945,7 @@ type InputTags =
 
 type IntegrityTags =
   [ 'Audio
+  , 'CustomHTML
   , 'Image
   , 'Link
   , 'Script
@@ -938,7 +953,8 @@ type IntegrityTags =
   ]
 
 type LabelableTags =
-  [ 'OptionGroup
+  [ 'CustomHTML
+  , 'OptionGroup
   , 'Option
   , 'Track
   ]
@@ -967,7 +983,8 @@ type NameTags =
     ]
 
 type RangedNumberTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputNumber
   , 'InputRange
   , 'Meter
@@ -975,7 +992,8 @@ type RangedNumberTags =
   ]
 
 type RangedTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputDate
   , 'InputDatetimeLocal
   , 'InputMonth
@@ -988,7 +1006,8 @@ type RangedTags =
   ]
 
 type ReadOnlyTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputDate
   , 'InputDatetimeLocal
   , 'InputEmail
@@ -1007,6 +1026,7 @@ type ReadOnlyTags =
 type ReferrerPolicyTags =
   [ 'Anchor
   , 'Area
+  , 'CustomHTML
   , 'IFrame
   , 'Image
   , 'Link
@@ -1016,12 +1036,14 @@ type ReferrerPolicyTags =
 type RelTags =
   [ 'Anchor
   , 'Area
+  , 'CustomHTML
   , 'Form
   , 'Link
   ]
 
 type RequireableTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputCheckbox
   , 'InputDate
   , 'InputDatetimeLocal
@@ -1043,6 +1065,7 @@ type RequireableTags =
 
 type SizableTags =
   [ 'Canvas
+  , 'CustomHTML
   , 'Embed
   , 'IFrame
   , 'Image
@@ -1055,6 +1078,7 @@ type SizableTags =
 
 type SrcTags =
   [ 'Audio
+  , 'CustomHTML
   , 'Embed
   , 'IFrame
   , 'Image
@@ -1067,7 +1091,8 @@ type SrcTags =
   ]
 
 type SteppableTags =
-  [ 'Input
+  [ 'CustomHTML
+  , 'Input
   , 'InputDate
   , 'InputDatetimeLocal
   , 'InputMonth
@@ -1081,11 +1106,13 @@ type TargetableTags =
   [ 'Anchor
   , 'Area
   , 'Base
+  , 'CustomHTML
   , 'Form
   ]
 
 type TimestampableTags =
-  [ 'DeletedText
+  [ 'CustomHTML
+  , 'DeletedText
   , 'InsertedText
   , 'Time
   ]
@@ -1093,6 +1120,7 @@ type TimestampableTags =
 type TypeableTags =
   [ 'Anchor
   , 'Button
+  , 'CustomHTML
   , 'Embed
   , 'Input
   , 'InputButton
@@ -1127,6 +1155,7 @@ type TypeableTags =
 
 type URLTags =
   [ 'Anchor
+  , 'CustomHTML
   , 'Area
   ]
 

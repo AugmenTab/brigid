@@ -23,8 +23,8 @@ type ValidRelationship rel tag =
 type family ValidRelationshipsFor (rel :: Type) :: [TagType] where
   ValidRelationshipsFor Types.Rel_Alternate        = Remove Tags.Form TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_Author           = Remove Tags.Form TagGroups.RelTags
-  ValidRelationshipsFor Types.Rel_Bookmark         = [ Tags.Anchor, Tags.Area ]
-  ValidRelationshipsFor Types.Rel_Canonical        = '[ Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Bookmark         = [ Tags.Anchor, Tags.Area, Tags.CustomHTML ]
+  ValidRelationshipsFor Types.Rel_Canonical        = [ Tags.CustomHTML, Tags.Link ]
   -- TODO: Valid for link only in body and head.
   ValidRelationshipsFor Types.Rel_DNS_Prefetch     = '[]
 
@@ -34,34 +34,34 @@ type family ValidRelationshipsFor (rel :: Type) :: [TagType] where
   ValidRelationshipsFor Types.Rel_Expect           = '[]
 
   ValidRelationshipsFor Types.Rel_Help             = TagGroups.RelTags
-  ValidRelationshipsFor Types.Rel_Icon             = '[ Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Icon             = [ Tags.CustomHTML, Tags.Link ]
   ValidRelationshipsFor Types.Rel_License          = TagGroups.RelTags
 
   -- TODO: Unsure which elements can accept this.
-  ValidRelationshipsFor Types.Rel_Manifest         = '[]
+  ValidRelationshipsFor Types.Rel_Manifest         = '[ Tags.CustomHTML ]
 
   -- TODO: Unsure which elements can accept this.
-  ValidRelationshipsFor Types.Rel_Me               = '[]
+  ValidRelationshipsFor Types.Rel_Me               = '[ Tags.CustomHTML ]
 
-  ValidRelationshipsFor Types.Rel_ModulePreload    = '[ Tags.Link ]
+  ValidRelationshipsFor Types.Rel_ModulePreload    = [ Tags.CustomHTML, Tags.Link ]
   ValidRelationshipsFor Types.Rel_Next             = TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_NoFollow         = Remove Tags.Link TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_NoOpener         = Remove Tags.Link TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_NoReferrer       = Remove Tags.Link TagGroups.RelTags
 
   -- TODO: Unsure which elements can accept the following.
-  ValidRelationshipsFor Types.Rel_Opener           = '[]
-  ValidRelationshipsFor Types.Rel_Pingback         = '[]
-  ValidRelationshipsFor Types.Rel_Preconnect       = '[]
-  ValidRelationshipsFor Types.Rel_Prefetch         = '[]
-  ValidRelationshipsFor Types.Rel_Preload          = '[]
-  ValidRelationshipsFor Types.Rel_Prerender        = '[]
+  ValidRelationshipsFor Types.Rel_Opener           = '[ Tags.CustomHTML ]
+  ValidRelationshipsFor Types.Rel_Pingback         = '[ Tags.CustomHTML ]
+  ValidRelationshipsFor Types.Rel_Preconnect       = '[ Tags.CustomHTML ]
+  ValidRelationshipsFor Types.Rel_Prefetch         = '[ Tags.CustomHTML ]
+  ValidRelationshipsFor Types.Rel_Preload          = '[ Tags.CustomHTML ]
+  ValidRelationshipsFor Types.Rel_Prerender        = '[ Tags.CustomHTML ]
 
   ValidRelationshipsFor Types.Rel_Prev             = TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_Privacy_Policy   = Remove Tags.Form TagGroups.RelTags
   ValidRelationshipsFor Types.Rel_Search           = TagGroups.RelTags
-  ValidRelationshipsFor Types.Rel_Stylesheet       = '[ Tags.Link ]
-  ValidRelationshipsFor Types.Rel_Tag              = [ Tags.Anchor, Tags.Area ]
+  ValidRelationshipsFor Types.Rel_Stylesheet       = [ Tags.CustomHTML, Tags.Link ]
+  ValidRelationshipsFor Types.Rel_Tag              = [ Tags.Anchor, Tags.Area, Tags.CustomHTML ]
   ValidRelationshipsFor Types.Rel_Terms_Of_Service = Remove Tags.Form TagGroups.RelTags
 
 type family AlertRelationship (member :: Bool) (rel :: Type) (tag :: TagType) :: Bool where

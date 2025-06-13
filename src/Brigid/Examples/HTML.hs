@@ -74,6 +74,7 @@ documentExample =
              ]
         [ E.header []
             [ E.text "Header with entities: "
+            , E.customHTML "custom-tag" [] $ Left B.WithTag
             , Entity.latinCapitalLetterTWithCedilla
             , Entity.latinCapitalLetterEWithDiaeresis
             , Entity.latinCapitalLetterSWithCaron
@@ -133,6 +134,7 @@ example =
         , A.writingsuggestions True
         ]
     [ E.noElement
+    , E.customHTML "custom-tag" [] $ Left B.WithTag
     , E.blockquote [ A.cite . exampleURL $ GetCustomer 100 ]
         [
         ]
