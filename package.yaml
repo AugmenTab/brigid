@@ -46,10 +46,12 @@ dependencies:
 - non-empty-text
 - ogma
 - scientific
+- semigroupoids
 - shrubbery
 - text
 - time
 - uuid
+- validation
 
 ghc-options:
 - -j

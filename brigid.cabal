@@ -229,10 +229,12 @@ library
     , non-empty-text
     , ogma
     , scientific
+    , semigroupoids
     , shrubbery
     , text
     , time
     , uuid
+    , validation
   default-language: Haskell2010
 
 test-suite brigid-test
@@ -271,10 +273,12 @@ test-suite brigid-test
     , non-empty-text
     , ogma
     , scientific
+    , semigroupoids
     , shrubbery
     , text
     , time
     , uuid
+    , validation
   default-language: Haskell2010
 
 benchmark brigid-bench
@@ -318,9 +322,11 @@ benchmark brigid-bench
     , non-empty-text
     , ogma
     , scientific
+    , semigroupoids
     , shrubbery
     , tasty-bench
     , text
     , time
     , uuid
+    , validation
   default-language: Haskell2010
