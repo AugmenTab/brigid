@@ -165,7 +165,7 @@ elementValidChildren element =
     Body -> bodyContent
     LineBreak -> Set.empty
     Button -> buttonContent
-    Canvas -> Set.empty
+    Canvas -> canvasContent
     TableCaption -> tableCaptionContent
     Citation -> citationContent
     Code -> codeContent
@@ -603,6 +603,14 @@ canvasAttrs =
   , A.width
   ]
 
+canvasContent :: Set ElementType
+canvasContent =
+  Set.fromList
+    [ Anchor
+    , Button
+    , Input
+    ]
+
 tableCaptionContent :: Set ElementType
 tableCaptionContent = flowContent
 
@@ -645,55 +653,7 @@ detailsAttrs =
 
 definitionContent :: Set ElementType
 definitionContent =
-  Set.fromList
-    [ Abbreviation
-    , Area
-    , Audio
-    , BringAttentionTo
-    , BidirectionalIsolation
-    , BidirectionalOverride
-    , LineBreak
-    , Button
-    , Canvas
-    , Citation
-    , Code
-    , Data
-    , DataList
-    , Emphasis
-    , Embed
-    , IdiomaticText
-    , IFrame
-    , Image
-    , Input
-    , KeyboardInput
-    , Label
-    , Mark
-    , Meter
-    , NoScript
-    , Object
-    , Output
-    , Picture
-    , Progress
-    , Quotation
-    , Ruby
-    , Strikethrough
-    , Sample
-    , Script
-    , Select
-    , Slot
-    , SideComment
-    , Span
-    , Strong
-    , Subscript
-    , Superscript
-    , ContentTemplate
-    , TextArea
-    , Time
-    , Underline
-    , Variable
-    , Video
-    , WordBreakOpportunity
-    ]
+  Set.delete Definition phrasingContent
 
 dialogContent :: Set ElementType
 dialogContent = flowContent

@@ -7,6 +7,7 @@ module Brigid.HTML.Generation
   , mkRange
   , minRange
   , maxRange
+  , toBrigid
   , module Analysis
   , module Elements
   , accesskey
@@ -313,6 +314,7 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , xmlns
   )
 import Brigid.HTML.Generation.Internal.Build as Build
+import Brigid.HTML.Generation.Internal.Convert (toBrigid)
 import Brigid.HTML.Generation.Internal.Elements as Elements
 import Brigid.HTML.Generation.Internal.Types
   ( Element (..)

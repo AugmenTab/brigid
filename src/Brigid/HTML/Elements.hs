@@ -2,6 +2,7 @@
 
 module Brigid.HTML.Elements
   ( HTML
+  , AnyHTML
   , ChildHTML
   , Tags.NoElement, noElement
   , Tags.Comment, comment
@@ -136,6 +137,8 @@ import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.Types qualified as Types
 
 type HTML = ChildHTML Tags.Document Tags.NoElement
+
+type AnyHTML = ChildHTML Tags.CustomHTML Tags.NoElement
 
 noElement :: ChildHTML parent grandparent
 noElement = Tag_NoElement
