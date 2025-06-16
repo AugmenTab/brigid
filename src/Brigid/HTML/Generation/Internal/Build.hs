@@ -1,3 +1,4 @@
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TupleSections #-}
 
 module Brigid.HTML.Generation.Internal.Build
@@ -10,7 +11,7 @@ import Data.IntMap.Strict (IntMap)
 import Data.IntMap.Strict qualified as IntMap
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
-import Data.Maybe (mapMaybe)
+import Data.Maybe (catMaybes, mapMaybe)
 import Data.Set qualified as Set
 import Data.UUID (UUID)
 import Hedgehog (Gen)
@@ -77,15 +78,20 @@ generateElement params = do
   rootId <- Generators.uuid
   finalState <-
     execStateT (buildLayer [ LayerItem rootId Nothing 1 ]) $
-      Context
-        { genParams = params
-        , layerMap = IntMap.singleton 1 [ rootId ]
-        , childMap = Map.empty
-        , nodeInfo =
-            Map.singleton
-              rootId
-              (Types.startingElement params, Types.BranchNode)
-        }
+      let
+        startingElement = Types.startingElement params
+      in
+        Context
+          { genParams = params
+          , layerMap = IntMap.singleton 1 [ rootId ]
+          , childMap = Map.empty
+          , nodeInfo =
+              Map.singleton
+                rootId
+                ( startingElement
+                , E.elementNodeType startingElement
+                )
+          }
 
   buildTree finalState rootId
 
@@ -118,7 +124,8 @@ buildLayer queue = do
               rangeList <- Gen.shuffle [ minAllowed .. maxAllowed ]
               childCount <- lift $ Gen.element rangeList
               children <-
-                replicateM (min remaining childCount)
+                fmap catMaybes
+                  . replicateM (min remaining childCount)
                   . genChild nid
                   $ depth + 1
 
@@ -133,41 +140,48 @@ buildLayer queue = do
 
       buildLayer nextQueue
 
-genChild :: UUID -> Int -> GenM LayerItem
+genChild :: UUID -> Int -> GenM (Maybe LayerItem)
 genChild pid depth = do
   ctx <- get
-  cid <- lift Generators.uuid
 
   case Map.lookup pid (nodeInfo ctx) of
-    Just (parentType, _parentNodeType) -> do
-      let
-        allValidChildren = E.elementValidChildren parentType
-        branchable = Set.intersection E.branchElements allValidChildren
-        validChildren =
-          Set.toList $
-            if Set.null branchable
-              then allValidChildren
-              else branchable
+    Just (parentType, parentNodeType) ->
+      case parentNodeType of
+        Types.BranchNode ->
+          let
+            allValidChildren = Set.toList $ E.elementValidChildren parentType
+            weightedChildren =
+              flip mapMaybe allValidChildren $ \child ->
+                (, pure child) <$> E.elementWeight child
 
-        weightedChildren =
-          flip mapMaybe validChildren $ \child ->
-            (,pure child) <$> E.elementWeight child
+          in
+            if null weightedChildren
+              then pure Nothing
+              else do
+                cid <- lift Generators.uuid
+                childType <- Gen.frequency weightedChildren
 
-      childType <- lift $ Gen.frequency weightedChildren
-      modify $ \s ->
-        s { nodeInfo =
-              Map.insert
-                cid
-                (childType, E.elementNodeType childType)
-                (nodeInfo s)
-          , childMap = Map.insertWith (<>) pid [ cid ] (childMap s)
-          , layerMap = IntMap.insertWith (<>) depth [ cid ] (layerMap s)
-          }
+                modify $ \s ->
+                  s { nodeInfo =
+                        Map.insert
+                          cid
+                          (childType, E.elementNodeType childType)
+                          (nodeInfo s)
+                    , childMap = Map.insertWith (<>) pid [ cid ] (childMap s)
+                    , layerMap =
+                        IntMap.insertWith (<>) depth [ cid ] (layerMap s)
+                    }
 
-      pure $ LayerItem cid (Just pid) depth
+                pure . Just $ LayerItem cid (Just pid) depth
+
+        Types.LeafNode ->
+          pure Nothing
+
+        Types.VoidNode ->
+          pure Nothing
 
     Nothing ->
-      fail $ "No parent for UUID " <> show cid
+      fail $ "Could not find element with UUID " <> show pid
 
 buildTree :: Context -> UUID -> Gen Types.Element
 buildTree ctx rootId = do

@@ -937,7 +937,7 @@ imageAttrs =
   , A.ismap
   , A.loading
   , A.referrerpolicy
-  , A.sizes
+  -- , A.sizes
   , A.src
   , A.srcset
   , A.usemap
@@ -1073,10 +1073,10 @@ linkAttrs =
   , A.imagesizes
   , A.imagesrcset
   , A.integrity
-  , A.media
+  -- , A.media
   , A.referrerpolicy
   , A.rel
-  , A.sizes
+  -- , A.sizes
   , A.type_
   ]
 
@@ -1109,7 +1109,7 @@ metaAttrs =
   [ A.charset
   , A.content
   , A.httpEquiv
-  , A.media
+  -- , A.media
   , A.nameMeta
   ]
 
@@ -1121,7 +1121,7 @@ meterAttrs =
   , A.max
   , A.min
   , A.optimum
-  , A.value
+  , A.valueNumber
   ]
 
 meterContent :: Set ElementType
@@ -1241,7 +1241,7 @@ preformattedTextContent = phrasingContent
 progressAttrs :: MonadGen m => [m A.Attribute]
 progressAttrs =
   [ A.max
-  , A.value
+  , A.valueNumber
   ]
 
 progressContent :: Set ElementType
@@ -1365,8 +1365,8 @@ sideCommentContent = phrasingContent
 sourceAttrs :: MonadGen m => [m A.Attribute]
 sourceAttrs =
   [ A.height
-  , A.media
-  , A.sizes
+  -- , A.media
+  -- , A.sizes
   , A.src
   , A.srcset
   , A.type_
@@ -1382,7 +1382,7 @@ strongContent = phrasingContent
 styleAttrs :: MonadGen m => [m A.Attribute]
 styleAttrs =
   [ A.blocking
-  , A.media
+  -- , A.media
   ]
 
 subscriptContent :: Set ElementType
@@ -2057,7 +2057,8 @@ branchElements =
 leafElements :: Set ElementType
 leafElements =
   Set.fromList
-    [ Anchor
+    [ Comment
+    , Anchor
     , Canvas
     , DeletedText
     , InsertedText
@@ -2081,7 +2082,6 @@ leafBranchElements =
     , Button
     , Citation
     , Code
-    , DescriptionList
     , DescriptionTerm
     , Division
     , Emphasis

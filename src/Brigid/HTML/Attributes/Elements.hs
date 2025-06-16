@@ -89,7 +89,7 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Name                     = TagGroups.NameTags
   ValidElementsFor 'NoModule                 = [ Tags.CustomHTML, Tags.Script ]
   ValidElementsFor 'NoValidate               = [ Tags.CustomHTML, Tags.Form ]
-  ValidElementsFor 'Open                     = [ Tags.CustomHTML, Tags.Details ]
+  ValidElementsFor 'Open                     = [ Tags.CustomHTML, Tags.Details, Tags.Dialog ]
   ValidElementsFor 'Optimum                  = [ Tags.CustomHTML, Tags.Meter ]
   ValidElementsFor 'Pattern                  = TagGroups.FreeTextInputTags
   ValidElementsFor 'Ping                     = [ Tags.Anchor, Tags.Area, Tags.CustomHTML ]

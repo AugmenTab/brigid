@@ -276,6 +276,8 @@ test-suite brigid-test
     , scientific
     , semigroupoids
     , shrubbery
+    , tasty
+    , tasty-hedgehog
     , text
     , time
     , uuid

@@ -2406,7 +2406,7 @@ mkDialogAttr attr =
   let
     vAttr =
       case attr of
-        -- TODO: GA.Open -> V.Success (A.open :: A.Attribute E.Dialog)
+        GA.Open -> V.Success (A.open :: A.Attribute E.Dialog)
         _attr -> V.Failure [ wrongAttr attr Dialog ]
   in
     vAttr <!> mkGlobalAttr attr
@@ -7484,7 +7484,7 @@ mkTextArea attrs node =
   E.textarea
     <$> foldValidate mkTextAreaAttr attrs
     <*> ( case node of
-            Branch _nodes -> V.Failure [ wrongNodeType TextArea LeafNode ]
+            Branch _nodes -> V.Failure [ wrongNodeType TextArea BranchNode ]
             Leaf net -> V.Success $ NET.toText net
             Void -> V.Failure [ wrongNodeType TextArea VoidNode ]
         )
@@ -8141,6 +8141,9 @@ mkGlobalAttr attr =
     GA.Autocapitalize autocapitalize ->
       V.Success $ A.autocapitalize autocapitalize
 
+    GA.Autocorrect autocorrect ->
+      V.Success $ A.autocorrect autocorrect
+
     GA.Autofocus autofocus ->
       V.Success $ A.autofocus autofocus
 
@@ -8149,6 +8152,9 @@ mkGlobalAttr attr =
 
     GA.ContentEditable contenteditable ->
       V.Success $ A.contenteditable contenteditable
+
+    GA.CustomData name value ->
+      V.Success $ A.customData name value
 
     GA.Dir dir ->
       V.Success $ A.dir dir
@@ -8258,6 +8264,6 @@ wrongNodeType :: ElementType -> NodeType -> String
 wrongNodeType et nt =
   "Tried to treat the "
     <> show et
-    <> " element as a "
+    <> " element as "
     <> show nt
-    <> " node."
+    <> "."
