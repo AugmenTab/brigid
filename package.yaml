@@ -69,6 +69,7 @@ library:
   exposed-modules:
     - Brigid.Examples.HTML
     - Brigid.Examples.HXML
+    - Brigid.HTML.Analysis
     - Brigid.HTML.Attributes
     - Brigid.HTML.Elements
     - Brigid.HTML.Elements.Safe
