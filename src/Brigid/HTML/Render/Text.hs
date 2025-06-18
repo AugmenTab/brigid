@@ -99,7 +99,7 @@ renderTag html =
       buildTag "button" attrs $ Right content
 
     Tag_Canvas attrs content ->
-      buildTag "canbvas" attrs $ Right content
+      buildTag "canvas" attrs $ Right content
 
     Tag_TableCaption attrs content ->
       buildTag "caption" attrs $ Right content
