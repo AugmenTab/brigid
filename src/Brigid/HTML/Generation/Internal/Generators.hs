@@ -371,7 +371,7 @@ rangeBound =
 ratio :: (Integral a, MonadGen m) => m (Ratio a)
 ratio =
   (%)
-    <$> Gen.integral (Range.linear 0 1000)
+    <$> Gen.integral (Range.linear 1 1000)
     <*> Gen.integral (Range.linear 1 1000)
 
 referrerPolicy :: MonadGen m => m Types.ReferrerPolicy

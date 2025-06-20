@@ -6736,9 +6736,6 @@ mkSlotAttr attr =
   in
     vAttr <!> mkGlobalAttr attr
 
--- TODO: Convert all of these to Either String etc, so it can report when a bad
--- combination was generated.
---
 mkSideComment :: E.ValidChild E.SideComment parent grandparent
               => [GA.Attribute]
               -> ElementNode

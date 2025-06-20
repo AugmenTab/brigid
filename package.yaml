@@ -101,6 +101,9 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - brigid
+      - hedgehog
+      - tasty
+      - tasty-hedgehog
 
 benchmarks:
   brigid-bench:
