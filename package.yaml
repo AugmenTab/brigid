@@ -50,7 +50,6 @@ dependencies:
 - shrubbery
 - text
 - time
-- uuid
 - validation
 
 ghc-options:

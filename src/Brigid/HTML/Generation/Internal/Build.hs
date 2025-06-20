@@ -8,11 +8,8 @@ import Control.Monad (foldM, forM, replicateM)
 import Control.Monad.State (StateT, execStateT, get, lift, modify)
 import Data.IntMap.Strict (IntMap)
 import Data.IntMap.Strict qualified as IntMap
-import Data.Map.Strict (Map)
-import Data.Map.Strict qualified as Map
-import Data.Maybe (mapMaybe)
+import Data.Maybe (catMaybes, mapMaybe)
 import Data.Set qualified as Set
-import Data.UUID (UUID)
 import Hedgehog (Gen)
 import Hedgehog.Gen qualified as Gen
 import Prelude hiding (head)
@@ -21,15 +18,16 @@ import Brigid.HTML.Generation.Internal.Elements qualified as E
 import Brigid.HTML.Generation.Internal.Generators qualified as Generators
 import Brigid.HTML.Generation.Internal.Types qualified as Types
 
-type LayerMap = IntMap [UUID]
-type ChildMap = Map UUID [UUID]
-type NodeInfoMap = Map UUID (Types.ElementType, Types.NodeType)
+type LayerMap = IntMap [Int]
+type ChildMap = IntMap [Int]
+type NodeInfoMap = IntMap (Types.ElementType, Types.NodeType)
 
 type GenM a = StateT Context Gen a
 
 data Context =
   Context
     { genParams :: Types.GeneratorParams
+    , nextId    :: Int
     , layerMap  :: LayerMap
     , childMap  :: ChildMap
     , nodeInfo  :: NodeInfoMap
@@ -37,8 +35,8 @@ data Context =
 
 data LayerItem =
   LayerItem
-    { nodeId :: UUID
-    , parentId :: Maybe UUID
+    { nodeId :: Int
+    , parentId :: Maybe Int
     , layerDepth :: Int
     } deriving Show
 
@@ -74,18 +72,26 @@ generateDOM params =
 
 generateElement :: Types.GeneratorParams -> Gen Types.Element
 generateElement params = do
-  rootId <- Generators.uuid
+  let
+    rootId = 0
+
   finalState <-
     execStateT (buildLayer [ LayerItem rootId Nothing 1 ]) $
-      Context
-        { genParams = params
-        , layerMap = IntMap.singleton 1 [ rootId ]
-        , childMap = Map.empty
-        , nodeInfo =
-            Map.singleton
-              rootId
-              (Types.startingElement params, Types.BranchNode)
-        }
+      let
+        startingElement = Types.startingElement params
+      in
+        Context
+          { genParams = params
+          , nextId = rootId + 1
+          , layerMap = IntMap.singleton 1 [ rootId ]
+          , childMap = IntMap.empty
+          , nodeInfo =
+              IntMap.singleton
+                rootId
+                ( startingElement
+                , E.elementNodeType startingElement
+                )
+          }
 
   buildTree finalState rootId
 
@@ -96,7 +102,7 @@ buildLayer queue = do
 
   let
     params = genParams ctx
-    nodeCount = Map.size $ nodeInfo ctx
+    nodeCount = IntMap.size $ nodeInfo ctx
 
   if nodeCount >= Types.maximumTotalNodes params
     then pure ()
@@ -109,7 +115,7 @@ buildLayer queue = do
               updatedCtx <- get
 
               let
-                currentCount = Map.size (nodeInfo updatedCtx)
+                currentCount = IntMap.size (nodeInfo updatedCtx)
                 remaining = Types.maximumTotalNodes params - currentCount
                 range = Types.childrenPerNode params
                 maxAllowed = min (Types.maxRange range) remaining
@@ -118,7 +124,8 @@ buildLayer queue = do
               rangeList <- Gen.shuffle [ minAllowed .. maxAllowed ]
               childCount <- lift $ Gen.element rangeList
               children <-
-                replicateM (min remaining childCount)
+                fmap catMaybes
+                  . replicateM (min remaining childCount)
                   . genChild nid
                   $ depth + 1
 
@@ -126,50 +133,61 @@ buildLayer queue = do
               pure
                 [ child
                 | child@(LayerItem cid _parent _depth) <- children
-                , case Map.lookup cid (nodeInfo ctxAfterChildren) of
+                , case IntMap.lookup cid (nodeInfo ctxAfterChildren) of
                     Just (_elementType, Types.BranchNode) -> True
                     _ -> False
                 ]
 
-      buildLayer nextQueue
+      Gen.small $ buildLayer nextQueue
 
-genChild :: UUID -> Int -> GenM LayerItem
+genChild :: Int -> Int -> GenM (Maybe LayerItem)
 genChild pid depth = do
   ctx <- get
-  cid <- lift Generators.uuid
 
-  case Map.lookup pid (nodeInfo ctx) of
-    Just (parentType, _parentNodeType) -> do
-      let
-        allValidChildren = E.elementValidChildren parentType
-        branchable = Set.intersection E.branchElements allValidChildren
-        validChildren =
-          Set.toList $
-            if Set.null branchable
-              then allValidChildren
-              else branchable
+  case IntMap.lookup pid (nodeInfo ctx) of
+    Just (parentType, parentNodeType) ->
+      case parentNodeType of
+        Types.BranchNode ->
+          let
+            allValidChildren = Set.toList $ E.elementValidChildren parentType
+            weightedChildren =
+              flip mapMaybe allValidChildren $ \child ->
+                (, pure child) <$> E.elementWeight child
 
-        weightedChildren =
-          flip mapMaybe validChildren $ \child ->
-            (,pure child) <$> E.elementWeight child
+          in
+            if null weightedChildren
+              then pure Nothing
+              else do
+                let
+                  cid = nextId ctx
 
-      childType <- lift $ Gen.frequency weightedChildren
-      modify $ \s ->
-        s { nodeInfo =
-              Map.insert
-                cid
-                (childType, E.elementNodeType childType)
-                (nodeInfo s)
-          , childMap = Map.insertWith (<>) pid [ cid ] (childMap s)
-          , layerMap = IntMap.insertWith (<>) depth [ cid ] (layerMap s)
-          }
+                childType <- Gen.frequency weightedChildren
 
-      pure $ LayerItem cid (Just pid) depth
+                modify $ \s ->
+                  s { nextId = cid + 1
+                    , nodeInfo =
+                        IntMap.insert
+                          cid
+                          (childType, E.elementNodeType childType)
+                          (nodeInfo s)
+                    , childMap =
+                        IntMap.insertWith (<>) pid [ cid ] (childMap s)
+                    , layerMap =
+                        IntMap.insertWith (<>) depth [ cid ] (layerMap s)
+                    }
+
+                pure . Just $ LayerItem cid (Just pid) depth
+
+        Types.LeafNode ->
+          pure Nothing
+
+        Types.VoidNode ->
+          pure Nothing
 
     Nothing ->
-      fail $ "No parent for UUID " <> show cid
+      fail $ "Could not find element with UUID " <> show pid
 
-buildTree :: Context -> UUID -> Gen Types.Element
+buildTree :: Context -> Int -> Gen Types.Element
 buildTree ctx rootId = do
   let
     maxLayer =
@@ -177,17 +195,17 @@ buildTree ctx rootId = do
         then 0
         else fst (IntMap.findMax $ layerMap ctx)
 
-    buildLayerNodes :: Map UUID Types.Element
+    buildLayerNodes :: IntMap Types.Element
                     -> Int
-                    -> Gen (Map UUID Types.Element)
+                    -> Gen (IntMap Types.Element)
     buildLayerNodes acc depth =
       maybe (pure acc) (foldM buildOne acc)
         . IntMap.lookup depth
         $ layerMap ctx
 
-    buildOne :: Map UUID Types.Element -> UUID -> Gen (Map UUID Types.Element)
+    buildOne :: IntMap Types.Element -> Int -> Gen (IntMap Types.Element)
     buildOne acc nid =
-      case Map.lookup nid (nodeInfo ctx) of
+      case IntMap.lookup nid (nodeInfo ctx) of
         Just (elementType, nodeType) -> do
           attrs <- E.withGlobalAttrs (genParams ctx) elementType
 
@@ -195,8 +213,8 @@ buildTree ctx rootId = do
             Types.BranchNode -> do
               let
                 children =
-                  mapMaybe (`Map.lookup` acc)
-                    . Map.findWithDefault [] nid
+                  mapMaybe (`IntMap.lookup` acc)
+                    . IntMap.findWithDefault [] nid
                     $ childMap ctx
 
               content <-
@@ -205,7 +223,7 @@ buildTree ctx rootId = do
                   else pure $ Types.Branch children
 
               pure $
-                Map.insert
+                IntMap.insert
                   nid
                   (Types.Element elementType attrs content)
                   acc
@@ -213,14 +231,14 @@ buildTree ctx rootId = do
             Types.LeafNode -> do
               text <- Generators.nonEmptyText
               pure $
-                Map.insert
+                IntMap.insert
                   nid
                   (Types.Element elementType attrs $ Types.Leaf text)
                   acc
 
             Types.VoidNode ->
               pure $
-                Map.insert
+                IntMap.insert
                   nid
                   (Types.Element elementType attrs Types.Void)
                   acc
@@ -228,8 +246,9 @@ buildTree ctx rootId = do
         Nothing ->
           pure acc
 
-  builtMap <- foldM buildLayerNodes Map.empty [ maxLayer, maxLayer - 1 .. 0 ]
+  builtMap <-
+    foldM buildLayerNodes IntMap.empty [ maxLayer, maxLayer - 1 .. 0 ]
 
-  case Map.lookup rootId builtMap of
+  case IntMap.lookup rootId builtMap of
     Just node -> pure node
     Nothing -> fail "Failed to build root node"

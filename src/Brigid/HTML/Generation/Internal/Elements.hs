@@ -607,8 +607,8 @@ canvasContent :: Set ElementType
 canvasContent =
   Set.fromList
     [ Anchor
-    , Button
-    , Input
+    -- TODO: Uncomment this when Canvas is fixed: Button
+    -- TODO: Uncomment this when Canvas is fixed: Input
     ]
 
 tableCaptionContent :: Set ElementType
@@ -1121,7 +1121,7 @@ meterAttrs =
   , A.max
   , A.min
   , A.optimum
-  , A.value
+  , A.valueNumber
   ]
 
 meterContent :: Set ElementType
@@ -1241,7 +1241,7 @@ preformattedTextContent = phrasingContent
 progressAttrs :: MonadGen m => [m A.Attribute]
 progressAttrs =
   [ A.max
-  , A.value
+  , A.valueNumber
   ]
 
 progressContent :: Set ElementType
@@ -1980,6 +1980,7 @@ branchElements =
     , Body
     , Button
     , TableCaption
+    , Canvas
     , Citation
     , Code
     , TableColumn
@@ -2057,8 +2058,8 @@ branchElements =
 leafElements :: Set ElementType
 leafElements =
   Set.fromList
-    [ Anchor
-    , Canvas
+    [ Comment
+    , Anchor
     , DeletedText
     , InsertedText
     , NoScript
@@ -2081,7 +2082,6 @@ leafBranchElements =
     , Button
     , Citation
     , Code
-    , DescriptionList
     , DescriptionTerm
     , Division
     , Emphasis

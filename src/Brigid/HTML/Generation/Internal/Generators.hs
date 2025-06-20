@@ -57,7 +57,6 @@ module Brigid.HTML.Generation.Internal.Generators
   , trackKind
   , type_
   , url
-  , uuid
   , wrap
   , yesNo
   ) where
@@ -68,7 +67,6 @@ import Data.NonEmptyText qualified as NET
 import Data.Ratio (Ratio, (%))
 import Data.Text qualified as T
 import Data.Time.Calendar.OrdinalDate qualified as Time
-import Data.UUID (UUID, fromWords64)
 import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
@@ -465,12 +463,6 @@ type_ =
 url  :: MonadGen m => m Types.RawURL
 url =
   Types.mkRawURL <$> text
-
-uuid :: MonadGen m => m UUID
-uuid =
-  fromWords64
-    <$> Gen.word64 Range.constantBounded
-    <*> Gen.word64 Range.constantBounded
 
 wrap :: MonadGen m => m Types.Wrap
 wrap =

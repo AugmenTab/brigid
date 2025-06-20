@@ -234,7 +234,6 @@ library
     , shrubbery
     , text
     , time
-    , uuid
     , validation
   default-language: Haskell2010
 
@@ -280,7 +279,6 @@ test-suite brigid-test
     , tasty-hedgehog
     , text
     , time
-    , uuid
     , validation
   default-language: Haskell2010
 
@@ -330,6 +328,5 @@ benchmark brigid-bench
     , tasty-bench
     , text
     , time
-    , uuid
     , validation
   default-language: Haskell2010

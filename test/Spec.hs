@@ -6,6 +6,7 @@ module Main
 
 import Control.Exception (SomeException, evaluate, try)
 import Control.Monad.IO.Class (liftIO)
+import Data.List ((\\))
 import Data.Text qualified as T
 import Hedgehog qualified as HH
 import Test.Tasty qualified as Tasty
@@ -13,6 +14,7 @@ import Test.Tasty.Hedgehog qualified as TastyHH
 
 import Brigid.HTML.Generation qualified as Gen
 import Brigid.HTML.Generation.Attributes qualified as GA
+import Brigid.HTML.Generation.Elements qualified as GE
 
 main :: IO ()
 main = do
@@ -20,7 +22,25 @@ main = do
     Tasty.testGroup "Brigid tests"
       [ Tasty.testGroup "Attribute generation doesn't produce exceptions" $
           uncurry mkAttributeTestCase <$> allAttributeGenerators
+      , Tasty.testGroup "Spec compliance in DOM generation" $
+          mkElementTestCase <$> allElements
       ]
+
+allElements :: [GE.ElementType]
+allElements =
+  let
+    brokenElements =
+      [ GE.Canvas
+      , GE.DeletedText
+      , GE.InsertedText
+      , GE.NoScript
+      , GE.Object
+      , GE.Section
+      , GE.Slot
+      , GE.ContentTemplate
+      ]
+  in
+    [ minBound..maxBound ] \\ brokenElements
 
 mkAttributeTestCase :: T.Text -> HH.Gen GA.Attribute -> Tasty.TestTree
 mkAttributeTestCase attrName gen =
@@ -186,3 +206,23 @@ allAttributeGenerators =
   , ("WritingSuggestions", Gen.writingsuggestions)
   , ("XMLNS", Gen.xmlns)
   ]
+
+mkElementTestCase :: GE.ElementType -> Tasty.TestTree
+mkElementTestCase e =
+  TastyHH.testProperty (show e) $
+    HH.property $ do
+      dom <- HH.forAll . Gen.generateDOM $ testParams e
+
+      case Gen.toBrigid dom of
+        Left err -> fail $ unlines err
+        Right _brigid -> pure ()
+
+testParams :: GE.ElementType -> Gen.GeneratorParams
+testParams e =
+  Gen.GeneratorParams
+    { Gen.startingElement = e
+    , Gen.maximumTotalNodes = 25
+    , Gen.maximumDepth = 3
+    , Gen.childrenPerNode = Gen.mkRange 1 20
+    , Gen.attributesPerNode = Gen.mkRange 1 10
+    }
