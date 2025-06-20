@@ -12,6 +12,7 @@ import Text.Blaze.Html.Renderer.Utf8 (renderHtml)
 
 import Brigid.HTML.Generation qualified as G
 import Brigid.HTML.Generation.Elements (ElementType (Html))
+import Brigid.HTML.Render.ByteString (renderLazyHTML)
 import Generation.Convert (toBlaze, toLucid)
 
 main :: IO ()
@@ -73,30 +74,38 @@ main = do
       let
         node = nodeValue $ runTree nodeTree
 
-   -- putStrLn $ G.prettyPrint node
-   -- putStrLn "\n"
+      case G.toBrigid node of
+        Left errs ->
+          error
+            . unlines
+            $ "Brigid conversion failed:" : errs
 
-      putStrLn "Blaze:"
-      LBS8.putStrLn . renderHtml $ toBlaze node
-      putStrLn "\n"
+        Right brigid -> do
+          putStrLn "Brigid:"
+          LBS8.putStrLn $ renderLazyHTML brigid
+          putStrLn "\n"
 
-      putStrLn "Lucid:"
-      LBS8.putStrLn . renderBS $ toLucid node
-      putStrLn "\n"
+          putStrLn "Blaze:"
+          LBS8.putStrLn . renderHtml $ toBlaze node
+          putStrLn "\n"
 
-      putStrLn $
-        "Total Nodes: "
-          <> show (G.totalNodes node)
-          <> " / "
-          <> show (G.maximumTotalNodes testing)
+          putStrLn "Lucid:"
+          LBS8.putStrLn . renderBS $ toLucid node
+          putStrLn "\n"
 
-      putStrLn $
-        "Depth: "
-          <> show (G.maxDepth node)
-          <> " / "
-          <> show (G.maximumDepth testing)
+          putStrLn $
+            "Total Nodes: "
+              <> show (G.totalNodes node)
+              <> " / "
+              <> show (G.maximumTotalNodes testing)
 
-      putStrLn "\n"
+          putStrLn $
+            "Depth: "
+              <> show (G.maxDepth node)
+              <> " / "
+              <> show (G.maximumDepth testing)
+
+          putStrLn "\n"
 
     Nothing ->
       error "Structure generation failed."

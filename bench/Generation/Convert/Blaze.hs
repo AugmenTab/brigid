@@ -80,7 +80,7 @@ toBlaze (Element tag attrs node) =
       Header -> H.header ! attributes $ content
       HeadingGroup -> H.hgroup ! attributes $ content
       HorizontalRule -> H.hr ! attributes
-      Html -> H.docTypeHtml ! attributes $ content
+      Html -> H.html ! attributes $ content
       IdiomaticText -> H.i ! attributes $ content
       IFrame -> H.iframe ! attributes $ content
       Image -> H.img ! attributes

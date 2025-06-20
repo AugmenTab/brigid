@@ -85,7 +85,7 @@ toLucid (Element tag attrs node) =
       Header -> H.header_ attributes content
       HeadingGroup -> H.hgroup_ attributes content
       HorizontalRule -> H.hr_ attributes
-      Html -> H.doctypehtml_ content `Lucid.with` attributes
+      Html -> H.html_ attributes content
       IdiomaticText -> H.i_ attributes content
       IFrame -> H.iframe_ attributes content
       Image -> H.img_ attributes
