@@ -21,8 +21,11 @@ main = do
     Tasty.testGroup "Brigid tests"
       [ Tasty.testGroup "Attribute generation doesn't produce exceptions" $
           uncurry mkAttributeTestCase <$> allAttributeGenerators
-      , Tasty.testGroup "Generated DOM is spec compliant" $
+      , Tasty.testGroup "Generated DOM elements are spec compliant" $
           mkElementTestCase <$> allElements
+      , TastyHH.testProperty
+          "Large generated DOM is spec compliant"
+          largeDOMTest
       ]
 
 allElements :: [GE.ElementType]
@@ -198,18 +201,36 @@ mkElementTestCase :: GE.ElementType -> Tasty.TestTree
 mkElementTestCase e =
   TastyHH.testProperty (show e) $
     HH.property $ do
-      dom <- HH.forAll . Gen.generateDOM $ testParams e
+      dom <-
+        HH.forAll $
+          Gen.generateDOM $
+            Gen.GeneratorParams
+              { Gen.startingElement = e
+              , Gen.maximumTotalNodes = 25
+              , Gen.maximumDepth = 3
+              , Gen.childrenPerNode = Gen.mkRange 1 20
+              , Gen.attributesPerNode = Gen.mkRange 1 10
+              }
 
       case Gen.toBrigid dom of
         Left err -> fail $ unlines err
         Right _brigid -> pure ()
 
-testParams :: GE.ElementType -> Gen.GeneratorParams
-testParams e =
-  Gen.GeneratorParams
-    { Gen.startingElement = e
-    , Gen.maximumTotalNodes = 25
-    , Gen.maximumDepth = 3
-    , Gen.childrenPerNode = Gen.mkRange 1 20
-    , Gen.attributesPerNode = Gen.mkRange 1 10
-    }
+largeDOMTest :: HH.Property
+largeDOMTest =
+  HH.withTests 1 $
+    HH.property $ do
+      dom <-
+        HH.forAll $
+          Gen.generateDOM $
+            Gen.GeneratorParams
+              { Gen.startingElement = GE.Html
+              , Gen.maximumTotalNodes = 100000
+              , Gen.maximumDepth = 11
+              , Gen.childrenPerNode = Gen.mkRange 1 20
+              , Gen.attributesPerNode = Gen.mkRange 1 20
+              }
+
+      case Gen.toBrigid dom of
+        Left err -> fail $ unlines err
+        Right _brigid -> pure ()
