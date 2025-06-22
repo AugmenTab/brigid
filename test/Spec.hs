@@ -6,7 +6,6 @@ module Main
 
 import Control.Exception (SomeException, evaluate, try)
 import Control.Monad.IO.Class (liftIO)
-import Data.List ((\\))
 import Data.Text qualified as T
 import Hedgehog qualified as HH
 import Test.Tasty qualified as Tasty
@@ -22,25 +21,13 @@ main = do
     Tasty.testGroup "Brigid tests"
       [ Tasty.testGroup "Attribute generation doesn't produce exceptions" $
           uncurry mkAttributeTestCase <$> allAttributeGenerators
-      , Tasty.testGroup "Spec compliance in DOM generation" $
+      , Tasty.testGroup "Generated DOM is spec compliant" $
           mkElementTestCase <$> allElements
       ]
 
 allElements :: [GE.ElementType]
 allElements =
-  let
-    brokenElements =
-      [ GE.Canvas
-      , GE.DeletedText
-      , GE.InsertedText
-      , GE.NoScript
-      , GE.Object
-      , GE.Section
-      , GE.Slot
-      , GE.ContentTemplate
-      ]
-  in
-    [ minBound..maxBound ] \\ brokenElements
+  [ minBound..maxBound ]
 
 mkAttributeTestCase :: T.Text -> HH.Gen GA.Attribute -> Tasty.TestTree
 mkAttributeTestCase attrName gen =

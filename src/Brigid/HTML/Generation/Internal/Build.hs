@@ -35,8 +35,8 @@ data Context =
 
 data LayerItem =
   LayerItem
-    { nodeId :: Int
-    , parentId :: Maybe Int
+    { nodeId     :: Int
+    , parentId   :: Maybe Int
     , layerDepth :: Int
     } deriving Show
 

@@ -98,7 +98,8 @@ toBlaze (Element tag attrs node) =
       Meta -> H.meta ! attributes
       Meter -> H.meter ! attributes $ content
       Nav -> H.nav ! attributes $ content
-      NoScript -> H.noscript ! attributes $ content
+      NoScriptHead -> H.noscript ! attributes $ content
+      NoScriptBody -> H.noscript ! attributes $ content
       Object -> H.object ! attributes $ content
       OrderedList -> H.ol ! attributes $ content
       OptionGroup -> H.optgroup ! attributes $ content

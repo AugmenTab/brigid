@@ -103,7 +103,8 @@ toLucid (Element tag attrs node) =
       Meta -> H.meta_ attributes
       Meter -> H.meter_ attributes content
       Nav -> H.nav_ attributes content
-      NoScript -> H.noscript_ attributes content
+      NoScriptHead -> H.noscript_ attributes content
+      NoScriptBody -> H.noscript_ attributes content
       Object -> H.object_ attributes content
       OrderedList -> H.ol_ attributes content
       OptionGroup -> H.optgroup_ attributes content

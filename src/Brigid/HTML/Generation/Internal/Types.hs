@@ -107,7 +107,8 @@ data ElementType
   | Meta
   | Meter
   | Nav
-  | NoScript
+  | NoScriptBody
+  | NoScriptHead
   | Object
   | OrderedList
   | OptionGroup

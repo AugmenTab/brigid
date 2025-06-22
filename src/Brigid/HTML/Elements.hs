@@ -138,7 +138,7 @@ import Brigid.Types qualified as Types
 
 type HTML = ChildHTML Tags.Document Tags.NoElement
 
-type AnyHTML = ChildHTML Tags.CustomHTML Tags.NoElement
+type AnyHTML = ChildHTML Tags.CustomHTML Tags.CustomHTML
 
 noElement :: ChildHTML parent grandparent
 noElement = Tag_NoElement

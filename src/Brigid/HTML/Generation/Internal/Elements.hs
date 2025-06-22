@@ -99,7 +99,8 @@ elementValidAttrs element =
     Meta -> metaAttrs
     Meter -> meterAttrs
     Nav -> [ A.elementtiming ]
-    NoScript -> []
+    NoScriptHead -> []
+    NoScriptBody -> []
     Object -> objectAttrs
     OrderedList -> orderedListAttrs
     OptionGroup -> optionGroupAttrs
@@ -216,7 +217,8 @@ elementValidChildren element =
     Meta -> Set.empty
     Meter -> meterContent
     Nav -> navContent
-    NoScript -> Set.empty
+    NoScriptHead -> noScriptHeadContent
+    NoScriptBody -> noScriptBodyContent
     Object -> Set.empty
     OrderedList -> orderedListContent
     OptionGroup -> optionGroupContent
@@ -333,7 +335,8 @@ elementWeight et =
     Meta -> Just 1
     Meter -> Just 1
     Nav -> Just 5
-    NoScript -> Just 1
+    NoScriptHead -> Just 1
+    NoScriptBody -> Just 1
     Object -> Just 1
     OrderedList -> Just 8
     OptionGroup -> Just 1
@@ -437,7 +440,7 @@ contactAddressContent =
     , Mark
     , Menu
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , Output
@@ -572,7 +575,7 @@ buttonContent =
     , KeyboardInput
     , Mark
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , Output
     , Picture
@@ -607,8 +610,8 @@ canvasContent :: Set ElementType
 canvasContent =
   Set.fromList
     [ Anchor
-    -- TODO: Uncomment this when Canvas is fixed: Button
-    -- TODO: Uncomment this when Canvas is fixed: Input
+    , Button
+    , Input
     ]
 
 tableCaptionContent :: Set ElementType
@@ -708,7 +711,7 @@ descriptionTermContent =
     , Mark
     , Menu
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , Output
@@ -839,7 +842,7 @@ formContent =
     , Menu
     , Meter
     , Nav
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , Output
@@ -896,7 +899,7 @@ headContent =
     [ Base
     , Link
     , Meta
-    , NoScript
+    , NoScriptHead
     , Script
     , Style
     , Title
@@ -1016,7 +1019,7 @@ labelContent =
     , KeyboardInput
     , Mark
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , Output
     , Picture
@@ -1092,7 +1095,7 @@ mapContent =
     , DeletedText
     , InsertedText
     , Map
-    , NoScript
+    , NoScriptBody
     , Object
     , Slot
     , Video
@@ -1150,7 +1153,7 @@ meterContent =
     , KeyboardInput
     , Label
     , Mark
-    , NoScript
+    , NoScriptBody
     , Object
     , Output
     , Picture
@@ -1178,6 +1181,19 @@ meterContent =
 
 navContent :: Set ElementType
 navContent = flowContent
+
+noScriptHeadContent :: Set ElementType
+noScriptHeadContent =
+  Set.fromList
+    [ Link
+    , Meta
+    , Style
+    ]
+
+noScriptBodyContent :: Set ElementType
+noScriptBodyContent =
+  Set.union flowContent phrasingContent
+    `Set.difference` Set.fromList [ NoScriptHead, NoScriptBody ]
 
 objectAttrs :: MonadGen m => [m A.Attribute]
 objectAttrs =
@@ -1271,7 +1287,7 @@ progressContent =
     , Label
     , Mark
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , Output
     , Picture
@@ -1504,7 +1520,7 @@ tableHeaderContent =
     , Mark
     , Menu
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , Output
@@ -1663,7 +1679,7 @@ allElements =
     , Meta
     , Meter
     , Nav
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , OptionGroup
@@ -1770,7 +1786,7 @@ flowContent =
     , Menu
     , Meter
     , Nav
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , Output
@@ -1870,7 +1886,7 @@ marginalContent =
     , Menu
     , Meter
     , Nav
-    , NoScript
+    , NoScriptBody
     , Object
     , OrderedList
     , Output
@@ -1930,7 +1946,7 @@ phrasingContent =
     , Label
     , Mark
     , Meter
-    , NoScript
+    , NoScriptBody
     , Object
     , Output
     , Picture
@@ -2020,6 +2036,8 @@ branchElements =
     , Menu
     , Meter
     , Nav
+    , NoScriptHead
+    , NoScriptBody
     , OrderedList
     , OptionGroup
     , Output
@@ -2062,7 +2080,6 @@ leafElements =
     , Anchor
     , DeletedText
     , InsertedText
-    , NoScript
     , Object
     , Option
     , RubyParenthesis
@@ -2091,6 +2108,7 @@ leafBranchElements =
     , Label
     , ListItem
     , Mark
+    , NoScriptBody
     , Paragraph
     , Quotation
     , Sample
