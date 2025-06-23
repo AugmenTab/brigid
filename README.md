@@ -35,6 +35,8 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
    constructors that prevent users from creating them with invalid characters,
    rather than escaping them after the fact.
 10. Consider writing Aeson instances for common types.
+11. Give `ChildHTML` and `Attribute` an `NFData` instance - this seems to be
+    required for benchmarking.
 
 ### TODO (XML)
 
@@ -57,4 +59,10 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 
 1. Change all `ToText` and `ToBytes` functions to use builders? Export them for
    use in render, but not from `Brigid.HTML.Types`.
+2. Switch to strict types for element combinators.
+3. Inline newtypes.
+4. Interpolate hard-coded string types everywhere.
+5. Parallel rendering for DOMs branches with more than 3 children.
+6. Replace `nubOrdOn attributeText` in element combinators with a
+   custom fold in rendering that dedupes as it folds.
 
