@@ -256,6 +256,7 @@ test-suite brigid-test
     , beeline-routing
     , brigid
     , bytestring
+    , clock
     , containers
     , crypton
     , extra
@@ -276,7 +277,9 @@ test-suite brigid-test
     , semigroupoids
     , shrubbery
     , tasty
+    , tasty-bench-fit
     , tasty-hedgehog
+    , tasty-hunit
     , text
     , time
     , validation
@@ -307,6 +310,7 @@ benchmark brigid-bench
     , bytestring
     , containers
     , crypton
+    , deepseq
     , extra
     , foldable1-classes-compat
     , hedgehog
