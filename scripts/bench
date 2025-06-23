@@ -4,5 +4,5 @@ set -o errexit
 
 . scripts/lib/run-in-container.sh
 
-stack build --bench "$@"
+stack build --bench -- "$@"
 

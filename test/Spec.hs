@@ -5,15 +5,27 @@ module Main
   ) where
 
 import Control.Exception (SomeException, evaluate, try)
+import Control.Monad (forM)
 import Control.Monad.IO.Class (liftIO)
+import Data.Bifunctor (first)
+import Data.ByteString qualified as BS
+import Data.Map.Strict qualified as Map
 import Data.Text qualified as T
 import Hedgehog qualified as HH
+import Hedgehog.Internal.Gen (evalGen)
+import Hedgehog.Internal.Seed (from)
+import Hedgehog.Internal.Tree (nodeValue, runTree)
+import Hedgehog.Range (Size (..))
+import System.Clock (Clock (Monotonic), diffTimeSpec, getTime, toNanoSecs)
 import Test.Tasty qualified as Tasty
+import Test.Tasty.Bench.Fit qualified as Fit
+import Test.Tasty.HUnit qualified as TastyHU
 import Test.Tasty.Hedgehog qualified as TastyHH
 
 import Brigid.HTML.Generation qualified as Gen
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Elements qualified as GE
+import Brigid.HTML.Render.ByteString (renderHTML)
 
 main :: IO ()
 main = do
@@ -26,11 +38,10 @@ main = do
       , TastyHH.testProperty
           "Large generated DOM is spec compliant"
           largeDOMTest
+      , Tasty.testGroup
+          "Core Brigid operations are linear complexity"
+          complexityTests
       ]
-
-allElements :: [GE.ElementType]
-allElements =
-  [ minBound..maxBound ]
 
 mkAttributeTestCase :: T.Text -> HH.Gen GA.Attribute -> Tasty.TestTree
 mkAttributeTestCase attrName gen =
@@ -216,21 +227,88 @@ mkElementTestCase e =
         Left err -> fail $ unlines err
         Right _brigid -> pure ()
 
+allElements :: [GE.ElementType]
+allElements =
+  [ minBound..maxBound ]
+
 largeDOMTest :: HH.Property
 largeDOMTest =
   HH.withTests 1 $
     HH.property $ do
-      dom <-
-        HH.forAll $
-          Gen.generateDOM $
-            Gen.GeneratorParams
-              { Gen.startingElement = GE.Html
-              , Gen.maximumTotalNodes = 100000
-              , Gen.maximumDepth = 11
-              , Gen.childrenPerNode = Gen.mkRange 1 20
-              , Gen.attributesPerNode = Gen.mkRange 1 20
-              }
+      dom <- HH.forAll . Gen.generateDOM $ mkParams 100000
 
       case Gen.toBrigid dom of
         Left err -> fail $ unlines err
         Right _brigid -> pure ()
+
+mkParams :: Int -> Gen.GeneratorParams
+mkParams nodes =
+  Gen.GeneratorParams
+    { Gen.startingElement = GE.Html
+    , Gen.maximumTotalNodes = nodes
+    , Gen.maximumDepth = 11
+    , Gen.childrenPerNode = Gen.mkRange 1 20
+    , Gen.attributesPerNode = Gen.mkRange 1 20
+    }
+
+complexityTests :: [Tasty.TestTree]
+complexityTests =
+  let
+    size = Size 30
+    seed = from 0
+  in
+    [ TastyHU.testCase "Brigid construction and rendering is linear" $ do
+        putStrLn "Before gens"
+        doms <-
+          forM [3000] $ \testCase ->
+            case evalGen size seed (Gen.generateDOM $ mkParams testCase) of
+              Just tree -> do
+                pure . nodeValue $ runTree tree
+
+              Nothing ->
+                error "Structure generation failed."
+
+        putStrLn "Before conversions"
+        brigids <-
+          forM doms $ \dom ->
+            time $
+              either
+                (TastyHU.assertFailure . unlines)
+                (evaluate . BS.length . renderHTML)
+                (Gen.toBrigid dom)
+        putStrLn "After conversions"
+
+        let
+          measurements =
+            Map.fromList
+              $ fmap (first (fromIntegral . Gen.totalNodes))
+              $ zip doms brigids
+
+        putStrLn
+          . ("Measurements: " <>)
+          . show
+          . Map.toList
+          $ measurements
+
+        let
+          complexity =
+            Fit.guessComplexity measurements
+
+        TastyHU.assertBool "Construction and rendering is not linear" $
+          Fit.isLinear complexity
+    ]
+
+time :: IO a -> IO Fit.Measurement
+time action = do
+  start <- getTime Monotonic
+  _ <- action
+  end <- getTime Monotonic
+
+  let
+    millis = fromIntegral (toNanoSecs $ diffTimeSpec end start) / 1000
+
+  putStrLn $ "Measurement: " <> show millis <> " millis"
+
+  if millis <= 0
+    then fail $ "Invalid measurement duration: " <> show millis
+    else pure $ Fit.Measurement millis 1

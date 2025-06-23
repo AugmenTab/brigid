@@ -101,9 +101,12 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - brigid
+      - clock
       - hedgehog
       - tasty
+      - tasty-bench-fit
       - tasty-hedgehog
+      - tasty-hunit
 
 benchmarks:
   brigid-bench:
@@ -115,6 +118,7 @@ benchmarks:
       - -rtsopts
       - -with-rtsopts "-N -T -A32m"
     dependencies:
+      - deepseq
       - blaze-html
       - brigid
       - lucid

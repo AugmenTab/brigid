@@ -1,15 +1,23 @@
+{-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Main
   ( main
   ) where
 
-import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Control.Exception (evaluate)
+import Data.ByteString.Lazy qualified as LBS
+import Data.Map.Strict (Map)
+import Data.Map.Strict qualified as Map
 import Hedgehog.Internal.Gen (evalGen)
 import Hedgehog.Internal.Seed (from)
 import Hedgehog.Internal.Tree (nodeValue, runTree)
 import Hedgehog.Range (Size (..))
 import Lucid.Base (renderBS)
+import Test.Tasty.Bench qualified as TB
 import Text.Blaze.Html.Renderer.Utf8 (renderHtml)
 
+import Brigid.HTML.Elements (AnyHTML)
 import Brigid.HTML.Generation qualified as G
 import Brigid.HTML.Generation.Elements (ElementType (Html))
 import Brigid.HTML.Render.ByteString (renderLazyHTML)
@@ -20,92 +28,139 @@ main = do
   let
     size = Size 30
     seed = from 0
+    doms =
+      flip fmap testParams $ \testCase ->
+        maybe
+          (error "Structure generation failed.")
+          (nodeValue . runTree)
+          (evalGen size seed $ G.generateDOM testCase)
 
-    small =
-      G.GeneratorParams
-        { G.startingElement = Html
-        , G.maximumTotalNodes = 100
-        , G.maximumDepth = 7
-        , G.childrenPerNode = G.mkRange 0 5
-        , G.attributesPerNode = G.mkRange 0 10
-        }
+    blazes = toBlaze <$> doms
+    lucids = toLucid <$> doms
 
-    _medium =
-      G.GeneratorParams
-        { G.startingElement = Html
-        , G.maximumTotalNodes = 1000
-        , G.maximumDepth = 9
-        , G.childrenPerNode = G.mkRange 0 6
-        , G.attributesPerNode = G.mkRange 0 10
-        }
+  brigids <- mapM constructBrigid doms
 
-    _large =
-      G.GeneratorParams
-        { G.startingElement = Html
-        , G.maximumTotalNodes = 10000
-        , G.maximumDepth = 10
-        , G.childrenPerNode = G.mkRange 0 7
-        , G.attributesPerNode = G.mkRange 0 10
-        }
+  TB.defaultMain
+    [ TB.bgroup "Constructing HTML with libraries"
+        [ TB.bgroup "Blaze"
+            [ TB.bench (show testSize) $ TB.whnf toBlaze testDOM
+            | (testSize, testDOM) <- Map.toAscList doms
+            ]
+        , TB.bgroup "Lucid"
+            [ TB.bench (show testSize) $ TB.whnf toLucid testDOM
+            | (testSize, testDOM) <- Map.toAscList doms
+            ]
+        , TB.bgroup "Brigid"
+            [ TB.bench (show testSize) . TB.whnfIO $ constructBrigid testDOM
+            | (testSize, testDOM) <- Map.toAscList doms
+            ]
+        ]
+    , TB.bgroup "Rendering HTML to lazy ByteString with libraries"
+        [ TB.bgroup "Blaze"
+            [ TB.bench (show testSize)
+                . TB.whnfIO
+                . evaluate
+                $! LBS.length (renderHtml testDOM)
+            | (testSize, testDOM) <- Map.toAscList blazes
+            ]
+        , TB.bgroup "Lucid"
+            [ TB.bench (show testSize)
+                . TB.whnfIO
+                . evaluate
+                $! LBS.length (renderBS testDOM)
+            | (testSize, testDOM) <- Map.toAscList lucids
+            ]
+        , TB.bgroup "Brigid"
+            [ TB.bench (show testSize)
+                . TB.whnfIO
+                . evaluate
+                $! LBS.length (renderLazyHTML testDOM)
+            | (testSize, testDOM) <- Map.toAscList brigids
+            ]
+        ]
+    , TB.bgroup "Constructing and rendering libraries"
+        [ TB.bgroup "Blaze"
+            [ TB.bench (show testSize) $ TB.whnf (renderHtml . toBlaze) testDOM
+            | (testSize, testDOM) <- Map.toAscList doms
+            ]
+        , TB.bgroup "Lucid"
+            [ TB.bench (show testSize) $ TB.whnf (renderBS . toLucid) testDOM
+            | (testSize, testDOM) <- Map.toAscList doms
+            ]
+        , TB.bgroup "Brigid"
+            [ TB.bench (show testSize)
+                . TB.whnfIO
+                . fmap renderLazyHTML
+                $ constructBrigid testDOM
+            | (testSize, testDOM) <- Map.toAscList doms
+            ]
+        ]
+    , TB.bgroup "Construction has linear complexity"
+        [
+        ]
+    , TB.bgroup "Rendering has linear complexity"
+        [
+        ]
+    ]
 
-    _stress =
-      G.GeneratorParams
-        { G.startingElement = Html
-        , G.maximumTotalNodes = 100000
-        , G.maximumDepth = 11
-        , G.childrenPerNode = G.mkRange 0 8
-        , G.attributesPerNode = G.mkRange 0 10
-        }
+data TestSize
+  = Small
+  | Medium
+  | Large
+  | Stress
+  | Absurd
+  deriving (Eq, Ord, Show)
 
-    _absurd =
-      G.GeneratorParams
-        { G.startingElement = Html
-        , G.maximumTotalNodes = 1000000
-        , G.maximumDepth = 12
-        , G.childrenPerNode = G.mkRange 0 10
-        , G.attributesPerNode = G.mkRange 0 10
-        }
+testParams :: Map TestSize G.GeneratorParams
+testParams =
+  Map.fromList
+    [ ( Small
+      , G.GeneratorParams
+          { G.startingElement = Html
+          , G.maximumTotalNodes = 100
+          , G.maximumDepth = 8
+          , G.childrenPerNode = G.mkRange 0 5
+          , G.attributesPerNode = G.mkRange 0 10
+          }
+      )
+    , ( Medium
+      , G.GeneratorParams
+          { G.startingElement = Html
+          , G.maximumTotalNodes = 1000
+          , G.maximumDepth = 9
+          , G.childrenPerNode = G.mkRange 0 6
+          , G.attributesPerNode = G.mkRange 0 10
+          }
+      )
+    , ( Large
+      , G.GeneratorParams
+          { G.startingElement = Html
+          , G.maximumTotalNodes = 10000
+          , G.maximumDepth = 10
+          , G.childrenPerNode = G.mkRange 0 7
+          , G.attributesPerNode = G.mkRange 0 10
+          }
+      )
+ -- , ( Stress
+ --   , G.GeneratorParams
+ --       { G.startingElement = Html
+ --       , G.maximumTotalNodes = 100000
+ --       , G.maximumDepth = 11
+ --       , G.childrenPerNode = G.mkRange 0 8
+ --       , G.attributesPerNode = G.mkRange 0 10
+ --       }isLinear :: (NFData b, Show a, Enum a, Num a, Ord a) => String -> (a -> b) -> a -> a -> TestTree
+ --   )
+ -- , ( Absurd
+ --   , G.GeneratorParams
+ --       { G.startingElement = Html
+ --       , G.maximumTotalNodes = 1000000
+ --       , G.maximumDepth = 12
+ --       , G.childrenPerNode = G.mkRange 0 10
+ --       , G.attributesPerNode = G.mkRange 0 10
+ --       }
+ --   )
+    ]
 
-    testing =
-      small
-
-  case evalGen size seed (G.generateDOM testing) of
-    Just nodeTree -> do
-      let
-        node = nodeValue $ runTree nodeTree
-
-      case G.toBrigid node of
-        Left errs ->
-          error
-            . unlines
-            $ "Brigid conversion failed:" : errs
-
-        Right brigid -> do
-          putStrLn "Brigid:"
-          LBS8.putStrLn $ renderLazyHTML brigid
-          putStrLn "\n"
-
-          putStrLn "Blaze:"
-          LBS8.putStrLn . renderHtml $ toBlaze node
-          putStrLn "\n"
-
-          putStrLn "Lucid:"
-          LBS8.putStrLn . renderBS $ toLucid node
-          putStrLn "\n"
-
-          putStrLn $
-            "Total Nodes: "
-              <> show (G.totalNodes node)
-              <> " / "
-              <> show (G.maximumTotalNodes testing)
-
-          putStrLn $
-            "Depth: "
-              <> show (G.maxDepth node)
-              <> " / "
-              <> show (G.maximumDepth testing)
-
-          putStrLn "\n"
-
-    Nothing ->
-      error "Structure generation failed."
+constructBrigid :: G.Element -> IO AnyHTML
+constructBrigid =
+  either (error . unlines) pure . G.toBrigid
