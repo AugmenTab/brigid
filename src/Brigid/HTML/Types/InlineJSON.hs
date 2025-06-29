@@ -13,7 +13,7 @@ import Fleece.Aeson qualified as FA
 newtype InlineJSON =
   InlineJSON
     { inlineJSONToBytes :: LBS.ByteString
-    }
+    } deriving (Eq, Show)
 
 mkInlineJSON :: FA.Encoder a -> a -> InlineJSON
 mkInlineJSON encoder =

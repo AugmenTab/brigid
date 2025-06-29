@@ -11,6 +11,7 @@ import Data.Text qualified as T
 import Numeric.Natural (Natural)
 
 newtype Throttle = Throttle Natural
+  deriving (Eq, Show)
 
 throttle :: Natural -> Throttle
 throttle = Throttle

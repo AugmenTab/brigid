@@ -24,17 +24,9 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.HTML.Types.InputType (InputType, inputTypeToBytes, inputTypeToText)
 import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, numberingTypeToText)
 
-newtype TypeOption = TypeOption (Shrubbery.Union TypeOptionTypes)
-
-instance Show TypeOption where
-  show (TypeOption typeOption) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @InputType     show
-        . Shrubbery.branch @NumberingType show
-        . Shrubbery.branch @RawTypeOption show
-        $ Shrubbery.branchEnd
-    ) typeOption
+newtype TypeOption =
+  TypeOption (Shrubbery.Union TypeOptionTypes)
+    deriving (Eq, Show)
 
 type TypeOptionTypes =
   [ InputType

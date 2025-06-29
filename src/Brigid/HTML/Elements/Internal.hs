@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Brigid.HTML.Elements.Internal
@@ -950,3 +951,6 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
     :: ValidChild 'WordBreakOpportunity parent grandparent
     => [Attribute 'WordBreakOpportunity]
     -> ChildHTML parent grandparent
+
+deriving instance Eq (ChildHTML parent grandparent)
+deriving instance Show (ChildHTML parent grandparent)

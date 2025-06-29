@@ -13,3 +13,4 @@ data NoContent
   -- | WithTag means the tag requires an explicit closing tag despite not being
   -- able to contain child elements.
   | WithTag
+  deriving (Bounded, Enum, Eq, Show)

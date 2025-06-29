@@ -8,6 +8,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data Document = Document
+  deriving (Eq, Show)
 
 documentToBytes :: Document -> LBS.ByteString
 documentToBytes = const "document"

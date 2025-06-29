@@ -24,7 +24,9 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.HTML.Types.Time qualified as BTime
 
-newtype RangeBound = RangeBound (Shrubbery.Union RangeBoundTypes)
+newtype RangeBound =
+  RangeBound (Shrubbery.Union RangeBoundTypes)
+    deriving (Eq, Show)
 
 type RangeBoundTypes =
   [ BTime.Date -- 'InputDate
@@ -42,20 +44,6 @@ mkRangeBound :: ( KnownNat branchIndex
              => rangeBound -> RangeBound
 mkRangeBound =
   RangeBound . Shrubbery.unify
-
-instance Show RangeBound where
-  show (RangeBound rangeBound) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @BTime.Date             show
-        . Shrubbery.branch @BTime.DatetimeLocal    show
-        . Shrubbery.branch @BTime.Month            show
-        . Shrubbery.branch @Number                 show
-        . Shrubbery.branch @BTime.Time             show
-        . Shrubbery.branch @BTime.Week             show
-        . Shrubbery.branch @RawRangeBound          show
-        $ Shrubbery.branchEnd
-    ) rangeBound
 
 rangeBoundToBytes :: RangeBound -> LBS.ByteString
 rangeBoundToBytes (RangeBound rangeBound) =

@@ -15,7 +15,7 @@ import Numeric.Natural (Natural)
 newtype Threshold =
   Threshold
     { unThreshold :: Ratio Natural
-    }
+    } deriving (Eq, Show)
 
 mkThreshold :: Natural -> Either String Threshold
 mkThreshold n =

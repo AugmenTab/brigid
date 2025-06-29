@@ -731,7 +731,7 @@ import Brigid.Types.URL (AbsoluteURL, Ping, RelativeURL, URLTypes, absoluteURLTo
 newtype QuerySelector =
   QuerySelector
     { unQuerySelector :: Shrubbery.Union QuerySelectorTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type QuerySelectorTypes =
   [ Id.Id
@@ -798,7 +798,7 @@ data ElementSelector =
     , elementSelectorAttr :: Maybe AttributeSelector
     , elementSelectorClasses :: [CS.ClassSelector]
     , elementSelectorChild :: Maybe ElementSelector
-    }
+    } deriving (Eq, Show.Show)
 
 elementSelectorToBytes :: ElementSelector -> LBS.ByteString
 elementSelectorToBytes element =
@@ -1574,6 +1574,7 @@ data ElementType
   | Tag_Variable
   | Tag_Video
   | Tag_WordBreakOpportunity
+  deriving (Eq, Show.Show)
 
 elementTypeToBytes :: ElementType -> LBS.ByteString
 elementTypeToBytes element =
@@ -2019,6 +2020,7 @@ data AttributeType
   | Attr_HxSync
   | Attr_HxValidate
   | Attr_HyperScript
+  deriving (Eq, Show.Show)
 
 attributeTypeToBytes :: AttributeType -> LBS.ByteString
 attributeTypeToBytes attr =
@@ -3369,7 +3371,7 @@ attr_hxValidate = (Attr_HxValidate, Nothing)
 newtype Swap =
   Swap
     { unSwap :: Shrubbery.Union SwapTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type SwapTypes =
   [ SwapModifier
@@ -3405,7 +3407,7 @@ data SwapModifier =
   SwapModifier
     { swapModifierStrategy :: SwapStyle
     , swapModifierModifier :: Maybe (Shrubbery.Union SwapModifierTypes)
-    }
+    } deriving (Eq, Show.Show)
 
 type SwapModifierTypes =
   [ SwapTransition
@@ -3525,7 +3527,7 @@ data SwapDisplay =
     { swapDisplayType   :: SwapDisplayType
     , swapDisplayView   :: SwapDisplayView
     , swapDisplayTarget :: Maybe (Shrubbery.Union SwapDisplayTargetTypes)
-    }
+    } deriving (Eq, Show.Show)
 
 type SwapDisplayTargetTypes =
   [ QuerySelector
@@ -3585,6 +3587,7 @@ show displayTo mbDisplayTarget =
 data SwapDisplayType
   = ScrollTo
   | Show
+  deriving (Bounded, Enum, Eq, Show.Show)
 
 swapDisplayTypeToBytes :: SwapDisplayType -> LBS.ByteString
 swapDisplayTypeToBytes displayType =
@@ -3601,6 +3604,7 @@ swapDisplayTypeToText displayType =
 data SwapDisplayView
   = SwapTop
   | SwapBottom
+  deriving (Bounded, Enum, Eq, Show.Show)
 
 swapDisplayViewToBytes :: SwapDisplayView -> LBS.ByteString
 swapDisplayViewToBytes view =
@@ -3617,10 +3621,7 @@ swapDisplayViewToText view =
 newtype RawSwap =
   RawSwap
     { rawSwapToText :: T.Text
-    } deriving (Eq)
-
-instance Show.Show RawSwap where
-  show = mappend "RawSwap " . Show.show
+    } deriving (Eq, Show.Show)
 
 rawSwapToBytes :: RawSwap -> LBS.ByteString
 rawSwapToBytes = Render.textToLazyBytes . rawSwapToText
@@ -3631,7 +3632,7 @@ data SwapSelector =
   SwapSelector
     { swapSelectorStrategy :: SwapStyle
     , swapSelectorQuery    :: QuerySelector
-    }
+    } deriving (Eq, Show.Show)
 
 -- <swap strategy>:<query selector>
 swapSelectorToBytes :: SwapSelector -> LBS.ByteString
@@ -3696,7 +3697,7 @@ swapSelectNone = SwapSelector SwapNone
 newtype OutOfBandSelect =
   OutOfBandSelect
     { unOutOfBandSelect :: Shrubbery.Union OutOfBandSelectTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type OutOfBandSelectTypes =
   [ QuerySelector
@@ -3736,7 +3737,7 @@ outOfBandSelectToText =
 newtype OutOfBandSwap =
   OutOfBandSwap
     { unOutOfBandSwap :: Shrubbery.Union OutOfBandSwapTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type OutOfBandSwapTypes =
   [ SwapStyle
@@ -3776,7 +3777,7 @@ outOfBandSwapToText =
 newtype DisabledSelector =
   DisabledSelector
     { unDisabledSelector :: Shrubbery.Union DisabledSelectorTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type DisabledSelectorTypes =
   [ This
@@ -3824,7 +3825,7 @@ disabledSelectorToText =
 newtype IncludeSelector =
   IncludeSelector
     { unIncludeSelector :: Shrubbery.Union IncludeSelectorTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type IncludeSelectorTypes =
   [ This
@@ -3869,7 +3870,7 @@ includeSelectorToText =
 newtype Indicator =
   Indicator
     { unIndicator :: Shrubbery.Union IndicatorTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type IndicatorTypes =
   [ QuerySelector
@@ -3911,7 +3912,7 @@ indicatorToText =
 newtype HxTarget =
   HxTarget
     { unHxTarget :: Shrubbery.Union HxTargetTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type HxTargetTypes =
   [ QuerySelector
@@ -3957,6 +3958,7 @@ data TargetSelectorType
   | TargetSelector_Find
   | TargetSelector_Next
   | TargetSelector_Previous
+  deriving (Bounded, Enum, Eq, Show.Show)
 
 targetSelectorTypeToBytes :: TargetSelectorType -> LBS.ByteString
 targetSelectorTypeToBytes selectorType =
@@ -3978,7 +3980,7 @@ data TargetSelector =
   TargetSelector
     { targetSelectorType  :: TargetSelectorType
     , targetSelectorQuery :: QuerySelector
-    }
+    } deriving (Eq, Show.Show)
 
 htmx_closest :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf querySelector QuerySelectorTypes
@@ -4046,7 +4048,7 @@ targetSelectorToWrappedText selector =
 newtype Trigger =
   Trigger
     { unTrigger :: Shrubbery.Union TriggerTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type TriggerTypes =
   [ Every
@@ -4090,7 +4092,7 @@ data TriggerEvent =
     { triggerEventType      :: Shrubbery.Union TriggerEventTypes
     , triggerEventFilter    :: Maybe TriggerFilter
     , triggerEventModifiers :: [TriggerModifier]
-    }
+    } deriving (Eq, Show.Show)
 
 type TriggerEventTypes =
   [ Event.Event
@@ -4152,7 +4154,7 @@ triggerEventToText event =
 newtype Intersect =
   Intersect
     { unIntersect :: Shrubbery.Union IntersectTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type IntersectTypes =
   [ Root
@@ -4199,7 +4201,7 @@ intersectToText =
 newtype Root =
   Root
     { unRoot :: QuerySelector
-    }
+    } deriving (Eq, Show.Show)
 
 rootToBytes :: Root -> LBS.ByteString
 rootToBytes =
@@ -4212,7 +4214,7 @@ rootToText =
 newtype TriggerModifier =
   TriggerModifier
     { unTriggerModifier :: Shrubbery.Union TriggerModifierTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type TriggerModifierTypes =
   [ Once
@@ -4291,7 +4293,7 @@ triggerQueue = TriggerModifier . Shrubbery.unify
 newtype TriggerFrom =
   TriggerFrom
     { unTriggerFrom :: Shrubbery.Union TriggerFromTypes
-    }
+    } deriving (Eq, Show.Show)
 
 type TriggerFromTypes =
   [ QuerySelector
@@ -4337,7 +4339,7 @@ triggerFromToText =
 newtype TriggerTarget =
   TriggerTarget
     { unTriggerTarget :: QuerySelector
-    }
+    } deriving (Eq, Show.Show)
 
 triggerTargetToBytes :: TriggerTarget -> LBS.ByteString
 triggerTargetToBytes =
@@ -4349,7 +4351,9 @@ triggerTargetToText =
 
 -- CustomTrigger
 --
-newtype CustomTrigger = CustomTrigger T.Text
+newtype CustomTrigger =
+  CustomTrigger T.Text
+    deriving (Eq, Show.Show)
 
 customTrigger :: T.Text -> Trigger
 customTrigger = mkTrigger . CustomTrigger
@@ -4367,10 +4371,7 @@ customTriggerToText (CustomTrigger trigger) =
 newtype RawTrigger =
   RawTrigger
     { rawTriggerToText :: T.Text
-    } deriving (Eq)
-
-instance Show.Show RawTrigger where
-  show = mappend "RawTrigger " . Show.show
+    } deriving (Eq, Show.Show)
 
 rawTriggerToBytes :: RawTrigger -> LBS.ByteString
 rawTriggerToBytes =

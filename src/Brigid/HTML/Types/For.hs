@@ -21,16 +21,9 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.Internal.Render (foldToBytesWithSeparator, foldToTextWithSeparator)
 import Brigid.Types.Id (Id, idToBytes, idToText)
 
-newtype ForOption = ForOption (Shrubbery.Union ForOptionTypes)
-
-instance Show ForOption where
-  show (ForOption for) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @Id                show
-        . Shrubbery.branch @(NEL.NonEmpty Id) show
-        $ Shrubbery.branchEnd
-    ) for
+newtype ForOption =
+  ForOption (Shrubbery.Union ForOptionTypes)
+    deriving (Eq, Show)
 
 type ForOptionTypes =
   [ Id

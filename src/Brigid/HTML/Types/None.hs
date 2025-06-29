@@ -8,6 +8,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data None = None
+  deriving (Eq, Show)
 
 noneToBytes :: None -> LBS.ByteString
 noneToBytes = const "none"

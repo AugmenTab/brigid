@@ -17,7 +17,7 @@ data ClassSelector =
   ClassSelector
     { classSelectorExcluded :: Bool
     , classSelectorClass    :: Class
-    }
+    } deriving (Eq, Show)
 
 toClassSelector :: Class -> ClassSelector
 toClassSelector = ClassSelector True

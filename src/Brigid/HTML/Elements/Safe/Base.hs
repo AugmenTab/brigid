@@ -17,10 +17,9 @@ import Brigid.HTML.Attributes.Href (ValidHref)
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Types qualified as Types
-import Brigid.Types qualified as Types
 
 baseWithHref :: ( KnownNat branchIndex
-                , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
+                , branchIndex ~ FirstIndexOf href Types.HrefTypes
                 , ValidHref href E.Base
                 , ValidChild E.Base parent grandparent
                 )
@@ -36,7 +35,7 @@ baseWithTarget target attrs =
   E.base $ A.target target : attrs
 
 baseWithHrefAndTarget :: ( KnownNat branchIndex
-                         , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
+                         , branchIndex ~ FirstIndexOf href Types.HrefTypes
                          , ValidHref href E.Base
                          , ValidChild E.Base parent grandparent
                          )

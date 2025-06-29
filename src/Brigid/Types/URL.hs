@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
@@ -22,6 +23,7 @@ module Brigid.Types.URL
       , Relative_Put
       , Relative_Patch
       )
+  , eqRelativeURL
   , get
   , post
   , delete
@@ -52,20 +54,9 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.Types.Method (Method, Get, Post, Delete, Put, Patch)
 
-newtype URL = URL (Shrubbery.Union URLTypes)
-
-instance Eq URL where
-  (==) = (==) `on` urlToText
-
-instance Show URL where
-  show (URL url) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @AbsoluteURL       show
-        . Shrubbery.branch @(RelativeURL Get) show
-        . Shrubbery.branch @RawURL            show
-        $ Shrubbery.branchEnd
-    ) url
+newtype URL =
+  URL (Shrubbery.Union URLTypes)
+    deriving (Eq, Show)
 
 type URLTypes =
   [ AbsoluteURL
@@ -128,17 +119,18 @@ data RelativeURL (method :: Method) where
   Relative_Put    :: T.Text -> RelativeURL Put
   Relative_Patch  :: T.Text -> RelativeURL Patch
 
-instance Eq (RelativeURL method) where
-  (==) = (==) `on` relativeURLToText
+deriving instance Eq (RelativeURL method)
+deriving instance Show (RelativeURL method)
 
-instance Show (RelativeURL method) where
-  show relativeURL =
-    case relativeURL of
-      Relative_Get    url -> mappend "RelativeURL GET "    $ T.unpack url
-      Relative_Post   url -> mappend "RelativeURL POST "   $ T.unpack url
-      Relative_Delete url -> mappend "RelativeURL DELETE " $ T.unpack url
-      Relative_Put    url -> mappend "RelativeURL PUT "    $ T.unpack url
-      Relative_Patch  url -> mappend "RelativeURL PATCH "  $ T.unpack url
+eqRelativeURL :: RelativeURL m1 -> RelativeURL m2 -> Bool
+eqRelativeURL url1 url2 =
+  case (url1, url2) of
+    (Relative_Get    a, Relative_Get    b) -> a == b
+    (Relative_Post   a, Relative_Post   b) -> a == b
+    (Relative_Delete a, Relative_Delete b) -> a == b
+    (Relative_Put    a, Relative_Put    b) -> a == b
+    (Relative_Patch  a, Relative_Patch  b) -> a == b
+    (_url1, _url2) -> False
 
 get :: route -> R.Builder R.RouteGenerator route route -> RelativeURL Get
 get route =

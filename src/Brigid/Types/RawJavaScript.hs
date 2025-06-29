@@ -12,7 +12,7 @@ import Brigid.Internal.Render qualified as Render
 newtype RawJavaScript =
   RawJavaScript
     { unRawJavaScript :: T.Text
-    }
+    } deriving (Eq, Show)
 
 rawJavaScriptToBytes :: RawJavaScript -> LBS.ByteString
 rawJavaScriptToBytes =

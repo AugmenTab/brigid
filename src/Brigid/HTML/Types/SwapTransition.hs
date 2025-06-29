@@ -11,7 +11,7 @@ import Data.Text qualified as T
 newtype SwapTransition =
   SwapTransition
     { unSwapTransition :: Bool
-    }
+    } deriving (Eq, Show)
 
 swapTransitionToBytes :: SwapTransition -> LBS.ByteString
 swapTransitionToBytes =

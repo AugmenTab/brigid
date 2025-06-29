@@ -17,6 +17,7 @@ data QueueOption
   | QueueLast
   | QueueAll
   | QueueNone
+  deriving (Bounded, Enum, Eq, Show)
 
 queueOptionToBytes :: QueueOption -> LBS.ByteString
 queueOptionToBytes queueOption =

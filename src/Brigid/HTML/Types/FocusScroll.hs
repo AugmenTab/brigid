@@ -11,7 +11,7 @@ import Data.Text qualified as T
 newtype FocusScroll =
   FocusScroll
     { unFocusScroll :: Bool
-    }
+    } deriving (Eq, Show)
 
 focusScrollToBytes :: FocusScroll -> LBS.ByteString
 focusScrollToBytes =

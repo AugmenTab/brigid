@@ -8,6 +8,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data Consume = Consume
+  deriving (Eq, Show)
 
 consumeToBytes :: Consume -> LBS.ByteString
 consumeToBytes = const "consume"

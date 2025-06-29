@@ -507,7 +507,7 @@ htmxExample =
                ]
         [
         ]
-    , E.button [ A.hxGet . exampleURL $ GetCustomer 3
+    , E.button [ A.htmx . exampleURL $ GetCustomer 3
                , A.hxBoost False
                , A.hxPrompt $
                    "Customer 3 doesn't like to be disturbed."
@@ -530,7 +530,7 @@ htmxExample =
             [ E.comment "Disinherit two"
             ]
         ]
-    , E.button [ A.hxDelete . deleteCustomer $ DeleteCustomer 4
+    , E.button [ A.htmx . deleteCustomer $ DeleteCustomer 4
                , A.hxConfirm $
                    "Customer 4 is essential to our future."
                      <> " Are you sure you want to do this?"

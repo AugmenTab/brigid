@@ -30,14 +30,14 @@ import Brigid.Types.Id (Id, idToBytes, idToText)
 import Brigid.Types.Method (Get, Post)
 import Brigid.Types.URL qualified as URL
 
-newtype Href method =
+newtype Href =
   Href
-    { unHref :: Shrubbery.Union (HrefTypes method)
-    }
+    { unHref :: Shrubbery.Union HrefTypes
+    } deriving (Eq, Show)
 
-type HrefTypes method =
+type HrefTypes =
   [ URL.AbsoluteURL
-  , URL.RelativeURL method
+  , URL.RelativeURL Get
   , Id
   , EmailAddress
   , PhoneNumber
@@ -47,13 +47,13 @@ type HrefTypes method =
   ]
 
 mkHref :: ( KnownNat branchIndex
-          , branchIndex ~ FirstIndexOf href (HrefTypes method)
+          , branchIndex ~ FirstIndexOf href HrefTypes
           )
-       => href -> Href method
+       => href -> Href
 mkHref =
   Href . Shrubbery.unify
 
-hrefToBytes :: Href method -> LBS.ByteString
+hrefToBytes :: Href -> LBS.ByteString
 hrefToBytes (Href href) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -67,7 +67,7 @@ hrefToBytes (Href href) =
       $ Shrubbery.branchEnd
   ) href
 
-hrefToText :: Href method -> T.Text
+hrefToText :: Href -> T.Text
 hrefToText (Href href) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -82,6 +82,7 @@ hrefToText (Href href) =
   ) href
 
 data BlankHref = BlankHref
+  deriving (Eq, Show)
 
 newtype HrefSelector =
   HrefSelector

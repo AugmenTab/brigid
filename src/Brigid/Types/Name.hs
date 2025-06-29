@@ -25,24 +25,14 @@ import Brigid.Internal.Render qualified as Render
 newtype Name =
   Name
     { nameToText :: T.Text
-    } deriving (Eq, Ord)
-
-instance Show Name where
-  show = mappend "Name " . T.unpack . nameToText
+    } deriving (Eq, Ord, Show)
 
 nameToBytes :: Name -> LBS.ByteString
 nameToBytes = Render.textToLazyBytes . nameToText
 
-newtype NameOption = NameOption (Shrubbery.Union NameOptionTypes)
-
-instance Show NameOption where
-  show (NameOption nameOption) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @Name         show
-        . Shrubbery.branch @MetadataName show
-        $ Shrubbery.branchEnd
-    ) nameOption
+newtype NameOption =
+  NameOption (Shrubbery.Union NameOptionTypes)
+    deriving (Eq, Show)
 
 type NameOptionTypes =
   [ Name

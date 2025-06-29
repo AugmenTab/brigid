@@ -26,6 +26,7 @@ data SwapStyle
   | AfterEnd
   | SwapDelete
   | SwapNone
+  deriving (Bounded, Enum, Eq, Show)
 
 swapStyleToBytes :: SwapStyle -> LBS.ByteString
 swapStyleToBytes style =

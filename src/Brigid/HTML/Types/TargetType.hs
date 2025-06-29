@@ -13,6 +13,7 @@ import Data.Text qualified as T
 data TargetType
   = TargetNext
   | TargetPrevious
+  deriving (Bounded, Enum, Eq, Show)
 
 targetTypeToBytes :: TargetType -> LBS.ByteString
 targetTypeToBytes targetType =

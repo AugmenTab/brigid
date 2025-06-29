@@ -22,7 +22,7 @@ import Brigid.Types.URL qualified as URL
 newtype PushURL =
   PushURL
     { unPushURL :: Shrubbery.Union PushURLTypes
-    }
+    } deriving (Eq, Show)
 
 type PushURLTypes =
   [ URL.AbsoluteURL

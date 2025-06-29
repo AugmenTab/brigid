@@ -11,6 +11,7 @@ import Data.Text qualified as T
 import Numeric.Natural (Natural)
 
 newtype Delay = Delay Natural
+  deriving (Eq, Show)
 
 delay :: Natural -> Delay
 delay = Delay

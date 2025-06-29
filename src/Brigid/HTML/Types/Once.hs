@@ -8,6 +8,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data Once = Once
+  deriving (Eq, Show)
 
 onceToBytes :: Once -> LBS.ByteString
 onceToBytes = const "once"

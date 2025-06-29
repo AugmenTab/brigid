@@ -8,6 +8,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data This = This
+  deriving (Eq, Show)
 
 thisToBytes :: This -> LBS.ByteString
 thisToBytes = const "this"

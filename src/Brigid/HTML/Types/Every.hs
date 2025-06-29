@@ -17,7 +17,7 @@ data Every =
   Every
     { everySeconds :: Natural
     , everyFilter  :: Maybe TF.TriggerFilter
-    }
+    } deriving (Eq, Show)
 
 every :: Natural -> Maybe TF.TriggerFilter -> Every
 every = Every

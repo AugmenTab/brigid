@@ -15,7 +15,7 @@ data SwapTiming =
   SwapTiming
     { swapTimingType    :: SwapTimingType
     , swapTimingSeconds :: Natural
-    }
+    } deriving (Eq, Show)
 
 swapTimingToBytes :: SwapTiming -> LBS.ByteString
 swapTimingToBytes swapTiming =
@@ -44,6 +44,7 @@ settle = SwapTiming Settle
 data SwapTimingType
   = Swap
   | Settle
+  deriving (Bounded, Enum, Eq, Show)
 
 swapTimingTypeToBytes :: SwapTimingType -> LBS.ByteString
 swapTimingTypeToBytes timingType =

@@ -1,6 +1,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
@@ -88,122 +89,7 @@ import Brigid.HTML.Types.Boolean (OnOff, onOffToBytes, onOffToText)
 
 newtype AutocompleteToken =
   AutocompleteToken (Shrubbery.Union AutocompleteTokenTypes)
-
-instance Show AutocompleteToken where
-  show (AutocompleteToken token) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @OnOff                                 show
-        . Shrubbery.branch @(Modifier FullName)                   show
-        . Shrubbery.branch @(Modifier HonorificPrefix)            show
-        . Shrubbery.branch @(Modifier GivenName)                  show
-        . Shrubbery.branch @(Modifier AdditionalName)             show
-        . Shrubbery.branch @(Modifier FamilyName)                 show
-        . Shrubbery.branch @(Modifier HonorificSuffix)            show
-        . Shrubbery.branch @(Modifier Nickname)                   show
-        . Shrubbery.branch @(Modifier Username)                   show
-        . Shrubbery.branch @(Modifier NewPassword)                show
-        . Shrubbery.branch @(Modifier CurrentPassword)            show
-        . Shrubbery.branch @(Modifier OneTimeCode)                show
-        . Shrubbery.branch @(Modifier Email)                      show
-        . Shrubbery.branch @(Modifier InstantMessagingProtocol)   show
-        . Shrubbery.branch @(Modifier Telephone)                  show
-        . Shrubbery.branch @(Modifier TelephoneCountryCode)       show
-        . Shrubbery.branch @(Modifier TelephoneNational)          show
-        . Shrubbery.branch @(Modifier TelephoneAreaCode)          show
-        . Shrubbery.branch @(Modifier TelephoneLocal)             show
-        . Shrubbery.branch @(Modifier TelephoneLocalPrefix)       show
-        . Shrubbery.branch @(Modifier TelephoneLocalSuffix)       show
-        . Shrubbery.branch @(Modifier TelephoneExtension)         show
-        . Shrubbery.branch @(Modifier Organization)               show
-        . Shrubbery.branch @(Modifier OrganizationTitle)          show
-        . Shrubbery.branch @(Modifier StreetAddress)              show
-        . Shrubbery.branch @(Modifier AddressLine1)               show
-        . Shrubbery.branch @(Modifier AddressLine2)               show
-        . Shrubbery.branch @(Modifier AddressLine3)               show
-        . Shrubbery.branch @(Modifier AddressLevel4)              show
-        . Shrubbery.branch @(Modifier AddressLevel3)              show
-        . Shrubbery.branch @(Modifier AddressLevel2)              show
-        . Shrubbery.branch @(Modifier AddressLevel1)              show
-        . Shrubbery.branch @(Modifier Country)                    show
-        . Shrubbery.branch @(Modifier CountryName)                show
-        . Shrubbery.branch @(Modifier PostalCode)                 show
-        . Shrubbery.branch @(Modifier CreditCardFullName)         show
-        . Shrubbery.branch @(Modifier CreditCardGivenName)        show
-        . Shrubbery.branch @(Modifier CreditCardAdditionalName)   show
-        . Shrubbery.branch @(Modifier CreditCardFamilyName)       show
-        . Shrubbery.branch @(Modifier CreditCardNumber)           show
-        . Shrubbery.branch @(Modifier CreditCardExpiration)       show
-        . Shrubbery.branch @(Modifier CreditCardExpirationMonth)  show
-        . Shrubbery.branch @(Modifier CreditCardExpirationYear)   show
-        . Shrubbery.branch @(Modifier CreditCardSecurityCode)     show
-        . Shrubbery.branch @(Modifier CreditCardType)             show
-        . Shrubbery.branch @(Modifier TransactionCurrency)        show
-        . Shrubbery.branch @(Modifier TransactionAmount)          show
-        . Shrubbery.branch @(Modifier Birthday)                   show
-        . Shrubbery.branch @(Modifier BirthdayDay)                show
-        . Shrubbery.branch @(Modifier BirthdayMonth)              show
-        . Shrubbery.branch @(Modifier BirthdayYear)               show
-        . Shrubbery.branch @(Modifier Language)                   show
-        . Shrubbery.branch @(Modifier Sex)                        show
-        . Shrubbery.branch @(Modifier Url)                        show
-        . Shrubbery.branch @(Modifier Photo)                      show
-        . Shrubbery.branch @FullName                              show
-        . Shrubbery.branch @HonorificPrefix                       show
-        . Shrubbery.branch @GivenName                             show
-        . Shrubbery.branch @AdditionalName                        show
-        . Shrubbery.branch @FamilyName                            show
-        . Shrubbery.branch @HonorificSuffix                       show
-        . Shrubbery.branch @Nickname                              show
-        . Shrubbery.branch @Username                              show
-        . Shrubbery.branch @NewPassword                           show
-        . Shrubbery.branch @CurrentPassword                       show
-        . Shrubbery.branch @OneTimeCode                           show
-        . Shrubbery.branch @Email                                 show
-        . Shrubbery.branch @InstantMessagingProtocol              show
-        . Shrubbery.branch @Telephone                             show
-        . Shrubbery.branch @TelephoneCountryCode                  show
-        . Shrubbery.branch @TelephoneNational                     show
-        . Shrubbery.branch @TelephoneAreaCode                     show
-        . Shrubbery.branch @TelephoneLocal                        show
-        . Shrubbery.branch @TelephoneLocalPrefix                  show
-        . Shrubbery.branch @TelephoneLocalSuffix                  show
-        . Shrubbery.branch @TelephoneExtension                    show
-        . Shrubbery.branch @Organization                          show
-        . Shrubbery.branch @OrganizationTitle                     show
-        . Shrubbery.branch @StreetAddress                         show
-        . Shrubbery.branch @AddressLine1                          show
-        . Shrubbery.branch @AddressLine2                          show
-        . Shrubbery.branch @AddressLine3                          show
-        . Shrubbery.branch @AddressLevel4                         show
-        . Shrubbery.branch @AddressLevel3                         show
-        . Shrubbery.branch @AddressLevel2                         show
-        . Shrubbery.branch @AddressLevel1                         show
-        . Shrubbery.branch @Country                               show
-        . Shrubbery.branch @CountryName                           show
-        . Shrubbery.branch @PostalCode                            show
-        . Shrubbery.branch @CreditCardFullName                    show
-        . Shrubbery.branch @CreditCardGivenName                   show
-        . Shrubbery.branch @CreditCardAdditionalName              show
-        . Shrubbery.branch @CreditCardFamilyName                  show
-        . Shrubbery.branch @CreditCardNumber                      show
-        . Shrubbery.branch @CreditCardExpiration                  show
-        . Shrubbery.branch @CreditCardExpirationMonth             show
-        . Shrubbery.branch @CreditCardExpirationYear              show
-        . Shrubbery.branch @CreditCardSecurityCode                show
-        . Shrubbery.branch @CreditCardType                        show
-        . Shrubbery.branch @TransactionCurrency                   show
-        . Shrubbery.branch @TransactionAmount                     show
-        . Shrubbery.branch @Birthday                              show
-        . Shrubbery.branch @BirthdayDay                           show
-        . Shrubbery.branch @BirthdayMonth                         show
-        . Shrubbery.branch @BirthdayYear                          show
-        . Shrubbery.branch @Language                              show
-        . Shrubbery.branch @Sex                                   show
-        . Shrubbery.branch @Url                                   show
-        . Shrubbery.branch @Photo                                 show
-        $ Shrubbery.branchEnd
-    ) token
+    deriving (Eq, Show)
 
 type AutocompleteTokenTypes =
   [ OnOff
@@ -573,8 +459,8 @@ data Modifier token where
   Fax      :: ValidFax      token =>           token -> Modifier token
   Pager    :: ValidPager    token =>           token -> Modifier token
 
-instance Show token => Show (Modifier token) where
-  show = show
+deriving instance Eq token => Eq (Modifier token)
+deriving instance Show token => Show (Modifier token)
 
 type ValidSection token = Elem token SectionTypes ~ 'True
 

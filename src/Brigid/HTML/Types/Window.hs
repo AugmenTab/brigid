@@ -8,6 +8,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
 data Window = Window
+  deriving (Eq, Show)
 
 windowToBytes :: Window -> LBS.ByteString
 windowToBytes = const "window"

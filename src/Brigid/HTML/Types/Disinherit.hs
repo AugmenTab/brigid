@@ -47,7 +47,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 newtype Disinherit =
   Disinherit
     { unDisinherit :: Shrubbery.Union DisinheritTypes
-    }
+    } deriving (Eq, Show)
 
 type DisinheritTypes =
   [ DisinheritAll
@@ -80,6 +80,7 @@ disinheritToText =
   ) . unDisinherit
 
 data DisinheritAll = DisinheritAll
+  deriving (Eq, Show)
 
 disinheritAllToBytes :: DisinheritAll -> LBS.ByteString
 disinheritAllToBytes = const "*"
@@ -108,6 +109,7 @@ data InheritableHTMX
   | HxSync
   | HxTarget
   | HxVals
+  deriving (Bounded, Enum, Eq, Show)
 
 inheritableHTMXToBytes :: InheritableHTMX -> LBS.ByteString
 inheritableHTMXToBytes htmx =

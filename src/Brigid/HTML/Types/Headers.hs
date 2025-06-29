@@ -30,7 +30,9 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Brigid.Internal.Render qualified as Render
 import Brigid.Types.RawJavaScript qualified as JS
 
-newtype HtmxHeaders = HtmxHeaders (Shrubbery.Union HtmxHeadersTypes)
+newtype HtmxHeaders =
+  HtmxHeaders (Shrubbery.Union HtmxHeadersTypes)
+    deriving (Eq, Show)
 
 type HtmxHeadersTypes =
   [ RequestHeaders
@@ -111,7 +113,7 @@ data RequestHeaders =
  -- , hXTarget                    :: Maybe _
  -- , hXTriggerName               :: Maybe _
  -- , hXTrigger                   :: Maybe _
-    }
+    } deriving (Eq, Show)
 
 emptyRequestHeaders :: RequestHeaders
 emptyRequestHeaders =
@@ -209,7 +211,7 @@ data CustomRequestHeader =
   CustomRequestHeader
     { customRequestHeaderName  :: T.Text
     , customRequestHeaderValue :: T.Text
-    }
+    } deriving (Eq, Show)
 
 customRequestHeaderToBytes :: CustomRequestHeader -> LBS.ByteString
 customRequestHeaderToBytes header =

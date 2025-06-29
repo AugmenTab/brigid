@@ -134,7 +134,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 newtype Event =
   Event
     { unEvent :: Shrubbery.Union EventTypes
-    }
+    } deriving (Eq, Show)
 
 type EventTypes =
   [ HTMLEvent
@@ -234,6 +234,7 @@ data HTMLEvent
   | ProgressAbortEvent
   | ProgressLoadEvent
   | ProgressLoadEndEvent
+  deriving (Bounded, Enum, Eq, Show)
 
 htmlEventToBytes :: HTMLEvent -> LBS.ByteString
 htmlEventToBytes event =
@@ -340,6 +341,7 @@ data TouchEvent
   | TouchEnter
   | TouchLeave
   | TouchCancel
+  deriving (Bounded, Enum, Eq, Show)
 
 touchEventToBytes :: TouchEvent -> LBS.ByteString
 touchEventToBytes event =
@@ -404,6 +406,7 @@ data HtmxEvent
   | HtmxXHRLoadEnd
   | HtmxXHRLoadStart
   | HtmxXHRProgress
+  deriving (Bounded, Enum, Eq, Show)
 
 htmxEventToBytes :: HtmxEvent -> LBS.ByteString
 htmxEventToBytes event =
@@ -498,6 +501,7 @@ htmxEventToText event =
     HtmxXHRProgress           -> "xhr-progress"
 
 data TriggerLoad = TriggerLoad
+  deriving (Bounded, Enum, Eq, Show)
 
 triggerLoadToBytes :: TriggerLoad -> LBS.ByteString
 triggerLoadToBytes = const "load"
@@ -506,6 +510,7 @@ triggerLoadToText :: TriggerLoad -> T.Text
 triggerLoadToText = const "load"
 
 data TriggerRevealed = TriggerRevealed
+  deriving (Bounded, Enum, Eq, Show)
 
 triggerRevealedToBytes :: TriggerRevealed -> LBS.ByteString
 triggerRevealedToBytes = const "revealed"

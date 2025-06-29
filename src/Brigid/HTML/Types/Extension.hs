@@ -37,7 +37,7 @@ data Extension =
   Extension
     { extensionType :: ExtensionType
     , extensionIgnored :: Bool
-    }
+    } deriving (Eq, Show)
 
 mkExtension :: ExtensionType -> Extension
 mkExtension extType =
@@ -153,6 +153,7 @@ data ExtensionType
   | ServerSentEvents
   | WebSockets
   | CustomExtension T.Text
+  deriving (Eq, Show)
 
 extensionTypeToBytes :: ExtensionType -> LBS.ByteString
 extensionTypeToBytes ext =

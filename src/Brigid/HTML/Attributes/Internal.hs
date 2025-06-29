@@ -1,5 +1,7 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Brigid.HTML.Attributes.Internal
@@ -199,6 +201,7 @@ import Brigid.HTML.Attributes.Elements (ValidAttribute)
 import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
+import Brigid.Types.URL (eqRelativeURL)
 
 data Attribute (tag :: TagType) where
   -- No Attribute
@@ -576,7 +579,7 @@ data Attribute (tag :: TagType) where
 
   Attr_Href
     :: ValidAttribute 'Href tag
-    => Types.Href Types.Get
+    => Types.Href
     -> Attribute tag
 
   Attr_HrefLang
@@ -1007,6 +1010,187 @@ data Attribute (tag :: TagType) where
   Attr_HyperScript
     :: Types.HyperScript
     -> Attribute tag
+
+instance Eq (Attribute tag) where
+  attr1 == attr2 =
+    case (attr1, attr2) of
+      (Attr_NoAttribute, Attr_NoAttribute) -> True
+      (Attr_Custom d1 v1, Attr_Custom d2 v2) -> d1 == d2 && v1 == v2
+      (Attr_AccessKey a1, Attr_AccessKey a2) -> a1 == a2
+      (Attr_Autocapitalize a1, Attr_Autocapitalize a2) -> a1 == a2
+      (Attr_Autocorrect a1, Attr_Autocorrect a2) -> a1 == a2
+      (Attr_Autofocus a1, Attr_Autofocus a2) -> a1 == a2
+      (Attr_Class a1, Attr_Class a2) -> a1 == a2
+      (Attr_ContentEditable a1, Attr_ContentEditable a2) -> a1 == a2
+      (Attr_CustomData d1 v1, Attr_CustomData d2 v2) -> d1 == d2 && v1 == v2
+      (Attr_Dir a1, Attr_Dir a2) -> a1 == a2
+      (Attr_Draggable a1, Attr_Draggable a2) -> a1 == a2
+      (Attr_EnterKeyHint a1, Attr_EnterKeyHint a2) -> a1 == a2
+      (Attr_ExportParts a1, Attr_ExportParts a2) -> a1 == a2
+      (Attr_Hidden a1, Attr_Hidden a2) -> a1 == a2
+      (Attr_Id a1, Attr_Id a2) -> a1 == a2
+      (Attr_Inert a1, Attr_Inert a2) -> a1 == a2
+      (Attr_InputMode a1, Attr_InputMode a2) -> a1 == a2
+      (Attr_Is a1, Attr_Is a2) -> a1 == a2
+      (Attr_ItemId a1, Attr_ItemId a2) -> a1 == a2
+      (Attr_ItemProp a1, Attr_ItemProp a2) -> a1 == a2
+      (Attr_ItemRef a1, Attr_ItemRef a2) -> a1 == a2
+      (Attr_ItemScope, Attr_ItemScope) -> True
+      (Attr_ItemType a1, Attr_ItemType a2) -> a1 == a2
+      (Attr_Lang a1, Attr_Lang a2) -> a1 == a2
+      (Attr_Nonce a1, Attr_Nonce a2) -> a1 == a2
+      (Attr_Part a1, Attr_Part a2) -> a1 == a2
+      (Attr_Popover a1, Attr_Popover a2) -> a1 == a2
+      (Attr_Role a1, Attr_Role a2) -> a1 == a2
+      (Attr_Slot a1, Attr_Slot a2) -> a1 == a2
+      (Attr_Spellcheck a1, Attr_Spellcheck a2) -> a1 == a2
+      (Attr_Style a1, Attr_Style a2) -> a1 == a2
+      (Attr_TabIndex a1, Attr_TabIndex a2) -> a1 == a2
+      (Attr_Title a1, Attr_Title a2) -> a1 == a2
+      (Attr_Translate a1, Attr_Translate a2) -> a1 == a2
+      (Attr_WritingSuggestions a1, Attr_WritingSuggestions a2) -> a1 == a2
+      (Attr_Abbreviation a1, Attr_Abbreviation a2) -> a1 == a2
+      (Attr_Accept a1, Attr_Accept a2) -> a1 == a2
+      (Attr_AcceptCharset, Attr_AcceptCharset) -> True
+      (Attr_Action a1, Attr_Action a2) -> a1 == a2
+      (Attr_Allow a1, Attr_Allow a2) -> a1 == a2
+      (Attr_Alt a1, Attr_Alt a2) -> a1 == a2
+      (Attr_As a1, Attr_As a2) -> a1 == a2
+      (Attr_Async, Attr_Async) -> True
+      (Attr_Autocomplete a1, Attr_Autocomplete a2) -> a1 == a2
+      (Attr_Autoplay, Attr_Autoplay) -> True
+      (Attr_Blocking a1, Attr_Blocking a2) -> a1 == a2
+      (Attr_Capture a1, Attr_Capture a2) -> a1 == a2
+      (Attr_Charset, Attr_Charset) -> True
+      (Attr_Checked a1, Attr_Checked a2) -> a1 == a2
+      (Attr_Cite a1, Attr_Cite a2) -> a1 == a2
+      (Attr_Cols a1, Attr_Cols a2) -> a1 == a2
+      (Attr_Colspan a1, Attr_Colspan a2) -> a1 == a2
+      (Attr_Command a1, Attr_Command a2) -> a1 == a2
+      (Attr_CommandFor a1, Attr_CommandFor a2) -> a1 == a2
+      (Attr_Content a1, Attr_Content a2) -> a1 == a2
+      (Attr_Controls, Attr_Controls) -> True
+      (Attr_ControlsList a1, Attr_ControlsList a2) -> a1 == a2
+      (Attr_Coords a1, Attr_Coords a2) -> a1 == a2
+      (Attr_CrossOrigin a1, Attr_CrossOrigin a2) -> a1 == a2
+      (Attr_Data a1, Attr_Data a2) -> a1 == a2
+      (Attr_Datetime a1, Attr_Datetime a2) -> a1 == a2
+      (Attr_Decoding a1, Attr_Decoding a2) -> a1 == a2
+      (Attr_Default, Attr_Default) -> True
+      (Attr_Defer, Attr_Defer) -> True
+      (Attr_Dirname a1, Attr_Dirname a2) -> a1 == a2
+      (Attr_Disabled a1, Attr_Disabled a2) -> a1 == a2
+      (Attr_DisablePictureInPicture, Attr_DisablePictureInPicture) -> True
+      (Attr_DisableRemotePlayback, Attr_DisableRemotePlayback) -> True
+      (Attr_Download a1, Attr_Download a2) -> a1 == a2
+      (Attr_ElementTiming a1, Attr_ElementTiming a2) -> a1 == a2
+      (Attr_Enctype a1, Attr_Enctype a2) -> a1 == a2
+      (Attr_FetchPriority a1, Attr_FetchPriority a2) -> a1 == a2
+      (Attr_For a1, Attr_For a2) -> a1 == a2
+      (Attr_Form a1, Attr_Form a2) -> a1 == a2
+      (Attr_FormAction a1, Attr_FormAction a2) -> a1 == a2
+      (Attr_FormEnctype a1, Attr_FormEnctype a2) -> a1 == a2
+      (Attr_FormMethod a1, Attr_FormMethod a2) -> a1 == a2
+      (Attr_FormNoValidate, Attr_FormNoValidate) -> True
+      (Attr_FormTarget a1, Attr_FormTarget a2) -> a1 == a2
+      (Attr_Headers a1, Attr_Headers a2) -> a1 == a2
+      (Attr_Height a1, Attr_Height a2) -> a1 == a2
+      (Attr_High a1, Attr_High a2) -> a1 == a2
+      (Attr_Href a1, Attr_Href a2) -> a1 == a2
+      (Attr_HrefLang a1, Attr_HrefLang a2) -> a1 == a2
+      (Attr_HttpEquiv a1, Attr_HttpEquiv a2) -> a1 == a2
+      (Attr_ImageSizes a1, Attr_ImageSizes a2) -> a1 == a2
+      (Attr_ImageSrcset a1, Attr_ImageSrcset a2) -> a1 == a2
+      (Attr_Integrity e1 i1, Attr_Integrity e2 i2) -> e1 == e2 && i1 == i2
+      (Attr_IsMap, Attr_IsMap) -> True
+      (Attr_Kind a1, Attr_Kind a2) -> a1 == a2
+      (Attr_Label a1, Attr_Label a2) -> a1 == a2
+      (Attr_List a1, Attr_List a2) -> a1 == a2
+      (Attr_Loading a1, Attr_Loading a2) -> a1 == a2
+      (Attr_Loop, Attr_Loop) -> True
+      (Attr_Low a1, Attr_Low a2) -> a1 == a2
+      (Attr_Max a1, Attr_Max a2) -> a1 == a2
+      (Attr_MaxLength a1, Attr_MaxLength a2) -> a1 == a2
+      (Attr_Media a1, Attr_Media a2) -> a1 == a2
+      (Attr_Method a1, Attr_Method a2) -> a1 == a2
+      (Attr_Min a1, Attr_Min a2) -> a1 == a2
+      (Attr_MinLength a1, Attr_MinLength a2) -> a1 == a2
+      (Attr_Multiple, Attr_Multiple) -> True
+      (Attr_Muted a1, Attr_Muted a2) -> a1 == a2
+      (Attr_Name a1, Attr_Name a2) -> a1 == a2
+      (Attr_NoModule a1, Attr_NoModule a2) -> a1 == a2
+      (Attr_NoValidate a1, Attr_NoValidate a2) -> a1 == a2
+      (Attr_Open, Attr_Open) -> True
+      (Attr_Optimum a1, Attr_Optimum a2) -> a1 == a2
+      (Attr_Pattern a1, Attr_Pattern a2) -> a1 == a2
+      (Attr_Ping a1, Attr_Ping a2) -> a1 == a2
+      (Attr_Placeholder a1, Attr_Placeholder a2) -> a1 == a2
+      (Attr_PlaysInline a1, Attr_PlaysInline a2) -> a1 == a2
+      (Attr_PopoverTarget a1, Attr_PopoverTarget a2) -> a1 == a2
+      (Attr_PopoverTargetAction a1, Attr_PopoverTargetAction a2) -> a1 == a2
+      (Attr_Poster a1, Attr_Poster a2) -> a1 == a2
+      (Attr_Preload a1, Attr_Preload a2) -> a1 == a2
+      (Attr_ReadOnly, Attr_ReadOnly) -> True
+      (Attr_ReferrerPolicy a1, Attr_ReferrerPolicy a2) -> a1 == a2
+      (Attr_Rel a1, Attr_Rel a2) -> a1 == a2
+      (Attr_Required a1, Attr_Required a2) -> a1 == a2
+      (Attr_Reversed a1, Attr_Reversed a2) -> a1 == a2
+      (Attr_Rows a1, Attr_Rows a2) -> a1 == a2
+      (Attr_Rowspan a1, Attr_Rowspan a2) -> a1 == a2
+      (Attr_Sandbox a1, Attr_Sandbox a2) -> a1 == a2
+      (Attr_Scope a1, Attr_Scope a2) -> a1 == a2
+      (Attr_Selected a1, Attr_Selected a2) -> a1 == a2
+      (Attr_ShadowRootMode a1, Attr_ShadowRootMode a2) -> a1 == a2
+      (Attr_ShadowRootDelegatesFocus, Attr_ShadowRootDelegatesFocus) -> True
+      (Attr_ShadowRootClonable, Attr_ShadowRootClonable) -> True
+      (Attr_Shape a1, Attr_Shape a2) -> a1 == a2
+      (Attr_Size a1, Attr_Size a2) -> a1 == a2
+      (Attr_Sizes a1, Attr_Sizes a2) -> a1 == a2
+      (Attr_Span a1, Attr_Span a2) -> a1 == a2
+      (Attr_Src a1, Attr_Src a2) -> a1 == a2
+      (Attr_SrcDoc a1, Attr_SrcDoc a2) -> a1 == a2
+      (Attr_SrcLang a1, Attr_SrcLang a2) -> a1 == a2
+      (Attr_SrcSet a1, Attr_SrcSet a2) -> a1 == a2
+      (Attr_Start a1, Attr_Start a2) -> a1 == a2
+      (Attr_Step a1, Attr_Step a2) -> a1 == a2
+      (Attr_Target a1, Attr_Target a2) -> a1 == a2
+      (Attr_Type a1, Attr_Type a2) -> a1 == a2
+      (Attr_UseMap a1, Attr_UseMap a2) -> a1 == a2
+      (Attr_Value a1, Attr_Value a2) -> a1 == a2
+      (Attr_Width a1, Attr_Width a2) -> a1 == a2
+      (Attr_Wrap a1, Attr_Wrap a2) -> a1 == a2
+      (Attr_XMLNS a1, Attr_XMLNS a2) -> a1 == a2
+      (Attr_Htmx a1, Attr_Htmx a2) -> eqRelativeURL a1 a2
+      (Attr_HxBoost a1, Attr_HxBoost a2) -> a1 == a2
+      (Attr_HxConfirm a1, Attr_HxConfirm a2) -> a1 == a2
+      (Attr_HxDisable a1, Attr_HxDisable a2) -> a1 == a2
+      (Attr_HxDisabledElt a1, Attr_HxDisabledElt a2) -> a1 == a2
+      (Attr_HxDisinherit a1, Attr_HxDisinherit a2) -> a1 == a2
+      (Attr_HxEncoding, Attr_HxEncoding) -> True
+      (Attr_HxExt a1, Attr_HxExt a2) -> a1 == a2
+      (Attr_HxHeaders a1, Attr_HxHeaders a2) -> a1 == a2
+      (Attr_HxHistory, Attr_HxHistory) -> True
+      (Attr_HxHistoryElt, Attr_HxHistoryElt) -> True
+      (Attr_HxInclude a1, Attr_HxInclude a2) -> a1 == a2
+      (Attr_HxIndicator a1, Attr_HxIndicator a2) -> a1 == a2
+      (Attr_HxOn e1 t1, Attr_HxOn e2 t2) -> e1 == e2 && t1 == t2
+      (Attr_HxParams a1, Attr_HxParams a2) -> a1 == a2
+      (Attr_HxPreserve a1, Attr_HxPreserve a2) -> a1 == a2
+      (Attr_HxPrompt a1, Attr_HxPrompt a2) -> a1 == a2
+      (Attr_HxPushURL a1, Attr_HxPushURL a2) -> a1 == a2
+      (Attr_HxReplaceURL a1, Attr_HxReplaceURL a2) -> a1 == a2
+      (Attr_HxSelect a1, Attr_HxSelect a2) -> a1 == a2
+      (Attr_HxSelectOOB a1, Attr_HxSelectOOB a2) -> a1 == a2
+      (Attr_HxSwap a1, Attr_HxSwap a2) -> a1 == a2
+      (Attr_HxSwapOOB a1, Attr_HxSwapOOB a2) -> a1 == a2
+      (Attr_HxTarget a1, Attr_HxTarget a2) -> a1 == a2
+      (Attr_HxTrigger a1, Attr_HxTrigger a2) -> a1 == a2
+      (Attr_HxValidate, Attr_HxValidate) -> True
+      (Attr_HxVals a1, Attr_HxVals a2) -> a1 == a2
+      (Attr_HyperScript a1, Attr_HyperScript a2) -> a1 == a2
+      (_a1, _a2) -> False
+
+deriving instance Show (Attribute tag)
 
 attributeText :: Attribute tag -> T.Text
 attributeText attr =

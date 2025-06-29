@@ -25,29 +25,9 @@ import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
 import Brigid.Types.Method (Get, Post)
 import Brigid.Types.URL qualified as URL
 
-newtype Value = Value (Shrubbery.Union ValueTypes)
-
-instance Show Value where
-  show (Value value) =
-    ( Shrubbery.dissect
-        . Shrubbery.branchBuild
-        . Shrubbery.branch @HexColor               show
-        . Shrubbery.branch @BTime.Date             show
-        . Shrubbery.branch @BTime.DatetimeLocal    show
-        . Shrubbery.branch @EmailAddress           show
-        . Shrubbery.branch @Integer                show
-        . Shrubbery.branch @BTime.Month            show
-        . Shrubbery.branch @Number                 show
-        . Shrubbery.branch @PhoneNumber            show
-        . Shrubbery.branch @T.Text                 T.unpack
-        . Shrubbery.branch @BTime.Time             show
-        . Shrubbery.branch @URL.AbsoluteURL        show
-        . Shrubbery.branch @(URL.RelativeURL Get)  show
-        . Shrubbery.branch @(URL.RelativeURL Post) show
-        . Shrubbery.branch @URL.RawURL             show
-        . Shrubbery.branch @BTime.Week             show
-        $ Shrubbery.branchEnd
-    ) value
+newtype Value =
+  Value (Shrubbery.Union ValueTypes)
+    deriving (Eq, Show)
 
 type ValueTypes =
   [ HexColor

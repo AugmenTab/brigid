@@ -417,7 +417,7 @@ high :: ValidAttribute AttributeTags.High tag => Types.Number -> Attribute tag
 high = Attr_High
 
 href :: ( KnownNat branchIndex
-        , branchIndex ~ FirstIndexOf href (Types.HrefTypes Types.Get)
+        , branchIndex ~ FirstIndexOf href Types.HrefTypes
         , ValidHref href tag
         , ValidAttribute AttributeTags.Href tag
         )
