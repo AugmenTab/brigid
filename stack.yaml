@@ -43,7 +43,7 @@ extra-deps:
 - non-empty-text-0.2.0@sha256:7d1c1f9a11c78c00c656269f940d2fcccd3c2eaf6b619f66bb83a9ea72decc1f,2438
 # Ogma
 - github: AugmenTab/ogma
-  commit: 0776fd8d004d6c4a491032fd12dc433031372a2c
+  commit: bc99dd49b1783a8fad784ca40d4d273c132f8008
 # Shrubbery
 - github: flipstone/shrubbery
   commit: 40a2bbe88ac99ec6fbad7a40e331a1f624e70850

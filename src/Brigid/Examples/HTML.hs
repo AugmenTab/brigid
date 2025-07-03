@@ -16,7 +16,6 @@ import Data.Coerce (coerce)
 import Data.List qualified as L
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.List.NonEmpty qualified as NEL
-import Data.Maybe (fromMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Ratio ((%))
 import Data.Text qualified as T
@@ -368,13 +367,13 @@ transparencyExample =
               ]
         [ E.track [ A.default_
                   , A.label
-                      . fromMaybe (Ogma.bcp_47LanguageToText english)
-                      $ Ogma.bcp_47EndonymToText english
+                      . Ogma.languageToNameText
+                      $ Ogma.bcp_47Language english
                   , A.srclang english
                   ]
         , E.track [ A.label
-                      . fromMaybe (Ogma.bcp_47LanguageToText irish)
-                      $ Ogma.bcp_47EndonymToText irish
+                      . Ogma.languageToNameText
+                      $ Ogma.bcp_47Language irish
                   , A.srclang irish
                   , A.kind HTML.Metadata
                   ]
