@@ -8,6 +8,7 @@ module Brigid.HTML.Attributes.Internal
   ( Attribute
       ( Attr_NoAttribute
       , Attr_Custom
+      , Attr_CustomBoolean
       , Attr_AccessKey
       , Attr_Autocapitalize
       , Attr_Autocorrect
@@ -209,11 +210,16 @@ data Attribute (tag :: TagType) where
   Attr_NoAttribute
     :: Attribute tag
 
-  -- Custom Attribute
+  -- Custom Attributes
   --
   Attr_Custom
     :: T.Text
     -> T.Text
+    -> Attribute tag
+
+  Attr_CustomBoolean
+    :: T.Text
+    -> Bool
     -> Attribute tag
 
   -- Global Attributes
@@ -1016,6 +1022,7 @@ instance Eq (Attribute tag) where
     case (attr1, attr2) of
       (Attr_NoAttribute, Attr_NoAttribute) -> True
       (Attr_Custom d1 v1, Attr_Custom d2 v2) -> d1 == d2 && v1 == v2
+      (Attr_CustomBoolean d1 v1, Attr_CustomBoolean d2 v2) -> d1 == d2 && v1 == v2
       (Attr_AccessKey a1, Attr_AccessKey a2) -> a1 == a2
       (Attr_Autocapitalize a1, Attr_Autocapitalize a2) -> a1 == a2
       (Attr_Autocorrect a1, Attr_Autocorrect a2) -> a1 == a2
@@ -1199,6 +1206,9 @@ attributeText attr =
       "no_attribute"
 
     Attr_Custom name _value ->
+      name
+
+    Attr_CustomBoolean name _value ->
       name
 
     -- Global Attributes

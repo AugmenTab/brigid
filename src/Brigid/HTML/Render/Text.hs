@@ -527,6 +527,9 @@ renderAttribute attr =
           ("data-" <> data_)
           (Escape.attributeText value)
 
+    Attr_CustomBoolean name value ->
+      buildBooleanAttribute name value
+
     Attr_Dir directionality ->
       Just
         . buildAttribute "dir"

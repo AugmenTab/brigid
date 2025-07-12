@@ -510,6 +510,9 @@ renderAttribute attr =
           (Render.textToLazyBytes name)
           (Render.textToLazyBytes $ Escape.attributeText value)
 
+    Attr_CustomBoolean name value ->
+      buildBooleanAttribute (Render.textToLazyBytes name) value
+
     Attr_AccessKey key ->
       Just . buildAttribute "accesskey" $ Escape.attributeCharBytes key
 

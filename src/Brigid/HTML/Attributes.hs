@@ -2,6 +2,7 @@ module Brigid.HTML.Attributes
   ( Attribute
   , noAttribute
   , customAttribute
+  , customBooleanAttribute
   , module Global
   , module Scoped
   , module HTMX
@@ -21,3 +22,6 @@ noAttribute = Attr_NoAttribute
 
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
+
+customBooleanAttribute :: T.Text -> Bool -> Attribute tag
+customBooleanAttribute = Attr_CustomBoolean

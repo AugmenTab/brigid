@@ -132,6 +132,7 @@ module Brigid.HTML.Types.QuerySelector
   , attributeSelectorToBytes
   , attributeSelectorToText
   , attr_custom
+  , attr_customBoolean
   , attr_accesskey
   , attr_autocapitalize
   , attr_autocorrect
@@ -2644,6 +2645,10 @@ attributeTypeToText attr =
 attr_custom :: T.Text -> T.Text -> AttributeSelector
 attr_custom attrName val =
   (Attr_CustomAttribute attrName, Just val)
+
+attr_customBoolean :: T.Text -> AttributeSelector
+attr_customBoolean attrName =
+  (Attr_CustomAttribute attrName, Nothing)
 
 -- Global Attributes
 --
