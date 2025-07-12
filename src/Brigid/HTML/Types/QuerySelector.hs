@@ -128,6 +128,63 @@ module Brigid.HTML.Types.QuerySelector
   , tag_var
   , tag_video
   , tag_wbr
+  , tag_animate
+  , tag_animateMotion
+  , tag_animateTransform
+  , tag_circle
+  , tag_clipPath
+  , tag_defs
+  , tag_desc
+  , tag_ellipse
+  , tag_feBlend
+  , tag_feColorMatrix
+  , tag_feComponentTransfer
+  , tag_feComposite
+  , tag_feConvolveMatrix
+  , tag_feDiffuseLighting
+  , tag_feDisplacementMap
+  , tag_feDistantLight
+  , tag_feDropShadow
+  , tag_feFlood
+  , tag_feFuncA
+  , tag_feFuncB
+  , tag_feFuncG
+  , tag_feFuncR
+  , tag_feGaussianBlur
+  , tag_feImage
+  , tag_feMerge
+  , tag_feMergeNode
+  , tag_feMorphology
+  , tag_feOffset
+  , tag_fePointLight
+  , tag_feSpecularLighting
+  , tag_feSpotLight
+  , tag_feTile
+  , tag_feTurbulence
+  , tag_filter
+  , tag_foreignObject
+  , tag_g
+  , tag_line
+  , tag_linearGradient
+  , tag_marker
+  , tag_mask
+  , tag_metadata
+  , tag_mpath
+  , tag_path
+  , tag_pattern
+  , tag_polygon
+  , tag_polyline
+  , tag_radialGradient
+  , tag_rect
+  , tag_set
+  , tag_stop
+  , tag_svg
+  , tag_switch
+  , tag_symbol
+  , tag_textPath
+  , tag_tspan
+  , tag_use
+  , tag_view
   , AttributeSelector
   , attributeSelectorToBytes
   , attributeSelectorToText
@@ -1461,6 +1518,328 @@ tag_wbr :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
 tag_wbr mbAttr classes =
   ElementSelector Tag_WordBreakOpportunity mbAttr classes Nothing
 
+tag_animate :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_animate mbAttr classes =
+  ElementSelector Tag_Animate mbAttr classes Nothing
+
+tag_animateMotion :: Maybe AttributeSelector
+                  -> [CS.ClassSelector]
+                  -> ElementSelector
+tag_animateMotion mbAttr classes =
+  ElementSelector Tag_AnimateMotion mbAttr classes Nothing
+
+tag_animateTransform :: Maybe AttributeSelector
+                     -> [CS.ClassSelector]
+                     -> ElementSelector
+tag_animateTransform mbAttr classes =
+  ElementSelector Tag_AnimateTransform mbAttr classes Nothing
+
+tag_circle :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_circle mbAttr classes =
+  ElementSelector Tag_Circle mbAttr classes Nothing
+
+tag_clipPath :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_clipPath = ElementSelector Tag_ClipPath
+
+tag_defs :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_defs = ElementSelector Tag_Definitions
+
+tag_desc :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_desc = ElementSelector Tag_Description
+
+tag_ellipse :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_ellipse mbAttr classes =
+  ElementSelector Tag_Ellipse mbAttr classes Nothing
+
+tag_feBlend :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feBlend = ElementSelector Tag_FilterEffectBlend
+
+tag_feColorMatrix :: Maybe AttributeSelector
+                  -> [CS.ClassSelector]
+                  -> Maybe ElementSelector
+                  -> ElementSelector
+tag_feColorMatrix = ElementSelector Tag_FilterEffectColorMatrix
+
+tag_feComponentTransfer :: Maybe AttributeSelector
+                        -> [CS.ClassSelector]
+                        -> Maybe ElementSelector
+                        -> ElementSelector
+tag_feComponentTransfer = ElementSelector Tag_FilterEffectComponentTransfer
+
+tag_feComposite :: Maybe AttributeSelector
+                -> [CS.ClassSelector]
+                -> Maybe ElementSelector
+                -> ElementSelector
+tag_feComposite = ElementSelector Tag_FilterEffectComposite
+
+tag_feConvolveMatrix :: Maybe AttributeSelector
+                     -> [CS.ClassSelector]
+                     -> Maybe ElementSelector
+                     -> ElementSelector
+tag_feConvolveMatrix = ElementSelector Tag_FilterEffectConvolveMatrix
+
+tag_feDiffuseLighting :: Maybe AttributeSelector
+                      -> [CS.ClassSelector]
+                      -> Maybe ElementSelector
+                      -> ElementSelector
+tag_feDiffuseLighting = ElementSelector Tag_FilterEffectDiffuseLighting
+
+tag_feDisplacementMap :: Maybe AttributeSelector
+                      -> [CS.ClassSelector]
+                      -> Maybe ElementSelector
+                      -> ElementSelector
+tag_feDisplacementMap = ElementSelector Tag_FilterEffectDisplacementMap
+
+tag_feDistantLight :: Maybe AttributeSelector
+                   -> [CS.ClassSelector]
+                   -> Maybe ElementSelector
+                   -> ElementSelector
+tag_feDistantLight = ElementSelector Tag_FilterEffectDistantLight
+
+tag_feDropShadow :: Maybe AttributeSelector
+                 -> [CS.ClassSelector]
+                 -> Maybe ElementSelector
+                 -> ElementSelector
+tag_feDropShadow = ElementSelector Tag_FilterEffectDropShadow
+
+tag_feFlood :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feFlood = ElementSelector Tag_FilterEffectFlood
+
+tag_feFuncA :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feFuncA = ElementSelector Tag_FilterEffectFuncA
+
+tag_feFuncB :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feFuncB = ElementSelector Tag_FilterEffectFuncB
+
+tag_feFuncG :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feFuncG = ElementSelector Tag_FilterEffectFuncG
+
+tag_feFuncR :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feFuncR = ElementSelector Tag_FilterEffectFuncR
+
+tag_feGaussianBlur :: Maybe AttributeSelector
+                   -> [CS.ClassSelector]
+                   -> Maybe ElementSelector
+                   -> ElementSelector
+tag_feGaussianBlur = ElementSelector Tag_FilterEffectGaussianBlur
+
+tag_feImage :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feImage = ElementSelector Tag_FilterEffectImage
+
+tag_feMerge :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_feMerge = ElementSelector Tag_FilterEffectMerge
+
+tag_feMergeNode :: Maybe AttributeSelector
+                -> [CS.ClassSelector]
+                -> Maybe ElementSelector
+                -> ElementSelector
+tag_feMergeNode = ElementSelector Tag_FilterEffectMergeNode
+
+tag_feMorphology :: Maybe AttributeSelector
+                 -> [CS.ClassSelector]
+                 -> Maybe ElementSelector
+                 -> ElementSelector
+tag_feMorphology = ElementSelector Tag_FilterEffectMorphology
+
+tag_feOffset :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_feOffset = ElementSelector Tag_FilterEffectOffset
+
+tag_fePointLight :: Maybe AttributeSelector
+                 -> [CS.ClassSelector]
+                 -> Maybe ElementSelector
+                 -> ElementSelector
+tag_fePointLight = ElementSelector Tag_FilterEffectPointLight
+
+tag_feSpecularLighting :: Maybe AttributeSelector
+                       -> [CS.ClassSelector]
+                       -> Maybe ElementSelector
+                       -> ElementSelector
+tag_feSpecularLighting = ElementSelector Tag_FilterEffectSpecularLighting
+
+tag_feSpotLight :: Maybe AttributeSelector
+                -> [CS.ClassSelector]
+                -> Maybe ElementSelector
+                -> ElementSelector
+tag_feSpotLight = ElementSelector Tag_FilterEffectSpotLight
+
+tag_feTile :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_feTile = ElementSelector Tag_FilterEffectTile
+
+tag_feTurbulence :: Maybe AttributeSelector
+                 -> [CS.ClassSelector]
+                 -> Maybe ElementSelector
+                 -> ElementSelector
+tag_feTurbulence = ElementSelector Tag_FilterEffectTurbulence
+
+tag_filter :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_filter = ElementSelector Tag_Filter
+
+tag_foreignObject :: Maybe AttributeSelector
+                  -> [CS.ClassSelector]
+                  -> Maybe ElementSelector
+                  -> ElementSelector
+tag_foreignObject = ElementSelector Tag_ForeignObject
+
+tag_g :: Maybe AttributeSelector
+      -> [CS.ClassSelector]
+      -> Maybe ElementSelector
+      -> ElementSelector
+tag_g = ElementSelector Tag_Group
+
+tag_line :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_line mbAttr classes =
+  ElementSelector Tag_Line mbAttr classes Nothing
+
+tag_linearGradient :: Maybe AttributeSelector
+                   -> [CS.ClassSelector]
+                   -> Maybe ElementSelector
+                   -> ElementSelector
+tag_linearGradient = ElementSelector Tag_LinearGradient
+
+tag_marker :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_marker = ElementSelector Tag_Marker
+
+tag_mask :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_mask = ElementSelector Tag_Mask
+
+tag_metadata :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_metadata = ElementSelector Tag_Metadata
+
+tag_mpath :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_mpath mbAttr classes =
+  ElementSelector Tag_MotionPath mbAttr classes Nothing
+
+tag_path :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_path mbAttr classes =
+  ElementSelector Tag_Path mbAttr classes Nothing
+
+tag_pattern :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_pattern = ElementSelector Tag_Pattern
+
+tag_polygon :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_polygon = ElementSelector Tag_Polygon
+
+tag_polyline :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_polyline = ElementSelector Tag_Polyline
+
+tag_radialGradient :: Maybe AttributeSelector
+                   -> [CS.ClassSelector]
+                   -> Maybe ElementSelector
+                   -> ElementSelector
+tag_radialGradient = ElementSelector Tag_RadialGradient
+
+tag_rect :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_rect mbAttr classes =
+  ElementSelector Tag_Rectangle mbAttr classes Nothing
+
+tag_set :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_set mbAttr classes =
+  ElementSelector Tag_Set mbAttr classes Nothing
+
+tag_stop :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_stop mbAttr classes =
+  ElementSelector Tag_Stop mbAttr classes Nothing
+
+tag_svg :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_svg = ElementSelector Tag_SVG
+
+tag_switch :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_switch = ElementSelector Tag_Switch
+
+tag_symbol :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_symbol = ElementSelector Tag_Symbol
+
+tag_textPath :: Maybe AttributeSelector
+             -> [CS.ClassSelector]
+             -> Maybe ElementSelector
+             -> ElementSelector
+tag_textPath = ElementSelector Tag_TextPath
+
+tag_tspan :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_tspan = ElementSelector Tag_TextSpan
+
+tag_use :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
+tag_use mbAttr classes =
+  ElementSelector Tag_Use mbAttr classes Nothing
+
+tag_view :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_view = ElementSelector Tag_View
+
 data ElementType
   = Tag_CustomElement T.Text
   | Tag_Anchor
@@ -1575,6 +1954,63 @@ data ElementType
   | Tag_Variable
   | Tag_Video
   | Tag_WordBreakOpportunity
+  | Tag_Animate
+  | Tag_AnimateMotion
+  | Tag_AnimateTransform
+  | Tag_Circle
+  | Tag_ClipPath
+  | Tag_Definitions
+  | Tag_Description
+  | Tag_Ellipse
+  | Tag_FilterEffectBlend
+  | Tag_FilterEffectColorMatrix
+  | Tag_FilterEffectComponentTransfer
+  | Tag_FilterEffectComposite
+  | Tag_FilterEffectConvolveMatrix
+  | Tag_FilterEffectDiffuseLighting
+  | Tag_FilterEffectDisplacementMap
+  | Tag_FilterEffectDistantLight
+  | Tag_FilterEffectDropShadow
+  | Tag_FilterEffectFlood
+  | Tag_FilterEffectFuncA
+  | Tag_FilterEffectFuncB
+  | Tag_FilterEffectFuncG
+  | Tag_FilterEffectFuncR
+  | Tag_FilterEffectGaussianBlur
+  | Tag_FilterEffectImage
+  | Tag_FilterEffectMerge
+  | Tag_FilterEffectMergeNode
+  | Tag_FilterEffectMorphology
+  | Tag_FilterEffectOffset
+  | Tag_FilterEffectPointLight
+  | Tag_FilterEffectSpecularLighting
+  | Tag_FilterEffectSpotLight
+  | Tag_FilterEffectTile
+  | Tag_FilterEffectTurbulence
+  | Tag_Filter
+  | Tag_ForeignObject
+  | Tag_Group
+  | Tag_Line
+  | Tag_LinearGradient
+  | Tag_Marker
+  | Tag_Mask
+  | Tag_Metadata
+  | Tag_MotionPath
+  | Tag_Path
+  | Tag_Pattern
+  | Tag_Polygon
+  | Tag_Polyline
+  | Tag_RadialGradient
+  | Tag_Rectangle
+  | Tag_Set
+  | Tag_Stop
+  | Tag_SVG
+  | Tag_Switch
+  | Tag_Symbol
+  | Tag_TextPath
+  | Tag_TextSpan
+  | Tag_Use
+  | Tag_View
   deriving (Eq, Show.Show)
 
 elementTypeToBytes :: ElementType -> LBS.ByteString
@@ -1694,6 +2130,64 @@ elementTypeToBytes element =
     Tag_Video                  -> "video"
     Tag_WordBreakOpportunity   -> "wbr"
 
+    Tag_Animate                       -> "animate"
+    Tag_AnimateMotion                 -> "animateMotion"
+    Tag_AnimateTransform              -> "animateTransform"
+    Tag_Circle                        -> "circle"
+    Tag_ClipPath                      -> "clipPath"
+    Tag_Definitions                   -> "defs"
+    Tag_Description                   -> "desc"
+    Tag_Ellipse                       -> "ellipse"
+    Tag_FilterEffectBlend             -> "feBlend"
+    Tag_FilterEffectColorMatrix       -> "feColorMatrix"
+    Tag_FilterEffectComponentTransfer -> "feComponentTransfer"
+    Tag_FilterEffectComposite         -> "feComposite"
+    Tag_FilterEffectConvolveMatrix    -> "feConvolveMatrix"
+    Tag_FilterEffectDiffuseLighting   -> "feDiffuseLighting"
+    Tag_FilterEffectDisplacementMap   -> "feDisplacementMap"
+    Tag_FilterEffectDistantLight      -> "feDistantLight"
+    Tag_FilterEffectDropShadow        -> "feDropShadow"
+    Tag_FilterEffectFlood             -> "feFlood"
+    Tag_FilterEffectFuncA             -> "feFuncA"
+    Tag_FilterEffectFuncB             -> "feFuncB"
+    Tag_FilterEffectFuncG             -> "feFuncG"
+    Tag_FilterEffectFuncR             -> "feFuncR"
+    Tag_FilterEffectGaussianBlur      -> "feGaussianBlur"
+    Tag_FilterEffectImage             -> "feImage"
+    Tag_FilterEffectMerge             -> "feMerge"
+    Tag_FilterEffectMergeNode         -> "feMergeNode"
+    Tag_FilterEffectMorphology        -> "feMorphology"
+    Tag_FilterEffectOffset            -> "feOffset"
+    Tag_FilterEffectPointLight        -> "fePointLight"
+    Tag_FilterEffectSpecularLighting  -> "feSpecularLighting"
+    Tag_FilterEffectSpotLight         -> "feSpotLight"
+    Tag_FilterEffectTile              -> "feTile"
+    Tag_FilterEffectTurbulence        -> "feTurbulence"
+    Tag_Filter                        -> "filter"
+    Tag_ForeignObject                 -> "foreignObject"
+    Tag_Group                         -> "g"
+    Tag_Line                          -> "line"
+    Tag_LinearGradient                -> "linearGradient"
+    Tag_Marker                        -> "marker"
+    Tag_Mask                          -> "mask"
+    Tag_Metadata                      -> "metadata"
+    Tag_MotionPath                    -> "mpath"
+    Tag_Path                          -> "path"
+    Tag_Pattern                       -> "pattern"
+    Tag_Polygon                       -> "polygon"
+    Tag_Polyline                      -> "polyline"
+    Tag_RadialGradient                -> "radialGradient"
+    Tag_Rectangle                     -> "rect"
+    Tag_Set                           -> "set"
+    Tag_Stop                          -> "stop"
+    Tag_SVG                           -> "svg"
+    Tag_Switch                        -> "switch"
+    Tag_Symbol                        -> "symbol"
+    Tag_TextPath                      -> "textPath"
+    Tag_TextSpan                      -> "tspan"
+    Tag_Use                           -> "use"
+    Tag_View                          -> "view"
+
 elementTypeToText :: ElementType -> T.Text
 elementTypeToText element =
   case element of
@@ -1810,6 +2304,64 @@ elementTypeToText element =
     Tag_Variable               -> "var"
     Tag_Video                  -> "video"
     Tag_WordBreakOpportunity   -> "wbr"
+
+    Tag_Animate                       -> "animate"
+    Tag_AnimateMotion                 -> "animateMotion"
+    Tag_AnimateTransform              -> "animateTransform"
+    Tag_Circle                        -> "circle"
+    Tag_ClipPath                      -> "clipPath"
+    Tag_Definitions                   -> "defs"
+    Tag_Description                   -> "desc"
+    Tag_Ellipse                       -> "ellipse"
+    Tag_FilterEffectBlend             -> "feBlend"
+    Tag_FilterEffectColorMatrix       -> "feColorMatrix"
+    Tag_FilterEffectComponentTransfer -> "feComponentTransfer"
+    Tag_FilterEffectComposite         -> "feComposite"
+    Tag_FilterEffectConvolveMatrix    -> "feConvolveMatrix"
+    Tag_FilterEffectDiffuseLighting   -> "feDiffuseLighting"
+    Tag_FilterEffectDisplacementMap   -> "feDisplacementMap"
+    Tag_FilterEffectDistantLight      -> "feDistantLight"
+    Tag_FilterEffectDropShadow        -> "feDropShadow"
+    Tag_FilterEffectFlood             -> "feFlood"
+    Tag_FilterEffectFuncA             -> "feFuncA"
+    Tag_FilterEffectFuncB             -> "feFuncB"
+    Tag_FilterEffectFuncG             -> "feFuncG"
+    Tag_FilterEffectFuncR             -> "feFuncR"
+    Tag_FilterEffectGaussianBlur      -> "feGaussianBlur"
+    Tag_FilterEffectImage             -> "feImage"
+    Tag_FilterEffectMerge             -> "feMerge"
+    Tag_FilterEffectMergeNode         -> "feMergeNode"
+    Tag_FilterEffectMorphology        -> "feMorphology"
+    Tag_FilterEffectOffset            -> "feOffset"
+    Tag_FilterEffectPointLight        -> "fePointLight"
+    Tag_FilterEffectSpecularLighting  -> "feSpecularLighting"
+    Tag_FilterEffectSpotLight         -> "feSpotLight"
+    Tag_FilterEffectTile              -> "feTile"
+    Tag_FilterEffectTurbulence        -> "feTurbulence"
+    Tag_Filter                        -> "filter"
+    Tag_ForeignObject                 -> "foreignObject"
+    Tag_Group                         -> "g"
+    Tag_Line                          -> "line"
+    Tag_LinearGradient                -> "linearGradient"
+    Tag_Marker                        -> "marker"
+    Tag_Mask                          -> "mask"
+    Tag_Metadata                      -> "metadata"
+    Tag_MotionPath                    -> "mpath"
+    Tag_Path                          -> "path"
+    Tag_Pattern                       -> "pattern"
+    Tag_Polygon                       -> "polygon"
+    Tag_Polyline                      -> "polyline"
+    Tag_RadialGradient                -> "radialGradient"
+    Tag_Rectangle                     -> "rect"
+    Tag_Set                           -> "set"
+    Tag_Stop                          -> "stop"
+    Tag_SVG                           -> "svg"
+    Tag_Switch                        -> "switch"
+    Tag_Symbol                        -> "symbol"
+    Tag_TextPath                      -> "textPath"
+    Tag_TextSpan                      -> "tspan"
+    Tag_Use                           -> "use"
+    Tag_View                          -> "view"
 
 type AttributeSelector = (AttributeType, Maybe T.Text)
 

@@ -43,6 +43,23 @@ module Brigid.HTML.Elements.TagGroups
   , TableCells
   , TableRowContent
 
+  , SVG_AnimationElements
+  , SVG_BasicShapes
+  , SVG_ContainerElements
+  , SVG_DescriptiveElements
+  , SVG_FilterPrimitiveElements
+  , SVG_GradientElements
+  , SVG_GraphicsElements
+  , SVG_LightSourceElements
+  , SVG_NeverRenderedElements
+  , SVG_PaintServerElements
+  , SVG_RenderableElements
+  , SVG_ShapeElements
+  , SVG_StructuralElements
+  , SVG_TextContentElements
+  , SVG_TextContentChildElements
+  , SVG_UncategorizedElements
+
   , AltTags
   , AutocompletableTags
   , BlockingTags
@@ -721,6 +738,171 @@ type TableRowContent =
   Union
     TableCells
     ScriptSupportingContent
+
+-- SVG Tag Groups
+--
+
+type SVG_AnimationElements =
+  [ 'Animate
+  , 'AnimateMotion
+  , 'AnimateTransform
+  , 'MotionPath
+  , 'Set
+  ]
+
+type SVG_BasicShapes =
+  [ 'Circle
+  , 'Ellipse
+  , 'Line
+  , 'Polygon
+  , 'Polyline
+  , 'Rectangle
+  ]
+
+type SVG_ContainerElements =
+  -- [ 'Anchor
+  [ 'Definitions
+  , 'Group
+  , 'Marker
+  , 'Mask
+  , 'Pattern
+  , 'SVG
+  , 'Switch
+  , 'Symbol
+  ]
+
+type SVG_DescriptiveElements =
+  [ 'Description
+  , 'Metadata
+  -- , 'Title
+  ]
+
+type SVG_FilterPrimitiveElements =
+  [ 'FilterEffectBlend
+  , 'FilterEffectColorMatrix
+  , 'FilterEffectComponentTransfer
+  , 'FilterEffectComposite
+  , 'FilterEffectConvolveMatrix
+  , 'FilterEffectDiffuseLighting
+  , 'FilterEffectDisplacementMap
+  , 'FilterEffectDropShadow
+  , 'FilterEffectFlood
+  , 'FilterEffectFuncA
+  , 'FilterEffectFuncB
+  , 'FilterEffectFuncG
+  , 'FilterEffectFuncR
+  , 'FilterEffectGaussianBlur
+  , 'FilterEffectImage
+  , 'FilterEffectMerge
+  , 'FilterEffectMergeNode
+  , 'FilterEffectMorphology
+  , 'FilterEffectOffset
+  , 'FilterEffectSpecularLighting
+  , 'FilterEffectTile
+  , 'FilterEffectTurbulence
+  ]
+
+type SVG_GradientElements =
+  [ 'LinearGradient
+  , 'RadialGradient
+  , 'Stop
+  ]
+
+type SVG_GraphicsElements =
+  [ 'Circle
+  , 'Ellipse
+  -- 'Image
+  , 'Line
+  , 'Path
+  , 'Polygon
+  , 'Polyline
+  , 'Rectangle
+  -- , 'Text
+  , 'Use
+  ]
+
+type SVG_LightSourceElements =
+  [ 'FilterEffectDistantLight
+  , 'FilterEffectPointLight
+  , 'FilterEffectSpotLight
+  ]
+
+type SVG_NeverRenderedElements =
+  [ 'ClipPath
+  , 'Definitions
+  , 'LinearGradient
+  , 'Marker
+  , 'Mask
+  , 'Metadata
+  , 'Pattern
+  , 'RadialGradient
+  -- 'Script
+  -- 'Style
+  , 'Symbol
+  -- 'Title
+  ]
+
+type SVG_PaintServerElements =
+  [ 'LinearGradient
+  , 'Pattern
+  , 'RadialGradient
+  ]
+
+type SVG_RenderableElements =
+  -- 'Anchor
+  [ 'Circle
+  , 'Ellipse
+  , 'ForeignObject
+  , 'Group
+  -- 'Image
+  , 'Line
+  , 'Path
+  , 'Polygon
+  , 'Polyline
+  , 'Rectangle
+  , 'SVG
+  , 'Switch
+  -- 'Symbol
+  , 'TextPath
+  , 'TextSpan
+  , 'Use
+  ]
+
+type SVG_ShapeElements =
+  [ 'Circle
+  , 'Ellipse
+  , 'Line
+  , 'Path
+  , 'Polygon
+  , 'Polyline
+  , 'Rectangle
+  ]
+
+type SVG_StructuralElements =
+  [ 'Definitions
+  , 'Group
+  , 'SVG
+  , 'Symbol
+  , 'Use
+  ]
+
+type SVG_TextContentElements =
+  -- Add 'Text SVG_TextContentChildElements
+  SVG_TextContentChildElements
+
+type SVG_TextContentChildElements =
+  [ 'TextPath
+  , 'TextSpan
+  ]
+
+type SVG_UncategorizedElements =
+  [ 'ClipPath
+  , 'Filter
+  , 'ForeignObject
+  -- Script
+  -- Style
+  , 'View
+  ]
 
 -- Attribute-Focused Tag Groups
 --

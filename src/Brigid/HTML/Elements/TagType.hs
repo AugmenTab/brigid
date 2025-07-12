@@ -144,6 +144,64 @@ module Brigid.HTML.Elements.TagType
       , Variable
       , Video
       , WordBreakOpportunity
+
+      , Animate
+      , AnimateMotion
+      , AnimateTransform
+      , Circle
+      , ClipPath
+      , Definitions
+      , Description
+      , Ellipse
+      , FilterEffectBlend
+      , FilterEffectColorMatrix
+      , FilterEffectComponentTransfer
+      , FilterEffectComposite
+      , FilterEffectConvolveMatrix
+      , FilterEffectDiffuseLighting
+      , FilterEffectDisplacementMap
+      , FilterEffectDistantLight
+      , FilterEffectDropShadow
+      , FilterEffectFlood
+      , FilterEffectFuncA
+      , FilterEffectFuncB
+      , FilterEffectFuncG
+      , FilterEffectFuncR
+      , FilterEffectGaussianBlur
+      , FilterEffectImage
+      , FilterEffectMerge
+      , FilterEffectMergeNode
+      , FilterEffectMorphology
+      , FilterEffectOffset
+      , FilterEffectPointLight
+      , FilterEffectSpecularLighting
+      , FilterEffectSpotLight
+      , FilterEffectTile
+      , FilterEffectTurbulence
+      , Filter
+      , ForeignObject
+      , Group
+      , Line
+      , LinearGradient
+      , Marker
+      , Mask
+      , Metadata
+      , MotionPath
+      , Path
+      , Pattern
+      , Polygon
+      , Polyline
+      , RadialGradient
+      , Rectangle
+      , Set
+      , Stop
+      , SVG
+      , Switch
+      , Symbol
+      , TextPath
+      , TextSpan
+      , Use
+      , View
       )
   ) where
 
@@ -291,6 +349,66 @@ data TagType
   | Video
   | WordBreakOpportunity
 
+  -- SVG Elements
+  --
+  | Animate
+  | AnimateMotion
+  | AnimateTransform
+  | Circle
+  | ClipPath
+  | Definitions
+  | Description
+  | Ellipse
+  | FilterEffectBlend
+  | FilterEffectColorMatrix
+  | FilterEffectComponentTransfer
+  | FilterEffectComposite
+  | FilterEffectConvolveMatrix
+  | FilterEffectDiffuseLighting
+  | FilterEffectDisplacementMap
+  | FilterEffectDistantLight
+  | FilterEffectDropShadow
+  | FilterEffectFlood
+  | FilterEffectFuncA
+  | FilterEffectFuncB
+  | FilterEffectFuncG
+  | FilterEffectFuncR
+  | FilterEffectGaussianBlur
+  | FilterEffectImage
+  | FilterEffectMerge
+  | FilterEffectMergeNode
+  | FilterEffectMorphology
+  | FilterEffectOffset
+  | FilterEffectPointLight
+  | FilterEffectSpecularLighting
+  | FilterEffectSpotLight
+  | FilterEffectTile
+  | FilterEffectTurbulence
+  | Filter
+  | ForeignObject
+  | Group
+  | Line
+  | LinearGradient
+  | Marker
+  | Mask
+  | Metadata
+  | MotionPath
+  | Path
+  | Pattern
+  | Polygon
+  | Polyline
+  | RadialGradient
+  | Rectangle
+  | Set
+  | Stop
+  | SVG
+  | Switch
+  | Symbol
+  | TextPath
+  | TextSpan
+  | Use
+  | View
+
 type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
   TagErrorMessage Document               = 'TypeLits.Text "Document"
   TagErrorMessage Comment                = 'TypeLits.Text "Comment"
@@ -431,3 +549,61 @@ type family TagErrorMessage (tag :: TagType) :: TypeLits.ErrorMessage where
   TagErrorMessage Variable               = 'TypeLits.Text "Variable (<var>)"
   TagErrorMessage Video                  = 'TypeLits.Text "Video (<video>)"
   TagErrorMessage WordBreakOpportunity   = 'TypeLits.Text "WordBreakOpportunity (<wbr>)"
+
+  TagErrorMessage Animate                       = 'TypeLits.Text "Animate (<animate>)"
+  TagErrorMessage AnimateMotion                 = 'TypeLits.Text "AnimateMotion (<animateMotion>)"
+  TagErrorMessage AnimateTransform              = 'TypeLits.Text "AnimateTransform (<animateTransform>)"
+  TagErrorMessage Circle                        = 'TypeLits.Text "Circle (<circle>)"
+  TagErrorMessage ClipPath                      = 'TypeLits.Text "ClipPath (<clipPath>)"
+  TagErrorMessage Definitions                   = 'TypeLits.Text "Definitions (<defs>)"
+  TagErrorMessage Description                   = 'TypeLits.Text "Description (<desc>)"
+  TagErrorMessage Ellipse                       = 'TypeLits.Text "Ellipse (<ellipse>)"
+  TagErrorMessage FilterEffectBlend             = 'TypeLits.Text "FilterEffectBlend (<feBlend>)"
+  TagErrorMessage FilterEffectColorMatrix       = 'TypeLits.Text "FilterEffectColorMatrix (<feColorMatrix>)"
+  TagErrorMessage FilterEffectComponentTransfer = 'TypeLits.Text "FilterEffectComponentTransfer (<feComponentTransfer>)"
+  TagErrorMessage FilterEffectComposite         = 'TypeLits.Text "FilterEffectComposite (<feComposite>)"
+  TagErrorMessage FilterEffectConvolveMatrix    = 'TypeLits.Text "FilterEffectConvolveMatrix (<feConvolveMatrix>)"
+  TagErrorMessage FilterEffectDiffuseLighting   = 'TypeLits.Text "FilterEffectDiffuseLighting (<feDiffuseLighting>)"
+  TagErrorMessage FilterEffectDisplacementMap   = 'TypeLits.Text "FilterEffectDisplacementMap (<feDisplacementMap>)"
+  TagErrorMessage FilterEffectDistantLight      = 'TypeLits.Text "FilterEffectDistantLight (<feDistantLight>)"
+  TagErrorMessage FilterEffectDropShadow        = 'TypeLits.Text "FilterEffectDropShadow (<feDropShadow>)"
+  TagErrorMessage FilterEffectFlood             = 'TypeLits.Text "FilterEffectFlood (<feFlood>)"
+  TagErrorMessage FilterEffectFuncA             = 'TypeLits.Text "FilterEffectFuncA (<feFuncA>)"
+  TagErrorMessage FilterEffectFuncB             = 'TypeLits.Text "FilterEffectFuncB (<feFuncB>)"
+  TagErrorMessage FilterEffectFuncG             = 'TypeLits.Text "FilterEffectFuncG (<feFuncG>)"
+  TagErrorMessage FilterEffectFuncR             = 'TypeLits.Text "FilterEffectFuncR (<feFuncR>)"
+  TagErrorMessage FilterEffectGaussianBlur      = 'TypeLits.Text "FilterEffectGaussianBlur (<feGaussianBlur>)"
+  TagErrorMessage FilterEffectImage             = 'TypeLits.Text "FilterEffectImage (<feImage>)"
+  TagErrorMessage FilterEffectMerge             = 'TypeLits.Text "FilterEffectMerge (<feMerge>)"
+  TagErrorMessage FilterEffectMergeNode         = 'TypeLits.Text "FilterEffectMergeNode (<feMergeNode>)"
+  TagErrorMessage FilterEffectMorphology        = 'TypeLits.Text "FilterEffectMorphology (<feMorphology>)"
+  TagErrorMessage FilterEffectOffset            = 'TypeLits.Text "FilterEffectOffset (<feOffset>)"
+  TagErrorMessage FilterEffectPointLight        = 'TypeLits.Text "FilterEffectPointLight (<fePointLight>)"
+  TagErrorMessage FilterEffectSpecularLighting  = 'TypeLits.Text "FilterEffectSpecularLighting (<feSpecularLighting>)"
+  TagErrorMessage FilterEffectSpotLight         = 'TypeLits.Text "FilterEffectSpotLight (<feSpotLight>)"
+  TagErrorMessage FilterEffectTile              = 'TypeLits.Text "FilterEffectTile (<feTile>)"
+  TagErrorMessage FilterEffectTurbulence        = 'TypeLits.Text "FilterEffectTurbulence (<feTurbulence>)"
+  TagErrorMessage Filter                        = 'TypeLits.Text "Filter (<filter>)"
+  TagErrorMessage ForeignObject                 = 'TypeLits.Text "ForeignObject (<foreignObject>)"
+  TagErrorMessage Group                         = 'TypeLits.Text "Group (<g>)"
+  TagErrorMessage Line                          = 'TypeLits.Text "Line (<line>)"
+  TagErrorMessage LinearGradient                = 'TypeLits.Text "LinearGradient (<linearGradient>)"
+  TagErrorMessage Marker                        = 'TypeLits.Text "Marker (<marker>)"
+  TagErrorMessage Mask                          = 'TypeLits.Text "Mask (<mask>)"
+  TagErrorMessage Metadata                      = 'TypeLits.Text "Metadata (<metadata>)"
+  TagErrorMessage MotionPath                    = 'TypeLits.Text "MotionPath (<mpath>)"
+  TagErrorMessage Path                          = 'TypeLits.Text "Path (<path>)"
+  TagErrorMessage Pattern                       = 'TypeLits.Text "Pattern (<pattern>)"
+  TagErrorMessage Polygon                       = 'TypeLits.Text "Polygon (<polygon>)"
+  TagErrorMessage Polyline                      = 'TypeLits.Text "Polyline (<polyline>)"
+  TagErrorMessage RadialGradient                = 'TypeLits.Text "RadialGradient (<radialGradient>)"
+  TagErrorMessage Rectangle                     = 'TypeLits.Text "Rectangle (<rect>)"
+  TagErrorMessage Set                           = 'TypeLits.Text "Set (<set>)"
+  TagErrorMessage Stop                          = 'TypeLits.Text "Stop (<stop>)"
+  TagErrorMessage SVG                           = 'TypeLits.Text "SVG (<svg>)"
+  TagErrorMessage Switch                        = 'TypeLits.Text "Switch (<switch>)"
+  TagErrorMessage Symbol                        = 'TypeLits.Text "Symbol (<symbol>)"
+  TagErrorMessage TextPath                      = 'TypeLits.Text "TextPath (<textPath>)"
+  TagErrorMessage TextSpan                      = 'TypeLits.Text "TextSpan (<tspan>)"
+  TagErrorMessage Use                           = 'TypeLits.Text "Use (<use>)"
+  TagErrorMessage View                          = 'TypeLits.Text "View (<view>)"

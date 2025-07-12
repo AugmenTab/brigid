@@ -141,6 +141,64 @@ module Brigid.HTML.Elements.Tags
   , Variable
   , Video
   , WordBreakOpportunity
+
+  , Animate
+  , AnimateMotion
+  , AnimateTransform
+  , Circle
+  , ClipPath
+  , Definitions
+  , Description
+  , Ellipse
+  , FilterEffectBlend
+  , FilterEffectColorMatrix
+  , FilterEffectComponentTransfer
+  , FilterEffectComposite
+  , FilterEffectConvolveMatrix
+  , FilterEffectDiffuseLighting
+  , FilterEffectDisplacementMap
+  , FilterEffectDistantLight
+  , FilterEffectDropShadow
+  , FilterEffectFlood
+  , FilterEffectFuncA
+  , FilterEffectFuncB
+  , FilterEffectFuncG
+  , FilterEffectFuncR
+  , FilterEffectGaussianBlur
+  , FilterEffectImage
+  , FilterEffectMerge
+  , FilterEffectMergeNode
+  , FilterEffectMorphology
+  , FilterEffectOffset
+  , FilterEffectPointLight
+  , FilterEffectSpecularLighting
+  , FilterEffectSpotLight
+  , FilterEffectTile
+  , FilterEffectTurbulence
+  , Filter
+  , ForeignObject
+  , Group
+  , Line
+  , LinearGradient
+  , Marker
+  , Mask
+  , Metadata
+  , MotionPath
+  , Path
+  , Pattern
+  , Polygon
+  , Polyline
+  , RadialGradient
+  , Rectangle
+  , Set
+  , Stop
+  , SVG
+  , Switch
+  , Symbol
+  , TextPath
+  , TextSpan
+  , Use
+  , View
   ) where
 
 import Brigid.HTML.Elements.TagType qualified as TagType
@@ -578,3 +636,174 @@ type Video = 'TagType.Video
 
 -- | This type synonym represents the @\<wbr>@ element.
 type WordBreakOpportunity = 'TagType.WordBreakOpportunity
+
+-- | This type synonym represents the SVG @\<animate>@ element.
+type Animate = 'TagType.Animate
+
+-- | This type synonym represents the SVG @\<animateMotion>@ element.
+type AnimateMotion = 'TagType.AnimateMotion
+
+-- | This type synonym represents the SVG @\<animateTransform>@ element.
+type AnimateTransform = 'TagType.AnimateTransform
+
+-- | This type synonym represents the SVG @\<circle>@ element.
+type Circle = 'TagType.Circle
+
+-- | This type synonym represents the SVG @\<clipPath>@ element.
+type ClipPath = 'TagType.ClipPath
+
+-- | This type synonym represents the SVG @\<defs>@ element.
+type Definitions = 'TagType.Definitions
+
+-- | This type synonym represents the SVG @\<desc>@ element.
+type Description = 'TagType.Description
+
+-- | This type synonym represents the SVG @\<ellipse>@ element.
+type Ellipse = 'TagType.Ellipse
+
+-- | This type synonym represents the SVG @\<feBlend>@ element.
+type FilterEffectBlend = 'TagType.FilterEffectBlend
+
+-- | This type synonym represents the SVG @\<feColorMatrix>@ element.
+type FilterEffectColorMatrix = 'TagType.FilterEffectColorMatrix
+
+-- | This type synonym represents the SVG @\<feComponentTransfer>@ element.
+type FilterEffectComponentTransfer = 'TagType.FilterEffectComponentTransfer
+
+-- | This type synonym represents the SVG @\<feComposite>@ element.
+type FilterEffectComposite = 'TagType.FilterEffectComposite
+
+-- | This type synonym represents the SVG @\<feConvolveMatrix>@ element.
+type FilterEffectConvolveMatrix = 'TagType.FilterEffectConvolveMatrix
+
+-- | This type synonym represents the SVG @\<feDiffuseLighting>@ element.
+type FilterEffectDiffuseLighting = 'TagType.FilterEffectDiffuseLighting
+
+-- | This type synonym represents the SVG @\<feDisplacementMap>@ element.
+type FilterEffectDisplacementMap = 'TagType.FilterEffectDisplacementMap
+
+-- | This type synonym represents the SVG @\<feDistantLight>@ element.
+type FilterEffectDistantLight = 'TagType.FilterEffectDistantLight
+
+-- | This type synonym represents the SVG @\<feDropShadow>@ element.
+type FilterEffectDropShadow = 'TagType.FilterEffectDropShadow
+
+-- | This type synonym represents the SVG @\<feFlood>@ element.
+type FilterEffectFlood = 'TagType.FilterEffectFlood
+
+-- | This type synonym represents the SVG @\<feFuncA>@ element.
+type FilterEffectFuncA = 'TagType.FilterEffectFuncA
+
+-- | This type synonym represents the SVG @\<feFuncB>@ element.
+type FilterEffectFuncB = 'TagType.FilterEffectFuncB
+
+-- | This type synonym represents the SVG @\<feFuncG>@ element.
+type FilterEffectFuncG = 'TagType.FilterEffectFuncG
+
+-- | This type synonym represents the SVG @\<feFuncR>@ element.
+type FilterEffectFuncR = 'TagType.FilterEffectFuncR
+
+-- | This type synonym represents the SVG @\<feGaussianBlur>@ element.
+type FilterEffectGaussianBlur = 'TagType.FilterEffectGaussianBlur
+
+-- | This type synonym represents the SVG @\<feImage>@ element.
+type FilterEffectImage = 'TagType.FilterEffectImage
+
+-- | This type synonym represents the SVG @\<feMerge>@ element.
+type FilterEffectMerge = 'TagType.FilterEffectMerge
+
+-- | This type synonym represents the SVG @\<feMergeNode>@ element.
+type FilterEffectMergeNode = 'TagType.FilterEffectMergeNode
+
+-- | This type synonym represents the SVG @\<feMorphology>@ element.
+type FilterEffectMorphology = 'TagType.FilterEffectMorphology
+
+-- | This type synonym represents the SVG @\<feOffset>@ element.
+type FilterEffectOffset = 'TagType.FilterEffectOffset
+
+-- | This type synonym represents the SVG @\<fePointLight>@ element.
+type FilterEffectPointLight = 'TagType.FilterEffectPointLight
+
+-- | This type synonym represents the SVG @\<feSpecularLighting>@ element.
+type FilterEffectSpecularLighting = 'TagType.FilterEffectSpecularLighting
+
+-- | This type synonym represents the SVG @\<feSpotLight>@ element.
+type FilterEffectSpotLight = 'TagType.FilterEffectSpotLight
+
+-- | This type synonym represents the SVG @\<feTile>@ element.
+type FilterEffectTile = 'TagType.FilterEffectTile
+
+-- | This type synonym represents the SVG @\<feTurbulence>@ element.
+type FilterEffectTurbulence = 'TagType.FilterEffectTurbulence
+
+-- | This type synonym represents the SVG @\<filter>@ element.
+type Filter = 'TagType.Filter
+
+-- | This type synonym represents the SVG @\<foreignObject>@ element.
+type ForeignObject = 'TagType.ForeignObject
+
+-- | This type synonym represents the SVG @\<g>@ element.
+type Group = 'TagType.Group
+
+-- | This type synonym represents the SVG @\<line>@ element.
+type Line = 'TagType.Line
+
+-- | This type synonym represents the SVG @\<linearGradient>@ element.
+type LinearGradient = 'TagType.LinearGradient
+
+-- | This type synonym represents the SVG @\<marker>@ element.
+type Marker = 'TagType.Marker
+
+-- | This type synonym represents the SVG @\<mask>@ element.
+type Mask = 'TagType.Mask
+
+-- | This type synonym represents the SVG @\<metadata>@ element.
+type Metadata = 'TagType.Metadata
+
+-- | This type synonym represents the SVG @\<mpath>@ element.
+type MotionPath = 'TagType.MotionPath
+
+-- | This type synonym represents the SVG @\<path>@ element.
+type Path = 'TagType.Path
+
+-- | This type synonym represents the SVG @\<pattern>@ element.
+type Pattern = 'TagType.Pattern
+
+-- | This type synonym represents the SVG @\<polygon>@ element.
+type Polygon = 'TagType.Polygon
+
+-- | This type synonym represents the SVG @\<polyline>@ element.
+type Polyline = 'TagType.Polyline
+
+-- | This type synonym represents the SVG @\<radialGradient>@ element.
+type RadialGradient = 'TagType.RadialGradient
+
+-- | This type synonym represents the SVG @\<rect>@ element.
+type Rectangle = 'TagType.Rectangle
+
+-- | This type synonym represents the SVG @\<set>@ element.
+type Set = 'TagType.Set
+
+-- | This type synonym represents the SVG @\<stop>@ element.
+type Stop = 'TagType.Stop
+
+-- | This type synonym represents the SVG @\<svg>@ element.
+type SVG = 'TagType.SVG
+
+-- | This type synonym represents the SVG @\<switch>@ element.
+type Switch = 'TagType.Switch
+
+-- | This type synonym represents the SVG @\<symbol>@ element.
+type Symbol = 'TagType.Symbol
+
+-- | This type synonym represents the SVG @\<textPath>@ element.
+type TextPath = 'TagType.TextPath
+
+-- | This type synonym represents the SVG @\<tspan>@ element.
+type TextSpan = 'TagType.TextSpan
+
+-- | This type synonym represents the SVG @\<use>@ element.
+type Use = 'TagType.Use
+
+-- | This type synonym represents the SVG @\<view>@ element.
+type View = 'TagType.View
