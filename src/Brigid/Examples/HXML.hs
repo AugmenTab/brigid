@@ -4,6 +4,7 @@ module Brigid.Examples.HXML
   ) where
 
 import Data.Coerce (coerce)
+import Data.NonEmptyText qualified as NET
 
 import Brigid.Examples.HTML qualified as HTML
 import Brigid.HXML.Attributes qualified as A
@@ -30,7 +31,7 @@ navigatorExample =
 documentExample :: E.HXML
 documentExample =
   E.doc [ A.xmlns hyperviewNamespace ]
-    [ E.screen [ A.id $ B.Id "my-screen" ]
+    [ E.screen [ A.id . B.Id $ NET.new 'm' "y-screen" ]
         [ E.styles
             [ E.style [ -- TODO: A.id myStyleId
                       ]
@@ -107,7 +108,7 @@ documentExample =
                             , A.url hyperviewNamespace
                             ]
                 , E.form []
-                    [ E.textField [ A.name $ B.Name "random-text"
+                    [ E.textField [ A.name . B.Name $ NET.new 'r' "andom-text"
                                   , A.value "Existing value"
                                   , A.placeholder "Type something..."
                                   , A.placeholderTextColor blue
@@ -165,7 +166,7 @@ hyperviewNamespace =
   B.mkRawURL "https://hyperview.org/hyperview"
 
 myStyleId :: B.Id
-myStyleId = B.Id "MyStyle"
+myStyleId = B.Id $ NET.new 'M' "yStyle"
 
 blue :: HXML.ColorName
 blue = HXML.ColorName "blue"

@@ -3,16 +3,14 @@ module Brigid.HTML.Attributes.Global
   , AttributeTags.Autocapitalize, autocapitalize
   , AttributeTags.Autocorrect, autocorrect
   , AttributeTags.Autofocus, autofocus
-  , AttributeTags.Class, class_
-  , classes
+  , AttributeTags.Class, class_, classes
   , AttributeTags.ContentEditable, contenteditable
   , AttributeTags.CustomData, customData
   , AttributeTags.Dir, dir
   , AttributeTags.Draggable, draggable
   , AttributeTags.EnterKeyHint, enterkeyhint
   , AttributeTags.ExportParts, exportparts
-  , AttributeTags.Hidden, hide
-  , hidden
+  , AttributeTags.Hidden, hide, hidden
   , AttributeTags.Id, id
   , AttributeTags.Inert, inert
   , AttributeTags.InputMode, inputmode
@@ -29,10 +27,8 @@ module Brigid.HTML.Attributes.Global
   , AttributeTags.Role, role
   , AttributeTags.Slot, slot
   , AttributeTags.Spellcheck, spellcheck
-  , AttributeTags.Style, style
-  , styles
-  , AttributeTags.TabIndex, tabindex
-  , unsafeTabIndex
+  , AttributeTags.Style, style, styles
+  , AttributeTags.TabIndex, tabindex, unsafeTabIndex
   , AttributeTags.Title, title
   , AttributeTags.Translate, translate
   , AttributeTags.WritingSuggestions, writingsuggestions
@@ -42,8 +38,9 @@ module Brigid.HTML.Attributes.Global
 --
 
 import Prelude hiding (id)
-import Data.Containers.ListUtils (nubOrd)
+import Data.List qualified as List
 import Data.List.NonEmpty qualified as NEL
+import Data.Set qualified as Set
 import Data.Text qualified as T
 import Ogma qualified
 
@@ -68,8 +65,22 @@ autofocus = Attr_Autofocus
 class_ :: Types.Class -> Attribute tag
 class_ = Attr_Class
 
+-- | Construct a @class@ attribute from a list of classes in raw 'T.Text'. If
+-- you want to construct a @class@ attribute from a list of 'Types.Class'es,
+-- use the 'Data.Monoid.Monoid' instance for 'HTML.Class'.
+--
 classes :: [T.Text] -> Attribute tag
-classes = class_ . Types.Class . T.unwords . nubOrd
+classes =
+  let
+    foldClasses (acc, usedClasses) c =
+      if T.null c
+        then (acc, usedClasses)
+        else
+          if Set.member c usedClasses
+            then (acc, usedClasses)
+            else (acc <> Types.Class c, Set.insert c usedClasses)
+  in
+    class_ . fst . List.foldl' foldClasses (mempty, Set.empty)
 
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable

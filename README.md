@@ -37,6 +37,11 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 10. Consider writing Aeson instances for common types.
 11. Give `ChildHTML` and `Attribute` an `NFData` instance - this seems to be
     required for benchmarking.
+12. Make type synonyms for Shrubbery union member constraints.
+13. `Maybe member` for members of Shrubbery union member constraints causes
+    compile issues when `Nothing` is passed, because it can't determine what
+    the union member should be. These unions should include `None` as an
+    option, and that can be used for `Nothing` instead.
 
 ### TODO (XML)
 

@@ -5,6 +5,7 @@
 module Brigid.Types.Name
   ( Name (Name)
   , nameToBytes
+  , nameToNonEmptyText
   , nameToText
   , NameOption
   , NameOptionTypes
@@ -14,6 +15,7 @@ module Brigid.Types.Name
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
+import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -24,11 +26,15 @@ import Brigid.Internal.Render qualified as Render
 
 newtype Name =
   Name
-    { nameToText :: T.Text
+    { nameToNonEmptyText :: NET.NonEmptyText
     } deriving (Eq, Ord, Show)
 
 nameToBytes :: Name -> LBS.ByteString
 nameToBytes = Render.textToLazyBytes . nameToText
+
+nameToText :: Name -> T.Text
+nameToText =
+  NET.toText . nameToNonEmptyText
 
 newtype NameOption =
   NameOption (Shrubbery.Union NameOptionTypes)

@@ -60,9 +60,9 @@ documentExample =
               { HTMX.refreshOnHistoryMiss = Just True
               }
         , Safe.baseWithTarget HTML.Self
-            [ A.id $ B.Id "safe-base"
+            [ A.id . B.Id $ NET.new 's' "afe-base"
             ]
-        -- , E.link [ A.href $ B.Id "bad-link" ] -- This fails, because Id is not a valid href type for link.
+        -- , E.link [ A.href . B.Id $ NET.new 'b' "ad-link" ] -- This fails, because Id is not a valid href type for link.
         -- , E.script [ A.src pingURL ] Nothing -- This fails, because RelativeURL Post is not a valid URL type for the src attribute.
         ]
     , E.body [ A.hxBoost True
@@ -101,7 +101,7 @@ exampleRoute =
     /+ R.Param (R.coerceParam $ R.intParam "customerId") getCustomerId
 
 divId :: B.Id
-divId = B.Id "div1"
+divId = B.Id $ NET.new 'd' "iv1"
 
 fakeJavaScriptLink :: B.RawURL
 fakeJavaScriptLink =
@@ -121,10 +121,10 @@ pingURL =
       /- "log_access"
 
 formId :: B.Id
-formId = B.Id "my_form"
+formId = B.Id $ NET.new 'm' "y_form"
 
 numberId :: B.Id
-numberId = B.Id "number"
+numberId = B.Id $ NET.new 'n' "umber"
 
 example :: E.ChildHTML E.Body grandparent
 example =
@@ -223,7 +223,7 @@ example =
             , E.comment "Second comment"
             , E.customHTML
                 "my-custom-element"
-                [ A.id $ B.Id "my-custom-elem-id" ]
+                [ A.id . B.Id $ NET.new 'm' "y-custom-elem-id" ]
                   ( Right
                       [ E.script [ A.src fakeJavaScriptLink
                                  , A.customData "my-custom-elem-attr" "test"
@@ -246,7 +246,8 @@ example =
                           (Just "Your browser does not support this element.")
                           (Just HTML.Rel_Bookmark)
                           (Just HTML.Parent)
-                  , Safe.areaOtherAttributes = [ A.id $ B.Id "safe-area" ]
+                  , Safe.areaOtherAttributes =
+                      [ A.id . B.Id $ NET.new 's' "afe-area" ]
                   }
             ]
         , safeScriptExample
@@ -454,7 +455,7 @@ tableExample content =
             ]
 
    in Safe.table
-        [ A.id $ B.Id "body-table" ]
+        [ A.id . B.Id $ NET.new 'b' "ody-table" ]
         caption
         colgroups
         head
@@ -543,7 +544,7 @@ htmxExample =
             [ E.comment "Disinherit all"
             ]
         ]
-    , E.button [ A.id $ B.Id "worthless"
+    , E.button [ A.id . B.Id $ NET.new 'w' "orthless"
                , A.hxDisabled
                ]
         [ E.text "I Do Nothing"
@@ -577,7 +578,7 @@ myClass = HTML.Class "myClass"
 
 idQuerySelectorExample :: HTML.QuerySelector
 idQuerySelectorExample =
-  HTML.mkQuerySelector $ B.Id "myId"
+  HTML.mkQuerySelector . B.Id $ NET.new 'm' "yId"
 
 classQuerySelectorExample :: HTML.QuerySelector
 classQuerySelectorExample =

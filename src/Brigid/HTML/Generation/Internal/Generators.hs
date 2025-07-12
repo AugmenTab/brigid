@@ -172,7 +172,7 @@ httpEquivToken =
 
 id  :: MonadGen m => m Types.Id
 id =
-  Types.Id <$> text
+  Types.Id <$> nonEmptyText
 
 inputMode :: MonadGen m => m Types.InputMode
 inputMode =
@@ -312,7 +312,7 @@ metadataName =
 
 name  :: MonadGen m => m Types.Name
 name =
-  Types.Name <$> text
+  Types.Name <$> nonEmptyText
 
 natural  :: MonadGen m => m Natural
 natural =
