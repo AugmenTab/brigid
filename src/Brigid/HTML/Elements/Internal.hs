@@ -160,7 +160,22 @@ import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.TagType (TagType (..))
 import Brigid.Types.NoContent (NoContent)
 
-data ChildHTML (parent :: TagType) (grandparent :: TagType) where
+type ChildSVG parent grandparent = ChildElement 'SVG parent grandparent
+
+type ChildHTML parent grandparent = ChildElement 'HTML parent grandparent
+
+type ChildXML parent grandparent = ChildElement 'XML parent grandparent
+
+-- TODO: This should be moved to a shared `Internal` module. It will be
+-- rebranded as `ChildElement` instead of `ChildHTML` or `ChildSVG` or
+-- `ChildXML`. This will allow them to all be shared amongst each other without
+-- too much fuss, but it will be quite the lift in terms of refactoring and
+-- updating users.
+--
+-- One downside is that it forces all elements to be aware of their grandparent
+-- when only HTML would otherwise need to do this.
+--
+data ChildElement (elementType :: DocType) (parent :: TagType) (grandparent :: TagType) where
   Tag_NoElement
     :: ChildHTML parent grandparent
 
