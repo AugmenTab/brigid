@@ -460,6 +460,15 @@ renderTag html =
     Tag_WordBreakOpportunity attrs ->
       buildTag "wbr" attrs $ Left Types.OmitTag
 
+    Tag_Group attrs content ->
+      buildTag "g" attrs $ Right content
+
+    Tag_Path attrs content ->
+      buildTag "path" attrs $ Right content
+
+    Tag_SVG attrs content ->
+      buildTag "svg" attrs $ Right content
+
 buildTag :: T.Text
          -> [Attribute tag]
          -> Either Types.NoContent [ChildHTML parent grandparent]

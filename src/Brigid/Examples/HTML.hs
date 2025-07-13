@@ -27,6 +27,7 @@ import Ogma qualified
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Safe qualified as Safe
+import Brigid.HTML.Elements.SVG qualified as SVG
 import Brigid.HTML.Entities qualified as Entity
 import Brigid.HTML.HTMX.Config qualified as HTMX
 import Brigid.HTML.Types qualified as HTML
@@ -205,7 +206,7 @@ example =
         "Here's some text!"
     , E.div [ A.tabindex HTML.NotReachable ]
         [ E.output [ A.for $ divId :| [ numberId ] ]
-            [
+            [ svgExample
             ]
         , E.p [ {- A.width 100, -} A.unsafeTabIndex 4 ]
             [ E.noElement
@@ -295,6 +296,25 @@ sampleHyperScript =
       , "put 'hello' into the"
       , HTML.querySelectorToText idQuerySelectorExample
       ]
+
+svgExample :: E.ChildHTML E.Output grandparent
+svgExample =
+  SVG.svg []
+    [ SVG.g []
+        [ SVG.g []
+            [ SVG.path []
+                [
+                ]
+            ]
+        ]
+    , SVG.g []
+        [ SVG.g []
+            [ SVG.path []
+                [
+                ]
+            ]
+        ]
+    ]
 
 listExample :: [E.ChildHTML E.Division grandparent]
 listExample =

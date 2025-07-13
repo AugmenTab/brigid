@@ -72,6 +72,7 @@ library:
     - Brigid.HTML.Attributes
     - Brigid.HTML.Elements
     - Brigid.HTML.Elements.Safe
+    - Brigid.HTML.Elements.SVG
     - Brigid.HTML.Entities
     - Brigid.HTML.Generation
     - Brigid.HTML.Generation.Attributes

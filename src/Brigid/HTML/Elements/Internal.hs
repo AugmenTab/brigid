@@ -146,6 +146,9 @@ module Brigid.HTML.Elements.Internal
       , Tag_Variable
       , Tag_Video
       , Tag_WordBreakOpportunity
+      , Tag_Group
+      , Tag_Path
+      , Tag_SVG
       )
   ) where
 
@@ -950,6 +953,24 @@ data ChildHTML (parent :: TagType) (grandparent :: TagType) where
   Tag_WordBreakOpportunity
     :: ValidChild 'WordBreakOpportunity parent grandparent
     => [Attribute 'WordBreakOpportunity]
+    -> ChildHTML parent grandparent
+
+  Tag_Group
+    :: ValidChild 'Group parent grandparent
+    => [Attribute 'Group]
+    -> [ChildHTML 'Group parent]
+    -> ChildHTML parent grandparent
+
+  Tag_Path
+    :: ValidChild 'Path parent grandparent
+    => [Attribute 'Path]
+    -> [ChildHTML 'Path parent]
+    -> ChildHTML parent grandparent
+
+  Tag_SVG
+    :: ValidChild 'SVG parent grandparent
+    => [Attribute 'SVG]
+    -> [ChildHTML 'SVG parent]
     -> ChildHTML parent grandparent
 
 deriving instance Eq (ChildHTML parent grandparent)

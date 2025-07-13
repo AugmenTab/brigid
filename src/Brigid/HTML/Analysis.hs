@@ -451,6 +451,14 @@ countNodes element =
     Tag_WordBreakOpportunity _attrs ->
       Count 1
 
+    Tag_Group _attrs content ->
+      Count 1 + foldMap countNodes content
+
+    Tag_Path _attrs content ->
+      Count 1 + foldMap countNodes content
+
+    Tag_SVG _attrs content ->
+      Count 1 + foldMap countNodes content
 
 maxDepth :: ChildHTML parent grandparent -> Int
 maxDepth element =
@@ -879,3 +887,12 @@ maxDepth element =
 
     Tag_WordBreakOpportunity _attrs ->
       1
+
+    Tag_Group _attrs content ->
+      1 + maybe 0 (maximum1 . fmap maxDepth) (NEL.nonEmpty content)
+
+    Tag_Path _attrs content ->
+      1 + maybe 0 (maximum1 . fmap maxDepth) (NEL.nonEmpty content)
+
+    Tag_SVG _attrs content ->
+      1 + maybe 0 (maximum1 . fmap maxDepth) (NEL.nonEmpty content)

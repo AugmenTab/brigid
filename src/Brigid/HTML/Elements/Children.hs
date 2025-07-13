@@ -119,3 +119,7 @@ type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [Ta
   ValidChildrenFor UnorderedList          grandparent = TagGroups.ListContent
   ValidChildrenFor Variable               grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Video                  grandparent = TagGroups.AudioVideoContent
+
+  ValidChildrenFor Group                  grandparent = TagGroups.SVG_CommonContent
+  ValidChildrenFor Path                   grandparent = TagGroups.SVG_PathElements
+  ValidChildrenFor SVG                    grandparent = TagGroups.SVG_CommonContent

@@ -1518,25 +1518,29 @@ tag_wbr :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
 tag_wbr mbAttr classes =
   ElementSelector Tag_WordBreakOpportunity mbAttr classes Nothing
 
-tag_animate :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_animate mbAttr classes =
-  ElementSelector Tag_Animate mbAttr classes Nothing
+tag_animate :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_animate = ElementSelector Tag_Animate
 
 tag_animateMotion :: Maybe AttributeSelector
                   -> [CS.ClassSelector]
+                  -> Maybe ElementSelector
                   -> ElementSelector
-tag_animateMotion mbAttr classes =
-  ElementSelector Tag_AnimateMotion mbAttr classes Nothing
+tag_animateMotion = ElementSelector Tag_AnimateMotion
 
 tag_animateTransform :: Maybe AttributeSelector
                      -> [CS.ClassSelector]
+                     -> Maybe ElementSelector
                      -> ElementSelector
-tag_animateTransform mbAttr classes =
-  ElementSelector Tag_AnimateTransform mbAttr classes Nothing
+tag_animateTransform = ElementSelector Tag_AnimateTransform
 
-tag_circle :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_circle mbAttr classes =
-  ElementSelector Tag_Circle mbAttr classes Nothing
+tag_circle :: Maybe AttributeSelector
+           -> [CS.ClassSelector]
+           -> Maybe ElementSelector
+           -> ElementSelector
+tag_circle = ElementSelector Tag_Circle
 
 tag_clipPath :: Maybe AttributeSelector
              -> [CS.ClassSelector]
@@ -1556,9 +1560,11 @@ tag_desc :: Maybe AttributeSelector
          -> ElementSelector
 tag_desc = ElementSelector Tag_Description
 
-tag_ellipse :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_ellipse mbAttr classes =
-  ElementSelector Tag_Ellipse mbAttr classes Nothing
+tag_ellipse :: Maybe AttributeSelector
+            -> [CS.ClassSelector]
+            -> Maybe ElementSelector
+            -> ElementSelector
+tag_ellipse = ElementSelector Tag_Ellipse
 
 tag_feBlend :: Maybe AttributeSelector
             -> [CS.ClassSelector]
@@ -1728,9 +1734,11 @@ tag_g :: Maybe AttributeSelector
       -> ElementSelector
 tag_g = ElementSelector Tag_Group
 
-tag_line :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_line mbAttr classes =
-  ElementSelector Tag_Line mbAttr classes Nothing
+tag_line :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_line = ElementSelector Tag_Line
 
 tag_linearGradient :: Maybe AttributeSelector
                    -> [CS.ClassSelector]
@@ -1756,13 +1764,17 @@ tag_metadata :: Maybe AttributeSelector
              -> ElementSelector
 tag_metadata = ElementSelector Tag_Metadata
 
-tag_mpath :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_mpath mbAttr classes =
-  ElementSelector Tag_MotionPath mbAttr classes Nothing
+tag_mpath :: Maybe AttributeSelector
+          -> [CS.ClassSelector]
+          -> Maybe ElementSelector
+          -> ElementSelector
+tag_mpath = ElementSelector Tag_MotionPath
 
-tag_path :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_path mbAttr classes =
-  ElementSelector Tag_Path mbAttr classes Nothing
+tag_path :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_path = ElementSelector Tag_Path
 
 tag_pattern :: Maybe AttributeSelector
             -> [CS.ClassSelector]
@@ -1788,17 +1800,23 @@ tag_radialGradient :: Maybe AttributeSelector
                    -> ElementSelector
 tag_radialGradient = ElementSelector Tag_RadialGradient
 
-tag_rect :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_rect mbAttr classes =
-  ElementSelector Tag_Rectangle mbAttr classes Nothing
+tag_rect :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_rect = ElementSelector Tag_Rectangle
 
-tag_set :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_set mbAttr classes =
-  ElementSelector Tag_Set mbAttr classes Nothing
+tag_set :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_set = ElementSelector Tag_Set
 
-tag_stop :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_stop mbAttr classes =
-  ElementSelector Tag_Stop mbAttr classes Nothing
+tag_stop :: Maybe AttributeSelector
+         -> [CS.ClassSelector]
+         -> Maybe ElementSelector
+         -> ElementSelector
+tag_stop = ElementSelector Tag_Stop
 
 tag_svg :: Maybe AttributeSelector
         -> [CS.ClassSelector]
@@ -1830,9 +1848,11 @@ tag_tspan :: Maybe AttributeSelector
           -> ElementSelector
 tag_tspan = ElementSelector Tag_TextSpan
 
-tag_use :: Maybe AttributeSelector -> [CS.ClassSelector] -> ElementSelector
-tag_use mbAttr classes =
-  ElementSelector Tag_Use mbAttr classes Nothing
+tag_use :: Maybe AttributeSelector
+        -> [CS.ClassSelector]
+        -> Maybe ElementSelector
+        -> ElementSelector
+tag_use = ElementSelector Tag_Use
 
 tag_view :: Maybe AttributeSelector
          -> [CS.ClassSelector]

@@ -60,6 +60,9 @@ module Brigid.HTML.Elements.TagGroups
   , SVG_TextContentChildElements
   , SVG_UncategorizedElements
 
+  , SVG_CommonContent
+  , SVG_PathElements
+
   , AltTags
   , AutocompletableTags
   , BlockingTags
@@ -270,7 +273,7 @@ type EmbeddedContent =
   --' , Math
   , 'Object
   , 'Picture
-  --' , SVG
+  , 'SVG
   , 'Video
   ]
 
@@ -374,7 +377,7 @@ type FlowContent =
   , 'Strong
   , 'Subscript
   , 'Superscript
-  --' , SVG
+  , 'SVG
   , 'Table
   , 'ContentTemplate
   , 'TextArea
@@ -541,7 +544,7 @@ type PhrasingContent =
   , 'Strong
   , 'Subscript
   , 'Superscript
-  --' , SVG
+  , 'SVG
   , 'ContentTemplate
   , 'TextArea
   , 'Time
@@ -903,6 +906,34 @@ type SVG_UncategorizedElements =
   -- Style
   , 'View
   ]
+
+type SVG_CommonContent =
+  Union SVG_AnimationElements
+    ( Union SVG_DescriptiveElements
+        ( Union SVG_ShapeElements
+            ( Union SVG_StructuralElements
+                ( Union SVG_GradientElements
+                    -- 'Anchor
+                    [ 'ClipPath
+                    , 'Filter
+                    , 'ForeignObject
+                    -- 'Image
+                    , 'Marker
+                    , 'Mask
+                    , 'Pattern
+                    -- 'Script
+                    -- 'Style
+                    , 'Switch
+                    -- 'Text
+                    , 'View
+                    ]
+                )
+            )
+        )
+    )
+
+type SVG_PathElements =
+  Union SVG_AnimationElements SVG_DescriptiveElements
 
 -- Attribute-Focused Tag Groups
 --
