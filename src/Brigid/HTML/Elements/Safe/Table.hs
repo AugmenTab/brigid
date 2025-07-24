@@ -9,7 +9,7 @@ module Brigid.HTML.Elements.Safe.Table
   , ColumnGroup, colgroup
   , TableFoot, tfoot
   , TableHead, thead
-  , TableRow, tr
+  , TableRow, tr, unsafeTableRow
   ) where
 
 import Prelude hiding (head)
@@ -35,7 +35,7 @@ table attrs mbCaption colgroups mbHead eiBodiesRows mbFoot =
       [ maybeToList $ unCaption <$> mbCaption
       , unColumnGroup <$> colgroups
       , maybeToList $ unHead <$> mbHead
-      , either (fmap unBody) (fmap unRow) eiBodiesRows
+      , either (fmap unBody) (fmap unsafeTableRow) eiBodiesRows
       , maybeToList $ unFoot <$> mbFoot
       ]
 
@@ -54,7 +54,7 @@ unBody :: TableBody -> ChildHTML Tags.Table grandparent
 unBody body =
   E.tbody
     (bodyAttributes body)
-    (unRow <$> bodyContent body)
+    (unsafeTableRow <$> bodyContent body)
 
 newtype Caption grandparent =
   Caption { unCaption :: ChildHTML Tags.Table grandparent }
@@ -87,7 +87,7 @@ unFoot :: TableFoot -> ChildHTML Tags.Table grandparent
 unFoot foot =
   E.tfoot
     (footAttributes foot)
-    (unRow <$> footContent foot)
+    (unsafeTableRow <$> footContent foot)
 
 data TableHead =
   TableHead
@@ -104,10 +104,10 @@ unHead :: TableHead -> ChildHTML Tags.Table grandparent
 unHead head =
   E.thead
     (headAttributes head)
-    (unRow <$> headContent head)
+    (unsafeTableRow <$> headContent head)
 
 newtype TableRow parent grandparent =
-  TableRow { unRow :: ChildHTML parent grandparent }
+  TableRow { unsafeTableRow :: ChildHTML parent grandparent }
 
 tr :: ValidChild Tags.TableRow parent grandparent
    => [Attribute Tags.TableRow]
