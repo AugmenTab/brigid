@@ -6,28 +6,21 @@ module Brigid.HTML.Types.Throttle
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
-import Numeric.Natural (Natural)
+import Integer (Positive)
 
-newtype Throttle = Throttle Natural
+import Brigid.HTML.Types.TimingDeclaration qualified as TD
+
+newtype Throttle = Throttle TD.TimingDeclaration
   deriving (Eq, Show)
 
-throttle :: Natural -> Throttle
-throttle = Throttle
+throttle :: Positive -> TD.TimingUnits -> Throttle
+throttle n = Throttle . TD.TimingDeclaration n
 
 throttleToBytes :: Throttle -> LBS.ByteString
-throttleToBytes (Throttle n) =
-  LBS.concat
-    [ "throttle:"
-    , LBS8.pack $ show n
-    , "s"
-    ]
+throttleToBytes (Throttle td) =
+  "throttle:" <> TD.timingDeclarationToBytes td
 
 throttleToText :: Throttle -> T.Text
-throttleToText (Throttle n) =
-  T.concat
-    [ "throttle:"
-    , T.pack $ show n
-    , "s"
-    ]
+throttleToText (Throttle td) =
+  "throttle:" <> TD.timingDeclarationToText td

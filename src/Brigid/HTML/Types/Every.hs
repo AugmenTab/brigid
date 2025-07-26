@@ -9,29 +9,26 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
-import Numeric.Natural (Natural)
+import Integer (Positive)
 
+import Brigid.HTML.Types.TimingDeclaration qualified as TD
 import Brigid.HTML.Types.TriggerFilter qualified as TF
 
 data Every =
   Every
-    { everySeconds :: Natural
-    , everyFilter  :: Maybe TF.TriggerFilter
+    { everyTiming :: TD.TimingDeclaration
+    , everyFilter :: Maybe TF.TriggerFilter
     } deriving (Eq, Show)
 
-every :: Natural -> Maybe TF.TriggerFilter -> Every
-every = Every
+every :: Positive -> TD.TimingUnits -> Maybe TF.TriggerFilter -> Every
+every n tu = Every (TD.TimingDeclaration n tu)
 
 everyToBytes :: Every -> LBS.ByteString
 everyToBytes e =
   LBS.intercalate (LBS8.pack " ")
     . catMaybes
     $ [ Just "every"
-      , Just
-          . LBS.concat
-          $ [ LBS8.pack . show $ everySeconds e
-            , "s"
-            ]
+      , Just . TD.timingDeclarationToBytes $ everyTiming e
       , (\tf -> "[" <> TF.triggerFilterToBytes tf <> "]") <$> everyFilter e
       ]
 
@@ -40,10 +37,6 @@ everyToText e =
   T.unwords
     . catMaybes
     $ [ Just "every"
-      , Just
-          . T.concat
-          $ [ T.pack . show $ everySeconds e
-            , "s"
-            ]
+      , Just . TD.timingDeclarationToText $ everyTiming e
       , (\tf -> "[" <> TF.triggerFilterToText tf <> "]") <$> everyFilter e
       ]

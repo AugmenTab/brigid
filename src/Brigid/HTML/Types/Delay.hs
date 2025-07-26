@@ -6,28 +6,21 @@ module Brigid.HTML.Types.Delay
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
-import Numeric.Natural (Natural)
+import Integer (Positive)
 
-newtype Delay = Delay Natural
+import Brigid.HTML.Types.TimingDeclaration qualified as TD
+
+newtype Delay = Delay TD.TimingDeclaration
   deriving (Eq, Show)
 
-delay :: Natural -> Delay
-delay = Delay
+delay :: Positive -> TD.TimingUnits -> Delay
+delay n = Delay . TD.TimingDeclaration n
 
 delayToBytes :: Delay -> LBS.ByteString
-delayToBytes (Delay n) =
-  LBS.concat
-    [ "delay:"
-    , LBS8.pack $ show n
-    , "s"
-    ]
+delayToBytes (Delay td) =
+  "delay:" <> TD.timingDeclarationToBytes td
 
 delayToText :: Delay -> T.Text
-delayToText (Delay n) =
-  T.concat
-    [ "delay:"
-    , T.pack $ show n
-    , "s"
-    ]
+delayToText (Delay td) =
+  "delay:" <> TD.timingDeclarationToText td

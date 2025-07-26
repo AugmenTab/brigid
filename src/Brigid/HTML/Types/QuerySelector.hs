@@ -772,6 +772,7 @@ import Brigid.HTML.Types.TargetType (TargetType, targetTypeToBytes, targetTypeTo
 import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
 import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
 import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
+import Brigid.HTML.Types.TimingDeclaration (TimingUnits)
 import Brigid.HTML.Types.TrackKind (TrackKind, trackKindToText)
 import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
 import Brigid.HTML.Types.TypeOption (TypeOptionTypes, mkTypeOption, typeOptionToText)
@@ -4840,11 +4841,11 @@ triggerOnce = TriggerModifier $ Shrubbery.unify Once
 triggerChanged :: TriggerModifier
 triggerChanged = TriggerModifier $ Shrubbery.unify Changed
 
-triggerDelay :: Natural -> TriggerModifier
-triggerDelay = TriggerModifier . Shrubbery.unify . delay
+triggerDelay :: Positive -> TimingUnits -> TriggerModifier
+triggerDelay n = TriggerModifier . Shrubbery.unify . delay n
 
-triggerThrottle :: Natural -> TriggerModifier
-triggerThrottle = TriggerModifier . Shrubbery.unify . throttle
+triggerThrottle :: Positive -> TimingUnits -> TriggerModifier
+triggerThrottle n = TriggerModifier . Shrubbery.unify . throttle n
 
 triggerFrom :: ( KnownNat branchIndex
                , branchIndex ~ FirstIndexOf triggerFrom TriggerFromTypes

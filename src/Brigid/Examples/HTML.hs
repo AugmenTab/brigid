@@ -512,7 +512,7 @@ htmxExample =
                    . HTML.mkTrigger
                    . HTML.mkTriggerEvent (HTML.mkEvent HTML.KeyUpEvent) Nothing
                    $ [ HTML.triggerChanged
-                     , HTML.triggerDelay 1
+                     , HTML.triggerDelay 1 HTML.Milliseconds
                      ]
                ]
         [ E.text "Implicit Get"
@@ -541,7 +541,7 @@ htmxExample =
                , A.hxTrigger
                    . NEL.singleton
                    . HTML.mkTrigger
-                   . HTML.every 2
+                   . HTML.every 2 HTML.Seconds
                    . Just
                    $ HTML.TriggerFilter "someConditional"
                ]
@@ -578,12 +578,12 @@ htmxExample =
                    . HTML.scroll HTML.SwapTop
                    $ Just idQuerySelectorExample
                , A.hxTrigger $
-                   HTML.mkTrigger (HTML.every 1 Nothing)
+                   HTML.mkTrigger (HTML.every 1 HTML.Minutes Nothing)
                      :| [ HTML.mkTrigger $
                             HTML.mkTriggerEvent
                               (HTML.intersectRoot myClass)
                               (Nothing)
-                              [ HTML.triggerThrottle 1
+                              [ HTML.triggerThrottle 1 HTML.Hours
                               , HTML.triggerQueue HTML.QueueAll
                               ]
                         , HTML.customTrigger "my-custom-event"
