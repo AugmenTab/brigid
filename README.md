@@ -12,7 +12,7 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 
 ### TODO (HTML)
 
-1. For each of global, HTMX, event listeners, arias, and scoped attributes:
+1. For each of ~~global~~, ~~HTMX~~, event listeners, arias, and ~~scoped~~ attributes:
     1. Make constructors for `Attribute` GADT.
     2. Make render functions.
     3. Modify `ValidElementsFor`.
