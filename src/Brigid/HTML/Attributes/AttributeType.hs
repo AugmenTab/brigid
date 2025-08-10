@@ -150,6 +150,8 @@ module Brigid.HTML.Attributes.AttributeType
       , Wrap
       , XMLNS
 
+      , Aria
+
       , Htmx
       , HxGet
       , HxPost
@@ -340,6 +342,9 @@ data AttributeType
   | Wrap
   | XMLNS
 
+  -- ARIA Attributes
+  | Aria
+
   -- HTMX Attributes
   --
   | Htmx
@@ -525,6 +530,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage Width                    = 'Text "Width (width)"
   AttributeErrorMessage Wrap                     = 'Text "Wrap (wrap)"
   AttributeErrorMessage XMLNS                    = 'Text "XMLNS (xmlns)"
+
+  AttributeErrorMessage Aria                     = 'Text "Aria (aria-*)"
 
   AttributeErrorMessage Htmx                     = 'Text "HTMX (htmx)"
   AttributeErrorMessage HxGet                    = 'Text "HTMX Get (hx-get)"

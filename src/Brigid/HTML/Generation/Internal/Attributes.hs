@@ -149,6 +149,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , width
   , wrap
   , xmlns
+  , aria
   ) where
 
 import Beeline.HTTP.Client qualified as B
@@ -328,6 +329,7 @@ data Attribute
   | Width Positive
   | Wrap Types.Wrap
   | XMLNS Types.RawURL
+  | Aria Types.Aria
   deriving Show
 
 attributeText :: Attribute -> T.Text
@@ -486,6 +488,10 @@ attributeText attr =
     Width _ -> "width"
     Wrap _ -> "wrap"
     XMLNS _ -> "xmlns"
+
+    -- ARIA Attributes
+    --
+    Aria a -> Types.ariaAttributeToText a
 
 accesskey :: MonadGen m => m Attribute
 accesskey =
@@ -1082,3 +1088,7 @@ wrap =
 xmlns :: MonadGen m => m Attribute
 xmlns =
   XMLNS <$> Generators.url
+
+aria :: MonadGen m => m Attribute
+aria =
+  Aria <$> Generators.aria

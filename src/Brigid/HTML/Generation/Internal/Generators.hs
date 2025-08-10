@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeOperators #-}
+
 module Brigid.HTML.Generation.Internal.Generators
   ( as
   , autocapitalizeOption
@@ -59,6 +61,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , url
   , wrap
   , yesNo
+  , aria
   ) where
 
 import Data.ByteString qualified as BS
@@ -67,12 +70,14 @@ import Data.NonEmptyText qualified as NET
 import Data.Ratio (Ratio, (%))
 import Data.Text qualified as T
 import Data.Time.Calendar.OrdinalDate qualified as Time
+import GHC.TypeLits (KnownNat)
 import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
 import Integer (Positive)
 import Numeric.Natural (Natural)
 import Prelude hiding (id)
+import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
@@ -471,3 +476,71 @@ wrap =
 yesNo :: MonadGen m => m Types.YesNo
 yesNo =
   Types.yesNoBool <$> Gen.bool
+
+aria :: MonadGen m => m Types.Aria
+aria =
+  let
+    listIds = Gen.list (Range.linear 1 20) id
+    nonEmptyIds = Gen.nonEmpty (Range.linear 1 20) id
+
+    mkGen :: ( MonadGen m
+             , KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf aria Types.AriaTypes
+             )
+          => (a -> aria) -> m a -> m Types.Aria
+    mkGen constructor gen =
+      Types.mkAria . constructor <$> gen
+  in
+    Gen.choice
+      [ mkGen Types.AriaActiveDescendant id
+      , mkGen Types.AriaAtomic Gen.bool
+      -- , Types.mkAria . Types.AriaAutocomplete <$> _
+      , mkGen Types.AriaBrailleLabel text
+      , mkGen Types.AriaBrailleRoleDescription text
+      , mkGen Types.AriaBusy Gen.bool
+      -- , Types.mkAria . Types.AriaChecked <$> _
+      , mkGen Types.AriaColCount natural
+      , mkGen Types.AriaColIndex positive
+      , mkGen Types.AriaColIndexText text
+      , mkGen Types.AriaColspan positive
+      , mkGen Types.AriaControls listIds
+      -- , Types.mkAria . Types.AriaCurrent <$> _
+      , mkGen Types.AriaDescribedBy listIds
+      , mkGen Types.AriaDescription text
+      , mkGen Types.AriaDetails listIds
+      , mkGen Types.AriaDisabled Gen.bool
+      , mkGen Types.AriaErrorMessage nonEmptyIds
+      -- , Types.mkAria . Types.AriaExpanded <$> _
+      , mkGen Types.AriaFlowTo listIds
+      -- , Types.mkAria . Types.AriaHasPopup <$> _
+      -- , Types.mkAria . Types.AriaHidden <$> _
+      -- , Types.mkAria . Types.AriaInvalid <$> _
+      , mkGen Types.AriaKeyShortcuts text
+      , mkGen Types.AriaLabel text
+      , mkGen Types.AriaLabelledBy nonEmptyIds
+      , mkGen Types.AriaLevel positive
+      -- , Types.mkAria . Types.AriaLive <$> _
+      , mkGen Types.AriaModal Gen.bool
+      , mkGen Types.AriaMultiline Gen.bool
+      , mkGen Types.AriaMultiselectable Gen.bool
+      -- , Types.mkAria . Types.AriaOrientation <$> _
+      , mkGen Types.AriaOwns listIds
+      , mkGen Types.AriaPlaceholder text
+      , mkGen Types.AriaPosInSet positive
+      -- , Types.mkAria . Types.AriaPressed <$> _
+      , mkGen Types.AriaReadOnly Gen.bool
+      -- , Types.mkAria . Types.AriaRelevant <$> _
+      , mkGen Types.AriaRequired Gen.bool
+      , mkGen Types.AriaRoleDescription nonEmptyText
+      , mkGen Types.AriaRowCount integer
+      , mkGen Types.AriaRowIndex positive
+      , mkGen Types.AriaRowIndexText text
+      , mkGen Types.AriaRowspan natural
+      -- , Types.mkAria . Types.AriaSelected <$> _
+      , mkGen Types.AriaSetSize integer
+      -- , Types.mkAria . Types.AriaSort <$> _
+      , mkGen Types.AriaValueMax number
+      , mkGen Types.AriaValueMin number
+      , mkGen Types.AriaValueNow number
+      , mkGen Types.AriaValueText text
+      ]

@@ -5,12 +5,14 @@ module Brigid.HTML.Attributes
   , customBooleanAttribute
   , module Global
   , module Scoped
+  , module Aria
   , module HTMX
   , module Other
   ) where
 
 import Data.Text qualified as T
 
+import Brigid.HTML.Attributes.Aria as Aria
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Global as Global
 import Brigid.HTML.Attributes.HTMX as HTMX

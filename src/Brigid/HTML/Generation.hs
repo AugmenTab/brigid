@@ -158,6 +158,7 @@ module Brigid.HTML.Generation
   , width
   , wrap
   , xmlns
+  , aria
   ) where
 
 import Prelude hiding (div, id, max, min, span)
@@ -312,6 +313,7 @@ import Brigid.HTML.Generation.Internal.Attributes as Attribute
   , width
   , wrap
   , xmlns
+  , aria
   )
 import Brigid.HTML.Generation.Internal.Build as Build
 import Brigid.HTML.Generation.Internal.Convert (toBrigid)

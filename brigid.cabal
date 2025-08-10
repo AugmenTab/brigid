@@ -49,6 +49,7 @@ library
       Brigid.HXML.Types
       Brigid.Types
   other-modules:
+      Brigid.HTML.Attributes.Aria
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Autocomplete
       Brigid.HTML.Attributes.Elements
@@ -89,6 +90,7 @@ library
       Brigid.HTML.Generation.Internal.Types
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Types.Action
+      Brigid.HTML.Types.Aria
       Brigid.HTML.Types.As
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken

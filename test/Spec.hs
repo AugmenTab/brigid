@@ -195,6 +195,7 @@ allAttributeGenerators =
   , ("Wrap", Gen.wrap)
   , ("WritingSuggestions", Gen.writingsuggestions)
   , ("XMLNS", Gen.xmlns)
+  , ("Aria", Gen.aria)
   ]
 
 mkElementTestCase :: GE.ElementType -> Tasty.TestTree

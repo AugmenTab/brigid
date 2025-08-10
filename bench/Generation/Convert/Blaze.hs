@@ -634,6 +634,13 @@ toAttribute attr =
     GA.XMLNS xmlns ->
       A.xmlns $ textToBlaze Types.rawURLToText xmlns
 
+    -- ARIA Attributes
+    --
+    GA.Aria aria ->
+      H.customAttribute
+        (H.textTag $ Types.ariaAttributeToText aria)
+        (textToBlaze id $ Types.ariaValueToText aria)
+
 boolToBlaze :: Bool -> H.AttributeValue
 boolToBlaze b =
   if b

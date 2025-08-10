@@ -1025,6 +1025,14 @@ renderAttribute attr =
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToText xmlns
 
+    -- ARIA Attributes
+    --
+    Attr_Aria aria ->
+      Just $
+        buildAttribute
+          (Types.ariaAttributeToText aria)
+          (Types.ariaValueToText aria)
+
     -- HTMX Attributes
     --
     Attr_Htmx url ->

@@ -334,6 +334,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_value
   , attr_width
   , attr_wrap
+  , attr_aria
   , attr_xmlns
   , attr_hxGet
   , attr_hxPost
@@ -709,6 +710,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
 
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
+import Brigid.HTML.Types.Aria (Aria, AriaTypes, ariaAttributeToBytes, ariaAttributeToText, ariaValueToText, mkAria)
 import Brigid.HTML.Types.As (As, asToText)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
@@ -2558,6 +2560,10 @@ data AttributeType
   | Attr_Wrap
   | Attr_XMLNS
 
+  -- ARIA Attributes
+  --
+  | Attr_Aria Aria
+
   -- HTMX Attributes
   --
   | Attr_HxGet
@@ -2755,6 +2761,10 @@ attributeTypeToBytes attr =
     Attr_Width                    -> "width"
     Attr_Wrap                     -> "wrap"
     Attr_XMLNS                    -> "xmlns"
+
+    -- ARIA Attributes
+    --
+    Attr_Aria aria -> ariaAttributeToBytes aria
 
     -- HTMX Attributes
     --
@@ -3174,6 +3184,10 @@ attributeTypeToText attr =
     Attr_Width                    -> "width"
     Attr_Wrap                     -> "wrap"
     Attr_XMLNS                    -> "xmlns"
+
+    -- ARIA Attributes
+    --
+    Attr_Aria aria -> ariaAttributeToText aria
 
     -- HTMX Attributes
     --
@@ -3787,6 +3801,17 @@ attr_xmlns :: ( KnownNat branchIndex
            => url -> AttributeSelector
 attr_xmlns =
   (,) Attr_XMLNS . Just . urlToText . mkURL
+
+-- ARIA Attributes
+--
+
+attr_aria :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf aria AriaTypes)
+          => aria -> AttributeSelector
+attr_aria a =
+  let
+    aria = mkAria a
+  in
+    (Attr_Aria aria, Just $ ariaValueToText aria)
 
 -- HTMX Attributes
 --

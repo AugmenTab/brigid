@@ -660,6 +660,14 @@ toAttribute attr =
     GA.XMLNS xmlns ->
       Just . H.xmlns_ $ Types.rawURLToText xmlns
 
+    -- ARIA Attributes
+    --
+    GA.Aria aria ->
+      Just $
+        B.makeAttribute
+          (Types.ariaAttributeToText aria)
+          (Types.ariaValueToText aria)
+
 boolText :: Bool -> T.Text
 boolText b =
   if b

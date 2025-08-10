@@ -155,6 +155,8 @@ module Brigid.HTML.Attributes.Internal
       , Attr_Wrap
       , Attr_XMLNS
 
+      , Attr_Aria
+
       , Attr_Htmx
       , Attr_HxBoost
       , Attr_HxConfirm
@@ -903,6 +905,12 @@ data Attribute (tag :: TagType) where
     => Types.URL
     -> Attribute tag
 
+  -- ARIA
+  --
+  Attr_Aria
+    :: Types.Aria
+    -> Attribute tag
+
   -- HTMX Attributes
   --
   Attr_Htmx
@@ -1167,6 +1175,7 @@ instance Eq (Attribute tag) where
       (Attr_Width a1, Attr_Width a2) -> a1 == a2
       (Attr_Wrap a1, Attr_Wrap a2) -> a1 == a2
       (Attr_XMLNS a1, Attr_XMLNS a2) -> a1 == a2
+      (Attr_Aria a1, Attr_Aria a2) -> a1 == a2
       (Attr_Htmx a1, Attr_Htmx a2) -> eqRelativeURL a1 a2
       (Attr_HxBoost a1, Attr_HxBoost a2) -> a1 == a2
       (Attr_HxConfirm a1, Attr_HxConfirm a2) -> a1 == a2
@@ -1647,6 +1656,11 @@ attributeText attr =
 
     Attr_XMLNS _xmlns ->
       "xmlns"
+
+    -- ARIA
+    --
+    Attr_Aria aria ->
+      Types.ariaAttributeToText aria
 
     -- HTMX Attributes
     --
