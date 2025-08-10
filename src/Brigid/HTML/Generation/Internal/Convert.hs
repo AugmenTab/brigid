@@ -8576,7 +8576,7 @@ mkGlobalAttr attr =
             . Shrubbery.branchBuild
             . Shrubbery.branch @Types.AriaActiveDescendant (A.aria_activedescendant . Types.unAriaActiveDescendant)
             . Shrubbery.branch @Types.AriaAtomic (A.aria_atomic . Types.unAriaAtomic)
-            -- . AriaAutocomplete
+            . Shrubbery.branch @Types.AriaAutocomplete (A.aria_autocomplete . Types.unAriaAutocomplete)
             . Shrubbery.branch @Types.AriaBrailleLabel (A.aria_braillelabel . Types.unAriaBrailleLabel)
             . Shrubbery.branch @Types.AriaBrailleRoleDescription (A.aria_brailleroledescription . Types.unAriaBrailleRoleDescription)
             . Shrubbery.branch @Types.AriaBusy (A.aria_busy . Types.unAriaBusy)
@@ -8601,7 +8601,7 @@ mkGlobalAttr attr =
             . Shrubbery.branch @Types.AriaLabel (A.aria_label . Types.unAriaLabel)
             . Shrubbery.branch @Types.AriaLabelledBy (A.aria_labelledby . Types.unAriaLabelledBy)
             . Shrubbery.branch @Types.AriaLevel (A.aria_level . Types.unAriaLevel)
-            -- . AriaLive
+            . Shrubbery.branch @Types.AriaLive (A.aria_live . Types.unAriaLive)
             . Shrubbery.branch @Types.AriaModal (A.aria_modal . Types.unAriaModal)
             . Shrubbery.branch @Types.AriaMultiline (A.aria_multiline . Types.unAriaMultiline)
             . Shrubbery.branch @Types.AriaMultiselectable (A.aria_multiselectable . Types.unAriaMultiselectable)
@@ -8611,7 +8611,7 @@ mkGlobalAttr attr =
             . Shrubbery.branch @Types.AriaPosInSet (A.aria_posinset . Types.unAriaPosInSet)
             -- . AriaPressed
             . Shrubbery.branch @Types.AriaReadOnly (A.aria_readonly . Types.unAriaReadOnly)
-            -- . AriaRelevant
+            . Shrubbery.branch @Types.AriaRelevant (A.aria_relevant . Types.unAriaRelevant)
             . Shrubbery.branch @Types.AriaRequired (A.aria_required . Types.unAriaRequired)
             . Shrubbery.branch @Types.AriaRoleDescription (A.aria_roledescription . Types.unAriaRoleDescription)
             . Shrubbery.branch @Types.AriaRowCount (A.aria_rowcount . Types.unAriaRowCount)
@@ -8620,11 +8620,12 @@ mkGlobalAttr attr =
             . Shrubbery.branch @Types.AriaRowspan (A.aria_rowspan . Types.unAriaRowspan)
             -- . AriaSelected
             . Shrubbery.branch @Types.AriaSetSize (A.aria_setsize . Types.unAriaSetSize)
-            -- . AriaSort
+            . Shrubbery.branch @Types.AriaSort (A.aria_sort . Types.unAriaSort)
             . Shrubbery.branch @Types.AriaValueMax (A.aria_valuemax . Types.unAriaValueMax)
             . Shrubbery.branch @Types.AriaValueMin (A.aria_valuemin . Types.unAriaValueMin)
             . Shrubbery.branch @Types.AriaValueNow (A.aria_valuenow . Types.unAriaValueNow)
             . Shrubbery.branch @Types.AriaValueText (A.aria_valuetext . Types.unAriaValueText)
+            . Shrubbery.branch @Types.RawAria A.aria
             $ Shrubbery.branchEnd
         ) (Types.unAria aria)
 

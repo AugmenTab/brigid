@@ -494,7 +494,7 @@ aria =
     Gen.choice
       [ mkGen Types.AriaActiveDescendant id
       , mkGen Types.AriaAtomic Gen.bool
-      -- , Types.mkAria . Types.AriaAutocomplete <$> _
+      , mkGen Types.AriaAutocomplete ariaAutocompleteOption
       , mkGen Types.AriaBrailleLabel text
       , mkGen Types.AriaBrailleRoleDescription text
       , mkGen Types.AriaBusy Gen.bool
@@ -519,7 +519,7 @@ aria =
       , mkGen Types.AriaLabel text
       , mkGen Types.AriaLabelledBy nonEmptyIds
       , mkGen Types.AriaLevel positive
-      -- , Types.mkAria . Types.AriaLive <$> _
+      , mkGen Types.AriaLive ariaLiveOption
       , mkGen Types.AriaModal Gen.bool
       , mkGen Types.AriaMultiline Gen.bool
       , mkGen Types.AriaMultiselectable Gen.bool
@@ -527,9 +527,9 @@ aria =
       , mkGen Types.AriaOwns listIds
       , mkGen Types.AriaPlaceholder text
       , mkGen Types.AriaPosInSet positive
-      -- , Types.mkAria . Types.AriaPressed <$> _
+      -- , mkGen Types.AriaPressed _
       , mkGen Types.AriaReadOnly Gen.bool
-      -- , Types.mkAria . Types.AriaRelevant <$> _
+      , mkGen Types.AriaRelevant ariaRelevantOption
       , mkGen Types.AriaRequired Gen.bool
       , mkGen Types.AriaRoleDescription nonEmptyText
       , mkGen Types.AriaRowCount integer
@@ -538,9 +538,32 @@ aria =
       , mkGen Types.AriaRowspan natural
       -- , Types.mkAria . Types.AriaSelected <$> _
       , mkGen Types.AriaSetSize integer
-      -- , Types.mkAria . Types.AriaSort <$> _
+      , mkGen Types.AriaSort ariaSortOption
       , mkGen Types.AriaValueMax number
       , mkGen Types.AriaValueMin number
       , mkGen Types.AriaValueNow number
       , mkGen Types.AriaValueText text
+      , Types.mkAria <$> rawAria
       ]
+
+ariaAutocompleteOption :: MonadGen m => m Types.AriaAutocompleteOption
+ariaAutocompleteOption =
+  Gen.enumBounded
+
+ariaLiveOption :: MonadGen m => m Types.AriaLiveOption
+ariaLiveOption =
+  Gen.enumBounded
+
+ariaRelevantOption :: MonadGen m => m Types.AriaRelevantOption
+ariaRelevantOption =
+  Gen.enumBounded
+
+ariaSortOption :: MonadGen m => m Types.AriaSortOption
+ariaSortOption =
+  Gen.enumBounded
+
+rawAria :: MonadGen m => m Types.RawAria
+rawAria =
+  Types.RawAria
+    <$> nonEmptyText
+    <*> text

@@ -4,9 +4,10 @@
 
 module Brigid.HTML.Attributes.Aria
   ( AttributeTags.Aria
+  , aria
   , aria_activedescendant
   , aria_atomic
-  -- , aria_autocomplete
+  , aria_autocomplete
   , aria_braillelabel
   , aria_brailleroledescription
   , aria_busy
@@ -31,7 +32,7 @@ module Brigid.HTML.Attributes.Aria
   , aria_label
   , aria_labelledby
   , aria_level
-  -- , aria_live
+  , aria_live
   , aria_modal
   , aria_multiline
   , aria_multiselectable
@@ -41,7 +42,7 @@ module Brigid.HTML.Attributes.Aria
   , aria_posinset
   -- , aria_pressed
   , aria_readonly
-  -- , aria_relevant
+  , aria_relevant
   , aria_required
   , aria_roledescription
   , aria_rowcount
@@ -50,7 +51,7 @@ module Brigid.HTML.Attributes.Aria
   , aria_rowspan
   -- , aria_selected
   , aria_setsize
-  -- , aria_sort
+  , aria_sort
   , aria_valuemax
   , aria_valuemin
   , aria_valuenow
@@ -69,6 +70,10 @@ import Brigid.HTML.Types qualified as Types
 import Brigid.HTML.Types.Aria qualified as Aria
 import Brigid.Types qualified as Types
 
+aria :: Types.RawAria -> Attribute tag
+aria =
+  Attr_Aria . Aria.mkAria
+
 aria_activedescendant :: Types.Id -> Attribute tag
 aria_activedescendant =
   Attr_Aria . Aria.mkAria . Aria.AriaActiveDescendant
@@ -77,7 +82,9 @@ aria_atomic :: Bool -> Attribute tag
 aria_atomic =
   Attr_Aria . Aria.mkAria . Aria.AriaAtomic
 
--- aria_autocomplete
+aria_autocomplete :: Types.AriaAutocompleteOption -> Attribute tag
+aria_autocomplete =
+  Attr_Aria . Aria.mkAria . Aria.AriaAutocomplete
 
 aria_braillelabel :: T.Text -> Attribute tag
 aria_braillelabel =
@@ -163,7 +170,9 @@ aria_level :: Positive -> Attribute tag
 aria_level =
   Attr_Aria . Aria.mkAria . Aria.AriaLevel
 
--- aria_live
+aria_live :: Types.AriaLiveOption -> Attribute tag
+aria_live =
+  Attr_Aria . Aria.mkAria . Aria.AriaLive
 
 aria_modal :: Bool -> Attribute tag
 aria_modal =
@@ -197,7 +206,9 @@ aria_readonly :: Bool -> Attribute tag
 aria_readonly =
   Attr_Aria . Aria.mkAria . Aria.AriaReadOnly
 
--- aria_relevant
+aria_relevant :: Types.AriaRelevantOption -> Attribute tag
+aria_relevant =
+  Attr_Aria . Aria.mkAria . Aria.AriaRelevant
 
 aria_required :: Bool -> Attribute tag
 aria_required =
@@ -229,7 +240,9 @@ aria_setsize :: Integer -> Attribute tag
 aria_setsize =
   Attr_Aria . Aria.mkAria . Aria.AriaSetSize
 
--- aria_sort
+aria_sort :: Types.AriaSortOption -> Attribute tag
+aria_sort =
+  Attr_Aria . Aria.mkAria . Aria.AriaSort
 
 aria_valuemax :: Types.Number -> Attribute tag
 aria_valuemax =

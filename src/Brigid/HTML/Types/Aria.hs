@@ -13,7 +13,7 @@ module Brigid.HTML.Types.Aria
   , ariaValueToText
   , AriaActiveDescendant (..)
   , AriaAtomic (..)
-  -- , AriaAutocomplete (..)
+  , AriaAutocomplete (..)
   , AriaBrailleLabel (..)
   , AriaBrailleRoleDescription (..)
   , AriaBusy (..)
@@ -38,7 +38,7 @@ module Brigid.HTML.Types.Aria
   , AriaLabel (..)
   , AriaLabelledBy (..)
   , AriaLevel (..)
-  -- , AriaLive (..)
+  , AriaLive (..)
   , AriaModal (..)
   , AriaMultiline (..)
   , AriaMultiselectable (..)
@@ -48,7 +48,7 @@ module Brigid.HTML.Types.Aria
   , AriaPosInSet (..)
   -- , AriaPressed (..)
   , AriaReadOnly (..)
-  -- , AriaRelevant (..)
+  , AriaRelevant (..)
   , AriaRequired (..)
   , AriaRoleDescription (..)
   , AriaRowCount (..)
@@ -57,11 +57,12 @@ module Brigid.HTML.Types.Aria
   , AriaRowspan (..)
   -- , AriaSelected (..)
   , AriaSetSize (..)
-  -- , AriaSort (..)
+  , AriaSort (..)
   , AriaValueMax (..)
   , AriaValueMin (..)
   , AriaValueNow (..)
   , AriaValueText (..)
+  , RawAria (..)
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
@@ -74,6 +75,7 @@ import Numeric.Natural (Natural)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
+import Brigid.HTML.Types.AriaOption qualified as Option
 import Brigid.HTML.Types.Number (Number)
 import Brigid.Internal.Render qualified as Render
 import Brigid.Types qualified as Types
@@ -86,7 +88,7 @@ newtype Aria =
 type AriaTypes =
   [ AriaActiveDescendant
   , AriaAtomic
-  -- , AriaAutocomplete
+  , AriaAutocomplete
   , AriaBrailleLabel
   , AriaBrailleRoleDescription
   , AriaBusy
@@ -111,7 +113,7 @@ type AriaTypes =
   , AriaLabel
   , AriaLabelledBy
   , AriaLevel
-  -- , AriaLive
+  , AriaLive
   , AriaModal
   , AriaMultiline
   , AriaMultiselectable
@@ -121,7 +123,7 @@ type AriaTypes =
   , AriaPosInSet
   -- , AriaPressed
   , AriaReadOnly
-  -- , AriaRelevant
+  , AriaRelevant
   , AriaRequired
   , AriaRoleDescription
   , AriaRowCount
@@ -130,11 +132,12 @@ type AriaTypes =
   , AriaRowspan
   -- , AriaSelected
   , AriaSetSize
-  -- , AriaSort
+  , AriaSort
   , AriaValueMax
   , AriaValueMin
   , AriaValueNow
   , AriaValueText
+  , RawAria
   ]
 
 mkAria :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf aria AriaTypes)
@@ -152,8 +155,10 @@ newtype AriaAtomic =
     { unAriaAtomic :: Bool
     } deriving (Eq, Show)
 
--- newtype AriaAutocomplete = AriaAutocomplete -- TODO
---   deriving (Eq, Show)
+newtype AriaAutocomplete =
+  AriaAutocomplete
+    { unAriaAutocomplete :: Option.AriaAutocompleteOption
+    } deriving (Eq, Show)
 
 newtype AriaBrailleLabel =
   AriaBrailleLabel
@@ -263,8 +268,10 @@ newtype AriaLevel =
     { unAriaLevel :: Positive
     } deriving (Eq, Show)
 
--- newtype AriaLive = AriaLive -- TODO
---   deriving (Eq, Show)
+newtype AriaLive =
+  AriaLive
+    { unAriaLive :: Option.AriaLiveOption
+    } deriving (Eq, Show)
 
 newtype AriaModal =
   AriaModal
@@ -299,16 +306,20 @@ newtype AriaPosInSet =
     { unAriaPosInSet :: Positive
     } deriving (Eq, Show)
 
--- newtype AriaPressed = AriaPressed -- TODO
---   deriving (Eq, Show)
+-- newtype AriaPressed =
+--   AriaPressed
+--     { unAriaPressed :: _
+--     } deriving (Eq, Show)
 
 newtype AriaReadOnly =
   AriaReadOnly
     { unAriaReadOnly :: Bool
     } deriving (Eq, Show)
 
--- newtype AriaRelevant = AriaRelevant -- TODO
---   deriving (Eq, Show)
+newtype AriaRelevant =
+  AriaRelevant
+    { unAriaRelevant :: Option.AriaRelevantOption
+    } deriving (Eq, Show)
 
 newtype AriaRequired =
   AriaRequired
@@ -348,8 +359,10 @@ newtype AriaSetSize =
     { unAriaSetSize :: Integer
     } deriving (Eq, Show)
 
--- newtype AriaSort = AriaSort -- TODO
---   deriving (Eq, Show)
+newtype AriaSort =
+  AriaSort
+    { unAriaSort :: Option.AriaSortOption
+    } deriving (Eq, Show)
 
 newtype AriaValueMax =
   AriaValueMax
@@ -371,13 +384,19 @@ newtype AriaValueText =
     { unAriaValueText :: T.Text
     } deriving (Eq, Show)
 
+data RawAria =
+  RawAria
+    { rawAriaAttribute :: NET.NonEmptyText
+    , rawAriaValue :: T.Text
+    } deriving (Eq, Show)
+
 ariaAttributeToBytes :: Aria -> LBS.ByteString
 ariaAttributeToBytes (Aria aria) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @AriaActiveDescendant (const "aria-activedescendant")
       . Shrubbery.branch @AriaAtomic (const "aria-atomic")
-      -- . Shrubbery.branch @AriaAutocomplete (const "aria-autocomplete")
+      . Shrubbery.branch @AriaAutocomplete (const "aria-autocomplete")
       . Shrubbery.branch @AriaBrailleLabel (const "aria-braillelabel")
       . Shrubbery.branch @AriaBrailleRoleDescription (const "aria-brailleroledescription")
       . Shrubbery.branch @AriaBusy (const "aria-busy")
@@ -402,7 +421,7 @@ ariaAttributeToBytes (Aria aria) =
       . Shrubbery.branch @AriaLabel (const "aria-label")
       . Shrubbery.branch @AriaLabelledBy (const "aria-labelledby")
       . Shrubbery.branch @AriaLevel (const "aria-level")
-      -- . Shrubbery.branch @AriaLive (const "aria-live")
+      . Shrubbery.branch @AriaLive (const "aria-live")
       . Shrubbery.branch @AriaModal (const "aria-modal")
       . Shrubbery.branch @AriaMultiline (const "aria-multiline")
       . Shrubbery.branch @AriaMultiselectable (const "aria-multiselectable")
@@ -412,7 +431,7 @@ ariaAttributeToBytes (Aria aria) =
       . Shrubbery.branch @AriaPosInSet (const "aria-posinset")
       -- . Shrubbery.branch @AriaPressed (const "aria-pressed")
       . Shrubbery.branch @AriaReadOnly (const "aria-readonly")
-      -- . Shrubbery.branch @AriaRelevant (const "aria-relevant")
+      . Shrubbery.branch @AriaRelevant (const "aria-relevant")
       . Shrubbery.branch @AriaRequired (const "aria-required")
       . Shrubbery.branch @AriaRoleDescription (const "aria-roledescription")
       . Shrubbery.branch @AriaRowCount (const "aria-rowcount")
@@ -421,11 +440,12 @@ ariaAttributeToBytes (Aria aria) =
       . Shrubbery.branch @AriaRowspan (const "aria-rowspan")
       -- . Shrubbery.branch @AriaSelected (const "aria-selected")
       . Shrubbery.branch @AriaSetSize (const "aria-setsize")
-      -- . Shrubbery.branch @AriaSort (const "aria-sort")
+      . Shrubbery.branch @AriaSort (const "aria-sort")
       . Shrubbery.branch @AriaValueMax (const "aria-valuemax")
       . Shrubbery.branch @AriaValueMin (const "aria-valuemin")
       . Shrubbery.branch @AriaValueNow (const "aria-valuenow")
       . Shrubbery.branch @AriaValueText (const "aria-valuetext")
+      . Shrubbery.branch @RawAria (("aria-" <>) . Render.textToLazyBytes . NET.toText . rawAriaAttribute)
       $ Shrubbery.branchEnd
   ) aria
 
@@ -435,7 +455,7 @@ ariaAttributeToText (Aria aria) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @AriaActiveDescendant (const "aria-activedescendant")
       . Shrubbery.branch @AriaAtomic (const "aria-atomic")
-      -- . Shrubbery.branch @AriaAutocomplete (const "aria-autocomplete")
+      . Shrubbery.branch @AriaAutocomplete (const "aria-autocomplete")
       . Shrubbery.branch @AriaBrailleLabel (const "aria-braillelabel")
       . Shrubbery.branch @AriaBrailleRoleDescription (const "aria-brailleroledescription")
       . Shrubbery.branch @AriaBusy (const "aria-busy")
@@ -460,7 +480,7 @@ ariaAttributeToText (Aria aria) =
       . Shrubbery.branch @AriaLabel (const "aria-label")
       . Shrubbery.branch @AriaLabelledBy (const "aria-labelledby")
       . Shrubbery.branch @AriaLevel (const "aria-level")
-      -- . Shrubbery.branch @AriaLive (const "aria-live")
+      . Shrubbery.branch @AriaLive (const "aria-live")
       . Shrubbery.branch @AriaModal (const "aria-modal")
       . Shrubbery.branch @AriaMultiline (const "aria-multiline")
       . Shrubbery.branch @AriaMultiselectable (const "aria-multiselectable")
@@ -470,7 +490,7 @@ ariaAttributeToText (Aria aria) =
       . Shrubbery.branch @AriaPosInSet (const "aria-posinset")
       -- . Shrubbery.branch @AriaPressed (const "aria-pressed")
       . Shrubbery.branch @AriaReadOnly (const "aria-readonly")
-      -- . Shrubbery.branch @AriaRelevant (const "aria-relevant")
+      . Shrubbery.branch @AriaRelevant (const "aria-relevant")
       . Shrubbery.branch @AriaRequired (const "aria-required")
       . Shrubbery.branch @AriaRoleDescription (const "aria-roledescription")
       . Shrubbery.branch @AriaRowCount (const "aria-rowcount")
@@ -479,11 +499,12 @@ ariaAttributeToText (Aria aria) =
       . Shrubbery.branch @AriaRowspan (const "aria-rowspan")
       -- . Shrubbery.branch @AriaSelected (const "aria-selected")
       . Shrubbery.branch @AriaSetSize (const "aria-setsize")
-      -- . Shrubbery.branch @AriaSort (const "aria-sort")
+      . Shrubbery.branch @AriaSort (const "aria-sort")
       . Shrubbery.branch @AriaValueMax (const "aria-valuemax")
       . Shrubbery.branch @AriaValueMin (const "aria-valuemin")
       . Shrubbery.branch @AriaValueNow (const "aria-valuenow")
       . Shrubbery.branch @AriaValueText (const "aria-valuetext")
+      . Shrubbery.branch @RawAria (("aria-" <>) . NET.toText . rawAriaAttribute)
       $ Shrubbery.branchEnd
   ) aria
 
@@ -493,7 +514,7 @@ ariaValueToBytes (Aria aria) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @AriaActiveDescendant (Types.idToBytes . unAriaActiveDescendant)
       . Shrubbery.branch @AriaAtomic (Render.enumBoolToBytes . unAriaAtomic)
-      -- . Shrubbery.branch @AriaAutocomplete _
+      . Shrubbery.branch @AriaAutocomplete (Option.ariaAutocompleteOptionToBytes . unAriaAutocomplete)
       . Shrubbery.branch @AriaBrailleLabel (Render.textToLazyBytes . unAriaBrailleLabel)
       . Shrubbery.branch @AriaBrailleRoleDescription (Render.textToLazyBytes . unAriaBrailleRoleDescription)
       . Shrubbery.branch @AriaBusy (Render.enumBoolToBytes . unAriaBusy)
@@ -518,7 +539,7 @@ ariaValueToBytes (Aria aria) =
       . Shrubbery.branch @AriaLabel (Render.textToLazyBytes . unAriaLabel)
       . Shrubbery.branch @AriaLabelledBy (Render.foldToBytesWithSeparator Types.idToBytes " " . NEL.toList . unAriaLabelledBy)
       . Shrubbery.branch @AriaLevel (Render.showBytes . unAriaLevel)
-      -- . Shrubbery.branch @AriaLive _
+      . Shrubbery.branch @AriaLive (Option.ariaLiveOptionToBytes . unAriaLive)
       . Shrubbery.branch @AriaModal (Render.enumBoolToBytes . unAriaModal)
       . Shrubbery.branch @AriaMultiline (Render.enumBoolToBytes . unAriaMultiline)
       . Shrubbery.branch @AriaMultiselectable (Render.enumBoolToBytes . unAriaMultiselectable)
@@ -528,7 +549,7 @@ ariaValueToBytes (Aria aria) =
       . Shrubbery.branch @AriaPosInSet (Render.showBytes . unAriaPosInSet)
       -- . Shrubbery.branch @AriaPressed _
       . Shrubbery.branch @AriaReadOnly (Render.showBytes . unAriaReadOnly)
-      -- . Shrubbery.branch @AriaRelevant _
+      . Shrubbery.branch @AriaRelevant (Option.ariaRelevantOptionToBytes . unAriaRelevant)
       . Shrubbery.branch @AriaRequired (Render.enumBoolToBytes . unAriaRequired)
       . Shrubbery.branch @AriaRoleDescription (Render.textToLazyBytes . NET.toText . unAriaRoleDescription)
       . Shrubbery.branch @AriaRowCount (Render.showBytes . unAriaRowCount)
@@ -537,11 +558,12 @@ ariaValueToBytes (Aria aria) =
       . Shrubbery.branch @AriaRowspan (Render.showBytes . unAriaRowspan)
       -- . Shrubbery.branch @AriaSelected _
       . Shrubbery.branch @AriaSetSize (Render.showBytes . unAriaSetSize)
-      -- . Shrubbery.branch @AriaSort _
+      . Shrubbery.branch @AriaSort (Option.ariaSortOptionToBytes . unAriaSort)
       . Shrubbery.branch @AriaValueMax (Render.showBytes . unAriaValueMax)
       . Shrubbery.branch @AriaValueMin (Render.showBytes . unAriaValueMin)
       . Shrubbery.branch @AriaValueNow (Render.showBytes . unAriaValueNow)
       . Shrubbery.branch @AriaValueText (Render.textToLazyBytes . unAriaValueText)
+      . Shrubbery.branch @RawAria (Render.textToLazyBytes . rawAriaValue)
       $ Shrubbery.branchEnd
   ) aria
 
@@ -551,7 +573,7 @@ ariaValueToText (Aria aria) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @AriaActiveDescendant (Types.idToText . unAriaActiveDescendant)
       . Shrubbery.branch @AriaAtomic (Render.enumBoolToText . unAriaAtomic)
-      -- . Shrubbery.branch @AriaAutocomplete _
+      . Shrubbery.branch @AriaAutocomplete (Option.ariaAutocompleteOptionToText . unAriaAutocomplete)
       . Shrubbery.branch @AriaBrailleLabel unAriaBrailleLabel
       . Shrubbery.branch @AriaBrailleRoleDescription unAriaBrailleRoleDescription
       . Shrubbery.branch @AriaBusy (Render.enumBoolToText . unAriaBusy)
@@ -576,7 +598,7 @@ ariaValueToText (Aria aria) =
       . Shrubbery.branch @AriaLabel unAriaLabel
       . Shrubbery.branch @AriaLabelledBy (Render.foldToTextWithSeparator Types.idToText " " . NEL.toList . unAriaLabelledBy)
       . Shrubbery.branch @AriaLevel (Render.showText . unAriaLevel)
-      -- . Shrubbery.branch @AriaLive _
+      . Shrubbery.branch @AriaLive (Option.ariaLiveOptionToText . unAriaLive)
       . Shrubbery.branch @AriaModal (Render.enumBoolToText . unAriaModal)
       . Shrubbery.branch @AriaMultiline (Render.enumBoolToText . unAriaMultiline)
       . Shrubbery.branch @AriaMultiselectable (Render.enumBoolToText . unAriaMultiselectable)
@@ -586,7 +608,7 @@ ariaValueToText (Aria aria) =
       . Shrubbery.branch @AriaPosInSet (Render.showText . unAriaPosInSet)
       -- . Shrubbery.branch @AriaPressed _
       . Shrubbery.branch @AriaReadOnly (Render.showText . unAriaReadOnly)
-      -- . Shrubbery.branch @AriaRelevant _
+      . Shrubbery.branch @AriaRelevant (Option.ariaRelevantOptionToText . unAriaRelevant)
       . Shrubbery.branch @AriaRequired (Render.enumBoolToText . unAriaRequired)
       . Shrubbery.branch @AriaRoleDescription (NET.toText . unAriaRoleDescription)
       . Shrubbery.branch @AriaRowCount (Render.showText . unAriaRowCount)
@@ -595,10 +617,11 @@ ariaValueToText (Aria aria) =
       . Shrubbery.branch @AriaRowspan (Render.showText . unAriaRowspan)
       -- . Shrubbery.branch @AriaSelected _
       . Shrubbery.branch @AriaSetSize (Render.showText . unAriaSetSize)
-      -- . Shrubbery.branch @AriaSort _
+      . Shrubbery.branch @AriaSort (Option.ariaSortOptionToText . unAriaSort)
       . Shrubbery.branch @AriaValueMax (Render.showText . unAriaValueMax)
       . Shrubbery.branch @AriaValueMin (Render.showText . unAriaValueMin)
       . Shrubbery.branch @AriaValueNow (Render.showText . unAriaValueNow)
       . Shrubbery.branch @AriaValueText unAriaValueText
+      . Shrubbery.branch @RawAria rawAriaValue
       $ Shrubbery.branchEnd
   ) aria

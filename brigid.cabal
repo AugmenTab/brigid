@@ -91,6 +91,7 @@ library
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.Aria
+      Brigid.HTML.Types.AriaOption
       Brigid.HTML.Types.As
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
