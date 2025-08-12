@@ -77,6 +77,7 @@ import Hedgehog.Range qualified as Range
 import Integer (Positive)
 import Numeric.Natural (Natural)
 import Prelude hiding (id)
+import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types qualified as Types
@@ -504,7 +505,7 @@ aria =
       , mkGen Types.AriaColIndexText text
       , mkGen Types.AriaColspan positive
       , mkGen Types.AriaControls listIds
-      -- , Types.mkAria . Types.AriaCurrent <$> _
+      , Types.mkAria <$> ariaCurrent
       , mkGen Types.AriaDescribedBy listIds
       , mkGen Types.AriaDescription text
       , mkGen Types.AriaDetails listIds
@@ -549,6 +550,17 @@ aria =
 ariaAutocompleteOption :: MonadGen m => m Types.AriaAutocompleteOption
 ariaAutocompleteOption =
   Gen.enumBounded
+
+ariaCurrent :: MonadGen m => m Types.AriaCurrent
+ariaCurrent =
+  Gen.choice
+    [ pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaPage
+    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaStep
+    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaLocation
+    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaDate
+    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaTime
+    , Types.AriaCurrent . Shrubbery.unify <$> Gen.bool
+    ]
 
 ariaLiveOption :: MonadGen m => m Types.AriaLiveOption
 ariaLiveOption =

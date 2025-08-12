@@ -1,5 +1,3 @@
-{-# LANGUAGE TypeApplications #-}
-
 module Brigid.HTML.Generation.Internal.Convert
   ( toBrigid
   ) where
@@ -9,13 +7,12 @@ import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Validation qualified as V
 import Prelude hiding (div, max, min, span)
-import Shrubbery qualified
 
 import Brigid.HTML.Attributes qualified as A
+import Brigid.HTML.Attributes.Internal qualified as Attr
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Internal.Types (Element (..), ElementNode (..), ElementType (..), NodeType (..))
-import Brigid.HTML.Types qualified as Types
 
 type Validator a =
   V.Validation [String] a
@@ -8571,63 +8568,7 @@ mkGlobalAttr attr =
       V.Success $ A.writingsuggestions writingsuggestions
 
     GA.Aria aria ->
-      V.Success $
-        ( Shrubbery.dissect
-            . Shrubbery.branchBuild
-            . Shrubbery.branch @Types.AriaActiveDescendant (A.aria_activedescendant . Types.unAriaActiveDescendant)
-            . Shrubbery.branch @Types.AriaAtomic (A.aria_atomic . Types.unAriaAtomic)
-            . Shrubbery.branch @Types.AriaAutocomplete (A.aria_autocomplete . Types.unAriaAutocomplete)
-            . Shrubbery.branch @Types.AriaBrailleLabel (A.aria_braillelabel . Types.unAriaBrailleLabel)
-            . Shrubbery.branch @Types.AriaBrailleRoleDescription (A.aria_brailleroledescription . Types.unAriaBrailleRoleDescription)
-            . Shrubbery.branch @Types.AriaBusy (A.aria_busy . Types.unAriaBusy)
-            -- . AriaChecked
-            . Shrubbery.branch @Types.AriaColCount (A.aria_colcount . Types.unAriaColCount)
-            . Shrubbery.branch @Types.AriaColIndex (A.aria_colindex . Types.unAriaColIndex)
-            . Shrubbery.branch @Types.AriaColIndexText (A.aria_colindextext . Types.unAriaColIndexText)
-            . Shrubbery.branch @Types.AriaColspan (A.aria_colspan . Types.unAriaColspan)
-            . Shrubbery.branch @Types.AriaControls (A.aria_controls . Types.unAriaControls)
-            -- . AriaCurrent
-            . Shrubbery.branch @Types.AriaDescribedBy (A.aria_describedby . Types.unAriaDescribedBy)
-            . Shrubbery.branch @Types.AriaDescription (A.aria_description . Types.unAriaDescription)
-            . Shrubbery.branch @Types.AriaDetails (A.aria_details . Types.unAriaDetails)
-            . Shrubbery.branch @Types.AriaDisabled (A.aria_disabled . Types.unAriaDisabled)
-            . Shrubbery.branch @Types.AriaErrorMessage (A.aria_errormessage . Types.unAriaErrorMessage)
-            -- . AriaExpanded
-            . Shrubbery.branch @Types.AriaFlowTo (A.aria_flowto . Types.unAriaFlowTo)
-            -- . AriaHasPopup
-            -- . AriaHidden
-            -- . AriaInvalid
-            . Shrubbery.branch @Types.AriaKeyShortcuts (A.aria_keyshortcuts . Types.unAriaKeyShortcuts)
-            . Shrubbery.branch @Types.AriaLabel (A.aria_label . Types.unAriaLabel)
-            . Shrubbery.branch @Types.AriaLabelledBy (A.aria_labelledby . Types.unAriaLabelledBy)
-            . Shrubbery.branch @Types.AriaLevel (A.aria_level . Types.unAriaLevel)
-            . Shrubbery.branch @Types.AriaLive (A.aria_live . Types.unAriaLive)
-            . Shrubbery.branch @Types.AriaModal (A.aria_modal . Types.unAriaModal)
-            . Shrubbery.branch @Types.AriaMultiline (A.aria_multiline . Types.unAriaMultiline)
-            . Shrubbery.branch @Types.AriaMultiselectable (A.aria_multiselectable . Types.unAriaMultiselectable)
-            -- . AriaOrientation
-            . Shrubbery.branch @Types.AriaOwns (A.aria_owns . Types.unAriaOwns)
-            . Shrubbery.branch @Types.AriaPlaceholder (A.aria_placeholder . Types.unAriaPlaceholder)
-            . Shrubbery.branch @Types.AriaPosInSet (A.aria_posinset . Types.unAriaPosInSet)
-            -- . AriaPressed
-            . Shrubbery.branch @Types.AriaReadOnly (A.aria_readonly . Types.unAriaReadOnly)
-            . Shrubbery.branch @Types.AriaRelevant (A.aria_relevant . Types.unAriaRelevant)
-            . Shrubbery.branch @Types.AriaRequired (A.aria_required . Types.unAriaRequired)
-            . Shrubbery.branch @Types.AriaRoleDescription (A.aria_roledescription . Types.unAriaRoleDescription)
-            . Shrubbery.branch @Types.AriaRowCount (A.aria_rowcount . Types.unAriaRowCount)
-            . Shrubbery.branch @Types.AriaRowIndex (A.aria_rowindex . Types.unAriaRowIndex)
-            . Shrubbery.branch @Types.AriaRowIndexText (A.aria_rowindextext . Types.unAriaRowIndexText)
-            . Shrubbery.branch @Types.AriaRowspan (A.aria_rowspan . Types.unAriaRowspan)
-            -- . AriaSelected
-            . Shrubbery.branch @Types.AriaSetSize (A.aria_setsize . Types.unAriaSetSize)
-            . Shrubbery.branch @Types.AriaSort (A.aria_sort . Types.unAriaSort)
-            . Shrubbery.branch @Types.AriaValueMax (A.aria_valuemax . Types.unAriaValueMax)
-            . Shrubbery.branch @Types.AriaValueMin (A.aria_valuemin . Types.unAriaValueMin)
-            . Shrubbery.branch @Types.AriaValueNow (A.aria_valuenow . Types.unAriaValueNow)
-            . Shrubbery.branch @Types.AriaValueText (A.aria_valuetext . Types.unAriaValueText)
-            . Shrubbery.branch @Types.RawAria A.aria
-            $ Shrubbery.branchEnd
-        ) (Types.unAria aria)
+      V.Success $ Attr.Attr_Aria aria
 
     _attr ->
       V.Failure $

@@ -17,7 +17,7 @@ module Brigid.HTML.Attributes.Aria
   , aria_colindextext
   , aria_colspan
   , aria_controls
-  -- , aria_current
+  , aria_current
   , aria_describedby
   , aria_description
   , aria_details
@@ -61,8 +61,11 @@ module Brigid.HTML.Attributes.Aria
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import GHC.TypeLits (KnownNat)
 import Integer (Positive)
 import Numeric.Natural (Natural)
+import Shrubbery qualified
+import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Tags qualified as AttributeTags
@@ -120,7 +123,12 @@ aria_controls :: [Types.Id] -> Attribute tag
 aria_controls =
   Attr_Aria . Aria.mkAria . Aria.AriaControls
 
--- aria_current
+aria_current :: ( KnownNat branchIndex
+                , branchIndex ~ FirstIndexOf aria Types.AriaCurrentTypes
+                )
+             => aria -> Attribute tag
+aria_current =
+  Attr_Aria . Aria.mkAria . Aria.AriaCurrent . Shrubbery.unify
 
 aria_describedby :: [Types.Id] -> Attribute tag
 aria_describedby =
