@@ -1,0 +1,29 @@
+<<: !include stack-base.yml
+
+resolver: lts-22.39
+
+extra-deps:
+# Beeline
+- github: flipstone/beeline
+  commit: ad51a5197ba71b44f27fd760c6c241ac67f0a52f
+  subdirs:
+    - beeline-http-client
+    - beeline-params
+    - beeline-routing
+# Fleece
+- git: https://github.com/flipstone/json-fleece.git
+  commit: 818a3f6dba2a18bec4b6a267365c97eb5e0bf2d4
+  subdirs:
+    - json-fleece-aeson
+    - json-fleece-core
+# libphonenumber
+- git: https://github.com/typeable/libphonenumber.git
+  commit: 5e03e45e2ef02b17a9d0ec3b1e951ef7214cba4a
+# Non-Empty Text
+- non-empty-text-0.2.0@sha256:2260e4d13526502435234b8033da025bba0f3358,2438
+# Ogma
+- github: AugmenTab/ogma
+  commit: b826f12c2a5481019211bc647fa0dec422ea4a55
+# Shrubbery
+- github: flipstone/shrubbery
+  commit: 11cb7d675d3f7d786fdb061a43f118866eb95a31
