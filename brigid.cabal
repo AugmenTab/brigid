@@ -195,6 +195,7 @@ library
       Brigid.Internal.Entities
       Brigid.Internal.Escape
       Brigid.Internal.Render
+      Brigid.Internal.Use
       Brigid.Types.Conversions
       Brigid.Types.EmailAddress
       Brigid.Types.HexColor
@@ -218,6 +219,7 @@ library
     , beeline-http-client
     , beeline-routing
     , bytestring
+    , constraints
     , containers
     , crypton
     , extra
@@ -261,6 +263,7 @@ test-suite brigid-test
     , beeline-routing
     , brigid
     , bytestring
+    , constraints
     , containers
     , crypton
     , extra
@@ -310,6 +313,7 @@ benchmark brigid-bench
     , blaze-html
     , brigid
     , bytestring
+    , constraints
     , containers
     , crypton
     , extra

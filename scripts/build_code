@@ -11,7 +11,7 @@ for stack_file in stack-ghc*.yaml; do
   log_file="./test-all-logs/$stack_file.log"
 
   echo "Testing with $stack_file..."
-  if stack --stack-yaml "$stack_yaml" build --fast --test >"$log_file" 2>&1; then
+  if stack --stack-yaml "$stack_file" build --fast --test >"$log_file" 2>&1; then
     echo "Passed"
   else
     SOME_TEST_FAILED=1

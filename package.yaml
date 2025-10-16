@@ -29,6 +29,7 @@ dependencies:
 - beeline-http-client
 - beeline-routing
 - bytestring
+- constraints
 - containers
 - crypton
 - extra
