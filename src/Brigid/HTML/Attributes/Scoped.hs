@@ -1,4 +1,7 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Attributes.Scoped
@@ -137,6 +140,7 @@ module Brigid.HTML.Attributes.Scoped
 import Prelude hiding (max, min, reverse, span)
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
+import Data.Constraint (Dict (..))
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
@@ -164,6 +168,7 @@ import Brigid.HTML.Attributes.Value (ValidValue)
 import Brigid.HTML.Elements.Internal (ChildHTML)
 import Brigid.HTML.Render.ByteString (renderLazyHTML)
 import Brigid.HTML.Types qualified as Types
+import Brigid.Internal.Use (use)
 import Brigid.Types qualified as Types
 
 -- Scoped Attributes
@@ -211,14 +216,16 @@ as = Attr_As
 async :: ValidAttribute AttributeTags.Async tag => Attribute tag
 async = Attr_Async
 
-autocomplete :: ( KnownNat branchIndex
+autocomplete :: forall tag token branchIndex.
+                ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf token Types.AutocompleteTokenTypes
                 , ValidAutocomplete token tag
                 , ValidAttribute AttributeTags.Autocomplete tag
                 )
              => token -> Attribute tag
 autocomplete =
-  Attr_Autocomplete . Types.mkAutocompleteToken
+  use @(ValidAutocomplete token tag) $ \Dict ->
+    Attr_Autocomplete . Types.mkAutocompleteToken
 
 autoplay :: ValidAttribute AttributeTags.Autoplay tag => Attribute tag
 autoplay = Attr_Autoplay
@@ -370,14 +377,15 @@ fetchpriority :: ValidAttribute AttributeTags.FetchPriority tag
               => Types.FetchPriority -> Attribute tag
 fetchpriority = Attr_FetchPriority
 
-for :: ( KnownNat branchIndex
+for :: forall tag for branchIndex.
+       ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf for Types.ForOptionTypes
        , ValidFor for tag
        , ValidAttribute AttributeTags.For tag
        )
     => for -> Attribute tag
 for =
-  Attr_For . Types.mkForOption
+  use @(ValidFor for tag) $ \Dict -> Attr_For . Types.mkForOption
 
 form :: ValidAttribute AttributeTags.Form tag => Types.Id -> Attribute tag
 form = Attr_Form
@@ -416,14 +424,15 @@ height = Attr_Height
 high :: ValidAttribute AttributeTags.High tag => Types.Number -> Attribute tag
 high = Attr_High
 
-href :: ( KnownNat branchIndex
+href :: forall tag href branchIndex.
+        ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf href Types.HrefTypes
         , ValidHref href tag
         , ValidAttribute AttributeTags.Href tag
         )
      => href -> Attribute tag
 href =
-  Attr_Href . Types.mkHref
+  use @(ValidHref href tag) $ \Dict -> Attr_Href . Types.mkHref
 
 hreflang :: ValidAttribute AttributeTags.HrefLang tag
          => Ogma.BCP_47 -> Attribute tag
@@ -480,14 +489,15 @@ low = Attr_Low
 -- applies, a comparison of min/max should be done to ensure that the bounds
 -- are applied appropriately.
 --
-max :: ( KnownNat branchIndex
+max :: forall tag max branchIndex.
+       ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf max Types.RangeBoundTypes
        , ValidRangeBound max tag
        , ValidAttribute AttributeTags.Max tag
        )
     => max -> Attribute tag
 max =
-  Attr_Max . Types.mkRangeBound
+  use @(ValidRangeBound max tag) $ \Dict -> Attr_Max . Types.mkRangeBound
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the
@@ -512,14 +522,15 @@ method = Attr_Method
 -- applies, a comparison of min/max should be done to ensure that the bounds
 -- are applied appropriately.
 --
-min :: ( KnownNat branchIndex
+min :: forall tag min branchIndex.
+       ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf min Types.RangeBoundTypes
        , ValidRangeBound min tag
        , ValidAttribute AttributeTags.Min tag
        )
     => min -> Attribute tag
 min =
-  Attr_Min . Types.mkRangeBound
+  use @(ValidRangeBound min tag) $ \Dict -> Attr_Min . Types.mkRangeBound
 
 -- TODO: For all `Safe` module versions of elements for which this attribute
 -- applies, a comparison of min/maxlength should be done to ensure that the
@@ -538,14 +549,15 @@ mute = Attr_Muted
 muted :: ValidAttribute AttributeTags.Muted tag => Attribute tag
 muted = mute True
 
-name :: ( KnownNat branchIndex
+name :: forall tag name branchIndex.
+        ( KnownNat branchIndex
         , branchIndex ~ FirstIndexOf name Types.NameOptionTypes
         , ValidName name tag
         , ValidAttribute AttributeTags.Name tag
         )
      => name -> Attribute tag
 name =
-  Attr_Name . Types.mkNameOption
+  use @(ValidName name tag) $ \Dict -> Attr_Name . Types.mkNameOption
 
 nomodule :: ValidAttribute AttributeTags.NoModule tag => Bool -> Attribute tag
 nomodule = Attr_NoModule
@@ -615,14 +627,15 @@ referrerpolicy :: ValidAttribute AttributeTags.ReferrerPolicy tag
                => Types.ReferrerPolicy -> Attribute tag
 referrerpolicy = Attr_ReferrerPolicy
 
-rel :: ( KnownNat branchIndex
+rel :: forall tag rel branchIndex.
+       ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf rel Types.RelationshipTypes
        , ValidRelationship rel tag
        , ValidAttribute AttributeTags.Rel tag
        )
     => rel -> Attribute tag
 rel =
-  Attr_Rel . Types.mkRelationship
+  use @(ValidRelationship rel tag) $ \Dict ->  Attr_Rel . Types.mkRelationship
 
 require :: ValidAttribute AttributeTags.Required tag => Bool -> Attribute tag
 require = Attr_Required
@@ -681,14 +694,15 @@ sizes = Attr_Sizes
 span :: ValidAttribute AttributeTags.Span tag => Positive -> Attribute tag
 span = Attr_Span
 
-src :: ( KnownNat branchIndex
+src :: forall tag url branchIndex.
+       ( KnownNat branchIndex
        , branchIndex ~ FirstIndexOf url Types.URLTypes
        , ValidSource url tag
        , ValidAttribute AttributeTags.Src tag
        )
     => url -> Attribute tag
 src =
-  Attr_Src . Types.mkURL
+  use @(ValidSource url tag) $ \Dict -> Attr_Src . Types.mkURL
 
 srcdoc :: ValidAttribute AttributeTags.SrcDoc tag
        => ChildHTML parent grandparent -> Attribute tag
@@ -716,14 +730,15 @@ target :: ValidAttribute AttributeTags.Target tag
        => Types.Target -> Attribute tag
 target = Attr_Target
 
-type_ :: ( KnownNat branchIndex
+type_ :: forall tag type_ branchIndex.
+         ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf type_ Types.TypeOptionTypes
          , ValidTypeOption type_ tag
          , ValidAttribute AttributeTags.Type tag
          )
       => type_ -> Attribute tag
 type_ =
-  Attr_Type . Types.mkTypeOption
+  use @(ValidTypeOption type_ tag) $ \Dict -> Attr_Type . Types.mkTypeOption
 
 -- TODO: For broader compatibility and clarity, it's common to include both id
 -- and name on the <map> element with the same value. When making a `Safe`
@@ -740,14 +755,15 @@ validate :: ValidAttribute AttributeTags.NoValidate tag
          => Bool -> Attribute tag
 validate = Attr_NoValidate . not
 
-value :: ( KnownNat branchIndex
+value :: forall tag value branchIndex.
+         ( KnownNat branchIndex
          , branchIndex ~ FirstIndexOf value Types.ValueTypes
          , ValidValue value tag
          , ValidAttribute AttributeTags.Value tag
          )
       => value -> Attribute tag
 value =
-  Attr_Value . Types.mkValue
+  use @(ValidValue value tag) $ \Dict -> Attr_Value . Types.mkValue
 
 width :: ValidAttribute AttributeTags.Width tag => Positive -> Attribute tag
 width = Attr_Width

@@ -1,7 +1,12 @@
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
+
 module Brigid.HTML.Generation.Internal.Convert
   ( toBrigid
   ) where
 
+import Data.Constraint (Dict (..))
 import Data.Functor.Alt ((<!>))
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -13,6 +18,7 @@ import Brigid.HTML.Attributes.Internal qualified as Attr
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Internal.Types (Element (..), ElementNode (..), ElementType (..), NodeType (..))
+import Brigid.Internal.Use (use)
 
 type Validator a =
   V.Validation [String] a
@@ -375,16 +381,18 @@ validateBrigid e =
       WordBreakOpportunity ->
         mkWordBreakOpportunity (elementAttrs e)
 
-mkAnchor :: E.ValidChild E.Anchor parent grandparent
+mkAnchor :: forall parent grandparent.
+            E.ValidChild E.Anchor parent grandparent
          => [GA.Attribute] -> ElementNode -> ValidHTML parent grandparent
 mkAnchor attrs node =
-  E.customHTML "a"
-    <$> foldValidate mkAnchorAttr attrs
-    <*> ( case node of
-            Branch _nodes -> V.Failure [ wrongNodeType Anchor BranchNode ]
-            Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
-            Void -> V.Failure [ wrongNodeType Anchor BranchNode ]
-        )
+  use @(E.ValidChild E.Anchor parent grandparent) $ \Dict ->
+    E.customHTML "a"
+      <$> foldValidate mkAnchorAttr attrs
+      <*> ( case node of
+              Branch _nodes -> V.Failure [ wrongNodeType Anchor BranchNode ]
+              Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
+              Void -> V.Failure [ wrongNodeType Anchor BranchNode ]
+          )
 
 mkAnchorAttr :: GA.Attribute -> ValidAttribute E.CustomHTML
 mkAnchorAttr attr =
@@ -2147,16 +2155,18 @@ mkDescriptionDetailsChild e =
       WordBreakOpportunity -> mkWordBreakOpportunity attrs
       element -> V.Failure [ wrongChild element DescriptionDetails ]
 
-mkDeletedText :: E.ValidChild E.DeletedText parent grandparent
+mkDeletedText :: forall parent grandparent.
+                 E.ValidChild E.DeletedText parent grandparent
               => [GA.Attribute] -> ElementNode -> ValidHTML parent grandparent
 mkDeletedText attrs node =
-  E.customHTML "del"
-    <$> foldValidate mkDeletedTextAttr attrs
-    <*> ( case node of
-            Branch _nodes -> V.Failure [ wrongNodeType DeletedText BranchNode ]
-            Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
-            Void -> V.Failure [ wrongNodeType DeletedText VoidNode ]
-        )
+  use @(E.ValidChild E.DeletedText parent grandparent) $ \Dict ->
+    E.customHTML "del"
+      <$> foldValidate mkDeletedTextAttr attrs
+      <*> ( case node of
+              Branch _nodes -> V.Failure [ wrongNodeType DeletedText BranchNode ]
+              Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
+              Void -> V.Failure [ wrongNodeType DeletedText VoidNode ]
+          )
 
 mkDeletedTextAttr :: GA.Attribute -> ValidAttribute E.CustomHTML
 mkDeletedTextAttr attr =
@@ -4446,16 +4456,18 @@ mkInputAttr attr =
   in
     vAttr <!> mkGlobalAttr attr
 
-mkInsertedText :: E.ValidChild E.InsertedText parent grandparent
+mkInsertedText :: forall parent grandparent.
+                  E.ValidChild E.InsertedText parent grandparent
                => [GA.Attribute] -> ElementNode -> ValidHTML parent grandparent
 mkInsertedText attrs node =
-  E.customHTML "ins"
-    <$> foldValidate mkInsertedTextAttr attrs
-    <*> ( case node of
-            Branch _nodes -> V.Failure [ wrongNodeType InsertedText BranchNode ]
-            Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
-            Void -> V.Failure [ wrongNodeType InsertedText VoidNode ]
-        )
+  use @(E.ValidChild E.InsertedText parent grandparent) $ \Dict ->
+    E.customHTML "ins"
+      <$> foldValidate mkInsertedTextAttr attrs
+      <*> ( case node of
+              Branch _nodes -> V.Failure [ wrongNodeType InsertedText BranchNode ]
+              Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
+              Void -> V.Failure [ wrongNodeType InsertedText VoidNode ]
+          )
 
 mkInsertedTextAttr :: GA.Attribute -> ValidAttribute E.CustomHTML
 mkInsertedTextAttr attr =
@@ -5526,16 +5538,18 @@ mkNoScriptBodyChild e =
       WordBreakOpportunity -> mkWordBreakOpportunity attrs
       element -> V.Failure [ wrongChild element NoScriptBody ]
 
-mkObject :: E.ValidChild E.Object parent grandparent
+mkObject :: forall parent grandparent.
+            E.ValidChild E.Object parent grandparent
          => [GA.Attribute] -> ElementNode -> ValidHTML parent grandparent
 mkObject attrs node =
-  E.customHTML "object"
-    <$> foldValidate mkObjectAttr attrs
-    <*> ( case node of
-            Branch _nodes -> V.Failure [ wrongNodeType Object BranchNode ]
-            Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
-            Void -> V.Failure [ wrongNodeType Object VoidNode ]
-        )
+  use @(E.ValidChild E.Object parent grandparent) $ \Dict ->
+    E.customHTML "object"
+      <$> foldValidate mkObjectAttr attrs
+      <*> ( case node of
+              Branch _nodes -> V.Failure [ wrongNodeType Object BranchNode ]
+              Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
+              Void -> V.Failure [ wrongNodeType Object VoidNode ]
+          )
 
 mkObjectAttr :: GA.Attribute -> ValidAttribute E.CustomHTML
 mkObjectAttr attr =
@@ -6743,16 +6757,18 @@ mkSelectChild e =
       OptionGroup -> mkOptionGroup attrs content
       element -> V.Failure [ wrongChild element Select ]
 
-mkSlot :: E.ValidChild E.Slot parent grandparent
+mkSlot :: forall parent grandparent.
+          E.ValidChild E.Slot parent grandparent
        => [GA.Attribute] -> ElementNode -> ValidHTML parent grandparent
 mkSlot attrs node =
-  E.customHTML "slot"
-    <$> foldValidate mkSlotAttr attrs
-    <*> ( case node of
-            Branch _nodes -> V.Failure [ wrongNodeType Slot BranchNode ]
-            Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
-            Void -> V.Failure [ wrongNodeType Slot VoidNode ]
-        )
+  use @(E.ValidChild E.Slot parent grandparent) $ \Dict ->
+    E.customHTML "slot"
+      <$> foldValidate mkSlotAttr attrs
+      <*> ( case node of
+              Branch _nodes -> V.Failure [ wrongNodeType Slot BranchNode ]
+              Leaf net -> V.Success $ Right [ E.text $ NET.toText net ]
+              Void -> V.Failure [ wrongNodeType Slot VoidNode ]
+          )
 
 mkSlotAttr :: GA.Attribute -> ValidAttribute E.CustomHTML
 mkSlotAttr attr =

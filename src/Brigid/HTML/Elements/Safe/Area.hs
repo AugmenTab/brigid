@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
@@ -16,7 +17,9 @@ module Brigid.HTML.Elements.Safe.Area
   , mkHrefAttributes
   ) where
 
+#if __GLASGOW_HASKELL__ < 910
 import Data.List (foldl')
+#endif
 import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
