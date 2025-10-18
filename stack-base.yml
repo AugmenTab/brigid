@@ -17,6 +17,9 @@ extra-deps:
   subdirs:
     - json-fleece-aeson
     - json-fleece-core
+# integer-types
+- git: git@github.com:AugmenTab/integer-types.git
+  commit: acdd40713c74b78f1a3674625985cbf406cc22d4
 # libphonenumber
 - git: https://github.com/typeable/libphonenumber.git
   commit: 5e03e45e2ef02b17a9d0ec3b1e951ef7214cba4a
