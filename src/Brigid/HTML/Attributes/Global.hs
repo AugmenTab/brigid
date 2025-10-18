@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 module Brigid.HTML.Attributes.Global
   ( AttributeTags.AccessKey, accesskey
   , AttributeTags.Autocapitalize, autocapitalize
@@ -37,12 +39,14 @@ module Brigid.HTML.Attributes.Global
 -- Global Attributes
 --
 
-import Prelude hiding (id)
-import Data.List qualified as List
+#if __GLASGOW_HASKELL__ < 910
+import Data.List (foldl')
+#endif
 import Data.List.NonEmpty qualified as NEL
 import Data.Set qualified as Set
 import Data.Text qualified as T
 import Ogma qualified
+import Prelude hiding (id)
 
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Attributes.Tags qualified as AttributeTags
@@ -80,7 +84,7 @@ classes =
             then (acc, usedClasses)
             else (acc <> Types.Class c, Set.insert c usedClasses)
   in
-    class_ . fst . List.foldl' foldClasses (mempty, Set.empty)
+    class_ . fst . foldl' foldClasses (mempty, Set.empty)
 
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable
