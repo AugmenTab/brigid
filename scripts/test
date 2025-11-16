@@ -2,5 +2,5 @@
 
 set -e
 
-./scripts/build_code "$@"
+stack --stack-yaml "stack-ghc-9.10.yaml" build --fast --test $@
 

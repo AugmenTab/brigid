@@ -3265,8 +3265,9 @@ attr_contenteditable :: ContentEditableOption -> AttributeSelector
 attr_contenteditable =
   (,) Attr_ContentEditable . Just . contentEditableOptionToText
 
-attr_customData :: T.Text -> T.Text -> AttributeSelector
-attr_customData dataName val = (Attr_CustomData dataName, Just val)
+attr_customData :: T.Text -> Maybe T.Text -> AttributeSelector
+attr_customData dataName mbVal =
+  (Attr_CustomData dataName, mbVal)
 
 attr_dir :: Directionality -> AttributeSelector
 attr_dir = (,) Attr_Dir . Just . directionalityToText

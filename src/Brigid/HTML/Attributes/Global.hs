@@ -7,7 +7,7 @@ module Brigid.HTML.Attributes.Global
   , AttributeTags.Autofocus, autofocus
   , AttributeTags.Class, class_, classes
   , AttributeTags.ContentEditable, contenteditable
-  , AttributeTags.CustomData, customData
+  , AttributeTags.CustomData, customData, customDataBool
   , AttributeTags.Dir, dir
   , AttributeTags.Draggable, draggable
   , AttributeTags.EnterKeyHint, enterkeyhint
@@ -90,7 +90,10 @@ contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable
 
 customData :: T.Text -> T.Text -> Attribute tag
-customData = Attr_CustomData
+customData d = Attr_CustomData d . Just
+
+customDataBool :: T.Text -> Attribute tag
+customDataBool d = Attr_CustomData d Nothing
 
 dir :: Types.Directionality -> Attribute tag
 dir = Attr_Dir

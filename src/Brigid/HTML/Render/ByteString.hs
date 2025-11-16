@@ -547,11 +547,16 @@ renderAttribute attr =
         . buildAttribute "contenteditable"
         $ Types.contentEditableOptionToBytes option
 
-    Attr_CustomData data_ value ->
-      Just $
-        buildAttribute
-          ("data-" <> Render.textToLazyBytes data_)
-          (Render.textToLazyBytes $ Escape.attributeText value)
+    Attr_CustomData data_ mbValue ->
+      case mbValue of
+        Just value ->
+          Just $
+            buildAttribute
+              ("data-" <> Render.textToLazyBytes data_)
+              (Render.textToLazyBytes $ Escape.attributeText value)
+
+        Nothing ->
+          buildBooleanAttribute ("data-" <> Render.textToLazyBytes data_) True
 
     Attr_Dir directionality ->
       Just

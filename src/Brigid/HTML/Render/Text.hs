@@ -530,11 +530,16 @@ renderAttribute attr =
         . buildAttribute "contenteditable"
         $ Types.contentEditableOptionToText option
 
-    Attr_CustomData data_ value ->
-      Just $
-        buildAttribute
-          ("data-" <> data_)
-          (Escape.attributeText value)
+    Attr_CustomData data_ mbValue ->
+      case mbValue of
+        Just value ->
+          Just $
+            buildAttribute
+              ("data-" <> data_)
+              (Escape.attributeText value)
+
+        Nothing ->
+          buildBooleanAttribute ("data-" <> data_) True
 
     Attr_CustomBoolean name value ->
       buildBooleanAttribute name value

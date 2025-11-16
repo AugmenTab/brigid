@@ -252,7 +252,7 @@ data Attribute (tag :: TagType) where
 
   Attr_CustomData
     :: T.Text
-    -> T.Text
+    -> Maybe T.Text
     -> Attribute tag
 
   Attr_Dir
