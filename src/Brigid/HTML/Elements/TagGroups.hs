@@ -97,6 +97,7 @@ module Brigid.HTML.Elements.TagGroups
   , TimestampableTags
   , TypeableTags
   , URLTags
+  , ValidatableTags
   , ValuableTags
   , TextValueTags
   ) where
@@ -1371,6 +1372,13 @@ type URLTags =
   , 'CustomHTML
   , 'Area
   ]
+
+type ValidatableTags =
+  Union InputTags
+    [ 'Form
+    , 'Select
+    , 'TextArea
+    ]
 
 type ValuableTags =
   Union (Remove 'InputFile InputTags)

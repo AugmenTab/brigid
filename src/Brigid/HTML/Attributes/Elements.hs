@@ -130,4 +130,4 @@ type family ValidElementsFor (attribute :: AttributeType) :: [TagType] where
   ValidElementsFor 'Wrap                     = [ Tags.CustomHTML, Tags.TextArea ]
   ValidElementsFor 'XMLNS                    = [ Tags.CustomHTML, Tags.Html ] -- SVG, MathML
 
-  ValidElementsFor 'HxValidate               = [ Tags.CustomHTML, Tags.Form ]
+  ValidElementsFor 'HxValidate               = TagGroups.ValidatableTags

@@ -188,6 +188,7 @@ example =
                    , A.required
                    , A.dirname "telephone"
                    , A.readonly
+                   , A.hxValidate
                    ]
         , Safe.number [ A.value $ HTML.numberFromFractional (0.75 :: Double) 2
                       ]
@@ -202,6 +203,7 @@ example =
                  , A.rows 5
                  , A.writingsuggestions False
                  , A.wrap HTML.WrapHard
+                 , A.hxValidate
                  ]
         "Here's some text!"
     , E.div [ A.tabindex HTML.NotReachable ]
