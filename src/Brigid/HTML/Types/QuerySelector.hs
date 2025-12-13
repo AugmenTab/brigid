@@ -335,6 +335,7 @@ module Brigid.HTML.Types.QuerySelector
   , attr_width
   , attr_wrap
   , attr_aria
+  , attr_on
   , attr_xmlns
   , attr_hxGet
   , attr_hxPost
@@ -709,6 +710,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
 
+import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToBytes, eventAttributeToText)
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.Aria (Aria, AriaTypes, ariaAttributeToBytes, ariaAttributeToText, ariaValueToText, mkAria)
 import Brigid.HTML.Types.As (As, asToText)
@@ -787,6 +789,7 @@ import Brigid.Types.Id qualified as Id
 import Brigid.Types.Method (FormMethod, Get, Post, Delete, Put, Patch, formMethodToText)
 import Brigid.Types.Name (Name, NameOptionTypes, mkNameOption, nameOptionToText, nameToText)
 import Brigid.Types.NoContent (NoContent)
+import Brigid.Types.RawJavaScript (RawJavaScript, rawJavaScriptToText)
 import Brigid.Types.URL (AbsoluteURL, Ping, RelativeURL, URLTypes, absoluteURLToText, mkURL, pingToText, relativeURLToText, urlToText)
 
 newtype QuerySelector =
@@ -2564,6 +2567,10 @@ data AttributeType
   --
   | Attr_Aria Aria
 
+  -- Event Attributes
+  --
+  | Attr_On Event
+
   -- HTMX Attributes
   --
   | Attr_HxGet
@@ -2765,6 +2772,10 @@ attributeTypeToBytes attr =
     -- ARIA Attributes
     --
     Attr_Aria aria -> ariaAttributeToBytes aria
+
+    -- Event Attributes
+    --
+    Attr_On event -> eventAttributeToBytes event
 
     -- HTMX Attributes
     --
@@ -3003,6 +3014,8 @@ attributeTypeFromText attr =
 
     -- Edge cases
     txt
+      -- TODO: Try to parse aria attributes.
+      -- TODO: Try to parse event attributes.
       | T.isPrefixOf "data-" txt ->
           Right
             . maybe (Attr_CustomAttribute txt) Attr_CustomData
@@ -3188,6 +3201,10 @@ attributeTypeToText attr =
     -- ARIA Attributes
     --
     Attr_Aria aria -> ariaAttributeToText aria
+
+    -- Event Attributes
+    --
+    Attr_On event -> eventAttributeToText event
 
     -- HTMX Attributes
     --
@@ -3813,6 +3830,13 @@ attr_aria a =
     aria = mkAria a
   in
     (Attr_Aria aria, Just $ ariaValueToText aria)
+
+-- Event Attributes
+--
+
+attr_on :: Event -> RawJavaScript -> AttributeSelector
+attr_on e s =
+  (Attr_On e, Just $ rawJavaScriptToText s)
 
 -- HTMX Attributes
 --

@@ -149,6 +149,8 @@ module Brigid.HTML.Attributes.Tags
 
   , Aria
 
+  , On
+
   , Htmx
   , HxGet
   , HxPost
@@ -334,6 +336,8 @@ type Wrap = 'AttributeType.Wrap
 type XMLNS = 'AttributeType.XMLNS
 
 type Aria = 'AttributeType.Aria
+
+type On = 'AttributeType.On
 
 type Htmx = 'AttributeType.Htmx
 type HxGet = 'AttributeType.HxGet

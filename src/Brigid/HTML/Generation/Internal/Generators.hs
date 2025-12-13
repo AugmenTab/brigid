@@ -15,6 +15,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , day
   , decoding
   , directionality
+  , event
   , exportPart
   , featurePolicyDirective
   , fetchPriority
@@ -45,6 +46,7 @@ module Brigid.HTML.Generation.Internal.Generators
   , positive
   , preload
   , rangeBound
+  , rawJavaScript
   , referrerPolicy
   , role
   , sandboxToken
@@ -80,6 +82,7 @@ import Prelude hiding (id)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
+import Brigid.HTML.Attributes.Event.Event (Event)
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
 import Ogma qualified
@@ -148,6 +151,10 @@ decoding =
 
 directionality :: MonadGen m => m Types.Directionality
 directionality =
+  Gen.enumBounded
+
+event :: MonadGen m => m Event
+event =
   Gen.enumBounded
 
 exportPart  :: MonadGen m => m Types.ExportPart
@@ -377,6 +384,10 @@ ratio =
   (%)
     <$> Gen.integral (Range.linear 1 1000)
     <*> Gen.integral (Range.linear 1 1000)
+
+rawJavaScript :: MonadGen m => m Types.RawJavaScript
+rawJavaScript =
+  Types.RawJavaScript <$> text
 
 referrerPolicy :: MonadGen m => m Types.ReferrerPolicy
 referrerPolicy =

@@ -2193,4 +2193,5 @@ withGlobalAttrs params element =
         , A.translate
         , A.writingsuggestions
         , A.aria
+        , A.on
         ]

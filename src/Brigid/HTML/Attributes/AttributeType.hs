@@ -152,6 +152,8 @@ module Brigid.HTML.Attributes.AttributeType
 
       , Aria
 
+      , On
+
       , Htmx
       , HxGet
       , HxPost
@@ -343,7 +345,12 @@ data AttributeType
   | XMLNS
 
   -- ARIA Attributes
+  --
   | Aria
+
+  -- Event Attributes
+  --
+  | On
 
   -- HTMX Attributes
   --
@@ -532,6 +539,8 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage XMLNS                    = 'Text "XMLNS (xmlns)"
 
   AttributeErrorMessage Aria                     = 'Text "Aria (aria-*)"
+
+  AttributeErrorMessage On                       = 'Text "Event (on*)"
 
   AttributeErrorMessage Htmx                     = 'Text "HTMX (htmx)"
   AttributeErrorMessage HxGet                    = 'Text "HTMX Get (hx-get)"

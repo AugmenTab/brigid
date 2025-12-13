@@ -12,6 +12,7 @@ import Text.Blaze.Html (Html, (!))
 import Text.Blaze.Html5 qualified as H
 import Text.Blaze.Html5.Attributes qualified as A
 
+import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToText)
 import Brigid.HTML.Generation (Element (..), ElementNode (..))
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Elements (ElementType (..))
@@ -640,6 +641,11 @@ toAttribute attr =
       H.customAttribute
         (H.textTag $ Types.ariaAttributeToText aria)
         (textToBlaze id $ Types.ariaValueToText aria)
+
+    GA.On event script ->
+      H.customAttribute
+        (H.textTag $ eventAttributeToText event)
+        (textToBlaze id $ Types.rawJavaScriptToText script)
 
 boolToBlaze :: Bool -> H.AttributeValue
 boolToBlaze b =

@@ -15,6 +15,7 @@ import Lucid.Html5 qualified as H
 import Ogma qualified
 import Prelude hiding (div, max, min, span)
 
+import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToText)
 import Brigid.HTML.Generation (Element (..), ElementNode (..))
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Elements (ElementType (..))
@@ -667,6 +668,12 @@ toAttribute attr =
         B.makeAttribute
           (Types.ariaAttributeToText aria)
           (Types.ariaValueToText aria)
+
+    GA.On event script ->
+      Just $
+        B.makeAttribute
+          (eventAttributeToText event)
+          (Types.rawJavaScriptToText script)
 
 boolText :: Bool -> T.Text
 boolText b =

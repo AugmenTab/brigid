@@ -1,6 +1,6 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.37.0.
+-- This file has been generated from package.yaml by hpack version 0.38.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -53,6 +53,9 @@ library
       Brigid.HTML.Attributes.AttributeType
       Brigid.HTML.Attributes.Autocomplete
       Brigid.HTML.Attributes.Elements
+      Brigid.HTML.Attributes.Event
+      Brigid.HTML.Attributes.Event.Event
+      Brigid.HTML.Attributes.Event.On
       Brigid.HTML.Attributes.For
       Brigid.HTML.Attributes.Global
       Brigid.HTML.Attributes.Href

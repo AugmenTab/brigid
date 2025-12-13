@@ -8586,6 +8586,9 @@ mkGlobalAttr attr =
     GA.Aria aria ->
       V.Success $ Attr.Attr_Aria aria
 
+    GA.On event script ->
+      V.Success $ Attr.Attr_On event script
+
     _attr ->
       V.Failure $
         [ T.unpack (GA.attributeText attr) <> " is not a global attribute." ]

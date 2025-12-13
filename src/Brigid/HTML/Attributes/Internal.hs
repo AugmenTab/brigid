@@ -157,6 +157,8 @@ module Brigid.HTML.Attributes.Internal
 
       , Attr_Aria
 
+      , Attr_On
+
       , Attr_Htmx
       , Attr_HxBoost
       , Attr_HxConfirm
@@ -201,6 +203,7 @@ import Ogma qualified
 
 import Brigid.HTML.Attributes.AttributeType (AttributeType (..))
 import Brigid.HTML.Attributes.Elements (ValidAttribute)
+import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToText)
 import Brigid.HTML.Elements.TagType (TagType)
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
@@ -911,6 +914,13 @@ data Attribute (tag :: TagType) where
     :: Types.Aria
     -> Attribute tag
 
+  -- Event Attributes
+  --
+  Attr_On
+    :: Event
+    -> Types.RawJavaScript
+    -> Attribute tag
+
   -- HTMX Attributes
   --
   Attr_Htmx
@@ -1176,6 +1186,7 @@ instance Eq (Attribute tag) where
       (Attr_Wrap a1, Attr_Wrap a2) -> a1 == a2
       (Attr_XMLNS a1, Attr_XMLNS a2) -> a1 == a2
       (Attr_Aria a1, Attr_Aria a2) -> a1 == a2
+      (Attr_On e1 a1, Attr_On e2 a2) -> e1 == e2 && a1 == a2
       (Attr_Htmx a1, Attr_Htmx a2) -> eqRelativeURL a1 a2
       (Attr_HxBoost a1, Attr_HxBoost a2) -> a1 == a2
       (Attr_HxConfirm a1, Attr_HxConfirm a2) -> a1 == a2
@@ -1661,6 +1672,11 @@ attributeText attr =
     --
     Attr_Aria aria ->
       Types.ariaAttributeToText aria
+
+    -- Event Attributes
+    --
+    Attr_On event _script ->
+      eventAttributeToText event
 
     -- HTMX Attributes
     --

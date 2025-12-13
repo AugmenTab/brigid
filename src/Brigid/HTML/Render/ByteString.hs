@@ -19,6 +19,7 @@ import Data.NonEmptyText qualified as NET
 import Ogma qualified
 import Shrubbery qualified
 
+import Brigid.HTML.Attributes.Event.Event (eventAttributeToBytes)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Types qualified as Types
@@ -1058,6 +1059,14 @@ renderAttribute attr =
         buildAttribute
           (Types.ariaAttributeToBytes aria)
           (Types.ariaValueToBytes aria)
+
+    -- Event Attributes
+    --
+    Attr_On event script ->
+      Just $
+        buildAttribute
+          (eventAttributeToBytes event)
+          (Types.rawJavaScriptToBytes script)
 
     -- HTMX Attributes
     --

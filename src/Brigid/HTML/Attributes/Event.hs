@@ -1,0 +1,77 @@
+module Brigid.HTML.Attributes.Event
+  ( module Export
+  , Event
+      ( AfterPrint
+      , BeforePrint
+      , BeforeUnload
+      , Error
+      , HashChange
+      , Load
+      , Message
+      , Offline
+      , Online
+      , PageHide
+      , PageShow
+      , PopState
+      , Resize
+      , Storage
+      , Unload
+      , Blur
+      , Change
+      , ContextMenu
+      , Focus
+      , Input
+      , Invalid
+      , Reset
+      , Select
+      , Submit
+      , KeyDown
+      , KeyPress
+      , KeyUp
+      , Click
+      , DoubleClick
+      , MouseDown
+      , MouseMove
+      , MouseOut
+      , MouseOver
+      , MouseUp
+      , Wheel
+      , Drag
+      , DragEnd
+      , DragEnter
+      , DragLeave
+      , DragOver
+      , DragStart
+      , Drop
+      , Scroll
+      , Copy
+      , Cut
+      , Paste
+      , Abort
+      , CanPlay
+      , CanPlaythrough
+      , CueChange
+      , DurationChange
+      , Emptied
+      , Ended
+      , LoadedData
+      , LoadedMetadata
+      , LoadStart
+      , Pause
+      , Play
+      , Playing
+      , Progress
+      , RateChange
+      , Seeked
+      , Seeking
+      , Stalled
+      , Suspend
+      , TimeUpdate
+      , VolumeChange
+      , Waiting
+      , Toggle
+      )
+  ) where
+
+import Brigid.HTML.Attributes.Event.Event (Event (..))
+import Brigid.HTML.Attributes.Event.On as Export

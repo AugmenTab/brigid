@@ -150,6 +150,7 @@ module Brigid.HTML.Generation.Internal.Attributes
   , wrap
   , xmlns
   , aria
+  , on
   ) where
 
 import Beeline.HTTP.Client qualified as B
@@ -167,6 +168,7 @@ import Numeric.Natural (Natural)
 import Ogma qualified
 import Prelude hiding (div, id, map, max, min, reverse, span)
 
+import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToText)
 import Brigid.HTML.Generation.Internal.Generators qualified as Generators
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
@@ -330,6 +332,7 @@ data Attribute
   | Wrap Types.Wrap
   | XMLNS Types.RawURL
   | Aria Types.Aria
+  | On Event Types.RawJavaScript
   deriving Show
 
 attributeText :: Attribute -> T.Text
@@ -492,6 +495,10 @@ attributeText attr =
     -- ARIA Attributes
     --
     Aria a -> Types.ariaAttributeToText a
+
+    -- Event Attributes
+    --
+    On e _s -> eventAttributeToText e
 
 accesskey :: MonadGen m => m Attribute
 accesskey =
@@ -1092,3 +1099,9 @@ xmlns =
 aria :: MonadGen m => m Attribute
 aria =
   Aria <$> Generators.aria
+
+on :: MonadGen m => m Attribute
+on =
+  On
+    <$> Generators.event
+    <*> Generators.rawJavaScript
