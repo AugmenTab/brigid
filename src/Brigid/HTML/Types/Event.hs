@@ -30,7 +30,8 @@ module Brigid.HTML.Types.Event
       , KeyPressEvent
       , KeyUpEvent
       , LoadEvent
-      , UnloadEvent
+      , LoadEndEvent
+      , LoadStartEvent
       , AbortEvent
       , ErrorEvent
       , ResizeEvent
@@ -43,20 +44,24 @@ module Brigid.HTML.Types.Event
       , BlurEvent
       , FocusInEvent
       , FocusOutEvent
-      , DOMActivateEvent
-      , DOMSubtreeModifiedEvent
-      , DOMNodeInsertedEvent
-      , DOMNodeRemovedEvent
-      , DOMNodeRemovedFromDocumentEvent
-      , DOMNodeInsertedIntoDocumentEvent
-      , DOMAttrModifiedEvent
-      , DOMCharacterDataModifiedEvent
-      , LoadStartEvent
       , ProgressEvent
-      , ProgressErrorEvent
-      , ProgressAbortEvent
-      , ProgressLoadEvent
-      , ProgressLoadEndEvent
+      , InputEvent
+      , BeforeInputEvent
+      , InvalidEvent
+      , PointerDownEvent
+      , PointerUpEvent
+      , PointerMoveEvent
+      , PointerEnterEvent
+      , PointerLeaveEvent
+      , PointerOverEvent
+      , PointerOutEvent
+      , PointerCancelEvent
+      , WheelEvent
+      , ContextMenuEvent
+      , AuxClickEvent
+      , CompositionStartEvent
+      , CompositionUpdateEvent
+      , CompositionEndEvent
       )
   , htmlEventToBytes
   , htmlEventToText
@@ -207,7 +212,8 @@ data HTMLEvent
   | KeyPressEvent
   | KeyUpEvent
   | LoadEvent
-  | UnloadEvent
+  | LoadEndEvent
+  | LoadStartEvent
   | AbortEvent
   | ErrorEvent
   | ResizeEvent
@@ -220,119 +226,133 @@ data HTMLEvent
   | BlurEvent
   | FocusInEvent
   | FocusOutEvent
-  | DOMActivateEvent
-  | DOMSubtreeModifiedEvent
-  | DOMNodeInsertedEvent
-  | DOMNodeRemovedEvent
-  | DOMNodeRemovedFromDocumentEvent
-  | DOMNodeInsertedIntoDocumentEvent
-  | DOMAttrModifiedEvent
-  | DOMCharacterDataModifiedEvent
-  | LoadStartEvent
   | ProgressEvent
-  | ProgressErrorEvent
-  | ProgressAbortEvent
-  | ProgressLoadEvent
-  | ProgressLoadEndEvent
+  | InputEvent
+  | BeforeInputEvent
+  | InvalidEvent
+  | PointerDownEvent
+  | PointerUpEvent
+  | PointerMoveEvent
+  | PointerEnterEvent
+  | PointerLeaveEvent
+  | PointerOverEvent
+  | PointerOutEvent
+  | PointerCancelEvent
+  | WheelEvent
+  | ContextMenuEvent
+  | AuxClickEvent
+  | CompositionStartEvent
+  | CompositionUpdateEvent
+  | CompositionEndEvent
   deriving (Bounded, Enum, Eq, Show)
 
 htmlEventToBytes :: HTMLEvent -> LBS.ByteString
 htmlEventToBytes event =
   case event of
-    ClickEvent                       -> "click"
-    DblClickEvent                    -> "dblclick"
-    MouseDownEvent                   -> "mousedown"
-    MouseUpEvent                     -> "mouseup"
-    MouseOverEvent                   -> "mouseover"
-    MouseMoveEvent                   -> "mousemove"
-    MouseOutEvent                    -> "mouseout"
-    DragStartEvent                   -> "dragstart"
-    DragEvent                        -> "drag"
-    DragEnterEvent                   -> "dragenter"
-    DragLeaveEvent                   -> "dragleave"
-    DragOverEvent                    -> "dragover"
-    DropEvent                        -> "drop"
-    DragEndEvent                     -> "dragend"
-    KeyDownEvent                     -> "keydown"
-    KeyPressEvent                    -> "keypress"
-    KeyUpEvent                       -> "keyup"
-    LoadEvent                        -> "load"
-    UnloadEvent                      -> "unload"
-    AbortEvent                       -> "abort"
-    ErrorEvent                       -> "error"
-    ResizeEvent                      -> "resize"
-    ScrollEvent                      -> "scroll"
-    SelectEvent                      -> "select"
-    ChangeEvent                      -> "change"
-    SubmitEvent                      -> "submit"
-    ResetEvent                       -> "reset"
-    FocusEvent                       -> "focus"
-    BlurEvent                        -> "blur"
-    FocusInEvent                     -> "focusin"
-    FocusOutEvent                    -> "focusout"
-    DOMActivateEvent                 -> "DOMActivate"
-    DOMSubtreeModifiedEvent          -> "DOMSubtreeModified"
-    DOMNodeInsertedEvent             -> "DOMNodeInserted"
-    DOMNodeRemovedEvent              -> "DOMNodeRemoved"
-    DOMNodeRemovedFromDocumentEvent  -> "DOMNodeRemovedFromDocument"
-    DOMNodeInsertedIntoDocumentEvent -> "DOMNodeInsertedIntoDocument"
-    DOMAttrModifiedEvent             -> "DOMAttrModified"
-    DOMCharacterDataModifiedEvent    -> "DOMCharacterDataModified"
-    LoadStartEvent                   -> "loadstart"
-    ProgressEvent                    -> "progress"
-    ProgressErrorEvent               -> "error"
-    ProgressAbortEvent               -> "abort"
-    ProgressLoadEvent                -> "load"
-    ProgressLoadEndEvent             -> "loadend"
+    ClickEvent             -> "click"
+    DblClickEvent          -> "dblclick"
+    MouseDownEvent         -> "mousedown"
+    MouseUpEvent           -> "mouseup"
+    MouseOverEvent         -> "mouseover"
+    MouseMoveEvent         -> "mousemove"
+    MouseOutEvent          -> "mouseout"
+    DragStartEvent         -> "dragstart"
+    DragEvent              -> "drag"
+    DragEnterEvent         -> "dragenter"
+    DragLeaveEvent         -> "dragleave"
+    DragOverEvent          -> "dragover"
+    DropEvent              -> "drop"
+    DragEndEvent           -> "dragend"
+    KeyDownEvent           -> "keydown"
+    KeyPressEvent          -> "keypress"
+    KeyUpEvent             -> "keyup"
+    LoadEvent              -> "load"
+    LoadEndEvent           -> "loadend"
+    LoadStartEvent         -> "loadstart"
+    AbortEvent             -> "abort"
+    ErrorEvent             -> "error"
+    ResizeEvent            -> "resize"
+    ScrollEvent            -> "scroll"
+    SelectEvent            -> "select"
+    ChangeEvent            -> "change"
+    SubmitEvent            -> "submit"
+    ResetEvent             -> "reset"
+    FocusEvent             -> "focus"
+    BlurEvent              -> "blur"
+    FocusInEvent           -> "focusin"
+    FocusOutEvent          -> "focusout"
+    ProgressEvent          -> "progress"
+    InputEvent             -> "input"
+    BeforeInputEvent       -> "beforeinput"
+    InvalidEvent           -> "invalid"
+    PointerDownEvent       -> "pointerdown"
+    PointerUpEvent         -> "pointerup"
+    PointerMoveEvent       -> "pointermove"
+    PointerEnterEvent      -> "pointerenter"
+    PointerLeaveEvent      -> "pointerleave"
+    PointerOverEvent       -> "pointerover"
+    PointerOutEvent        -> "pointerout"
+    PointerCancelEvent     -> "pointercancel"
+    WheelEvent             -> "wheel"
+    ContextMenuEvent       -> "contextmenu"
+    AuxClickEvent          -> "auxclick"
+    CompositionStartEvent  -> "compositionstart"
+    CompositionUpdateEvent -> "compositionupdate"
+    CompositionEndEvent    -> "compositionend"
 
 htmlEventToText :: HTMLEvent -> T.Text
 htmlEventToText event =
   case event of
-    ClickEvent                       -> "click"
-    DblClickEvent                    -> "dblclick"
-    MouseDownEvent                   -> "mousedown"
-    MouseUpEvent                     -> "mouseup"
-    MouseOverEvent                   -> "mouseover"
-    MouseMoveEvent                   -> "mousemove"
-    MouseOutEvent                    -> "mouseout"
-    DragStartEvent                   -> "dragstart"
-    DragEvent                        -> "drag"
-    DragEnterEvent                   -> "dragenter"
-    DragLeaveEvent                   -> "dragleave"
-    DragOverEvent                    -> "dragover"
-    DropEvent                        -> "drop"
-    DragEndEvent                     -> "dragend"
-    KeyDownEvent                     -> "keydown"
-    KeyPressEvent                    -> "keypress"
-    KeyUpEvent                       -> "keyup"
-    LoadEvent                        -> "load"
-    UnloadEvent                      -> "unload"
-    AbortEvent                       -> "abort"
-    ErrorEvent                       -> "error"
-    ResizeEvent                      -> "resize"
-    ScrollEvent                      -> "scroll"
-    SelectEvent                      -> "select"
-    ChangeEvent                      -> "change"
-    SubmitEvent                      -> "submit"
-    ResetEvent                       -> "reset"
-    FocusEvent                       -> "focus"
-    BlurEvent                        -> "blur"
-    FocusInEvent                     -> "focusin"
-    FocusOutEvent                    -> "focusout"
-    DOMActivateEvent                 -> "DOMActivate"
-    DOMSubtreeModifiedEvent          -> "DOMSubtreeModified"
-    DOMNodeInsertedEvent             -> "DOMNodeInserted"
-    DOMNodeRemovedEvent              -> "DOMNodeRemoved"
-    DOMNodeRemovedFromDocumentEvent  -> "DOMNodeRemovedFromDocument"
-    DOMNodeInsertedIntoDocumentEvent -> "DOMNodeInsertedIntoDocument"
-    DOMAttrModifiedEvent             -> "DOMAttrModified"
-    DOMCharacterDataModifiedEvent    -> "DOMCharacterDataModified"
-    LoadStartEvent                   -> "loadstart"
-    ProgressEvent                    -> "progress"
-    ProgressErrorEvent               -> "error"
-    ProgressAbortEvent               -> "abort"
-    ProgressLoadEvent                -> "load"
-    ProgressLoadEndEvent             -> "loadend"
+    ClickEvent             -> "click"
+    DblClickEvent          -> "dblclick"
+    MouseDownEvent         -> "mousedown"
+    MouseUpEvent           -> "mouseup"
+    MouseOverEvent         -> "mouseover"
+    MouseMoveEvent         -> "mousemove"
+    MouseOutEvent          -> "mouseout"
+    DragStartEvent         -> "dragstart"
+    DragEvent              -> "drag"
+    DragEnterEvent         -> "dragenter"
+    DragLeaveEvent         -> "dragleave"
+    DragOverEvent          -> "dragover"
+    DropEvent              -> "drop"
+    DragEndEvent           -> "dragend"
+    KeyDownEvent           -> "keydown"
+    KeyPressEvent          -> "keypress"
+    KeyUpEvent             -> "keyup"
+    LoadEvent              -> "load"
+    LoadEndEvent           -> "loadend"
+    LoadStartEvent         -> "loadstart"
+    AbortEvent             -> "abort"
+    ErrorEvent             -> "error"
+    ResizeEvent            -> "resize"
+    ScrollEvent            -> "scroll"
+    SelectEvent            -> "select"
+    ChangeEvent            -> "change"
+    SubmitEvent            -> "submit"
+    ResetEvent             -> "reset"
+    FocusEvent             -> "focus"
+    BlurEvent              -> "blur"
+    FocusInEvent           -> "focusin"
+    FocusOutEvent          -> "focusout"
+    ProgressEvent          -> "progress"
+    InputEvent             -> "input"
+    BeforeInputEvent       -> "beforeinput"
+    InvalidEvent           -> "invalid"
+    PointerDownEvent       -> "pointerdown"
+    PointerUpEvent         -> "pointerup"
+    PointerMoveEvent       -> "pointermove"
+    PointerEnterEvent      -> "pointerenter"
+    PointerLeaveEvent      -> "pointerleave"
+    PointerOverEvent       -> "pointerover"
+    PointerOutEvent        -> "pointerout"
+    PointerCancelEvent     -> "pointercancel"
+    WheelEvent             -> "wheel"
+    ContextMenuEvent       -> "contextmenu"
+    AuxClickEvent          -> "auxclick"
+    CompositionStartEvent  -> "compositionstart"
+    CompositionUpdateEvent -> "compositionupdate"
+    CompositionEndEvent    -> "compositionend"
 
 data TouchEvent
   = TouchStart
