@@ -7,6 +7,7 @@ services:
       - launchpad_stack_root:/stack-root
     environment:
       STACK_ROOT: /stack-root
+      STACK_YAML: stack-ghc-9.10.yaml
       IN_DEV_CONTAINER: 'true'
       # Pass through the CI variable from GitHub (or set it to 'true' locally
       # for debugging CI builds).

@@ -2,6 +2,8 @@
 
 A library for constructing type-safe and (mostly) spec-compliant HTML.
 
+This library is in active development; the API is not yet stable.
+
 ### TODO
 
 1. Remove Fleece dependency.
