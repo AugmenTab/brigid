@@ -144,7 +144,11 @@ example =
         , E.time [ A.datetime exampleDate ]
             [ E.text "the day this was written"
             ]
-        , E.text ", we learned about using week numbers to represent "
+        , E.text ", we "
+        , E.a [ A.href $ B.mkRawURL "https://www.google.com" ]
+            [ E.text "learned"
+            ]
+        , E.text " about using week numbers to represent "
         , E.time [ A.datetimeWithFormat "%G-W%V-%u" exampleDate ]
             [ E.text "the same date"
             ]

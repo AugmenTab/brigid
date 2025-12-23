@@ -36,6 +36,7 @@ module Brigid.HTML.Elements.TagGroups
   , LegendContent
   , NoScriptBodyContent
   , NoScriptHeadContent
+  , ParagraphContent
   , PictureContent
   , RubyContent
   , SummaryContent
@@ -692,6 +693,39 @@ type NoScriptHeadContent =
   , 'Meta
   , 'Style
   ]
+
+-- This list represents all elements that are valid under a `<p>` tag.
+--
+-- Everything being unioned with 'PhrasingContent' here has a condition that
+-- must be met in order to be a valid child, but for most of these, we can't
+-- enforce it, so we trust the user to make the right call.
+--
+-- @a@ and @map@ are valid only if they contain only phrasing content. This
+-- should be taken care of with the existing mechanics, since they are
+-- transparent and can only contain what is valid for their parents (with some
+-- exceptions).
+--
+-- @area@ is valid only if it is the descendent of a @map@ element. Presumably,
+-- this means that the parent @p@ tag can itself be a child of a @map@ tag. We
+-- have no way to check for this, unless it's a direct parent of @p@, which it
+-- may not have to be.
+--
+-- @del@ and @ins@ are transparent, and is valid if it contains only phrasing
+-- content, so that is safe.
+--
+-- @link@ and @meta@ are valid only if the @itemprop@ attribute is present. We
+-- have no way to check for this, so we trust the user to make the right call.
+--
+type ParagraphContent =
+  Union PhrasingContent
+    [ 'Anchor
+    , 'Area
+    , 'DeletedText
+    , 'InsertedText
+    , 'Link
+    , 'Map
+    , 'Meta
+    ]
 
 -- This list represents all elements that are valid under a `<picture>` tag.
 --

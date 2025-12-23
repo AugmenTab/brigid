@@ -5801,6 +5801,7 @@ mkParagraphChild e =
   in
     case elementType e of
       Abbreviation -> mkAbbreviation attrs content
+      Anchor -> mkAnchor attrs content
       Area -> mkArea attrs
       Audio -> mkAudio attrs content
       BringAttentionTo -> mkBringAttentionTo attrs content
@@ -5814,15 +5815,20 @@ mkParagraphChild e =
       Data -> mkData attrs content
       DataList -> mkDataList attrs content
       Definition -> mkDefinition attrs content
+      DeletedText -> mkDeletedText attrs content
       Emphasis -> mkEmphasis attrs content
       Embed -> mkEmbed attrs
       IdiomaticText -> mkIdiomaticText attrs content
       IFrame -> mkIFrame attrs
       Image -> mkImage attrs
       Input -> mkInput attrs
+      InsertedText -> mkInsertedText attrs content
       KeyboardInput -> mkKeyboardInput attrs content
       Label -> mkLabel attrs content
+      Link -> mkLink attrs
       Mark -> mkMark attrs content
+      Map -> mkMap attrs content
+      Meta -> mkMeta attrs
       Meter -> mkMeter attrs content
       NoScriptHead -> mkNoScriptHead attrs content
       NoScriptBody -> mkNoScriptBody attrs content

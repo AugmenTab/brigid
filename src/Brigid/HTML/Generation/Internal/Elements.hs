@@ -1245,7 +1245,17 @@ outputContent :: Set ElementType
 outputContent = phrasingContent
 
 paragraphContent :: Set ElementType
-paragraphContent = phrasingContent
+paragraphContent =
+  Set.union phrasingContent
+    . Set.fromList
+    $ [ Anchor
+      , Area
+      , DeletedText
+      , InsertedText
+      , Link
+      , Map
+      , Meta
+      ]
 
 pictureContent :: Set ElementType
 pictureContent =

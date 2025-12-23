@@ -85,7 +85,7 @@ type family ValidChildrenFor (parent :: TagType) (grandparent :: TagType) :: [Ta
   ValidChildrenFor OptionGroup            grandparent = '[ Option ]
   ValidChildrenFor Option                 grandparent = '[ Text ]
   ValidChildrenFor Output                 grandparent = TagGroups.PhrasingContent
-  ValidChildrenFor Paragraph              grandparent = TagGroups.PhrasingContent
+  ValidChildrenFor Paragraph              grandparent = TagGroups.ParagraphContent
   ValidChildrenFor Picture                grandparent = TagGroups.PictureContent
   ValidChildrenFor PreformattedText       grandparent = TagGroups.PhrasingContent
   ValidChildrenFor Progress               grandparent = Remove Progress TagGroups.PhrasingContent
