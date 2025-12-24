@@ -1,11 +1,11 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.38.0.
+-- This file has been generated from package.yaml by hpack version 0.38.1.
 --
 -- see: https://github.com/sol/hpack
 
 name:           brigid
-version:        0.1.0.1
+version:        0.1.0.2
 description:    Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
 homepage:       https://github.com/AugmenTab/brigid#readme
 bug-reports:    https://github.com/AugmenTab/brigid/issues

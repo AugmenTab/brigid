@@ -1,4 +1,4 @@
-FROM ghcr.io/flipstone/haskell-tools:debian-stable-ghc-9.6.6-2024-12-10-9810a49
+FROM ghcr.io/flipstone/haskell-tools:debian-ghc-9.10.3-1e1d10c
 
 RUN apt-get update \
       && apt-get install -qq -y --no-install-recommends libphonenumber-dev libprotobuf-dev \
