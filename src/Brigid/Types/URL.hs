@@ -47,6 +47,7 @@ import Beeline.Routing qualified as R
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
+import Data.Hashable (Hashable, hashUsing, hashWithSalt)
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -93,6 +94,9 @@ urlToText (URL url) =
 
 newtype AbsoluteURL = AbsoluteURL B.BaseURI
   deriving (Eq)
+
+instance Hashable AbsoluteURL where
+  hashWithSalt = hashUsing absoluteURLToText
 
 instance Show AbsoluteURL where
   show = mappend "AbsoluteURL " . T.unpack . absoluteURLToText

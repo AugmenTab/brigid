@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           brigid
-version:        0.1.0.0
+version:        0.1.0.1
 description:    Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
 homepage:       https://github.com/AugmenTab/brigid#readme
 bug-reports:    https://github.com/AugmenTab/brigid/issues
@@ -227,6 +227,7 @@ library
     , crypton
     , extra
     , foldable1-classes-compat
+    , hashable
     , hedgehog
     , html-email-validate
     , http-types
@@ -271,6 +272,7 @@ test-suite brigid-test
     , crypton
     , extra
     , foldable1-classes-compat
+    , hashable
     , hedgehog
     , html-email-validate
     , http-types
@@ -321,6 +323,7 @@ benchmark brigid-bench
     , crypton
     , extra
     , foldable1-classes-compat
+    , hashable
     , hedgehog
     , html-email-validate
     , http-types
