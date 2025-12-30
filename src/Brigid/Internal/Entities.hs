@@ -2050,7 +2050,7 @@ percentSign = "&#37;"
 ampersand :: String
 ampersand = "&#38;"
 
--- | The single quote HTML entity (''').
+-- | The single quote HTML entity ('\'').
 singleQuote :: String
 singleQuote = "&#39;"
 

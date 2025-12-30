@@ -43,7 +43,10 @@ def create_file(module, tag, entities):
             if entity['symbol'] == "":
                 f.write('.')
             else:
-                f.write(" ('" + entity['symbol'] + "').")
+                if entity['symbol'] == "'":
+                  f.write(" ('\\" + entity['symbol'] + "').")
+                else:
+                  f.write(" ('" + entity['symbol'] + "').")
             f.write("\n" + entity['name'] + f" :: ValidChild {tag} parent{argument}")
             f.write("\n" + indent(len(entity['name'])) + f" => Child{module} parent{argument}")
             f.write("\n" + entity['name'] + " = Tag_Entity Entity." + entity['name'])
@@ -84,7 +87,10 @@ def create_shared_file(entities):
             if entity['symbol'] == "":
                 f.write('.')
             else:
-                f.write(" ('" + entity['symbol'] + "').")
+                if entity['symbol'] == "'":
+                  f.write(" ('\\" + entity['symbol'] + "').")
+                else:
+                  f.write(" ('" + entity['symbol'] + "').")
             f.write("\n" + entity['name'] + " :: String")
             f.write("\n" + entity['name'] + " = \"" + entity['code'] + "\"")
 

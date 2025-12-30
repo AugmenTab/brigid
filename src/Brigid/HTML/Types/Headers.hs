@@ -173,13 +173,13 @@ requestHeadersToByteStringBuilder headers =
       wrap b = BSB.lazyByteString "{" <> b <> BSB.lazyByteString "}"
       renderCustomHeaders =
         fold
-          . intersperse (BSB.lazyByteString ", ")
+          . intersperse (BSB.lazyByteString ",")
           . fmap (BSB.lazyByteString . customRequestHeaderToBytes)
           . NEL.toList
 
    in wrap
         . fold
-        . intersperse (BSB.lazyByteString ", ")
+        . intersperse (BSB.lazyByteString ",")
         $ [ maybe empty renderCustomHeaders $ customHeaders headers
           ]
 
@@ -193,13 +193,13 @@ requestHeadersToTextBuilder headers =
       wrap b = TLB.fromText "{" <> b <> TLB.fromText "}"
       renderCustomHeaders =
         fold
-          . intersperse (TLB.fromText ", ")
+          . intersperse (TLB.fromText ",")
           . fmap (TLB.fromText . customRequestHeaderToText)
           . NEL.toList
 
    in wrap
         . fold
-        . intersperse (TLB.fromText ", ")
+        . intersperse (TLB.fromText ",")
         $ [ maybe empty renderCustomHeaders $ customHeaders headers
           ]
 
@@ -218,16 +218,16 @@ customRequestHeaderToBytes header =
   LBS.concat
     [ "\""
     , Render.textToLazyBytes $ customRequestHeaderName header
-    , "\" : \""
+    , "\":\""
     , Render.textToLazyBytes $ customRequestHeaderValue header
     , "\""
     ]
 customRequestHeaderToText :: CustomRequestHeader -> T.Text
 customRequestHeaderToText header =
   T.concat
-    [ T.singleton '"'
+    [ "\""
     , customRequestHeaderName header
-    , "\": \""
+    , "\":\""
     , customRequestHeaderValue header
     , "\""
     ]

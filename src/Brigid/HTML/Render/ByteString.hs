@@ -1114,7 +1114,10 @@ renderAttribute attr =
         $ NEL.toList exts
 
     Attr_HxHeaders headers ->
-      Just . buildAttribute "hx-headers" $ Types.htmxHeadersToBytes headers
+      Just
+        . buildAttribute "hx-headers"
+        . Escape.attributeBytes
+        $ Types.htmxHeadersToBytes headers
 
     Attr_HxHistory ->
       Just $ buildAttribute "hx-history" "false"

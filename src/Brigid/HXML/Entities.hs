@@ -2083,7 +2083,7 @@ ampersand :: ValidChild Content parent
           => ChildHXML parent
 ampersand = Tag_Entity Entity.ampersand
 
--- | The single quote HTML entity (''').
+-- | The single quote HTML entity ('\'').
 singleQuote :: ValidChild Content parent
             => ChildHXML parent
 singleQuote = Tag_Entity Entity.singleQuote

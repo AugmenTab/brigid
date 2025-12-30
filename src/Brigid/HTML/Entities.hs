@@ -2083,7 +2083,7 @@ ampersand :: ValidChild Text parent grandparent
           => ChildHTML parent grandparent
 ampersand = Tag_Entity Entity.ampersand
 
--- | The single quote HTML entity (''').
+-- | The single quote HTML entity ('\'').
 singleQuote :: ValidChild Text parent grandparent
             => ChildHTML parent grandparent
 singleQuote = Tag_Entity Entity.singleQuote
