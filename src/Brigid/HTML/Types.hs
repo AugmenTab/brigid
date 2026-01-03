@@ -44,6 +44,7 @@ import Brigid.HTML.Types.KeyHint as Export
 import Brigid.HTML.Types.LoadOption as Export
 import Brigid.HTML.Types.MediaQuery as Export
 import Brigid.HTML.Types.MetadataName as Export
+import Brigid.HTML.Types.NoModifier as Export
 import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Number as Export
 import Brigid.HTML.Types.NumberingType as Export

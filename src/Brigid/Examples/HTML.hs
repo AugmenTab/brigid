@@ -580,7 +580,6 @@ htmxExample =
                , A.hxTarget $ HTML.htmx_closest myClass
                , A.hxSwap
                    . HTML.swapAfterbegin
-                   . Just
                    . HTML.scroll HTML.SwapTop
                    $ Just idQuerySelectorExample
                , A.hxTrigger $

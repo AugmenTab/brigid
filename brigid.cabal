@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           brigid
-version:        0.1.0.2
+version:        0.2.0.0
 description:    Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
 homepage:       https://github.com/AugmenTab/brigid#readme
 bug-reports:    https://github.com/AugmenTab/brigid/issues
@@ -134,6 +134,7 @@ library
       Brigid.HTML.Types.LoadOption
       Brigid.HTML.Types.MediaQuery
       Brigid.HTML.Types.MetadataName
+      Brigid.HTML.Types.NoModifier
       Brigid.HTML.Types.None
       Brigid.HTML.Types.Number
       Brigid.HTML.Types.NumberingType

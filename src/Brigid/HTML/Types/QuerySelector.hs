@@ -749,6 +749,7 @@ import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
 import Brigid.HTML.Types.LoadOption (LoadOption, loadOptionToText)
 import Brigid.HTML.Types.MediaQuery (MediaQuery, mediaQueryToText)
 import Brigid.HTML.Types.Number (Number, numberToText)
+import Brigid.HTML.Types.NoModifier (NoModifier)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
 import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
@@ -4034,7 +4035,7 @@ swapToText =
 data SwapModifier =
   SwapModifier
     { swapModifierStrategy :: SwapStyle
-    , swapModifierModifier :: Maybe (Shrubbery.Union SwapModifierTypes)
+    , swapModifierModifier :: Shrubbery.Union SwapModifierTypes
     } deriving (Eq, Show.Show)
 
 type SwapModifierTypes =
@@ -4043,6 +4044,7 @@ type SwapModifierTypes =
   , IgnoreTitle
   , SwapDisplay
   , FocusScroll
+  , NoModifier
   ]
 
 swapModifierToBytes :: SwapModifier -> LBS.ByteString
@@ -4052,13 +4054,14 @@ swapModifierToBytes swapModifier =
     $ [ Just . swapStyleToBytes $ swapModifierStrategy swapModifier
       , ( Shrubbery.dissect
             . Shrubbery.branchBuild
-            . Shrubbery.branch @SwapTransition swapTransitionToBytes
-            . Shrubbery.branch @SwapTiming swapTimingToBytes
-            . Shrubbery.branch @IgnoreTitle ignoreTitleToBytes
-            . Shrubbery.branch @SwapDisplay swapDisplayToBytes
-            . Shrubbery.branch @FocusScroll focusScrollToBytes
+            . Shrubbery.branch @SwapTransition (Just . swapTransitionToBytes)
+            . Shrubbery.branch @SwapTiming (Just . swapTimingToBytes)
+            . Shrubbery.branch @IgnoreTitle (Just . ignoreTitleToBytes)
+            . Shrubbery.branch @SwapDisplay (Just . swapDisplayToBytes)
+            . Shrubbery.branch @FocusScroll (Just . focusScrollToBytes)
+            . Shrubbery.branch @NoModifier (const Nothing)
             $ Shrubbery.branchEnd
-        ) <$> swapModifierModifier swapModifier
+        ) $ swapModifierModifier swapModifier
       ]
 
 swapModifierToText :: SwapModifier -> T.Text
@@ -4068,84 +4071,85 @@ swapModifierToText swapModifier =
     $ [ Just . swapStyleToText $ swapModifierStrategy swapModifier
       , ( Shrubbery.dissect
             . Shrubbery.branchBuild
-            . Shrubbery.branch @SwapTransition swapTransitionToText
-            . Shrubbery.branch @SwapTiming swapTimingToText
-            . Shrubbery.branch @IgnoreTitle ignoreTitleToText
-            . Shrubbery.branch @SwapDisplay swapDisplayToText
-            . Shrubbery.branch @FocusScroll focusScrollToText
+            . Shrubbery.branch @SwapTransition (Just . swapTransitionToText)
+            . Shrubbery.branch @SwapTiming (Just . swapTimingToText)
+            . Shrubbery.branch @IgnoreTitle (Just . ignoreTitleToText)
+            . Shrubbery.branch @SwapDisplay (Just . swapDisplayToText)
+            . Shrubbery.branch @FocusScroll (Just . focusScrollToText)
+            . Shrubbery.branch @NoModifier (const Nothing)
             $ Shrubbery.branchEnd
-        ) <$> swapModifierModifier swapModifier
+        ) $ swapModifierModifier swapModifier
       ]
 
 
 swapInnerHTML :: ( KnownNat branchIndex
                  , branchIndex ~ FirstIndexOf swap SwapModifierTypes
                  )
-              => Maybe swap -> SwapModifier
+              => swap -> SwapModifier
 swapInnerHTML swap =
   SwapModifier
     { swapModifierStrategy = InnerHTML
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 swapOuterHTML :: ( KnownNat branchIndex
                  , branchIndex ~ FirstIndexOf swap SwapModifierTypes
                  )
-              => Maybe swap -> SwapModifier
+              => swap -> SwapModifier
 swapOuterHTML swap =
   SwapModifier
     { swapModifierStrategy = OuterHTML
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 swapBeforebegin :: ( KnownNat branchIndex
                    , branchIndex ~ FirstIndexOf swap SwapModifierTypes
                    )
-                => Maybe swap -> SwapModifier
+                => swap -> SwapModifier
 swapBeforebegin swap =
   SwapModifier
     { swapModifierStrategy = BeforeBegin
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 swapAfterbegin :: ( KnownNat branchIndex
                   , branchIndex ~ FirstIndexOf swap SwapModifierTypes
                   )
-               => Maybe swap -> SwapModifier
+               => swap -> SwapModifier
 swapAfterbegin swap =
   SwapModifier
     { swapModifierStrategy = AfterBegin
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 swapBeforeend :: ( KnownNat branchIndex
                  , branchIndex ~ FirstIndexOf swap SwapModifierTypes
                  )
-              => Maybe swap -> SwapModifier
+              => swap -> SwapModifier
 swapBeforeend swap =
   SwapModifier
     { swapModifierStrategy = BeforeEnd
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 swapAfterend :: ( KnownNat branchIndex
                 , branchIndex ~ FirstIndexOf swap SwapModifierTypes
                 )
-             => Maybe swap -> SwapModifier
+             => swap -> SwapModifier
 swapAfterend swap =
   SwapModifier
     { swapModifierStrategy = AfterEnd
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 swapDelete :: ( KnownNat branchIndex
               , branchIndex ~ FirstIndexOf swap SwapModifierTypes
               )
-           => Maybe swap -> SwapModifier
+           => swap -> SwapModifier
 swapDelete swap =
   SwapModifier
     { swapModifierStrategy = SwapDelete
-    , swapModifierModifier = Shrubbery.unify <$> swap
+    , swapModifierModifier = Shrubbery.unify swap
     }
 
 -- Swap Display
