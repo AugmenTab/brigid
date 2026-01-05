@@ -1,715 +1,357 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE ExplicitNamespaces #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Types.Aria
-  ( Aria
-  , unAria
+  ( Aria (Aria)
   , AriaTypes
-  , mkAria
   , ariaAttributeToBytes
   , ariaAttributeToText
   , ariaValueToBytes
   , ariaValueToText
-  , AriaActiveDescendant (..)
-  , AriaAtomic (..)
-  , AriaAutocomplete (..)
-  , AriaBrailleLabel (..)
-  , AriaBrailleRoleDescription (..)
-  , AriaBusy (..)
-  -- , AriaChecked (..)
-  , AriaColCount (..)
-  , AriaColIndex (..)
-  , AriaColIndexText (..)
-  , AriaColspan (..)
-  , AriaControls (..)
-  , AriaCurrent (..)
-  , AriaCurrentTypes
-  , AriaDescribedBy (..)
-  , AriaDescription (..)
-  , AriaDetails (..)
-  , AriaDisabled (..)
-  , AriaErrorMessage (..)
-  -- , AriaExpanded (..)
-  , AriaFlowTo (..)
-  -- , AriaHasPopup (..)
-  -- , AriaHidden (..)
-  -- , AriaInvalid (..)
-  , AriaKeyShortcuts (..)
-  , AriaLabel (..)
-  , AriaLabelledBy (..)
-  , AriaLevel (..)
-  , AriaLive (..)
-  , AriaModal (..)
-  , AriaMultiline (..)
-  , AriaMultiselectable (..)
-  -- , AriaOrientation (..)
-  , AriaOwns (..)
-  , AriaPlaceholder (..)
-  , AriaPosInSet (..)
-  -- , AriaPressed (..)
-  , AriaReadOnly (..)
-  , AriaRelevant (..)
-  , AriaRequired (..)
-  , AriaRoleDescription (..)
-  , AriaRowCount (..)
-  , AriaRowIndex (..)
-  , AriaRowIndexText (..)
-  , AriaRowspan (..)
-  -- , AriaSelected (..)
-  , AriaSetSize (..)
-  , AriaSort (..)
-  , AriaValueMax (..)
-  , AriaValueMin (..)
-  , AriaValueNow (..)
-  , AriaValueText (..)
+  , Current.AriaCurrent (..)
+  , Current.AriaCurrentTypes
+  , Current.CurrentPage (..)
+  , Current.CurrentStep (..)
+  , Current.CurrentLocation (..)
+  , Current.CurrentDate (..)
+  , Current.CurrentTime (..)
+  , HasPopup.AriaHasPopup (..)
+  , HasPopup.AriaHasPopupTypes
+  , HasPopup.PopupMenu (..)
+  , HasPopup.PopupListbox (..)
+  , HasPopup.PopupTree (..)
+  , HasPopup.PopupGrid (..)
+  , HasPopup.PopupDialog (..)
+  , Invalid.AriaInvalid (..)
+  , Invalid.AriaInvalidTypes
+  , Invalid.InvalidGrammar (..)
+  , Invalid.InvalidSpelling (..)
+  , MixedBool.AriaMixedBool (..)
+  , MixedBool.AriaMixedBoolTypes
+  , Option.AriaAutocompleteOption (..)
+  , Option.AriaLiveOption (..)
+  , Option.AriaRelevantOption (..)
+  , Option.AriaSortOption (..)
   , RawAria (..)
-  , AriaPage (AriaPage)
-  , AriaStep (AriaStep)
-  , AriaLocation (AriaLocation)
-  , AriaDate (AriaDate)
-  , AriaTime (AriaTime)
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
-import GHC.TypeLits (KnownNat)
 import Integer (Positive)
 import Numeric.Natural (Natural)
+import Shrubbery (type (@=))
 import Shrubbery qualified
-import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.AriaOption qualified as Option
+import Brigid.HTML.Types.Aria.Current qualified as Current
+import Brigid.HTML.Types.Aria.HasPopup qualified as HasPopup
+import Brigid.HTML.Types.Aria.Invalid qualified as Invalid
+import Brigid.HTML.Types.Aria.MixedBool qualified as MixedBool
+import Brigid.HTML.Types.Aria.Option qualified as Option
 import Brigid.HTML.Types.Number (Number)
+import Brigid.HTML.Types.Orientation (Orientation, orientationToBytes, orientationToText)
 import Brigid.Internal.Render qualified as Render
 import Brigid.Types qualified as Types
 
-newtype Aria =
-  Aria
-    { unAria :: Shrubbery.Union AriaTypes
-    } deriving (Eq, Show)
+newtype Aria = Aria (Shrubbery.TaggedUnion AriaTypes)
+  deriving (Eq, Show)
 
 type AriaTypes =
-  [ AriaActiveDescendant
-  , AriaAtomic
-  , AriaAutocomplete
-  , AriaBrailleLabel
-  , AriaBrailleRoleDescription
-  , AriaBusy
-  -- , AriaChecked
-  , AriaColCount
-  , AriaColIndex
-  , AriaColIndexText
-  , AriaColspan
-  , AriaControls
-  , AriaCurrent
-  , AriaDescribedBy
-  , AriaDescription
-  , AriaDetails
-  , AriaDisabled
-  , AriaErrorMessage
-  -- , AriaExpanded
-  , AriaFlowTo
-  -- , AriaHasPopup
-  -- , AriaHidden
-  -- , AriaInvalid
-  , AriaKeyShortcuts
-  , AriaLabel
-  , AriaLabelledBy
-  , AriaLevel
-  , AriaLive
-  , AriaModal
-  , AriaMultiline
-  , AriaMultiselectable
-  -- , AriaOrientation
-  , AriaOwns
-  , AriaPlaceholder
-  , AriaPosInSet
-  -- , AriaPressed
-  , AriaReadOnly
-  , AriaRelevant
-  , AriaRequired
-  , AriaRoleDescription
-  , AriaRowCount
-  , AriaRowIndex
-  , AriaRowIndexText
-  , AriaRowspan
-  -- , AriaSelected
-  , AriaSetSize
-  , AriaSort
-  , AriaValueMax
-  , AriaValueMin
-  , AriaValueNow
-  , AriaValueText
-  , RawAria
+  [ "activedescendant" @= Types.Id
+  , "atomic" @= Bool
+  , "autocomplete" @= Option.AriaAutocompleteOption
+  , "braillelabel" @= T.Text
+  , "brailleroledescription" @= T.Text
+  , "busy" @= Bool
+  , "checked" @= MixedBool.AriaMixedBool
+  , "colcount" @= Natural
+  , "colindex" @= Positive
+  , "colindextext" @= T.Text
+  , "colspan" @= Positive
+  , "controls" @= [Types.Id]
+  , "current" @= Current.AriaCurrent
+  , "describedby" @= [Types.Id]
+  , "description" @= T.Text
+  , "details" @= [Types.Id]
+  , "disabled" @= Bool
+  , "errormessage" @= NEL.NonEmpty Types.Id
+  , "expanded" @= Bool
+  , "flowto" @= [Types.Id]
+  , "haspopup" @= HasPopup.AriaHasPopup
+  , "hidden" @= Bool
+  , "invalid" @= Invalid.AriaInvalid
+  , "keyshortcuts" @= T.Text -- TODO: Add type-safe implementation?
+  , "label" @= T.Text
+  , "labelledby" @= NEL.NonEmpty Types.Id
+  , "level" @= Positive
+  , "live" @= Option.AriaLiveOption
+  , "modal" @= Bool
+  , "multiline" @= Bool
+  , "multiselectable" @= Bool
+  , "orientation" @= Orientation
+  , "owns" @= [Types.Id]
+  , "placeholder" @= T.Text
+  , "posinset" @= Positive
+  , "pressed" @= MixedBool.AriaMixedBool
+  , "readonly" @= Bool
+  , "relevant" @= Option.AriaRelevantOption
+  , "required" @= Bool
+  , "roledescription" @= NET.NonEmptyText
+  , "rowcount" @= Integer
+  , "rowindex" @= Positive
+  , "rowindextext" @= T.Text
+  , "rowspan" @= Natural
+  , "selected" @= Bool
+  , "setsize" @= Integer
+  , "sort" @= Option.AriaSortOption
+  , "valuemax" @= Number
+  , "valuemin" @= Number
+  , "valuenow" @= Number
+  , "valuetext" @= T.Text
+  , "raw" @= RawAria
   ]
-
-mkAria :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf aria AriaTypes)
-       => aria -> Aria
-mkAria =
-  Aria . Shrubbery.unify
 
 ariaAttributeToBytes :: Aria -> LBS.ByteString
 ariaAttributeToBytes (Aria aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AriaActiveDescendant (const "aria-activedescendant")
-      . Shrubbery.branch @AriaAtomic (const "aria-atomic")
-      . Shrubbery.branch @AriaAutocomplete (const "aria-autocomplete")
-      . Shrubbery.branch @AriaBrailleLabel (const "aria-braillelabel")
-      . Shrubbery.branch @AriaBrailleRoleDescription (const "aria-brailleroledescription")
-      . Shrubbery.branch @AriaBusy (const "aria-busy")
-      -- . Shrubbery.branch @AriaChecked (const "aria-checked")
-      . Shrubbery.branch @AriaColCount (const "aria-colcount")
-      . Shrubbery.branch @AriaColIndex (const "aria-colindex")
-      . Shrubbery.branch @AriaColIndexText (const "aria-colindextext")
-      . Shrubbery.branch @AriaColspan (const "aria-colspan")
-      . Shrubbery.branch @AriaControls (const "aria-controls")
-      . Shrubbery.branch @AriaCurrent (const "aria-current")
-      . Shrubbery.branch @AriaDescribedBy (const "aria-describedby")
-      . Shrubbery.branch @AriaDescription (const "aria-description")
-      . Shrubbery.branch @AriaDetails (const "aria-details")
-      . Shrubbery.branch @AriaDisabled (const "aria-disabled")
-      . Shrubbery.branch @AriaErrorMessage (const "aria-errormessage")
-      -- . Shrubbery.branch @AriaExpanded (const "aria-expanded")
-      . Shrubbery.branch @AriaFlowTo (const "aria-flowto")
-      -- . Shrubbery.branch @AriaHasPopup (const "aria-haspopup")
-      -- . Shrubbery.branch @AriaHidden (const "aria-hidden")
-      -- . Shrubbery.branch @AriaInvalid (const "aria-invalid")
-      . Shrubbery.branch @AriaKeyShortcuts (const "aria-keyshortcuts")
-      . Shrubbery.branch @AriaLabel (const "aria-label")
-      . Shrubbery.branch @AriaLabelledBy (const "aria-labelledby")
-      . Shrubbery.branch @AriaLevel (const "aria-level")
-      . Shrubbery.branch @AriaLive (const "aria-live")
-      . Shrubbery.branch @AriaModal (const "aria-modal")
-      . Shrubbery.branch @AriaMultiline (const "aria-multiline")
-      . Shrubbery.branch @AriaMultiselectable (const "aria-multiselectable")
-      -- . Shrubbery.branch @AriaOrientation (const "aria-orientation")
-      . Shrubbery.branch @AriaOwns (const "aria-owns")
-      . Shrubbery.branch @AriaPlaceholder (const "aria-placeholder")
-      . Shrubbery.branch @AriaPosInSet (const "aria-posinset")
-      -- . Shrubbery.branch @AriaPressed (const "aria-pressed")
-      . Shrubbery.branch @AriaReadOnly (const "aria-readonly")
-      . Shrubbery.branch @AriaRelevant (const "aria-relevant")
-      . Shrubbery.branch @AriaRequired (const "aria-required")
-      . Shrubbery.branch @AriaRoleDescription (const "aria-roledescription")
-      . Shrubbery.branch @AriaRowCount (const "aria-rowcount")
-      . Shrubbery.branch @AriaRowIndex (const "aria-rowindex")
-      . Shrubbery.branch @AriaRowIndexText (const "aria-rowindextext")
-      . Shrubbery.branch @AriaRowspan (const "aria-rowspan")
-      -- . Shrubbery.branch @AriaSelected (const "aria-selected")
-      . Shrubbery.branch @AriaSetSize (const "aria-setsize")
-      . Shrubbery.branch @AriaSort (const "aria-sort")
-      . Shrubbery.branch @AriaValueMax (const "aria-valuemax")
-      . Shrubbery.branch @AriaValueMin (const "aria-valuemin")
-      . Shrubbery.branch @AriaValueNow (const "aria-valuenow")
-      . Shrubbery.branch @AriaValueText (const "aria-valuetext")
-      . Shrubbery.branch @RawAria (("aria-" <>) . Render.textToLazyBytes . NET.toText . rawAriaAttribute)
-      $ Shrubbery.branchEnd
+  ( Shrubbery.dissectTaggedUnion
+      . Shrubbery.taggedBranchBuild
+      . Shrubbery.taggedBranch @"activedescendant" (const "aria-activedescendant")
+      . Shrubbery.taggedBranch @"atomic" (const "aria-atomic")
+      . Shrubbery.taggedBranch @"autocomplete" (const "aria-autocomplete")
+      . Shrubbery.taggedBranch @"braillelabel" (const "aria-braillelabel")
+      . Shrubbery.taggedBranch @"brailleroledescription" (const "aria-brailleroledescription")
+      . Shrubbery.taggedBranch @"busy" (const "aria-busy")
+      . Shrubbery.taggedBranch @"checked" (const "aria-checked")
+      . Shrubbery.taggedBranch @"colcount" (const "aria-colcount")
+      . Shrubbery.taggedBranch @"colindex" (const "aria-colindex")
+      . Shrubbery.taggedBranch @"colindextext" (const "aria-colindextext")
+      . Shrubbery.taggedBranch @"colspan" (const "aria-colspan")
+      . Shrubbery.taggedBranch @"controls" (const "aria-controls")
+      . Shrubbery.taggedBranch @"current" (const "aria-current")
+      . Shrubbery.taggedBranch @"describedby" (const "aria-describedby")
+      . Shrubbery.taggedBranch @"description" (const "aria-description")
+      . Shrubbery.taggedBranch @"details" (const "aria-details")
+      . Shrubbery.taggedBranch @"disabled" (const "aria-disabled")
+      . Shrubbery.taggedBranch @"errormessage" (const "aria-errormessage")
+      . Shrubbery.taggedBranch @"expanded" (const "aria-expanded")
+      . Shrubbery.taggedBranch @"flowto" (const "aria-flowto")
+      . Shrubbery.taggedBranch @"haspopup" (const "aria-haspopup")
+      . Shrubbery.taggedBranch @"hidden" (const "aria-hidden")
+      . Shrubbery.taggedBranch @"invalid" (const "aria-invalid")
+      . Shrubbery.taggedBranch @"keyshortcuts" (const "aria-keyshortcuts")
+      . Shrubbery.taggedBranch @"label" (const "aria-label")
+      . Shrubbery.taggedBranch @"labelledby" (const "aria-labelledby")
+      . Shrubbery.taggedBranch @"level" (const "aria-level")
+      . Shrubbery.taggedBranch @"live" (const "aria-live")
+      . Shrubbery.taggedBranch @"modal" (const "aria-modal")
+      . Shrubbery.taggedBranch @"multiline" (const "aria-multiline")
+      . Shrubbery.taggedBranch @"multiselectable" (const "aria-multiselectable")
+      . Shrubbery.taggedBranch @"orientation" (const "aria-orientation")
+      . Shrubbery.taggedBranch @"owns" (const "aria-owns")
+      . Shrubbery.taggedBranch @"placeholder" (const "aria-placeholder")
+      . Shrubbery.taggedBranch @"posinset" (const "aria-posinset")
+      . Shrubbery.taggedBranch @"pressed" (const "aria-pressed")
+      . Shrubbery.taggedBranch @"readonly" (const "aria-readonly")
+      . Shrubbery.taggedBranch @"relevant" (const "aria-relevant")
+      . Shrubbery.taggedBranch @"required" (const "aria-required")
+      . Shrubbery.taggedBranch @"roledescription" (const "aria-roledescription")
+      . Shrubbery.taggedBranch @"rowcount" (const "aria-rowcount")
+      . Shrubbery.taggedBranch @"rowindex" (const "aria-rowindex")
+      . Shrubbery.taggedBranch @"rowindextext" (const "aria-rowindextext")
+      . Shrubbery.taggedBranch @"rowspan" (const "aria-rowspan")
+      . Shrubbery.taggedBranch @"selected" (const "aria-selected")
+      . Shrubbery.taggedBranch @"setsize" (const "aria-setsize")
+      . Shrubbery.taggedBranch @"sort" (const "aria-sort")
+      . Shrubbery.taggedBranch @"valuemax" (const "aria-valuemax")
+      . Shrubbery.taggedBranch @"valuemin" (const "aria-valuemin")
+      . Shrubbery.taggedBranch @"valuenow" (const "aria-valuenow")
+      . Shrubbery.taggedBranch @"valuetext" (const "aria-valuetext")
+      . Shrubbery.taggedBranch @"raw" (("aria-" <>) . Render.textToLazyBytes . NET.toText . rawAriaAttribute)
+      $ Shrubbery.taggedBranchEnd
   ) aria
 
 ariaAttributeToText :: Aria -> T.Text
 ariaAttributeToText (Aria aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AriaActiveDescendant (const "aria-activedescendant")
-      . Shrubbery.branch @AriaAtomic (const "aria-atomic")
-      . Shrubbery.branch @AriaAutocomplete (const "aria-autocomplete")
-      . Shrubbery.branch @AriaBrailleLabel (const "aria-braillelabel")
-      . Shrubbery.branch @AriaBrailleRoleDescription (const "aria-brailleroledescription")
-      . Shrubbery.branch @AriaBusy (const "aria-busy")
-      -- . Shrubbery.branch @AriaChecked (const "aria-checked")
-      . Shrubbery.branch @AriaColCount (const "aria-colcount")
-      . Shrubbery.branch @AriaColIndex (const "aria-colindex")
-      . Shrubbery.branch @AriaColIndexText (const "aria-colindextext")
-      . Shrubbery.branch @AriaColspan (const "aria-colspan")
-      . Shrubbery.branch @AriaControls (const "aria-controls")
-      . Shrubbery.branch @AriaCurrent (const "aria-current")
-      . Shrubbery.branch @AriaDescribedBy (const "aria-describedby")
-      . Shrubbery.branch @AriaDescription (const "aria-description")
-      . Shrubbery.branch @AriaDetails (const "aria-details")
-      . Shrubbery.branch @AriaDisabled (const "aria-disabled")
-      . Shrubbery.branch @AriaErrorMessage (const "aria-errormessage")
-      -- . Shrubbery.branch @AriaExpanded (const "aria-expanded")
-      . Shrubbery.branch @AriaFlowTo (const "aria-flowto")
-      -- . Shrubbery.branch @AriaHasPopup (const "aria-haspopup")
-      -- . Shrubbery.branch @AriaHidden (const "aria-hidden")
-      -- . Shrubbery.branch @AriaInvalid (const "aria-invalid")
-      . Shrubbery.branch @AriaKeyShortcuts (const "aria-keyshortcuts")
-      . Shrubbery.branch @AriaLabel (const "aria-label")
-      . Shrubbery.branch @AriaLabelledBy (const "aria-labelledby")
-      . Shrubbery.branch @AriaLevel (const "aria-level")
-      . Shrubbery.branch @AriaLive (const "aria-live")
-      . Shrubbery.branch @AriaModal (const "aria-modal")
-      . Shrubbery.branch @AriaMultiline (const "aria-multiline")
-      . Shrubbery.branch @AriaMultiselectable (const "aria-multiselectable")
-      -- . Shrubbery.branch @AriaOrientation (const "aria-orientation")
-      . Shrubbery.branch @AriaOwns (const "aria-owns")
-      . Shrubbery.branch @AriaPlaceholder (const "aria-placeholder")
-      . Shrubbery.branch @AriaPosInSet (const "aria-posinset")
-      -- . Shrubbery.branch @AriaPressed (const "aria-pressed")
-      . Shrubbery.branch @AriaReadOnly (const "aria-readonly")
-      . Shrubbery.branch @AriaRelevant (const "aria-relevant")
-      . Shrubbery.branch @AriaRequired (const "aria-required")
-      . Shrubbery.branch @AriaRoleDescription (const "aria-roledescription")
-      . Shrubbery.branch @AriaRowCount (const "aria-rowcount")
-      . Shrubbery.branch @AriaRowIndex (const "aria-rowindex")
-      . Shrubbery.branch @AriaRowIndexText (const "aria-rowindextext")
-      . Shrubbery.branch @AriaRowspan (const "aria-rowspan")
-      -- . Shrubbery.branch @AriaSelected (const "aria-selected")
-      . Shrubbery.branch @AriaSetSize (const "aria-setsize")
-      . Shrubbery.branch @AriaSort (const "aria-sort")
-      . Shrubbery.branch @AriaValueMax (const "aria-valuemax")
-      . Shrubbery.branch @AriaValueMin (const "aria-valuemin")
-      . Shrubbery.branch @AriaValueNow (const "aria-valuenow")
-      . Shrubbery.branch @AriaValueText (const "aria-valuetext")
-      . Shrubbery.branch @RawAria (("aria-" <>) . NET.toText . rawAriaAttribute)
-      $ Shrubbery.branchEnd
+  ( Shrubbery.dissectTaggedUnion
+      . Shrubbery.taggedBranchBuild
+      . Shrubbery.taggedBranch @"activedescendant" (const "aria-activedescendant")
+      . Shrubbery.taggedBranch @"atomic" (const "aria-atomic")
+      . Shrubbery.taggedBranch @"autocomplete" (const "aria-autocomplete")
+      . Shrubbery.taggedBranch @"braillelabel" (const "aria-braillelabel")
+      . Shrubbery.taggedBranch @"brailleroledescription" (const "aria-brailleroledescription")
+      . Shrubbery.taggedBranch @"busy" (const "aria-busy")
+      . Shrubbery.taggedBranch @"checked" (const "aria-checked")
+      . Shrubbery.taggedBranch @"colcount" (const "aria-colcount")
+      . Shrubbery.taggedBranch @"colindex" (const "aria-colindex")
+      . Shrubbery.taggedBranch @"colindextext" (const "aria-colindextext")
+      . Shrubbery.taggedBranch @"colspan" (const "aria-colspan")
+      . Shrubbery.taggedBranch @"controls" (const "aria-controls")
+      . Shrubbery.taggedBranch @"current" (const "aria-current")
+      . Shrubbery.taggedBranch @"describedby" (const "aria-describedby")
+      . Shrubbery.taggedBranch @"description" (const "aria-description")
+      . Shrubbery.taggedBranch @"details" (const "aria-details")
+      . Shrubbery.taggedBranch @"disabled" (const "aria-disabled")
+      . Shrubbery.taggedBranch @"errormessage" (const "aria-errormessage")
+      . Shrubbery.taggedBranch @"expanded" (const "aria-expanded")
+      . Shrubbery.taggedBranch @"flowto" (const "aria-flowto")
+      . Shrubbery.taggedBranch @"haspopup" (const "aria-haspopup")
+      . Shrubbery.taggedBranch @"hidden" (const "aria-hidden")
+      . Shrubbery.taggedBranch @"invalid" (const "aria-invalid")
+      . Shrubbery.taggedBranch @"keyshortcuts" (const "aria-keyshortcuts")
+      . Shrubbery.taggedBranch @"label" (const "aria-label")
+      . Shrubbery.taggedBranch @"labelledby" (const "aria-labelledby")
+      . Shrubbery.taggedBranch @"level" (const "aria-level")
+      . Shrubbery.taggedBranch @"live" (const "aria-live")
+      . Shrubbery.taggedBranch @"modal" (const "aria-modal")
+      . Shrubbery.taggedBranch @"multiline" (const "aria-multiline")
+      . Shrubbery.taggedBranch @"multiselectable" (const "aria-multiselectable")
+      . Shrubbery.taggedBranch @"orientation" (const "aria-orientation")
+      . Shrubbery.taggedBranch @"owns" (const "aria-owns")
+      . Shrubbery.taggedBranch @"placeholder" (const "aria-placeholder")
+      . Shrubbery.taggedBranch @"posinset" (const "aria-posinset")
+      . Shrubbery.taggedBranch @"pressed" (const "aria-pressed")
+      . Shrubbery.taggedBranch @"readonly" (const "aria-readonly")
+      . Shrubbery.taggedBranch @"relevant" (const "aria-relevant")
+      . Shrubbery.taggedBranch @"required" (const "aria-required")
+      . Shrubbery.taggedBranch @"roledescription" (const "aria-roledescription")
+      . Shrubbery.taggedBranch @"rowcount" (const "aria-rowcount")
+      . Shrubbery.taggedBranch @"rowindex" (const "aria-rowindex")
+      . Shrubbery.taggedBranch @"rowindextext" (const "aria-rowindextext")
+      . Shrubbery.taggedBranch @"rowspan" (const "aria-rowspan")
+      . Shrubbery.taggedBranch @"selected" (const "aria-selected")
+      . Shrubbery.taggedBranch @"setsize" (const "aria-setsize")
+      . Shrubbery.taggedBranch @"sort" (const "aria-sort")
+      . Shrubbery.taggedBranch @"valuemax" (const "aria-valuemax")
+      . Shrubbery.taggedBranch @"valuemin" (const "aria-valuemin")
+      . Shrubbery.taggedBranch @"valuenow" (const "aria-valuenow")
+      . Shrubbery.taggedBranch @"valuetext" (const "aria-valuetext")
+      . Shrubbery.taggedBranch @"raw" (("aria-" <>) . NET.toText . rawAriaAttribute)
+      $ Shrubbery.taggedBranchEnd
   ) aria
 
 ariaValueToBytes :: Aria -> LBS.ByteString
 ariaValueToBytes (Aria aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AriaActiveDescendant (Types.idToBytes . unAriaActiveDescendant)
-      . Shrubbery.branch @AriaAtomic (Render.enumBoolToBytes . unAriaAtomic)
-      . Shrubbery.branch @AriaAutocomplete (Option.ariaAutocompleteOptionToBytes . unAriaAutocomplete)
-      . Shrubbery.branch @AriaBrailleLabel (Render.textToLazyBytes . unAriaBrailleLabel)
-      . Shrubbery.branch @AriaBrailleRoleDescription (Render.textToLazyBytes . unAriaBrailleRoleDescription)
-      . Shrubbery.branch @AriaBusy (Render.enumBoolToBytes . unAriaBusy)
-      -- . Shrubbery.branch @AriaChecked _
-      . Shrubbery.branch @AriaColCount (Render.showBytes . unAriaColCount)
-      . Shrubbery.branch @AriaColIndex (Render.showBytes . unAriaColIndex)
-      . Shrubbery.branch @AriaColIndexText (Render.textToLazyBytes . unAriaColIndexText)
-      . Shrubbery.branch @AriaColspan (Render.showBytes . unAriaColspan)
-      . Shrubbery.branch @AriaControls (Render.foldToBytesWithSeparator Types.idToBytes " " . unAriaControls)
-      . Shrubbery.branch @AriaCurrent ariaCurrentToBytes
-      . Shrubbery.branch @AriaDescribedBy (Render.foldToBytesWithSeparator Types.idToBytes " " . unAriaDescribedBy)
-      . Shrubbery.branch @AriaDescription (Render.textToLazyBytes . unAriaDescription)
-      . Shrubbery.branch @AriaDetails (Render.foldToBytesWithSeparator Types.idToBytes " " . unAriaDetails)
-      . Shrubbery.branch @AriaDisabled (Render.enumBoolToBytes . unAriaDisabled)
-      . Shrubbery.branch @AriaErrorMessage (Render.foldToBytesWithSeparator Types.idToBytes " " . NEL.toList . unAriaErrorMessage)
-      -- . Shrubbery.branch @AriaExpanded _
-      . Shrubbery.branch @AriaFlowTo (Render.foldToBytesWithSeparator Types.idToBytes " " . unAriaFlowTo)
-      -- . Shrubbery.branch @AriaHasPopup _
-      -- . Shrubbery.branch @AriaHidden _
-      -- . Shrubbery.branch @AriaInvalid _
-      . Shrubbery.branch @AriaKeyShortcuts (Render.textToLazyBytes . unAriaKeyShortcuts)
-      . Shrubbery.branch @AriaLabel (Render.textToLazyBytes . unAriaLabel)
-      . Shrubbery.branch @AriaLabelledBy (Render.foldToBytesWithSeparator Types.idToBytes " " . NEL.toList . unAriaLabelledBy)
-      . Shrubbery.branch @AriaLevel (Render.showBytes . unAriaLevel)
-      . Shrubbery.branch @AriaLive (Option.ariaLiveOptionToBytes . unAriaLive)
-      . Shrubbery.branch @AriaModal (Render.enumBoolToBytes . unAriaModal)
-      . Shrubbery.branch @AriaMultiline (Render.enumBoolToBytes . unAriaMultiline)
-      . Shrubbery.branch @AriaMultiselectable (Render.enumBoolToBytes . unAriaMultiselectable)
-      -- . Shrubbery.branch @AriaOrientation _
-      . Shrubbery.branch @AriaOwns (Render.foldToBytesWithSeparator Types.idToBytes " " . unAriaOwns)
-      . Shrubbery.branch @AriaPlaceholder (Render.textToLazyBytes . unAriaPlaceholder)
-      . Shrubbery.branch @AriaPosInSet (Render.showBytes . unAriaPosInSet)
-      -- . Shrubbery.branch @AriaPressed _
-      . Shrubbery.branch @AriaReadOnly (Render.showBytes . unAriaReadOnly)
-      . Shrubbery.branch @AriaRelevant (Option.ariaRelevantOptionToBytes . unAriaRelevant)
-      . Shrubbery.branch @AriaRequired (Render.enumBoolToBytes . unAriaRequired)
-      . Shrubbery.branch @AriaRoleDescription (Render.textToLazyBytes . NET.toText . unAriaRoleDescription)
-      . Shrubbery.branch @AriaRowCount (Render.showBytes . unAriaRowCount)
-      . Shrubbery.branch @AriaRowIndex (Render.showBytes . unAriaRowIndex)
-      . Shrubbery.branch @AriaRowIndexText (Render.textToLazyBytes . unAriaRowIndexText)
-      . Shrubbery.branch @AriaRowspan (Render.showBytes . unAriaRowspan)
-      -- . Shrubbery.branch @AriaSelected _
-      . Shrubbery.branch @AriaSetSize (Render.showBytes . unAriaSetSize)
-      . Shrubbery.branch @AriaSort (Option.ariaSortOptionToBytes . unAriaSort)
-      . Shrubbery.branch @AriaValueMax (Render.showBytes . unAriaValueMax)
-      . Shrubbery.branch @AriaValueMin (Render.showBytes . unAriaValueMin)
-      . Shrubbery.branch @AriaValueNow (Render.showBytes . unAriaValueNow)
-      . Shrubbery.branch @AriaValueText (Render.textToLazyBytes . unAriaValueText)
-      . Shrubbery.branch @RawAria (Render.textToLazyBytes . rawAriaValue)
-      $ Shrubbery.branchEnd
+  ( Shrubbery.dissectTaggedUnion
+      . Shrubbery.taggedBranchBuild
+      . Shrubbery.taggedBranch @"activedescendant" Types.idToBytes
+      . Shrubbery.taggedBranch @"atomic" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"autocomplete" Option.ariaAutocompleteOptionToBytes
+      . Shrubbery.taggedBranch @"braillelabel" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"brailleroledescription" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"busy" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"checked" MixedBool.ariaMixedBoolToBytes
+      . Shrubbery.taggedBranch @"colcount" Render.showBytes
+      . Shrubbery.taggedBranch @"colindex" Render.showBytes
+      . Shrubbery.taggedBranch @"colindextext" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"colspan" Render.showBytes
+      . Shrubbery.taggedBranch @"controls" (Render.foldToBytesWithSeparator Types.idToBytes " ")
+      . Shrubbery.taggedBranch @"current" Current.ariaCurrentToBytes
+      . Shrubbery.taggedBranch @"describedby" (Render.foldToBytesWithSeparator Types.idToBytes " ")
+      . Shrubbery.taggedBranch @"description" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"details" (Render.foldToBytesWithSeparator Types.idToBytes " ")
+      . Shrubbery.taggedBranch @"disabled" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"errormessage" (Render.foldToBytesWithSeparator Types.idToBytes " " . NEL.toList)
+      . Shrubbery.taggedBranch @"expanded" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"flowto" (Render.foldToBytesWithSeparator Types.idToBytes " ")
+      . Shrubbery.taggedBranch @"haspopup" HasPopup.ariaHasPopupToBytes
+      . Shrubbery.taggedBranch @"hidden" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"invalid" Invalid.ariaInvalidToBytes
+      . Shrubbery.taggedBranch @"keyshortcuts" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"label" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"labelledby" (Render.foldToBytesWithSeparator Types.idToBytes " " . NEL.toList)
+      . Shrubbery.taggedBranch @"level" Render.showBytes
+      . Shrubbery.taggedBranch @"live" Option.ariaLiveOptionToBytes
+      . Shrubbery.taggedBranch @"modal" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"multiline" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"multiselectable" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"orientation" orientationToBytes
+      . Shrubbery.taggedBranch @"owns" (Render.foldToBytesWithSeparator Types.idToBytes " ")
+      . Shrubbery.taggedBranch @"placeholder" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"posinset" Render.showBytes
+      . Shrubbery.taggedBranch @"pressed" MixedBool.ariaMixedBoolToBytes
+      . Shrubbery.taggedBranch @"readonly" Render.showBytes
+      . Shrubbery.taggedBranch @"relevant" Option.ariaRelevantOptionToBytes
+      . Shrubbery.taggedBranch @"required" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"roledescription" (Render.textToLazyBytes . NET.toText)
+      . Shrubbery.taggedBranch @"rowcount" Render.showBytes
+      . Shrubbery.taggedBranch @"rowindex" Render.showBytes
+      . Shrubbery.taggedBranch @"rowindextext" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"rowspan" Render.showBytes
+      . Shrubbery.taggedBranch @"selected" Render.enumBoolToBytes
+      . Shrubbery.taggedBranch @"setsize" Render.showBytes
+      . Shrubbery.taggedBranch @"sort" Option.ariaSortOptionToBytes
+      . Shrubbery.taggedBranch @"valuemax" Render.showBytes
+      . Shrubbery.taggedBranch @"valuemin" Render.showBytes
+      . Shrubbery.taggedBranch @"valuenow" Render.showBytes
+      . Shrubbery.taggedBranch @"valuetext" Render.textToLazyBytes
+      . Shrubbery.taggedBranch @"raw" (Render.textToLazyBytes . rawAriaValue)
+      $ Shrubbery.taggedBranchEnd
   ) aria
 
 ariaValueToText :: Aria -> T.Text
 ariaValueToText (Aria aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AriaActiveDescendant (Types.idToText . unAriaActiveDescendant)
-      . Shrubbery.branch @AriaAtomic (Render.enumBoolToText . unAriaAtomic)
-      . Shrubbery.branch @AriaAutocomplete (Option.ariaAutocompleteOptionToText . unAriaAutocomplete)
-      . Shrubbery.branch @AriaBrailleLabel unAriaBrailleLabel
-      . Shrubbery.branch @AriaBrailleRoleDescription unAriaBrailleRoleDescription
-      . Shrubbery.branch @AriaBusy (Render.enumBoolToText . unAriaBusy)
-      -- . Shrubbery.branch @AriaChecked _
-      . Shrubbery.branch @AriaColCount (Render.showText . unAriaColCount)
-      . Shrubbery.branch @AriaColIndex (Render.showText . unAriaColIndex)
-      . Shrubbery.branch @AriaColIndexText unAriaColIndexText
-      . Shrubbery.branch @AriaColspan (Render.showText . unAriaColspan)
-      . Shrubbery.branch @AriaControls (Render.foldToTextWithSeparator Types.idToText " " . unAriaControls)
-      . Shrubbery.branch @AriaCurrent ariaCurrentToText
-      . Shrubbery.branch @AriaDescribedBy (Render.foldToTextWithSeparator Types.idToText " " . unAriaDescribedBy)
-      . Shrubbery.branch @AriaDescription unAriaDescription
-      . Shrubbery.branch @AriaDetails (Render.foldToTextWithSeparator Types.idToText " " . unAriaDetails)
-      . Shrubbery.branch @AriaDisabled (Render.enumBoolToText . unAriaDisabled)
-      . Shrubbery.branch @AriaErrorMessage (Render.foldToTextWithSeparator Types.idToText " " . NEL.toList . unAriaErrorMessage)
-      -- . Shrubbery.branch @AriaExpanded _
-      . Shrubbery.branch @AriaFlowTo (Render.foldToTextWithSeparator Types.idToText " " . unAriaFlowTo)
-      -- . Shrubbery.branch @AriaHasPopup _
-      -- . Shrubbery.branch @AriaHidden _
-      -- . Shrubbery.branch @AriaInvalid _
-      . Shrubbery.branch @AriaKeyShortcuts unAriaKeyShortcuts
-      . Shrubbery.branch @AriaLabel unAriaLabel
-      . Shrubbery.branch @AriaLabelledBy (Render.foldToTextWithSeparator Types.idToText " " . NEL.toList . unAriaLabelledBy)
-      . Shrubbery.branch @AriaLevel (Render.showText . unAriaLevel)
-      . Shrubbery.branch @AriaLive (Option.ariaLiveOptionToText . unAriaLive)
-      . Shrubbery.branch @AriaModal (Render.enumBoolToText . unAriaModal)
-      . Shrubbery.branch @AriaMultiline (Render.enumBoolToText . unAriaMultiline)
-      . Shrubbery.branch @AriaMultiselectable (Render.enumBoolToText . unAriaMultiselectable)
-      -- . Shrubbery.branch @AriaOrientation _
-      . Shrubbery.branch @AriaOwns (Render.foldToTextWithSeparator Types.idToText " " . unAriaOwns)
-      . Shrubbery.branch @AriaPlaceholder unAriaPlaceholder
-      . Shrubbery.branch @AriaPosInSet (Render.showText . unAriaPosInSet)
-      -- . Shrubbery.branch @AriaPressed _
-      . Shrubbery.branch @AriaReadOnly (Render.showText . unAriaReadOnly)
-      . Shrubbery.branch @AriaRelevant (Option.ariaRelevantOptionToText . unAriaRelevant)
-      . Shrubbery.branch @AriaRequired (Render.enumBoolToText . unAriaRequired)
-      . Shrubbery.branch @AriaRoleDescription (NET.toText . unAriaRoleDescription)
-      . Shrubbery.branch @AriaRowCount (Render.showText . unAriaRowCount)
-      . Shrubbery.branch @AriaRowIndex (Render.showText . unAriaRowIndex)
-      . Shrubbery.branch @AriaRowIndexText unAriaRowIndexText
-      . Shrubbery.branch @AriaRowspan (Render.showText . unAriaRowspan)
-      -- . Shrubbery.branch @AriaSelected _
-      . Shrubbery.branch @AriaSetSize (Render.showText . unAriaSetSize)
-      . Shrubbery.branch @AriaSort (Option.ariaSortOptionToText . unAriaSort)
-      . Shrubbery.branch @AriaValueMax (Render.showText . unAriaValueMax)
-      . Shrubbery.branch @AriaValueMin (Render.showText . unAriaValueMin)
-      . Shrubbery.branch @AriaValueNow (Render.showText . unAriaValueNow)
-      . Shrubbery.branch @AriaValueText unAriaValueText
-      . Shrubbery.branch @RawAria rawAriaValue
-      $ Shrubbery.branchEnd
+  ( Shrubbery.dissectTaggedUnion
+      . Shrubbery.taggedBranchBuild
+      . Shrubbery.taggedBranch @"activedescendant" Types.idToText
+      . Shrubbery.taggedBranch @"atomic" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"autocomplete" Option.ariaAutocompleteOptionToText
+      . Shrubbery.taggedBranch @"braillelabel" id
+      . Shrubbery.taggedBranch @"brailleroledescription" id
+      . Shrubbery.taggedBranch @"busy" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"checked" MixedBool.ariaMixedBoolToText
+      . Shrubbery.taggedBranch @"colcount" Render.showText
+      . Shrubbery.taggedBranch @"colindex" Render.showText
+      . Shrubbery.taggedBranch @"colindextext" id
+      . Shrubbery.taggedBranch @"colspan" Render.showText
+      . Shrubbery.taggedBranch @"controls" (Render.foldToTextWithSeparator Types.idToText " ")
+      . Shrubbery.taggedBranch @"current" Current.ariaCurrentToText
+      . Shrubbery.taggedBranch @"describedby" (Render.foldToTextWithSeparator Types.idToText " ")
+      . Shrubbery.taggedBranch @"description" id
+      . Shrubbery.taggedBranch @"details" (Render.foldToTextWithSeparator Types.idToText " ")
+      . Shrubbery.taggedBranch @"disabled" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"errormessage" (Render.foldToTextWithSeparator Types.idToText " " . NEL.toList)
+      . Shrubbery.taggedBranch @"expanded" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"flowto" (Render.foldToTextWithSeparator Types.idToText " ")
+      . Shrubbery.taggedBranch @"haspopup" HasPopup.ariaHasPopupToText
+      . Shrubbery.taggedBranch @"hidden" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"invalid" Invalid.ariaInvalidToText
+      . Shrubbery.taggedBranch @"keyshortcuts" id
+      . Shrubbery.taggedBranch @"label" id
+      . Shrubbery.taggedBranch @"labelledby" (Render.foldToTextWithSeparator Types.idToText " " . NEL.toList)
+      . Shrubbery.taggedBranch @"level" Render.showText
+      . Shrubbery.taggedBranch @"live" Option.ariaLiveOptionToText
+      . Shrubbery.taggedBranch @"modal" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"multiline" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"multiselectable" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"orientation" orientationToText
+      . Shrubbery.taggedBranch @"owns" (Render.foldToTextWithSeparator Types.idToText " ")
+      . Shrubbery.taggedBranch @"placeholder" id
+      . Shrubbery.taggedBranch @"posinset" Render.showText
+      . Shrubbery.taggedBranch @"pressed" MixedBool.ariaMixedBoolToText
+      . Shrubbery.taggedBranch @"readonly" Render.showText
+      . Shrubbery.taggedBranch @"relevant" Option.ariaRelevantOptionToText
+      . Shrubbery.taggedBranch @"required" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"roledescription" NET.toText
+      . Shrubbery.taggedBranch @"rowcount" Render.showText
+      . Shrubbery.taggedBranch @"rowindex" Render.showText
+      . Shrubbery.taggedBranch @"rowindextext" id
+      . Shrubbery.taggedBranch @"rowspan" Render.showText
+      . Shrubbery.taggedBranch @"selected" Render.enumBoolToText
+      . Shrubbery.taggedBranch @"setsize" Render.showText
+      . Shrubbery.taggedBranch @"sort" Option.ariaSortOptionToText
+      . Shrubbery.taggedBranch @"valuemax" Render.showText
+      . Shrubbery.taggedBranch @"valuemin" Render.showText
+      . Shrubbery.taggedBranch @"valuenow" Render.showText
+      . Shrubbery.taggedBranch @"valuetext" id
+      . Shrubbery.taggedBranch @"raw" rawAriaValue
+      $ Shrubbery.taggedBranchEnd
   ) aria
-
-newtype AriaActiveDescendant =
-  AriaActiveDescendant
-    { unAriaActiveDescendant :: Types.Id
-    } deriving (Eq, Show)
-
-newtype AriaAtomic =
-  AriaAtomic
-    { unAriaAtomic :: Bool
-    } deriving (Eq, Show)
-
-newtype AriaAutocomplete =
-  AriaAutocomplete
-    { unAriaAutocomplete :: Option.AriaAutocompleteOption
-    } deriving (Eq, Show)
-
-newtype AriaBrailleLabel =
-  AriaBrailleLabel
-    { unAriaBrailleLabel :: T.Text
-    } deriving (Eq, Show)
-
-newtype AriaBrailleRoleDescription =
-  AriaBrailleRoleDescription
-    { unAriaBrailleRoleDescription :: T.Text -- TODO: Restrict to Braille characters?
-    } deriving (Eq, Show)
-
-newtype AriaBusy =
-  AriaBusy
-    { unAriaBusy :: Bool
-    } deriving (Eq, Show)
-
--- newtype AriaChecked = AriaChecked -- TODO
---   deriving (Eq, Show)
-
-newtype AriaColCount =
-  AriaColCount
-    { unAriaColCount :: Natural
-    } deriving (Eq, Show)
-
-newtype AriaColIndex =
-  AriaColIndex
-    { unAriaColIndex :: Positive
-    } deriving (Eq, Show)
-
-newtype AriaColIndexText =
-  AriaColIndexText
-    { unAriaColIndexText :: T.Text
-    } deriving (Eq, Show)
-
-newtype AriaColspan =
-  AriaColspan
-    { unAriaColspan :: Positive
-    } deriving (Eq, Show)
-
-newtype AriaControls =
-  AriaControls
-    { unAriaControls :: [Types.Id]
-    } deriving (Eq, Show)
-
-newtype AriaCurrent =
-  AriaCurrent
-    { unAriaCurrent :: Shrubbery.Union AriaCurrentTypes
-    } deriving (Eq, Show)
-
-type AriaCurrentTypes =
-  [ AriaPage
-  , AriaStep
-  , AriaLocation
-  , AriaDate
-  , AriaTime
-  , Bool
-  ]
-
-ariaCurrentToBytes :: AriaCurrent -> LBS.ByteString
-ariaCurrentToBytes (AriaCurrent aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AriaPage ariaPageToBytes
-      . Shrubbery.branch @AriaStep ariaStepToBytes
-      . Shrubbery.branch @AriaLocation ariaLocationToBytes
-      . Shrubbery.branch @AriaDate ariaDateToBytes
-      . Shrubbery.branch @AriaTime ariaTimeToBytes
-      . Shrubbery.branch @Bool Render.enumBoolToBytes
-      $ Shrubbery.branchEnd
-  ) aria
-
-ariaCurrentToText :: AriaCurrent -> T.Text
-ariaCurrentToText (AriaCurrent aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AriaPage ariaPageToText
-      . Shrubbery.branch @AriaStep ariaStepToText
-      . Shrubbery.branch @AriaLocation ariaLocationToText
-      . Shrubbery.branch @AriaDate ariaDateToText
-      . Shrubbery.branch @AriaTime ariaTimeToText
-      . Shrubbery.branch @Bool Render.enumBoolToText
-      $ Shrubbery.branchEnd
-  ) aria
-
-newtype AriaDescribedBy =
-  AriaDescribedBy
-    { unAriaDescribedBy :: [Types.Id]
-    } deriving (Eq, Show)
-
-newtype AriaDescription =
-  AriaDescription
-    { unAriaDescription :: T.Text
-    } deriving (Eq, Show)
-
-newtype AriaDetails =
-  AriaDetails
-    { unAriaDetails :: [Types.Id]
-    } deriving (Eq, Show)
-
-newtype AriaDisabled =
-  AriaDisabled
-    { unAriaDisabled :: Bool
-    } deriving (Eq, Show)
-
-newtype AriaErrorMessage =
-  AriaErrorMessage
-    { unAriaErrorMessage :: NEL.NonEmpty Types.Id
-    } deriving (Eq, Show)
-
--- newtype AriaExpanded = AriaExpanded -- TODO
---   deriving (Eq, Show)
-
-newtype AriaFlowTo =
-  AriaFlowTo
-    { unAriaFlowTo :: [Types.Id]
-    } deriving (Eq, Show)
-
--- newtype AriaHasPopup = AriaHasPopup -- TODO
---   deriving (Eq, Show)
-
--- newtype AriaHidden = AriaHidden -- TODO
---   deriving (Eq, Show)
-
--- newtype AriaInvalid = AriaInvalid -- TODO
---   deriving (Eq, Show)
-
-newtype AriaKeyShortcuts =
-  AriaKeyShortcuts
-    { unAriaKeyShortcuts :: T.Text -- TODO: Add type-safe implementation?
-    } deriving (Eq, Show)
-
-newtype AriaLabel =
-  AriaLabel
-    { unAriaLabel :: T.Text
-    } deriving (Eq, Show)
-
-newtype AriaLabelledBy =
-  AriaLabelledBy
-    { unAriaLabelledBy :: NEL.NonEmpty Types.Id
-    } deriving (Eq, Show)
-
-newtype AriaLevel =
-  AriaLevel
-    { unAriaLevel :: Positive
-    } deriving (Eq, Show)
-
-newtype AriaLive =
-  AriaLive
-    { unAriaLive :: Option.AriaLiveOption
-    } deriving (Eq, Show)
-
-newtype AriaModal =
-  AriaModal
-    { unAriaModal :: Bool
-    } deriving (Eq, Show)
-
-newtype AriaMultiline =
-  AriaMultiline
-    { unAriaMultiline :: Bool
-    } deriving (Eq, Show)
-
-newtype AriaMultiselectable =
-  AriaMultiselectable
-    { unAriaMultiselectable :: Bool
-    } deriving (Eq, Show)
-
--- newtype AriaOrientation = AriaOrientation -- TODO
---   deriving (Eq, Show)
-
-newtype AriaOwns =
-  AriaOwns
-    { unAriaOwns :: [Types.Id]
-    } deriving (Eq, Show)
-
-newtype AriaPlaceholder =
-  AriaPlaceholder
-    { unAriaPlaceholder :: T.Text
-    } deriving (Eq, Show)
-
-newtype AriaPosInSet =
-  AriaPosInSet
-    { unAriaPosInSet :: Positive
-    } deriving (Eq, Show)
-
--- newtype AriaPressed =
---   AriaPressed
---     { unAriaPressed :: _
---     } deriving (Eq, Show)
-
-newtype AriaReadOnly =
-  AriaReadOnly
-    { unAriaReadOnly :: Bool
-    } deriving (Eq, Show)
-
-newtype AriaRelevant =
-  AriaRelevant
-    { unAriaRelevant :: Option.AriaRelevantOption
-    } deriving (Eq, Show)
-
-newtype AriaRequired =
-  AriaRequired
-    { unAriaRequired :: Bool
-    } deriving (Eq, Show)
-
-newtype AriaRoleDescription =
-  AriaRoleDescription
-    { unAriaRoleDescription :: NET.NonEmptyText
-    } deriving (Eq, Show)
-
-newtype AriaRowCount =
-  AriaRowCount
-    { unAriaRowCount :: Integer
-    } deriving (Eq, Show)
-
-newtype AriaRowIndex =
-  AriaRowIndex
-    { unAriaRowIndex :: Positive
-    } deriving (Eq, Show)
-
-newtype AriaRowIndexText =
-  AriaRowIndexText
-    { unAriaRowIndexText :: T.Text
-    } deriving (Eq, Show)
-
-newtype AriaRowspan =
-  AriaRowspan
-    { unAriaRowspan :: Natural
-    } deriving (Eq, Show)
-
--- newtype AriaSelected = AriaSelected -- TODO
---   deriving (Eq, Show)
-
-newtype AriaSetSize =
-  AriaSetSize
-    { unAriaSetSize :: Integer
-    } deriving (Eq, Show)
-
-newtype AriaSort =
-  AriaSort
-    { unAriaSort :: Option.AriaSortOption
-    } deriving (Eq, Show)
-
-newtype AriaValueMax =
-  AriaValueMax
-    { unAriaValueMax :: Number
-    } deriving (Eq, Show)
-
-newtype AriaValueMin =
-  AriaValueMin
-    { unAriaValueMin :: Number
-    } deriving (Eq, Show)
-
-newtype AriaValueNow =
-  AriaValueNow
-    { unAriaValueNow :: Number
-    } deriving (Eq, Show)
-
-newtype AriaValueText =
-  AriaValueText
-    { unAriaValueText :: T.Text
-    } deriving (Eq, Show)
 
 data RawAria =
   RawAria
     { rawAriaAttribute :: NET.NonEmptyText
     , rawAriaValue :: T.Text
     } deriving (Eq, Show)
-
-data AriaDate = AriaDate
-  deriving (Eq, Show)
-
-ariaDateToBytes :: AriaDate -> LBS.ByteString
-ariaDateToBytes AriaDate = "date"
-
-ariaDateToText :: AriaDate -> T.Text
-ariaDateToText AriaDate = "date"
-
-data AriaLocation = AriaLocation
-  deriving (Eq, Show)
-
-ariaLocationToBytes :: AriaLocation -> LBS.ByteString
-ariaLocationToBytes AriaLocation = "location"
-
-ariaLocationToText :: AriaLocation -> T.Text
-ariaLocationToText AriaLocation = "location"
-
-data AriaPage = AriaPage
-  deriving (Eq, Show)
-
-ariaPageToBytes :: AriaPage -> LBS.ByteString
-ariaPageToBytes AriaPage = "page"
-
-ariaPageToText :: AriaPage -> T.Text
-ariaPageToText AriaPage = "page"
-
-data AriaStep = AriaStep
-  deriving (Eq, Show)
-
-ariaStepToBytes :: AriaStep -> LBS.ByteString
-ariaStepToBytes AriaStep = "step"
-
-ariaStepToText :: AriaStep -> T.Text
-ariaStepToText AriaStep = "step"
-
-data AriaTime = AriaTime
-  deriving (Eq, Show)
-
-ariaTimeToBytes :: AriaTime -> LBS.ByteString
-ariaTimeToBytes AriaTime = "time"
-
-ariaTimeToText :: AriaTime -> T.Text
-ariaTimeToText AriaTime = "time"

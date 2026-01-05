@@ -334,7 +334,58 @@ module Brigid.HTML.Types.QuerySelector
   , attr_value
   , attr_width
   , attr_wrap
-  , attr_aria
+  , attr_aria_activedescendant
+  , attr_aria_atomic
+  , attr_aria_autocomplete
+  , attr_aria_braillelabel
+  , attr_aria_brailleroledescription
+  , attr_aria_busy
+  , attr_aria_checked
+  , attr_aria_colcount
+  , attr_aria_colindex
+  , attr_aria_colindextext
+  , attr_aria_colspan
+  , attr_aria_controls
+  , attr_aria_current
+  , attr_aria_describedby
+  , attr_aria_description
+  , attr_aria_details
+  , attr_aria_disabled
+  , attr_aria_errormessage
+  , attr_aria_expanded
+  , attr_aria_flowto
+  , attr_aria_haspopup
+  , attr_aria_hidden
+  , attr_aria_invalid
+  , attr_aria_keyshortcuts
+  , attr_aria_label
+  , attr_aria_labelledby
+  , attr_aria_level
+  , attr_aria_live
+  , attr_aria_modal
+  , attr_aria_multiline
+  , attr_aria_multiselectable
+  , attr_aria_orientation
+  , attr_aria_owns
+  , attr_aria_placeholder
+  , attr_aria_posinset
+  , attr_aria_pressed
+  , attr_aria_readonly
+  , attr_aria_relevant
+  , attr_aria_required
+  , attr_aria_roledescription
+  , attr_aria_rowcount
+  , attr_aria_rowindex
+  , attr_aria_rowindextext
+  , attr_aria_rowspan
+  , attr_aria_selected
+  , attr_aria_setsize
+  , attr_aria_sort
+  , attr_aria_valuemax
+  , attr_aria_valuemin
+  , attr_aria_valuenow
+  , attr_aria_valuetext
+  , attr_aria_raw
   , attr_on
   , attr_xmlns
   , attr_hxGet
@@ -712,7 +763,7 @@ import Text.Show qualified as Show
 
 import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToBytes, eventAttributeToText)
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
-import Brigid.HTML.Types.Aria (Aria, AriaTypes, ariaAttributeToBytes, ariaAttributeToText, ariaValueToText, mkAria)
+import Brigid.HTML.Types.Aria qualified as Aria
 import Brigid.HTML.Types.As (As, asToText)
 import Brigid.HTML.Types.AutocompleteToken (AutocompleteTokenTypes, autocompleteTokenToText, mkAutocompleteToken)
 import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOptionToText)
@@ -752,6 +803,7 @@ import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.NoModifier (NoModifier)
 import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
 import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
+import Brigid.HTML.Types.Orientation (Orientation)
 import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import Brigid.HTML.Types.PopoverTargetAction (PopoverTargetAction, popoverTargetActionToText)
@@ -2566,7 +2618,7 @@ data AttributeType
 
   -- ARIA Attributes
   --
-  | Attr_Aria Aria
+  | Attr_Aria Aria.Aria
 
   -- Event Attributes
   --
@@ -2772,7 +2824,7 @@ attributeTypeToBytes attr =
 
     -- ARIA Attributes
     --
-    Attr_Aria aria -> ariaAttributeToBytes aria
+    Attr_Aria aria -> Aria.ariaAttributeToBytes aria
 
     -- Event Attributes
     --
@@ -3201,7 +3253,7 @@ attributeTypeToText attr =
 
     -- ARIA Attributes
     --
-    Attr_Aria aria -> ariaAttributeToText aria
+    Attr_Aria aria -> Aria.ariaAttributeToText aria
 
     -- Event Attributes
     --
@@ -3824,13 +3876,407 @@ attr_xmlns =
 -- ARIA Attributes
 --
 
-attr_aria :: (KnownNat branchIndex, branchIndex ~ FirstIndexOf aria AriaTypes)
-          => aria -> AttributeSelector
-attr_aria a =
+attr_aria_activedescendant :: Id.Id -> AttributeSelector
+attr_aria_activedescendant v =
   let
-    aria = mkAria a
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"activedescendant" v
   in
-    (Attr_Aria aria, Just $ ariaValueToText aria)
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_atomic :: Bool -> AttributeSelector
+attr_aria_atomic v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"atomic" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_autocomplete :: Aria.AriaAutocompleteOption -> AttributeSelector
+attr_aria_autocomplete v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"autocomplete" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_braillelabel :: T.Text -> AttributeSelector
+attr_aria_braillelabel v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"braillelabel" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_brailleroledescription :: T.Text -> AttributeSelector
+attr_aria_brailleroledescription v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"brailleroledescription" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_busy :: Bool -> AttributeSelector
+attr_aria_busy v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"busy" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_checked :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf mixedBool Aria.AriaMixedBoolTypes
+                     )
+                  => mixedBool -> AttributeSelector
+attr_aria_checked v =
+  let
+    aria =
+      Aria.Aria
+        . Shrubbery.unifyTaggedUnion @"checked"
+        . Aria.AriaMixedBool
+        $ Shrubbery.unify v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_colcount :: Natural -> AttributeSelector
+attr_aria_colcount v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"colcount" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_colindex :: Positive -> AttributeSelector
+attr_aria_colindex v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"colindex" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_colindextext :: T.Text -> AttributeSelector
+attr_aria_colindextext v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"colindextext" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_colspan :: Positive -> AttributeSelector
+attr_aria_colspan v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"colspan" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_controls :: [Id.Id] -> AttributeSelector
+attr_aria_controls v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"controls" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_current :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf current Aria.AriaCurrentTypes
+                     )
+                  => current -> AttributeSelector
+attr_aria_current v =
+  let
+    aria =
+      Aria.Aria
+        . Shrubbery.unifyTaggedUnion @"current"
+        . Aria.AriaCurrent
+        $ Shrubbery.unify v
+ in
+   (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_describedby :: [Id.Id] -> AttributeSelector
+attr_aria_describedby v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"describedby" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_description :: T.Text -> AttributeSelector
+attr_aria_description v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"description" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_details :: [Id.Id] -> AttributeSelector
+attr_aria_details v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"details" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_disabled :: Bool -> AttributeSelector
+attr_aria_disabled v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"disabled" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_errormessage :: NEL.NonEmpty Id.Id -> AttributeSelector
+attr_aria_errormessage v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"errormessage" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_expanded :: Bool -> AttributeSelector
+attr_aria_expanded v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"expanded" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_flowto :: [Id.Id] -> AttributeSelector
+attr_aria_flowto v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"flowto" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_haspopup :: ( KnownNat branchIndex
+                      , branchIndex ~ FirstIndexOf haspopup Aria.AriaHasPopupTypes
+                      )
+                   => haspopup -> AttributeSelector
+attr_aria_haspopup v =
+  let
+    aria =
+      Aria.Aria
+        . Shrubbery.unifyTaggedUnion @"haspopup"
+        . Aria.AriaHasPopup
+        $ Shrubbery.unify v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_hidden :: Bool -> AttributeSelector
+attr_aria_hidden v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"hidden" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_invalid :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf invalid Aria.AriaInvalidTypes
+                     )
+                  => invalid -> AttributeSelector
+attr_aria_invalid v =
+  let
+    aria =
+      Aria.Aria
+        . Shrubbery.unifyTaggedUnion @"invalid"
+        . Aria.AriaInvalid
+        $ Shrubbery.unify v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_keyshortcuts :: T.Text -> AttributeSelector
+attr_aria_keyshortcuts v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"keyshortcuts" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_label :: T.Text -> AttributeSelector
+attr_aria_label v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"label" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_labelledby :: NEL.NonEmpty Id.Id -> AttributeSelector
+attr_aria_labelledby v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"labelledby" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_level :: Positive -> AttributeSelector
+attr_aria_level v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"level" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_live :: Aria.AriaLiveOption -> AttributeSelector
+attr_aria_live v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"live" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_modal :: Bool -> AttributeSelector
+attr_aria_modal v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"modal" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_multiline :: Bool -> AttributeSelector
+attr_aria_multiline v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"multiline" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_multiselectable :: Bool -> AttributeSelector
+attr_aria_multiselectable v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"multiselectable" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_orientation :: Orientation -> AttributeSelector
+attr_aria_orientation v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"orientation" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_owns :: [Id.Id] -> AttributeSelector
+attr_aria_owns v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"owns" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_placeholder :: T.Text -> AttributeSelector
+attr_aria_placeholder v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"placeholder" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_posinset :: Positive -> AttributeSelector
+attr_aria_posinset v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"posinset" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_pressed :: ( KnownNat branchIndex
+                     , branchIndex ~ FirstIndexOf mixedBool Aria.AriaMixedBoolTypes
+                     )
+                  => mixedBool -> AttributeSelector
+attr_aria_pressed v =
+  let
+    aria =
+      Aria.Aria
+        . Shrubbery.unifyTaggedUnion @"pressed"
+        . Aria.AriaMixedBool
+        $ Shrubbery.unify v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_readonly :: Bool -> AttributeSelector
+attr_aria_readonly v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"readonly" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_relevant :: Aria.AriaRelevantOption -> AttributeSelector
+attr_aria_relevant v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"relevant" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_required :: Bool -> AttributeSelector
+attr_aria_required v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"required" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_roledescription :: NET.NonEmptyText -> AttributeSelector
+attr_aria_roledescription v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"roledescription" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_rowcount :: Integer -> AttributeSelector
+attr_aria_rowcount v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"rowcount" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_rowindex :: Positive -> AttributeSelector
+attr_aria_rowindex v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"rowindex" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_rowindextext :: T.Text -> AttributeSelector
+attr_aria_rowindextext v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"rowindextext" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_rowspan :: Natural -> AttributeSelector
+attr_aria_rowspan v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"rowspan" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_selected :: Bool -> AttributeSelector
+attr_aria_selected v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"selected" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_setsize :: Integer -> AttributeSelector
+attr_aria_setsize v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"setsize" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_sort :: Aria.AriaSortOption -> AttributeSelector
+attr_aria_sort v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"sort" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_valuemax :: Number -> AttributeSelector
+attr_aria_valuemax v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"valuemax" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_valuemin :: Number -> AttributeSelector
+attr_aria_valuemin v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"valuemin" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_valuenow :: Number -> AttributeSelector
+attr_aria_valuenow v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"valuenow" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_valuetext :: T.Text -> AttributeSelector
+attr_aria_valuetext v =
+  let
+    aria = Aria.Aria $ Shrubbery.unifyTaggedUnion @"valuetext" v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
+
+attr_aria_raw :: NET.NonEmptyText -> T.Text -> AttributeSelector
+attr_aria_raw name v =
+  let
+    aria =
+      Aria.Aria
+        . Shrubbery.unifyTaggedUnion @"raw"
+        $ Aria.RawAria name v
+  in
+    (Attr_Aria aria, Just $ Aria.ariaValueToText aria)
 
 -- Event Attributes
 --

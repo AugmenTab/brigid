@@ -1,3 +1,5 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Brigid.HTML.Generation.Internal.Generators
@@ -72,7 +74,6 @@ import Data.NonEmptyText qualified as NET
 import Data.Ratio (Ratio, (%))
 import Data.Text qualified as T
 import Data.Time.Calendar.OrdinalDate qualified as Time
-import GHC.TypeLits (KnownNat)
 import Hedgehog (MonadGen)
 import Hedgehog.Gen qualified as Gen
 import Hedgehog.Range qualified as Range
@@ -80,7 +81,6 @@ import Integer (Positive)
 import Numeric.Natural (Natural)
 import Prelude hiding (id)
 import Shrubbery qualified
-import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Attributes.Event.Event (Event)
 import Brigid.HTML.Types qualified as Types
@@ -351,6 +351,10 @@ openClosed  :: MonadGen m => m Types.OpenClosed
 openClosed =
   Gen.enumBounded
 
+orientation :: MonadGen m => m Types.Orientation
+orientation =
+  Gen.enumBounded
+
 part  :: MonadGen m => m Types.Part
 part =
   Types.Part <$> text
@@ -494,68 +498,60 @@ aria =
   let
     listIds = Gen.list (Range.linear 1 20) id
     nonEmptyIds = Gen.nonEmpty (Range.linear 1 20) id
-
-    mkGen :: ( MonadGen m
-             , KnownNat branchIndex
-             , branchIndex ~ FirstIndexOf aria Types.AriaTypes
-             )
-          => (a -> aria) -> m a -> m Types.Aria
-    mkGen constructor gen =
-      Types.mkAria . constructor <$> gen
   in
     Gen.choice
-      [ mkGen Types.AriaActiveDescendant id
-      , mkGen Types.AriaAtomic Gen.bool
-      , mkGen Types.AriaAutocomplete ariaAutocompleteOption
-      , mkGen Types.AriaBrailleLabel text
-      , mkGen Types.AriaBrailleRoleDescription text
-      , mkGen Types.AriaBusy Gen.bool
-      -- , Types.mkAria . Types.AriaChecked <$> _
-      , mkGen Types.AriaColCount natural
-      , mkGen Types.AriaColIndex positive
-      , mkGen Types.AriaColIndexText text
-      , mkGen Types.AriaColspan positive
-      , mkGen Types.AriaControls listIds
-      , Types.mkAria <$> ariaCurrent
-      , mkGen Types.AriaDescribedBy listIds
-      , mkGen Types.AriaDescription text
-      , mkGen Types.AriaDetails listIds
-      , mkGen Types.AriaDisabled Gen.bool
-      , mkGen Types.AriaErrorMessage nonEmptyIds
-      -- , Types.mkAria . Types.AriaExpanded <$> _
-      , mkGen Types.AriaFlowTo listIds
-      -- , Types.mkAria . Types.AriaHasPopup <$> _
-      -- , Types.mkAria . Types.AriaHidden <$> _
-      -- , Types.mkAria . Types.AriaInvalid <$> _
-      , mkGen Types.AriaKeyShortcuts text
-      , mkGen Types.AriaLabel text
-      , mkGen Types.AriaLabelledBy nonEmptyIds
-      , mkGen Types.AriaLevel positive
-      , mkGen Types.AriaLive ariaLiveOption
-      , mkGen Types.AriaModal Gen.bool
-      , mkGen Types.AriaMultiline Gen.bool
-      , mkGen Types.AriaMultiselectable Gen.bool
-      -- , Types.mkAria . Types.AriaOrientation <$> _
-      , mkGen Types.AriaOwns listIds
-      , mkGen Types.AriaPlaceholder text
-      , mkGen Types.AriaPosInSet positive
-      -- , mkGen Types.AriaPressed _
-      , mkGen Types.AriaReadOnly Gen.bool
-      , mkGen Types.AriaRelevant ariaRelevantOption
-      , mkGen Types.AriaRequired Gen.bool
-      , mkGen Types.AriaRoleDescription nonEmptyText
-      , mkGen Types.AriaRowCount integer
-      , mkGen Types.AriaRowIndex positive
-      , mkGen Types.AriaRowIndexText text
-      , mkGen Types.AriaRowspan natural
-      -- , Types.mkAria . Types.AriaSelected <$> _
-      , mkGen Types.AriaSetSize integer
-      , mkGen Types.AriaSort ariaSortOption
-      , mkGen Types.AriaValueMax number
-      , mkGen Types.AriaValueMin number
-      , mkGen Types.AriaValueNow number
-      , mkGen Types.AriaValueText text
-      , Types.mkAria <$> rawAria
+      [ Types.Aria . Shrubbery.unifyTaggedUnion @"activedescendant" <$> id
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"atomic" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"autocomplete" <$> ariaAutocompleteOption
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"braillelabel" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"brailleroledescription" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"busy" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"checked" <$> ariaMixedBool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"colcount" <$> natural
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"colindex" <$> positive
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"colindextext" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"colspan" <$> positive
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"controls" <$> listIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"current" <$> ariaCurrent
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"describedby" <$> listIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"description" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"details" <$> listIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"disabled" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"errormessage" <$> nonEmptyIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"expanded" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"flowto" <$> listIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"haspopup" <$> ariaHasPopup
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"hidden" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"invalid" <$> ariaInvalid
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"keyshortcuts" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"label" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"labelledby" <$> nonEmptyIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"level" <$> positive
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"live" <$> ariaLiveOption
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"modal" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"multiline" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"multiselectable" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"orientation" <$> orientation
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"owns" <$> listIds
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"placeholder" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"posinset" <$> positive
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"pressed" <$> ariaMixedBool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"readonly" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"relevant" <$> ariaRelevantOption
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"required" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"roledescription" <$> nonEmptyText
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"rowcount" <$> integer
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"rowindex" <$> positive
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"rowindextext" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"rowspan" <$> natural
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"selected" <$> Gen.bool
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"setsize" <$> integer
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"sort" <$> ariaSortOption
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"valuemax" <$> number
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"valuemin" <$> number
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"valuenow" <$> number
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"valuetext" <$> text
+      , Types.Aria . Shrubbery.unifyTaggedUnion @"raw" <$> rawAria
       ]
 
 ariaAutocompleteOption :: MonadGen m => m Types.AriaAutocompleteOption
@@ -565,17 +561,43 @@ ariaAutocompleteOption =
 ariaCurrent :: MonadGen m => m Types.AriaCurrent
 ariaCurrent =
   Gen.choice
-    [ pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaPage
-    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaStep
-    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaLocation
-    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaDate
-    , pure . Types.AriaCurrent $ Shrubbery.unify Types.AriaTime
+    [ Types.AriaCurrent . Shrubbery.unify <$> pure Types.CurrentPage
+    , Types.AriaCurrent . Shrubbery.unify <$> pure Types.CurrentStep
+    , Types.AriaCurrent . Shrubbery.unify <$> pure Types.CurrentLocation
+    , Types.AriaCurrent . Shrubbery.unify <$> pure Types.CurrentDate
+    , Types.AriaCurrent . Shrubbery.unify <$> pure Types.CurrentTime
     , Types.AriaCurrent . Shrubbery.unify <$> Gen.bool
+    ]
+
+ariaHasPopup :: MonadGen m => m Types.AriaHasPopup
+ariaHasPopup =
+  Gen.choice
+    [ Types.AriaHasPopup . Shrubbery.unify <$> pure Types.PopupMenu
+    , Types.AriaHasPopup . Shrubbery.unify <$> pure Types.PopupListbox
+    , Types.AriaHasPopup . Shrubbery.unify <$> pure Types.PopupTree
+    , Types.AriaHasPopup . Shrubbery.unify <$> pure Types.PopupGrid
+    , Types.AriaHasPopup . Shrubbery.unify <$> pure Types.PopupDialog
+    , Types.AriaHasPopup . Shrubbery.unify <$> Gen.bool
+    ]
+
+ariaInvalid :: MonadGen m => m Types.AriaInvalid
+ariaInvalid =
+  Gen.choice
+    [ Types.AriaInvalid . Shrubbery.unify <$> pure Types.InvalidGrammar
+    , Types.AriaInvalid . Shrubbery.unify <$> pure Types.InvalidSpelling
+    , Types.AriaInvalid . Shrubbery.unify <$> Gen.bool
     ]
 
 ariaLiveOption :: MonadGen m => m Types.AriaLiveOption
 ariaLiveOption =
   Gen.enumBounded
+
+ariaMixedBool :: MonadGen m => m Types.AriaMixedBool
+ariaMixedBool =
+  Gen.choice
+    [ Types.AriaMixedBool . Shrubbery.unify <$> pure Types.Mixed
+    , Types.AriaMixedBool . Shrubbery.unify <$> Gen.bool
+    ]
 
 ariaRelevantOption :: MonadGen m => m Types.AriaRelevantOption
 ariaRelevantOption =

@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           brigid
-version:        0.2.0.0
+version:        0.3.0.0
 description:    Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
 homepage:       https://github.com/AugmenTab/brigid#readme
 bug-reports:    https://github.com/AugmenTab/brigid/issues
@@ -94,7 +94,11 @@ library
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.Aria
-      Brigid.HTML.Types.AriaOption
+      Brigid.HTML.Types.Aria.Current
+      Brigid.HTML.Types.Aria.HasPopup
+      Brigid.HTML.Types.Aria.Invalid
+      Brigid.HTML.Types.Aria.MixedBool
+      Brigid.HTML.Types.Aria.Option
       Brigid.HTML.Types.As
       Brigid.HTML.Types.Autocapitalize
       Brigid.HTML.Types.AutocompleteToken
@@ -134,11 +138,13 @@ library
       Brigid.HTML.Types.LoadOption
       Brigid.HTML.Types.MediaQuery
       Brigid.HTML.Types.MetadataName
+      Brigid.HTML.Types.Mixed
       Brigid.HTML.Types.NoModifier
       Brigid.HTML.Types.None
       Brigid.HTML.Types.Number
       Brigid.HTML.Types.NumberingType
       Brigid.HTML.Types.Once
+      Brigid.HTML.Types.Orientation
       Brigid.HTML.Types.Part
       Brigid.HTML.Types.Phone
       Brigid.HTML.Types.PopoverState

@@ -4,7 +4,6 @@ module Brigid.HTML.Types
 
 import Brigid.HTML.Types.Action as Export
 import Brigid.HTML.Types.Aria as Export
-import Brigid.HTML.Types.AriaOption as Export
 import Brigid.HTML.Types.As as Export
 import Brigid.HTML.Types.Autocapitalize as Export
 import Brigid.HTML.Types.AutocompleteToken as Export
@@ -44,11 +43,13 @@ import Brigid.HTML.Types.KeyHint as Export
 import Brigid.HTML.Types.LoadOption as Export
 import Brigid.HTML.Types.MediaQuery as Export
 import Brigid.HTML.Types.MetadataName as Export
+import Brigid.HTML.Types.Mixed as Export
 import Brigid.HTML.Types.NoModifier as Export
 import Brigid.HTML.Types.None as Export
 import Brigid.HTML.Types.Number as Export
 import Brigid.HTML.Types.NumberingType as Export
 import Brigid.HTML.Types.Once as Export
+import Brigid.HTML.Types.Orientation as Export
 import Brigid.HTML.Types.Part as Export
 import Brigid.HTML.Types.Phone as Export
 import Brigid.HTML.Types.PopoverState as Export

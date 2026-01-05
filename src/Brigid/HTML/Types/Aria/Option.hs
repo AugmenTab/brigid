@@ -1,4 +1,4 @@
-module Brigid.HTML.Types.AriaOption
+module Brigid.HTML.Types.Aria.Option
   ( AriaAutocompleteOption
       ( AutocompleteInline
       , AutocompleteList
