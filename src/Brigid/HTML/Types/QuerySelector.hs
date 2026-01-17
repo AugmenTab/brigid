@@ -5430,19 +5430,16 @@ triggerTargetToText =
 -- CustomTrigger
 --
 newtype CustomTrigger =
-  CustomTrigger T.Text
-    deriving (Eq, Show.Show)
+  CustomTrigger
+    { customTriggerToText :: T.Text
+    } deriving (Eq, Show.Show)
 
 customTrigger :: T.Text -> Trigger
 customTrigger = mkTrigger . CustomTrigger
 
 customTriggerToBytes :: CustomTrigger -> LBS.ByteString
-customTriggerToBytes (CustomTrigger trigger) =
-  Render.textToLazyBytes trigger <> " from:body"
-
-customTriggerToText :: CustomTrigger -> T.Text
-customTriggerToText (CustomTrigger trigger) =
-  trigger <> " from:body"
+customTriggerToBytes =
+  Render.textToLazyBytes . customTriggerToText
 
 -- RawTrigger
 --
