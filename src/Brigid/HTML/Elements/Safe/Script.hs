@@ -18,6 +18,7 @@ module Brigid.HTML.Elements.Safe.Script
 
 import Data.Maybe (catMaybes)
 import Data.NonEmptyText qualified as NET
+import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -37,10 +38,12 @@ script :: ( KnownNat branchIndex
           )
        => script -> E.ChildHTML parent grandparent
 script details =
-  let union = mkScript details
-   in E.script
-        (scriptAttributes union)
-        (scriptContent union)
+  let
+    union = mkScript details
+  in
+    E.script
+      (scriptAttributes union)
+      (scriptContent union)
 
 newtype Script = Script (Shrubbery.Union ScriptTypes)
 
@@ -73,7 +76,7 @@ scriptContent :: Script -> Maybe NET.NonEmptyText
 scriptContent (Script union) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @InlineScript   (Just . inlineScriptContent)
+      . Shrubbery.branch @InlineScript (Just . inlineScriptContent)
       . Shrubbery.branch @(ExternalScript Types.AbsoluteURL) (const Nothing)
       . Shrubbery.branch @(ExternalScript (Types.RelativeURL Types.Get)) (const Nothing)
       . Shrubbery.branch @(ExternalScript Types.RawURL) (const Nothing)
@@ -85,49 +88,49 @@ data InlineScript =
     { inlineScriptContent        :: NET.NonEmptyText
     , inlineScriptReferrerPolicy :: Maybe Types.ReferrerPolicy
  -- , inlineScriptNonce          :: Maybe _
- -- , inlineScriptType           :: Maybe _
+    , inlineScriptType           :: Maybe (Either Types.ScriptType T.Text)
     }
 
 defaultInlineScript :: NET.NonEmptyText -> InlineScript
 defaultInlineScript content =
   InlineScript
-    { inlineScriptContent        = content
+    { inlineScriptContent = content
     , inlineScriptReferrerPolicy = Nothing
- -- , inlineScriptNonce          = Nothing
- -- , inlineScriptType           = Nothing
+ -- , inlineScriptNonce = Nothing
+    , inlineScriptType = Nothing
     }
 
 inlineScriptAttributes :: InlineScript -> [Attribute Tags.Script]
 inlineScriptAttributes inline =
   catMaybes
     [ A.referrerpolicy <$> inlineScriptReferrerPolicy inline
- -- , A.nonce          <$> inlineScriptNonce          inline
- -- , A.type_          <$> inlineScriptType           inline
+ -- , A.nonce <$> inlineScriptNonce inline
+    , either A.type_ (A.type_ . Types.mkRawTypeOption) <$> inlineScriptType inline
     ]
 
 data ExternalScript url =
   ExternalScript
-    { externalScriptCrossorigin     :: Maybe Types.CrossOriginFetch
- -- , externalScriptIntegrity       :: Maybe _
+    { externalScriptCrossorigin :: Maybe Types.CrossOriginFetch
+ -- , externalScriptIntegrity :: Maybe _
     , externalScriptLoadingBehavior :: LoadingBehavior
-    , externalScriptNoModule        :: Bool
- -- , externalScriptNonce           :: Maybe _
-    , externalScriptReferrerPolicy  :: Maybe Types.ReferrerPolicy
-    , externalScriptSource          :: url
- -- , externalScriptType            :: Maybe _
+    , externalScriptNoModule :: Bool
+ -- , externalScriptNonce :: Maybe _
+    , externalScriptReferrerPolicy :: Maybe Types.ReferrerPolicy
+    , externalScriptSource :: url
+    , externalScriptType :: Maybe (Either Types.ScriptType T.Text)
     }
 
 defaultExternalScript :: url -> ExternalScript url
 defaultExternalScript url =
   ExternalScript
-    { externalScriptCrossorigin     = Nothing
- -- , externalScriptIntegrity       = Nothing
+    { externalScriptCrossorigin = Nothing
+ -- , externalScriptIntegrity = Nothing
     , externalScriptLoadingBehavior = Block
-    , externalScriptNoModule        = False
- -- , externalScriptNonce           = Nothing
-    , externalScriptReferrerPolicy  = Nothing
-    , externalScriptSource          = url
- -- , externalScriptType            = Nothing
+    , externalScriptNoModule = False
+ -- , externalScriptNonce = Nothing
+    , externalScriptReferrerPolicy = Nothing
+    , externalScriptSource = url
+    , externalScriptType = Nothing
     }
 
 externalScriptAttributes  :: ( KnownNat branchIndex
@@ -137,14 +140,14 @@ externalScriptAttributes  :: ( KnownNat branchIndex
                           => ExternalScript url -> [Attribute Tags.Script]
 externalScriptAttributes external =
   catMaybes
-    [ Just . A.src            $ externalScriptSource          external
-    , Just . A.nomodule       $ externalScriptNoModule        external
- -- , A.type_               <$> externalScriptType            external
+    [ Just . A.src $ externalScriptSource external
+    , Just . A.nomodule $ externalScriptNoModule external
+    , either A.type_ (A.type_ . Types.mkRawTypeOption) <$> externalScriptType external
     , loadingBehaviorAttribute (externalScriptLoadingBehavior external)
-    , A.crossorigin         <$> externalScriptCrossorigin     external
- -- , A.integrity           <$> externalScriptIntegrity       external
- -- , A.nonce               <$> externalScriptNonce           external
-    , A.referrerpolicy      <$> externalScriptReferrerPolicy  external
+    , A.crossorigin <$> externalScriptCrossorigin external
+ -- , A.integrity <$> externalScriptIntegrity external
+ -- , A.nonce <$> externalScriptNonce external
+    , A.referrerpolicy <$> externalScriptReferrerPolicy external
     ]
 
 data LoadingBehavior

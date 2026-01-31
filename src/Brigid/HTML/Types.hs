@@ -66,6 +66,7 @@ import Brigid.HTML.Types.RequestParams as Export
 import Brigid.HTML.Types.Role as Export
 import Brigid.HTML.Types.SandboxToken as Export
 import Brigid.HTML.Types.Scope as Export
+import Brigid.HTML.Types.ScriptType as Export
 import Brigid.HTML.Types.ScrollBehavior as Export
 import Brigid.HTML.Types.Shape as Export
 import Brigid.HTML.Types.Size as Export
