@@ -11,12 +11,6 @@ extra-deps:
     - beeline-http-client
     - beeline-params
     - beeline-routing
-# Fleece
-- git: https://github.com/flipstone/json-fleece.git
-  commit: 818a3f6dba2a18bec4b6a267365c97eb5e0bf2d4
-  subdirs:
-    - json-fleece-aeson
-    - json-fleece-core
 # libphonenumber
 - git: https://github.com/typeable/libphonenumber.git
   commit: 5e03e45e2ef02b17a9d0ec3b1e951ef7214cba4a

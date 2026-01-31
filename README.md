@@ -6,9 +6,8 @@ This library is in active development; the API is not yet stable.
 
 ### TODO
 
-1. Remove Fleece dependency.
-2. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
-3. Change HTML entities to an ADT. Change the `ChildHTML` constructor to accept
+1. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
+2. Change HTML entities to an ADT. Change the `ChildHTML` constructor to accept
    this, and add use `ToText` and `ToBytes`. Decide between either an `entity`
    combinator and the ADT exposed, or combinator functions that do this.
 
@@ -72,4 +71,5 @@ This library is in active development; the API is not yet stable.
 5. Parallel rendering for DOMs branches with more than 3 children.
 6. Replace `nubOrdOn attributeText` in element combinators with a
    custom fold in rendering that dedupes as it folds.
+7. Switch to using `text-builder-linear` for all building functions.
 

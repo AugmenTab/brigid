@@ -1,28 +1,27 @@
 module Brigid.HTML.HTMX.Config
   ( Config (..)
-  , configSchema
+  , configToText
   , defaultConfig
   , setConfig
   ) where
 
-import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Bool qualified as B
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
-import Fleece.Aeson qualified as FA
-import Fleece.Core ((#+))
-import Fleece.Core qualified as FC
+import Data.Text.Builder.Linear qualified as TB
 import Numeric.Natural (Natural)
 
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements.Children (ValidChild)
 import Brigid.HTML.Elements.Tags qualified as Tags
 import Brigid.HTML.Elements qualified as E
-import Brigid.HTML.Types.Class (Class (Class))
+import Brigid.HTML.Types.Class (Class, classToText)
 import Brigid.HTML.Types.QuerySelector qualified as QS
 import Brigid.HTML.Types.ScrollBehavior qualified as SB
-import Brigid.HTML.Types.Swap (SwapStyle, swapStyleFromText, swapStyleToText)
+import Brigid.HTML.Types.Swap (SwapStyle, swapStyleToText)
 import Brigid.HTML.Types.WebsocketBinaryType qualified as WBT
-import Brigid.Types.Method (Method, methodFromText, methodToText)
+import Brigid.Internal.Render qualified as Render
+import Brigid.Types.Method (Method, methodToText)
 
 data Config =
   Config
@@ -58,42 +57,6 @@ data Config =
     , scrollIntoViewOnBoost   :: Maybe Bool
  -- , triggerSpecsCache       :: Maybe _
     }
-
-configSchema :: FA.Encoder Config
-configSchema =
-  FC.object $
-    FC.constructor Config
-      #+ FC.optional "historyEnabled"          historyEnabled          FC.boolean
-      #+ FC.optional "historyCacheSize"        historyCacheSize        naturalSchema
-      #+ FC.optional "refreshOnHistoryMiss"    refreshOnHistoryMiss    FC.boolean
-      #+ FC.optional "defaultSwapStyle"        defaultSwapStyle        swapStyleSchema
-      #+ FC.optional "defaultSwapDelay"        defaultSwapDelay        naturalSchema
-      #+ FC.optional "defaultSettleDelay"      defaultSettleDelay      naturalSchema
-      #+ FC.optional "includeIndicatorStyles"  includeIndicatorStyles  FC.boolean
-      #+ FC.optional "indicatorClass"          indicatorClass          (FC.coerceSchema FC.text)
-      #+ FC.optional "requestClass"            requestClass            (FC.coerceSchema FC.text)
-      #+ FC.optional "addedClass"              addedClass              (FC.coerceSchema FC.text)
-      #+ FC.optional "settlingClass"           settlingClass           (FC.coerceSchema FC.text)
-      #+ FC.optional "swappingClass"           swappingClass           (FC.coerceSchema FC.text)
-      #+ FC.optional "allowEval"               allowEval               FC.boolean
-      #+ FC.optional "allowScriptTypes"        allowScriptTypes        FC.boolean
-  --  #+ FC.optional "inlineScriptNonce"       inlineScriptNonce       :: Maybe _
-      #+ FC.optional "attributesToSettle"      attributesToSettle      (FC.nonEmpty attributeTypeSchema)
-      #+ FC.optional "useTemplateFragments"    useTemplateFragments    FC.boolean
-  --  #+ FC.optional "wsReconnectDelay"        wsReconnectDelay        :: Maybe _
-      #+ FC.optional "wsBinaryType"            wsBinaryType            websocketBinaryTypeSchema
-      #+ FC.optional "disableSelector"         disableSelector         (FC.nonEmpty attributeTypeSchema)
-      #+ FC.optional "withCredentials"         withCredentials         FC.boolean
-      #+ FC.optional "timeout"                 timeout                 naturalSchema
-      #+ FC.optional "scrollBehavior"          scrollBehavior          scrollBehaviorSchema
-  --  #+ FC.optional "defaultFocusScroll"      defaultFocusScroll      :: Maybe _
-      #+ FC.optional "getCacheBusterParam"     getCacheBusterParam     FC.boolean
-      #+ FC.optional "globalViewTransitions"   globalViewTransitions   FC.boolean
-      #+ FC.optional "methodsThatUseUrlParams" methodsThatUseUrlParams (FC.nonEmpty methodSchema)
-      #+ FC.optional "selfRequestsOnly"        selfRequestsOnly        FC.boolean
-      #+ FC.optional "ignoreTitle"             ignoreTitle             FC.boolean
-      #+ FC.optional "scrollIntoViewOnBoost"   scrollIntoViewOnBoost   FC.boolean
-  --  #+ FC.optional "triggerSpecsCache"       triggerSpecsCache       :: Maybe _
 
 defaultConfig :: Config
 defaultConfig =
@@ -134,36 +97,106 @@ defaultConfig =
 setConfig :: ValidChild Tags.Meta parent grandparent
           => Config -> E.ChildHTML parent grandparent
 setConfig config =
-  E.meta [ A.customAttribute "name" "htmx-config"
-         , A.content . T.pack . LBS8.unpack $ FA.encode configSchema config
-         ]
+  E.meta
+    [ A.customAttribute "name" "htmx-config"
+    , A.content $ configToText config
+    ]
 
-attributeTypeSchema :: FC.Fleece schema => schema QS.AttributeType
-attributeTypeSchema =
-  FC.validate QS.attributeTypeToText QS.attributeTypeFromText FC.text
+configToText :: Config -> T.Text
+configToText config =
+  TB.runBuilder $ TB.fromText "{" <> makeFields config <> TB.fromText "}"
 
-methodSchema :: FC.Fleece schema => schema Method
-methodSchema =
-  FC.validate methodToText methodFromText FC.text
+makeFields :: Config -> TB.Builder
+makeFields config =
+  let
+    foldBuilders mbAcc fields =
+      case (mbAcc, fields) of
+        (Just acc, []) -> acc
+        (Nothing, []) -> mempty
+        (_mbAcc, Nothing:xs) -> foldBuilders mbAcc xs
+        (Just acc, (Just x):xs) -> foldBuilders (Just $ acc <> comma <> x) xs
+        (Nothing, (Just x):xs) -> foldBuilders (Just x) xs
+  in
+    foldBuilders Nothing
+      [ bool "historyEnabled" <$> historyEnabled config
+      , int "historyCacheSize" <$> historyCacheSize config
+      , bool "refreshOnHistoryMiss" <$> refreshOnHistoryMiss config
+      , text "defaultSwapStyle" swapStyleToText <$> defaultSwapStyle config
+      , int "defaultSwapDelay" <$> defaultSwapDelay config
+      , int "defaultSettleDelay" <$> defaultSettleDelay config
+      , bool "includeIndicatorStyles" <$> includeIndicatorStyles config
+      , text "indicatorClass" classToText <$> indicatorClass config
+      , text "requestClass" classToText <$> requestClass config
+      , text "addedClass" classToText <$> addedClass config
+      , text "settlingClass" classToText <$> settlingClass config
+      , text "swappingClass" classToText <$> swappingClass config
+      , bool "allowEval" <$> allowEval config
+      , bool "allowScriptTypes" <$> allowScriptTypes config
+   -- , () <$> inlineScriptNonce config
+      , list "attributesToSettle" QS.attributeTypeToText <$> attributesToSettle config
+      , bool "useTemplateFragments" <$> useTemplateFragments config
+   -- , () <$> wsReconnectDelay config
+      , text "websocketBinaryType" WBT.websocketBinaryTypeToText <$> wsBinaryType config
+      , list "disableSelector" QS.attributeTypeToText <$> disableSelector config
+      , bool "withCredentials" <$> withCredentials config
+      , int "timeout" <$> timeout config
+      , text "scrollBehavior" SB.scrollBehaviorToText <$> scrollBehavior config
+   -- , () <$> defaultFocusScroll config
+      , bool "getCacheBusterParam" <$> getCacheBusterParam config
+      , bool "globalViewTransitions" <$> globalViewTransitions config
+      , list "methodsThatUseUrlParams" methodToText <$> methodsThatUseUrlParams config
+      , bool "selfRequestsOnly" <$> selfRequestsOnly config
+      , bool "ignoreTitle" <$> ignoreTitle config
+      , bool "scrollIntoViewOnBoost" <$> scrollIntoViewOnBoost config
+   -- , () <$> triggerSpecsCache config
+      ]
 
-naturalSchema :: FC.Fleece schema => schema Natural
-naturalSchema =
-  let check int
-        | int < 0   = Left $ "Invalid Natural " <> show int
-        | otherwise = Right $ fromIntegral int
-   in FC.validate fromIntegral check FC.integer
+quotationMark :: TB.Builder
+quotationMark =
+  TB.fromChar '"'
 
-scrollBehaviorSchema :: FC.Fleece schema => schema SB.ScrollBehavior
-scrollBehaviorSchema =
-  FC.validate SB.scrollBehaviorToText SB.scrollBehaviorFromText FC.text
+colon :: TB.Builder
+colon =
+  TB.fromChar ':'
 
-swapStyleSchema :: FC.Fleece schema => schema SwapStyle
-swapStyleSchema =
-  FC.validate swapStyleToText swapStyleFromText FC.text
+comma :: TB.Builder
+comma =
+  TB.fromChar ','
 
-websocketBinaryTypeSchema :: FC.Fleece schema => schema WBT.WebsocketBinaryType
-websocketBinaryTypeSchema =
-  FC.validate
-    WBT.websocketBinaryTypeToText
-    WBT.websocketBinaryTypeFromText
-    FC.text
+quote :: T.Text -> TB.Builder
+quote t =
+  quotationMark <> TB.fromText t <> quotationMark
+
+bool :: T.Text -> Bool -> TB.Builder
+bool label x =
+  mconcat
+    [ quote label
+    , colon
+    , B.bool "false" "true" x
+    ]
+
+int :: Integral a => T.Text -> a -> TB.Builder
+int label x =
+  mconcat
+    [ quote label
+    , colon
+    , TB.fromUnboundedDec x
+    ]
+
+list :: Foldable f => T.Text -> (a -> T.Text) -> f a -> TB.Builder
+list label toText xs =
+  mconcat
+    [ quote label
+    , colon
+    , TB.fromChar '['
+    , TB.fromText $ Render.foldToTextWithSeparator toText "," xs
+    , TB.fromChar ']'
+    ]
+
+text :: T.Text -> (a -> T.Text) -> a -> TB.Builder
+text label toText x =
+  mconcat
+    [ quote label
+    , colon
+    , TB.fromText $ toText x
+    ]

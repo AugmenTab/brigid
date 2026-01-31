@@ -44,32 +44,6 @@ packages:
     subdir: beeline-routing
     url: https://github.com/flipstone/beeline/archive/ad51a5197ba71b44f27fd760c6c241ac67f0a52f.tar.gz
 - completed:
-    commit: 818a3f6dba2a18bec4b6a267365c97eb5e0bf2d4
-    git: https://github.com/flipstone/json-fleece.git
-    name: json-fleece-aeson
-    pantry-tree:
-      sha256: b033b89cb2b953a6243cd653d40739b512aa347956345409d3569f28b4d3da76
-      size: 581
-    subdir: json-fleece-aeson
-    version: 0.3.7.2
-  original:
-    commit: 818a3f6dba2a18bec4b6a267365c97eb5e0bf2d4
-    git: https://github.com/flipstone/json-fleece.git
-    subdir: json-fleece-aeson
-- completed:
-    commit: 818a3f6dba2a18bec4b6a267365c97eb5e0bf2d4
-    git: https://github.com/flipstone/json-fleece.git
-    name: json-fleece-core
-    pantry-tree:
-      sha256: 83cbd3f3b1548883235d80473bea1c44170524cde37f799433643632e0571992
-      size: 443
-    subdir: json-fleece-core
-    version: 0.7.1.2
-  original:
-    commit: 818a3f6dba2a18bec4b6a267365c97eb5e0bf2d4
-    git: https://github.com/flipstone/json-fleece.git
-    subdir: json-fleece-core
-- completed:
     hackage: libphonenumber-0.1.3.0@sha256:4ba994791928c8cf0925af34ee2043eba3501bdab762ee787f2f1dcda6da2b90,4116
     pantry-tree:
       sha256: 1c6603e371c24f3f65cfd4cd83437587d1c13e3343fd4385b43130b3809cbd8e

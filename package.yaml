@@ -40,8 +40,6 @@ dependencies:
 - http-types
 - integer-types
 - iso3166-country-codes
-- json-fleece-aeson
-- json-fleece-core
 - libphonenumber
 - memory
 - mtl
@@ -51,6 +49,7 @@ dependencies:
 - semigroupoids
 - shrubbery
 - text
+- text-builder-linear
 - time
 - validation
 

@@ -12,16 +12,15 @@ import Prelude hiding (head)
 import Beeline.HTTP.Client (NoPathParams (NoPathParams))
 import Beeline.Routing ((/-), (/+))
 import Beeline.Routing qualified as R
+import Data.ByteString.Lazy qualified as LBS
 import Data.Coerce (coerce)
 import Data.List qualified as L
-import Data.List.NonEmpty (NonEmpty((:|)))
+import Data.List.NonEmpty (NonEmpty ((:|)))
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Ratio ((%))
 import Data.Text qualified as T
 import Data.Time qualified as Time
-import Fleece.Core ((#+))
-import Fleece.Core qualified as FC
 import Ogma qualified
 
 import Brigid.HTML.Attributes qualified as A
@@ -503,6 +502,12 @@ deleteCustomer route =
 customerIdParam :: T.Text
 customerIdParam = "customerId"
 
+-- Ideally, this would be done using the user's preferred JSON encoder.
+--
+thing :: LBS.ByteString
+thing =
+  "{\"thing_int\":1500,\"thing_bool\":false}"
+
 -- This example demonstrates HTMX content.
 htmxExample :: E.ChildHTML E.Body grandparent
 htmxExample =
@@ -576,7 +581,7 @@ htmxExample =
         [ E.text "I Do Nothing"
         ]
     , E.button [ A.htmx . exampleURL $ GetCustomer 5
-               , A.hxVals $ HTML.mkInlineJSON thingSchema exampleThing
+               , A.hxVals $ HTML.InlineJSON thing
                , A.hxTarget $ HTML.htmx_closest myClass
                , A.hxSwap
                    . HTML.swapAfterbegin
@@ -631,23 +636,3 @@ elementQuerySelectorExample =
                   )
             )
       )
-
-data Thing =
-  Thing
-    { thingInt  :: Int
-    , thingBool :: Bool
-    }
-
-thingSchema :: FC.Fleece schema => schema Thing
-thingSchema =
-  FC.object $
-    FC.constructor Thing
-      #+ FC.required "thing_int" thingInt FC.int
-      #+ FC.required "thing_bool" thingBool FC.boolean
-
-exampleThing :: Thing
-exampleThing =
-  Thing
-    { thingInt  = 1500
-    , thingBool = False
-    }

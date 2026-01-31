@@ -17,6 +17,7 @@ import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Foldable qualified as Foldable
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as TE
 
@@ -38,12 +39,13 @@ enumBoolToBytes = B.bool "false" "true"
 enumBoolToText :: Bool -> T.Text
 enumBoolToText = B.bool "false" "true"
 
-foldToBytesWithSeparator :: (a -> LBS.ByteString)
+foldToBytesWithSeparator :: Foldable f
+                         => (a -> LBS.ByteString)
                          -> LBS.ByteString
-                         -> [a]
+                         -> f a
                          -> LBS.ByteString
 foldToBytesWithSeparator toBytes separator items =
-  case items of
+  case Foldable.toList items of
     [] ->
       LBS.empty
 
@@ -53,9 +55,10 @@ foldToBytesWithSeparator toBytes separator items =
     (x:xs) ->
       toBytes x <> separator <> foldToBytesWithSeparator toBytes separator xs
 
-foldToTextWithSeparator :: (a -> T.Text) -> T.Text -> [a] -> T.Text
+foldToTextWithSeparator :: Foldable f
+                        => (a -> T.Text) -> T.Text -> f a -> T.Text
 foldToTextWithSeparator toText separator items =
-  case items of
+  case Foldable.toList items of
     [] ->
       T.empty
 

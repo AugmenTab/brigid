@@ -14,6 +14,7 @@ import Test.Tasty.Hedgehog qualified as TastyHH
 import Brigid.HTML.Generation qualified as Gen
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Elements qualified as GE
+import Brigid.HTML.Render.Text (renderHTML)
 
 main :: IO ()
 main = do
@@ -23,9 +24,10 @@ main = do
           uncurry mkAttributeTestCase <$> allAttributeGenerators
       , Tasty.testGroup "Generated DOM elements are spec compliant" $
           mkElementTestCase <$> allElements
-      , TastyHH.testProperty
-          "Large generated DOM is spec compliant"
-          largeDOMTest
+      , Tasty.testGroup "Generated DOM documents behave correctly" $
+          [ TastyHH.testProperty "Large generated DOM is spec compliant" largeDOMTest
+          , TastyHH.testProperty "Generated DOM renders without arithmetic underflow" renderTest
+          ]
       ]
 
 allElements :: [GE.ElementType]
@@ -217,6 +219,29 @@ mkElementTestCase e =
       case Gen.toBrigid dom of
         Left err -> fail $ unlines err
         Right _brigid -> pure ()
+
+-- This was seen happening in the REPL, so this is checking to ensure
+-- it doesn't happen in actual practice.
+--
+renderTest :: HH.Property
+renderTest =
+  HH.property $ do
+    dom <-
+      HH.forAll $
+        Gen.generateDOM $
+          Gen.GeneratorParams
+            { Gen.startingElement = GE.Html
+            , Gen.maximumTotalNodes = 100
+            , Gen.maximumDepth = 8
+            , Gen.childrenPerNode = Gen.mkRange 1 5
+            , Gen.attributesPerNode = Gen.mkRange 1 20
+            }
+
+    case Gen.toBrigid dom of
+      Left err -> fail $ unlines err
+      Right brigid -> do
+        _rendered <- pure $ renderHTML brigid
+        pure ()
 
 largeDOMTest :: HH.Property
 largeDOMTest =
