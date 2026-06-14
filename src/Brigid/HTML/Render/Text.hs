@@ -1161,7 +1161,7 @@ renderAttribute attr =
       buildBooleanAttribute "hx-validate" True
 
     Attr_HxVals vals ->
-      Just . buildAttribute "hx-vals" $ Types.htmxValsToText vals
+      Just . buildAttribute "hx-vals" $ Escape.attributeText (Types.htmxValsToText vals)
 
     -- Other
     --

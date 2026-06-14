@@ -189,7 +189,7 @@ list label toText xs =
     [ quote label
     , colon
     , TB.fromChar '['
-    , mconcat . intersperse comma $ fmap (TB.fromText . toText) xs
+    , mconcat . intersperse comma $ fmap (quote . toText) xs
     , TB.fromChar ']'
     ]
 
