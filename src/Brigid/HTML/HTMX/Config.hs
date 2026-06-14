@@ -6,6 +6,7 @@ module Brigid.HTML.HTMX.Config
   ) where
 
 import Data.Bool qualified as B
+import Data.List (intersperse)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TB
@@ -20,7 +21,6 @@ import Brigid.HTML.Types.QuerySelector qualified as QS
 import Brigid.HTML.Types.ScrollBehavior qualified as SB
 import Brigid.HTML.Types.Swap (SwapStyle, swapStyleToText)
 import Brigid.HTML.Types.WebsocketBinaryType qualified as WBT
-import Brigid.Internal.Render qualified as Render
 import Brigid.Types.Method (Method, methodToText)
 
 data Config =
@@ -133,18 +133,18 @@ makeFields config =
       , bool "allowEval" <$> allowEval config
       , bool "allowScriptTypes" <$> allowScriptTypes config
    -- , () <$> inlineScriptNonce config
-      , list "attributesToSettle" QS.attributeTypeToText <$> attributesToSettle config
+      , list "attributesToSettle" QS.attributeTypeToText . NEL.toList <$> attributesToSettle config
       , bool "useTemplateFragments" <$> useTemplateFragments config
    -- , () <$> wsReconnectDelay config
       , text "websocketBinaryType" WBT.websocketBinaryTypeToText <$> wsBinaryType config
-      , list "disableSelector" QS.attributeTypeToText <$> disableSelector config
+      , list "disableSelector" QS.attributeTypeToText . NEL.toList <$> disableSelector config
       , bool "withCredentials" <$> withCredentials config
       , int "timeout" <$> timeout config
       , text "scrollBehavior" SB.scrollBehaviorToText <$> scrollBehavior config
    -- , () <$> defaultFocusScroll config
       , bool "getCacheBusterParam" <$> getCacheBusterParam config
       , bool "globalViewTransitions" <$> globalViewTransitions config
-      , list "methodsThatUseUrlParams" methodToText <$> methodsThatUseUrlParams config
+      , list "methodsThatUseUrlParams" methodToText . NEL.toList <$> methodsThatUseUrlParams config
       , bool "selfRequestsOnly" <$> selfRequestsOnly config
       , bool "ignoreTitle" <$> ignoreTitle config
       , bool "scrollIntoViewOnBoost" <$> scrollIntoViewOnBoost config
@@ -183,13 +183,13 @@ int label x =
     , TB.fromUnboundedDec x
     ]
 
-list :: Foldable f => T.Text -> (a -> T.Text) -> f a -> TB.Builder
+list :: T.Text -> (a -> T.Text) -> [a] -> TB.Builder
 list label toText xs =
   mconcat
     [ quote label
     , colon
     , TB.fromChar '['
-    , TB.fromText $ Render.foldToTextWithSeparator toText "," xs
+    , mconcat . intersperse comma $ fmap (TB.fromText . toText) xs
     , TB.fromChar ']'
     ]
 
@@ -198,5 +198,5 @@ text label toText x =
   mconcat
     [ quote label
     , colon
-    , TB.fromText $ toText x
+    , quote $ toText x
     ]

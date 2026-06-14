@@ -14,7 +14,7 @@ import Brigid.Internal.Render qualified as Render
 newtype Id =
   Id
     { idToNonEmptyText :: NET.NonEmptyText
-    } deriving (Eq)
+    } deriving (Eq, Ord)
 
 instance Show Id where
   show = mappend "Id " . T.unpack . idToText
