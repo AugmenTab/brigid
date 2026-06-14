@@ -272,7 +272,7 @@ ariaValueToBytes (Aria aria) =
       . Shrubbery.taggedBranch @"placeholder" Render.textToLazyBytes
       . Shrubbery.taggedBranch @"posinset" Render.showBytes
       . Shrubbery.taggedBranch @"pressed" MixedBool.ariaMixedBoolToBytes
-      . Shrubbery.taggedBranch @"readonly" Render.showBytes
+      . Shrubbery.taggedBranch @"readonly" Render.enumBoolToBytes
       . Shrubbery.taggedBranch @"relevant" Option.ariaRelevantOptionToBytes
       . Shrubbery.taggedBranch @"required" Render.enumBoolToBytes
       . Shrubbery.taggedBranch @"roledescription" (Render.textToLazyBytes . NET.toText)
@@ -331,7 +331,7 @@ ariaValueToText (Aria aria) =
       . Shrubbery.taggedBranch @"placeholder" id
       . Shrubbery.taggedBranch @"posinset" Render.showText
       . Shrubbery.taggedBranch @"pressed" MixedBool.ariaMixedBoolToText
-      . Shrubbery.taggedBranch @"readonly" Render.showText
+      . Shrubbery.taggedBranch @"readonly" Render.enumBoolToText
       . Shrubbery.taggedBranch @"relevant" Option.ariaRelevantOptionToText
       . Shrubbery.taggedBranch @"required" Render.enumBoolToText
       . Shrubbery.taggedBranch @"roledescription" NET.toText
