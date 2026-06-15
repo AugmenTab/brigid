@@ -71,7 +71,8 @@ module Brigid.HTML.Attributes.Event
       , Waiting
       , Toggle
       )
+  , eventAttributeToText
   ) where
 
-import Brigid.HTML.Attributes.Event.Event (Event (..))
+import Brigid.HTML.Attributes.Event.Event (Event (..), eventAttributeToText)
 import Brigid.HTML.Attributes.Event.On as Export

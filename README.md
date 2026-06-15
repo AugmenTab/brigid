@@ -6,8 +6,7 @@ This library is in active development; the API is not yet stable.
 
 ### TODO
 
-1. Create benchmarks for Brigid HTML generation. Compare against Blaze and Lucid.
-2. Change HTML entities to an ADT. Change the `ChildHTML` constructor to accept
+1. Change HTML entities to an ADT. Change the `ChildHTML` constructor to accept
    this, and add use `ToText` and `ToBytes`. Decide between either an `entity`
    combinator and the ADT exposed, or combinator functions that do this.
 

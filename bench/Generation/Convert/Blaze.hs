@@ -12,7 +12,7 @@ import Text.Blaze.Html (Html, (!))
 import Text.Blaze.Html5 qualified as H
 import Text.Blaze.Html5.Attributes qualified as A
 
-import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToText)
+import Brigid.HTML.Attributes (eventAttributeToText)
 import Brigid.HTML.Generation (Element (..), ElementNode (..))
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Elements (ElementType (..))
