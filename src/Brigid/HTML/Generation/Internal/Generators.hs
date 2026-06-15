@@ -71,7 +71,7 @@ module Brigid.HTML.Generation.Internal.Generators
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
-import Data.Ratio (Ratio, (%))
+import GHC.Real (Ratio ((:%) ))
 import Data.Text qualified as T
 import Data.Time.Calendar.OrdinalDate qualified as Time
 import Hedgehog (MonadGen)
@@ -385,7 +385,7 @@ rangeBound =
 
 ratio :: (Integral a, MonadGen m) => m (Ratio a)
 ratio =
-  (%)
+  (:%)
     <$> Gen.integral (Range.linear 1 1000)
     <*> Gen.integral (Range.linear 1 1000)
 

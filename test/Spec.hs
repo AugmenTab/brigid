@@ -240,7 +240,7 @@ renderTest =
     case Gen.toBrigid dom of
       Left err -> fail $ unlines err
       Right brigid -> do
-        _rendered <- pure $ renderHTML brigid
+        _rendered <- liftIO . evaluate . T.length $ renderHTML brigid
         pure ()
 
 largeDOMTest :: HH.Property
