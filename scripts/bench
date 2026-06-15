@@ -4,4 +4,9 @@ set -o errexit
 
 . scripts/lib/run-in-container.sh
 
-stack build --bench --benchmark-arguments '+RTS -T' "$@"
+BASELINE_ARGS=''
+if [ -f bench/baseline.csv ]; then
+  BASELINE_ARGS='--baseline bench/baseline.csv --fail-if-slower 20'
+fi
+
+stack build --bench --benchmark-arguments "$BASELINE_ARGS +RTS -T" "$@"

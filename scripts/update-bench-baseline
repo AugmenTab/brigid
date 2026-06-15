@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -o errexit
+
+. scripts/lib/run-in-container.sh
+
+stack build --bench --benchmark-arguments '--csv bench/baseline.csv +RTS -T' "$@"
