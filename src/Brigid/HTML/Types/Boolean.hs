@@ -78,20 +78,20 @@ data OpenClosed
 openClosedToBytes :: OpenClosed -> LBS.ByteString
 openClosedToBytes openClosed =
   case openClosed of
-    Open -> "on"
-    Closed -> "off"
+    Open   -> "open"
+    Closed -> "closed"
 
 openClosedToBytesBuilder :: OpenClosed -> Builder
 openClosedToBytesBuilder openClosed =
   case openClosed of
-    Open   -> string8 "on"
-    Closed -> string8 "off"
+    Open   -> string8 "open"
+    Closed -> string8 "closed"
 
 openClosedToText :: OpenClosed -> T.Text
 openClosedToText openClosed =
   case openClosed of
-    Open -> "on"
-    Closed -> "off"
+    Open   -> "open"
+    Closed -> "closed"
 
 openClosedBool :: Bool -> OpenClosed
 openClosedBool b =

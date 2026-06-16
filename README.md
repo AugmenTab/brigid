@@ -10,15 +10,6 @@ This library is in active development; the API is not yet stable.
    this, and add use `ToText` and `ToBytes`. Decide between either an `entity`
    combinator and the ADT exposed, or combinator functions that do this.
 
-### Known bugs
-
-1. `openClosedToText` and `openClosedToBytes` in `Brigid.HTML.Types.Boolean` return
-   `"on"`/`"off"` instead of `"open"`/`"closed"`. This causes `Attr_ShadowRootMode` to
-   render `shadowrootmode="on"` / `shadowrootmode="off"` rather than the correct
-   `shadowrootmode="open"` / `shadowrootmode="closed"`. The `ToBytesBuilder` variant
-   intentionally matches the existing incorrect output to avoid a silent behavior change
-   until this is fixed across all render paths at once.
-
 ### TODO (HTML)
 
 1. For each of ~~global~~, ~~HTMX~~, event listeners, arias, and ~~scoped~~ attributes:
