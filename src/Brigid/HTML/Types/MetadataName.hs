@@ -12,9 +12,11 @@ module Brigid.HTML.Types.MetadataName
       , Viewport
       )
   , metadataNameToBytes
+  , metadataNameToBytesBuilder
   , metadataNameToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -44,6 +46,20 @@ metadataNameToBytes name =
     Robots          -> "robots"
     ThemeColor      -> "theme-color"
     Viewport        -> "viewport"
+
+metadataNameToBytesBuilder :: MetadataName -> Builder
+metadataNameToBytesBuilder name =
+  case name of
+    ApplicationName -> string8 "application-name"
+    Author          -> string8 "author"
+    ColorScheme     -> string8 "color-scheme"
+    Description     -> string8 "description"
+    Generator       -> string8 "generator"
+    Keywords        -> string8 "keywords"
+    Referrer        -> string8 "referrer"
+    Robots          -> string8 "robots"
+    ThemeColor      -> string8 "theme-color"
+    Viewport        -> string8 "viewport"
 
 metadataNameToText :: MetadataName -> T.Text
 metadataNameToText name =

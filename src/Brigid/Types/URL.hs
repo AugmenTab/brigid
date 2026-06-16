@@ -10,11 +10,13 @@ module Brigid.Types.URL
   , URLTypes
   , mkURL
   , urlToBytes
+  , urlToBytesBuilder
   , urlToText
   , AbsoluteURL
   , mkAbsoluteURL
   , absoluteURLFromText
   , absoluteURLToBytes
+  , absoluteURLToBytesBuilder
   , absoluteURLToText
   , RelativeURL
       ( Relative_Get
@@ -30,25 +32,30 @@ module Brigid.Types.URL
   , put
   , patch
   , relativeURLToBytes
+  , relativeURLToBytesBuilder
   , relativeURLToText
   , RawURL
   , mkRawURL
   , rawURLToBytes
+  , rawURLToBytesBuilder
   , rawURLToText
   , Ping
   , PingTypes
   , mkPing
   , pingToBytes
+  , pingToBytesBuilder
   , pingToText
   ) where
 
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing qualified as R
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
 import Data.Hashable (Hashable, hashUsing, hashWithSalt)
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -82,6 +89,16 @@ urlToBytes (URL url) =
       $ Shrubbery.branchEnd
   ) url
 
+urlToBytesBuilder :: URL -> Builder
+urlToBytesBuilder (URL url) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL       absoluteURLToBytesBuilder
+      . Shrubbery.branch @(RelativeURL Get) relativeURLToBytesBuilder
+      . Shrubbery.branch @RawURL            rawURLToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) url
+
 urlToText :: URL -> T.Text
 urlToText (URL url) =
   ( Shrubbery.dissect
@@ -111,6 +128,10 @@ absoluteURLFromText =
 absoluteURLToBytes :: AbsoluteURL -> LBS.ByteString
 absoluteURLToBytes (AbsoluteURL url) =
   LBS8.pack $ B.renderBaseURI url
+
+absoluteURLToBytesBuilder :: AbsoluteURL -> Builder
+absoluteURLToBytesBuilder (AbsoluteURL url) =
+  string8 $ B.renderBaseURI url
 
 absoluteURLToText :: AbsoluteURL -> T.Text
 absoluteURLToText (AbsoluteURL url) =
@@ -160,6 +181,10 @@ relativeURLToBytes :: RelativeURL method -> LBS.ByteString
 relativeURLToBytes =
   LBS8.pack . T.unpack . relativeURLToText
 
+relativeURLToBytesBuilder :: RelativeURL method -> Builder
+relativeURLToBytesBuilder =
+  TE.encodeUtf8Builder . relativeURLToText
+
 relativeURLToText :: RelativeURL method -> T.Text
 relativeURLToText url =
   case url of
@@ -187,6 +212,10 @@ mkRawURL = RawURL
 rawURLToBytes :: RawURL -> LBS.ByteString
 rawURLToBytes =
   LBS8.pack . T.unpack . rawURLToText
+
+rawURLToBytesBuilder :: RawURL -> Builder
+rawURLToBytesBuilder =
+  TE.encodeUtf8Builder . rawURLToText
 
 newtype Ping = Ping (Shrubbery.Union PingTypes)
 
@@ -220,9 +249,19 @@ pingToBytes :: Ping -> LBS.ByteString
 pingToBytes (Ping ping) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @AbsoluteURL absoluteURLToBytes
-      . Shrubbery.branch @(RelativeURL Post) relativeURLToBytes
-      . Shrubbery.branch @RawURL rawURLToBytes
+      . Shrubbery.branch @AbsoluteURL         absoluteURLToBytes
+      . Shrubbery.branch @(RelativeURL Post)  relativeURLToBytes
+      . Shrubbery.branch @RawURL              rawURLToBytes
+      $ Shrubbery.branchEnd
+  ) ping
+
+pingToBytesBuilder :: Ping -> Builder
+pingToBytesBuilder (Ping ping) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL         absoluteURLToBytesBuilder
+      . Shrubbery.branch @(RelativeURL Post)  relativeURLToBytesBuilder
+      . Shrubbery.branch @RawURL              rawURLToBytesBuilder
       $ Shrubbery.branchEnd
   ) ping
 

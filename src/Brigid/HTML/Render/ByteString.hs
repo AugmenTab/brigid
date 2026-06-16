@@ -597,7 +597,7 @@ renderAttribute attr =
     Attr_ItemRef itemref ->
       Just
         . buildAttribute "itemref"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.idToText) " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ NEL.toList itemref
 
     Attr_ItemScope ->
@@ -606,8 +606,7 @@ renderAttribute attr =
     Attr_ItemType itemtype ->
       Just
         . buildAttribute "itemtype"
-        . Render.textToBytesBuilder
-        $ Types.absoluteURLToText itemtype
+        $ Types.absoluteURLToBytesBuilder itemtype
 
     Attr_Lang lang ->
       Just
@@ -637,8 +636,7 @@ renderAttribute attr =
     Attr_Slot slot ->
       Just
         . buildAttribute "slot"
-        . Render.textToBytesBuilder
-        $ Types.nameToText slot
+        $ Types.nameToBytesBuilder slot
 
     Attr_Spellcheck spellcheck ->
       Just
@@ -742,8 +740,7 @@ renderAttribute attr =
     Attr_CommandFor commandfor ->
       Just
         . buildAttribute "commandfor"
-        . Render.textToBytesBuilder
-        $ Types.idToText commandfor
+        $ Types.idToBytesBuilder commandfor
 
     Attr_Coords coords ->
       Just
@@ -771,8 +768,7 @@ renderAttribute attr =
     Attr_Data _data ->
       Just
         . buildAttribute "data"
-        . Render.textToBytesBuilder
-        $ Types.urlToText _data
+        $ Types.urlToBytesBuilder _data
 
     Attr_Datetime datetime ->
       Just . buildAttribute "datetime" $ stringUtf8 datetime
@@ -822,14 +818,12 @@ renderAttribute attr =
     Attr_For for ->
       Just
         . buildAttribute "for"
-        . Render.textToBytesBuilder
-        $ Types.forOptionToText for
+        $ Types.forOptionToBytesBuilder for
 
     Attr_Form form ->
       Just
         . buildAttribute "form"
-        . Render.textToBytesBuilder
-        $ Types.idToText form
+        $ Types.idToBytesBuilder form
 
     Attr_FormAction formaction ->
       Just
@@ -843,8 +837,7 @@ renderAttribute attr =
     Attr_FormMethod formmethod ->
       Just
         . buildAttribute "formmethod"
-        . Render.textToBytesBuilder
-        $ Types.formMethodToText formmethod
+        $ Types.formMethodToBytesBuilder formmethod
 
     Attr_FormNoValidate ->
       buildBooleanAttribute "formnovalidate" True
@@ -852,13 +845,12 @@ renderAttribute attr =
     Attr_FormTarget formtarget ->
       Just
         . buildAttribute "formtarget"
-        . Render.textToBytesBuilder
-        $ Types.targetToText formtarget
+        $ Types.targetToBytesBuilder formtarget
 
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.idToText) " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ headers
 
     Attr_Height height ->
@@ -919,8 +911,7 @@ renderAttribute attr =
     Attr_List list ->
       Just
         . buildAttribute "label"
-        . Render.textToBytesBuilder
-        $ Types.idToText list
+        $ Types.idToBytesBuilder list
 
     Attr_Loading loading ->
       Just
@@ -954,8 +945,7 @@ renderAttribute attr =
     Attr_Method method ->
       Just
         . buildAttribute "method"
-        . Render.textToBytesBuilder
-        $ Types.formMethodToText method
+        $ Types.formMethodToBytesBuilder method
 
     Attr_Min min ->
       Just
@@ -975,8 +965,7 @@ renderAttribute attr =
     Attr_Name name ->
       Just
         . buildAttribute "name"
-        . Render.textToBytesBuilder
-        $ Types.nameOptionToText name
+        $ Types.nameOptionToBytesBuilder name
 
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule
@@ -999,7 +988,7 @@ renderAttribute attr =
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.pingToText) " "
+        . Render.foldToBytesBuilderWithSeparator Types.pingToBytesBuilder " "
         $ NEL.toList pings
 
     Attr_Placeholder placeholder ->
@@ -1013,8 +1002,7 @@ renderAttribute attr =
     Attr_PopoverTarget popovertarget ->
       Just
         . buildAttribute "popovertarget"
-        . Render.textToBytesBuilder
-        $ Types.idToText popovertarget
+        $ Types.idToBytesBuilder popovertarget
 
     Attr_PopoverTargetAction popovertargetaction ->
       Just
@@ -1024,8 +1012,7 @@ renderAttribute attr =
     Attr_Poster poster ->
       Just
         . buildAttribute "poster"
-        . Render.textToBytesBuilder
-        $ Types.urlToText poster
+        $ Types.urlToBytesBuilder poster
 
     Attr_Preload preload ->
       Just
@@ -1106,8 +1093,7 @@ renderAttribute attr =
     Attr_Src src ->
       Just
         . buildAttribute "src"
-        . Render.textToBytesBuilder
-        $ Types.urlToText src
+        $ Types.urlToBytesBuilder src
 
     Attr_SrcDoc srcdoc ->
       Just
@@ -1138,8 +1124,7 @@ renderAttribute attr =
     Attr_Target target ->
       Just
         . buildAttribute "target"
-        . Render.textToBytesBuilder
-        $ Types.targetToText target
+        $ Types.targetToBytesBuilder target
 
     Attr_Type type_ ->
       Just
@@ -1149,7 +1134,7 @@ renderAttribute attr =
     Attr_UseMap usemap ->
       Just
         . buildAttribute "usemap"
-        $ ("#" <> Render.textToBytesBuilder (Types.nameToText usemap))
+        $ ("#" <> Types.nameToBytesBuilder usemap)
 
     Attr_Value value ->
       Just
@@ -1168,8 +1153,7 @@ renderAttribute attr =
     Attr_XMLNS xmlns ->
       Just
         . buildAttribute "xmlns"
-        . Render.textToBytesBuilder
-        $ Types.urlToText xmlns
+        $ Types.urlToBytesBuilder xmlns
 
     -- ARIA Attributes
     --
@@ -1346,9 +1330,9 @@ renderPushURLBuilder :: Types.PushURL -> Builder
 renderPushURLBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Types.AbsoluteURL (Render.textToBytesBuilder . Types.absoluteURLToText)
-      . Shrubbery.branch @(Types.RelativeURL _) (Render.textToBytesBuilder . Types.relativeURLToText)
-      . Shrubbery.branch @Bool Render.enumBoolToBytesBuilder
-      . Shrubbery.branch @Types.RawURL (Render.textToBytesBuilder . Types.rawURLToText)
+      . Shrubbery.branch @Types.AbsoluteURL      Types.absoluteURLToBytesBuilder
+      . Shrubbery.branch @(Types.RelativeURL _)  Types.relativeURLToBytesBuilder
+      . Shrubbery.branch @Bool                   Render.enumBoolToBytesBuilder
+      . Shrubbery.branch @Types.RawURL           Types.rawURLToBytesBuilder
       $ Shrubbery.branchEnd
   ) . Types.unPushURL

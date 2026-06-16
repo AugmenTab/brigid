@@ -4,11 +4,13 @@ module Brigid.Types
   , URLTypes
   , mkURL
   , urlToBytes
+  , urlToBytesBuilder
   , urlToText
   , AbsoluteURL
   , mkAbsoluteURL
   , absoluteURLFromText
   , absoluteURLToBytes
+  , absoluteURLToBytesBuilder
   , absoluteURLToText
   , RelativeURL
   , get
@@ -17,15 +19,18 @@ module Brigid.Types
   , put
   , patch
   , relativeURLToBytes
+  , relativeURLToBytesBuilder
   , relativeURLToText
   , RawURL
   , mkRawURL
   , rawURLToBytes
+  , rawURLToBytesBuilder
   , rawURLToText
   , Ping
   , PingTypes
   , mkPing
   , pingToBytes
+  , pingToBytesBuilder
   , pingToText
   ) where
 
@@ -41,11 +46,13 @@ import Brigid.Types.URL ( URL
                         , URLTypes
                         , mkURL
                         , urlToBytes
+                        , urlToBytesBuilder
                         , urlToText
                         , AbsoluteURL
                         , mkAbsoluteURL
                         , absoluteURLFromText
                         , absoluteURLToBytes
+                        , absoluteURLToBytesBuilder
                         , absoluteURLToText
                         , RelativeURL
                         , get
@@ -54,14 +61,17 @@ import Brigid.Types.URL ( URL
                         , put
                         , patch
                         , relativeURLToBytes
+                        , relativeURLToBytesBuilder
                         , relativeURLToText
                         , RawURL
                         , mkRawURL
                         , rawURLToBytes
+                        , rawURLToBytesBuilder
                         , rawURLToText
                         , Ping
                         , PingTypes
                         , mkPing
                         , pingToBytes
+                        , pingToBytesBuilder
                         , pingToText
                         )

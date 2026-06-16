@@ -21,9 +21,11 @@ module Brigid.Types.Method
       , FormPOST
       )
   , formMethodToBytes
+  , formMethodToBytesBuilder
   , formMethodToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -82,6 +84,12 @@ formMethodToBytes method =
   case method of
     FormGET  -> methodToBytes GET
     FormPOST -> methodToBytes POST
+
+formMethodToBytesBuilder :: FormMethod -> Builder
+formMethodToBytesBuilder method =
+  case method of
+    FormGET  -> string8 "get"
+    FormPOST -> string8 "post"
 
 formMethodToText :: FormMethod -> T.Text
 formMethodToText method =

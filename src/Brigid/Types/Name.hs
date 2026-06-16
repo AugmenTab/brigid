@@ -5,23 +5,27 @@
 module Brigid.Types.Name
   ( Name (Name)
   , nameToBytes
+  , nameToBytesBuilder
   , nameToNonEmptyText
   , nameToText
   , NameOption
   , NameOptionTypes
   , mkNameOption
   , nameOptionToBytes
+  , nameOptionToBytesBuilder
   , nameOptionToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.MetadataName (MetadataName, metadataNameToBytes, metadataNameToText)
+import Brigid.HTML.Types.MetadataName (MetadataName, metadataNameToBytes, metadataNameToBytesBuilder, metadataNameToText)
 import Brigid.Internal.Render qualified as Render
 
 newtype Name =
@@ -31,6 +35,9 @@ newtype Name =
 
 nameToBytes :: Name -> LBS.ByteString
 nameToBytes = Render.textToLazyBytes . nameToText
+
+nameToBytesBuilder :: Name -> Builder
+nameToBytesBuilder = TE.encodeUtf8Builder . nameToText
 
 nameToText :: Name -> T.Text
 nameToText =
@@ -58,6 +65,15 @@ nameOptionToBytes (NameOption nameOption) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @Name         nameToBytes
       . Shrubbery.branch @MetadataName metadataNameToBytes
+      $ Shrubbery.branchEnd
+  ) nameOption
+
+nameOptionToBytesBuilder :: NameOption -> Builder
+nameOptionToBytesBuilder (NameOption nameOption) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Name         nameToBytesBuilder
+      . Shrubbery.branch @MetadataName metadataNameToBytesBuilder
       $ Shrubbery.branchEnd
   ) nameOption
 
