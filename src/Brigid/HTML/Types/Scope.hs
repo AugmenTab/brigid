@@ -6,9 +6,11 @@ module Brigid.HTML.Types.Scope
       , RowGroup
       )
   , scopeToBytes
+  , scopeToBytesBuilder
   , scopeToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -26,6 +28,14 @@ scopeToBytes scope =
     Row      -> "row"
     ColGroup -> "colgroup"
     RowGroup -> "rowgroup"
+
+scopeToBytesBuilder :: Scope -> Builder
+scopeToBytesBuilder scope =
+  case scope of
+    Col      -> string8 "col"
+    Row      -> string8 "row"
+    ColGroup -> string8 "colgroup"
+    RowGroup -> string8 "rowgroup"
 
 scopeToText :: Scope -> T.Text
 scopeToText scope =

@@ -5,9 +5,11 @@ module Brigid.HTML.Types.PopoverTargetAction
       , PopoverToggle
       )
   , popoverTargetActionToBytes
+  , popoverTargetActionToBytesBuilder
   , popoverTargetActionToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -23,6 +25,13 @@ popoverTargetActionToBytes pta =
     PopoverShow -> "show"
     PopoverHide -> "hide"
     PopoverToggle -> "toggle"
+
+popoverTargetActionToBytesBuilder :: PopoverTargetAction -> Builder
+popoverTargetActionToBytesBuilder pta =
+  case pta of
+    PopoverShow   -> string8 "show"
+    PopoverHide   -> string8 "hide"
+    PopoverToggle -> string8 "toggle"
 
 popoverTargetActionToText :: PopoverTargetAction -> T.Text
 popoverTargetActionToText pta =

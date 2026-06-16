@@ -6,9 +6,11 @@ module Brigid.HTML.Types.TrackKind
       , Metadata
       )
   , trackKindToBytes
+  , trackKindToBytesBuilder
   , trackKindToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -26,6 +28,14 @@ trackKindToBytes trackKind =
     Captions  -> "captions"
     Chapters  -> "chapters"
     Metadata  -> "metadata"
+
+trackKindToBytesBuilder :: TrackKind -> Builder
+trackKindToBytesBuilder trackKind =
+  case trackKind of
+    Subtitles -> string8 "subtitles"
+    Captions  -> string8 "captions"
+    Chapters  -> string8 "chapters"
+    Metadata  -> string8 "metadata"
 
 trackKindToText :: TrackKind -> T.Text
 trackKindToText trackKind =

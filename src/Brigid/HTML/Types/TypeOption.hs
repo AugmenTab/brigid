@@ -7,6 +7,7 @@ module Brigid.HTML.Types.TypeOption
   , TypeOptionTypes
   , mkTypeOption
   , typeOptionToBytes
+  , typeOptionToBytesBuilder
   , typeOptionToText
   , RawTypeOption
   , mkRawTypeOption
@@ -14,16 +15,18 @@ module Brigid.HTML.Types.TypeOption
   , rawTypeOptionToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.InputType (InputType, inputTypeToBytes, inputTypeToText)
-import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, numberingTypeToText)
-import Brigid.HTML.Types.ScriptType (ScriptType, scriptTypeToBytes, scriptTypeToText)
+import Brigid.HTML.Types.InputType (InputType, inputTypeToBytes, inputTypeToBytesBuilder, inputTypeToText)
+import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, numberingTypeToBytesBuilder, numberingTypeToText)
+import Brigid.HTML.Types.ScriptType (ScriptType, scriptTypeToBytes, scriptTypeToBytesBuilder, scriptTypeToText)
 
 newtype TypeOption =
   TypeOption (Shrubbery.Union TypeOptionTypes)
@@ -51,6 +54,17 @@ typeOptionToBytes (TypeOption typeOption) =
       . Shrubbery.branch @NumberingType numberingTypeToBytes
       . Shrubbery.branch @ScriptType    scriptTypeToBytes
       . Shrubbery.branch @RawTypeOption rawTypeOptionToBytes
+      $ Shrubbery.branchEnd
+  ) typeOption
+
+typeOptionToBytesBuilder :: TypeOption -> Builder
+typeOptionToBytesBuilder (TypeOption typeOption) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @InputType     inputTypeToBytesBuilder
+      . Shrubbery.branch @NumberingType numberingTypeToBytesBuilder
+      . Shrubbery.branch @ScriptType    scriptTypeToBytesBuilder
+      . Shrubbery.branch @RawTypeOption (TE.encodeUtf8Builder . rawTypeOptionToText)
       $ Shrubbery.branchEnd
   ) typeOption
 

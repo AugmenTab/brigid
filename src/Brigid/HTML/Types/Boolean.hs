@@ -4,6 +4,7 @@ module Brigid.HTML.Types.Boolean
       , Off
       )
   , onOffToBytes
+  , onOffToBytesBuilder
   , onOffToText
   , onOffBool
   , isOn
@@ -13,6 +14,7 @@ module Brigid.HTML.Types.Boolean
       , Closed
       )
   , openClosedToBytes
+  , openClosedToBytesBuilder
   , openClosedToText
   , openClosedBool
   , isOpen
@@ -22,12 +24,14 @@ module Brigid.HTML.Types.Boolean
       , No
       )
   , yesNoToBytes
+  , yesNoToBytesBuilder
   , yesNoToText
   , yesNoBool
   , isYes
   , isNo
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -41,6 +45,12 @@ onOffToBytes onOff =
   case onOff of
     On  -> "on"
     Off -> "off"
+
+onOffToBytesBuilder :: OnOff -> Builder
+onOffToBytesBuilder onOff =
+  case onOff of
+    On  -> string8 "on"
+    Off -> string8 "off"
 
 onOffToText :: OnOff -> T.Text
 onOffToText onOff =
@@ -71,6 +81,12 @@ openClosedToBytes openClosed =
     Open -> "on"
     Closed -> "off"
 
+openClosedToBytesBuilder :: OpenClosed -> Builder
+openClosedToBytesBuilder openClosed =
+  case openClosed of
+    Open   -> string8 "on"
+    Closed -> string8 "off"
+
 openClosedToText :: OpenClosed -> T.Text
 openClosedToText openClosed =
   case openClosed of
@@ -99,6 +115,12 @@ yesNoToBytes yesNo =
   case yesNo of
     Yes -> "yes"
     No  -> "no"
+
+yesNoToBytesBuilder :: YesNo -> Builder
+yesNoToBytesBuilder yesNo =
+  case yesNo of
+    Yes -> string8 "yes"
+    No  -> string8 "no"
 
 yesNoToText :: YesNo -> T.Text
 yesNoToText yesNo =

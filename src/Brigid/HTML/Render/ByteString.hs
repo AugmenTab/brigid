@@ -515,14 +515,12 @@ renderAttribute attr =
     Attr_Autocapitalize option ->
       Just
         . buildAttribute "autocapitalize"
-        . Render.textToBytesBuilder
-        $ Types.autocapitalizeOptionToText option
+        $ Types.autocapitalizeOptionToBytesBuilder option
 
     Attr_Autocorrect autocorrect ->
       Just
         . buildAttribute "autocorrect"
-        . Render.textToBytesBuilder
-        $ Types.onOffToText autocorrect
+        $ Types.onOffToBytesBuilder autocorrect
 
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
@@ -536,8 +534,7 @@ renderAttribute attr =
     Attr_ContentEditable option ->
       Just
         . buildAttribute "contenteditable"
-        . Render.textToBytesBuilder
-        $ Types.contentEditableOptionToText option
+        $ Types.contentEditableOptionToBytesBuilder option
 
     Attr_CustomData data_ mbValue ->
       case mbValue of
@@ -553,8 +550,7 @@ renderAttribute attr =
     Attr_Dir directionality ->
       Just
         . buildAttribute "dir"
-        . Render.textToBytesBuilder
-        $ Types.directionalityToText directionality
+        $ Types.directionalityToBytesBuilder directionality
 
     Attr_Draggable draggable ->
       Just
@@ -564,8 +560,7 @@ renderAttribute attr =
     Attr_EnterKeyHint option ->
       Just
         . buildAttribute "enterkeyhint"
-        . Render.textToBytesBuilder
-        $ Types.keyHintOptionToText option
+        $ Types.keyHintOptionToBytesBuilder option
 
     Attr_ExportParts parts ->
       Just
@@ -588,8 +583,7 @@ renderAttribute attr =
     Attr_InputMode mode ->
       Just
         . buildAttribute "inputmode"
-        . Render.textToBytesBuilder
-        $ Types.inputModeToText mode
+        $ Types.inputModeToBytesBuilder mode
 
     Attr_Is is ->
       Just . buildAttribute "is" $ Escape.attributeBytesBuilder is
@@ -633,14 +627,12 @@ renderAttribute attr =
     Attr_Popover state ->
       Just
         . buildAttribute "popover"
-        . Render.textToBytesBuilder
-        $ Types.popoverStateToText state
+        $ Types.popoverStateToBytesBuilder state
 
     Attr_Role role ->
       Just
         . buildAttribute "role"
-        . Render.textToBytesBuilder
-        $ Types.roleToText role
+        $ Types.roleToBytesBuilder role
 
     Attr_Slot slot ->
       Just
@@ -665,8 +657,7 @@ renderAttribute attr =
     Attr_Translate translate ->
       Just
         . buildAttribute "translate"
-        . Render.textToBytesBuilder
-        $ Types.yesNoToText translate
+        $ Types.yesNoToBytesBuilder translate
 
     Attr_WritingSuggestions writingsuggestions ->
       Just
@@ -700,7 +691,7 @@ renderAttribute attr =
       Just . buildAttribute "alt" $ Render.textToBytesBuilder alt
 
     Attr_As as ->
-      Just . buildAttribute "as" . Render.textToBytesBuilder $ Types.asToText as
+      Just . buildAttribute "as" $ Types.asToBytesBuilder as
 
     Attr_Async ->
       buildBooleanAttribute "async" True
@@ -717,13 +708,12 @@ renderAttribute attr =
     Attr_Blocking blocking ->
       Just
         . buildAttribute "blocking"
-        . Render.textToBytesBuilder
-        $ Types.blockOptionToText blocking
+        $ Types.blockOptionToBytesBuilder blocking
 
     Attr_Capture mbCapture ->
       maybe
         (buildBooleanAttribute "capture" True)
-        (Just . buildAttribute "capture" . Render.textToBytesBuilder . Types.captureMethodToText)
+        (Just . buildAttribute "capture" . Types.captureMethodToBytesBuilder)
         mbCapture
 
     Attr_Charset ->
@@ -747,8 +737,7 @@ renderAttribute attr =
     Attr_Command command ->
       Just
         . buildAttribute "command"
-        . Render.textToBytesBuilder
-        $ Types.commandOptionToText command
+        $ Types.commandOptionToBytesBuilder command
 
     Attr_CommandFor commandfor ->
       Just
@@ -777,8 +766,7 @@ renderAttribute attr =
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"
-        . Render.textToBytesBuilder
-        $ Types.crossOriginFetchToText crossorigin
+        $ Types.crossOriginFetchToBytesBuilder crossorigin
 
     Attr_Data _data ->
       Just
@@ -792,8 +780,7 @@ renderAttribute attr =
     Attr_Decoding decoding ->
       Just
         . buildAttribute "decoding"
-        . Render.textToBytesBuilder
-        $ Types.decodingToText decoding
+        $ Types.decodingToBytesBuilder decoding
 
     Attr_Default ->
       buildBooleanAttribute "default" True
@@ -830,8 +817,7 @@ renderAttribute attr =
     Attr_FetchPriority fetchpriority ->
       Just
         . buildAttribute "fetchpriority"
-        . Render.textToBytesBuilder
-        $ Types.fetchPriorityToText fetchpriority
+        $ Types.fetchPriorityToBytesBuilder fetchpriority
 
     Attr_For for ->
       Just
@@ -899,8 +885,7 @@ renderAttribute attr =
     Attr_HttpEquiv httpEquiv ->
       Just
         . buildAttribute "http-equiv"
-        . Render.textToBytesBuilder
-        $ Types.httpEquivTokenToText httpEquiv
+        $ Types.httpEquivTokenToBytesBuilder httpEquiv
 
     Attr_ImageSizes imagesizes ->
       Just
@@ -926,8 +911,7 @@ renderAttribute attr =
     Attr_Kind kind ->
       Just
         . buildAttribute "kind"
-        . Render.textToBytesBuilder
-        $ Types.trackKindToText kind
+        $ Types.trackKindToBytesBuilder kind
 
     Attr_Label label ->
       Just . buildAttribute "label" $ Render.textToBytesBuilder label
@@ -941,8 +925,7 @@ renderAttribute attr =
     Attr_Loading loading ->
       Just
         . buildAttribute "loading"
-        . Render.textToBytesBuilder
-        $ Types.loadOptionToText loading
+        $ Types.loadOptionToBytesBuilder loading
 
     Attr_Loop ->
       buildBooleanAttribute "loop" True
@@ -1036,8 +1019,7 @@ renderAttribute attr =
     Attr_PopoverTargetAction popovertargetaction ->
       Just
         . buildAttribute "popovertargetaction"
-        . Render.textToBytesBuilder
-        $ Types.popoverTargetActionToText popovertargetaction
+        $ Types.popoverTargetActionToBytesBuilder popovertargetaction
 
     Attr_Poster poster ->
       Just
@@ -1048,8 +1030,7 @@ renderAttribute attr =
     Attr_Preload preload ->
       Just
         . buildAttribute "preload"
-        . Render.textToBytesBuilder
-        $ Types.preloadToText preload
+        $ Types.preloadToBytesBuilder preload
 
     Attr_ReadOnly ->
       buildBooleanAttribute "readonly" True
@@ -1057,8 +1038,7 @@ renderAttribute attr =
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"
-        . Render.textToBytesBuilder
-        $ Types.referrerPolicyToText referrerpolicy
+        $ Types.referrerPolicyToBytesBuilder referrerpolicy
 
     Attr_Rel rel ->
       Just
@@ -1084,14 +1064,13 @@ renderAttribute attr =
         else
           Just
             . buildAttribute "sandbox"
-            . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.sandboxTokenToText) " "
+            . Render.foldToBytesBuilderWithSeparator Types.sandboxTokenToBytesBuilder " "
             $ sandbox
 
     Attr_Scope scope ->
       Just
         . buildAttribute "scope"
-        . Render.textToBytesBuilder
-        $ Types.scopeToText scope
+        $ Types.scopeToBytesBuilder scope
 
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
@@ -1099,8 +1078,7 @@ renderAttribute attr =
     Attr_ShadowRootMode shadowrootmode ->
       Just
         . buildAttribute "shadowrootmode"
-        . Render.textToBytesBuilder
-        $ Types.openClosedToText shadowrootmode
+        $ Types.openClosedToBytesBuilder shadowrootmode
 
     Attr_ShadowRootDelegatesFocus ->
       buildBooleanAttribute "shadowrootdelegatesfocus" True
@@ -1111,8 +1089,7 @@ renderAttribute attr =
     Attr_Shape shape ->
       Just
         . buildAttribute "shape"
-        . Render.textToBytesBuilder
-        $ Types.shapeToText shape
+        $ Types.shapeToBytesBuilder shape
 
     Attr_Size size ->
       Just . buildAttribute "size" $ Render.showIntegerBytesBuilder size
@@ -1167,8 +1144,7 @@ renderAttribute attr =
     Attr_Type type_ ->
       Just
         . buildAttribute "type"
-        . Render.textToBytesBuilder
-        $ Types.typeOptionToText type_
+        $ Types.typeOptionToBytesBuilder type_
 
     Attr_UseMap usemap ->
       Just
@@ -1187,8 +1163,7 @@ renderAttribute attr =
     Attr_Wrap wrap ->
       Just
         . buildAttribute "wrap"
-        . Render.textToBytesBuilder
-        $ Types.wrapToText wrap
+        $ Types.wrapToBytesBuilder wrap
 
     Attr_XMLNS xmlns ->
       Just

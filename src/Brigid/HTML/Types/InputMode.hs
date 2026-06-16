@@ -10,9 +10,11 @@ module Brigid.HTML.Types.InputMode
       , URLMode
       )
   , inputModeToBytes
+  , inputModeToBytesBuilder
   , inputModeToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -38,6 +40,18 @@ inputModeToBytes mode =
     SearchMode    -> "search"
     EmailMode     -> "email"
     URLMode       -> "url"
+
+inputModeToBytesBuilder :: InputMode -> Builder
+inputModeToBytesBuilder mode =
+  case mode of
+    NoInputMode   -> string8 "none"
+    TextMode      -> string8 "text"
+    DecimalMode   -> string8 "decimal"
+    NumericMode   -> string8 "numeric"
+    TelephoneMode -> string8 "tel"
+    SearchMode    -> string8 "search"
+    EmailMode     -> string8 "email"
+    URLMode       -> string8 "url"
 
 inputModeToText :: InputMode -> T.Text
 inputModeToText mode =

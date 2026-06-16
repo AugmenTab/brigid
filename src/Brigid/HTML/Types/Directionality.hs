@@ -5,9 +5,11 @@ module Brigid.HTML.Types.Directionality
       , AutoDirection
       )
   , directionalityToBytes
+  , directionalityToBytesBuilder
   , directionalityToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -23,6 +25,13 @@ directionalityToBytes option =
     LeftToRight   -> "ltr"
     RightToLeft   -> "rtl"
     AutoDirection -> "auto"
+
+directionalityToBytesBuilder :: Directionality -> Builder
+directionalityToBytesBuilder option =
+  case option of
+    LeftToRight   -> string8 "ltr"
+    RightToLeft   -> string8 "rtl"
+    AutoDirection -> string8 "auto"
 
 directionalityToText :: Directionality -> T.Text
 directionalityToText option =

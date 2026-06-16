@@ -6,9 +6,11 @@ module Brigid.HTML.Types.Shape
       , Poly
       )
   , shapeToBytes
+  , shapeToBytesBuilder
   , shapeToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -26,6 +28,14 @@ shapeToBytes shape =
     Rect    -> "rect"
     Circle  -> "circle"
     Poly    -> "poly"
+
+shapeToBytesBuilder :: Shape -> Builder
+shapeToBytesBuilder shape =
+  case shape of
+    Default -> string8 "default"
+    Rect    -> string8 "rect"
+    Circle  -> string8 "circle"
+    Poly    -> string8 "poly"
 
 shapeToText :: Shape -> T.Text
 shapeToText shape =

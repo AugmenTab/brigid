@@ -4,9 +4,11 @@ module Brigid.HTML.Types.CaptureMethod
       , Environment
       )
   , captureMethodToBytes
+  , captureMethodToBytesBuilder
   , captureMethodToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -20,6 +22,12 @@ captureMethodToBytes capture =
   case capture of
     User        -> "user"
     Environment -> "environment"
+
+captureMethodToBytesBuilder :: CaptureMethod -> Builder
+captureMethodToBytesBuilder capture =
+  case capture of
+    User        -> string8 "user"
+    Environment -> string8 "environment"
 
 captureMethodToText :: CaptureMethod -> T.Text
 captureMethodToText capture =
