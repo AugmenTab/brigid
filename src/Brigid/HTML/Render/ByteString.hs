@@ -14,7 +14,6 @@ import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Lazy qualified as LBS
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
-import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Ogma qualified
 import Shrubbery qualified
@@ -478,30 +477,20 @@ buildTag :: Builder
          -> Either Types.NoContent [ChildHTML parent grandparent]
          -> Builder
 buildTag tag attrs content =
-  mconcat
-    [ "<"
-    , tag
-    , B.bool " " mempty $ L.null attrs
-    , mconcat
-        . L.intersperse " "
-        $ mapMaybe renderAttribute attrs
-    , case content of
-        Left  Types.OmitTag -> "/>"
-        Left  Types.WithTag -> ">"
-        Right _children     -> ">"
-    , case content of
-        Left  _type    -> mempty
-        Right children -> foldMap renderTag children
-    , case content of
-        Left Types.OmitTag ->
-          mempty
-
-        Left Types.WithTag ->
-          "</" <> tag <> ">"
-
-        Right _children ->
-          "</" <> tag <> ">"
-    ]
+  "<"
+    <> tag
+    <> foldMap (\attr -> maybe mempty (" " <>) (renderAttribute attr)) attrs
+    <> case content of
+         Left  Types.OmitTag -> "/>"
+         Left  Types.WithTag -> ">"
+         Right _children     -> ">"
+    <> case content of
+         Left  _type    -> mempty
+         Right children -> foldMap renderTag children
+    <> case content of
+         Left  Types.OmitTag -> mempty
+         Left  Types.WithTag -> "</" <> tag <> ">"
+         Right _children     -> "</" <> tag <> ">"
 
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
@@ -668,7 +657,7 @@ renderAttribute attr =
       Just . buildAttribute "style" $ Escape.attributeBytesBuilder style
 
     Attr_TabIndex tabindex ->
-      Just . buildAttribute "tabindex" $ Render.showBytesBuilder tabindex
+      Just . buildAttribute "tabindex" $ Render.showIntegerBytesBuilder tabindex
 
     Attr_Title title ->
       Just . buildAttribute "title" $ Escape.attributeBytesBuilder title
@@ -750,10 +739,10 @@ renderAttribute attr =
         $ Types.urlToText cite
 
     Attr_Cols cols ->
-      Just . buildAttribute "cols" $ Render.showBytesBuilder cols
+      Just . buildAttribute "cols" $ Render.showIntegerBytesBuilder cols
 
     Attr_Colspan colspan ->
-      Just . buildAttribute "colspan" $ Render.showBytesBuilder colspan
+      Just . buildAttribute "colspan" $ Render.showIntegerBytesBuilder colspan
 
     Attr_Command command ->
       Just
@@ -770,7 +759,7 @@ renderAttribute attr =
     Attr_Coords coords ->
       Just
         . buildAttribute "coords"
-        . Render.foldToBytesBuilderWithSeparator Render.showBytesBuilder ","
+        . Render.foldToBytesBuilderWithSeparator Render.showIntegerBytesBuilder ","
         $ NEL.toList coords
 
     Attr_Content content ->
@@ -887,7 +876,7 @@ renderAttribute attr =
         $ headers
 
     Attr_Height height ->
-      Just . buildAttribute "height" $ Render.showBytesBuilder height
+      Just . buildAttribute "height" $ Render.showIntegerBytesBuilder height
 
     Attr_High high ->
       Just
@@ -971,7 +960,7 @@ renderAttribute attr =
         $ Types.rangeBoundToText max
 
     Attr_MaxLength maxlength ->
-      Just . buildAttribute "maxlength" $ Render.showBytesBuilder maxlength
+      Just . buildAttribute "maxlength" $ Render.showIntegerBytesBuilder maxlength
 
     Attr_Media media ->
       Just
@@ -992,7 +981,7 @@ renderAttribute attr =
         $ Types.rangeBoundToText min
 
     Attr_MinLength minlength ->
-      Just . buildAttribute "minlength" $ Render.showBytesBuilder minlength
+      Just . buildAttribute "minlength" $ Render.showIntegerBytesBuilder minlength
 
     Attr_Multiple ->
       buildBooleanAttribute "multiple" True
@@ -1084,10 +1073,10 @@ renderAttribute attr =
       buildBooleanAttribute "reversed" reversed
 
     Attr_Rows rows ->
-      Just . buildAttribute "rows" $ Render.showBytesBuilder rows
+      Just . buildAttribute "rows" $ Render.showIntegerBytesBuilder rows
 
     Attr_Rowspan rowspan ->
-      Just . buildAttribute "rowspan" $ Render.showBytesBuilder rowspan
+      Just . buildAttribute "rowspan" $ Render.showIntegerBytesBuilder rowspan
 
     Attr_Sandbox sandbox ->
       if null sandbox
@@ -1126,7 +1115,7 @@ renderAttribute attr =
         $ Types.shapeToText shape
 
     Attr_Size size ->
-      Just . buildAttribute "size" $ Render.showBytesBuilder size
+      Just . buildAttribute "size" $ Render.showIntegerBytesBuilder size
 
     Attr_Sizes sizes ->
       Just
@@ -1135,7 +1124,7 @@ renderAttribute attr =
         $ NEL.toList sizes
 
     Attr_Span span ->
-      Just . buildAttribute "span" $ Render.showBytesBuilder span
+      Just . buildAttribute "span" $ Render.showIntegerBytesBuilder span
 
     Attr_Src src ->
       Just
@@ -1161,7 +1150,7 @@ renderAttribute attr =
         $ NEL.toList srcset
 
     Attr_Start start ->
-      Just . buildAttribute "start" $ Render.showBytesBuilder start
+      Just . buildAttribute "start" $ Render.showIntegerBytesBuilder start
 
     Attr_Step step ->
       Just
@@ -1193,7 +1182,7 @@ renderAttribute attr =
         $ Types.valueToText value
 
     Attr_Width width ->
-      Just . buildAttribute "width" $ Render.showBytesBuilder width
+      Just . buildAttribute "width" $ Render.showIntegerBytesBuilder width
 
     Attr_Wrap wrap ->
       Just

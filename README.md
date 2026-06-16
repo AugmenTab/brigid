@@ -63,8 +63,13 @@ This library is in active development; the API is not yet stable.
 ### Possible optimizations
 
 1. Switch to strict types for element combinators.
-2. Inline newtypes.
-3. Interpolate hard-coded string types everywhere.
+2. Add `{-# INLINE #-}` pragmas to small functions called across module boundaries,
+   particularly the upcoming `xToBytesBuilder` family and `buildAttribute` /
+   `buildBooleanAttribute` in `Render/ByteString.hs`, to ensure GHC can fuse
+   surrounding Builder operations.
+3. Add `xToBytesBuilder` variants alongside each `xToText` function in the type
+   modules, giving `Render/ByteString.hs` a direct `Builder`-producing path with no
+   intermediate `Text` allocation. Both variants remain first-class citizens.
 4. Parallel rendering for DOMs branches with more than 3 children.
 5. Replace `nubOrdOn attributeText` in element combinators with a
    custom fold in rendering that dedupes as it folds.

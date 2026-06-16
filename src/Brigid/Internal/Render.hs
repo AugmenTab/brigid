@@ -11,6 +11,7 @@ module Brigid.Internal.Render
   , foldToTextWithSeparator
   , showBytes
   , showBytesBuilder
+  , showIntegerBytesBuilder
   , showText
   , textToBytes
   , textToLazyBytes
@@ -85,6 +86,9 @@ showBytes = toLazyByteString . showBytesBuilder
 
 showBytesBuilder :: Show s => s -> Builder
 showBytesBuilder = stringUtf8 . show
+
+showIntegerBytesBuilder :: Integral a => a -> Builder
+showIntegerBytesBuilder = BSB.integerDec . toInteger
 
 showText :: Show s => s -> T.Text
 showText = T.pack . show
