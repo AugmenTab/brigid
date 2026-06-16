@@ -62,13 +62,11 @@ This library is in active development; the API is not yet stable.
 
 ### Possible optimizations
 
-1. Change all `ToText` and `ToBytes` functions to use builders? Export them for
-   use in render, but not from `Brigid.HTML.Types`.
-2. Switch to strict types for element combinators.
-3. Inline newtypes.
-4. Interpolate hard-coded string types everywhere.
-5. Parallel rendering for DOMs branches with more than 3 children.
-6. Replace `nubOrdOn attributeText` in element combinators with a
+1. Switch to strict types for element combinators.
+2. Inline newtypes.
+3. Interpolate hard-coded string types everywhere.
+4. Parallel rendering for DOMs branches with more than 3 children.
+5. Replace `nubOrdOn attributeText` in element combinators with a
    custom fold in rendering that dedupes as it folds.
-7. Switch to using `text-builder-linear` for all building functions.
+6. Switch to using `text-builder-linear` for all building functions.
 

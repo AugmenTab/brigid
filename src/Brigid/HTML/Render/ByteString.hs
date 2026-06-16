@@ -9,9 +9,9 @@ module Brigid.HTML.Render.ByteString
 import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
 import Data.ByteString qualified as BS
-import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
+import Data.ByteString.Builder (Builder, string8, stringUtf8, toLazyByteString)
+import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (mapMaybe)
@@ -19,7 +19,7 @@ import Data.NonEmptyText qualified as NET
 import Ogma qualified
 import Shrubbery qualified
 
-import Brigid.HTML.Attributes.Event.Event (eventAttributeToBytes)
+import Brigid.HTML.Attributes.Event.Event (eventAttributeToBytesBuilder)
 import Brigid.HTML.Attributes.Internal (Attribute (..))
 import Brigid.HTML.Elements.Internal (ChildHTML (..))
 import Brigid.HTML.Types qualified as Types
@@ -38,24 +38,22 @@ renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
   case html of
     Tag_NoElement ->
-      lazyByteString LBS.empty
+      mempty
 
     Tag_Comment comment ->
-      lazyByteString "<!-- "
-        <> lazyByteString (Render.textToLazyBytes comment)
-        <> lazyByteString " -->"
+      "<!-- " <> Render.textToBytesBuilder comment <> " -->"
 
     Tag_Text content ->
-      lazyByteString . Render.textToLazyBytes $ Escape.escape content
+      Escape.escapeBytesBuilder content
 
     Tag_Entity entity ->
-      lazyByteString $ LBS8.pack entity
+      string8 entity
 
     Tag_RawHTML content ->
-      lazyByteString $ Render.textToLazyBytes content
+      Render.textToBytesBuilder content
 
     Tag_CustomHTML elemName attrs eiCloserOrContent ->
-      buildTag (Render.textToLazyBytes elemName) attrs eiCloserOrContent
+      buildTag (Render.textToBytesBuilder elemName) attrs eiCloserOrContent
 
     Tag_Anchor attrs content ->
       buildTag "a" attrs $ Right content
@@ -202,8 +200,7 @@ renderTag html =
       buildTag "hr" attrs $ Left Types.OmitTag
 
     Tag_Html attrs content ->
-      lazyByteString "<!DOCTYPE html>"
-        <> buildTag "html" attrs (Right content)
+      "<!DOCTYPE html>" <> buildTag "html" attrs (Right content)
 
     Tag_IdiomaticText attrs content ->
       buildTag "i" attrs $ Right content
@@ -476,34 +473,34 @@ renderTag html =
     Tag_SVG attrs content ->
       buildTag "svg" attrs $ Right content
 
-buildTag :: LBS.ByteString
+buildTag :: Builder
          -> [Attribute tag]
          -> Either Types.NoContent [ChildHTML parent grandparent]
          -> Builder
 buildTag tag attrs content =
   mconcat
-    [ lazyByteString "<"
-    , lazyByteString tag
-    , lazyByteString . B.bool " " LBS.empty $ L.null attrs
+    [ "<"
+    , tag
+    , B.bool " " mempty $ L.null attrs
     , mconcat
-        . L.intersperse (lazyByteString " ")
+        . L.intersperse " "
         $ mapMaybe renderAttribute attrs
     , case content of
-        Left  Types.OmitTag -> lazyByteString "/>"
-        Left  Types.WithTag -> lazyByteString ">"
-        Right _children     -> lazyByteString ">"
+        Left  Types.OmitTag -> "/>"
+        Left  Types.WithTag -> ">"
+        Right _children     -> ">"
     , case content of
-        Left  _type    -> lazyByteString LBS.empty
+        Left  _type    -> mempty
         Right children -> foldMap renderTag children
     , case content of
         Left Types.OmitTag ->
-          lazyByteString LBS.empty
+          mempty
 
         Left Types.WithTag ->
-          lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
+          "</" <> tag <> ">"
 
         Right _children ->
-          lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
+          "</" <> tag <> ">"
     ]
 
 renderAttribute :: Attribute any -> Maybe Builder
@@ -512,27 +509,31 @@ renderAttribute attr =
     -- Global Attributes
     --
     Attr_NoAttribute ->
-      Just $ lazyByteString LBS.empty
+      Just mempty
 
     Attr_Custom name value ->
       Just $
         buildAttribute
-          (Render.textToLazyBytes name)
-          (Render.textToLazyBytes $ Escape.attributeText value)
+          (Render.textToBytesBuilder name)
+          (Escape.attributeBytesBuilder value)
 
     Attr_CustomBoolean name value ->
-      buildBooleanAttribute (Render.textToLazyBytes name) value
+      buildBooleanAttribute (Render.textToBytesBuilder name) value
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ Escape.attributeCharBytes key
+      Just . buildAttribute "accesskey" $ Escape.attributeCharBytesBuilder key
 
     Attr_Autocapitalize option ->
       Just
         . buildAttribute "autocapitalize"
-        $ Types.autocapitalizeOptionToBytes option
+        . Render.textToBytesBuilder
+        $ Types.autocapitalizeOptionToText option
 
     Attr_Autocorrect autocorrect ->
-      Just . buildAttribute "autocorrect" $ Types.onOffToBytes autocorrect
+      Just
+        . buildAttribute "autocorrect"
+        . Render.textToBytesBuilder
+        $ Types.onOffToText autocorrect
 
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
@@ -540,151 +541,177 @@ renderAttribute attr =
     Attr_Class _class ->
       Just
         . buildAttribute "class"
-        . Escape.attributeBytes
-        $ Types.classToBytes _class
+        . Escape.attributeBytesBuilder
+        $ Types.classToText _class
 
     Attr_ContentEditable option ->
       Just
         . buildAttribute "contenteditable"
-        $ Types.contentEditableOptionToBytes option
+        . Render.textToBytesBuilder
+        $ Types.contentEditableOptionToText option
 
     Attr_CustomData data_ mbValue ->
       case mbValue of
         Just value ->
           Just $
             buildAttribute
-              ("data-" <> Render.textToLazyBytes data_)
-              (Render.textToLazyBytes $ Escape.attributeText value)
+              ("data-" <> Render.textToBytesBuilder data_)
+              (Escape.attributeBytesBuilder value)
 
         Nothing ->
-          buildBooleanAttribute ("data-" <> Render.textToLazyBytes data_) True
+          buildBooleanAttribute ("data-" <> Render.textToBytesBuilder data_) True
 
     Attr_Dir directionality ->
       Just
         . buildAttribute "dir"
-        $ Types.directionalityToBytes directionality
+        . Render.textToBytesBuilder
+        $ Types.directionalityToText directionality
 
     Attr_Draggable draggable ->
-      Just . buildAttribute "draggable" $ Render.enumBoolToBytes draggable
+      Just
+        . buildAttribute "draggable"
+        $ Render.enumBoolToBytesBuilder draggable
 
     Attr_EnterKeyHint option ->
       Just
         . buildAttribute "enterkeyhint"
-        $ Types.keyHintOptionToBytes option
+        . Render.textToBytesBuilder
+        $ Types.keyHintOptionToText option
 
     Attr_ExportParts parts ->
       Just
         . buildAttribute "exportparts"
-        . Render.foldToBytesWithSeparator Types.exportPartToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.exportPartToText) ", "
         $ parts
 
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id id ->
-      Just . buildAttribute "id" . Escape.attributeBytes $ Types.idToBytes id
+      Just
+        . buildAttribute "id"
+        . Escape.attributeBytesBuilder
+        $ Types.idToText id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
 
     Attr_InputMode mode ->
-      Just . buildAttribute "inputmode" $ Types.inputModeToBytes mode
+      Just
+        . buildAttribute "inputmode"
+        . Render.textToBytesBuilder
+        $ Types.inputModeToText mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" . Render.textToLazyBytes $ Escape.attributeText is
+      Just . buildAttribute "is" $ Escape.attributeBytesBuilder is
 
     Attr_ItemId itemid ->
-      Just . buildAttribute "itemid" $ Render.textToLazyBytes itemid
+      Just . buildAttribute "itemid" $ Render.textToBytesBuilder itemid
 
     Attr_ItemProp itemprop ->
-      Just . buildAttribute "itemprop" $ Render.textToLazyBytes itemprop
+      Just . buildAttribute "itemprop" $ Render.textToBytesBuilder itemprop
 
     Attr_ItemRef itemref ->
       Just
         . buildAttribute "itemref"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.idToText) " "
         $ NEL.toList itemref
 
     Attr_ItemScope ->
       buildBooleanAttribute "itemscope" True
 
     Attr_ItemType itemtype ->
-      Just . buildAttribute "itemtype" $ Types.absoluteURLToBytes itemtype
+      Just
+        . buildAttribute "itemtype"
+        . Render.textToBytesBuilder
+        $ Types.absoluteURLToText itemtype
 
     Attr_Lang lang ->
-      Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToBytes lang
+      Just
+        . buildAttribute "lang"
+        . maybe mempty (BSB.lazyByteString . Ogma.bcp_47ToBytes)
+        $ lang
 
     Attr_Nonce nonce ->
-      Just . buildAttribute "nonce" $ Render.textToLazyBytes nonce
+      Just . buildAttribute "nonce" $ Render.textToBytesBuilder nonce
 
     Attr_Part parts ->
       Just
         . buildAttribute "part"
-        . Render.foldToBytesWithSeparator Types.partToBytes " "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.partToText) " "
         $ parts
 
     Attr_Popover state ->
       Just
         . buildAttribute "popover"
-        $ Types.popoverStateToBytes state
+        . Render.textToBytesBuilder
+        $ Types.popoverStateToText state
 
     Attr_Role role ->
-      Just . buildAttribute "role" $ Types.roleToBytes role
+      Just
+        . buildAttribute "role"
+        . Render.textToBytesBuilder
+        $ Types.roleToText role
 
     Attr_Slot slot ->
-      Just . buildAttribute "slot" $ Types.nameToBytes slot
+      Just
+        . buildAttribute "slot"
+        . Render.textToBytesBuilder
+        $ Types.nameToText slot
 
     Attr_Spellcheck spellcheck ->
-      Just . buildAttribute "spellcheck" $ Render.enumBoolToBytes spellcheck
+      Just
+        . buildAttribute "spellcheck"
+        $ Render.enumBoolToBytesBuilder spellcheck
 
     Attr_Style style ->
-      Just
-        . buildAttribute "style"
-        . Render.textToLazyBytes
-        $ Escape.attributeText style
+      Just . buildAttribute "style" $ Escape.attributeBytesBuilder style
 
     Attr_TabIndex tabindex ->
-      Just . buildAttribute "tabindex" $ Render.showBytes tabindex
+      Just . buildAttribute "tabindex" $ Render.showBytesBuilder tabindex
 
     Attr_Title title ->
-      Just
-        . buildAttribute "title"
-        . Render.textToLazyBytes
-        $ Escape.attributeText title
+      Just . buildAttribute "title" $ Escape.attributeBytesBuilder title
 
     Attr_Translate translate ->
-      Just . buildAttribute "translate" $ Types.yesNoToBytes translate
+      Just
+        . buildAttribute "translate"
+        . Render.textToBytesBuilder
+        $ Types.yesNoToText translate
 
     Attr_WritingSuggestions writingsuggestions ->
       Just
         . buildAttribute "writingsuggestions"
-        $ Render.enumBoolToBytes writingsuggestions
+        $ Render.enumBoolToBytesBuilder writingsuggestions
 
     -- Scoped Attributes
     --
     Attr_Abbreviation abbr ->
-      Just $ buildAttribute "abbr" $ Render.textToLazyBytes abbr
+      Just . buildAttribute "abbr" $ Render.textToBytesBuilder abbr
 
     Attr_Accept accept ->
-      Just . buildAttribute "accept" $ Render.bytesToLazyBytes accept
+      Just . buildAttribute "accept" $ BSB.byteString accept
 
     Attr_AcceptCharset ->
       Just $ buildAttribute "accept-charset" "UTF-8"
 
     Attr_Action action ->
-      Just . buildAttribute "action" $ Types.actionToBytes action
+      Just
+        . buildAttribute "action"
+        . Render.textToBytesBuilder
+        $ Types.actionToText action
 
     Attr_Allow allow ->
       Just
         . buildAttribute "allow"
-        . Render.foldToBytesWithSeparator Types.featurePolicyDirectiveToBytes "; "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.featurePolicyDirectiveToText) "; "
         $ allow
 
     Attr_Alt alt ->
-      Just . buildAttribute "alt" $ Render.textToLazyBytes alt
+      Just . buildAttribute "alt" $ Render.textToBytesBuilder alt
 
     Attr_As as ->
-      Just . buildAttribute "as" $ Types.asToBytes as
+      Just . buildAttribute "as" . Render.textToBytesBuilder $ Types.asToText as
 
     Attr_Async ->
       buildBooleanAttribute "async" True
@@ -692,18 +719,22 @@ renderAttribute attr =
     Attr_Autocomplete autocomplete ->
       Just
         . buildAttribute "autocomplete"
-        $ Types.autocompleteTokenToBytes autocomplete
+        . Render.textToBytesBuilder
+        $ Types.autocompleteTokenToText autocomplete
 
     Attr_Autoplay ->
       buildBooleanAttribute "autoplay" True
 
     Attr_Blocking blocking ->
-      Just . buildAttribute "blocking" $ Types.blockOptionToBytes blocking
+      Just
+        . buildAttribute "blocking"
+        . Render.textToBytesBuilder
+        $ Types.blockOptionToText blocking
 
     Attr_Capture mbCapture ->
       maybe
         (buildBooleanAttribute "capture" True)
-        (Just . buildAttribute "capture" . Types.captureMethodToBytes)
+        (Just . buildAttribute "capture" . Render.textToBytesBuilder . Types.captureMethodToText)
         mbCapture
 
     Attr_Charset ->
@@ -713,28 +744,37 @@ renderAttribute attr =
       buildBooleanAttribute "checked" checked
 
     Attr_Cite cite ->
-      Just . buildAttribute "cite" $ Types.urlToBytes cite
+      Just
+        . buildAttribute "cite"
+        . Render.textToBytesBuilder
+        $ Types.urlToText cite
 
     Attr_Cols cols ->
-      Just . buildAttribute "cols" $ Render.showBytes cols
+      Just . buildAttribute "cols" $ Render.showBytesBuilder cols
 
     Attr_Colspan colspan ->
-      Just . buildAttribute "colspan" $ Render.showBytes colspan
+      Just . buildAttribute "colspan" $ Render.showBytesBuilder colspan
 
     Attr_Command command ->
-      Just . buildAttribute "command" $ Types.commandOptionToBytes command
+      Just
+        . buildAttribute "command"
+        . Render.textToBytesBuilder
+        $ Types.commandOptionToText command
 
     Attr_CommandFor commandfor ->
-      Just . buildAttribute "commandfor" $ Types.idToBytes commandfor
+      Just
+        . buildAttribute "commandfor"
+        . Render.textToBytesBuilder
+        $ Types.idToText commandfor
 
     Attr_Coords coords ->
       Just
         . buildAttribute "coords"
-        . Render.foldToBytesWithSeparator Render.showBytes ","
+        . Render.foldToBytesBuilderWithSeparator Render.showBytesBuilder ","
         $ NEL.toList coords
 
     Attr_Content content ->
-      Just . buildAttribute "content" $ Render.textToLazyBytes content
+      Just . buildAttribute "content" $ Render.textToBytesBuilder content
 
     Attr_Controls ->
       buildBooleanAttribute "controls" True
@@ -742,21 +782,29 @@ renderAttribute attr =
     Attr_ControlsList controlslist ->
       Just
         . buildAttribute "controlslist"
-        $ Types.controlsListToBytes controlslist
+        . Render.textToBytesBuilder
+        $ Types.controlsListToText controlslist
 
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"
-        $ Types.crossOriginFetchToBytes crossorigin
+        . Render.textToBytesBuilder
+        $ Types.crossOriginFetchToText crossorigin
 
     Attr_Data _data ->
-      Just . buildAttribute "data" $ Types.urlToBytes _data
+      Just
+        . buildAttribute "data"
+        . Render.textToBytesBuilder
+        $ Types.urlToText _data
 
     Attr_Datetime datetime ->
-      Just . buildAttribute "datetime" $ LBS8.pack datetime
+      Just . buildAttribute "datetime" $ stringUtf8 datetime
 
     Attr_Decoding decoding ->
-      Just . buildAttribute "decoding" $ Types.decodingToBytes decoding
+      Just
+        . buildAttribute "decoding"
+        . Render.textToBytesBuilder
+        $ Types.decodingToText decoding
 
     Attr_Default ->
       buildBooleanAttribute "default" True
@@ -765,7 +813,7 @@ renderAttribute attr =
       buildBooleanAttribute "defer" True
 
     Attr_Dirname dirname ->
-      Just . buildAttribute "dirname" $ Render.textToLazyBytes dirname
+      Just . buildAttribute "dirname" $ Render.textToBytesBuilder dirname
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
@@ -779,122 +827,172 @@ renderAttribute attr =
     Attr_Download download ->
       maybe
         (buildBooleanAttribute "download" True)
-        (Just . buildAttribute "download" . Render.textToLazyBytes . NET.toText)
+        (Just . buildAttribute "download" . Render.textToBytesBuilder . NET.toText)
         download
 
     Attr_ElementTiming elementtiming ->
       Just
         . buildAttribute "elementtiming"
-        $ Render.textToLazyBytes elementtiming
+        $ Render.textToBytesBuilder elementtiming
 
     Attr_Enctype enctype ->
-      Just . buildAttribute "enctype" $ Render.bytesToLazyBytes enctype
+      Just . buildAttribute "enctype" $ BSB.byteString enctype
 
     Attr_FetchPriority fetchpriority ->
       Just
         . buildAttribute "fetchpriority"
-        $ Types.fetchPriorityToBytes fetchpriority
+        . Render.textToBytesBuilder
+        $ Types.fetchPriorityToText fetchpriority
 
     Attr_For for ->
-      Just . buildAttribute "for" $ Types.forOptionToBytes for
+      Just
+        . buildAttribute "for"
+        . Render.textToBytesBuilder
+        $ Types.forOptionToText for
 
     Attr_Form form ->
-      Just . buildAttribute "form" $ Types.idToBytes form
+      Just
+        . buildAttribute "form"
+        . Render.textToBytesBuilder
+        $ Types.idToText form
 
     Attr_FormAction formaction ->
-      Just . buildAttribute "formaction" $ Types.actionToBytes formaction
+      Just
+        . buildAttribute "formaction"
+        . Render.textToBytesBuilder
+        $ Types.actionToText formaction
 
     Attr_FormEnctype formenctype ->
-      Just . buildAttribute "formenctype" $ Render.bytesToLazyBytes formenctype
+      Just . buildAttribute "formenctype" $ BSB.byteString formenctype
 
     Attr_FormMethod formmethod ->
-      Just . buildAttribute "formmethod" $ Types.formMethodToBytes formmethod
+      Just
+        . buildAttribute "formmethod"
+        . Render.textToBytesBuilder
+        $ Types.formMethodToText formmethod
 
     Attr_FormNoValidate ->
       buildBooleanAttribute "formnovalidate" True
 
     Attr_FormTarget formtarget ->
-      Just . buildAttribute "formtarget" $ Types.targetToBytes formtarget
+      Just
+        . buildAttribute "formtarget"
+        . Render.textToBytesBuilder
+        $ Types.targetToText formtarget
 
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.idToText) " "
         $ headers
 
     Attr_Height height ->
-      Just . buildAttribute "height" $ Render.showBytes height
+      Just . buildAttribute "height" $ Render.showBytesBuilder height
 
     Attr_High high ->
-      Just . buildAttribute "high" $ Types.numberToBytes high
+      Just
+        . buildAttribute "high"
+        . Render.textToBytesBuilder
+        $ Types.numberToText high
 
     Attr_Href href ->
-      Just . buildAttribute "href" $ Types.hrefToBytes href
+      Just
+        . buildAttribute "href"
+        . Render.textToBytesBuilder
+        $ Types.hrefToText href
 
     Attr_HrefLang hreflang ->
-      Just . buildAttribute "hreflang" $ Ogma.bcp_47ToBytes hreflang
+      Just
+        . buildAttribute "hreflang"
+        . BSB.lazyByteString
+        $ Ogma.bcp_47ToBytes hreflang
 
     Attr_HttpEquiv httpEquiv ->
       Just
         . buildAttribute "http-equiv"
-        $ Types.httpEquivTokenToBytes httpEquiv
+        . Render.textToBytesBuilder
+        $ Types.httpEquivTokenToText httpEquiv
 
     Attr_ImageSizes imagesizes ->
       Just
         . buildAttribute "imagesizes"
-        . Render.foldToBytesWithSeparator Types.sizeToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.sizeToText) ", "
         $ NEL.toList imagesizes
 
     Attr_ImageSrcset imagesrcset ->
       Just
         . buildAttribute "imagesrcset"
-        . Render.foldToBytesWithSeparator Types.srcsetCandidateToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.srcsetCandidateToText) ", "
         $ NEL.toList imagesrcset
 
     Attr_Integrity sha content ->
-      Just . buildAttribute "integrity" $ Types.integrityToBytes sha content
+      Just
+        . buildAttribute "integrity"
+        . Render.textToBytesBuilder
+        $ Types.integrityToText sha content
 
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 
     Attr_Kind kind ->
-      Just . buildAttribute "kind" $ Types.trackKindToBytes kind
+      Just
+        . buildAttribute "kind"
+        . Render.textToBytesBuilder
+        $ Types.trackKindToText kind
 
     Attr_Label label ->
-      Just . buildAttribute "label" $ Render.textToLazyBytes label
+      Just . buildAttribute "label" $ Render.textToBytesBuilder label
 
     Attr_List list ->
-      Just . buildAttribute "label" $ Types.idToBytes list
+      Just
+        . buildAttribute "label"
+        . Render.textToBytesBuilder
+        $ Types.idToText list
 
     Attr_Loading loading ->
-      Just . buildAttribute "loading" $ Types.loadOptionToBytes loading
+      Just
+        . buildAttribute "loading"
+        . Render.textToBytesBuilder
+        $ Types.loadOptionToText loading
 
     Attr_Loop ->
       buildBooleanAttribute "loop" True
 
     Attr_Low low ->
-      Just . buildAttribute "low" $ Types.numberToBytes low
+      Just
+        . buildAttribute "low"
+        . Render.textToBytesBuilder
+        $ Types.numberToText low
 
     Attr_Max max ->
-      Just . buildAttribute "max" $ Types.rangeBoundToBytes max
+      Just
+        . buildAttribute "max"
+        . Render.textToBytesBuilder
+        $ Types.rangeBoundToText max
 
     Attr_MaxLength maxlength ->
-      Just . buildAttribute "maxlength" $ Render.showBytes maxlength
+      Just . buildAttribute "maxlength" $ Render.showBytesBuilder maxlength
 
     Attr_Media media ->
       Just
         . buildAttribute "media"
-        . Render.foldToBytesWithSeparator Types.mediaQueryToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.mediaQueryToText) ", "
         $ NEL.toList media
 
     Attr_Method method ->
-      Just . buildAttribute "method" $ Types.formMethodToBytes method
+      Just
+        . buildAttribute "method"
+        . Render.textToBytesBuilder
+        $ Types.formMethodToText method
 
     Attr_Min min ->
-      Just . buildAttribute "min" $ Types.rangeBoundToBytes min
+      Just
+        . buildAttribute "min"
+        . Render.textToBytesBuilder
+        $ Types.rangeBoundToText min
 
     Attr_MinLength minlength ->
-      Just . buildAttribute "minlength" $ Render.showBytes minlength
+      Just . buildAttribute "minlength" $ Render.showBytesBuilder minlength
 
     Attr_Multiple ->
       buildBooleanAttribute "multiple" True
@@ -903,7 +1001,10 @@ renderAttribute attr =
       buildBooleanAttribute "muted" muted
 
     Attr_Name name ->
-      Just . buildAttribute "name" $ Types.nameOptionToBytes name
+      Just
+        . buildAttribute "name"
+        . Render.textToBytesBuilder
+        $ Types.nameOptionToText name
 
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule
@@ -915,36 +1016,51 @@ renderAttribute attr =
       buildBooleanAttribute "open" True
 
     Attr_Optimum optimum ->
-      Just . buildAttribute "optimum" $ Types.numberToBytes optimum
+      Just
+        . buildAttribute "optimum"
+        . Render.textToBytesBuilder
+        $ Types.numberToText optimum
 
     Attr_Pattern pattern ->
-      Just . buildAttribute "pattern" $ Render.textToLazyBytes pattern
+      Just . buildAttribute "pattern" $ Render.textToBytesBuilder pattern
 
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"
-        . Render.foldToBytesWithSeparator Types.pingToBytes " "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.pingToText) " "
         $ NEL.toList pings
 
     Attr_Placeholder placeholder ->
-      Just . buildAttribute "placeholder" $ Render.textToLazyBytes placeholder
+      Just
+        . buildAttribute "placeholder"
+        $ Render.textToBytesBuilder placeholder
 
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
 
     Attr_PopoverTarget popovertarget ->
-      Just . buildAttribute "popovertarget" $ Types.idToBytes popovertarget
+      Just
+        . buildAttribute "popovertarget"
+        . Render.textToBytesBuilder
+        $ Types.idToText popovertarget
 
     Attr_PopoverTargetAction popovertargetaction ->
       Just
         . buildAttribute "popovertargetaction"
-        $ Types.popoverTargetActionToBytes popovertargetaction
+        . Render.textToBytesBuilder
+        $ Types.popoverTargetActionToText popovertargetaction
 
     Attr_Poster poster ->
-      Just . buildAttribute "poster" $ Types.urlToBytes poster
+      Just
+        . buildAttribute "poster"
+        . Render.textToBytesBuilder
+        $ Types.urlToText poster
 
     Attr_Preload preload ->
-      Just . buildAttribute "preload" $ Types.preloadToBytes preload
+      Just
+        . buildAttribute "preload"
+        . Render.textToBytesBuilder
+        $ Types.preloadToText preload
 
     Attr_ReadOnly ->
       buildBooleanAttribute "readonly" True
@@ -952,10 +1068,14 @@ renderAttribute attr =
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"
-        $ Types.referrerPolicyToBytes referrerpolicy
+        . Render.textToBytesBuilder
+        $ Types.referrerPolicyToText referrerpolicy
 
     Attr_Rel rel ->
-      Just . buildAttribute "rel" $ Types.relationshipToBytes rel
+      Just
+        . buildAttribute "rel"
+        . Render.textToBytesBuilder
+        $ Types.relationshipToText rel
 
     Attr_Required required ->
       buildBooleanAttribute "required" required
@@ -964,10 +1084,10 @@ renderAttribute attr =
       buildBooleanAttribute "reversed" reversed
 
     Attr_Rows rows ->
-      Just . buildAttribute "rows" $ Render.showBytes rows
+      Just . buildAttribute "rows" $ Render.showBytesBuilder rows
 
     Attr_Rowspan rowspan ->
-      Just . buildAttribute "rowspan" $ Render.showBytes rowspan
+      Just . buildAttribute "rowspan" $ Render.showBytesBuilder rowspan
 
     Attr_Sandbox sandbox ->
       if null sandbox
@@ -975,11 +1095,14 @@ renderAttribute attr =
         else
           Just
             . buildAttribute "sandbox"
-            . Render.foldToBytesWithSeparator Types.sandboxTokenToBytes " "
+            . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.sandboxTokenToText) " "
             $ sandbox
 
     Attr_Scope scope ->
-      Just . buildAttribute "scope" $ Types.scopeToBytes scope
+      Just
+        . buildAttribute "scope"
+        . Render.textToBytesBuilder
+        $ Types.scopeToText scope
 
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
@@ -987,7 +1110,8 @@ renderAttribute attr =
     Attr_ShadowRootMode shadowrootmode ->
       Just
         . buildAttribute "shadowrootmode"
-        $ Types.openClosedToBytes shadowrootmode
+        . Render.textToBytesBuilder
+        $ Types.openClosedToText shadowrootmode
 
     Attr_ShadowRootDelegatesFocus ->
       buildBooleanAttribute "shadowrootdelegatesfocus" True
@@ -996,99 +1120,130 @@ renderAttribute attr =
       buildBooleanAttribute "shadowrootclonable" True
 
     Attr_Shape shape ->
-      Just . buildAttribute "shape" $ Types.shapeToBytes shape
+      Just
+        . buildAttribute "shape"
+        . Render.textToBytesBuilder
+        $ Types.shapeToText shape
 
     Attr_Size size ->
-      Just . buildAttribute "size" $ Render.showBytes size
+      Just . buildAttribute "size" $ Render.showBytesBuilder size
 
     Attr_Sizes sizes ->
       Just
         . buildAttribute "sizes"
-        . Render.foldToBytesWithSeparator Types.sizeToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.sizeToText) ", "
         $ NEL.toList sizes
 
     Attr_Span span ->
-      Just . buildAttribute "span" $ Render.showBytes span
+      Just . buildAttribute "span" $ Render.showBytesBuilder span
 
     Attr_Src src ->
-      Just . buildAttribute "src" $ Types.urlToBytes src
+      Just
+        . buildAttribute "src"
+        . Render.textToBytesBuilder
+        $ Types.urlToText src
 
     Attr_SrcDoc srcdoc ->
-      Just . buildAttribute "srcdoc" $ Escape.attributeBytes srcdoc
+      Just
+        . buildAttribute "srcdoc"
+        $ Escape.lazyBytesAttributeBytesBuilder srcdoc
 
     Attr_SrcLang srclang ->
-      Just . buildAttribute "srclang" $ Ogma.bcp_47ToBytes srclang
+      Just
+        . buildAttribute "srclang"
+        . BSB.lazyByteString
+        $ Ogma.bcp_47ToBytes srclang
 
     Attr_SrcSet srcset ->
       Just
         . buildAttribute "srcset"
-        . Render.foldToBytesWithSeparator Types.srcsetCandidateToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.srcsetCandidateToText) ", "
         $ NEL.toList srcset
 
     Attr_Start start ->
-      Just . buildAttribute "start" $ Render.showBytes start
+      Just . buildAttribute "start" $ Render.showBytesBuilder start
 
     Attr_Step step ->
-      Just . buildAttribute "step" $ Types.stepToBytes step
+      Just
+        . buildAttribute "step"
+        . Render.textToBytesBuilder
+        $ Types.stepToText step
 
     Attr_Target target ->
-      Just . buildAttribute "target" $ Types.targetToBytes target
+      Just
+        . buildAttribute "target"
+        . Render.textToBytesBuilder
+        $ Types.targetToText target
 
     Attr_Type type_ ->
-      Just . buildAttribute "type" $ Types.typeOptionToBytes type_
+      Just
+        . buildAttribute "type"
+        . Render.textToBytesBuilder
+        $ Types.typeOptionToText type_
 
     Attr_UseMap usemap ->
-      Just . buildAttribute "usemap" . LBS8.cons '#' $ Types.nameToBytes usemap
+      Just
+        . buildAttribute "usemap"
+        $ ("#" <> Render.textToBytesBuilder (Types.nameToText usemap))
 
     Attr_Value value ->
-      Just . buildAttribute "value" $ Types.valueToBytes value
+      Just
+        . buildAttribute "value"
+        . Render.textToBytesBuilder
+        $ Types.valueToText value
 
     Attr_Width width ->
-      Just . buildAttribute "width" $ Render.showBytes width
+      Just . buildAttribute "width" $ Render.showBytesBuilder width
 
     Attr_Wrap wrap ->
-      Just . buildAttribute "wrap" $ Types.wrapToBytes wrap
+      Just
+        . buildAttribute "wrap"
+        . Render.textToBytesBuilder
+        $ Types.wrapToText wrap
 
     Attr_XMLNS xmlns ->
-      Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns
+      Just
+        . buildAttribute "xmlns"
+        . Render.textToBytesBuilder
+        $ Types.urlToText xmlns
 
     -- ARIA Attributes
     --
     Attr_Aria aria ->
       Just $
         buildAttribute
-          (Types.ariaAttributeToBytes aria)
-          (Types.ariaValueToBytes aria)
+          (Render.textToBytesBuilder $ Types.ariaAttributeToText aria)
+          (Render.textToBytesBuilder $ Types.ariaValueToText aria)
 
     -- Event Attributes
     --
     Attr_On event script ->
       Just $
         buildAttribute
-          (eventAttributeToBytes event)
-          (Types.rawJavaScriptToBytes script)
+          (eventAttributeToBytesBuilder event)
+          (Render.textToBytesBuilder $ Types.rawJavaScriptToText script)
 
     -- HTMX Attributes
     --
     Attr_Htmx url ->
-      let (hxAttr, hxPath) =
-            case url of
-              Relative_Get    path -> ("hx-get", path)
-              Relative_Post   path -> ("hx-post", path)
-              Relative_Delete path -> ("hx-delete", path)
-              Relative_Put    path -> ("hx-put", path)
-              Relative_Patch  path -> ("hx-patch", path)
-
-       in Just . buildAttribute hxAttr $ Render.textToLazyBytes hxPath
+      let
+        (hxAttr, hxPath) =
+          case url of
+            Relative_Get    path -> ("hx-get" :: Builder, path)
+            Relative_Post   path -> ("hx-post", path)
+            Relative_Delete path -> ("hx-delete", path)
+            Relative_Put    path -> ("hx-put", path)
+            Relative_Patch  path -> ("hx-patch", path)
+      in
+        Just . buildAttribute hxAttr $ Render.textToBytesBuilder hxPath
 
     Attr_HxBoost boosted ->
-      Just . buildAttribute "hx-boost" $ Render.enumBoolToBytes boosted
+      Just . buildAttribute "hx-boost" $ Render.enumBoolToBytesBuilder boosted
 
     Attr_HxConfirm confirmation ->
       Just
         . buildAttribute "hx-confirm"
-        . Render.textToLazyBytes
-        $ Escape.attributeText confirmation
+        $ Escape.attributeBytesBuilder confirmation
 
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
@@ -1096,13 +1251,14 @@ renderAttribute attr =
     Attr_HxDisabledElt disabled ->
       Just
         . buildAttribute "hx-disabled-elt"
-        . Render.foldToBytesWithSeparator Types.disabledSelectorToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.disabledSelectorToText) ", "
         $ NEL.toList disabled
 
     Attr_HxDisinherit disinherit ->
       Just
         . buildAttribute "hx-disinherit"
-        $ Types.disinheritToBytes disinherit
+        . Render.textToBytesBuilder
+        $ Types.disinheritToText disinherit
 
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
@@ -1110,14 +1266,14 @@ renderAttribute attr =
     Attr_HxExt exts ->
       Just
         . buildAttribute "hx-ext"
-        . Render.foldToBytesWithSeparator Types.extensionToBytes ","
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.extensionToText) ","
         $ NEL.toList exts
 
     Attr_HxHeaders headers ->
       Just
         . buildAttribute "hx-headers"
-        . Escape.attributeBytes
-        $ Types.htmxHeadersToBytes headers
+        . Escape.attributeBytesBuilder
+        $ Types.htmxHeadersToText headers
 
     Attr_HxHistory ->
       Just $ buildAttribute "hx-history" "false"
@@ -1126,93 +1282,109 @@ renderAttribute attr =
       buildBooleanAttribute "hx-history" True
 
     Attr_HxInclude include ->
-      Just . buildAttribute "hx-include" $ Types.includeSelectorToBytes include
+      Just
+        . buildAttribute "hx-include"
+        . Render.textToBytesBuilder
+        $ Types.includeSelectorToText include
 
     Attr_HxIndicator indicator ->
-      Just . buildAttribute "hx-indicator" $ Types.indicatorToBytes indicator
+      Just
+        . buildAttribute "hx-indicator"
+        . Render.textToBytesBuilder
+        $ Types.indicatorToText indicator
 
     Attr_HxOn event action ->
-      Just
-        . buildAttribute ("hx-on" <> Types.hxOnEventBytes event)
-        . Render.textToLazyBytes
-        $ Escape.attributeText action
+      Just $
+        buildAttribute
+          ("hx-on" <> Render.textToBytesBuilder (Types.hxOnEventText event))
+          (Escape.attributeBytesBuilder action)
 
     Attr_HxParams params ->
       Just
         . buildAttribute "hx-params"
-        . Escape.attributeBytes
-        $ Types.requestParamsToBytes params
+        . Escape.attributeBytesBuilder
+        $ Types.requestParamsToText params
 
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
 
     Attr_HxPrompt prompt ->
-      Just
-        . buildAttribute "hx-prompt"
-        . Render.textToLazyBytes
-        $ Escape.attributeText prompt
+      Just . buildAttribute "hx-prompt" $ Escape.attributeBytesBuilder prompt
 
     Attr_HxPushURL url ->
-      Just . buildAttribute "hx-push-url" $ renderPushURL url
+      Just . buildAttribute "hx-push-url" $ renderPushURLBuilder url
 
     Attr_HxReplaceURL url ->
-      Just . buildAttribute "hx-replace-url" $ renderPushURL url
+      Just . buildAttribute "hx-replace-url" $ renderPushURLBuilder url
 
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"
-        . Escape.attributeBytes
-        $ Types.querySelectorToBytes selector
+        . Escape.attributeBytesBuilder
+        $ Types.querySelectorToText selector
 
     Attr_HxSelectOOB selects ->
       Just
         . buildAttribute "hx-select-oob"
-        . Render.foldToBytesWithSeparator Types.outOfBandSelectToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.outOfBandSelectToText) ", "
         $ NEL.toList selects
 
     Attr_HxSwap swap ->
-      Just . buildAttribute "hx-swap" $ Types.swapToBytes swap
+      Just
+        . buildAttribute "hx-swap"
+        . Render.textToBytesBuilder
+        $ Types.swapToText swap
 
     Attr_HxSwapOOB mbSwap ->
       Just
         . buildAttribute "hx-swap-oob"
-        $ maybe "true" Types.outOfBandSwapToBytes mbSwap
+        . maybe "true" (Render.textToBytesBuilder . Types.outOfBandSwapToText)
+        $ mbSwap
 
     Attr_HxTarget target ->
-      Just . buildAttribute "hx-target" $ Types.hxTargetToBytes target
+      Just
+        . buildAttribute "hx-target"
+        . Render.textToBytesBuilder
+        $ Types.hxTargetToText target
 
     Attr_HxTrigger triggers ->
       Just
         . buildAttribute "hx-trigger"
-        . Render.foldToBytesWithSeparator Types.triggerToBytes ", "
+        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.triggerToText) ", "
         $ NEL.toList triggers
 
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 
     Attr_HxVals vals ->
-      Just . buildAttribute "hx-vals" . Escape.attributeBytes $ Types.htmxValsToBytes vals
+      Just
+        . buildAttribute "hx-vals"
+        . Escape.attributeBytesBuilder
+        $ Types.htmxValsToText vals
 
     -- Other
     --
     Attr_HyperScript hyperscript ->
-      Just . buildAttribute "_" $ Types.hyperScriptToBytes hyperscript
+      Just
+        . buildAttribute "_"
+        . Render.textToBytesBuilder
+        $ Types.hyperScriptToText hyperscript
 
-buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
+buildAttribute :: Builder -> Builder -> Builder
 buildAttribute attr value =
-  lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""
+  attr <> "=\"" <> value <> "\""
 
-buildBooleanAttribute :: LBS.ByteString -> Bool -> Maybe Builder
+buildBooleanAttribute :: Builder -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
-  B.bool Nothing (Just $ lazyByteString attr)
+  B.bool Nothing (Just attr)
 
-renderPushURL :: Types.PushURL -> LBS.ByteString
-renderPushURL =
+renderPushURLBuilder :: Types.PushURL -> Builder
+renderPushURLBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Types.AbsoluteURL Types.absoluteURLToBytes
-      . Shrubbery.branch @(Types.RelativeURL _) Types.relativeURLToBytes
-      . Shrubbery.branch @Bool Render.enumBoolToBytes
-      . Shrubbery.branch @Types.RawURL Types.rawURLToBytes
+      . Shrubbery.branch @Types.AbsoluteURL (Render.textToBytesBuilder . Types.absoluteURLToText)
+      . Shrubbery.branch @(Types.RelativeURL _) (Render.textToBytesBuilder . Types.relativeURLToText)
+      . Shrubbery.branch @Bool Render.enumBoolToBytesBuilder
+      . Shrubbery.branch @Types.RawURL (Render.textToBytesBuilder . Types.rawURLToText)
       $ Shrubbery.branchEnd
   ) . Types.unPushURL

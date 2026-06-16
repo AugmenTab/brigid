@@ -70,13 +70,13 @@ module Brigid.HTML.Attributes.Event.Event
       , Waiting
       , Toggle
       )
-  , eventToBytes
   , eventToText
   , eventAttributeToBytes
+  , eventAttributeToBytesBuilder
   , eventAttributeToText
   ) where
 
-import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.ByteString.Builder (Builder, string8, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -168,80 +168,6 @@ data Event
   | Toggle
   deriving (Bounded, Enum, Eq, Show)
 
-eventToBytes :: Event -> LBS.ByteString
-eventToBytes event =
-  LBS8.pack $
-    case event of
-       AfterPrint -> "afterprint"
-       BeforePrint -> "beforeprint"
-       BeforeUnload -> "beforeunload"
-       Error -> "error"
-       HashChange -> "hashchange"
-       Load -> "load"
-       Message -> "message"
-       Offline -> "offline"
-       Online -> "online"
-       PageHide -> "pagehide"
-       PageShow -> "pageshow"
-       PopState -> "popstate"
-       Resize -> "resize"
-       Storage -> "storage"
-       Unload -> "unload"
-       Blur -> "blur"
-       Change -> "change"
-       ContextMenu -> "contextmenu"
-       Focus -> "focus"
-       Input -> "input"
-       Invalid -> "invalid"
-       Reset -> "reset"
-       Select -> "select"
-       Submit -> "submit"
-       KeyDown -> "keydown"
-       KeyPress -> "keypress"
-       KeyUp -> "keyup"
-       Click -> "click"
-       DoubleClick -> "doubleclick"
-       MouseDown -> "mousedown"
-       MouseMove -> "mousemove"
-       MouseOut -> "mouseout"
-       MouseOver -> "mouseover"
-       MouseUp -> "mouseup"
-       Wheel -> "wheel"
-       Drag -> "drag"
-       DragEnd -> "dragend"
-       DragEnter -> "dragenter"
-       DragLeave -> "dragleave"
-       DragOver -> "dragover"
-       DragStart -> "dragstart"
-       Drop -> "drop"
-       Scroll -> "scroll"
-       Copy -> "copy"
-       Cut -> "cut"
-       Paste -> "paste"
-       Abort -> "abort"
-       CanPlay -> "canplay"
-       CanPlaythrough -> "canplaythrough"
-       CueChange -> "cuechange"
-       DurationChange -> "durationchange"
-       Emptied -> "emptied"
-       Ended -> "ended"
-       LoadedData -> "loadeddata"
-       LoadedMetadata -> "loadedmetadata"
-       LoadStart -> "loadstart"
-       Pause -> "pause"
-       Play -> "play"
-       Playing -> "playing"
-       Progress -> "progress"
-       RateChange -> "ratechange"
-       Seeked -> "seeked"
-       Seeking -> "seeking"
-       Stalled -> "stalled"
-       Suspend -> "suspend"
-       TimeUpdate -> "timeupdate"
-       VolumeChange -> "volumechange"
-       Waiting -> "waiting"
-       Toggle -> "toggle"
-
 eventToText :: Event -> T.Text
 eventToText event =
   T.pack $
@@ -316,9 +242,83 @@ eventToText event =
        Waiting -> "waiting"
        Toggle -> "toggle"
 
+eventAttributeToBytesBuilder :: Event -> Builder
+eventAttributeToBytesBuilder event =
+  string8 $
+    case event of
+       AfterPrint -> "onafterprint"
+       BeforePrint -> "onbeforeprint"
+       BeforeUnload -> "onbeforeunload"
+       Error -> "onerror"
+       HashChange -> "onhashchange"
+       Load -> "onload"
+       Message -> "onmessage"
+       Offline -> "onoffline"
+       Online -> "ononline"
+       PageHide -> "onpagehide"
+       PageShow -> "onpageshow"
+       PopState -> "onpopstate"
+       Resize -> "onresize"
+       Storage -> "onstorage"
+       Unload -> "onunload"
+       Blur -> "onblur"
+       Change -> "onchange"
+       ContextMenu -> "oncontextmenu"
+       Focus -> "onfocus"
+       Input -> "oninput"
+       Invalid -> "oninvalid"
+       Reset -> "onreset"
+       Select -> "onselect"
+       Submit -> "onsubmit"
+       KeyDown -> "onkeydown"
+       KeyPress -> "onkeypress"
+       KeyUp -> "onkeyup"
+       Click -> "onclick"
+       DoubleClick -> "ondoubleclick"
+       MouseDown -> "onmousedown"
+       MouseMove -> "onmousemove"
+       MouseOut -> "onmouseout"
+       MouseOver -> "onmouseover"
+       MouseUp -> "onmouseup"
+       Wheel -> "onwheel"
+       Drag -> "ondrag"
+       DragEnd -> "ondragend"
+       DragEnter -> "ondragenter"
+       DragLeave -> "ondragleave"
+       DragOver -> "ondragover"
+       DragStart -> "ondragstart"
+       Drop -> "ondrop"
+       Scroll -> "onscroll"
+       Copy -> "oncopy"
+       Cut -> "oncut"
+       Paste -> "onpaste"
+       Abort -> "onabort"
+       CanPlay -> "oncanplay"
+       CanPlaythrough -> "oncanplaythrough"
+       CueChange -> "oncuechange"
+       DurationChange -> "ondurationchange"
+       Emptied -> "onemptied"
+       Ended -> "onended"
+       LoadedData -> "onloadeddata"
+       LoadedMetadata -> "onloadedmetadata"
+       LoadStart -> "onloadstart"
+       Pause -> "onpause"
+       Play -> "onplay"
+       Playing -> "onplaying"
+       Progress -> "onprogress"
+       RateChange -> "onratechange"
+       Seeked -> "onseeked"
+       Seeking -> "onseeking"
+       Stalled -> "onstalled"
+       Suspend -> "onsuspend"
+       TimeUpdate -> "ontimeupdate"
+       VolumeChange -> "onvolumechange"
+       Waiting -> "onwaiting"
+       Toggle -> "ontoggle"
+
 eventAttributeToBytes :: Event -> LBS.ByteString
-eventAttributeToBytes e =
-  LBS8.pack "on" <> eventToBytes e
+eventAttributeToBytes =
+  toLazyByteString . eventAttributeToBytesBuilder
 
 eventAttributeToText :: Event -> T.Text
 eventAttributeToText e =

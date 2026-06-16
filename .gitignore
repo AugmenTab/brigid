@@ -4,3 +4,5 @@
 eigse/__pycache__/
 
 test-all-logs/
+
+.local/
