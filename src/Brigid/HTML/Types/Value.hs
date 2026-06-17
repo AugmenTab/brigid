@@ -7,16 +7,19 @@ module Brigid.HTML.Types.Value
   , ValueTypes
   , mkValue
   , valueToBytes
+  , valueToBytesBuilder
   , valueToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
 import Brigid.HTML.Types.Phone (PhoneNumber, phoneNumberToBytes, phoneNumberToText)
 import Brigid.HTML.Types.Time qualified as BTime
 import Brigid.Internal.Render qualified as Render
@@ -73,6 +76,28 @@ valueToBytes (Value value) =
       . Shrubbery.branch @(URL.RelativeURL Post) URL.relativeURLToBytes
       . Shrubbery.branch @URL.RawURL             URL.rawURLToBytes
       . Shrubbery.branch @BTime.Week             BTime.weekToBytes
+      $ Shrubbery.branchEnd
+  ) value
+
+valueToBytesBuilder :: Value -> Builder
+valueToBytesBuilder (Value value) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HexColor               (TE.encodeUtf8Builder . hexColorToText)
+      . Shrubbery.branch @BTime.Date             (TE.encodeUtf8Builder . BTime.dateToText)
+      . Shrubbery.branch @BTime.DatetimeLocal    (TE.encodeUtf8Builder . BTime.datetimeLocalToText)
+      . Shrubbery.branch @EmailAddress           (TE.encodeUtf8Builder . emailAddressToText)
+      . Shrubbery.branch @Integer                Render.showIntegerBytesBuilder
+      . Shrubbery.branch @BTime.Month            (TE.encodeUtf8Builder . BTime.monthToText)
+      . Shrubbery.branch @Number                 numberToBytesBuilder
+      . Shrubbery.branch @PhoneNumber            (TE.encodeUtf8Builder . phoneNumberToText)
+      . Shrubbery.branch @T.Text                 TE.encodeUtf8Builder
+      . Shrubbery.branch @BTime.Time             (TE.encodeUtf8Builder . BTime.timeToText)
+      . Shrubbery.branch @URL.AbsoluteURL        URL.absoluteURLToBytesBuilder
+      . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToBytesBuilder
+      . Shrubbery.branch @(URL.RelativeURL Post) URL.relativeURLToBytesBuilder
+      . Shrubbery.branch @URL.RawURL             URL.rawURLToBytesBuilder
+      . Shrubbery.branch @BTime.Week             (TE.encodeUtf8Builder . BTime.weekToText)
       $ Shrubbery.branchEnd
   ) value
 

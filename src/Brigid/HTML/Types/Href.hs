@@ -8,6 +8,7 @@ module Brigid.HTML.Types.Href
   , unHref
   , HrefTypes
   , hrefToBytes
+  , hrefToBytesBuilder
   , hrefToText
   , BlankHref (BlankHref)
   , HrefSelectorTypes
@@ -15,6 +16,8 @@ module Brigid.HTML.Types.Href
   , hrefSelectorToText
   ) where
 
+import Data.ByteString.Builder (Builder, char8, string8)
+import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.PhoneNumber.Util (PhoneNumberFormat (RFC3966), formatNumber)
@@ -26,7 +29,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.Phone (PhoneNumber)
 import Brigid.Types.EmailAddress (EmailAddress, emailAddressToBytes, emailAddressToText)
-import Brigid.Types.Id (Id, idToBytes, idToText)
+import Brigid.Types.Id (Id, idToBytes, idToBytesBuilder, idToText)
 import Brigid.Types.Method (Get, Post)
 import Brigid.Types.URL qualified as URL
 
@@ -64,6 +67,20 @@ hrefToBytes (Href href) =
       . Shrubbery.branch @PhoneNumber         (LBS.fromStrict . formatNumber RFC3966)
       . Shrubbery.branch @BlankHref           (const "#")
       . Shrubbery.branch @URL.RawURL          URL.rawURLToBytes
+      $ Shrubbery.branchEnd
+  ) href
+
+hrefToBytesBuilder :: Href -> Builder
+hrefToBytesBuilder (Href href) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @URL.AbsoluteURL     URL.absoluteURLToBytesBuilder
+      . Shrubbery.branch @(URL.RelativeURL _) URL.relativeURLToBytesBuilder
+      . Shrubbery.branch @Id                  ((char8 '#' <>) . idToBytesBuilder)
+      . Shrubbery.branch @EmailAddress        ((string8 "mailto:" <>) . TE.encodeUtf8Builder . emailAddressToText)
+      . Shrubbery.branch @PhoneNumber         (BSB.byteString . formatNumber RFC3966)
+      . Shrubbery.branch @BlankHref           (const (string8 "#"))
+      . Shrubbery.branch @URL.RawURL          URL.rawURLToBytesBuilder
       $ Shrubbery.branchEnd
   ) href
 

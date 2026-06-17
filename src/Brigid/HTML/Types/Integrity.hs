@@ -5,6 +5,7 @@ module Brigid.HTML.Types.Integrity
       , SHA512
       )
   , integrityToBytes
+  , integrityToBytesBuilder
   , integrityToText
   ) where
 
@@ -12,6 +13,8 @@ import Crypto.Hash qualified as Hash
 import Crypto.Hash.Algorithms qualified as Algorithms
 import Data.ByteArray.Encoding (convertToBase, Base (Base64))
 import Data.ByteString qualified as BS
+import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -30,6 +33,13 @@ integrityEncodingToBytes sha =
     SHA384 -> "sha384"
     SHA512 -> "sha512"
 
+integrityEncodingToBytesBuilder :: IntegrityEncoding -> Builder
+integrityEncodingToBytesBuilder sha =
+  case sha of
+    SHA256 -> string8 "sha256"
+    SHA384 -> string8 "sha384"
+    SHA512 -> string8 "sha512"
+
 integrityEncodingToText :: IntegrityEncoding -> T.Text
 integrityEncodingToText sha =
   case sha of
@@ -43,6 +53,18 @@ integrityToBytes sha content =
     [ integrityEncodingToBytes sha
     , "-"
     , Render.bytesToLazyBytes $
+        case sha of
+          SHA256 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA256)
+          SHA384 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA384)
+          SHA512 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA512)
+    ]
+
+integrityToBytesBuilder :: IntegrityEncoding -> BS.ByteString -> Builder
+integrityToBytesBuilder sha content =
+  mconcat
+    [ integrityEncodingToBytesBuilder sha
+    , string8 "-"
+    , BSB.byteString $
         case sha of
           SHA256 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA256)
           SHA384 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA384)

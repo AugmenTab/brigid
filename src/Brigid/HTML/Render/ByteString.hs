@@ -565,7 +565,7 @@ renderAttribute attr =
     Attr_ExportParts parts ->
       Just
         . buildAttribute "exportparts"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.exportPartToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.exportPartToBytesBuilder ", "
         $ parts
 
     Attr_Hidden hidden ->
@@ -620,7 +620,7 @@ renderAttribute attr =
     Attr_Part parts ->
       Just
         . buildAttribute "part"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.partToText) " "
+        . Render.foldToBytesBuilderWithSeparator Types.partToBytesBuilder " "
         $ parts
 
     Attr_Popover state ->
@@ -676,13 +676,12 @@ renderAttribute attr =
     Attr_Action action ->
       Just
         . buildAttribute "action"
-        . Render.textToBytesBuilder
-        $ Types.actionToText action
+        $ Types.actionToBytesBuilder action
 
     Attr_Allow allow ->
       Just
         . buildAttribute "allow"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.featurePolicyDirectiveToText) "; "
+        . Render.foldToBytesBuilderWithSeparator Types.featurePolicyDirectiveToBytesBuilder "; "
         $ allow
 
     Attr_Alt alt ->
@@ -697,8 +696,7 @@ renderAttribute attr =
     Attr_Autocomplete autocomplete ->
       Just
         . buildAttribute "autocomplete"
-        . Render.textToBytesBuilder
-        $ Types.autocompleteTokenToText autocomplete
+        $ Types.autocompleteTokenToBytesBuilder autocomplete
 
     Attr_Autoplay ->
       buildBooleanAttribute "autoplay" True
@@ -723,8 +721,7 @@ renderAttribute attr =
     Attr_Cite cite ->
       Just
         . buildAttribute "cite"
-        . Render.textToBytesBuilder
-        $ Types.urlToText cite
+        $ Types.urlToBytesBuilder cite
 
     Attr_Cols cols ->
       Just . buildAttribute "cols" $ Render.showIntegerBytesBuilder cols
@@ -757,8 +754,7 @@ renderAttribute attr =
     Attr_ControlsList controlslist ->
       Just
         . buildAttribute "controlslist"
-        . Render.textToBytesBuilder
-        $ Types.controlsListToText controlslist
+        $ Types.controlsListToBytesBuilder controlslist
 
     Attr_CrossOrigin crossorigin ->
       Just
@@ -828,8 +824,7 @@ renderAttribute attr =
     Attr_FormAction formaction ->
       Just
         . buildAttribute "formaction"
-        . Render.textToBytesBuilder
-        $ Types.actionToText formaction
+        $ Types.actionToBytesBuilder formaction
 
     Attr_FormEnctype formenctype ->
       Just . buildAttribute "formenctype" $ BSB.byteString formenctype
@@ -859,14 +854,12 @@ renderAttribute attr =
     Attr_High high ->
       Just
         . buildAttribute "high"
-        . Render.textToBytesBuilder
-        $ Types.numberToText high
+        $ Types.numberToBytesBuilder high
 
     Attr_Href href ->
       Just
         . buildAttribute "href"
-        . Render.textToBytesBuilder
-        $ Types.hrefToText href
+        $ Types.hrefToBytesBuilder href
 
     Attr_HrefLang hreflang ->
       Just
@@ -882,20 +875,19 @@ renderAttribute attr =
     Attr_ImageSizes imagesizes ->
       Just
         . buildAttribute "imagesizes"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.sizeToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.sizeToBytesBuilder ", "
         $ NEL.toList imagesizes
 
     Attr_ImageSrcset imagesrcset ->
       Just
         . buildAttribute "imagesrcset"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.srcsetCandidateToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.srcsetCandidateToBytesBuilder ", "
         $ NEL.toList imagesrcset
 
     Attr_Integrity sha content ->
       Just
         . buildAttribute "integrity"
-        . Render.textToBytesBuilder
-        $ Types.integrityToText sha content
+        $ Types.integrityToBytesBuilder sha content
 
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
@@ -924,14 +916,12 @@ renderAttribute attr =
     Attr_Low low ->
       Just
         . buildAttribute "low"
-        . Render.textToBytesBuilder
-        $ Types.numberToText low
+        $ Types.numberToBytesBuilder low
 
     Attr_Max max ->
       Just
         . buildAttribute "max"
-        . Render.textToBytesBuilder
-        $ Types.rangeBoundToText max
+        $ Types.rangeBoundToBytesBuilder max
 
     Attr_MaxLength maxlength ->
       Just . buildAttribute "maxlength" $ Render.showIntegerBytesBuilder maxlength
@@ -939,7 +929,7 @@ renderAttribute attr =
     Attr_Media media ->
       Just
         . buildAttribute "media"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.mediaQueryToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.mediaQueryToBytesBuilder ", "
         $ NEL.toList media
 
     Attr_Method method ->
@@ -950,8 +940,7 @@ renderAttribute attr =
     Attr_Min min ->
       Just
         . buildAttribute "min"
-        . Render.textToBytesBuilder
-        $ Types.rangeBoundToText min
+        $ Types.rangeBoundToBytesBuilder min
 
     Attr_MinLength minlength ->
       Just . buildAttribute "minlength" $ Render.showIntegerBytesBuilder minlength
@@ -979,8 +968,7 @@ renderAttribute attr =
     Attr_Optimum optimum ->
       Just
         . buildAttribute "optimum"
-        . Render.textToBytesBuilder
-        $ Types.numberToText optimum
+        $ Types.numberToBytesBuilder optimum
 
     Attr_Pattern pattern ->
       Just . buildAttribute "pattern" $ Render.textToBytesBuilder pattern
@@ -1030,8 +1018,7 @@ renderAttribute attr =
     Attr_Rel rel ->
       Just
         . buildAttribute "rel"
-        . Render.textToBytesBuilder
-        $ Types.relationshipToText rel
+        $ Types.relationshipToBytesBuilder rel
 
     Attr_Required required ->
       buildBooleanAttribute "required" required
@@ -1084,7 +1071,7 @@ renderAttribute attr =
     Attr_Sizes sizes ->
       Just
         . buildAttribute "sizes"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.sizeToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.sizeToBytesBuilder ", "
         $ NEL.toList sizes
 
     Attr_Span span ->
@@ -1109,7 +1096,7 @@ renderAttribute attr =
     Attr_SrcSet srcset ->
       Just
         . buildAttribute "srcset"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.srcsetCandidateToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.srcsetCandidateToBytesBuilder ", "
         $ NEL.toList srcset
 
     Attr_Start start ->
@@ -1118,8 +1105,7 @@ renderAttribute attr =
     Attr_Step step ->
       Just
         . buildAttribute "step"
-        . Render.textToBytesBuilder
-        $ Types.stepToText step
+        $ Types.stepToBytesBuilder step
 
     Attr_Target target ->
       Just
@@ -1139,8 +1125,7 @@ renderAttribute attr =
     Attr_Value value ->
       Just
         . buildAttribute "value"
-        . Render.textToBytesBuilder
-        $ Types.valueToText value
+        $ Types.valueToBytesBuilder value
 
     Attr_Width width ->
       Just . buildAttribute "width" $ Render.showIntegerBytesBuilder width
@@ -1169,7 +1154,7 @@ renderAttribute attr =
       Just $
         buildAttribute
           (eventAttributeToBytesBuilder event)
-          (Render.textToBytesBuilder $ Types.rawJavaScriptToText script)
+          (Types.rawJavaScriptToBytesBuilder script)
 
     -- HTMX Attributes
     --

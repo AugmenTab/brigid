@@ -1,6 +1,7 @@
 module Brigid.HTML.Types.Size
   ( Size (..)
   , sizeToBytes
+  , sizeToBytesBuilder
   , sizeToText
   , SizeLength
       ( SizePx
@@ -17,13 +18,15 @@ module Brigid.HTML.Types.Size
       )
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 
-import Brigid.HTML.Types.MediaQuery (MediaFeature, mediaFeatureToBytes, mediaFeatureToText)
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
+import Brigid.HTML.Types.MediaQuery (MediaFeature, mediaFeatureToBytes, mediaFeatureToBytesBuilder, mediaFeatureToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
 import Brigid.Internal.Render qualified as Render
 
 data Size =
@@ -38,6 +41,14 @@ sizeToBytes size =
     catMaybes
       [ mediaFeatureToBytes <$> sizeCondition size
       , Just . sizeLengthToBytes $ sizeLength size
+      ]
+
+sizeToBytesBuilder :: Size -> Builder
+sizeToBytesBuilder size =
+  Render.foldToBytesBuilderWithSeparator id " " $
+    catMaybes
+      [ mediaFeatureToBytesBuilder <$> sizeCondition size
+      , Just . sizeLengthToBytesBuilder $ sizeLength size
       ]
 
 sizeToText :: Size -> T.Text
@@ -76,6 +87,21 @@ sizeLengthToBytes sl =
     SizeVmin n -> numberToBytes n <> "vmin"
     SizeVmax n -> numberToBytes n <> "vmax"
     SizeCalc n -> "calc(" <> Render.textToLazyBytes n <> ")"
+
+sizeLengthToBytesBuilder :: SizeLength -> Builder
+sizeLengthToBytesBuilder sl =
+  case sl of
+    SizePx n      -> Render.showIntegerBytesBuilder n <> string8 "px"
+    SizeVw n      -> Render.showIntegerBytesBuilder n <> string8 "vw"
+    SizeVh n      -> Render.showIntegerBytesBuilder n <> string8 "vh"
+    SizePercent n -> Render.showIntegerBytesBuilder n <> string8 "%"
+    SizeEm n      -> numberToBytesBuilder n <> string8 "em"
+    SizeRem n     -> numberToBytesBuilder n <> string8 "rem"
+    SizeCh n      -> numberToBytesBuilder n <> string8 "ch"
+    SizeEx n      -> numberToBytesBuilder n <> string8 "ex"
+    SizeVmin n    -> numberToBytesBuilder n <> string8 "vmin"
+    SizeVmax n    -> numberToBytesBuilder n <> string8 "vmax"
+    SizeCalc n    -> string8 "calc(" <> TE.encodeUtf8Builder n <> string8 ")"
 
 sizeLengthToText :: SizeLength -> T.Text
 sizeLengthToText sl =

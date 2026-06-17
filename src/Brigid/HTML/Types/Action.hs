@@ -9,9 +9,11 @@ module Brigid.HTML.Types.Action
   , ActionTypes
   , mkAction
   , actionToBytes
+  , actionToBytesBuilder
   , actionToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Function (on)
 import Data.Text qualified as T
@@ -52,6 +54,17 @@ actionToBytes (Action action) =
       . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToBytes
       . Shrubbery.branch @(URL.RelativeURL Post) URL.relativeURLToBytes
       . Shrubbery.branch @URL.RawURL             URL.rawURLToBytes
+      $ Shrubbery.branchEnd
+  ) action
+
+actionToBytesBuilder :: Action -> Builder
+actionToBytesBuilder (Action action) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @URL.AbsoluteURL        URL.absoluteURLToBytesBuilder
+      . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToBytesBuilder
+      . Shrubbery.branch @(URL.RelativeURL Post) URL.relativeURLToBytesBuilder
+      . Shrubbery.branch @URL.RawURL             URL.rawURLToBytesBuilder
       $ Shrubbery.branchEnd
   ) action
 

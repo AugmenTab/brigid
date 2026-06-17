@@ -8,10 +8,12 @@ module Brigid.HTML.Types.Number
   , numberFromScientific
   , numberFromText
   , numberToBytes
+  , numberToBytesBuilder
   , numberToText
   , number
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
@@ -76,6 +78,9 @@ numberFromText txt =
 
 numberToBytes :: Number -> LBS.ByteString
 numberToBytes = LBS8.pack . formatNumber
+
+numberToBytesBuilder :: Number -> Builder
+numberToBytesBuilder = string8 . formatNumber
 
 numberToText :: Number -> T.Text
 numberToText = T.pack . formatNumber

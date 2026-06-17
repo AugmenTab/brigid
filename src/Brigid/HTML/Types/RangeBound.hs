@@ -7,6 +7,7 @@ module Brigid.HTML.Types.RangeBound
   , RangeBoundTypes
   , mkRangeBound
   , rangeBoundToBytes
+  , rangeBoundToBytesBuilder
   , rangeBoundToText
   , RawRangeBound
   , mkRawRangeBound
@@ -14,14 +15,16 @@ module Brigid.HTML.Types.RangeBound
   , rawRangeBoundToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
 import Brigid.HTML.Types.Time qualified as BTime
 
 newtype RangeBound =
@@ -56,6 +59,20 @@ rangeBoundToBytes (RangeBound rangeBound) =
       . Shrubbery.branch @BTime.Time             BTime.timeToBytes
       . Shrubbery.branch @BTime.Week             BTime.weekToBytes
       . Shrubbery.branch @RawRangeBound          rawRangeBoundToBytes
+      $ Shrubbery.branchEnd
+  ) rangeBound
+
+rangeBoundToBytesBuilder :: RangeBound -> Builder
+rangeBoundToBytesBuilder (RangeBound rangeBound) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @BTime.Date             (TE.encodeUtf8Builder . BTime.dateToText)
+      . Shrubbery.branch @BTime.DatetimeLocal    (TE.encodeUtf8Builder . BTime.datetimeLocalToText)
+      . Shrubbery.branch @BTime.Month            (TE.encodeUtf8Builder . BTime.monthToText)
+      . Shrubbery.branch @Number                 numberToBytesBuilder
+      . Shrubbery.branch @BTime.Time             (TE.encodeUtf8Builder . BTime.timeToText)
+      . Shrubbery.branch @BTime.Week             (TE.encodeUtf8Builder . BTime.weekToText)
+      . Shrubbery.branch @RawRangeBound          (TE.encodeUtf8Builder . rawRangeBoundToText)
       $ Shrubbery.branchEnd
   ) rangeBound
 

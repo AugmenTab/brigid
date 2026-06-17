@@ -4,6 +4,7 @@ module Brigid.HTML.Types.SrcsetCandidate
   ( SrcsetCandidate (..)
   , mkSrcsetCandidate
   , srcsetCandidateToBytes
+  , srcsetCandidateToBytesBuilder
   , srcsetCandidateToText
   , SrcsetDescriptor
       ( SrcsetWidth
@@ -11,6 +12,7 @@ module Brigid.HTML.Types.SrcsetCandidate
       )
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
@@ -18,9 +20,9 @@ import Integer (Positive)
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
 import Brigid.Internal.Render qualified as Render
-import Brigid.Types.URL (URL, URLTypes, mkURL, urlToBytes, urlToText)
+import Brigid.Types.URL (URL, URLTypes, mkURL, urlToBytes, urlToBytesBuilder, urlToText)
 
 data SrcsetCandidate =
   SrcsetCandidate
@@ -45,6 +47,12 @@ srcsetCandidateToBytes ssc =
     , srcsetDescriptorToBytes $ srcsetCandidateDescriptor ssc
     ]
 
+srcsetCandidateToBytesBuilder :: SrcsetCandidate -> Builder
+srcsetCandidateToBytesBuilder ssc =
+  urlToBytesBuilder (srcsetCandidateURL ssc)
+    <> string8 " "
+    <> srcsetDescriptorToBytesBuilder (srcsetCandidateDescriptor ssc)
+
 srcsetCandidateToText :: SrcsetCandidate -> T.Text
 srcsetCandidateToText ssc =
   T.unwords
@@ -62,6 +70,12 @@ srcsetDescriptorToBytes ssd =
   case ssd of
     SrcsetWidth w -> Render.showBytes w <> "w"
     SrcsetDensity x -> numberToBytes x <> "x"
+
+srcsetDescriptorToBytesBuilder :: SrcsetDescriptor -> Builder
+srcsetDescriptorToBytesBuilder ssd =
+  case ssd of
+    SrcsetWidth w   -> Render.showIntegerBytesBuilder w <> string8 "w"
+    SrcsetDensity x -> numberToBytesBuilder x <> string8 "x"
 
 srcsetDescriptorToText :: SrcsetDescriptor -> T.Text
 srcsetDescriptorToText ssd =

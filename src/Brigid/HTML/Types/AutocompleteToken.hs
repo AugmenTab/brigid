@@ -11,6 +11,7 @@ module Brigid.HTML.Types.AutocompleteToken
   , AutocompleteTokenTypes
   , mkAutocompleteToken
   , autocompleteTokenToBytes
+  , autocompleteTokenToBytesBuilder
   , autocompleteTokenToText
   , Modifier
   , section
@@ -77,6 +78,7 @@ module Brigid.HTML.Types.AutocompleteToken
   , Photo (Photo)
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Kind (Type)
@@ -85,7 +87,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Boolean (OnOff, onOffToBytes, onOffToText)
+import Brigid.HTML.Types.Boolean (OnOff, onOffToBytes, onOffToBytesBuilder, onOffToText)
 
 newtype AutocompleteToken =
   AutocompleteToken (Shrubbery.Union AutocompleteTokenTypes)
@@ -323,6 +325,122 @@ autocompleteTokenToBytes (AutocompleteToken token) =
       . Shrubbery.branch @Sex                                  sexToBytes
       . Shrubbery.branch @Url                                  urlToBytes
       . Shrubbery.branch @Photo                                photoToBytes
+      $ Shrubbery.branchEnd
+  ) token
+
+autocompleteTokenToBytesBuilder :: AutocompleteToken -> Builder
+autocompleteTokenToBytesBuilder (AutocompleteToken token) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @OnOff                                onOffToBytesBuilder
+      . Shrubbery.branch @(Modifier FullName)                  (modifierToBytesBuilder (const (string8 "name")))
+      . Shrubbery.branch @(Modifier HonorificPrefix)           (modifierToBytesBuilder (const (string8 "honorific-prefix")))
+      . Shrubbery.branch @(Modifier GivenName)                 (modifierToBytesBuilder (const (string8 "given-name")))
+      . Shrubbery.branch @(Modifier AdditionalName)            (modifierToBytesBuilder (const (string8 "additional-name")))
+      . Shrubbery.branch @(Modifier FamilyName)                (modifierToBytesBuilder (const (string8 "family-name")))
+      . Shrubbery.branch @(Modifier HonorificSuffix)           (modifierToBytesBuilder (const (string8 "honorific-suffix")))
+      . Shrubbery.branch @(Modifier Nickname)                  (modifierToBytesBuilder (const (string8 "nickname")))
+      . Shrubbery.branch @(Modifier Username)                  (modifierToBytesBuilder (const (string8 "username")))
+      . Shrubbery.branch @(Modifier NewPassword)               (modifierToBytesBuilder (const (string8 "new-password")))
+      . Shrubbery.branch @(Modifier CurrentPassword)           (modifierToBytesBuilder (const (string8 "current-password")))
+      . Shrubbery.branch @(Modifier OneTimeCode)               (modifierToBytesBuilder (const (string8 "one-time-code")))
+      . Shrubbery.branch @(Modifier Email)                     (modifierToBytesBuilder (const (string8 "email")))
+      . Shrubbery.branch @(Modifier InstantMessagingProtocol)  (modifierToBytesBuilder (const (string8 "impp")))
+      . Shrubbery.branch @(Modifier Telephone)                 (modifierToBytesBuilder (const (string8 "tel")))
+      . Shrubbery.branch @(Modifier TelephoneCountryCode)      (modifierToBytesBuilder (const (string8 "tel-country-code")))
+      . Shrubbery.branch @(Modifier TelephoneNational)         (modifierToBytesBuilder (const (string8 "tel-national")))
+      . Shrubbery.branch @(Modifier TelephoneAreaCode)         (modifierToBytesBuilder (const (string8 "tel-area-code")))
+      . Shrubbery.branch @(Modifier TelephoneLocal)            (modifierToBytesBuilder (const (string8 "tel-local")))
+      . Shrubbery.branch @(Modifier TelephoneLocalPrefix)      (modifierToBytesBuilder (const (string8 "tel-local-prefix")))
+      . Shrubbery.branch @(Modifier TelephoneLocalSuffix)      (modifierToBytesBuilder (const (string8 "tel-local-suffix")))
+      . Shrubbery.branch @(Modifier TelephoneExtension)        (modifierToBytesBuilder (const (string8 "tel-extension")))
+      . Shrubbery.branch @(Modifier Organization)              (modifierToBytesBuilder (const (string8 "organization")))
+      . Shrubbery.branch @(Modifier OrganizationTitle)         (modifierToBytesBuilder (const (string8 "organization-title")))
+      . Shrubbery.branch @(Modifier StreetAddress)             (modifierToBytesBuilder (const (string8 "street-address")))
+      . Shrubbery.branch @(Modifier AddressLine1)              (modifierToBytesBuilder (const (string8 "address-line1")))
+      . Shrubbery.branch @(Modifier AddressLine2)              (modifierToBytesBuilder (const (string8 "address-line2")))
+      . Shrubbery.branch @(Modifier AddressLine3)              (modifierToBytesBuilder (const (string8 "address-line3")))
+      . Shrubbery.branch @(Modifier AddressLevel4)             (modifierToBytesBuilder (const (string8 "address-level4")))
+      . Shrubbery.branch @(Modifier AddressLevel3)             (modifierToBytesBuilder (const (string8 "address-level3")))
+      . Shrubbery.branch @(Modifier AddressLevel2)             (modifierToBytesBuilder (const (string8 "address-level2")))
+      . Shrubbery.branch @(Modifier AddressLevel1)             (modifierToBytesBuilder (const (string8 "address-level1")))
+      . Shrubbery.branch @(Modifier Country)                   (modifierToBytesBuilder (const (string8 "country")))
+      . Shrubbery.branch @(Modifier CountryName)               (modifierToBytesBuilder (const (string8 "country-name")))
+      . Shrubbery.branch @(Modifier PostalCode)                (modifierToBytesBuilder (const (string8 "postal-code")))
+      . Shrubbery.branch @(Modifier CreditCardFullName)        (modifierToBytesBuilder (const (string8 "cc-name")))
+      . Shrubbery.branch @(Modifier CreditCardGivenName)       (modifierToBytesBuilder (const (string8 "cc-given-name")))
+      . Shrubbery.branch @(Modifier CreditCardAdditionalName)  (modifierToBytesBuilder (const (string8 "cc-additional-name")))
+      . Shrubbery.branch @(Modifier CreditCardFamilyName)      (modifierToBytesBuilder (const (string8 "cc-family-name")))
+      . Shrubbery.branch @(Modifier CreditCardNumber)          (modifierToBytesBuilder (const (string8 "cc-number")))
+      . Shrubbery.branch @(Modifier CreditCardExpiration)      (modifierToBytesBuilder (const (string8 "cc-exp")))
+      . Shrubbery.branch @(Modifier CreditCardExpirationMonth) (modifierToBytesBuilder (const (string8 "cc-exp-month")))
+      . Shrubbery.branch @(Modifier CreditCardExpirationYear)  (modifierToBytesBuilder (const (string8 "cc-exp-year")))
+      . Shrubbery.branch @(Modifier CreditCardSecurityCode)    (modifierToBytesBuilder (const (string8 "cc-csc")))
+      . Shrubbery.branch @(Modifier CreditCardType)            (modifierToBytesBuilder (const (string8 "cc-type")))
+      . Shrubbery.branch @(Modifier TransactionCurrency)       (modifierToBytesBuilder (const (string8 "transaction-currency")))
+      . Shrubbery.branch @(Modifier TransactionAmount)         (modifierToBytesBuilder (const (string8 "transaction-amount")))
+      . Shrubbery.branch @(Modifier Birthday)                  (modifierToBytesBuilder (const (string8 "bday")))
+      . Shrubbery.branch @(Modifier BirthdayDay)               (modifierToBytesBuilder (const (string8 "bday-day")))
+      . Shrubbery.branch @(Modifier BirthdayMonth)             (modifierToBytesBuilder (const (string8 "bday-month")))
+      . Shrubbery.branch @(Modifier BirthdayYear)              (modifierToBytesBuilder (const (string8 "bday-year")))
+      . Shrubbery.branch @(Modifier Language)                  (modifierToBytesBuilder (const (string8 "language")))
+      . Shrubbery.branch @(Modifier Sex)                       (modifierToBytesBuilder (const (string8 "sex")))
+      . Shrubbery.branch @(Modifier Url)                       (modifierToBytesBuilder (const (string8 "url")))
+      . Shrubbery.branch @(Modifier Photo)                     (modifierToBytesBuilder (const (string8 "photo")))
+      . Shrubbery.branch @FullName                             (const (string8 "name"))
+      . Shrubbery.branch @HonorificPrefix                      (const (string8 "honorific-prefix"))
+      . Shrubbery.branch @GivenName                            (const (string8 "given-name"))
+      . Shrubbery.branch @AdditionalName                       (const (string8 "additional-name"))
+      . Shrubbery.branch @FamilyName                           (const (string8 "family-name"))
+      . Shrubbery.branch @HonorificSuffix                      (const (string8 "honorific-suffix"))
+      . Shrubbery.branch @Nickname                             (const (string8 "nickname"))
+      . Shrubbery.branch @Username                             (const (string8 "username"))
+      . Shrubbery.branch @NewPassword                          (const (string8 "new-password"))
+      . Shrubbery.branch @CurrentPassword                      (const (string8 "current-password"))
+      . Shrubbery.branch @OneTimeCode                          (const (string8 "one-time-code"))
+      . Shrubbery.branch @Email                                (const (string8 "email"))
+      . Shrubbery.branch @InstantMessagingProtocol             (const (string8 "impp"))
+      . Shrubbery.branch @Telephone                            (const (string8 "tel"))
+      . Shrubbery.branch @TelephoneCountryCode                 (const (string8 "tel-country-code"))
+      . Shrubbery.branch @TelephoneNational                    (const (string8 "tel-national"))
+      . Shrubbery.branch @TelephoneAreaCode                    (const (string8 "tel-area-code"))
+      . Shrubbery.branch @TelephoneLocal                       (const (string8 "tel-local"))
+      . Shrubbery.branch @TelephoneLocalPrefix                 (const (string8 "tel-local-prefix"))
+      . Shrubbery.branch @TelephoneLocalSuffix                 (const (string8 "tel-local-suffix"))
+      . Shrubbery.branch @TelephoneExtension                   (const (string8 "tel-extension"))
+      . Shrubbery.branch @Organization                         (const (string8 "organization"))
+      . Shrubbery.branch @OrganizationTitle                    (const (string8 "organization-title"))
+      . Shrubbery.branch @StreetAddress                        (const (string8 "street-address"))
+      . Shrubbery.branch @AddressLine1                         (const (string8 "address-line1"))
+      . Shrubbery.branch @AddressLine2                         (const (string8 "address-line2"))
+      . Shrubbery.branch @AddressLine3                         (const (string8 "address-line3"))
+      . Shrubbery.branch @AddressLevel4                        (const (string8 "address-level4"))
+      . Shrubbery.branch @AddressLevel3                        (const (string8 "address-level3"))
+      . Shrubbery.branch @AddressLevel2                        (const (string8 "address-level2"))
+      . Shrubbery.branch @AddressLevel1                        (const (string8 "address-level1"))
+      . Shrubbery.branch @Country                              (const (string8 "country"))
+      . Shrubbery.branch @CountryName                          (const (string8 "country-name"))
+      . Shrubbery.branch @PostalCode                           (const (string8 "postal-code"))
+      . Shrubbery.branch @CreditCardFullName                   (const (string8 "cc-name"))
+      . Shrubbery.branch @CreditCardGivenName                  (const (string8 "cc-given-name"))
+      . Shrubbery.branch @CreditCardAdditionalName             (const (string8 "cc-additional-name"))
+      . Shrubbery.branch @CreditCardFamilyName                 (const (string8 "cc-family-name"))
+      . Shrubbery.branch @CreditCardNumber                     (const (string8 "cc-number"))
+      . Shrubbery.branch @CreditCardExpiration                 (const (string8 "cc-exp"))
+      . Shrubbery.branch @CreditCardExpirationMonth            (const (string8 "cc-exp-month"))
+      . Shrubbery.branch @CreditCardExpirationYear             (const (string8 "cc-exp-year"))
+      . Shrubbery.branch @CreditCardSecurityCode               (const (string8 "cc-csc"))
+      . Shrubbery.branch @CreditCardType                       (const (string8 "cc-type"))
+      . Shrubbery.branch @TransactionCurrency                  (const (string8 "transaction-currency"))
+      . Shrubbery.branch @TransactionAmount                    (const (string8 "transaction-amount"))
+      . Shrubbery.branch @Birthday                             (const (string8 "bday"))
+      . Shrubbery.branch @BirthdayDay                          (const (string8 "bday-day"))
+      . Shrubbery.branch @BirthdayMonth                        (const (string8 "bday-month"))
+      . Shrubbery.branch @BirthdayYear                         (const (string8 "bday-year"))
+      . Shrubbery.branch @Language                             (const (string8 "language"))
+      . Shrubbery.branch @Sex                                  (const (string8 "sex"))
+      . Shrubbery.branch @Url                                  (const (string8 "url"))
+      . Shrubbery.branch @Photo                                (const (string8 "photo"))
       $ Shrubbery.branchEnd
   ) token
 
@@ -651,6 +769,18 @@ modifierToBytes toBytes modifier =
       Mobile       token -> [ "mobile",                     toBytes token ]
       Fax          token -> [ "fax",                        toBytes token ]
       Pager        token -> [ "pager",                      toBytes token ]
+
+modifierToBytesBuilder :: (token -> Builder) -> Modifier token -> Builder
+modifierToBytesBuilder toBuilder modifier =
+  case modifier of
+    Section name token -> string8 ("section-" ++ name) <> string8 " " <> toBuilder token
+    Home         token -> string8 "home"     <> string8 " " <> toBuilder token
+    Work         token -> string8 "work"     <> string8 " " <> toBuilder token
+    Shipping     token -> string8 "shipping" <> string8 " " <> toBuilder token
+    Billing      token -> string8 "billing"  <> string8 " " <> toBuilder token
+    Mobile       token -> string8 "mobile"   <> string8 " " <> toBuilder token
+    Fax          token -> string8 "fax"      <> string8 " " <> toBuilder token
+    Pager        token -> string8 "pager"    <> string8 " " <> toBuilder token
 
 modifierToText :: (token -> T.Text) -> Modifier token -> T.Text
 modifierToText toText modifier =

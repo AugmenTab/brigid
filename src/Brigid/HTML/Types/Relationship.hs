@@ -7,6 +7,7 @@ module Brigid.HTML.Types.Relationship
   , RelationshipTypes
   , mkRelationship
   , relationshipToBytes
+  , relationshipToBytesBuilder
   , relationshipToText
   , Rel_Alternate (Rel_Alternate)
   , Rel_Author (Rel_Author)
@@ -39,6 +40,7 @@ module Brigid.HTML.Types.Relationship
   , Rel_Terms_Of_Service (Rel_Terms_Of_Service)
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
@@ -157,6 +159,42 @@ relationshipToBytes (Relationship rel) =
       . Shrubbery.branch @Rel_Stylesheet       (const "stylesheet")
       . Shrubbery.branch @Rel_Tag              (const "tag")
       . Shrubbery.branch @Rel_Terms_Of_Service (const "terms-of-service")
+      $ Shrubbery.branchEnd
+  ) rel
+
+relationshipToBytesBuilder :: Relationship -> Builder
+relationshipToBytesBuilder (Relationship rel) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Rel_Alternate        (const (string8 "alternate"))
+      . Shrubbery.branch @Rel_Author           (const (string8 "author"))
+      . Shrubbery.branch @Rel_Bookmark         (const (string8 "bookmark"))
+      . Shrubbery.branch @Rel_Canonical        (const (string8 "canonical"))
+      . Shrubbery.branch @Rel_DNS_Prefetch     (const (string8 "dns-prefetch"))
+      . Shrubbery.branch @Rel_External         (const (string8 "external"))
+      . Shrubbery.branch @Rel_Expect           (const (string8 "expect"))
+      . Shrubbery.branch @Rel_Help             (const (string8 "help"))
+      . Shrubbery.branch @Rel_Icon             (const (string8 "icon"))
+      . Shrubbery.branch @Rel_License          (const (string8 "license"))
+      . Shrubbery.branch @Rel_Manifest         (const (string8 "manifest"))
+      . Shrubbery.branch @Rel_Me               (const (string8 "me"))
+      . Shrubbery.branch @Rel_ModulePreload    (const (string8 "modulepreload"))
+      . Shrubbery.branch @Rel_Next             (const (string8 "next"))
+      . Shrubbery.branch @Rel_NoFollow         (const (string8 "nofollow"))
+      . Shrubbery.branch @Rel_NoOpener         (const (string8 "noopener"))
+      . Shrubbery.branch @Rel_NoReferrer       (const (string8 "noreferrer"))
+      . Shrubbery.branch @Rel_Opener           (const (string8 "opener"))
+      . Shrubbery.branch @Rel_Pingback         (const (string8 "pingback"))
+      . Shrubbery.branch @Rel_Preconnect       (const (string8 "preconnect"))
+      . Shrubbery.branch @Rel_Prefetch         (const (string8 "prefetch"))
+      . Shrubbery.branch @Rel_Preload          (const (string8 "preload"))
+      . Shrubbery.branch @Rel_Prerender        (const (string8 "prerender"))
+      . Shrubbery.branch @Rel_Prev             (const (string8 "prev"))
+      . Shrubbery.branch @Rel_Privacy_Policy   (const (string8 "privacy-policy"))
+      . Shrubbery.branch @Rel_Search           (const (string8 "search"))
+      . Shrubbery.branch @Rel_Stylesheet       (const (string8 "stylesheet"))
+      . Shrubbery.branch @Rel_Tag              (const (string8 "tag"))
+      . Shrubbery.branch @Rel_Terms_Of_Service (const (string8 "terms-of-service"))
       $ Shrubbery.branchEnd
   ) rel
 
