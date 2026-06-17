@@ -155,22 +155,15 @@ buildTag tag attrs content =
         $ mapMaybe renderAttribute attrs
     , case content of
         Left  Types.OmitTag -> fromText "/>"
-        Left  Types.WithTag -> fromText ">"
-        Right _children     -> fromText ">"
-    , case content of
-        Left  _type    -> fromText T.empty
-        Right children -> foldMap renderTag children
-    , case content of
-        Left Types.OmitTag -> fromText T.empty
-        Left Types.WithTag -> fromText "</" <> fromText tag <> fromText ">"
-        Right _children    -> fromText "</" <> fromText tag <> fromText ">"
+        Left  Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
+        Right children      -> fromText ">" <> foldMap renderTag children <> fromText "</" <> fromText tag <> fromText ">"
     ]
 
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
     Attr_NoAttribute ->
-      Just $ fromText T.empty
+      Nothing
 
     Attr_Custom name value ->
       Just $ buildAttribute name value

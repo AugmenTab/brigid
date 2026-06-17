@@ -482,15 +482,8 @@ buildTag tag attrs content =
     <> foldMap (\attr -> maybe mempty (" " <>) (renderAttribute attr)) attrs
     <> case content of
          Left  Types.OmitTag -> "/>"
-         Left  Types.WithTag -> ">"
-         Right _children     -> ">"
-    <> case content of
-         Left  _type    -> mempty
-         Right children -> foldMap renderTag children
-    <> case content of
-         Left  Types.OmitTag -> mempty
-         Left  Types.WithTag -> "</" <> tag <> ">"
-         Right _children     -> "</" <> tag <> ">"
+         Left  Types.WithTag -> ">" <> "</" <> tag <> ">"
+         Right children      -> ">" <> foldMap renderTag children <> "</" <> tag <> ">"
 
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
@@ -498,7 +491,7 @@ renderAttribute attr =
     -- Global Attributes
     --
     Attr_NoAttribute ->
-      Just mempty
+      Nothing
 
     Attr_Custom name value ->
       Just $
