@@ -172,6 +172,7 @@ eventToBytes =
   ) . unEvent
 
 eventToBytesBuilder :: Event -> Builder
+{-# INLINABLE eventToBytesBuilder #-}
 eventToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -329,6 +330,7 @@ htmlEventToBytes event =
     CompositionEndEvent    -> "compositionend"
 
 htmlEventToBytesBuilder :: HTMLEvent -> Builder
+{-# INLINE htmlEventToBytesBuilder #-}
 htmlEventToBytesBuilder event =
   case event of
     ClickEvent             -> "click"
@@ -456,6 +458,7 @@ touchEventToBytes event =
     TouchCancel -> "touchcancel"
 
 touchEventToBytesBuilder :: TouchEvent -> Builder
+{-# INLINE touchEventToBytesBuilder #-}
 touchEventToBytesBuilder event =
   case event of
     TouchStart  -> "touchstart"
@@ -567,6 +570,7 @@ htmxEventToBytes event =
     HtmxXHRProgress           -> "xhr-progress"
 
 htmxEventToBytesBuilder :: HtmxEvent -> Builder
+{-# INLINE htmxEventToBytesBuilder #-}
 htmxEventToBytesBuilder event =
   case event of
     HtmxAbort                 -> "abort"
@@ -665,6 +669,7 @@ triggerLoadToBytes :: TriggerLoad -> LBS.ByteString
 triggerLoadToBytes = const "load"
 
 triggerLoadToBytesBuilder :: TriggerLoad -> Builder
+{-# INLINE triggerLoadToBytesBuilder #-}
 triggerLoadToBytesBuilder = const "load"
 
 triggerLoadToText :: TriggerLoad -> T.Text
@@ -677,6 +682,7 @@ triggerRevealedToBytes :: TriggerRevealed -> LBS.ByteString
 triggerRevealedToBytes = const "revealed"
 
 triggerRevealedToBytesBuilder :: TriggerRevealed -> Builder
+{-# INLINE triggerRevealedToBytesBuilder #-}
 triggerRevealedToBytesBuilder = const "revealed"
 
 triggerRevealedToText :: TriggerRevealed -> T.Text

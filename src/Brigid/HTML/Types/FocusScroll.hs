@@ -20,6 +20,7 @@ focusScrollToBytes =
   ("focus-scroll:" <>) . B.bool "false" "true" . unFocusScroll
 
 focusScrollToBytesBuilder :: FocusScroll -> Builder
+{-# INLINE focusScrollToBytesBuilder #-}
 focusScrollToBytesBuilder =
   ("focus-scroll:" <>) . B.bool "false" "true" . unFocusScroll
 

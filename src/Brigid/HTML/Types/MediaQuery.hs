@@ -132,6 +132,7 @@ mediaQueryToBytes query =
       ]
 
 mediaQueryToBytesBuilder :: MediaQuery -> Builder
+{-# INLINE mediaQueryToBytesBuilder #-}
 mediaQueryToBytesBuilder query =
   Render.foldToBytesBuilderWithSeparator id " " $
     catMaybes
@@ -189,6 +190,7 @@ mediaQueryModifierToText mqm =
     MediaOnly -> "only"
 
 mediaQueryModifierToBytesBuilder :: MediaQueryModifier -> Builder
+{-# INLINE mediaQueryModifierToBytesBuilder #-}
 mediaQueryModifierToBytesBuilder mqm =
   case mqm of
     MediaNot  -> string8 "not"
@@ -218,6 +220,7 @@ mediaQueryTypeToText mt =
     MediaSpeech -> "speech"
 
 mediaQueryTypeToBytesBuilder :: MediaQueryType -> Builder
+{-# INLINE mediaQueryTypeToBytesBuilder #-}
 mediaQueryTypeToBytesBuilder mt =
   case mt of
     MediaAll    -> string8 "all"
@@ -478,6 +481,7 @@ mediaFeatureToText mf =
     ]
 
 mediaFeatureToBytesBuilder :: MediaFeature -> Builder
+{-# INLINE mediaFeatureToBytesBuilder #-}
 mediaFeatureToBytesBuilder mf =
   mconcat
     [ string8 "("
@@ -610,6 +614,7 @@ mediaFeatureTypeToText mft =
     Exact -> T.empty
 
 mediaFeatureTypeToBytesBuilder :: MediaFeatureType -> Builder
+{-# INLINE mediaFeatureTypeToBytesBuilder #-}
 mediaFeatureTypeToBytesBuilder mft =
   case mft of
     Min   -> string8 "min-"
@@ -646,6 +651,7 @@ mediaLengthToText ml =
     MediaPc n -> numberToText n <> "pc"
 
 mediaLengthToBytesBuilder :: MediaLength -> Builder
+{-# INLINE mediaLengthToBytesBuilder #-}
 mediaLengthToBytesBuilder ml =
   case ml of
     MediaPx n -> numberToBytesBuilder n <> string8 "px"
@@ -673,6 +679,7 @@ mediaOrientationToText mo =
     Landscape -> "landscape"
 
 mediaOrientationToBytesBuilder :: MediaOrientation -> Builder
+{-# INLINE mediaOrientationToBytesBuilder #-}
 mediaOrientationToBytesBuilder mo =
   case mo of
     Portrait  -> string8 "portrait"
@@ -699,6 +706,7 @@ mediaResolutionToText mr =
     MediaDppx n -> numberToText n <> "dppx"
 
 mediaResolutionToBytesBuilder :: MediaResolution -> Builder
+{-# INLINE mediaResolutionToBytesBuilder #-}
 mediaResolutionToBytesBuilder mr =
   case mr of
     MediaDpi  n -> numberToBytesBuilder n <> string8 "dpi"
@@ -723,6 +731,7 @@ mediaScanTypeToText mst =
     Progressive -> "progressive"
 
 mediaScanTypeToBytesBuilder :: MediaScanType -> Builder
+{-# INLINE mediaScanTypeToBytesBuilder #-}
 mediaScanTypeToBytesBuilder mst =
   case mst of
     Interlace   -> string8 "interlace"
@@ -749,6 +758,7 @@ mediaColorSchemeToText mcs =
     ColorDark -> "dark"
 
 mediaColorSchemeToBytesBuilder :: MediaColorScheme -> Builder
+{-# INLINE mediaColorSchemeToBytesBuilder #-}
 mediaColorSchemeToBytesBuilder mcs =
   case mcs of
     ColorNoPreference -> string8 "no-preference"
@@ -779,6 +789,7 @@ mediaPrefersContrastToText mpc =
     ContrastCustom -> "custom"
 
 mediaPrefersContrastToBytesBuilder :: MediaPrefersContrast -> Builder
+{-# INLINE mediaPrefersContrastToBytesBuilder #-}
 mediaPrefersContrastToBytesBuilder mpc =
   case mpc of
     ContrastNoPreference -> string8 "no-preference"
@@ -807,6 +818,7 @@ mediaPointerAccuracyToText mpa =
     PointerFine -> "fine"
 
 mediaPointerAccuracyToBytesBuilder :: MediaPointerAccuracy -> Builder
+{-# INLINE mediaPointerAccuracyToBytesBuilder #-}
 mediaPointerAccuracyToBytesBuilder mpa =
   case mpa of
     PointerNone   -> string8 "none"
@@ -834,6 +846,7 @@ mediaUpdateFrequencyToText muf =
     UpdateFast -> "fast"
 
 mediaUpdateFrequencyToBytesBuilder :: MediaUpdateFrequency -> Builder
+{-# INLINE mediaUpdateFrequencyToBytesBuilder #-}
 mediaUpdateFrequencyToBytesBuilder muf =
   case muf of
     UpdateNone -> string8 "none"

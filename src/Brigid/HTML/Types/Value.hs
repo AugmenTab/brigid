@@ -80,6 +80,7 @@ valueToBytes (Value value) =
   ) value
 
 valueToBytesBuilder :: Value -> Builder
+{-# INLINABLE valueToBytesBuilder #-}
 valueToBytesBuilder (Value value) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

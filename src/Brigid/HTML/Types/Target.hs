@@ -36,6 +36,7 @@ targetToBytes target =
     CustomTarget t -> Render.textToLazyBytes t
 
 targetToBytesBuilder :: Target -> Builder
+{-# INLINE targetToBytesBuilder #-}
 targetToBytesBuilder target =
   case target of
     Self           -> string8 "_self"

@@ -42,6 +42,7 @@ commandOptionToBytes co =
     CustomCommand cmd -> "--" <> Render.textToLazyBytes cmd
 
 commandOptionToBytesBuilder :: CommandOption -> Builder
+{-# INLINE commandOptionToBytesBuilder #-}
 commandOptionToBytesBuilder co =
   case co of
     ShowModal         -> string8 "show-modal"

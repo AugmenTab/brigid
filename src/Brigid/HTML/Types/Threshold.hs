@@ -37,6 +37,7 @@ thresholdToBytes =
   ("threshold:" <>) . LBS8.pack . show . toMilli . unThreshold
 
 thresholdToBytesBuilder :: Threshold -> Builder
+{-# INLINE thresholdToBytesBuilder #-}
 thresholdToBytesBuilder =
   ("threshold:" <>) . Render.showBytesBuilder . toMilli . unThreshold
 

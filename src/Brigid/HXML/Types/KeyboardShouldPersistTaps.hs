@@ -27,6 +27,7 @@ keyboardShouldPersistTapsToBytes option =
     Handled -> "handled"
 
 keyboardShouldPersistTapsToBytesBuilder :: KeyboardShouldPersistTaps -> Builder
+{-# INLINE keyboardShouldPersistTapsToBytesBuilder #-}
 keyboardShouldPersistTapsToBytesBuilder option =
   case option of
     Never   -> string8 "never"

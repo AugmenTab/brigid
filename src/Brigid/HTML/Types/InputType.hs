@@ -84,6 +84,7 @@ inputTypeToBytes input =
     InputWeek          -> "week"
 
 inputTypeToBytesBuilder :: InputType -> Builder
+{-# INLINE inputTypeToBytesBuilder #-}
 inputTypeToBytesBuilder input =
   case input of
     InputButton        -> string8 "button"

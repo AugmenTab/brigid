@@ -30,6 +30,7 @@ scopeToBytes scope =
     RowGroup -> "rowgroup"
 
 scopeToBytesBuilder :: Scope -> Builder
+{-# INLINE scopeToBytesBuilder #-}
 scopeToBytesBuilder scope =
   case scope of
     Col      -> string8 "col"

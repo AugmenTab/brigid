@@ -63,6 +63,7 @@ rangeBoundToBytes (RangeBound rangeBound) =
   ) rangeBound
 
 rangeBoundToBytesBuilder :: RangeBound -> Builder
+{-# INLINABLE rangeBoundToBytesBuilder #-}
 rangeBoundToBytesBuilder (RangeBound rangeBound) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

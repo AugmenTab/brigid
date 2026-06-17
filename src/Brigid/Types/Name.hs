@@ -69,6 +69,7 @@ nameOptionToBytes (NameOption nameOption) =
   ) nameOption
 
 nameOptionToBytesBuilder :: NameOption -> Builder
+{-# INLINABLE nameOptionToBytesBuilder #-}
 nameOptionToBytesBuilder (NameOption nameOption) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

@@ -33,6 +33,7 @@ numberingTypeToBytes nt =
     LowercaseRomanNumerals -> LBS8.singleton 'i'
 
 numberingTypeToBytesBuilder :: NumberingType -> Builder
+{-# INLINE numberingTypeToBytesBuilder #-}
 numberingTypeToBytesBuilder nt =
   case nt of
     DecimalNumbers         -> char8 '1'

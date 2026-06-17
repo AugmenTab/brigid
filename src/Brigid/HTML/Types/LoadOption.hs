@@ -24,6 +24,7 @@ loadOptionToBytes pta =
     Lazy -> "lazy"
 
 loadOptionToBytesBuilder :: LoadOption -> Builder
+{-# INLINE loadOptionToBytesBuilder #-}
 loadOptionToBytesBuilder pta =
   case pta of
     Eager -> string8 "eager"

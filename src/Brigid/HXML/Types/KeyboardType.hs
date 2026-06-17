@@ -51,6 +51,7 @@ keyboardTypeToBytes keyboardType =
     WebSearch             -> "web-search"
 
 keyboardTypeToBytesBuilder :: KeyboardType -> Builder
+{-# INLINE keyboardTypeToBytesBuilder #-}
 keyboardTypeToBytesBuilder keyboardType =
   case keyboardType of
     AlphaNumeric          -> string8 "default"

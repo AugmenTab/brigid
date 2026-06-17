@@ -39,6 +39,7 @@ keyHintOptionToBytes option =
     KeyHintSend     -> "send"
 
 keyHintOptionToBytesBuilder :: KeyHintOption -> Builder
+{-# INLINE keyHintOptionToBytesBuilder #-}
 keyHintOptionToBytesBuilder option =
   case option of
     KeyHintEnter    -> string8 "enter"

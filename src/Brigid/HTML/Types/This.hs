@@ -16,6 +16,7 @@ thisToBytes :: This -> LBS.ByteString
 thisToBytes = const "this"
 
 thisToBytesBuilder :: This -> Builder
+{-# INLINE thisToBytesBuilder #-}
 thisToBytesBuilder = const "this"
 
 thisToText :: This -> T.Text

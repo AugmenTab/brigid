@@ -44,6 +44,7 @@ sizeToBytes size =
       ]
 
 sizeToBytesBuilder :: Size -> Builder
+{-# INLINE sizeToBytesBuilder #-}
 sizeToBytesBuilder size =
   Render.foldToBytesBuilderWithSeparator id " " $
     catMaybes
@@ -89,6 +90,7 @@ sizeLengthToBytes sl =
     SizeCalc n -> "calc(" <> Render.textToLazyBytes n <> ")"
 
 sizeLengthToBytesBuilder :: SizeLength -> Builder
+{-# INLINE sizeLengthToBytesBuilder #-}
 sizeLengthToBytesBuilder sl =
   case sl of
     SizePx n      -> Render.showIntegerBytesBuilder n <> string8 "px"

@@ -16,6 +16,7 @@ onceToBytes :: Once -> LBS.ByteString
 onceToBytes = const "once"
 
 onceToBytesBuilder :: Once -> Builder
+{-# INLINE onceToBytesBuilder #-}
 onceToBytesBuilder = const "once"
 
 onceToText :: Once -> T.Text

@@ -163,6 +163,7 @@ relationshipToBytes (Relationship rel) =
   ) rel
 
 relationshipToBytesBuilder :: Relationship -> Builder
+{-# INLINABLE relationshipToBytesBuilder #-}
 relationshipToBytesBuilder (Relationship rel) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

@@ -34,6 +34,7 @@ integrityEncodingToBytes sha =
     SHA512 -> "sha512"
 
 integrityEncodingToBytesBuilder :: IntegrityEncoding -> Builder
+{-# INLINE integrityEncodingToBytesBuilder #-}
 integrityEncodingToBytesBuilder sha =
   case sha of
     SHA256 -> string8 "sha256"
@@ -60,6 +61,7 @@ integrityToBytes sha content =
     ]
 
 integrityToBytesBuilder :: IntegrityEncoding -> BS.ByteString -> Builder
+{-# INLINE integrityToBytesBuilder #-}
 integrityToBytesBuilder sha content =
   mconcat
     [ integrityEncodingToBytesBuilder sha

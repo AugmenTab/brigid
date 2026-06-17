@@ -183,6 +183,7 @@ ariaAttributeToBytes (Aria aria) =
   ) aria
 
 ariaAttributeToBytesBuilder :: Aria -> Builder
+{-# INLINABLE ariaAttributeToBytesBuilder #-}
 ariaAttributeToBytesBuilder (Aria aria) =
   ( Shrubbery.dissectTaggedUnion
       . Shrubbery.taggedBranchBuild
@@ -360,6 +361,7 @@ ariaValueToBytes (Aria aria) =
   ) aria
 
 ariaValueToBytesBuilder :: Aria -> Builder
+{-# INLINABLE ariaValueToBytesBuilder #-}
 ariaValueToBytesBuilder (Aria aria) =
   ( Shrubbery.dissectTaggedUnion
       . Shrubbery.taggedBranchBuild

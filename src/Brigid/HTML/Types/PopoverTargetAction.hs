@@ -27,6 +27,7 @@ popoverTargetActionToBytes pta =
     PopoverToggle -> "toggle"
 
 popoverTargetActionToBytesBuilder :: PopoverTargetAction -> Builder
+{-# INLINE popoverTargetActionToBytesBuilder #-}
 popoverTargetActionToBytesBuilder pta =
   case pta of
     PopoverShow   -> string8 "show"

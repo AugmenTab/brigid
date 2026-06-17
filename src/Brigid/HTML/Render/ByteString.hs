@@ -1299,10 +1299,12 @@ renderAttribute attr =
         $ Types.hyperScriptToBytesBuilder hyperscript
 
 buildAttribute :: Builder -> Builder -> Builder
+{-# INLINE buildAttribute #-}
 buildAttribute attr value =
   attr <> "=\"" <> value <> "\""
 
 buildBooleanAttribute :: Builder -> Bool -> Maybe Builder
+{-# INLINE buildBooleanAttribute #-}
 buildBooleanAttribute attr =
   B.bool Nothing (Just attr)
 

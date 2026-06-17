@@ -16,6 +16,7 @@ noneToBytes :: None -> LBS.ByteString
 noneToBytes = const "none"
 
 noneToBytesBuilder :: None -> Builder
+{-# INLINE noneToBytesBuilder #-}
 noneToBytesBuilder = const "none"
 
 noneToText :: None -> T.Text

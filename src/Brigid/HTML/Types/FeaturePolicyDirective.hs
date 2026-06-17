@@ -105,6 +105,7 @@ featurePolicyDirectiveToBytes directive =
     XRSpatialTracking       -> "xr-spatial-tracking"
 
 featurePolicyDirectiveToBytesBuilder :: FeaturePolicyDirective -> Builder
+{-# INLINE featurePolicyDirectiveToBytesBuilder #-}
 featurePolicyDirectiveToBytesBuilder directive =
   case directive of
     Accelerometer           -> string8 "accelerometer"

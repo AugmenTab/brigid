@@ -49,6 +49,7 @@ ariaCurrentToBytes (AriaCurrent aria) =
   ) aria
 
 ariaCurrentToBytesBuilder :: AriaCurrent -> Builder
+{-# INLINABLE ariaCurrentToBytesBuilder #-}
 ariaCurrentToBytesBuilder (AriaCurrent aria) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -81,6 +82,7 @@ ariaDateToBytes :: CurrentDate -> LBS.ByteString
 ariaDateToBytes CurrentDate = "date"
 
 ariaDateToBytesBuilder :: CurrentDate -> Builder
+{-# INLINE ariaDateToBytesBuilder #-}
 ariaDateToBytesBuilder CurrentDate = string8 "date"
 
 ariaDateToText :: CurrentDate -> T.Text
@@ -93,6 +95,7 @@ ariaLocationToBytes :: CurrentLocation -> LBS.ByteString
 ariaLocationToBytes CurrentLocation = "location"
 
 ariaLocationToBytesBuilder :: CurrentLocation -> Builder
+{-# INLINE ariaLocationToBytesBuilder #-}
 ariaLocationToBytesBuilder CurrentLocation = string8 "location"
 
 ariaLocationToText :: CurrentLocation -> T.Text
@@ -105,6 +108,7 @@ ariaPageToBytes :: CurrentPage -> LBS.ByteString
 ariaPageToBytes CurrentPage = "page"
 
 ariaPageToBytesBuilder :: CurrentPage -> Builder
+{-# INLINE ariaPageToBytesBuilder #-}
 ariaPageToBytesBuilder CurrentPage = string8 "page"
 
 ariaPageToText :: CurrentPage -> T.Text
@@ -117,6 +121,7 @@ ariaStepToBytes :: CurrentStep -> LBS.ByteString
 ariaStepToBytes CurrentStep = "step"
 
 ariaStepToBytesBuilder :: CurrentStep -> Builder
+{-# INLINE ariaStepToBytesBuilder #-}
 ariaStepToBytesBuilder CurrentStep = string8 "step"
 
 ariaStepToText :: CurrentStep -> T.Text
@@ -129,6 +134,7 @@ ariaTimeToBytes :: CurrentTime -> LBS.ByteString
 ariaTimeToBytes CurrentTime = "time"
 
 ariaTimeToBytesBuilder :: CurrentTime -> Builder
+{-# INLINE ariaTimeToBytesBuilder #-}
 ariaTimeToBytesBuilder CurrentTime = string8 "time"
 
 ariaTimeToText :: CurrentTime -> T.Text

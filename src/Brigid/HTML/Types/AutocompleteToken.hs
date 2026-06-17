@@ -329,6 +329,7 @@ autocompleteTokenToBytes (AutocompleteToken token) =
   ) token
 
 autocompleteTokenToBytesBuilder :: AutocompleteToken -> Builder
+{-# INLINABLE autocompleteTokenToBytesBuilder #-}
 autocompleteTokenToBytesBuilder (AutocompleteToken token) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -771,6 +772,7 @@ modifierToBytes toBytes modifier =
       Pager        token -> [ "pager",                      toBytes token ]
 
 modifierToBytesBuilder :: (token -> Builder) -> Modifier token -> Builder
+{-# INLINE modifierToBytesBuilder #-}
 modifierToBytesBuilder toBuilder modifier =
   case modifier of
     Section name token -> string8 ("section-" ++ name) <> string8 " " <> toBuilder token

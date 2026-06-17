@@ -24,6 +24,7 @@ throttleToBytes (Throttle td) =
   "throttle:" <> TD.timingDeclarationToBytes td
 
 throttleToBytesBuilder :: Throttle -> Builder
+{-# INLINE throttleToBytesBuilder #-}
 throttleToBytesBuilder (Throttle td) =
   "throttle:" <> TD.timingDeclarationToBytesBuilder td
 

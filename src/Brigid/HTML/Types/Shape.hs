@@ -30,6 +30,7 @@ shapeToBytes shape =
     Poly    -> "poly"
 
 shapeToBytesBuilder :: Shape -> Builder
+{-# INLINE shapeToBytesBuilder #-}
 shapeToBytesBuilder shape =
   case shape of
     Default -> string8 "default"

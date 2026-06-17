@@ -76,6 +76,7 @@ disinheritToBytes =
   ) . unDisinherit
 
 disinheritToBytesBuilder :: Disinherit -> Builder
+{-# INLINABLE disinheritToBytesBuilder #-}
 disinheritToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -101,6 +102,7 @@ disinheritAllToBytes :: DisinheritAll -> LBS.ByteString
 disinheritAllToBytes = const "*"
 
 disinheritAllToBytesBuilder :: DisinheritAll -> Builder
+{-# INLINE disinheritAllToBytesBuilder #-}
 disinheritAllToBytesBuilder = const "*"
 
 disinheritAllToText :: DisinheritAll -> T.Text
@@ -154,6 +156,7 @@ inheritableHTMXToBytes htmx =
     HxVals       -> "hx-vals"
 
 inheritableHTMXToBytesBuilder :: InheritableHTMX -> Builder
+{-# INLINE inheritableHTMXToBytesBuilder #-}
 inheritableHTMXToBytesBuilder htmx =
   case htmx of
     HxBoost      -> "hx-boost"

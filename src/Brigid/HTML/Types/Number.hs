@@ -80,6 +80,7 @@ numberToBytes :: Number -> LBS.ByteString
 numberToBytes = LBS8.pack . formatNumber
 
 numberToBytesBuilder :: Number -> Builder
+{-# INLINE numberToBytesBuilder #-}
 numberToBytesBuilder = string8 . formatNumber
 
 numberToText :: Number -> T.Text

@@ -16,6 +16,7 @@ consumeToBytes :: Consume -> LBS.ByteString
 consumeToBytes = const "consume"
 
 consumeToBytesBuilder :: Consume -> Builder
+{-# INLINE consumeToBytesBuilder #-}
 consumeToBytesBuilder = const "consume"
 
 consumeToText :: Consume -> T.Text

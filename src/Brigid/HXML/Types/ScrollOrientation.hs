@@ -24,6 +24,7 @@ scrollOrientationToBytes orientation =
     Horizontal -> "horizontal"
 
 scrollOrientationToBytesBuilder :: ScrollOrientation -> Builder
+{-# INLINE scrollOrientationToBytesBuilder #-}
 scrollOrientationToBytesBuilder orientation =
   case orientation of
     Vertical   -> string8 "vertical"

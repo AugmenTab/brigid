@@ -49,6 +49,7 @@ forOptionToBytes (ForOption for) =
   ) for
 
 forOptionToBytesBuilder :: ForOption -> Builder
+{-# INLINABLE forOptionToBytesBuilder #-}
 forOptionToBytesBuilder (ForOption for) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

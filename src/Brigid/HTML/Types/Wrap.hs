@@ -27,6 +27,7 @@ wrapToBytes wrap =
     WrapOff  -> "off"
 
 wrapToBytesBuilder :: Wrap -> Builder
+{-# INLINE wrapToBytesBuilder #-}
 wrapToBytesBuilder wrap =
   case wrap of
     WrapHard -> string8 "hard"

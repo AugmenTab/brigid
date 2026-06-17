@@ -24,6 +24,7 @@ targetTypeToBytes targetType =
     TargetPrevious -> "previous"
 
 targetTypeToBytesBuilder :: TargetType -> Builder
+{-# INLINE targetTypeToBytesBuilder #-}
 targetTypeToBytesBuilder targetType =
   case targetType of
     TargetNext     -> "next"

@@ -27,6 +27,7 @@ fetchPriorityToBytes fp =
     FetchAuto -> "auto"
 
 fetchPriorityToBytesBuilder :: FetchPriority -> Builder
+{-# INLINE fetchPriorityToBytesBuilder #-}
 fetchPriorityToBytesBuilder fp =
   case fp of
     FetchHigh -> string8 "high"

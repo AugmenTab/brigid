@@ -17,6 +17,7 @@ mixedToBytes :: Mixed -> LBS.ByteString
 mixedToBytes Mixed = LBS8.pack "mixed"
 
 mixedToBytesBuilder :: Mixed -> Builder
+{-# INLINE mixedToBytesBuilder #-}
 mixedToBytesBuilder Mixed = string8 "mixed"
 
 mixedToText :: Mixed -> T.Text

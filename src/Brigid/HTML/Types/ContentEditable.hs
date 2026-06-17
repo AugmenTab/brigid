@@ -27,6 +27,7 @@ contentEditableOptionToBytes option =
     PlaintextOnly -> "plaintext-only"
 
 contentEditableOptionToBytesBuilder :: ContentEditableOption -> Builder
+{-# INLINE contentEditableOptionToBytesBuilder #-}
 contentEditableOptionToBytesBuilder option =
   case option of
     Editable      -> string8 "true"

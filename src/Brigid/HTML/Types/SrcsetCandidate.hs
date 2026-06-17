@@ -48,6 +48,7 @@ srcsetCandidateToBytes ssc =
     ]
 
 srcsetCandidateToBytesBuilder :: SrcsetCandidate -> Builder
+{-# INLINE srcsetCandidateToBytesBuilder #-}
 srcsetCandidateToBytesBuilder ssc =
   urlToBytesBuilder (srcsetCandidateURL ssc)
     <> string8 " "
@@ -72,6 +73,7 @@ srcsetDescriptorToBytes ssd =
     SrcsetDensity x -> numberToBytes x <> "x"
 
 srcsetDescriptorToBytesBuilder :: SrcsetDescriptor -> Builder
+{-# INLINE srcsetDescriptorToBytesBuilder #-}
 srcsetDescriptorToBytesBuilder ssd =
   case ssd of
     SrcsetWidth w   -> Render.showIntegerBytesBuilder w <> string8 "w"

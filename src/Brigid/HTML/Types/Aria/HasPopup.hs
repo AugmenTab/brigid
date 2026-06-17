@@ -48,6 +48,7 @@ ariaHasPopupToBytes (AriaHasPopup hp) =
   ) hp
 
 ariaHasPopupToBytesBuilder :: AriaHasPopup -> Builder
+{-# INLINABLE ariaHasPopupToBytesBuilder #-}
 ariaHasPopupToBytesBuilder (AriaHasPopup hp) =
   ( Shrubbery.dissectUnion
       . Shrubbery.branchBuild
@@ -80,6 +81,7 @@ popupMenuToBytes :: PopupMenu -> LBS.ByteString
 popupMenuToBytes PopupMenu = LBS8.pack "menu"
 
 popupMenuToBytesBuilder :: PopupMenu -> Builder
+{-# INLINE popupMenuToBytesBuilder #-}
 popupMenuToBytesBuilder PopupMenu = string8 "menu"
 
 popupMenuToText :: PopupMenu -> T.Text
@@ -92,6 +94,7 @@ popupListboxToBytes :: PopupListbox -> LBS.ByteString
 popupListboxToBytes PopupListbox = LBS8.pack "listbox"
 
 popupListboxToBytesBuilder :: PopupListbox -> Builder
+{-# INLINE popupListboxToBytesBuilder #-}
 popupListboxToBytesBuilder PopupListbox = string8 "listbox"
 
 popupListboxToText :: PopupListbox -> T.Text
@@ -104,6 +107,7 @@ popupTreeToBytes :: PopupTree -> LBS.ByteString
 popupTreeToBytes PopupTree = LBS8.pack "tree"
 
 popupTreeToBytesBuilder :: PopupTree -> Builder
+{-# INLINE popupTreeToBytesBuilder #-}
 popupTreeToBytesBuilder PopupTree = string8 "tree"
 
 popupTreeToText :: PopupTree -> T.Text
@@ -116,6 +120,7 @@ popupGridToBytes :: PopupGrid -> LBS.ByteString
 popupGridToBytes PopupGrid = LBS8.pack "grid"
 
 popupGridToBytesBuilder :: PopupGrid -> Builder
+{-# INLINE popupGridToBytesBuilder #-}
 popupGridToBytesBuilder PopupGrid = string8 "grid"
 
 popupGridToText :: PopupGrid -> T.Text
@@ -128,6 +133,7 @@ popupDialogToBytes :: PopupDialog -> LBS.ByteString
 popupDialogToBytes PopupDialog = LBS8.pack "dialog"
 
 popupDialogToBytesBuilder :: PopupDialog -> Builder
+{-# INLINE popupDialogToBytesBuilder #-}
 popupDialogToBytesBuilder PopupDialog = string8 "dialog"
 
 popupDialogToText :: PopupDialog -> T.Text

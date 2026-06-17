@@ -35,6 +35,7 @@ ariaMixedBoolToBytes (AriaMixedBool mb) =
   ) mb
 
 ariaMixedBoolToBytesBuilder :: AriaMixedBool -> Builder
+{-# INLINABLE ariaMixedBoolToBytesBuilder #-}
 ariaMixedBoolToBytesBuilder (AriaMixedBool mb) =
   ( Shrubbery.dissectUnion
       . Shrubbery.branchBuild

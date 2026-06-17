@@ -24,6 +24,7 @@ captureMethodToBytes capture =
     Environment -> "environment"
 
 captureMethodToBytesBuilder :: CaptureMethod -> Builder
+{-# INLINE captureMethodToBytesBuilder #-}
 captureMethodToBytesBuilder capture =
   case capture of
     User        -> string8 "user"

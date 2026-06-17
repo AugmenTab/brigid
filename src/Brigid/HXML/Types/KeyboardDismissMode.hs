@@ -27,6 +27,7 @@ keyboardDismissModeToBytes mode =
     Interactive -> "interactive"
 
 keyboardDismissModeToBytesBuilder :: KeyboardDismissMode -> Builder
+{-# INLINE keyboardDismissModeToBytesBuilder #-}
 keyboardDismissModeToBytesBuilder mode =
   case mode of
     None        -> string8 "none"

@@ -66,6 +66,7 @@ sandboxTokenToBytes token =
     AllowTopNavigationByUserActivation -> "allow-top-navigation-by-user-activation"
 
 sandboxTokenToBytesBuilder :: SandboxToken -> Builder
+{-# INLINE sandboxTokenToBytesBuilder #-}
 sandboxTokenToBytesBuilder token =
   case token of
     AllowForms                         -> string8 "allow-forms"

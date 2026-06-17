@@ -39,6 +39,7 @@ ariaInvalidToBytes (AriaInvalid hp) =
   ) hp
 
 ariaInvalidToBytesBuilder :: AriaInvalid -> Builder
+{-# INLINABLE ariaInvalidToBytesBuilder #-}
 ariaInvalidToBytesBuilder (AriaInvalid hp) =
   ( Shrubbery.dissectUnion
       . Shrubbery.branchBuild
@@ -65,6 +66,7 @@ invalidGrammarToBytes :: InvalidGrammar -> LBS.ByteString
 invalidGrammarToBytes InvalidGrammar = LBS8.pack "grammar"
 
 invalidGrammarToBytesBuilder :: InvalidGrammar -> Builder
+{-# INLINE invalidGrammarToBytesBuilder #-}
 invalidGrammarToBytesBuilder InvalidGrammar = string8 "grammar"
 
 invalidGrammarToText :: InvalidGrammar -> T.Text
@@ -77,6 +79,7 @@ invalidSpellingToBytes :: InvalidSpelling -> LBS.ByteString
 invalidSpellingToBytes InvalidSpelling = LBS8.pack "spelling"
 
 invalidSpellingToBytesBuilder :: InvalidSpelling -> Builder
+{-# INLINE invalidSpellingToBytesBuilder #-}
 invalidSpellingToBytesBuilder InvalidSpelling = string8 "spelling"
 
 invalidSpellingToText :: InvalidSpelling -> T.Text

@@ -16,6 +16,7 @@ windowToBytes :: Window -> LBS.ByteString
 windowToBytes = const "window"
 
 windowToBytesBuilder :: Window -> Builder
+{-# INLINE windowToBytesBuilder #-}
 windowToBytesBuilder = const "window"
 
 windowToText :: Window -> T.Text

@@ -90,6 +90,7 @@ urlToBytes (URL url) =
   ) url
 
 urlToBytesBuilder :: URL -> Builder
+{-# INLINABLE urlToBytesBuilder #-}
 urlToBytesBuilder (URL url) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -130,6 +131,7 @@ absoluteURLToBytes (AbsoluteURL url) =
   LBS8.pack $ B.renderBaseURI url
 
 absoluteURLToBytesBuilder :: AbsoluteURL -> Builder
+{-# INLINE absoluteURLToBytesBuilder #-}
 absoluteURLToBytesBuilder (AbsoluteURL url) =
   string8 $ B.renderBaseURI url
 
@@ -256,6 +258,7 @@ pingToBytes (Ping ping) =
   ) ping
 
 pingToBytesBuilder :: Ping -> Builder
+{-# INLINABLE pingToBytesBuilder #-}
 pingToBytesBuilder (Ping ping) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

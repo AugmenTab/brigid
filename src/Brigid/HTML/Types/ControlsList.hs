@@ -27,6 +27,7 @@ controlsListToBytes controlslist =
     NoRemotePlayback -> "noremoteplayback"
 
 controlsListToBytesBuilder :: ControlsList -> Builder
+{-# INLINE controlsListToBytesBuilder #-}
 controlsListToBytesBuilder controlslist =
   case controlslist of
     NoDownload       -> string8 "nodownload"

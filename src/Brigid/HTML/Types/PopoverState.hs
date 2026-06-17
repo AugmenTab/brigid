@@ -24,6 +24,7 @@ popoverStateToBytes pos =
     ManualPopover -> "manual"
 
 popoverStateToBytesBuilder :: PopoverState -> Builder
+{-# INLINE popoverStateToBytesBuilder #-}
 popoverStateToBytesBuilder pos =
   case pos of
     AutoPopover   -> string8 "auto"

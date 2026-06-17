@@ -62,6 +62,7 @@ colorToBytes (Color color) =
   ) color
 
 colorToBytesBuilder :: Color -> Builder
+{-# INLINABLE colorToBytesBuilder #-}
 colorToBytesBuilder (Color color) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

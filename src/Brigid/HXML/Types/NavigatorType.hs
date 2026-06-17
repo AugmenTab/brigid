@@ -24,6 +24,7 @@ navigatorTypeToBytes navigatorType =
     Tab   -> "tab"
 
 navigatorTypeToBytesBuilder :: NavigatorType -> Builder
+{-# INLINE navigatorTypeToBytesBuilder #-}
 navigatorTypeToBytesBuilder navigatorType =
   case navigatorType of
     Stack -> string8 "stack"

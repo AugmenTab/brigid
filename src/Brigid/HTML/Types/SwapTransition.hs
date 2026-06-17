@@ -20,6 +20,7 @@ swapTransitionToBytes =
   ("transition:" <>) . B.bool "false" "true" . unSwapTransition
 
 swapTransitionToBytesBuilder :: SwapTransition -> Builder
+{-# INLINE swapTransitionToBytesBuilder #-}
 swapTransitionToBytesBuilder =
   ("transition:" <>) . B.bool "false" "true" . unSwapTransition
 

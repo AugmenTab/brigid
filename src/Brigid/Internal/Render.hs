@@ -44,6 +44,7 @@ enumBoolToBytes :: Bool -> LBS.ByteString
 enumBoolToBytes = toLazyByteString . enumBoolToBytesBuilder
 
 enumBoolToBytesBuilder :: Bool -> Builder
+{-# INLINE enumBoolToBytesBuilder #-}
 enumBoolToBytesBuilder = B.bool "false" "true"
 
 enumBoolToText :: Bool -> T.Text
@@ -63,6 +64,7 @@ foldToBytesBuilderWithSeparator :: Foldable f
                                 -> Builder
                                 -> f a
                                 -> Builder
+{-# INLINE foldToBytesBuilderWithSeparator #-}
 foldToBytesBuilderWithSeparator f sep items =
   case Foldable.toList items of
     []     -> mempty
@@ -85,9 +87,11 @@ showBytes :: Show s => s -> LBS.ByteString
 showBytes = toLazyByteString . showBytesBuilder
 
 showBytesBuilder :: Show s => s -> Builder
+{-# INLINE showBytesBuilder #-}
 showBytesBuilder = stringUtf8 . show
 
 showIntegerBytesBuilder :: Integral a => a -> Builder
+{-# INLINE showIntegerBytesBuilder #-}
 showIntegerBytesBuilder = BSB.integerDec . toInteger
 
 showText :: Show s => s -> T.Text

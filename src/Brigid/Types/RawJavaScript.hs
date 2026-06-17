@@ -22,6 +22,7 @@ rawJavaScriptToBytes =
   ("js:" <>) . Render.textToLazyBytes . unRawJavaScript
 
 rawJavaScriptToBytesBuilder :: RawJavaScript -> Builder
+{-# INLINE rawJavaScriptToBytesBuilder #-}
 rawJavaScriptToBytesBuilder js =
   string8 "js:" <> TE.encodeUtf8Builder (unRawJavaScript js)
 

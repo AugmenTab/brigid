@@ -34,6 +34,7 @@ classSelectorToBytes selector =
      else LBS8.cons '.' . classToBytes $ classSelectorClass selector
 
 classSelectorToBytesBuilder :: ClassSelector -> Builder
+{-# INLINE classSelectorToBytesBuilder #-}
 classSelectorToBytesBuilder selector =
   if classSelectorExcluded selector
      then ":not(." <> classToBytesBuilder (classSelectorClass selector) <> ")"

@@ -399,6 +399,7 @@ renderAttribute attr =
       Just . buildAttribute "xmlns" $ Types.urlToBytesBuilder xmlns
 
 buildAttribute :: Builder -> Builder -> Builder
+{-# INLINE buildAttribute #-}
 buildAttribute attr value =
   attr <> "=\"" <> value <> "\""
 

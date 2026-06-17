@@ -27,6 +27,7 @@ preloadToBytes preload =
     PreloadAuto     -> "auto"
 
 preloadToBytesBuilder :: Preload -> Builder
+{-# INLINE preloadToBytesBuilder #-}
 preloadToBytesBuilder preload =
   case preload of
     PreloadNone     -> string8 "none"

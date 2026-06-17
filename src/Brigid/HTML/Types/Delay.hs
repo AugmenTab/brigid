@@ -24,6 +24,7 @@ delayToBytes (Delay td) =
   "delay:" <> TD.timingDeclarationToBytes td
 
 delayToBytesBuilder :: Delay -> Builder
+{-# INLINE delayToBytesBuilder #-}
 delayToBytesBuilder (Delay td) =
   "delay:" <> TD.timingDeclarationToBytesBuilder td
 

@@ -37,6 +37,7 @@ crossOriginFetchToBytes cors =
     UseCredentials -> "use-credentials"
 
 crossOriginFetchToBytesBuilder :: CrossOriginFetch -> Builder
+{-# INLINE crossOriginFetchToBytesBuilder #-}
 crossOriginFetchToBytesBuilder cors =
   case cors of
     Anonymous      -> string8 "anonymous"

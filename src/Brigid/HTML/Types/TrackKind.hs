@@ -30,6 +30,7 @@ trackKindToBytes trackKind =
     Metadata  -> "metadata"
 
 trackKindToBytesBuilder :: TrackKind -> Builder
+{-# INLINE trackKindToBytesBuilder #-}
 trackKindToBytesBuilder trackKind =
   case trackKind of
     Subtitles -> string8 "subtitles"

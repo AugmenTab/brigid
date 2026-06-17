@@ -58,6 +58,7 @@ typeOptionToBytes (TypeOption typeOption) =
   ) typeOption
 
 typeOptionToBytesBuilder :: TypeOption -> Builder
+{-# INLINABLE typeOptionToBytesBuilder #-}
 typeOptionToBytesBuilder (TypeOption typeOption) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

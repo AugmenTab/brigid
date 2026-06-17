@@ -47,6 +47,7 @@ onOffToBytes onOff =
     Off -> "off"
 
 onOffToBytesBuilder :: OnOff -> Builder
+{-# INLINE onOffToBytesBuilder #-}
 onOffToBytesBuilder onOff =
   case onOff of
     On  -> string8 "on"
@@ -82,6 +83,7 @@ openClosedToBytes openClosed =
     Closed -> "closed"
 
 openClosedToBytesBuilder :: OpenClosed -> Builder
+{-# INLINE openClosedToBytesBuilder #-}
 openClosedToBytesBuilder openClosed =
   case openClosed of
     Open   -> string8 "open"
@@ -117,6 +119,7 @@ yesNoToBytes yesNo =
     No  -> "no"
 
 yesNoToBytesBuilder :: YesNo -> Builder
+{-# INLINE yesNoToBytesBuilder #-}
 yesNoToBytesBuilder yesNo =
   case yesNo of
     Yes -> string8 "yes"

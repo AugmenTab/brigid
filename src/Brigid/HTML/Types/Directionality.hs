@@ -27,6 +27,7 @@ directionalityToBytes option =
     AutoDirection -> "auto"
 
 directionalityToBytesBuilder :: Directionality -> Builder
+{-# INLINE directionalityToBytesBuilder #-}
 directionalityToBytesBuilder option =
   case option of
     LeftToRight   -> string8 "ltr"

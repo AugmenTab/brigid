@@ -246,6 +246,7 @@ roleToBytes role =
     RoleTooltip          -> "tooltip"
 
 roleToBytesBuilder :: Role -> Builder
+{-# INLINE roleToBytesBuilder #-}
 roleToBytesBuilder role =
   case role of
     RoleAlert            -> string8 "alert"

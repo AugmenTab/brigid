@@ -129,6 +129,7 @@ extensionToBytes ext =
     <> extensionTypeToBytes (extensionType ext)
 
 extensionToBytesBuilder :: Extension -> Builder
+{-# INLINE extensionToBytesBuilder #-}
 extensionToBytesBuilder ext =
   B.bool "" "ignore:" (extensionIgnored ext)
     <> extensionTypeToBytesBuilder (extensionType ext)
@@ -192,6 +193,7 @@ extensionTypeToBytes ext =
     CustomExtension txt -> LBS8.pack $ T.unpack txt
 
 extensionTypeToBytesBuilder :: ExtensionType -> Builder
+{-# INLINE extensionTypeToBytesBuilder #-}
 extensionTypeToBytesBuilder ext =
   case ext of
     AjaxHeader          -> "ajax-header"

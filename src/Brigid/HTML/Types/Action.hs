@@ -58,6 +58,7 @@ actionToBytes (Action action) =
   ) action
 
 actionToBytesBuilder :: Action -> Builder
+{-# INLINABLE actionToBytesBuilder #-}
 actionToBytesBuilder (Action action) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

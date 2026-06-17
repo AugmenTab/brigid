@@ -16,6 +16,7 @@ documentToBytes :: Document -> LBS.ByteString
 documentToBytes = const "document"
 
 documentToBytesBuilder :: Document -> Builder
+{-# INLINE documentToBytesBuilder #-}
 documentToBytesBuilder = const "document"
 
 documentToText :: Document -> T.Text

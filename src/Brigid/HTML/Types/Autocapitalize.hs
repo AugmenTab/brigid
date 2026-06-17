@@ -30,6 +30,7 @@ autocapitalizeOptionToBytes option =
     Characters           -> "characters"
 
 autocapitalizeOptionToBytesBuilder :: AutocapitalizeOption -> Builder
+{-# INLINE autocapitalizeOptionToBytesBuilder #-}
 autocapitalizeOptionToBytesBuilder option =
   case option of
     NoAutocapitalization -> string8 "none"

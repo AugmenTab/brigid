@@ -26,6 +26,7 @@ stepToBytes step =
     Step n -> numberToBytes n
 
 stepToBytesBuilder :: Step -> Builder
+{-# INLINE stepToBytesBuilder #-}
 stepToBytesBuilder step =
   case step of
     Any    -> string8 "any"

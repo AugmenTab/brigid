@@ -36,6 +36,7 @@ everyToBytes e =
       ]
 
 everyToBytesBuilder :: Every -> Builder
+{-# INLINE everyToBytesBuilder #-}
 everyToBytesBuilder e =
   Render.foldToBytesBuilderWithSeparator id " "
     . catMaybes

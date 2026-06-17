@@ -56,6 +56,7 @@ swapStyleFromText txt =
     _             -> Left $ "Unknown SwapStyle: " <> T.unpack txt
 
 swapStyleToBytesBuilder :: SwapStyle -> Builder
+{-# INLINE swapStyleToBytesBuilder #-}
 swapStyleToBytesBuilder style =
   case style of
     InnerHTML   -> string8 "innerHTML"

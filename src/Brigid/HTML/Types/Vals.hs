@@ -47,6 +47,7 @@ htmxValsToBytes (HtmxVals vals) =
   ) vals
 
 htmxValsToBytesBuilder :: HtmxVals -> Builder
+{-# INLINABLE htmxValsToBytesBuilder #-}
 htmxValsToBytesBuilder (HtmxVals vals) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

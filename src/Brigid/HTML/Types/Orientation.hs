@@ -26,6 +26,7 @@ orientationToBytes o =
       Vertical -> "vertical"
 
 orientationToBytesBuilder :: Orientation -> Builder
+{-# INLINE orientationToBytesBuilder #-}
 orientationToBytesBuilder o =
   string8 $
     case o of

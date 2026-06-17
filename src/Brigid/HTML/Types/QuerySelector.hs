@@ -5485,6 +5485,7 @@ rawTriggerToBytes =
 -- ByteString.Builder functions
 --
 querySelectorToBytesBuilder :: QuerySelector -> Builder
+{-# INLINABLE querySelectorToBytesBuilder #-}
 querySelectorToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -5505,6 +5506,7 @@ rawSelectorToBytesBuilder =
   TE.encodeUtf8Builder . rawSelectorToText
 
 elementTypeToBytesBuilder :: ElementType -> Builder
+{-# INLINE elementTypeToBytesBuilder #-}
 elementTypeToBytesBuilder element =
   case element of
     Tag_CustomElement tagName  -> Render.textToBytesBuilder tagName
@@ -5679,6 +5681,7 @@ elementTypeToBytesBuilder element =
     Tag_View                          -> "view"
 
 attributeTypeToBytesBuilder :: AttributeType -> Builder
+{-# INLINE attributeTypeToBytesBuilder #-}
 attributeTypeToBytesBuilder attr =
   case attr of
     Attr_CustomAttribute attrName -> Render.textToBytesBuilder attrName
@@ -5868,6 +5871,7 @@ attributeTypeToBytesBuilder attr =
     Attr_HyperScript -> "_"
 
 attributeSelectorToBytesBuilder :: AttributeSelector -> Builder
+{-# INLINE attributeSelectorToBytesBuilder #-}
 attributeSelectorToBytesBuilder (attr, mbVal) =
   mconcat
     [ "["
@@ -5877,6 +5881,7 @@ attributeSelectorToBytesBuilder (attr, mbVal) =
     ]
 
 elementSelectorToBytesBuilder :: ElementSelector -> Builder
+{-# INLINE elementSelectorToBytesBuilder #-}
 elementSelectorToBytesBuilder element =
   mconcat
     [ elementTypeToBytesBuilder $ elementSelectorType element
@@ -5889,6 +5894,7 @@ elementSelectorToBytesBuilder element =
     ]
 
 swapToBytesBuilder :: Swap -> Builder
+{-# INLINABLE swapToBytesBuilder #-}
 swapToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -5899,6 +5905,7 @@ swapToBytesBuilder =
   ) . unSwap
 
 swapModifierToBytesBuilder :: SwapModifier -> Builder
+{-# INLINABLE swapModifierToBytesBuilder #-}
 swapModifierToBytesBuilder swapModifier =
   Render.foldToBytesBuilderWithSeparator id " "
     . catMaybes
@@ -5916,18 +5923,21 @@ swapModifierToBytesBuilder swapModifier =
       ]
 
 swapDisplayTypeToBytesBuilder :: SwapDisplayType -> Builder
+{-# INLINE swapDisplayTypeToBytesBuilder #-}
 swapDisplayTypeToBytesBuilder displayType =
   case displayType of
     ScrollTo -> "scroll"
     Show     -> "show"
 
 swapDisplayViewToBytesBuilder :: SwapDisplayView -> Builder
+{-# INLINE swapDisplayViewToBytesBuilder #-}
 swapDisplayViewToBytesBuilder view =
   case view of
     SwapTop    -> "top"
     SwapBottom -> "bottom"
 
 swapDisplayToBytesBuilder :: SwapDisplay -> Builder
+{-# INLINABLE swapDisplayToBytesBuilder #-}
 swapDisplayToBytesBuilder display =
   Render.foldToBytesBuilderWithSeparator id ":"
     . catMaybes
@@ -5946,6 +5956,7 @@ rawSwapToBytesBuilder =
   TE.encodeUtf8Builder . rawSwapToText
 
 swapSelectorToBytesBuilder :: SwapSelector -> Builder
+{-# INLINE swapSelectorToBytesBuilder #-}
 swapSelectorToBytesBuilder swap =
   mconcat
     [ swapStyleToBytesBuilder $ swapSelectorStrategy swap
@@ -5954,6 +5965,7 @@ swapSelectorToBytesBuilder swap =
     ]
 
 selectSwapToBytesBuilder :: SwapSelector -> Builder
+{-# INLINE selectSwapToBytesBuilder #-}
 selectSwapToBytesBuilder swap =
   mconcat
     [ querySelectorToBytesBuilder $ swapSelectorQuery swap
@@ -5962,6 +5974,7 @@ selectSwapToBytesBuilder swap =
     ]
 
 outOfBandSelectToBytesBuilder :: OutOfBandSelect -> Builder
+{-# INLINABLE outOfBandSelectToBytesBuilder #-}
 outOfBandSelectToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -5972,6 +5985,7 @@ outOfBandSelectToBytesBuilder =
   ) . unOutOfBandSelect
 
 outOfBandSwapToBytesBuilder :: OutOfBandSwap -> Builder
+{-# INLINABLE outOfBandSwapToBytesBuilder #-}
 outOfBandSwapToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -5982,6 +5996,7 @@ outOfBandSwapToBytesBuilder =
   ) . unOutOfBandSwap
 
 disabledSelectorToBytesBuilder :: DisabledSelector -> Builder
+{-# INLINABLE disabledSelectorToBytesBuilder #-}
 disabledSelectorToBytesBuilder =
   ( Shrubbery.dissect
      . Shrubbery.branchBuild
@@ -5992,6 +6007,7 @@ disabledSelectorToBytesBuilder =
   ) . unDisabledSelector
 
 includeSelectorToBytesBuilder :: IncludeSelector -> Builder
+{-# INLINABLE includeSelectorToBytesBuilder #-}
 includeSelectorToBytesBuilder =
   ( Shrubbery.dissect
      . Shrubbery.branchBuild
@@ -6002,6 +6018,7 @@ includeSelectorToBytesBuilder =
   ) . unIncludeSelector
 
 indicatorToBytesBuilder :: Indicator -> Builder
+{-# INLINABLE indicatorToBytesBuilder #-}
 indicatorToBytesBuilder =
   ( Shrubbery.dissect
      . Shrubbery.branchBuild
@@ -6011,6 +6028,7 @@ indicatorToBytesBuilder =
   ) . unIndicator
 
 hxTargetToBytesBuilder :: HxTarget -> Builder
+{-# INLINABLE hxTargetToBytesBuilder #-}
 hxTargetToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -6023,6 +6041,7 @@ hxTargetToBytesBuilder =
   ) . unHxTarget
 
 targetSelectorTypeToBytesBuilder :: TargetSelectorType -> Builder
+{-# INLINE targetSelectorTypeToBytesBuilder #-}
 targetSelectorTypeToBytesBuilder selectorType =
   case selectorType of
     TargetSelector_Closest  -> "closest"
@@ -6031,6 +6050,7 @@ targetSelectorTypeToBytesBuilder selectorType =
     TargetSelector_Previous -> "previous"
 
 targetSelectorToBytesBuilder :: TargetSelector -> Builder
+{-# INLINE targetSelectorToBytesBuilder #-}
 targetSelectorToBytesBuilder selector =
   targetSelectorTypeToBytesBuilder (targetSelectorType selector)
     <> " "
@@ -6044,6 +6064,7 @@ targetSelectorToWrappedBytesBuilder selector =
     <> ")"
 
 triggerToBytesBuilder :: Trigger -> Builder
+{-# INLINABLE triggerToBytesBuilder #-}
 triggerToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -6055,6 +6076,7 @@ triggerToBytesBuilder =
   ) . unTrigger
 
 triggerEventToBytesBuilder :: TriggerEvent -> Builder
+{-# INLINABLE triggerEventToBytesBuilder #-}
 triggerEventToBytesBuilder event =
   Render.foldToBytesBuilderWithSeparator id " "
     . catMaybes
@@ -6075,6 +6097,7 @@ triggerEventToBytesBuilder event =
       ]
 
 intersectToBytesBuilder :: Intersect -> Builder
+{-# INLINABLE intersectToBytesBuilder #-}
 intersectToBytesBuilder =
   ("intersect " <>)
     . ( Shrubbery.dissect
@@ -6086,10 +6109,12 @@ intersectToBytesBuilder =
     . unIntersect
 
 rootToBytesBuilder :: Root -> Builder
+{-# INLINE rootToBytesBuilder #-}
 rootToBytesBuilder =
   ("root:" <>) . querySelectorToWrappedBytesBuilder . unRoot
 
 triggerModifierToBytesBuilder :: TriggerModifier -> Builder
+{-# INLINABLE triggerModifierToBytesBuilder #-}
 triggerModifierToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
@@ -6105,6 +6130,7 @@ triggerModifierToBytesBuilder =
   ) . unTriggerModifier
 
 triggerFromToBytesBuilder :: TriggerFrom -> Builder
+{-# INLINABLE triggerFromToBytesBuilder #-}
 triggerFromToBytesBuilder =
   ("from:" <>)
     . ( Shrubbery.dissect
@@ -6118,6 +6144,7 @@ triggerFromToBytesBuilder =
     . unTriggerFrom
 
 triggerTargetToBytesBuilder :: TriggerTarget -> Builder
+{-# INLINE triggerTargetToBytesBuilder #-}
 triggerTargetToBytesBuilder =
   ("target:" <>) . querySelectorToWrappedBytesBuilder . unTriggerTarget
 

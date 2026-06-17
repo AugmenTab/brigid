@@ -42,6 +42,7 @@ referrerPolicyToBytes referrer =
     UnsafeURL                   -> "unsafe-url"
 
 referrerPolicyToBytesBuilder :: ReferrerPolicy -> Builder
+{-# INLINE referrerPolicyToBytesBuilder #-}
 referrerPolicyToBytesBuilder referrer =
   case referrer of
     NoReferrer                  -> string8 "no-referrer"

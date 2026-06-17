@@ -42,6 +42,7 @@ inputModeToBytes mode =
     URLMode       -> "url"
 
 inputModeToBytesBuilder :: InputMode -> Builder
+{-# INLINE inputModeToBytesBuilder #-}
 inputModeToBytesBuilder mode =
   case mode of
     NoInputMode   -> string8 "none"

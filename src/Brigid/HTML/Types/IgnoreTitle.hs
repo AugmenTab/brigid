@@ -16,6 +16,7 @@ ignoreTitleToBytes :: IgnoreTitle -> LBS.ByteString
 ignoreTitleToBytes = const "ignoreTitle:true"
 
 ignoreTitleToBytesBuilder :: IgnoreTitle -> Builder
+{-# INLINE ignoreTitleToBytesBuilder #-}
 ignoreTitleToBytesBuilder = const "ignoreTitle:true"
 
 ignoreTitleToText :: IgnoreTitle -> T.Text

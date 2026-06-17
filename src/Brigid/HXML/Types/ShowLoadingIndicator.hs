@@ -24,6 +24,7 @@ showLoadingIndicatorToBytes indicator =
     DocumentOnly -> "document-only"
 
 showLoadingIndicatorToBytesBuilder :: ShowLoadingIndicator -> Builder
+{-# INLINE showLoadingIndicatorToBytesBuilder #-}
 showLoadingIndicatorToBytesBuilder indicator =
   case indicator of
     All          -> string8 "all"

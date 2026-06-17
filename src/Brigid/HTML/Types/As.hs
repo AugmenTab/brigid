@@ -54,6 +54,7 @@ asToBytes as =
     AsWorker   -> "worker"
 
 asToBytesBuilder :: As -> Builder
+{-# INLINE asToBytesBuilder #-}
 asToBytesBuilder as =
   case as of
     AsAudio    -> string8 "audio"

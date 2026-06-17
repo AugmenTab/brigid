@@ -16,6 +16,7 @@ changedToBytes :: Changed -> LBS.ByteString
 changedToBytes = const "changed"
 
 changedToBytesBuilder :: Changed -> Builder
+{-# INLINE changedToBytesBuilder #-}
 changedToBytesBuilder = const "changed"
 
 changedToText :: Changed -> T.Text

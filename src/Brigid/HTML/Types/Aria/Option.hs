@@ -56,6 +56,7 @@ ariaAutocompleteOptionToBytes option =
     AutocompleteNone -> "none"
 
 ariaAutocompleteOptionToBytesBuilder :: AriaAutocompleteOption -> Builder
+{-# INLINE ariaAutocompleteOptionToBytesBuilder #-}
 ariaAutocompleteOptionToBytesBuilder option =
   case option of
     AutocompleteInline -> string8 "inline"
@@ -85,6 +86,7 @@ ariaLiveOptionToBytes option =
     LiveOff -> "off"
 
 ariaLiveOptionToBytesBuilder :: AriaLiveOption -> Builder
+{-# INLINE ariaLiveOptionToBytesBuilder #-}
 ariaLiveOptionToBytesBuilder option =
   case option of
     LiveAssertive -> string8 "assertive"
@@ -114,6 +116,7 @@ ariaRelevantOptionToBytes option =
     RelevantText -> "text"
 
 ariaRelevantOptionToBytesBuilder :: AriaRelevantOption -> Builder
+{-# INLINE ariaRelevantOptionToBytesBuilder #-}
 ariaRelevantOptionToBytesBuilder option =
   case option of
     RelevantAll       -> string8 "all"
@@ -145,6 +148,7 @@ ariaSortOptionToBytes option =
     SortOther -> "other"
 
 ariaSortOptionToBytesBuilder :: AriaSortOption -> Builder
+{-# INLINE ariaSortOptionToBytesBuilder #-}
 ariaSortOptionToBytesBuilder option =
   case option of
     SortAscending  -> string8 "ascending"

@@ -48,6 +48,7 @@ metadataNameToBytes name =
     Viewport        -> "viewport"
 
 metadataNameToBytesBuilder :: MetadataName -> Builder
+{-# INLINE metadataNameToBytesBuilder #-}
 metadataNameToBytesBuilder name =
   case name of
     ApplicationName -> string8 "application-name"

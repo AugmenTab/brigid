@@ -31,6 +31,7 @@ queueOptionToBytes queueOption =
       QueueNone  -> "none"
 
 queueOptionToBytesBuilder :: QueueOption -> Builder
+{-# INLINE queueOptionToBytesBuilder #-}
 queueOptionToBytesBuilder queueOption =
   "queue:" <>
     case queueOption of

@@ -71,6 +71,7 @@ hrefToBytes (Href href) =
   ) href
 
 hrefToBytesBuilder :: Href -> Builder
+{-# INLINABLE hrefToBytesBuilder #-}
 hrefToBytesBuilder (Href href) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild

@@ -25,6 +25,7 @@ scriptTypeToBytes st =
       Module -> "module"
 
 scriptTypeToBytesBuilder :: ScriptType -> Builder
+{-# INLINE scriptTypeToBytesBuilder #-}
 scriptTypeToBytesBuilder st =
   case st of
     ImportMap -> string8 "importmap"

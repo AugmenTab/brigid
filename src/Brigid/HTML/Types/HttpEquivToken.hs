@@ -50,6 +50,7 @@ httpEquivTokenToBytes token =
     ContentSecurityPolicy -> "content-security-policy"
 
 httpEquivTokenToBytesBuilder :: HttpEquivToken -> Builder
+{-# INLINE httpEquivTokenToBytesBuilder #-}
 httpEquivTokenToBytesBuilder token =
   case token of
     ContentType           -> string8 "content-type"

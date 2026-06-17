@@ -31,6 +31,7 @@ swapTimingToBytes swapTiming =
     ]
 
 swapTimingToBytesBuilder :: SwapTiming -> Builder
+{-# INLINE swapTimingToBytesBuilder #-}
 swapTimingToBytesBuilder swapTiming =
   mconcat
     [ swapTimingTypeToBytesBuilder $ swapTimingType swapTiming
@@ -66,6 +67,7 @@ swapTimingTypeToBytes timingType =
     Settle -> "settle"
 
 swapTimingTypeToBytesBuilder :: SwapTimingType -> Builder
+{-# INLINE swapTimingTypeToBytesBuilder #-}
 swapTimingTypeToBytesBuilder timingType =
   case timingType of
     Swap   -> "swap"

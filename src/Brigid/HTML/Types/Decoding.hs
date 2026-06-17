@@ -27,6 +27,7 @@ decodingToBytes decoding =
     DecodeAsync -> "async"
 
 decodingToBytesBuilder :: Decoding -> Builder
+{-# INLINE decodingToBytesBuilder #-}
 decodingToBytesBuilder decoding =
   case decoding of
     DecodeAuto  -> string8 "auto"

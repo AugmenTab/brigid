@@ -86,6 +86,7 @@ formMethodToBytes method =
     FormPOST -> methodToBytes POST
 
 formMethodToBytesBuilder :: FormMethod -> Builder
+{-# INLINE formMethodToBytesBuilder #-}
 formMethodToBytesBuilder method =
   case method of
     FormGET  -> string8 "get"

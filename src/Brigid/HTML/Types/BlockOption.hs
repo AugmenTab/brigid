@@ -21,6 +21,7 @@ blockOptionToBytes bo =
     Render -> "render"
 
 blockOptionToBytesBuilder :: BlockOption -> Builder
+{-# INLINE blockOptionToBytesBuilder #-}
 blockOptionToBytesBuilder bo =
   case bo of
     Render -> string8 "render"

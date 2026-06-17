@@ -43,6 +43,7 @@ timingDeclarationToBytes (TimingDeclaration n tu) =
   LBS8.pack (show n) <> timingUnitsToBytes tu
 
 timingDeclarationToBytesBuilder :: TimingDeclaration -> Builder
+{-# INLINE timingDeclarationToBytesBuilder #-}
 timingDeclarationToBytesBuilder (TimingDeclaration n tu) =
   Render.showBytesBuilder n <> timingUnitsToBytesBuilder tu
 
@@ -66,6 +67,7 @@ timingUnitsToBytes tu =
     Hours -> "h"
 
 timingUnitsToBytesBuilder :: TimingUnits -> Builder
+{-# INLINE timingUnitsToBytesBuilder #-}
 timingUnitsToBytesBuilder tu =
   case tu of
     Milliseconds -> "ms"
