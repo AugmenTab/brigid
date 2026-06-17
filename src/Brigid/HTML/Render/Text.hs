@@ -55,317 +55,317 @@ renderTag html =
       buildTag elemName attrs eiCloserOrContent
 
     Tag_Anchor attrs content ->
-      buildTag "a" attrs $ Right content
+      buildContentTag "a" attrs content
 
     Tag_Abbreviation attrs content ->
-      buildTag "abbr" attrs $ Right content
+      buildContentTag "abbr" attrs content
 
     Tag_ContactAddress attrs content ->
-      buildTag "address" attrs $ Right content
+      buildContentTag "address" attrs content
 
     Tag_Area attrs ->
-      buildTag "area" attrs $ Left Types.OmitTag
+      buildVoidTag "area" attrs Types.OmitTag
 
     Tag_Article attrs content ->
-      buildTag "article" attrs $ Right content
+      buildContentTag "article" attrs content
 
     Tag_Aside attrs content ->
-      buildTag "aside" attrs $ Right content
+      buildContentTag "aside" attrs content
 
     Tag_Audio attrs content ->
-      buildTag "audio" attrs $ Right content
+      buildContentTag "audio" attrs content
 
     Tag_BringAttentionTo attrs content ->
-      buildTag "b" attrs $ Right content
+      buildContentTag "b" attrs content
 
     Tag_Base attrs ->
-      buildTag "base" attrs $ Left Types.OmitTag
+      buildVoidTag "base" attrs Types.OmitTag
 
     Tag_BidirectionalIsolation attrs content ->
-      buildTag "bdi" attrs $ Right content
+      buildContentTag "bdi" attrs content
 
     Tag_BidirectionalOverride attrs content ->
-      buildTag "bdo" attrs $ Right content
+      buildContentTag "bdo" attrs content
 
     Tag_Blockquote attrs content ->
-      buildTag "blockquote" attrs $ Right content
+      buildContentTag "blockquote" attrs content
 
     Tag_Body attrs content ->
-      buildTag "body" attrs $ Right content
+      buildContentTag "body" attrs content
 
     Tag_LineBreak attrs ->
-      buildTag "br" attrs $ Left Types.OmitTag
+      buildVoidTag "br" attrs Types.OmitTag
 
     Tag_Button attrs content ->
-      buildTag "button" attrs $ Right content
+      buildContentTag "button" attrs content
 
     Tag_Canvas attrs content ->
-      buildTag "canvas" attrs $ Right content
+      buildContentTag "canvas" attrs content
 
     Tag_TableCaption attrs content ->
-      buildTag "caption" attrs $ Right content
+      buildContentTag "caption" attrs content
 
     Tag_Citation attrs content ->
-      buildTag "cite" attrs $ Right content
+      buildContentTag "cite" attrs content
 
     Tag_Code attrs content ->
-      buildTag "code" attrs $ Right content
+      buildContentTag "code" attrs content
 
     Tag_TableColumn attrs ->
-      buildTag "col" attrs $ Left Types.OmitTag
+      buildVoidTag "col" attrs Types.OmitTag
 
     Tag_TableColumnGroup attrs content ->
-      buildTag "colgroup" attrs $ Right content
+      buildContentTag "colgroup" attrs content
 
     Tag_Data attrs content ->
-      buildTag "data" attrs $ Right content
+      buildContentTag "data" attrs content
 
     Tag_DataList attrs content ->
-      buildTag "datalist" attrs $ Right content
+      buildContentTag "datalist" attrs content
 
     Tag_DescriptionDetails attrs content ->
-      buildTag "dd" attrs $ Right content
+      buildContentTag "dd" attrs content
 
     Tag_DeletedText attrs content ->
-      buildTag "del" attrs $ Right content
+      buildContentTag "del" attrs content
 
     Tag_Details attrs content ->
-      buildTag "details" attrs $ Right content
+      buildContentTag "details" attrs content
 
     Tag_Definition attrs content ->
-      buildTag "dfn" attrs $ Right content
+      buildContentTag "dfn" attrs content
 
     Tag_Dialog attrs content ->
-      buildTag "dialog" attrs $ Right content
+      buildContentTag "dialog" attrs content
 
     Tag_Division attrs content ->
-      buildTag "div" attrs $ Right content
+      buildContentTag "div" attrs content
 
     Tag_DescriptionList attrs content ->
-      buildTag "dl" attrs $ Right content
+      buildContentTag "dl" attrs content
 
     Tag_DescriptionTerm attrs content ->
-      buildTag "dt" attrs $ Right content
+      buildContentTag "dt" attrs content
 
     Tag_Emphasis attrs content ->
-      buildTag "em" attrs $ Right content
+      buildContentTag "em" attrs content
 
     Tag_Embed attrs ->
-      buildTag "embed" attrs $ Left Types.OmitTag
+      buildVoidTag "embed" attrs Types.OmitTag
 
     Tag_Fieldset attrs content ->
-      buildTag "fieldset" attrs $ Right content
+      buildContentTag "fieldset" attrs content
 
     Tag_FigureCaption attrs content ->
-      buildTag "figcaption" attrs $ Right content
+      buildContentTag "figcaption" attrs content
 
     Tag_Figure attrs content ->
-      buildTag "figure" attrs $ Right content
+      buildContentTag "figure" attrs content
 
     Tag_Footer attrs content ->
-      buildTag "footer" attrs $ Right content
+      buildContentTag "footer" attrs content
 
     Tag_Form attrs content ->
-      buildTag "form" attrs $ Right content
+      buildContentTag "form" attrs content
 
     Tag_H1 attrs content ->
-      buildTag "h1" attrs $ Right content
+      buildContentTag "h1" attrs content
 
     Tag_H2 attrs content ->
-      buildTag "h2" attrs $ Right content
+      buildContentTag "h2" attrs content
 
     Tag_H3 attrs content ->
-      buildTag "h3" attrs $ Right content
+      buildContentTag "h3" attrs content
 
     Tag_H4 attrs content ->
-      buildTag "h4" attrs $ Right content
+      buildContentTag "h4" attrs content
 
     Tag_H5 attrs content ->
-      buildTag "h5" attrs $ Right content
+      buildContentTag "h5" attrs content
 
     Tag_H6 attrs content ->
-      buildTag "h6" attrs $ Right content
+      buildContentTag "h6" attrs content
 
     Tag_Head attrs content ->
-      buildTag "head" attrs $ Right content
+      buildContentTag "head" attrs content
 
     Tag_Header attrs content ->
-      buildTag "header" attrs $ Right content
+      buildContentTag "header" attrs content
 
     Tag_HeadingGroup attrs content ->
-      buildTag "hgroup" attrs $ Right content
+      buildContentTag "hgroup" attrs content
 
     Tag_HorizontalRule attrs ->
-      buildTag "hr" attrs $ Left Types.OmitTag
+      buildVoidTag "hr" attrs Types.OmitTag
 
     Tag_Html attrs content ->
       fromText "<!DOCTYPE html>"
-        <> buildTag "html" attrs (Right content)
+        <> buildContentTag "html" attrs content
 
     Tag_IdiomaticText attrs content ->
-      buildTag "i" attrs $ Right content
+      buildContentTag "i" attrs content
 
     Tag_IFrame attrs ->
-      buildTag "iframe" attrs $ Left Types.WithTag
+      buildVoidTag "iframe" attrs Types.WithTag
 
     Tag_Image attrs ->
-      buildTag "img" attrs $ Left Types.OmitTag
+      buildVoidTag "img" attrs Types.OmitTag
 
     Tag_Input attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputButton attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputCheckbox attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputColor attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputDate attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputDatetimeLocal attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputEmail attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputFile attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputHidden attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputImage attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputMonth attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputNumber attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputPassword attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputRadio attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputRange attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputReset attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputSearch attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputSubmit attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputTel attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputText attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputTime attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputUrl attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InputWeek attrs ->
-      buildTag "input" attrs $ Left Types.OmitTag
+      buildVoidTag "input" attrs Types.OmitTag
 
     Tag_InsertedText attrs content ->
-      buildTag "ins" attrs $ Right content
+      buildContentTag "ins" attrs content
 
     Tag_KeyboardInput attrs content ->
-      buildTag "kbd" attrs $ Right content
+      buildContentTag "kbd" attrs content
 
     Tag_Label attrs content ->
-      buildTag "label" attrs $ Right content
+      buildContentTag "label" attrs content
 
     Tag_Legend attrs content ->
-      buildTag "legend" attrs $ Right content
+      buildContentTag "legend" attrs content
 
     Tag_ListItem attrs content ->
-      buildTag "li" attrs $ Right content
+      buildContentTag "li" attrs content
 
     Tag_Link attrs ->
-      buildTag "link" attrs $ Left Types.OmitTag
+      buildVoidTag "link" attrs Types.OmitTag
 
     Tag_Main attrs content ->
-      buildTag "main" attrs $ Right content
+      buildContentTag "main" attrs content
 
     Tag_Map attrs content ->
-      buildTag "map" attrs $ Right content
+      buildContentTag "map" attrs content
 
     Tag_Mark attrs content ->
-      buildTag "mark" attrs $ Right content
+      buildContentTag "mark" attrs content
 
     Tag_Menu attrs content ->
-      buildTag "menu" attrs $ Right content
+      buildContentTag "menu" attrs content
 
     Tag_Meta attrs ->
-      buildTag "meta" attrs $ Left Types.OmitTag
+      buildVoidTag "meta" attrs Types.OmitTag
 
     Tag_Meter attrs content ->
-      buildTag "meter" attrs $ Right content
+      buildContentTag "meter" attrs content
 
     Tag_Nav attrs content ->
-      buildTag "nav" attrs $ Right content
+      buildContentTag "nav" attrs content
 
     Tag_NoScript attrs content ->
-      buildTag "noscript" attrs $ Right content
+      buildContentTag "noscript" attrs content
 
     Tag_Object attrs content ->
-      buildTag "object" attrs $ Right content
+      buildContentTag "object" attrs content
 
     Tag_OrderedList attrs content ->
-      buildTag "ol" attrs $ Right content
+      buildContentTag "ol" attrs content
 
     Tag_OptionGroup attrs content ->
-      buildTag "optgroup" attrs $ Right content
+      buildContentTag "optgroup" attrs content
 
     Tag_Option attrs content ->
-      buildTag "option" attrs $ Right content
+      buildContentTag "option" attrs content
 
     Tag_Output attrs content ->
-      buildTag "output" attrs $ Right content
+      buildContentTag "output" attrs content
 
     Tag_Paragraph attrs content ->
-      buildTag "p" attrs $ Right content
+      buildContentTag "p" attrs content
 
     Tag_Picture attrs content ->
-      buildTag "picture" attrs $ Right content
+      buildContentTag "picture" attrs content
 
     Tag_PreformattedText attrs content ->
-      buildTag "pre" attrs $ Right content
+      buildContentTag "pre" attrs content
 
     Tag_Progress attrs content ->
-      buildTag "progress" attrs $ Right content
+      buildContentTag "progress" attrs content
 
     Tag_Quotation attrs content ->
-      buildTag "q" attrs $ Right content
+      buildContentTag "q" attrs content
 
     Tag_RubyParenthesis attrs content ->
-      buildTag "rp" attrs $ Right content
+      buildContentTag "rp" attrs content
 
     Tag_RubyText attrs content ->
-      buildTag "rt" attrs $ Right content
+      buildContentTag "rt" attrs content
 
     Tag_Ruby attrs content ->
-      buildTag "ruby" attrs $ Right content
+      buildContentTag "ruby" attrs content
 
     Tag_Strikethrough attrs content ->
-      buildTag "s" attrs $ Right content
+      buildContentTag "s" attrs content
 
     Tag_Sample attrs content ->
-      buildTag "samp" attrs $ Right content
+      buildContentTag "samp" attrs content
 
     Tag_Script attrs mbScript ->
       buildTag "script" attrs $
@@ -375,106 +375,112 @@ renderTag html =
           mbScript
 
     Tag_Search attrs content ->
-      buildTag "search" attrs $ Right content
+      buildContentTag "search" attrs content
 
     Tag_Section attrs content ->
-      buildTag "section" attrs $ Right content
+      buildContentTag "section" attrs content
 
     Tag_Select attrs content ->
-      buildTag "select" attrs $ Right content
+      buildContentTag "select" attrs content
 
     Tag_Slot attrs content ->
-      buildTag "slot" attrs $ Right content
+      buildContentTag "slot" attrs content
 
     Tag_SideComment attrs content ->
-      buildTag "small" attrs $ Right content
+      buildContentTag "small" attrs content
 
     Tag_Source attrs ->
-      buildTag "source" attrs $ Left Types.OmitTag
+      buildVoidTag "source" attrs Types.OmitTag
 
     Tag_Span attrs content ->
-      buildTag "span" attrs $ Right content
+      buildContentTag "span" attrs content
 
     Tag_Strong attrs content ->
-      buildTag "strong" attrs $ Right content
+      buildContentTag "strong" attrs content
 
     Tag_Style attrs content ->
-      buildTag "style" attrs . Right . L.singleton $ Tag_RawHTML content
+      buildContentTag "style" attrs . L.singleton $ Tag_RawHTML content
 
     Tag_Subscript attrs content ->
-      buildTag "sub" attrs $ Right content
+      buildContentTag "sub" attrs content
 
     Tag_Summary attrs content ->
-      buildTag "summary" attrs $ Right content
+      buildContentTag "summary" attrs content
 
     Tag_Superscript attrs content ->
-      buildTag "sup" attrs $ Right content
+      buildContentTag "sup" attrs content
 
     Tag_Table attrs content ->
-      buildTag "table" attrs $ Right content
+      buildContentTag "table" attrs content
 
     Tag_TableBody attrs content ->
-      buildTag "tbody" attrs $ Right content
+      buildContentTag "tbody" attrs content
 
     Tag_TableDataCell attrs content ->
-      buildTag "td" attrs $ Right content
+      buildContentTag "td" attrs content
 
     Tag_ContentTemplate attrs content ->
-      buildTag "template" attrs $ Right content
+      buildContentTag "template" attrs content
 
     Tag_TextArea attrs content ->
-      buildTag "textarea" attrs $ Right content
+      buildContentTag "textarea" attrs content
 
     Tag_TableFoot attrs content ->
-      buildTag "tfoot" attrs $ Right content
+      buildContentTag "tfoot" attrs content
 
     Tag_TableHeader attrs content ->
-      buildTag "th" attrs $ Right content
+      buildContentTag "th" attrs content
 
     Tag_TableHead attrs content ->
-      buildTag "thead" attrs $ Right content
+      buildContentTag "thead" attrs content
 
     Tag_Time attrs content ->
-      buildTag "time" attrs $ Right content
+      buildContentTag "time" attrs content
 
     Tag_Title attrs content ->
-      buildTag "title" attrs $ Right content
+      buildContentTag "title" attrs content
 
     Tag_TableRow attrs content ->
-      buildTag "tr" attrs $ Right content
+      buildContentTag "tr" attrs content
 
     Tag_Track attrs ->
-      buildTag "track" attrs $ Left Types.OmitTag
+      buildVoidTag "track" attrs Types.OmitTag
 
     Tag_Underline attrs content ->
-      buildTag "u" attrs $ Right content
+      buildContentTag "u" attrs content
 
     Tag_UnorderedList attrs content ->
-      buildTag "ul" attrs $ Right content
+      buildContentTag "ul" attrs content
 
     Tag_Variable attrs content ->
-      buildTag "var" attrs $ Right content
+      buildContentTag "var" attrs content
 
     Tag_Video attrs content ->
-      buildTag "video" attrs $ Right content
+      buildContentTag "video" attrs content
 
     Tag_WordBreakOpportunity attrs ->
-      buildTag "wbr" attrs $ Left Types.OmitTag
+      buildVoidTag "wbr" attrs Types.OmitTag
 
     Tag_Group attrs content ->
-      buildTag "g" attrs $ Right content
+      buildContentTag "g" attrs content
 
     Tag_Path attrs content ->
-      buildTag "path" attrs $ Right content
+      buildContentTag "path" attrs content
 
     Tag_SVG attrs content ->
-      buildTag "svg" attrs $ Right content
+      buildContentTag "svg" attrs content
 
 buildTag :: T.Text
          -> [Attribute tag]
          -> Either Types.NoContent [ChildHTML parent grandparent]
          -> Builder
-buildTag tag attrs content =
+buildTag tag attrs eiCloserOrContent =
+  case eiCloserOrContent of
+    Left  closer   -> buildVoidTag tag attrs closer
+    Right children -> buildContentTag tag attrs children
+
+buildVoidTag :: T.Text -> [Attribute tag] -> Types.NoContent -> Builder
+buildVoidTag tag attrs closer =
   mconcat
     [ fromText "<"
     , fromText tag
@@ -482,10 +488,25 @@ buildTag tag attrs content =
     , mconcat
         . L.intersperse (fromText " ")
         $ mapMaybe renderAttribute attrs
-    , case content of
-        Left  Types.OmitTag -> fromText "/>"
-        Left  Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
-        Right children      -> fromText ">" <> foldMap renderTag children <> fromText "</" <> fromText tag <> fromText ">"
+    , case closer of
+        Types.OmitTag -> fromText "/>"
+        Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
+    ]
+
+buildContentTag :: T.Text -> [Attribute tag] -> [ChildHTML parent grandparent] -> Builder
+buildContentTag tag attrs children =
+  mconcat
+    [ fromText "<"
+    , fromText tag
+    , fromText . B.bool " " T.empty $ L.null attrs
+    , mconcat
+        . L.intersperse (fromText " ")
+        $ mapMaybe renderAttribute attrs
+    , fromText ">"
+    , foldMap renderTag children
+    , fromText "</"
+    , fromText tag
+    , fromText ">"
     ]
 
 renderAttribute :: Attribute any -> Maybe Builder

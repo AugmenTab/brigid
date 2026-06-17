@@ -49,103 +49,109 @@ renderTag hxml =
       buildTag elemName attrs eiCloserOrContent
 
     Tag_Behavior attrs ->
-      buildTag "behavior" attrs $ Left Types.OmitTag
+      buildVoidTag "behavior" attrs Types.OmitTag
 
     Tag_Body attrs content ->
-      buildTag "body" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "body" attrs content
 
     Tag_DateField attrs ->
-      buildTag "date-field" attrs $ Left Types.OmitTag
+      buildVoidTag "date-field" attrs Types.OmitTag
 
     Tag_Document attrs content ->
-      buildTag "doc" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "doc" attrs content
 
     Tag_Form attrs content ->
-      buildTag "form" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "form" attrs content
 
     Tag_Header attrs content ->
-      buildTag "header" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "header" attrs content
 
     Tag_Image attrs content ->
-      buildTag "image" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "image" attrs content
 
     Tag_Item attrs content ->
-      buildTag "item" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "item" attrs content
 
     Tag_Items attrs content ->
-      buildTag "items" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "items" attrs content
 
     Tag_List attrs content ->
-      buildTag "list" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "list" attrs content
 
     Tag_Modifier attrs content ->
-      buildTag "modifier" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "modifier" attrs content
 
     Tag_Navigator attrs content ->
-      buildTag "navigator" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "navigator" attrs content
 
     Tag_NavRoute attrs content ->
-      buildTag "nav-route" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "nav-route" attrs content
 
     Tag_Option attrs content ->
-      buildTag "option" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "option" attrs content
 
     Tag_PickerField attrs content ->
-      buildTag "picker-field" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "picker-field" attrs content
 
     Tag_PickerItem attrs ->
-      buildTag "picker-item" attrs $ Left Types.OmitTag
+      buildVoidTag "picker-item" attrs Types.OmitTag
 
     Tag_Screen attrs content ->
-      buildTag "screen" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "screen" attrs content
 
     Tag_Section attrs content ->
-      buildTag "section" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "section" attrs content
 
     Tag_SectionList attrs content ->
-      buildTag "section-list" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "section-list" attrs content
 
     Tag_SectionTitle attrs content ->
-      buildTag "section-title" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "section-title" attrs content
 
     Tag_SelectMultiple attrs content ->
-      buildTag "select-multiple" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "select-multiple" attrs content
 
     Tag_SelectSingle attrs content ->
-      buildTag "select-single" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "select-single" attrs content
 
     Tag_Spinner attrs ->
-      buildTag "spinner" attrs $ Left Types.OmitTag
+      buildVoidTag "spinner" attrs Types.OmitTag
 
     Tag_Style attrs content ->
-      buildTag "style" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "style" attrs content
 
     Tag_Styles content ->
-      buildTag "styles" [] $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "styles" [] content
 
     Tag_Switch attrs ->
-      buildTag "switch" attrs $ Left Types.OmitTag
+      buildVoidTag "switch" attrs Types.OmitTag
 
     Tag_Text attrs content ->
-      buildTag "text" attrs $ contentOrClosingTag content
+      buildClosingOrContentTag "text" attrs content
 
     Tag_TextArea attrs ->
-      buildTag "text-area" attrs $ Left Types.OmitTag
+      buildVoidTag "text-area" attrs Types.OmitTag
 
     Tag_TextField attrs ->
-      buildTag "text-field" attrs $ Left Types.OmitTag
+      buildVoidTag "text-field" attrs Types.OmitTag
 
     Tag_View attrs content ->
-      buildTag "view" attrs $ contentOrSelfClosing content
+      buildSelfClosingOrContentTag "view" attrs content
 
     Tag_WebView attrs ->
-      buildTag "web-view" attrs $ Left Types.OmitTag
+      buildVoidTag "web-view" attrs Types.OmitTag
 
 buildTag :: T.Text
          -> [Attribute tag]
          -> Either Types.NoContent [ChildHXML parent]
          -> Builder
-buildTag tag attrs content =
+buildTag tag attrs eiCloserOrContent =
+  case eiCloserOrContent of
+    Left  closer   -> buildVoidTag tag attrs closer
+    Right children -> buildContentTag tag attrs children
+
+buildVoidTag :: T.Text -> [Attribute tag] -> Types.NoContent -> Builder
+buildVoidTag tag attrs closer =
   mconcat
     [ fromText "<"
     , fromText tag
@@ -153,11 +159,36 @@ buildTag tag attrs content =
     , mconcat
         . L.intersperse (fromText " ")
         $ mapMaybe renderAttribute attrs
-    , case content of
-        Left  Types.OmitTag -> fromText "/>"
-        Left  Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
-        Right children      -> fromText ">" <> foldMap renderTag children <> fromText "</" <> fromText tag <> fromText ">"
+    , case closer of
+        Types.OmitTag -> fromText "/>"
+        Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
     ]
+
+buildContentTag :: T.Text -> [Attribute tag] -> [ChildHXML parent] -> Builder
+buildContentTag tag attrs children =
+  mconcat
+    [ fromText "<"
+    , fromText tag
+    , fromText . B.bool " " T.empty $ L.null attrs
+    , mconcat
+        . L.intersperse (fromText " ")
+        $ mapMaybe renderAttribute attrs
+    , fromText ">"
+    , foldMap renderTag children
+    , fromText "</"
+    , fromText tag
+    , fromText ">"
+    ]
+
+buildSelfClosingOrContentTag :: T.Text -> [Attribute tag] -> [ChildHXML parent] -> Builder
+buildSelfClosingOrContentTag tag attrs children
+  | null children = buildVoidTag tag attrs Types.OmitTag
+  | otherwise     = buildContentTag tag attrs children
+
+buildClosingOrContentTag :: T.Text -> [Attribute tag] -> [ChildHXML parent] -> Builder
+buildClosingOrContentTag tag attrs children
+  | null children = buildVoidTag tag attrs Types.WithTag
+  | otherwise     = buildContentTag tag attrs children
 
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
@@ -393,16 +424,3 @@ buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
   fromText attr <> "=\"" <> fromText value <> fromText "\""
 
-contentOrClosingTag :: [ChildHXML parent]
-                    -> Either Types.NoContent [ChildHXML parent]
-contentOrClosingTag content =
-  if null content
-    then Left Types.WithTag
-    else Right content
-
-contentOrSelfClosing :: [ChildHXML parent]
-                     -> Either Types.NoContent [ChildHXML parent]
-contentOrSelfClosing content =
-  if null content
-    then Left Types.OmitTag
-    else Right content
