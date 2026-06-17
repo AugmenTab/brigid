@@ -1250,8 +1250,9 @@ renderAttribute attr =
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"
-        . Escape.attributeBytesBuilder
-        $ Types.querySelectorToText selector
+        . Escape.lazyBytesAttributeBytesBuilder
+        . toLazyByteString
+        $ Types.querySelectorToBytesBuilder selector
 
     Attr_HxSelectOOB selects ->
       Just

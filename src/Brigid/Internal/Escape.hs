@@ -8,6 +8,7 @@ module Brigid.Internal.Escape
   , escape
   , escapeBytesBuilder
   , lazyBytesAttributeBytesBuilder
+  , strictBytesAttributeBytesBuilder
   , urlByteString
   , urlText
   ) where
@@ -23,7 +24,6 @@ import Data.Word (Word8)
 import Network.HTTP.Types.URI (urlEncode)
 
 import Brigid.Internal.Entities qualified as Entity
-import Brigid.Internal.Render qualified as Render
 
 attributeBytes :: LBS.ByteString -> LBS.ByteString
 attributeBytes = toLazyByteString . lazyBytesAttributeBytesBuilder
@@ -42,7 +42,10 @@ attributeCharBytesBuilder c =
     _    -> charUtf8 c
 
 lazyBytesAttributeBytesBuilder :: LBS.ByteString -> Builder
-lazyBytesAttributeBytesBuilder = attributeBytesBuilder . Render.lazyBytesToText
+lazyBytesAttributeBytesBuilder = foldMap strictBytesAttributeBytesBuilder . LBS.toChunks
+
+strictBytesAttributeBytesBuilder :: BS.ByteString -> Builder
+strictBytesAttributeBytesBuilder = BPrim.primMapByteStringBounded attrEscapePrim
 
 attributeText :: T.Text -> T.Text
 attributeText = T.concatMap attributeCharText
