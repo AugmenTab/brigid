@@ -4,9 +4,11 @@ module Brigid.HXML.Types.NavigatorType
       , Tab
       )
   , navigatorTypeToBytes
+  , navigatorTypeToBytesBuilder
   , navigatorTypeToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -20,6 +22,12 @@ navigatorTypeToBytes navigatorType =
   case navigatorType of
     Stack -> "stack"
     Tab   -> "tab"
+
+navigatorTypeToBytesBuilder :: NavigatorType -> Builder
+navigatorTypeToBytesBuilder navigatorType =
+  case navigatorType of
+    Stack -> string8 "stack"
+    Tab   -> string8 "tab"
 
 navigatorTypeToText :: NavigatorType -> T.Text
 navigatorTypeToText navigatorType =

@@ -13,9 +13,11 @@ module Brigid.HXML.Types.KeyboardType
       , WebSearch
       )
   , keyboardTypeToBytes
+  , keyboardTypeToBytesBuilder
   , keyboardTypeToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -47,6 +49,21 @@ keyboardTypeToBytes keyboardType =
     NamePhonePad          -> "name-phone-pad"
     Twitter               -> "twitter"
     WebSearch             -> "web-search"
+
+keyboardTypeToBytesBuilder :: KeyboardType -> Builder
+keyboardTypeToBytesBuilder keyboardType =
+  case keyboardType of
+    AlphaNumeric          -> string8 "default"
+    NumberPad             -> string8 "number-pad"
+    DecimalPad            -> string8 "decimal-pad"
+    PhonePad              -> string8 "phone-pad"
+    EmailAddress          -> string8 "email-address"
+    Url                   -> string8 "url"
+    ASCIICapable          -> string8 "ascii-capable"
+    NumbersAndPunctuation -> string8 "numbers-and-punctuation"
+    NamePhonePad          -> string8 "name-phone-pad"
+    Twitter               -> string8 "twitter"
+    WebSearch             -> string8 "web-search"
 
 keyboardTypeToText :: KeyboardType -> T.Text
 keyboardTypeToText keyboardType =

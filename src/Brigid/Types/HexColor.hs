@@ -2,9 +2,11 @@ module Brigid.Types.HexColor
   ( HexColor
   , hexColorFromText
   , hexColorToBytes
+  , hexColorToBytesBuilder
   , hexColorToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Char qualified as C
 import Data.Text qualified as T
@@ -35,3 +37,7 @@ hexColorFromText txt =
 hexColorToBytes :: HexColor -> LBS.ByteString
 hexColorToBytes =
   Render.textToLazyBytes . hexColorToText
+
+hexColorToBytesBuilder :: HexColor -> Builder
+hexColorToBytesBuilder =
+  Render.textToBytesBuilder . hexColorToText

@@ -9,9 +9,8 @@ module Brigid.HXML.Render.ByteString
 import Prelude hiding (id)
 import Data.Bool qualified as B
 import Data.ByteString qualified as BS
-import Data.ByteString.Builder (Builder, lazyByteString, toLazyByteString)
+import Data.ByteString.Builder (Builder, string8, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List qualified as L
 import Data.Maybe (mapMaybe)
 
@@ -32,24 +31,22 @@ renderTag :: ChildHXML parent -> Builder
 renderTag hxml =
   case hxml of
     Tag_NoElement ->
-      lazyByteString LBS.empty
+      mempty
 
     Tag_Comment comment ->
-      lazyByteString "<!-- "
-        <> lazyByteString (Render.textToLazyBytes comment)
-        <> lazyByteString " -->"
+      "<!-- " <> Render.textToBytesBuilder comment <> " -->"
 
     Tag_Content content ->
-      lazyByteString $ Render.textToLazyBytes content
+      Render.textToBytesBuilder content
 
     Tag_Entity entity ->
-      lazyByteString $ LBS8.pack entity
+      string8 entity
 
     Tag_RawHXML content ->
-      lazyByteString $ Render.textToLazyBytes content
+      Render.textToBytesBuilder content
 
     Tag_CustomHXML elemName attrs eiCloserOrContent ->
-      buildTag (Render.textToLazyBytes elemName) attrs eiCloserOrContent
+      buildTag (Render.textToBytesBuilder elemName) attrs eiCloserOrContent
 
     Tag_Behavior attrs ->
       buildTag "behavior" attrs $ Left Types.OmitTag
@@ -144,266 +141,266 @@ renderTag hxml =
     Tag_WebView attrs ->
       buildTag "web-view" attrs $ Left Types.OmitTag
 
-buildTag :: LBS.ByteString
+buildTag :: Builder
          -> [Attribute tag]
          -> Either Types.NoContent [ChildHXML parent]
          -> Builder
 buildTag tag attrs content =
   mconcat
-    [ lazyByteString "<"
-    , lazyByteString tag
-    , lazyByteString . B.bool " " LBS.empty $ L.null attrs
+    [ "<"
+    , tag
+    , B.bool " " mempty $ L.null attrs
     , mconcat
-        . L.intersperse (lazyByteString " ")
+        . L.intersperse " "
         $ mapMaybe renderAttribute attrs
     , case content of
-        Left  Types.OmitTag -> lazyByteString "/>"
-        Left  Types.WithTag -> lazyByteString ">"
-        Right _children     -> lazyByteString ">"
+        Left  Types.OmitTag -> "/>"
+        Left  Types.WithTag -> ">"
+        Right _children     -> ">"
     , case content of
-        Left  _type    -> lazyByteString LBS.empty
+        Left  _type    -> mempty
         Right children -> foldMap renderTag children
     , case content of
         Left Types.OmitTag ->
-          lazyByteString LBS.empty
+          mempty
 
         Left Types.WithTag ->
-          lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
+          "</" <> tag <> ">"
 
         Right _children ->
-          lazyByteString "</" <> lazyByteString tag <> lazyByteString ">"
+          "</" <> tag <> ">"
     ]
 
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =
   case attr of
     Attr_NoAttribute ->
-      Just $ lazyByteString LBS.empty
+      Just mempty
 
     Attr_Custom name value ->
-      Just $ buildAttribute (Render.textToLazyBytes name) (Render.textToLazyBytes value)
+      Just $ buildAttribute (Render.textToBytesBuilder name) (Render.textToBytesBuilder value)
 
     Attr_ActivityIndicatorColor activityIndicatorColor ->
       Just
         . buildAttribute "activity-indicator-color"
-        $ Types.colorToBytes activityIndicatorColor
+        $ Types.colorToBytesBuilder activityIndicatorColor
 
     Attr_AdjustsFontSizeToFit adjustsFontSizeToFit ->
       Just
         . buildAttribute "adjustsFontSizeToFit"
-        $ Render.enumBoolToBytes adjustsFontSizeToFit
+        $ Render.enumBoolToBytesBuilder adjustsFontSizeToFit
 
     Attr_AllowDeselect allowDeselect ->
       Just
         . buildAttribute "allow-deselect"
-        $ Render.enumBoolToBytes allowDeselect
+        $ Render.enumBoolToBytesBuilder allowDeselect
 
     Attr_AutoFocus autoFocus ->
-      Just . buildAttribute "auto-focus" $ Render.enumBoolToBytes autoFocus
+      Just . buildAttribute "auto-focus" $ Render.enumBoolToBytesBuilder autoFocus
 
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
         . buildAttribute "avoid-keyboard"
-        $ Render.enumBoolToBytes avoidKeyboard
+        $ Render.enumBoolToBytesBuilder avoidKeyboard
 
     Attr_CancelLabel cancelLabel ->
-      Just . buildAttribute "cancel-label" $ Render.textToLazyBytes cancelLabel
+      Just . buildAttribute "cancel-label" $ Render.textToBytesBuilder cancelLabel
 
     Attr_Color color ->
-      Just . buildAttribute "color" $ Types.hexColorToBytes color
+      Just . buildAttribute "color" $ Types.hexColorToBytesBuilder color
 
     Attr_ContentContainerStyle contentContainerStyle ->
       Just
         . buildAttribute "content-container-style"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ contentContainerStyle
 
     Attr_CursorColor cursorColor ->
-      Just . buildAttribute "cursorColor" $ Types.colorToBytes cursorColor
+      Just . buildAttribute "cursorColor" $ Types.colorToBytesBuilder cursorColor
 
     Attr_DoneLabel doneLabel ->
-      Just . buildAttribute "done-label" $ Render.textToLazyBytes doneLabel
+      Just . buildAttribute "done-label" $ Render.textToBytesBuilder doneLabel
 
     Attr_FieldStyle fieldStyle ->
       Just
         . buildAttribute "field-style"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ fieldStyle
 
     Attr_FieldTextStyle fieldTextStyle ->
       Just
         . buildAttribute "field-text-style"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ fieldTextStyle
 
     Attr_Focused focused ->
-      Just . buildAttribute "focused" $ Render.enumBoolToBytes focused
+      Just . buildAttribute "focused" $ Render.enumBoolToBytesBuilder focused
 
     Attr_Hide hide ->
-      Just . buildAttribute "hide" $ Render.enumBoolToBytes hide
+      Just . buildAttribute "hide" $ Render.enumBoolToBytesBuilder hide
 
     Attr_Href href ->
-      Just . buildAttribute "href" $ Types.urlToBytes href
+      Just . buildAttribute "href" $ Types.urlToBytesBuilder href
 
     Attr_Html html ->
-      Just . buildAttribute "html" $ Escape.attributeBytes html
+      Just . buildAttribute "html" $ Escape.lazyBytesAttributeBytesBuilder html
 
     Attr_Id id ->
-      Just . buildAttribute "id" $ Types.idToBytes id
+      Just . buildAttribute "id" $ Types.idToBytesBuilder id
 
     Attr_InjectedJavaScript injectedJavaScript ->
       Just
         . buildAttribute "injected-java-script"
-        $ Types.rawJavaScriptToBytes injectedJavaScript
+        $ Types.rawJavaScriptToBytesBuilder injectedJavaScript
 
     Attr_ItemHeight itemHeight ->
-      Just . buildAttribute "itemHeight" $ Render.showBytes itemHeight
+      Just . buildAttribute "itemHeight" $ Render.showBytesBuilder itemHeight
 
     Attr_Key key ->
-      Just . buildAttribute "key" $ Types.keyToBytes key
+      Just . buildAttribute "key" $ Types.keyToBytesBuilder key
 
     Attr_KeyboardDismissMode keyboardDismissMode ->
       Just
         . buildAttribute "keyboard-dismiss-mode"
-        $ Types.keyboardDismissModeToBytes keyboardDismissMode
+        $ Types.keyboardDismissModeToBytesBuilder keyboardDismissMode
 
     Attr_KeyboardShouldPersistTaps keyboardShouldPersistTaps ->
       Just
         . buildAttribute "keyboard-should-persist-taps"
-        $ Types.keyboardShouldPersistTapsToBytes keyboardShouldPersistTaps
+        $ Types.keyboardShouldPersistTapsToBytesBuilder keyboardShouldPersistTaps
 
     Attr_KeyboardType keyboardType ->
       Just
         . buildAttribute "keyboard-type"
-        $ Types.keyboardTypeToBytes keyboardType
+        $ Types.keyboardTypeToBytesBuilder keyboardType
 
     Attr_Label label ->
-      Just . buildAttribute "label" $ Render.textToLazyBytes label
+      Just . buildAttribute "label" $ Render.textToBytesBuilder label
 
     Attr_Mask mask ->
-      Just . buildAttribute "mask" $ Types.maskToBytes mask
+      Just . buildAttribute "mask" $ Types.maskToBytesBuilder mask
 
     Attr_Merge merge ->
-      Just . buildAttribute "merge" $ Render.enumBoolToBytes merge
+      Just . buildAttribute "merge" $ Render.enumBoolToBytesBuilder merge
 
     Attr_Modal modal ->
-      Just . buildAttribute "modal" $ Render.enumBoolToBytes modal
+      Just . buildAttribute "modal" $ Render.enumBoolToBytesBuilder modal
 
     Attr_ModalStyle modalStyle ->
       Just
         . buildAttribute "modal-style"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ modalStyle
 
     Attr_ModalTextStyle modalTextStyle ->
       Just
         . buildAttribute "modal-text-style"
-        . Render.foldToBytesWithSeparator Types.idToBytes " "
+        . Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " "
         $ modalTextStyle
 
     Attr_Multiline multiline ->
-      Just . buildAttribute "multiline" $ Render.enumBoolToBytes multiline
+      Just . buildAttribute "multiline" $ Render.enumBoolToBytesBuilder multiline
 
     Attr_Name name ->
-      Just . buildAttribute "name" $ Types.nameToBytes name
+      Just . buildAttribute "name" $ Types.nameToBytesBuilder name
 
     Attr_NumberOfLines numberOfLines ->
       Just
         . buildAttribute "numberOfLines"
-        $ Render.showBytes numberOfLines
+        $ Render.showBytesBuilder numberOfLines
 
     Attr_Placeholder placeholder ->
-      Just . buildAttribute "placeholder" $ Render.textToLazyBytes placeholder
+      Just . buildAttribute "placeholder" $ Render.textToBytesBuilder placeholder
 
     Attr_PlaceholderTextColor placeholderTextColor ->
       Just
         . buildAttribute "placeholderTextColor"
-        $ Types.colorToBytes placeholderTextColor
+        $ Types.colorToBytesBuilder placeholderTextColor
 
     Attr_Preformatted preformatted ->
       Just
         . buildAttribute "preformatted"
-        $ Render.enumBoolToBytes preformatted
+        $ Render.enumBoolToBytesBuilder preformatted
 
     Attr_Pressed pressed ->
-      Just . buildAttribute "pressed" $ Render.enumBoolToBytes pressed
+      Just . buildAttribute "pressed" $ Render.enumBoolToBytesBuilder pressed
 
     Attr_SafeArea safeArea ->
-      Just . buildAttribute "safe-area" $ Render.enumBoolToBytes safeArea
+      Just . buildAttribute "safe-area" $ Render.enumBoolToBytesBuilder safeArea
 
     Attr_Scroll scroll ->
-      Just . buildAttribute "scroll" $ Render.enumBoolToBytes scroll
+      Just . buildAttribute "scroll" $ Render.enumBoolToBytesBuilder scroll
 
     Attr_ScrollOrientation scrollOrientation ->
       Just
         . buildAttribute "scroll-orientation"
-        $ Types.scrollOrientationToBytes scrollOrientation
+        $ Types.scrollOrientationToBytesBuilder scrollOrientation
 
     Attr_ScrollToInputOffset scrollToInputOffset ->
       Just
         . buildAttribute "scroll-orientation"
-        $ Render.showBytes scrollToInputOffset
+        $ Render.showBytesBuilder scrollToInputOffset
 
     Attr_SecureText secureText ->
-      Just . buildAttribute "secure-text" $ Render.enumBoolToBytes secureText
+      Just . buildAttribute "secure-text" $ Render.enumBoolToBytesBuilder secureText
 
     Attr_Selectable selectable ->
-      Just . buildAttribute "selectable" $ Render.enumBoolToBytes selectable
+      Just . buildAttribute "selectable" $ Render.enumBoolToBytesBuilder selectable
 
     Attr_Selected selected ->
-      Just . buildAttribute "selected" $ Render.enumBoolToBytes selected
+      Just . buildAttribute "selected" $ Render.enumBoolToBytesBuilder selected
 
     Attr_SelectionColor selectionColor ->
       Just
         . buildAttribute "selectionColor"
-        $ Types.colorToBytes selectionColor
+        $ Types.colorToBytesBuilder selectionColor
 
     Attr_SelectionHandleColor selectionHandleColor ->
       Just
         . buildAttribute "selectionHandleColor"
-        $ Types.colorToBytes selectionHandleColor
+        $ Types.colorToBytesBuilder selectionHandleColor
 
     Attr_ShowLoadingIndicator showLoadingIndicator ->
       Just
         . buildAttribute "show-loading-indicator"
-        $ Types.showLoadingIndicatorToBytes showLoadingIndicator
+        $ Types.showLoadingIndicatorToBytesBuilder showLoadingIndicator
 
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
         . buildAttribute "shows-scroll-indicator"
-        $ Render.enumBoolToBytes showsScrollIndicator
+        $ Render.enumBoolToBytesBuilder showsScrollIndicator
 
     Attr_Source source ->
-      Just . buildAttribute "source" $ Types.urlToBytes source
+      Just . buildAttribute "source" $ Types.urlToBytesBuilder source
 
     Attr_Sticky sticky ->
-      Just . buildAttribute "sticky" $ Render.enumBoolToBytes sticky
+      Just . buildAttribute "sticky" $ Render.enumBoolToBytesBuilder sticky
 
     Attr_StickySectionTitles stickySectionTitles ->
       Just
         . buildAttribute "sticky-section-titles"
-        $ Render.enumBoolToBytes stickySectionTitles
+        $ Render.enumBoolToBytesBuilder stickySectionTitles
 
     Attr_Style style ->
       Just
         . buildAttribute "style"
-        $ Render.foldToBytesWithSeparator Types.idToBytes " " style
+        $ Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " " style
 
     Attr_Type type_ ->
-      Just . buildAttribute "type" $ Types.navigatorTypeToBytes type_
+      Just . buildAttribute "type" $ Types.navigatorTypeToBytesBuilder type_
 
     Attr_Url url ->
-      Just . buildAttribute "url" $ Types.urlToBytes url
+      Just . buildAttribute "url" $ Types.urlToBytesBuilder url
 
     Attr_Value value ->
-      Just . buildAttribute "value" $ Render.textToLazyBytes value
+      Just . buildAttribute "value" $ Render.textToBytesBuilder value
 
     Attr_XMLNS xmlns ->
-      Just . buildAttribute "xmlns" $ Types.urlToBytes xmlns
+      Just . buildAttribute "xmlns" $ Types.urlToBytesBuilder xmlns
 
-buildAttribute :: LBS.ByteString -> LBS.ByteString -> Builder
+buildAttribute :: Builder -> Builder -> Builder
 buildAttribute attr value =
-  lazyByteString attr <> "=\"" <> lazyByteString value <> lazyByteString "\""
+  attr <> "=\"" <> value <> "\""
 
 contentOrClosingTag :: [ChildHXML parent]
                     -> Either Types.NoContent [ChildHXML parent]

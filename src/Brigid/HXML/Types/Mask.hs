@@ -2,9 +2,11 @@ module Brigid.HXML.Types.Mask
   ( Mask
   , mkMask
   , maskToBytes
+  , maskToBytesBuilder
   , maskToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Char qualified as C
 import Data.Text qualified as T
@@ -31,3 +33,6 @@ mkMask txt =
 
 maskToBytes :: Mask -> LBS.ByteString
 maskToBytes = Render.textToLazyBytes . maskToText
+
+maskToBytesBuilder :: Mask -> Builder
+maskToBytesBuilder = Render.textToBytesBuilder . maskToText

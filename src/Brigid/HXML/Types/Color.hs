@@ -7,12 +7,15 @@ module Brigid.HXML.Types.Color
   , ColorTypes
   , mkColor
   , colorToBytes
+  , colorToBytesBuilder
   , colorToText
   , ColorName (ColorName)
   , colorNameToBytes
+  , colorNameToBytesBuilder
   , colorNameToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Function (on)
 import Data.Text qualified as T
@@ -21,7 +24,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.Internal.Render qualified as Render
-import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
+import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToBytesBuilder, hexColorToText)
 
 newtype Color = Color (Shrubbery.Union ColorTypes)
 
@@ -58,6 +61,15 @@ colorToBytes (Color color) =
       $ Shrubbery.branchEnd
   ) color
 
+colorToBytesBuilder :: Color -> Builder
+colorToBytesBuilder (Color color) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HexColor  hexColorToBytesBuilder
+      . Shrubbery.branch @ColorName colorNameToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) color
+
 colorToText :: Color -> T.Text
 colorToText (Color color) =
   ( Shrubbery.dissect
@@ -77,3 +89,6 @@ instance Show ColorName where
 
 colorNameToBytes :: ColorName -> LBS.ByteString
 colorNameToBytes = Render.textToLazyBytes . colorNameToText
+
+colorNameToBytesBuilder :: ColorName -> Builder
+colorNameToBytesBuilder = Render.textToBytesBuilder . colorNameToText
