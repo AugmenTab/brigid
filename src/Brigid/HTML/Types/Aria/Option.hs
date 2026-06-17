@@ -6,6 +6,7 @@ module Brigid.HTML.Types.Aria.Option
       , AutocompleteNone
       )
   , ariaAutocompleteOptionToBytes
+  , ariaAutocompleteOptionToBytesBuilder
   , ariaAutocompleteOptionToText
   , AriaLiveOption
       ( LiveAssertive
@@ -13,6 +14,7 @@ module Brigid.HTML.Types.Aria.Option
       , LiveOff
       )
   , ariaLiveOptionToBytes
+  , ariaLiveOptionToBytesBuilder
   , ariaLiveOptionToText
   , AriaRelevantOption
       ( RelevantAll
@@ -21,6 +23,7 @@ module Brigid.HTML.Types.Aria.Option
       , RelevantText
       )
   , ariaRelevantOptionToBytes
+  , ariaRelevantOptionToBytesBuilder
   , ariaRelevantOptionToText
   , AriaSortOption
       ( SortAscending
@@ -29,9 +32,11 @@ module Brigid.HTML.Types.Aria.Option
       , SortOther
       )
   , ariaSortOptionToBytes
+  , ariaSortOptionToBytesBuilder
   , ariaSortOptionToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -49,6 +54,14 @@ ariaAutocompleteOptionToBytes option =
     AutocompleteList -> "list"
     AutocompleteBoth -> "both"
     AutocompleteNone -> "none"
+
+ariaAutocompleteOptionToBytesBuilder :: AriaAutocompleteOption -> Builder
+ariaAutocompleteOptionToBytesBuilder option =
+  case option of
+    AutocompleteInline -> string8 "inline"
+    AutocompleteList   -> string8 "list"
+    AutocompleteBoth   -> string8 "both"
+    AutocompleteNone   -> string8 "none"
 
 ariaAutocompleteOptionToText :: AriaAutocompleteOption -> T.Text
 ariaAutocompleteOptionToText option =
@@ -70,6 +83,13 @@ ariaLiveOptionToBytes option =
     LiveAssertive -> "assertive"
     LivePolite -> "polite"
     LiveOff -> "off"
+
+ariaLiveOptionToBytesBuilder :: AriaLiveOption -> Builder
+ariaLiveOptionToBytesBuilder option =
+  case option of
+    LiveAssertive -> string8 "assertive"
+    LivePolite    -> string8 "polite"
+    LiveOff       -> string8 "off"
 
 ariaLiveOptionToText :: AriaLiveOption -> T.Text
 ariaLiveOptionToText option =
@@ -93,6 +113,14 @@ ariaRelevantOptionToBytes option =
     RelevantRemovals -> "removals"
     RelevantText -> "text"
 
+ariaRelevantOptionToBytesBuilder :: AriaRelevantOption -> Builder
+ariaRelevantOptionToBytesBuilder option =
+  case option of
+    RelevantAll       -> string8 "all"
+    RelevantAdditions -> string8 "additions"
+    RelevantRemovals  -> string8 "removals"
+    RelevantText      -> string8 "text"
+
 ariaRelevantOptionToText :: AriaRelevantOption -> T.Text
 ariaRelevantOptionToText option =
   case option of
@@ -115,6 +143,14 @@ ariaSortOptionToBytes option =
     SortDescending -> "descending"
     SortNone -> "none"
     SortOther -> "other"
+
+ariaSortOptionToBytesBuilder :: AriaSortOption -> Builder
+ariaSortOptionToBytesBuilder option =
+  case option of
+    SortAscending  -> string8 "ascending"
+    SortDescending -> string8 "descending"
+    SortNone       -> string8 "none"
+    SortOther      -> string8 "other"
 
 ariaSortOptionToText :: AriaSortOption -> T.Text
 ariaSortOptionToText option =

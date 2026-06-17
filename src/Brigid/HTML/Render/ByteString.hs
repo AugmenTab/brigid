@@ -1145,8 +1145,8 @@ renderAttribute attr =
     Attr_Aria aria ->
       Just $
         buildAttribute
-          (Render.textToBytesBuilder $ Types.ariaAttributeToText aria)
-          (Render.textToBytesBuilder $ Types.ariaValueToText aria)
+          (Types.ariaAttributeToBytesBuilder aria)
+          (Types.ariaValueToBytesBuilder aria)
 
     -- Event Attributes
     --

@@ -4,9 +4,11 @@ module Brigid.HTML.Types.Orientation
       , Vertical
       )
   , orientationToBytes
+  , orientationToBytesBuilder
   , orientationToText
   ) where
 
+import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
@@ -22,6 +24,13 @@ orientationToBytes o =
     case o of
       Horizontal -> "horizontal"
       Vertical -> "vertical"
+
+orientationToBytesBuilder :: Orientation -> Builder
+orientationToBytesBuilder o =
+  string8 $
+    case o of
+      Horizontal -> "horizontal"
+      Vertical   -> "vertical"
 
 orientationToText :: Orientation -> T.Text
 orientationToText o =
