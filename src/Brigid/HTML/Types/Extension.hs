@@ -25,13 +25,17 @@ module Brigid.HTML.Types.Extension
   , extWebSockets
   , extCustomExtension
   , extensionToBytes
+  , extensionToBytesBuilder
   , extensionToText
   ) where
 
 import Data.Bool qualified as B
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+
+import Brigid.Internal.Render qualified as Render
 
 data Extension =
   Extension
@@ -124,6 +128,11 @@ extensionToBytes ext =
   B.bool "" "ignore:" (extensionIgnored ext)
     <> extensionTypeToBytes (extensionType ext)
 
+extensionToBytesBuilder :: Extension -> Builder
+extensionToBytesBuilder ext =
+  B.bool "" "ignore:" (extensionIgnored ext)
+    <> extensionTypeToBytesBuilder (extensionType ext)
+
 extensionToText :: Extension -> T.Text
 extensionToText ext =
   B.bool "" "ignore:" (extensionIgnored ext)
@@ -181,6 +190,33 @@ extensionTypeToBytes ext =
     ServerSentEvents    -> "server-sent-events"
     WebSockets          -> "web-sockets"
     CustomExtension txt -> LBS8.pack $ T.unpack txt
+
+extensionTypeToBytesBuilder :: ExtensionType -> Builder
+extensionTypeToBytesBuilder ext =
+  case ext of
+    AjaxHeader          -> "ajax-header"
+    AlpineMorph         -> "alpine-morph"
+    ClassTools          -> "class-tools"
+    ClientSideTemplates -> "client-side-templates"
+    Debug               -> "debug"
+    EventHeader         -> "event-header"
+    HeadSupport         -> "head-support"
+    IncludeVals         -> "include-vals"
+    JsonEnc             -> "json-enc"
+    Idiomorph           -> "idiomorph"
+    LoadingStates       -> "loading-states"
+    MethodOverride      -> "method-override"
+    MorphdomSwap        -> "morphdom-swap"
+    MultiSwap           -> "multi-swap"
+    PathDeps            -> "path-deps"
+    PathParams          -> "path-params"
+    Preload             -> "preload"
+    RemoveMe            -> "remove-me"
+    ResponseTargets     -> "response-targets"
+    Restored            -> "restored"
+    ServerSentEvents    -> "server-sent-events"
+    WebSockets          -> "web-sockets"
+    CustomExtension txt -> Render.textToBytesBuilder txt
 
 extensionTypeToText :: ExtensionType -> T.Text
 extensionTypeToText ext =

@@ -1,9 +1,11 @@
 module Brigid.HTML.Types.Class
   ( Class (Class)
   , classToBytes
+  , classToBytesBuilder
   , classToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Foldable1 (fold1)
 import Data.List.NonEmpty qualified as NEL
@@ -32,3 +34,6 @@ instance Show Class where
 
 classToBytes :: Class -> LBS.ByteString
 classToBytes = Render.textToLazyBytes . classToText
+
+classToBytesBuilder :: Class -> Builder
+classToBytesBuilder = Render.textToBytesBuilder . classToText

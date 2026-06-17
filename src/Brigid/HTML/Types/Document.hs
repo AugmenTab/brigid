@@ -1,9 +1,11 @@
 module Brigid.HTML.Types.Document
   ( Document (Document)
   , documentToBytes
+  , documentToBytesBuilder
   , documentToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -12,6 +14,9 @@ data Document = Document
 
 documentToBytes :: Document -> LBS.ByteString
 documentToBytes = const "document"
+
+documentToBytesBuilder :: Document -> Builder
+documentToBytesBuilder = const "document"
 
 documentToText :: Document -> T.Text
 documentToText = const "document"

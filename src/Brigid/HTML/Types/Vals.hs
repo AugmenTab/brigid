@@ -7,16 +7,18 @@ module Brigid.HTML.Types.Vals
   , HtmxValsTypes
   , mkHtmxVals
   , htmxValsToBytes
+  , htmxValsToBytesBuilder
   , htmxValsToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.InlineJSON (InlineJSON, inlineJSONToBytes, inlineJSONToText)
+import Brigid.HTML.Types.InlineJSON (InlineJSON, inlineJSONToBytes, inlineJSONToBytesBuilder, inlineJSONToText)
 import Brigid.Types.RawJavaScript qualified as RawJS
 
 newtype HtmxVals =
@@ -41,6 +43,15 @@ htmxValsToBytes (HtmxVals vals) =
       . Shrubbery.branchBuild
       . Shrubbery.branch @InlineJSON          inlineJSONToBytes
       . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToBytes)
+      $ Shrubbery.branchEnd
+  ) vals
+
+htmxValsToBytesBuilder :: HtmxVals -> Builder
+htmxValsToBytesBuilder (HtmxVals vals) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @InlineJSON          inlineJSONToBytesBuilder
+      . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToBytesBuilder)
       $ Shrubbery.branchEnd
   ) vals
 

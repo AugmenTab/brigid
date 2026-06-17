@@ -1184,14 +1184,13 @@ renderAttribute attr =
     Attr_HxDisabledElt disabled ->
       Just
         . buildAttribute "hx-disabled-elt"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.disabledSelectorToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.disabledSelectorToBytesBuilder ", "
         $ NEL.toList disabled
 
     Attr_HxDisinherit disinherit ->
       Just
         . buildAttribute "hx-disinherit"
-        . Render.textToBytesBuilder
-        $ Types.disinheritToText disinherit
+        $ Types.disinheritToBytesBuilder disinherit
 
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
@@ -1199,14 +1198,14 @@ renderAttribute attr =
     Attr_HxExt exts ->
       Just
         . buildAttribute "hx-ext"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.extensionToText) ","
+        . Render.foldToBytesBuilderWithSeparator Types.extensionToBytesBuilder ","
         $ NEL.toList exts
 
     Attr_HxHeaders headers ->
       Just
         . buildAttribute "hx-headers"
-        . Escape.attributeBytesBuilder
-        $ Types.htmxHeadersToText headers
+        . Escape.lazyBytesAttributeBytesBuilder
+        $ Types.htmxHeadersToBytes headers
 
     Attr_HxHistory ->
       Just $ buildAttribute "hx-history" "false"
@@ -1217,26 +1216,24 @@ renderAttribute attr =
     Attr_HxInclude include ->
       Just
         . buildAttribute "hx-include"
-        . Render.textToBytesBuilder
-        $ Types.includeSelectorToText include
+        $ Types.includeSelectorToBytesBuilder include
 
     Attr_HxIndicator indicator ->
       Just
         . buildAttribute "hx-indicator"
-        . Render.textToBytesBuilder
-        $ Types.indicatorToText indicator
+        $ Types.indicatorToBytesBuilder indicator
 
     Attr_HxOn event action ->
       Just $
         buildAttribute
-          ("hx-on" <> Render.textToBytesBuilder (Types.hxOnEventText event))
+          ("hx-on" <> Types.hxOnEventBytesBuilder event)
           (Escape.attributeBytesBuilder action)
 
     Attr_HxParams params ->
       Just
         . buildAttribute "hx-params"
-        . Escape.attributeBytesBuilder
-        $ Types.requestParamsToText params
+        . Escape.lazyBytesAttributeBytesBuilder
+        $ Types.requestParamsToBytes params
 
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
@@ -1259,31 +1256,29 @@ renderAttribute attr =
     Attr_HxSelectOOB selects ->
       Just
         . buildAttribute "hx-select-oob"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.outOfBandSelectToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.outOfBandSelectToBytesBuilder ", "
         $ NEL.toList selects
 
     Attr_HxSwap swap ->
       Just
         . buildAttribute "hx-swap"
-        . Render.textToBytesBuilder
-        $ Types.swapToText swap
+        $ Types.swapToBytesBuilder swap
 
     Attr_HxSwapOOB mbSwap ->
       Just
         . buildAttribute "hx-swap-oob"
-        . maybe "true" (Render.textToBytesBuilder . Types.outOfBandSwapToText)
+        . maybe "true" Types.outOfBandSwapToBytesBuilder
         $ mbSwap
 
     Attr_HxTarget target ->
       Just
         . buildAttribute "hx-target"
-        . Render.textToBytesBuilder
-        $ Types.hxTargetToText target
+        $ Types.hxTargetToBytesBuilder target
 
     Attr_HxTrigger triggers ->
       Just
         . buildAttribute "hx-trigger"
-        . Render.foldToBytesBuilderWithSeparator (Render.textToBytesBuilder . Types.triggerToText) ", "
+        . Render.foldToBytesBuilderWithSeparator Types.triggerToBytesBuilder ", "
         $ NEL.toList triggers
 
     Attr_HxValidate ->
@@ -1292,16 +1287,15 @@ renderAttribute attr =
     Attr_HxVals vals ->
       Just
         . buildAttribute "hx-vals"
-        . Escape.attributeBytesBuilder
-        $ Types.htmxValsToText vals
+        . Escape.lazyBytesAttributeBytesBuilder
+        $ Types.htmxValsToBytes vals
 
     -- Other
     --
     Attr_HyperScript hyperscript ->
       Just
         . buildAttribute "_"
-        . Render.textToBytesBuilder
-        $ Types.hyperScriptToText hyperscript
+        $ Types.hyperScriptToBytesBuilder hyperscript
 
 buildAttribute :: Builder -> Builder -> Builder
 buildAttribute attr value =

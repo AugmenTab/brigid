@@ -2,6 +2,7 @@ module Brigid.HTML.Types.TimingDeclaration
   ( TimingDeclaration (..)
   , timingDeclarationMilliseconds
   , timingDeclarationToBytes
+  , timingDeclarationToBytesBuilder
   , timingDeclarationToText
   , TimingUnits
       ( Milliseconds
@@ -10,14 +11,18 @@ module Brigid.HTML.Types.TimingDeclaration
       , Hours
       )
   , timingUnitsToBytes
+  , timingUnitsToBytesBuilder
   , timingUnitsToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
 import Data.Text qualified as T
 import Integer (Positive)
+
+import Brigid.Internal.Render qualified as Render
 
 data TimingDeclaration = TimingDeclaration Positive TimingUnits
   deriving (Eq, Show)
@@ -37,6 +42,10 @@ timingDeclarationToBytes :: TimingDeclaration -> LBS.ByteString
 timingDeclarationToBytes (TimingDeclaration n tu) =
   LBS8.pack (show n) <> timingUnitsToBytes tu
 
+timingDeclarationToBytesBuilder :: TimingDeclaration -> Builder
+timingDeclarationToBytesBuilder (TimingDeclaration n tu) =
+  Render.showBytesBuilder n <> timingUnitsToBytesBuilder tu
+
 timingDeclarationToText :: TimingDeclaration -> T.Text
 timingDeclarationToText (TimingDeclaration n tu) =
   T.pack (show n) <> timingUnitsToText tu
@@ -55,6 +64,14 @@ timingUnitsToBytes tu =
     Seconds -> "s"
     Minutes -> "m"
     Hours -> "h"
+
+timingUnitsToBytesBuilder :: TimingUnits -> Builder
+timingUnitsToBytesBuilder tu =
+  case tu of
+    Milliseconds -> "ms"
+    Seconds      -> "s"
+    Minutes      -> "m"
+    Hours        -> "h"
 
 timingUnitsToText :: TimingUnits -> T.Text
 timingUnitsToText tu =

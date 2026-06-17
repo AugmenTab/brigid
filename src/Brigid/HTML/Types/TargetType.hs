@@ -4,9 +4,11 @@ module Brigid.HTML.Types.TargetType
       , TargetPrevious
       )
   , targetTypeToBytes
+  , targetTypeToBytesBuilder
   , targetTypeToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -17,6 +19,12 @@ data TargetType
 
 targetTypeToBytes :: TargetType -> LBS.ByteString
 targetTypeToBytes targetType =
+  case targetType of
+    TargetNext     -> "next"
+    TargetPrevious -> "previous"
+
+targetTypeToBytesBuilder :: TargetType -> Builder
+targetTypeToBytesBuilder targetType =
   case targetType of
     TargetNext     -> "next"
     TargetPrevious -> "previous"

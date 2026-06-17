@@ -8,12 +8,15 @@ module Brigid.HTML.Types.QuerySelector
   , mkQuerySelector
   , unQuerySelector
   , querySelectorToBytes
+  , querySelectorToBytesBuilder
   , querySelectorToText
   , RawSelector (RawSelector)
   , rawSelectorToBytes
+  , rawSelectorToBytesBuilder
   , rawSelectorToText
   , ElementSelector
   , elementSelectorToBytes
+  , elementSelectorToBytesBuilder
   , elementSelectorToText
   , tag_custom
   , tag_a
@@ -187,6 +190,7 @@ module Brigid.HTML.Types.QuerySelector
   , tag_view
   , AttributeSelector
   , attributeSelectorToBytes
+  , attributeSelectorToBytesBuilder
   , attributeSelectorToText
   , attr_custom
   , attr_customBoolean
@@ -605,35 +609,41 @@ module Brigid.HTML.Types.QuerySelector
       , Attr_HyperScript
       )
   , attributeTypeFromText
+  , attributeTypeToBytesBuilder
   , attributeTypeToText
   , DisabledSelector
   , disableThis
   , disableClosest
   , disabledSelector
   , disabledSelectorToBytes
+  , disabledSelectorToBytesBuilder
   , disabledSelectorToText
   , IncludeSelector
   , includeThis
   , includeTarget
   , includeSelector
   , includeSelectorToBytes
+  , includeSelectorToBytesBuilder
   , includeSelectorToText
   , Indicator
   , indicateClosest
   , indicateSelector
   , indicatorToBytes
+  , indicatorToBytesBuilder
   , indicatorToText
   , HxTarget
   , HxTargetTypes
   , mkHxTarget
   , unHxTarget
   , hxTargetToBytes
+  , hxTargetToBytesBuilder
   , hxTargetToText
   , Swap
   , SwapTypes
   , mkSwap
   , unSwap
   , swapToBytes
+  , swapToBytesBuilder
   , swapToText
   , swapInnerHTML
   , swapOuterHTML
@@ -645,6 +655,7 @@ module Brigid.HTML.Types.QuerySelector
   , SwapDisplay
   , SwapDisplayTargetTypes
   , swapDisplayToBytes
+  , swapDisplayToBytesBuilder
   , swapDisplayToText
   , scroll
   , show
@@ -653,20 +664,25 @@ module Brigid.HTML.Types.QuerySelector
       , Show
       )
   , swapDisplayTypeToBytes
+  , swapDisplayTypeToBytesBuilder
   , swapDisplayTypeToText
   , SwapDisplayView
       ( SwapTop
       , SwapBottom
       )
   , swapDisplayViewToBytes
+  , swapDisplayViewToBytesBuilder
   , swapDisplayViewToText
   , RawSwap (RawSwap)
   , rawSwapToBytes
+  , rawSwapToBytesBuilder
   , rawSwapToText
   , SwapSelector
   , swapSelectorToBytes
+  , swapSelectorToBytesBuilder
   , swapSelectorToText
   , selectSwapToBytes
+  , selectSwapToBytesBuilder
   , selectSwapToText
   , swapSelectInnerHTML
   , swapSelectOuterHTML
@@ -681,12 +697,14 @@ module Brigid.HTML.Types.QuerySelector
   , mkOutOfBandSelect
   , unOutOfBandSelect
   , outOfBandSelectToBytes
+  , outOfBandSelectToBytesBuilder
   , outOfBandSelectToText
   , OutOfBandSwap
   , OutOfBandSwapTypes
   , mkOutOfBandSwap
   , unOutOfBandSwap
   , outOfBandSwapToBytes
+  , outOfBandSwapToBytesBuilder
   , outOfBandSwapToText
   , TargetSelector
   , htmx_closest
@@ -694,28 +712,34 @@ module Brigid.HTML.Types.QuerySelector
   , htmx_next
   , htmx_previous
   , targetSelectorToBytes
+  , targetSelectorToBytesBuilder
   , targetSelectorToText
   , Trigger
   , TriggerTypes
   , mkTrigger
   , triggerToBytes
+  , triggerToBytesBuilder
   , triggerToText
   , TriggerEvent
   , TriggerEventTypes
   , mkTriggerEvent
   , triggerEventToBytes
+  , triggerEventToBytesBuilder
   , triggerEventToText
   , Intersect
   , IntersectTypes
   , intersectRoot
   , intersectThreshold
   , intersectToBytes
+  , intersectToBytesBuilder
   , intersectToText
   , Root (Root)
   , rootToBytes
+  , rootToBytesBuilder
   , rootToText
   , TriggerModifier
   , triggerModifierToBytes
+  , triggerModifierToBytesBuilder
   , triggerModifierToText
   , triggerOnce
   , triggerChanged
@@ -729,23 +753,29 @@ module Brigid.HTML.Types.QuerySelector
   , TriggerFromTypes
   , mkTriggerFrom
   , triggerFromToBytes
+  , triggerFromToBytesBuilder
   , triggerFromToText
   , TriggerTarget (TriggerTarget)
   , triggerTargetToBytes
+  , triggerTargetToBytesBuilder
   , triggerTargetToText
   , CustomTrigger
   , customTrigger
   , customTriggerToBytes
+  , customTriggerToBytesBuilder
   , customTriggerToText
   , RawTrigger (RawTrigger)
   , rawTriggerToBytes
+  , rawTriggerToBytesBuilder
   , rawTriggerToText
   ) where
 
 import Prelude hiding (Show, div, head, map, max, min, show, span)
 import Data.ByteString qualified as BS
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
+import Data.Text.Encoding qualified as TE
 import Data.Containers.ListUtils (nubOrd)
 import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
@@ -761,7 +791,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 import Text.Show qualified as Show
 
-import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToBytes, eventAttributeToText)
+import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToBytes, eventAttributeToBytesBuilder, eventAttributeToText)
 import Brigid.HTML.Types.Action (ActionTypes, actionToText, mkAction)
 import Brigid.HTML.Types.Aria qualified as Aria
 import Brigid.HTML.Types.As (As, asToText)
@@ -770,30 +800,30 @@ import Brigid.HTML.Types.Autocapitalize (AutocapitalizeOption, autocapitalizeOpt
 import Brigid.HTML.Types.BlockOption (BlockOption, blockOptionToText)
 import Brigid.HTML.Types.Boolean (OnOff, OpenClosed, onOffToText, openClosedToText)
 import Brigid.HTML.Types.CaptureMethod (CaptureMethod, captureMethodToText)
-import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToText)
+import Brigid.HTML.Types.Changed (Changed (Changed), changedToBytes, changedToBytesBuilder, changedToText)
 import Brigid.HTML.Types.Class qualified as Class
 import Brigid.HTML.Types.ClassSelector qualified as CS
 import Brigid.HTML.Types.CommandOption (CommandOption, commandOptionToText)
-import Brigid.HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToText)
+import Brigid.HTML.Types.Consume (Consume (Consume), consumeToBytes, consumeToBytesBuilder, consumeToText)
 import Brigid.HTML.Types.ContentEditable (ContentEditableOption, contentEditableOptionToText)
 import Brigid.HTML.Types.ControlsList (ControlsList, controlsListToText)
 import Brigid.HTML.Types.CrossOrigin (CrossOriginFetch, crossOriginFetchToText)
 import Brigid.HTML.Types.Decoding (Decoding, decodingToText)
-import Brigid.HTML.Types.Delay (Delay, delay, delayToBytes, delayToText)
+import Brigid.HTML.Types.Delay (Delay, delay, delayToBytes, delayToBytesBuilder, delayToText)
 import Brigid.HTML.Types.Directionality (Directionality, directionalityToText)
 import Brigid.HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
-import Brigid.HTML.Types.Document (Document, documentToBytes, documentToText)
+import Brigid.HTML.Types.Document (Document, documentToBytes, documentToBytesBuilder, documentToText)
 import Brigid.HTML.Types.Event qualified as Event
-import Brigid.HTML.Types.Every (Every, everyToBytes, everyToText)
+import Brigid.HTML.Types.Every (Every, everyToBytes, everyToBytesBuilder, everyToText)
 import Brigid.HTML.Types.Extension (Extension, extensionToText)
 import Brigid.HTML.Types.FeaturePolicyDirective (FeaturePolicyDirective, featurePolicyDirectiveToText)
 import Brigid.HTML.Types.FetchPriority (FetchPriority, fetchPriorityToText)
 import Brigid.HTML.Types.For (ForOptionTypes, forOptionToText, mkForOption)
-import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToText)
+import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScrollToBytesBuilder, focusScrollToText)
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
 import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import Brigid.HTML.Types.HttpEquivToken (HttpEquivToken, httpEquivTokenToText)
-import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToText)
+import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToBytesBuilder, ignoreTitleToText)
 import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
 import Brigid.HTML.Types.Integrity (IntegrityEncoding, integrityToText)
 import Brigid.HTML.Types.KeyHint (KeyHintOption, keyHintOptionToText)
@@ -801,15 +831,15 @@ import Brigid.HTML.Types.LoadOption (LoadOption, loadOptionToText)
 import Brigid.HTML.Types.MediaQuery (MediaQuery, mediaQueryToText)
 import Brigid.HTML.Types.Number (Number, numberToText)
 import Brigid.HTML.Types.NoModifier (NoModifier)
-import Brigid.HTML.Types.None (None, noneToBytes, noneToText)
-import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToText)
+import Brigid.HTML.Types.None (None, noneToBytes, noneToBytesBuilder, noneToText)
+import Brigid.HTML.Types.Once (Once (Once), onceToBytes, onceToBytesBuilder, onceToText)
 import Brigid.HTML.Types.Orientation (Orientation)
 import Brigid.HTML.Types.Part (ExportPart, Part, exportPartToText, partToText)
 import Brigid.HTML.Types.PopoverState (PopoverState, popoverStateToText)
 import Brigid.HTML.Types.PopoverTargetAction (PopoverTargetAction, popoverTargetActionToText)
 import Brigid.HTML.Types.Preload (Preload, preloadToText)
 import Brigid.HTML.Types.PushURL (PushURLTypes, mkPushURL, pushURLToText)
-import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToText)
+import Brigid.HTML.Types.QueueOption (QueueOption, queueOptionToBytes, queueOptionToBytesBuilder, queueOptionToText)
 import Brigid.HTML.Types.RangeBound (RangeBound, rangeBoundToText)
 import Brigid.HTML.Types.ReferrerPolicy (ReferrerPolicy, referrerPolicyToText)
 import Brigid.HTML.Types.RequestParams (RequestParams, requestParamsToText)
@@ -821,21 +851,21 @@ import Brigid.HTML.Types.Shape (Shape, shapeToText)
 import Brigid.HTML.Types.Size (Size, sizeToText)
 import Brigid.HTML.Types.SrcsetCandidate (SrcsetCandidate, srcsetCandidateToText)
 import Brigid.HTML.Types.Step (Step, stepToText)
-import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToText)
-import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToText)
-import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToText)
+import Brigid.HTML.Types.Swap (SwapStyle (..), swapStyleToBytes, swapStyleToBytesBuilder, swapStyleToText)
+import Brigid.HTML.Types.SwapTiming (SwapTiming, swapTimingToBytes, swapTimingToBytesBuilder, swapTimingToText)
+import Brigid.HTML.Types.SwapTransition (SwapTransition, swapTransitionToBytes, swapTransitionToBytesBuilder, swapTransitionToText)
 import Brigid.HTML.Types.Target (Target, targetToText)
-import Brigid.HTML.Types.TargetType (TargetType, targetTypeToBytes, targetTypeToText)
-import Brigid.HTML.Types.This (This (This), thisToBytes, thisToText)
-import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToText)
-import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToText)
+import Brigid.HTML.Types.TargetType (TargetType, targetTypeToBytes, targetTypeToBytesBuilder, targetTypeToText)
+import Brigid.HTML.Types.This (This (This), thisToBytes, thisToBytesBuilder, thisToText)
+import Brigid.HTML.Types.Threshold (Threshold, thresholdToBytes, thresholdToBytesBuilder, thresholdToText)
+import Brigid.HTML.Types.Throttle (Throttle, throttle, throttleToBytes, throttleToBytesBuilder, throttleToText)
 import Brigid.HTML.Types.TimingDeclaration (TimingUnits)
 import Brigid.HTML.Types.TrackKind (TrackKind, trackKindToText)
-import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToText)
+import Brigid.HTML.Types.TriggerFilter (TriggerFilter, triggerFilterToBytes, triggerFilterToBytesBuilder, triggerFilterToText)
 import Brigid.HTML.Types.TypeOption (TypeOptionTypes, mkTypeOption, typeOptionToText)
 import Brigid.HTML.Types.Vals (HtmxValsTypes, htmxValsToText, mkHtmxVals)
 import Brigid.HTML.Types.Value (ValueTypes, mkValue, valueToText)
-import Brigid.HTML.Types.Window (Window, windowToBytes, windowToText)
+import Brigid.HTML.Types.Window (Window, windowToBytes, windowToBytesBuilder, windowToText)
 import Brigid.HTML.Types.Wrap (Wrap, wrapToText)
 import Brigid.Internal.Render qualified as Render
 import Brigid.Types.Id qualified as Id
@@ -5451,6 +5481,653 @@ newtype RawTrigger =
 rawTriggerToBytes :: RawTrigger -> LBS.ByteString
 rawTriggerToBytes =
   Render.textToLazyBytes . rawTriggerToText
+
+-- ByteString.Builder functions
+--
+querySelectorToBytesBuilder :: QuerySelector -> Builder
+querySelectorToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Id.Id (("#" <>) . Id.idToBytesBuilder)
+      . Shrubbery.branch @Class.Class (("." <>) . Class.classToBytesBuilder)
+      . Shrubbery.branch @ElementSelector elementSelectorToBytesBuilder
+      . Shrubbery.branch @AttributeSelector attributeSelectorToBytesBuilder
+      . Shrubbery.branch @RawSelector rawSelectorToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unQuerySelector
+
+querySelectorToWrappedBytesBuilder :: QuerySelector -> Builder
+querySelectorToWrappedBytesBuilder selector =
+  "(" <> querySelectorToBytesBuilder selector <> ")"
+
+rawSelectorToBytesBuilder :: RawSelector -> Builder
+rawSelectorToBytesBuilder =
+  TE.encodeUtf8Builder . rawSelectorToText
+
+elementTypeToBytesBuilder :: ElementType -> Builder
+elementTypeToBytesBuilder element =
+  case element of
+    Tag_CustomElement tagName  -> Render.textToBytesBuilder tagName
+    Tag_Anchor                 -> "a"
+    Tag_Abbreviation           -> "abbr"
+    Tag_ContactAddress         -> "address"
+    Tag_Area                   -> "area"
+    Tag_Article                -> "article"
+    Tag_Aside                  -> "aside"
+    Tag_Audio                  -> "audio"
+    Tag_BringAttentionTo       -> "b"
+    Tag_Base                   -> "base"
+    Tag_BidirectionalIsolation -> "bdi"
+    Tag_BidirectionalOverride  -> "bdo"
+    Tag_Blockquote             -> "blockquote"
+    Tag_Body                   -> "body"
+    Tag_LineBreak              -> "br"
+    Tag_Button                 -> "button"
+    Tag_Canvas                 -> "canvas"
+    Tag_TableCaption           -> "caption"
+    Tag_Citation               -> "cite"
+    Tag_Code                   -> "code"
+    Tag_TableColumn            -> "col"
+    Tag_TableColumnGroup       -> "colgroup"
+    Tag_Data                   -> "data"
+    Tag_DataList               -> "datalist"
+    Tag_DescriptionDetails     -> "dd"
+    Tag_DeletedText            -> "del"
+    Tag_Details                -> "details"
+    Tag_Definition             -> "dfn"
+    Tag_Dialog                 -> "dialog"
+    Tag_Division               -> "div"
+    Tag_DescriptionList        -> "dl"
+    Tag_DescriptionTerm        -> "dt"
+    Tag_Emphasis               -> "em"
+    Tag_Embed                  -> "embed"
+    Tag_Fieldset               -> "fieldset"
+    Tag_FigureCaption          -> "figcaption"
+    Tag_Figure                 -> "figure"
+    Tag_Footer                 -> "footer"
+    Tag_Form                   -> "form"
+    Tag_H1                     -> "h1"
+    Tag_H2                     -> "h2"
+    Tag_H3                     -> "h3"
+    Tag_H4                     -> "h4"
+    Tag_H5                     -> "h5"
+    Tag_H6                     -> "h6"
+    Tag_Head                   -> "head"
+    Tag_Header                 -> "header"
+    Tag_HeadingGroup           -> "hgroup"
+    Tag_HorizontalRule         -> "hr"
+    Tag_Html                   -> "html"
+    Tag_IdiomaticText          -> "i"
+    Tag_IFrame                 -> "iframe"
+    Tag_Image                  -> "img"
+    Tag_Input                  -> "input"
+    Tag_InsertedText           -> "ins"
+    Tag_KeyboardInput          -> "kbd"
+    Tag_Label                  -> "label"
+    Tag_Legend                 -> "legend"
+    Tag_ListItem               -> "li"
+    Tag_Link                   -> "link"
+    Tag_Main                   -> "main"
+    Tag_Map                    -> "map"
+    Tag_Mark                   -> "mark"
+    Tag_Menu                   -> "menu"
+    Tag_Meta                   -> "meta"
+    Tag_Meter                  -> "metere"
+    Tag_Nav                    -> "nav"
+    Tag_NoScript               -> "noscript"
+    Tag_Object                 -> "object"
+    Tag_OrderedList            -> "ol"
+    Tag_OptionGroup            -> "optgroup"
+    Tag_Option                 -> "option"
+    Tag_Output                 -> "output"
+    Tag_Paragraph              -> "p"
+    Tag_Picture                -> "picture"
+    Tag_PreformattedText       -> "pre"
+    Tag_Progress               -> "progress"
+    Tag_Quotation              -> "q"
+    Tag_RubyParenthesis        -> "rp"
+    Tag_RubyText               -> "rt"
+    Tag_Ruby                   -> "ruby"
+    Tag_Strikethrough          -> "s"
+    Tag_Sample                 -> "samp"
+    Tag_Script                 -> "script"
+    Tag_Search                 -> "search"
+    Tag_Section                -> "section"
+    Tag_Select                 -> "select"
+    Tag_Slot                   -> "slot"
+    Tag_SideComment            -> "small"
+    Tag_Source                 -> "source"
+    Tag_Span                   -> "span"
+    Tag_Strong                 -> "strong"
+    Tag_Style                  -> "style"
+    Tag_Subscript              -> "sub"
+    Tag_Summary                -> "summary"
+    Tag_Superscript            -> "sup"
+    Tag_Table                  -> "table"
+    Tag_TableBody              -> "tbody"
+    Tag_TableDataCell          -> "td"
+    Tag_ContentTemplate        -> "template"
+    Tag_TextArea               -> "textarea"
+    Tag_TableFoot              -> "tfoot"
+    Tag_TableHeader            -> "th"
+    Tag_TableHead              -> "thead"
+    Tag_Time                   -> "time"
+    Tag_Title                  -> "title"
+    Tag_TableRow               -> "tr"
+    Tag_Track                  -> "track"
+    Tag_Underline              -> "u"
+    Tag_UnorderedList          -> "ul"
+    Tag_Variable               -> "var"
+    Tag_Video                  -> "video"
+    Tag_WordBreakOpportunity   -> "wbr"
+    Tag_Animate                       -> "animate"
+    Tag_AnimateMotion                 -> "animateMotion"
+    Tag_AnimateTransform              -> "animateTransform"
+    Tag_Circle                        -> "circle"
+    Tag_ClipPath                      -> "clipPath"
+    Tag_Definitions                   -> "defs"
+    Tag_Description                   -> "desc"
+    Tag_Ellipse                       -> "ellipse"
+    Tag_FilterEffectBlend             -> "feBlend"
+    Tag_FilterEffectColorMatrix       -> "feColorMatrix"
+    Tag_FilterEffectComponentTransfer -> "feComponentTransfer"
+    Tag_FilterEffectComposite         -> "feComposite"
+    Tag_FilterEffectConvolveMatrix    -> "feConvolveMatrix"
+    Tag_FilterEffectDiffuseLighting   -> "feDiffuseLighting"
+    Tag_FilterEffectDisplacementMap   -> "feDisplacementMap"
+    Tag_FilterEffectDistantLight      -> "feDistantLight"
+    Tag_FilterEffectDropShadow        -> "feDropShadow"
+    Tag_FilterEffectFlood             -> "feFlood"
+    Tag_FilterEffectFuncA             -> "feFuncA"
+    Tag_FilterEffectFuncB             -> "feFuncB"
+    Tag_FilterEffectFuncG             -> "feFuncG"
+    Tag_FilterEffectFuncR             -> "feFuncR"
+    Tag_FilterEffectGaussianBlur      -> "feGaussianBlur"
+    Tag_FilterEffectImage             -> "feImage"
+    Tag_FilterEffectMerge             -> "feMerge"
+    Tag_FilterEffectMergeNode         -> "feMergeNode"
+    Tag_FilterEffectMorphology        -> "feMorphology"
+    Tag_FilterEffectOffset            -> "feOffset"
+    Tag_FilterEffectPointLight        -> "fePointLight"
+    Tag_FilterEffectSpecularLighting  -> "feSpecularLighting"
+    Tag_FilterEffectSpotLight         -> "feSpotLight"
+    Tag_FilterEffectTile              -> "feTile"
+    Tag_FilterEffectTurbulence        -> "feTurbulence"
+    Tag_Filter                        -> "filter"
+    Tag_ForeignObject                 -> "foreignObject"
+    Tag_Group                         -> "g"
+    Tag_Line                          -> "line"
+    Tag_LinearGradient                -> "linearGradient"
+    Tag_Marker                        -> "marker"
+    Tag_Mask                          -> "mask"
+    Tag_Metadata                      -> "metadata"
+    Tag_MotionPath                    -> "mpath"
+    Tag_Path                          -> "path"
+    Tag_Pattern                       -> "pattern"
+    Tag_Polygon                       -> "polygon"
+    Tag_Polyline                      -> "polyline"
+    Tag_RadialGradient                -> "radialGradient"
+    Tag_Rectangle                     -> "rect"
+    Tag_Set                           -> "set"
+    Tag_Stop                          -> "stop"
+    Tag_SVG                           -> "svg"
+    Tag_Switch                        -> "switch"
+    Tag_Symbol                        -> "symbol"
+    Tag_TextPath                      -> "textPath"
+    Tag_TextSpan                      -> "tspan"
+    Tag_Use                           -> "use"
+    Tag_View                          -> "view"
+
+attributeTypeToBytesBuilder :: AttributeType -> Builder
+attributeTypeToBytesBuilder attr =
+  case attr of
+    Attr_CustomAttribute attrName -> Render.textToBytesBuilder attrName
+    Attr_AccessKey           -> "accesskey"
+    Attr_Autocapitalize      -> "autocapitalize"
+    Attr_Autocorrect         -> "autocorrect"
+    Attr_Autofocus           -> "autofocus"
+    Attr_Class               -> "class"
+    Attr_ContentEditable     -> "contenteditable"
+    Attr_CustomData attrName -> "data-" <> Render.textToBytesBuilder attrName
+    Attr_Dir                 -> "dir"
+    Attr_Draggable           -> "draggable"
+    Attr_EnterKeyHint        -> "enterkeyhint"
+    Attr_ExportParts         -> "exportparts"
+    Attr_Hidden              -> "hidden"
+    Attr_Id                  -> "id"
+    Attr_Inert               -> "inert"
+    Attr_InputMode           -> "inputmode"
+    Attr_Is                  -> "is"
+    Attr_ItemId              -> "itemid"
+    Attr_ItemProp            -> "itemprop"
+    Attr_ItemRef             -> "itemref"
+    Attr_ItemScope           -> "itemscope"
+    Attr_ItemType            -> "itemtype"
+    Attr_Lang                -> "lang"
+    Attr_Nonce               -> "nonce"
+    Attr_Part                -> "part"
+    Attr_Popover             -> "popover"
+    Attr_Role                -> "role"
+    Attr_Slot                -> "slot"
+    Attr_Spellcheck          -> "spellcheck"
+    Attr_Style               -> "style"
+    Attr_TabIndex            -> "tabindex"
+    Attr_Title               -> "title"
+    Attr_Translate           -> "translate"
+    Attr_WritingSuggestions  -> "writingsuggestions"
+    Attr_Abbreviation             -> "abbr"
+    Attr_Accept                   -> "accept"
+    Attr_AcceptCharset            -> "accept-charset"
+    Attr_Action                   -> "action"
+    Attr_Allow                    -> "allow"
+    Attr_Alt                      -> "alt"
+    Attr_As                       -> "as"
+    Attr_Async                    -> "async"
+    Attr_Autocomplete             -> "autocomplete"
+    Attr_Autoplay                 -> "autoplay"
+    Attr_Background               -> "background"
+    Attr_BackgroundColor          -> "bgcolor"
+    Attr_Blocking                 -> "blocking"
+    Attr_Border                   -> "border"
+    Attr_Capture                  -> "capture"
+    Attr_Charset                  -> "charset"
+    Attr_Checked                  -> "checked"
+    Attr_Cite                     -> "cite"
+    Attr_Color                    -> "color"
+    Attr_Cols                     -> "cols"
+    Attr_Colspan                  -> "colspan"
+    Attr_Command                  -> "command"
+    Attr_CommandFor               -> "commandfor"
+    Attr_Content                  -> "content"
+    Attr_Controls                 -> "controls"
+    Attr_ControlsList             -> "controlslist"
+    Attr_Coords                   -> "coords"
+    Attr_CrossOrigin              -> "crossorigin"
+    Attr_Data                     -> "data"
+    Attr_Datetime                 -> "datetime"
+    Attr_Decoding                 -> "decoding"
+    Attr_Default                  -> "default"
+    Attr_Defer                    -> "defer"
+    Attr_Dirname                  -> "dirname"
+    Attr_Disabled                 -> "disabled"
+    Attr_DisablePictureInPicture  -> "disablepictureinpicture"
+    Attr_DisableRemotePlayback    -> "disabled"
+    Attr_Download                 -> "download"
+    Attr_ElementTiming            -> "elementtiming"
+    Attr_Enctype                  -> "enctype"
+    Attr_FetchPriority            -> "fetchpriority"
+    Attr_For                      -> "for"
+    Attr_Form                     -> "form"
+    Attr_FormAction               -> "formaction"
+    Attr_FormEnctype              -> "formenctype"
+    Attr_FormMethod               -> "formmethod"
+    Attr_FormNoValidate           -> "formnovalidate"
+    Attr_FormTarget               -> "formtarget"
+    Attr_Headers                  -> "headers"
+    Attr_Height                   -> "height"
+    Attr_High                     -> "high"
+    Attr_Href                     -> "href"
+    Attr_HrefLang                 -> "hreflang"
+    Attr_HttpEquiv                -> "http-equiv"
+    Attr_ImageSizes               -> "imagesizes"
+    Attr_ImageSrcset              -> "imagesrcset"
+    Attr_Integrity                -> "integrity"
+    Attr_IsMap                    -> "ismap"
+    Attr_Kind                     -> "kind"
+    Attr_Label                    -> "label"
+    Attr_List                     -> "list"
+    Attr_Loading                  -> "loading"
+    Attr_Loop                     -> "loop"
+    Attr_Low                      -> "low"
+    Attr_Max                      -> "max"
+    Attr_MaxLength                -> "maxlength"
+    Attr_MinLength                -> "minlength"
+    Attr_Media                    -> "media"
+    Attr_Method                   -> "method"
+    Attr_Min                      -> "min"
+    Attr_Multiple                 -> "multiple"
+    Attr_Muted                    -> "muted"
+    Attr_Name                     -> "name"
+    Attr_NoModule                 -> "nomodule"
+    Attr_NoValidate               -> "novalidate"
+    Attr_Open                     -> "open"
+    Attr_Optimum                  -> "optimum"
+    Attr_Pattern                  -> "pattern"
+    Attr_Ping                     -> "ping"
+    Attr_Placeholder              -> "placeholder"
+    Attr_PlaysInline              -> "playsinline"
+    Attr_PopoverTarget            -> "popovertarget"
+    Attr_PopoverTargetAction      -> "popovertargetaction"
+    Attr_Poster                   -> "poster"
+    Attr_Preload                  -> "preload"
+    Attr_ReadOnly                 -> "readonly"
+    Attr_ReferrerPolicy           -> "referrerpolicy"
+    Attr_Rel                      -> "rel"
+    Attr_Required                 -> "required"
+    Attr_Reversed                 -> "reversed"
+    Attr_Rows                     -> "rows"
+    Attr_Rowspan                  -> "rowspan"
+    Attr_Sandbox                  -> "sandbox"
+    Attr_Scope                    -> "scope"
+    Attr_Selected                 -> "selected"
+    Attr_ShadowRootMode           -> "shadowrootmode"
+    Attr_ShadowRootDelegatesFocus -> "shadowrootdelegatesfocus"
+    Attr_ShadowRootClonable       -> "shadowrootclonable"
+    Attr_Shape                    -> "shape"
+    Attr_Size                     -> "size"
+    Attr_Sizes                    -> "sizes"
+    Attr_Span                     -> "span"
+    Attr_Src                      -> "src"
+    Attr_SrcDoc                   -> "srcdoc"
+    Attr_SrcLang                  -> "srclang"
+    Attr_SrcSet                   -> "srcset"
+    Attr_Start                    -> "start"
+    Attr_Step                     -> "step"
+    Attr_Target                   -> "target"
+    Attr_Type                     -> "type"
+    Attr_UseMap                   -> "usemap"
+    Attr_Value                    -> "value"
+    Attr_Width                    -> "width"
+    Attr_Wrap                     -> "wrap"
+    Attr_XMLNS                    -> "xmlns"
+    Attr_Aria aria -> Aria.ariaAttributeToBytesBuilder aria
+    Attr_On event -> eventAttributeToBytesBuilder event
+    Attr_HxGet         -> "hx-get"
+    Attr_HxPost        -> "hx-post"
+    Attr_HxOn event    -> "hx-on" <> Render.textToBytesBuilder event
+    Attr_HxPushURL     -> "hx-push-url"
+    Attr_HxSelect      -> "hx-select"
+    Attr_HxSelectOOB   -> "hx-select-oob"
+    Attr_HxSwap        -> "hx-swap"
+    Attr_HxSwapOOB     -> "hx-swap-oob"
+    Attr_HxTarget      -> "hx-target"
+    Attr_HxTrigger     -> "hx-trigger"
+    Attr_HxVals        -> "hx-vals"
+    Attr_HxBoost       -> "hx-boost"
+    Attr_HxConfirm     -> "hx-confirm"
+    Attr_HxDelete      -> "hx-delete"
+    Attr_HxDisable     -> "hx-disable"
+    Attr_HxDisabledElt -> "hx-disabled-elt"
+    Attr_HxDisinherit  -> "hx-disinherit"
+    Attr_HxEncoding    -> "hx-encoding"
+    Attr_HxExt         -> "hx-ext"
+    Attr_HxHeaders     -> "hx-headers"
+    Attr_HxHistory     -> "hx-history"
+    Attr_HxHistoryElt  -> "hx-historyElt"
+    Attr_HxInclude     -> "hx-include"
+    Attr_HxIndicator   -> "hx-indicator"
+    Attr_HxParams      -> "hx-params"
+    Attr_HxPatch       -> "hx-patch"
+    Attr_HxPreserve    -> "hx-preserve"
+    Attr_HxPrompt      -> "hx-prompt"
+    Attr_HxPut         -> "hx-put"
+    Attr_HxReplaceURL  -> "hx-replace-url"
+    Attr_HxRequest     -> "hx-request"
+    Attr_HxSync        -> "hx-sync"
+    Attr_HxValidate    -> "hx-validate"
+    Attr_HyperScript -> "_"
+
+attributeSelectorToBytesBuilder :: AttributeSelector -> Builder
+attributeSelectorToBytesBuilder (attr, mbVal) =
+  mconcat
+    [ "["
+    , attributeTypeToBytesBuilder attr
+    , maybe "" (\v -> "='" <> Render.textToBytesBuilder v <> "'") mbVal
+    , "]"
+    ]
+
+elementSelectorToBytesBuilder :: ElementSelector -> Builder
+elementSelectorToBytesBuilder element =
+  mconcat
+    [ elementTypeToBytesBuilder $ elementSelectorType element
+    , maybe "" attributeSelectorToBytesBuilder $ elementSelectorAttr element
+    , foldMap CS.classSelectorToBytesBuilder $ elementSelectorClasses element
+    , maybe
+        ""
+        ((" " <>) . elementSelectorToBytesBuilder)
+        (elementSelectorChild element)
+    ]
+
+swapToBytesBuilder :: Swap -> Builder
+swapToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @SwapModifier swapModifierToBytesBuilder
+      . Shrubbery.branch @None (("show:" <>) . noneToBytesBuilder)
+      . Shrubbery.branch @RawSwap rawSwapToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unSwap
+
+swapModifierToBytesBuilder :: SwapModifier -> Builder
+swapModifierToBytesBuilder swapModifier =
+  Render.foldToBytesBuilderWithSeparator id " "
+    . catMaybes
+    $ [ Just . swapStyleToBytesBuilder $ swapModifierStrategy swapModifier
+      , ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @SwapTransition (Just . swapTransitionToBytesBuilder)
+            . Shrubbery.branch @SwapTiming (Just . swapTimingToBytesBuilder)
+            . Shrubbery.branch @IgnoreTitle (Just . ignoreTitleToBytesBuilder)
+            . Shrubbery.branch @SwapDisplay (Just . swapDisplayToBytesBuilder)
+            . Shrubbery.branch @FocusScroll (Just . focusScrollToBytesBuilder)
+            . Shrubbery.branch @NoModifier (const Nothing)
+            $ Shrubbery.branchEnd
+        ) $ swapModifierModifier swapModifier
+      ]
+
+swapDisplayTypeToBytesBuilder :: SwapDisplayType -> Builder
+swapDisplayTypeToBytesBuilder displayType =
+  case displayType of
+    ScrollTo -> "scroll"
+    Show     -> "show"
+
+swapDisplayViewToBytesBuilder :: SwapDisplayView -> Builder
+swapDisplayViewToBytesBuilder view =
+  case view of
+    SwapTop    -> "top"
+    SwapBottom -> "bottom"
+
+swapDisplayToBytesBuilder :: SwapDisplay -> Builder
+swapDisplayToBytesBuilder display =
+  Render.foldToBytesBuilderWithSeparator id ":"
+    . catMaybes
+    $ [ Just . swapDisplayTypeToBytesBuilder $ swapDisplayType display
+      , ( Shrubbery.dissect
+            . Shrubbery.branchBuild
+            . Shrubbery.branch @QuerySelector querySelectorToBytesBuilder
+            . Shrubbery.branch @Window windowToBytesBuilder
+            $ Shrubbery.branchEnd
+        ) <$> swapDisplayTarget display
+      , Just . swapDisplayViewToBytesBuilder $ swapDisplayView display
+      ]
+
+rawSwapToBytesBuilder :: RawSwap -> Builder
+rawSwapToBytesBuilder =
+  TE.encodeUtf8Builder . rawSwapToText
+
+swapSelectorToBytesBuilder :: SwapSelector -> Builder
+swapSelectorToBytesBuilder swap =
+  mconcat
+    [ swapStyleToBytesBuilder $ swapSelectorStrategy swap
+    , ":"
+    , querySelectorToBytesBuilder $ swapSelectorQuery swap
+    ]
+
+selectSwapToBytesBuilder :: SwapSelector -> Builder
+selectSwapToBytesBuilder swap =
+  mconcat
+    [ querySelectorToBytesBuilder $ swapSelectorQuery swap
+    , ":"
+    , swapStyleToBytesBuilder $ swapSelectorStrategy swap
+    ]
+
+outOfBandSelectToBytesBuilder :: OutOfBandSelect -> Builder
+outOfBandSelectToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @QuerySelector querySelectorToBytesBuilder
+      . Shrubbery.branch @SwapSelector swapSelectorToBytesBuilder
+      . Shrubbery.branch @RawSelector rawSelectorToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unOutOfBandSelect
+
+outOfBandSwapToBytesBuilder :: OutOfBandSwap -> Builder
+outOfBandSwapToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @SwapStyle swapStyleToBytesBuilder
+      . Shrubbery.branch @SwapSelector swapSelectorToBytesBuilder
+      . Shrubbery.branch @RawSelector rawSelectorToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unOutOfBandSwap
+
+disabledSelectorToBytesBuilder :: DisabledSelector -> Builder
+disabledSelectorToBytesBuilder =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @This thisToBytesBuilder
+     . Shrubbery.branch @QuerySelector querySelectorToBytesBuilder
+     . Shrubbery.branch @TargetSelector targetSelectorToBytesBuilder
+     $ Shrubbery.branchEnd
+  ) . unDisabledSelector
+
+includeSelectorToBytesBuilder :: IncludeSelector -> Builder
+includeSelectorToBytesBuilder =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @This thisToBytesBuilder
+     . Shrubbery.branch @QuerySelector querySelectorToBytesBuilder
+     . Shrubbery.branch @TargetSelector targetSelectorToBytesBuilder
+     $ Shrubbery.branchEnd
+  ) . unIncludeSelector
+
+indicatorToBytesBuilder :: Indicator -> Builder
+indicatorToBytesBuilder =
+  ( Shrubbery.dissect
+     . Shrubbery.branchBuild
+     . Shrubbery.branch @QuerySelector querySelectorToBytesBuilder
+     . Shrubbery.branch @TargetSelector targetSelectorToBytesBuilder
+     $ Shrubbery.branchEnd
+  ) . unIndicator
+
+hxTargetToBytesBuilder :: HxTarget -> Builder
+hxTargetToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @QuerySelector querySelectorToBytesBuilder
+      . Shrubbery.branch @TargetSelector targetSelectorToBytesBuilder
+      . Shrubbery.branch @TargetType targetTypeToBytesBuilder
+      . Shrubbery.branch @This thisToBytesBuilder
+      . Shrubbery.branch @RawSelector rawSelectorToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unHxTarget
+
+targetSelectorTypeToBytesBuilder :: TargetSelectorType -> Builder
+targetSelectorTypeToBytesBuilder selectorType =
+  case selectorType of
+    TargetSelector_Closest  -> "closest"
+    TargetSelector_Find     -> "find"
+    TargetSelector_Next     -> "next"
+    TargetSelector_Previous -> "previous"
+
+targetSelectorToBytesBuilder :: TargetSelector -> Builder
+targetSelectorToBytesBuilder selector =
+  targetSelectorTypeToBytesBuilder (targetSelectorType selector)
+    <> " "
+    <> querySelectorToBytesBuilder (targetSelectorQuery selector)
+
+targetSelectorToWrappedBytesBuilder :: TargetSelector -> Builder
+targetSelectorToWrappedBytesBuilder selector =
+  targetSelectorTypeToBytesBuilder (targetSelectorType selector)
+    <> " ("
+    <> querySelectorToBytesBuilder (targetSelectorQuery selector)
+    <> ")"
+
+triggerToBytesBuilder :: Trigger -> Builder
+triggerToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Every everyToBytesBuilder
+      . Shrubbery.branch @TriggerEvent triggerEventToBytesBuilder
+      . Shrubbery.branch @CustomTrigger customTriggerToBytesBuilder
+      . Shrubbery.branch @RawTrigger rawTriggerToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unTrigger
+
+triggerEventToBytesBuilder :: TriggerEvent -> Builder
+triggerEventToBytesBuilder event =
+  Render.foldToBytesBuilderWithSeparator id " "
+    . catMaybes
+    $ [ Just
+          . ( Shrubbery.dissect
+                . Shrubbery.branchBuild
+                . Shrubbery.branch @Event.Event Event.eventToBytesBuilder
+                . Shrubbery.branch @Event.TriggerLoad Event.triggerLoadToBytesBuilder
+                . Shrubbery.branch @Event.TriggerRevealed Event.triggerRevealedToBytesBuilder
+                . Shrubbery.branch @Intersect intersectToBytesBuilder
+                $ Shrubbery.branchEnd
+            )
+          $ triggerEventType event
+      , triggerFilterToBytesBuilder <$> triggerEventFilter event
+      , fmap (Render.foldToBytesBuilderWithSeparator id " " . fmap triggerModifierToBytesBuilder . NEL.toList)
+          . NEL.nonEmpty
+          $ triggerEventModifiers event
+      ]
+
+intersectToBytesBuilder :: Intersect -> Builder
+intersectToBytesBuilder =
+  ("intersect " <>)
+    . ( Shrubbery.dissect
+          . Shrubbery.branchBuild
+          . Shrubbery.branch @Root rootToBytesBuilder
+          . Shrubbery.branch @Threshold thresholdToBytesBuilder
+          $ Shrubbery.branchEnd
+      )
+    . unIntersect
+
+rootToBytesBuilder :: Root -> Builder
+rootToBytesBuilder =
+  ("root:" <>) . querySelectorToWrappedBytesBuilder . unRoot
+
+triggerModifierToBytesBuilder :: TriggerModifier -> Builder
+triggerModifierToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @Once onceToBytesBuilder
+      . Shrubbery.branch @Changed changedToBytesBuilder
+      . Shrubbery.branch @Delay delayToBytesBuilder
+      . Shrubbery.branch @Throttle throttleToBytesBuilder
+      . Shrubbery.branch @TriggerFrom triggerFromToBytesBuilder
+      . Shrubbery.branch @TriggerTarget triggerTargetToBytesBuilder
+      . Shrubbery.branch @Consume consumeToBytesBuilder
+      . Shrubbery.branch @QueueOption queueOptionToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unTriggerModifier
+
+triggerFromToBytesBuilder :: TriggerFrom -> Builder
+triggerFromToBytesBuilder =
+  ("from:" <>)
+    . ( Shrubbery.dissect
+          . Shrubbery.branchBuild
+          . Shrubbery.branch @QuerySelector querySelectorToWrappedBytesBuilder
+          . Shrubbery.branch @Document documentToBytesBuilder
+          . Shrubbery.branch @Window windowToBytesBuilder
+          . Shrubbery.branch @TargetSelector targetSelectorToWrappedBytesBuilder
+          $ Shrubbery.branchEnd
+      )
+    . unTriggerFrom
+
+triggerTargetToBytesBuilder :: TriggerTarget -> Builder
+triggerTargetToBytesBuilder =
+  ("target:" <>) . querySelectorToWrappedBytesBuilder . unTriggerTarget
+
+customTriggerToBytesBuilder :: CustomTrigger -> Builder
+customTriggerToBytesBuilder =
+  TE.encodeUtf8Builder . customTriggerToText
+
+rawTriggerToBytesBuilder :: RawTrigger -> Builder
+rawTriggerToBytesBuilder =
+  TE.encodeUtf8Builder . rawTriggerToText
 
 -- Helpers
 --

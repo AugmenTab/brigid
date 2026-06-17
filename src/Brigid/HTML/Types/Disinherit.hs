@@ -8,6 +8,7 @@ module Brigid.HTML.Types.Disinherit
   , mkDisinherit
   , unDisinherit
   , disinheritToBytes
+  , disinheritToBytesBuilder
   , disinheritToText
   , DisinheritAll (DisinheritAll)
   , InheritableHTMX
@@ -33,9 +34,11 @@ module Brigid.HTML.Types.Disinherit
       , HxVals
       )
   , inheritableHTMXToBytes
+  , inheritableHTMXToBytesBuilder
   , inheritableHTMXToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
@@ -43,6 +46,8 @@ import Data.Text qualified as T
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
+
+import Brigid.Internal.Render qualified as Render
 
 newtype Disinherit =
   Disinherit
@@ -70,6 +75,16 @@ disinheritToBytes =
       $ Shrubbery.branchEnd
   ) . unDisinherit
 
+disinheritToBytesBuilder :: Disinherit -> Builder
+disinheritToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @DisinheritAll disinheritAllToBytesBuilder
+      . Shrubbery.branch @(NEL.NonEmpty InheritableHTMX)
+          (Render.foldToBytesBuilderWithSeparator inheritableHTMXToBytesBuilder " " . NEL.toList)
+      $ Shrubbery.branchEnd
+  ) . unDisinherit
+
 disinheritToText :: Disinherit -> T.Text
 disinheritToText =
   ( Shrubbery.dissect
@@ -84,6 +99,9 @@ data DisinheritAll = DisinheritAll
 
 disinheritAllToBytes :: DisinheritAll -> LBS.ByteString
 disinheritAllToBytes = const "*"
+
+disinheritAllToBytesBuilder :: DisinheritAll -> Builder
+disinheritAllToBytesBuilder = const "*"
 
 disinheritAllToText :: DisinheritAll -> T.Text
 disinheritAllToText = const "*"
@@ -113,6 +131,30 @@ data InheritableHTMX
 
 inheritableHTMXToBytes :: InheritableHTMX -> LBS.ByteString
 inheritableHTMXToBytes htmx =
+  case htmx of
+    HxBoost      -> "hx-boost"
+    HxConfirm    -> "hx-confirm"
+    HxDisable    -> "hx-disable"
+    HxDisableElt -> "hx-disable-elt"
+    HxEncoding   -> "hx-encoding"
+    HxExt        -> "hx-ext"
+    HxHeaders    -> "hx-headers"
+    HxInclude    -> "hx-include"
+    HxIndicator  -> "hx-indicator"
+    HxParams     -> "hx-params"
+    HxPrompt     -> "hx-prompt"
+    HxPushURL    -> "hx-push-url"
+    HxReplaceURL -> "hx-replace-url"
+    HxRequest    -> "hx-request"
+    HxSelect     -> "hx-select"
+    HxSelectOOB  -> "hx-select-oob"
+    HxSwap       -> "hx-swap"
+    HxSync       -> "hx-swap"
+    HxTarget     -> "hx-target"
+    HxVals       -> "hx-vals"
+
+inheritableHTMXToBytesBuilder :: InheritableHTMX -> Builder
+inheritableHTMXToBytesBuilder htmx =
   case htmx of
     HxBoost      -> "hx-boost"
     HxConfirm    -> "hx-confirm"

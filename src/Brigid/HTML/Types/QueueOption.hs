@@ -6,9 +6,11 @@ module Brigid.HTML.Types.QueueOption
       , QueueNone
       )
   , queueOptionToBytes
+  , queueOptionToBytesBuilder
   , queueOptionToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -21,6 +23,15 @@ data QueueOption
 
 queueOptionToBytes :: QueueOption -> LBS.ByteString
 queueOptionToBytes queueOption =
+  "queue:" <>
+    case queueOption of
+      QueueFirst -> "first"
+      QueueLast  -> "last"
+      QueueAll   -> "all"
+      QueueNone  -> "none"
+
+queueOptionToBytesBuilder :: QueueOption -> Builder
+queueOptionToBytesBuilder queueOption =
   "queue:" <>
     case queueOption of
       QueueFirst -> "first"

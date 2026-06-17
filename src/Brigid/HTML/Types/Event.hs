@@ -8,8 +8,10 @@ module Brigid.HTML.Types.Event
   , unEvent
   , EventTypes
   , eventToBytes
+  , eventToBytesBuilder
   , eventToText
   , hxOnEventBytes
+  , hxOnEventBytesBuilder
   , hxOnEventText
   , HTMLEvent
       ( ClickEvent
@@ -64,6 +66,7 @@ module Brigid.HTML.Types.Event
       , CompositionEndEvent
       )
   , htmlEventToBytes
+  , htmlEventToBytesBuilder
   , htmlEventToText
   , TouchEvent
       ( TouchStart
@@ -74,6 +77,7 @@ module Brigid.HTML.Types.Event
       , TouchCancel
       )
   , touchEventToBytes
+  , touchEventToBytesBuilder
   , touchEventToText
   , HtmxEvent
       ( HtmxAbort
@@ -120,15 +124,19 @@ module Brigid.HTML.Types.Event
       ,  HtmxXHRProgress
       )
   , htmxEventToBytes
+  , htmxEventToBytesBuilder
   , htmxEventToText
   , TriggerLoad (TriggerLoad)
   , triggerLoadToBytes
+  , triggerLoadToBytesBuilder
   , triggerLoadToText
   , TriggerRevealed (TriggerRevealed)
   , triggerRevealedToBytes
+  , triggerRevealedToBytesBuilder
   , triggerRevealedToText
   ) where
 
+import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
@@ -163,6 +171,16 @@ eventToBytes =
       $ Shrubbery.branchEnd
   ) . unEvent
 
+eventToBytesBuilder :: Event -> Builder
+eventToBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HTMLEvent htmlEventToBytesBuilder
+      . Shrubbery.branch @TouchEvent touchEventToBytesBuilder
+      . Shrubbery.branch @HtmxEvent htmxEventToBytesBuilder
+      $ Shrubbery.branchEnd
+  ) . unEvent
+
 eventToText :: Event -> T.Text
 eventToText =
   ( Shrubbery.dissect
@@ -180,6 +198,16 @@ hxOnEventBytes =
       . Shrubbery.branch @HTMLEvent (LBS8.cons '-' . htmlEventToBytes)
       . Shrubbery.branch @TouchEvent (LBS8.cons '-' . touchEventToBytes)
       . Shrubbery.branch @HtmxEvent (("--" <>) . htmxEventToBytes)
+      $ Shrubbery.branchEnd
+  ) . unEvent
+
+hxOnEventBytesBuilder :: Event -> Builder
+hxOnEventBytesBuilder =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @HTMLEvent (("-" <>) . htmlEventToBytesBuilder)
+      . Shrubbery.branch @TouchEvent (("-" <>) . touchEventToBytesBuilder)
+      . Shrubbery.branch @HtmxEvent (("--" <>) . htmxEventToBytesBuilder)
       $ Shrubbery.branchEnd
   ) . unEvent
 
@@ -248,6 +276,60 @@ data HTMLEvent
 
 htmlEventToBytes :: HTMLEvent -> LBS.ByteString
 htmlEventToBytes event =
+  case event of
+    ClickEvent             -> "click"
+    DblClickEvent          -> "dblclick"
+    MouseDownEvent         -> "mousedown"
+    MouseUpEvent           -> "mouseup"
+    MouseOverEvent         -> "mouseover"
+    MouseMoveEvent         -> "mousemove"
+    MouseOutEvent          -> "mouseout"
+    DragStartEvent         -> "dragstart"
+    DragEvent              -> "drag"
+    DragEnterEvent         -> "dragenter"
+    DragLeaveEvent         -> "dragleave"
+    DragOverEvent          -> "dragover"
+    DropEvent              -> "drop"
+    DragEndEvent           -> "dragend"
+    KeyDownEvent           -> "keydown"
+    KeyPressEvent          -> "keypress"
+    KeyUpEvent             -> "keyup"
+    LoadEvent              -> "load"
+    LoadEndEvent           -> "loadend"
+    LoadStartEvent         -> "loadstart"
+    AbortEvent             -> "abort"
+    ErrorEvent             -> "error"
+    ResizeEvent            -> "resize"
+    ScrollEvent            -> "scroll"
+    SelectEvent            -> "select"
+    ChangeEvent            -> "change"
+    SubmitEvent            -> "submit"
+    ResetEvent             -> "reset"
+    FocusEvent             -> "focus"
+    BlurEvent              -> "blur"
+    FocusInEvent           -> "focusin"
+    FocusOutEvent          -> "focusout"
+    ProgressEvent          -> "progress"
+    InputEvent             -> "input"
+    BeforeInputEvent       -> "beforeinput"
+    InvalidEvent           -> "invalid"
+    PointerDownEvent       -> "pointerdown"
+    PointerUpEvent         -> "pointerup"
+    PointerMoveEvent       -> "pointermove"
+    PointerEnterEvent      -> "pointerenter"
+    PointerLeaveEvent      -> "pointerleave"
+    PointerOverEvent       -> "pointerover"
+    PointerOutEvent        -> "pointerout"
+    PointerCancelEvent     -> "pointercancel"
+    WheelEvent             -> "wheel"
+    ContextMenuEvent       -> "contextmenu"
+    AuxClickEvent          -> "auxclick"
+    CompositionStartEvent  -> "compositionstart"
+    CompositionUpdateEvent -> "compositionupdate"
+    CompositionEndEvent    -> "compositionend"
+
+htmlEventToBytesBuilder :: HTMLEvent -> Builder
+htmlEventToBytesBuilder event =
   case event of
     ClickEvent             -> "click"
     DblClickEvent          -> "dblclick"
@@ -373,6 +455,16 @@ touchEventToBytes event =
     TouchLeave  -> "touchleave"
     TouchCancel -> "touchcancel"
 
+touchEventToBytesBuilder :: TouchEvent -> Builder
+touchEventToBytesBuilder event =
+  case event of
+    TouchStart  -> "touchstart"
+    TouchEnd    -> "touchend"
+    TouchMove   -> "touchmove"
+    TouchEnter  -> "touchenter"
+    TouchLeave  -> "touchleave"
+    TouchCancel -> "touchcancel"
+
 touchEventToText :: TouchEvent -> T.Text
 touchEventToText event =
   case event of
@@ -474,6 +566,52 @@ htmxEventToBytes event =
     HtmxXHRLoadStart          -> "xhr-loadstart"
     HtmxXHRProgress           -> "xhr-progress"
 
+htmxEventToBytesBuilder :: HtmxEvent -> Builder
+htmxEventToBytesBuilder event =
+  case event of
+    HtmxAbort                 -> "abort"
+    HtmxAfterOnLoad           -> "after-on-load"
+    HtmxAfterProcessNode      -> "after-process-node"
+    HtmxAfterRequest          -> "after-request"
+    HtmxAfterSettle           -> "after-settle"
+    HtmxAfterSwap             -> "after-swap"
+    HtmxBeforeCleanupElement  -> "before-cleanup-element"
+    HtmxBeforeOnLoad          -> "before-on-load"
+    HtmxBeforeProcessNode     -> "before-process-node"
+    HtmxBeforeRequest         -> "before-request"
+    HtmxBeforeSwap            -> "before-swap"
+    HtmxBeforeSend            -> "before-send"
+    HtmxConfigRequest         -> "config-request"
+    HtmxConfirm               -> "confirm"
+    HtmxHistoryCacheError     -> "history-cache-error"
+    HtmxHistoryCacheMiss      -> "history-cache-miss"
+    HtmxHistoryCacheMissError -> "history-cache-miss-error"
+    HtmxHistoryCacheMissLoad  -> "history-cache-miss-load"
+    HtmxHistoryRestore        -> "history-restore"
+    HtmxBeforeHistorySave     -> "before-history-save"
+    HtmxLoad                  -> "load"
+    HtmxNoSSESourceError      -> "no-sse-source-error"
+    HtmxOnLoadError           -> "on-load-error"
+    HtmxOOBAfterSwap          -> "oob-after-swap"
+    HtmxOOBBeforeSwap         -> "oob-before-swap"
+    HtmxOOBErrorNoTarget      -> "oob-error-no-target"
+    HtmxPrompt                -> "prompt"
+    HtmxPushedIntoHistory     -> "pushed-into-history"
+    HtmxResponseError         -> "response-error"
+    HtmxSendError             -> "send-error"
+    HtmxSSEError              -> "sse-error"
+    HtmxSSEOpen               -> "sse-open"
+    HtmxSwapError             -> "swap-error"
+    HtmxTargetError           -> "target-error"
+    HtmxTimeout               -> "timeout"
+    HtmxValidate              -> "validation-validate"
+    HtmxValidationFailed      -> "validation-failed"
+    HtmxValidationHalted      -> "validation-halted"
+    HtmxXHRAbort              -> "xhr-abort"
+    HtmxXHRLoadEnd            -> "xhr-loadend"
+    HtmxXHRLoadStart          -> "xhr-loadstart"
+    HtmxXHRProgress           -> "xhr-progress"
+
 htmxEventToText :: HtmxEvent -> T.Text
 htmxEventToText event =
   case event of
@@ -526,6 +664,9 @@ data TriggerLoad = TriggerLoad
 triggerLoadToBytes :: TriggerLoad -> LBS.ByteString
 triggerLoadToBytes = const "load"
 
+triggerLoadToBytesBuilder :: TriggerLoad -> Builder
+triggerLoadToBytesBuilder = const "load"
+
 triggerLoadToText :: TriggerLoad -> T.Text
 triggerLoadToText = const "load"
 
@@ -534,6 +675,9 @@ data TriggerRevealed = TriggerRevealed
 
 triggerRevealedToBytes :: TriggerRevealed -> LBS.ByteString
 triggerRevealedToBytes = const "revealed"
+
+triggerRevealedToBytesBuilder :: TriggerRevealed -> Builder
+triggerRevealedToBytesBuilder = const "revealed"
 
 triggerRevealedToText :: TriggerRevealed -> T.Text
 triggerRevealedToText = const "revealed"
