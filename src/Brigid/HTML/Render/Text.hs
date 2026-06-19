@@ -10,11 +10,10 @@ import Prelude hiding (id, max, min, span)
 import Data.Bool qualified as B
 import Data.List qualified as L
 import Data.List.NonEmpty qualified as NEL
-import Data.Maybe (mapMaybe)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
-import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
+import Data.Text.Builder.Linear (Builder, fromText, runBuilder)
 import Ogma qualified
 import Shrubbery qualified
 
@@ -28,16 +27,16 @@ import Brigid.Types qualified as Types
 import Brigid.Types.URL (RelativeURL(..))
 
 renderHTML :: ChildHTML parent grandparent -> T.Text
-renderHTML = TL.toStrict . renderLazyHTML
+renderHTML = runBuilder . renderTag
 
 renderLazyHTML :: ChildHTML parent grandparent -> TL.Text
-renderLazyHTML = toLazyText . renderTag
+renderLazyHTML = TL.fromStrict . runBuilder . renderTag
 
 renderTag :: ChildHTML parent grandparent -> Builder
 renderTag html =
   case html of
     Tag_NoElement ->
-      fromText T.empty
+      mempty
 
     Tag_Comment comment ->
       fromText "<!-- " <> fromText comment <> fromText " -->"
@@ -481,33 +480,23 @@ buildTag tag attrs eiCloserOrContent =
 
 buildVoidTag :: T.Text -> [Attribute tag] -> Types.NoContent -> Builder
 buildVoidTag tag attrs closer =
-  mconcat
-    [ fromText "<"
-    , fromText tag
-    , fromText . B.bool " " T.empty $ L.null attrs
-    , mconcat
-        . L.intersperse (fromText " ")
-        $ mapMaybe renderAttribute attrs
-    , case closer of
-        Types.OmitTag -> fromText "/>"
-        Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
-    ]
+  fromText "<"
+    <> fromText tag
+    <> foldMap (\attr -> maybe mempty (fromText " " <>) (renderAttribute attr)) attrs
+    <> case closer of
+         Types.OmitTag -> fromText "/>"
+         Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
 
 buildContentTag :: T.Text -> [Attribute tag] -> [ChildHTML parent grandparent] -> Builder
 buildContentTag tag attrs children =
-  mconcat
-    [ fromText "<"
-    , fromText tag
-    , fromText . B.bool " " T.empty $ L.null attrs
-    , mconcat
-        . L.intersperse (fromText " ")
-        $ mapMaybe renderAttribute attrs
-    , fromText ">"
-    , foldMap renderTag children
-    , fromText "</"
-    , fromText tag
-    , fromText ">"
-    ]
+  fromText "<"
+    <> fromText tag
+    <> foldMap (\attr -> maybe mempty (fromText " " <>) (renderAttribute attr)) attrs
+    <> fromText ">"
+    <> foldMap renderTag children
+    <> fromText "</"
+    <> fromText tag
+    <> fromText ">"
 
 renderAttribute :: Attribute any -> Maybe Builder
 renderAttribute attr =

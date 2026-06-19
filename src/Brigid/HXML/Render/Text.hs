@@ -7,12 +7,9 @@ module Brigid.HXML.Render.Text
   ) where
 
 import Prelude hiding (id)
-import Data.Bool qualified as B
-import Data.List qualified as L
-import Data.Maybe (mapMaybe)
 import Data.Text qualified as T
 import Data.Text.Lazy qualified as TL
-import Data.Text.Lazy.Builder (Builder, fromText, toLazyText)
+import Data.Text.Builder.Linear (Builder, fromText, runBuilder)
 
 import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
@@ -22,16 +19,16 @@ import Brigid.Internal.Render qualified as Render
 import Brigid.Types qualified as Types
 
 renderHXML :: ChildHXML parent -> T.Text
-renderHXML = TL.toStrict . renderLazyHXML
+renderHXML = runBuilder . renderTag
 
 renderLazyHXML :: ChildHXML parent -> TL.Text
-renderLazyHXML = toLazyText . renderTag
+renderLazyHXML = TL.fromStrict . runBuilder . renderTag
 
 renderTag :: ChildHXML parent -> Builder
 renderTag hxml =
   case hxml of
     Tag_NoElement ->
-      fromText T.empty
+      mempty
 
     Tag_Comment comment ->
       fromText "<!-- " <> fromText comment <> fromText " -->"
@@ -152,33 +149,23 @@ buildTag tag attrs eiCloserOrContent =
 
 buildVoidTag :: T.Text -> [Attribute tag] -> Types.NoContent -> Builder
 buildVoidTag tag attrs closer =
-  mconcat
-    [ fromText "<"
-    , fromText tag
-    , fromText . B.bool " " T.empty $ L.null attrs
-    , mconcat
-        . L.intersperse (fromText " ")
-        $ mapMaybe renderAttribute attrs
-    , case closer of
-        Types.OmitTag -> fromText "/>"
-        Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
-    ]
+  fromText "<"
+    <> fromText tag
+    <> foldMap (\attr -> maybe mempty (fromText " " <>) (renderAttribute attr)) attrs
+    <> case closer of
+         Types.OmitTag -> fromText "/>"
+         Types.WithTag -> fromText ">" <> fromText "</" <> fromText tag <> fromText ">"
 
 buildContentTag :: T.Text -> [Attribute tag] -> [ChildHXML parent] -> Builder
 buildContentTag tag attrs children =
-  mconcat
-    [ fromText "<"
-    , fromText tag
-    , fromText . B.bool " " T.empty $ L.null attrs
-    , mconcat
-        . L.intersperse (fromText " ")
-        $ mapMaybe renderAttribute attrs
-    , fromText ">"
-    , foldMap renderTag children
-    , fromText "</"
-    , fromText tag
-    , fromText ">"
-    ]
+  fromText "<"
+    <> fromText tag
+    <> foldMap (\attr -> maybe mempty (fromText " " <>) (renderAttribute attr)) attrs
+    <> fromText ">"
+    <> foldMap renderTag children
+    <> fromText "</"
+    <> fromText tag
+    <> fromText ">"
 
 buildSelfClosingOrContentTag :: T.Text -> [Attribute tag] -> [ChildHXML parent] -> Builder
 buildSelfClosingOrContentTag tag attrs children
@@ -230,9 +217,8 @@ renderAttribute attr =
 
     Attr_ContentContainerStyle contentContainerStyle ->
       Just
-        . buildAttribute "content-container-style"
-        . Render.foldToTextWithSeparator Types.idToText " "
-        $ contentContainerStyle
+        . buildAttributeB "content-container-style"
+        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") contentContainerStyle
 
     Attr_CursorColor cursorColor ->
       Just . buildAttribute "cursorColor" $ Types.colorToText cursorColor
@@ -242,15 +228,13 @@ renderAttribute attr =
 
     Attr_FieldStyle fieldStyle ->
       Just
-        . buildAttribute "field-style"
-        . Render.foldToTextWithSeparator Types.idToText " "
-        $ fieldStyle
+        . buildAttributeB "field-style"
+        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") fieldStyle
 
     Attr_FieldTextStyle fieldTextStyle ->
       Just
-        . buildAttribute "field-text-style"
-        . Render.foldToTextWithSeparator Types.idToText " "
-        $ fieldTextStyle
+        . buildAttributeB "field-text-style"
+        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") fieldTextStyle
 
     Attr_Focused focused ->
       Just . buildAttribute "focused" $ Render.enumBoolToText focused
@@ -310,15 +294,13 @@ renderAttribute attr =
 
     Attr_ModalStyle modalStyle ->
       Just
-        . buildAttribute "modal-style"
-        . Render.foldToTextWithSeparator Types.idToText " "
-        $ modalStyle
+        . buildAttributeB "modal-style"
+        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") modalStyle
 
     Attr_ModalTextStyle modalTextStyle ->
       Just
-        . buildAttribute "modal-text-style"
-        . Render.foldToTextWithSeparator Types.idToText " "
-        $ modalTextStyle
+        . buildAttributeB "modal-text-style"
+        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") modalTextStyle
 
     Attr_Multiline multiline ->
       Just . buildAttribute "multiline" $ Render.enumBoolToText multiline
@@ -405,8 +387,8 @@ renderAttribute attr =
 
     Attr_Style style ->
       Just
-        . buildAttribute "style"
-        $ Render.foldToTextWithSeparator Types.idToText " " style
+        . buildAttributeB "style"
+        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") style
 
     Attr_Type type_ ->
       Just . buildAttribute "type" $ Types.navigatorTypeToText type_
@@ -422,5 +404,9 @@ renderAttribute attr =
 
 buildAttribute :: T.Text -> T.Text -> Builder
 buildAttribute attr value =
-  fromText attr <> "=\"" <> fromText value <> fromText "\""
+  fromText attr <> fromText "=\"" <> fromText value <> fromText "\""
+
+buildAttributeB :: T.Text -> Builder -> Builder
+buildAttributeB attr value =
+  fromText attr <> fromText "=\"" <> value <> fromText "\""
 

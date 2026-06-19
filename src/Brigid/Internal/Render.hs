@@ -8,9 +8,11 @@ module Brigid.Internal.Render
   , enumBoolToText
   , foldToBytesWithSeparator
   , foldToBytesBuilderWithSeparator
+  , foldToBuilderWithSeparator
   , foldToTextWithSeparator
   , showBytes
   , showBytesBuilder
+  , showBuilder
   , showIntegerBytesBuilder
   , showText
   , textToBytes
@@ -26,6 +28,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Foldable qualified as Foldable
 import Data.List qualified as L
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 
 bytesToLazyBytes :: BS.ByteString -> LBS.ByteString
@@ -70,6 +73,17 @@ foldToBytesBuilderWithSeparator f sep items =
     []     -> mempty
     (x:xs) -> L.foldl' (\acc y -> acc <> sep <> f y) (f x) xs
 
+foldToBuilderWithSeparator :: Foldable f
+                           => (a -> TBL.Builder)
+                           -> TBL.Builder
+                           -> f a
+                           -> TBL.Builder
+{-# INLINE foldToBuilderWithSeparator #-}
+foldToBuilderWithSeparator f sep items =
+  case Foldable.toList items of
+    []     -> mempty
+    (x:xs) -> L.foldl' (\acc y -> acc <> sep <> f y) (f x) xs
+
 foldToTextWithSeparator :: Foldable f
                         => (a -> T.Text) -> T.Text -> f a -> T.Text
 foldToTextWithSeparator toText separator items =
@@ -89,6 +103,10 @@ showBytes = toLazyByteString . showBytesBuilder
 showBytesBuilder :: Show s => s -> Builder
 {-# INLINE showBytesBuilder #-}
 showBytesBuilder = stringUtf8 . show
+
+showBuilder :: Show s => s -> TBL.Builder
+{-# INLINE showBuilder #-}
+showBuilder = TBL.fromText . T.pack . show
 
 showIntegerBytesBuilder :: Integral a => a -> Builder
 {-# INLINE showIntegerBytesBuilder #-}
