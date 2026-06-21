@@ -4,9 +4,12 @@ module Brigid.Internal.Escape
   , attributeCharBytes
   , attributeCharBytesBuilder
   , attributeText
+  , attributeTextBuilder
   , attributeCharText
+  , attributeCharTextBuilder
   , escape
   , escapeBytesBuilder
+  , escapeTextBuilder
   , lazyBytesAttributeBytesBuilder
   , strictBytesAttributeBytesBuilder
   , urlByteString
@@ -19,6 +22,7 @@ import Data.ByteString.Builder.Prim qualified as BPrim
 import Data.ByteString.Builder.Prim ((>$<), (>*<))
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import Data.Word (Word8)
 import Network.HTTP.Types.URI (urlEncode)
@@ -50,12 +54,18 @@ strictBytesAttributeBytesBuilder = BPrim.primMapByteStringBounded attrEscapePrim
 attributeText :: T.Text -> T.Text
 attributeText = T.concatMap attributeCharText
 
+attributeTextBuilder :: T.Text -> TBL.Builder
+attributeTextBuilder = TBL.fromText . attributeText
+
 attributeCharText :: Char -> T.Text
 attributeCharText c =
   case c of
     '"'  -> T.pack Entity.quotationMark
     '\'' -> T.pack Entity.singleQuote
     _    -> T.singleton c
+
+attributeCharTextBuilder :: Char -> TBL.Builder
+attributeCharTextBuilder = TBL.fromText . attributeCharText
 
 escape :: T.Text -> T.Text
 escape =
@@ -90,6 +100,9 @@ attrEscapePrim =
 
 escapeBytesBuilder :: T.Text -> Builder
 escapeBytesBuilder = TE.encodeUtf8BuilderEscaped htmlEscapePrim
+
+escapeTextBuilder :: T.Text -> TBL.Builder
+escapeTextBuilder = TBL.fromText . escape
 
 urlByteString :: T.Text -> LBS.ByteString
 urlByteString = LBS.fromStrict . encodeBS
