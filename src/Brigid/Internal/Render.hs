@@ -6,6 +6,7 @@ module Brigid.Internal.Render
   , enumBoolToBytes
   , enumBoolToBytesBuilder
   , enumBoolToText
+  , enumBoolToTextBuilder
   , foldToBytesWithSeparator
   , foldToBytesBuilderWithSeparator
   , foldToBuilderWithSeparator
@@ -14,6 +15,7 @@ module Brigid.Internal.Render
   , showBytesBuilder
   , showBuilder
   , showIntegerBytesBuilder
+  , showIntegerToTextBuilder
   , showText
   , textToBytes
   , textToLazyBytes
@@ -52,6 +54,10 @@ enumBoolToBytesBuilder = B.bool "false" "true"
 
 enumBoolToText :: Bool -> T.Text
 enumBoolToText = B.bool "false" "true"
+
+enumBoolToTextBuilder :: Bool -> TBL.Builder
+{-# INLINE enumBoolToTextBuilder #-}
+enumBoolToTextBuilder = B.bool (TBL.fromText "false") (TBL.fromText "true")
 
 foldToBytesWithSeparator :: Foldable f
                          => (a -> LBS.ByteString)
@@ -111,6 +117,10 @@ showBuilder = TBL.fromText . T.pack . show
 showIntegerBytesBuilder :: Integral a => a -> Builder
 {-# INLINE showIntegerBytesBuilder #-}
 showIntegerBytesBuilder = BSB.integerDec . toInteger
+
+showIntegerToTextBuilder :: Integral a => a -> TBL.Builder
+{-# INLINE showIntegerToTextBuilder #-}
+showIntegerToTextBuilder = TBL.fromUnboundedDec
 
 showText :: Show s => s -> T.Text
 showText = T.pack . show
