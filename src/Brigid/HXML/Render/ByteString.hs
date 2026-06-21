@@ -7,12 +7,9 @@ module Brigid.HXML.Render.ByteString
   ) where
 
 import Prelude hiding (id)
-import Data.Bool qualified as B
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, string8, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.List qualified as L
-import Data.Maybe (mapMaybe)
 
 import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
@@ -152,33 +149,23 @@ buildTag tag attrs eiCloserOrContent =
 
 buildVoidTag :: Builder -> [Attribute tag] -> Types.NoContent -> Builder
 buildVoidTag tag attrs closer =
-  mconcat
-    [ "<"
-    , tag
-    , B.bool " " mempty $ L.null attrs
-    , mconcat
-        . L.intersperse " "
-        $ mapMaybe renderAttribute attrs
-    , case closer of
-        Types.OmitTag -> "/>"
-        Types.WithTag -> ">" <> "</" <> tag <> ">"
-    ]
+  "<"
+    <> tag
+    <> foldMap (\attr -> maybe mempty (" " <>) (renderAttribute attr)) attrs
+    <> case closer of
+         Types.OmitTag -> "/>"
+         Types.WithTag -> ">" <> "</" <> tag <> ">"
 
 buildContentTag :: Builder -> [Attribute tag] -> [ChildHXML parent] -> Builder
 buildContentTag tag attrs children =
-  mconcat
-    [ "<"
-    , tag
-    , B.bool " " mempty $ L.null attrs
-    , mconcat
-        . L.intersperse " "
-        $ mapMaybe renderAttribute attrs
-    , ">"
-    , foldMap renderTag children
-    , "</"
-    , tag
-    , ">"
-    ]
+  "<"
+    <> tag
+    <> foldMap (\attr -> maybe mempty (" " <>) (renderAttribute attr)) attrs
+    <> ">"
+    <> foldMap renderTag children
+    <> "</"
+    <> tag
+    <> ">"
 
 buildSelfClosingOrContentTag :: Builder -> [Attribute tag] -> [ChildHXML parent] -> Builder
 buildSelfClosingOrContentTag tag attrs children
