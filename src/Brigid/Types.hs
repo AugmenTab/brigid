@@ -6,12 +6,14 @@ module Brigid.Types
   , urlToBytes
   , urlToBytesBuilder
   , urlToText
+  , urlToTextBuilder
   , AbsoluteURL
   , mkAbsoluteURL
   , absoluteURLFromText
   , absoluteURLToBytes
   , absoluteURLToBytesBuilder
   , absoluteURLToText
+  , absoluteURLToTextBuilder
   , RelativeURL
   , get
   , post
@@ -21,17 +23,20 @@ module Brigid.Types
   , relativeURLToBytes
   , relativeURLToBytesBuilder
   , relativeURLToText
+  , relativeURLToTextBuilder
   , RawURL
   , mkRawURL
   , rawURLToBytes
   , rawURLToBytesBuilder
   , rawURLToText
+  , rawURLToTextBuilder
   , Ping
   , PingTypes
   , mkPing
   , pingToBytes
   , pingToBytesBuilder
   , pingToText
+  , pingToTextBuilder
   ) where
 
 import Brigid.Types.Conversions as Export
@@ -48,12 +53,14 @@ import Brigid.Types.URL ( URL
                         , urlToBytes
                         , urlToBytesBuilder
                         , urlToText
+                        , urlToTextBuilder
                         , AbsoluteURL
                         , mkAbsoluteURL
                         , absoluteURLFromText
                         , absoluteURLToBytes
                         , absoluteURLToBytesBuilder
                         , absoluteURLToText
+                        , absoluteURLToTextBuilder
                         , RelativeURL
                         , get
                         , post
@@ -63,15 +70,18 @@ import Brigid.Types.URL ( URL
                         , relativeURLToBytes
                         , relativeURLToBytesBuilder
                         , relativeURLToText
+                        , relativeURLToTextBuilder
                         , RawURL
                         , mkRawURL
                         , rawURLToBytes
                         , rawURLToBytesBuilder
                         , rawURLToText
+                        , rawURLToTextBuilder
                         , Ping
                         , PingTypes
                         , mkPing
                         , pingToBytes
                         , pingToBytesBuilder
                         , pingToText
+                        , pingToTextBuilder
                         )

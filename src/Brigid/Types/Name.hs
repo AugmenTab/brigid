@@ -8,6 +8,7 @@ module Brigid.Types.Name
   , nameToBytesBuilder
   , nameToNonEmptyText
   , nameToText
+  , nameToTextBuilder
   , NameOption
   , NameOptionTypes
   , mkNameOption
@@ -20,6 +21,7 @@ import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -42,6 +44,9 @@ nameToBytesBuilder = TE.encodeUtf8Builder . nameToText
 nameToText :: Name -> T.Text
 nameToText =
   NET.toText . nameToNonEmptyText
+
+nameToTextBuilder :: Name -> TBL.Builder
+nameToTextBuilder = TBL.fromText . nameToText
 
 newtype NameOption =
   NameOption (Shrubbery.Union NameOptionTypes)

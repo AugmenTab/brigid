@@ -12,12 +12,14 @@ module Brigid.Types.URL
   , urlToBytes
   , urlToBytesBuilder
   , urlToText
+  , urlToTextBuilder
   , AbsoluteURL
   , mkAbsoluteURL
   , absoluteURLFromText
   , absoluteURLToBytes
   , absoluteURLToBytesBuilder
   , absoluteURLToText
+  , absoluteURLToTextBuilder
   , RelativeURL
       ( Relative_Get
       , Relative_Post
@@ -34,17 +36,20 @@ module Brigid.Types.URL
   , relativeURLToBytes
   , relativeURLToBytesBuilder
   , relativeURLToText
+  , relativeURLToTextBuilder
   , RawURL
   , mkRawURL
   , rawURLToBytes
   , rawURLToBytesBuilder
   , rawURLToText
+  , rawURLToTextBuilder
   , Ping
   , PingTypes
   , mkPing
   , pingToBytes
   , pingToBytesBuilder
   , pingToText
+  , pingToTextBuilder
   ) where
 
 import Beeline.HTTP.Client qualified as B
@@ -55,6 +60,7 @@ import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
 import Data.Hashable (Hashable, hashUsing, hashWithSalt)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -110,6 +116,17 @@ urlToText (URL url) =
       $ Shrubbery.branchEnd
   ) url
 
+urlToTextBuilder :: URL -> TBL.Builder
+{-# INLINABLE urlToTextBuilder #-}
+urlToTextBuilder (URL url) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL       absoluteURLToTextBuilder
+      . Shrubbery.branch @(RelativeURL Get) relativeURLToTextBuilder
+      . Shrubbery.branch @RawURL            rawURLToTextBuilder
+      $ Shrubbery.branchEnd
+  ) url
+
 newtype AbsoluteURL = AbsoluteURL B.BaseURI
   deriving (Eq)
 
@@ -138,6 +155,10 @@ absoluteURLToBytesBuilder (AbsoluteURL url) =
 absoluteURLToText :: AbsoluteURL -> T.Text
 absoluteURLToText (AbsoluteURL url) =
   T.pack $ B.renderBaseURI url
+
+absoluteURLToTextBuilder :: AbsoluteURL -> TBL.Builder
+{-# INLINE absoluteURLToTextBuilder #-}
+absoluteURLToTextBuilder = TBL.fromText . absoluteURLToText
 
 data RelativeURL (method :: Method) where
   Relative_Get    :: T.Text -> RelativeURL Get
@@ -196,6 +217,9 @@ relativeURLToText url =
     Relative_Put    path -> path
     Relative_Patch  path -> path
 
+relativeURLToTextBuilder :: RelativeURL method -> TBL.Builder
+relativeURLToTextBuilder = TBL.fromText . relativeURLToText
+
 -- | This is a basic wrapper around 'T.Text'. It assumes that anything it
 -- contains is encoded as appropriate for whatever use case it finds itself in.
 -- It provides an unsafe constructor for URLs; it should be handled with care
@@ -218,6 +242,9 @@ rawURLToBytes =
 rawURLToBytesBuilder :: RawURL -> Builder
 rawURLToBytesBuilder =
   TE.encodeUtf8Builder . rawURLToText
+
+rawURLToTextBuilder :: RawURL -> TBL.Builder
+rawURLToTextBuilder = TBL.fromText . rawURLToText
 
 newtype Ping = Ping (Shrubbery.Union PingTypes)
 
@@ -275,5 +302,16 @@ pingToText (Ping ping) =
       . Shrubbery.branch @AbsoluteURL absoluteURLToText
       . Shrubbery.branch @(RelativeURL Post) relativeURLToText
       . Shrubbery.branch @RawURL rawURLToText
+      $ Shrubbery.branchEnd
+  ) ping
+
+pingToTextBuilder :: Ping -> TBL.Builder
+{-# INLINABLE pingToTextBuilder #-}
+pingToTextBuilder (Ping ping) =
+  ( Shrubbery.dissect
+      . Shrubbery.branchBuild
+      . Shrubbery.branch @AbsoluteURL        absoluteURLToTextBuilder
+      . Shrubbery.branch @(RelativeURL Post) relativeURLToTextBuilder
+      . Shrubbery.branch @RawURL             rawURLToTextBuilder
       $ Shrubbery.branchEnd
   ) ping

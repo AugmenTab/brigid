@@ -3,11 +3,13 @@ module Brigid.Types.RawJavaScript
   , rawJavaScriptToBytes
   , rawJavaScriptToBytesBuilder
   , rawJavaScriptToText
+  , rawJavaScriptToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 
 import Brigid.Internal.Render qualified as Render
@@ -29,3 +31,8 @@ rawJavaScriptToBytesBuilder js =
 rawJavaScriptToText :: RawJavaScript -> T.Text
 rawJavaScriptToText =
   ("js:" <>) . unRawJavaScript
+
+rawJavaScriptToTextBuilder :: RawJavaScript -> TBL.Builder
+{-# INLINE rawJavaScriptToTextBuilder #-}
+rawJavaScriptToTextBuilder =
+  TBL.fromText . rawJavaScriptToText
