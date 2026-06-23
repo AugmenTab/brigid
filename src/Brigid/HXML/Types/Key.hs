@@ -4,12 +4,14 @@ module Brigid.HXML.Types.Key
   , keyToBytesBuilder
   , keyToNonEmptyText
   , keyToText
+  , keyToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 import Brigid.Internal.Render qualified as Render
 
@@ -29,3 +31,6 @@ keyToBytesBuilder = Render.textToBytesBuilder . keyToText
 
 keyToText :: Key -> T.Text
 keyToText = NET.toText . keyToNonEmptyText
+
+keyToTextBuilder :: Key -> TBL.Builder
+keyToTextBuilder = TBL.fromText . keyToText

@@ -9,6 +9,7 @@ module Brigid.HXML.Types.Color
   , colorToBytes
   , colorToBytesBuilder
   , colorToText
+  , colorToTextBuilder
   , ColorName (ColorName)
   , colorNameToBytes
   , colorNameToBytesBuilder
@@ -19,6 +20,7 @@ import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Function (on)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -79,6 +81,9 @@ colorToText (Color color) =
       . Shrubbery.branch @ColorName colorNameToText
       $ Shrubbery.branchEnd
   ) color
+
+colorToTextBuilder :: Color -> TBL.Builder
+colorToTextBuilder = TBL.fromText . colorToText
 
 newtype ColorName =
   ColorName

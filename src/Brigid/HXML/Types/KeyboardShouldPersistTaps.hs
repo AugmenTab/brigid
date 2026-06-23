@@ -7,11 +7,13 @@ module Brigid.HXML.Types.KeyboardShouldPersistTaps
   , keyboardShouldPersistTapsToBytes
   , keyboardShouldPersistTapsToBytesBuilder
   , keyboardShouldPersistTapsToText
+  , keyboardShouldPersistTapsToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data KeyboardShouldPersistTaps
   = Never
@@ -40,3 +42,6 @@ keyboardShouldPersistTapsToText option =
     Never   -> "never"
     Always  -> "always"
     Handled -> "handled"
+
+keyboardShouldPersistTapsToTextBuilder :: KeyboardShouldPersistTaps -> TBL.Builder
+keyboardShouldPersistTapsToTextBuilder = TBL.fromText . keyboardShouldPersistTapsToText

@@ -15,11 +15,13 @@ module Brigid.HXML.Types.KeyboardType
   , keyboardTypeToBytes
   , keyboardTypeToBytesBuilder
   , keyboardTypeToText
+  , keyboardTypeToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data KeyboardType
   = AlphaNumeric -- ^ Standard alpha-numeric keyboard
@@ -80,3 +82,6 @@ keyboardTypeToText keyboardType =
     NamePhonePad          -> "name-phone-pad"
     Twitter               -> "twitter"
     WebSearch             -> "web-search"
+
+keyboardTypeToTextBuilder :: KeyboardType -> TBL.Builder
+keyboardTypeToTextBuilder = TBL.fromText . keyboardTypeToText

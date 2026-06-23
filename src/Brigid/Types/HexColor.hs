@@ -4,12 +4,14 @@ module Brigid.Types.HexColor
   , hexColorToBytes
   , hexColorToBytesBuilder
   , hexColorToText
+  , hexColorToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Char qualified as C
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 import Brigid.Internal.Render qualified as Render
 
@@ -41,3 +43,6 @@ hexColorToBytes =
 hexColorToBytesBuilder :: HexColor -> Builder
 hexColorToBytesBuilder =
   Render.textToBytesBuilder . hexColorToText
+
+hexColorToTextBuilder :: HexColor -> TBL.Builder
+hexColorToTextBuilder = TBL.fromText . hexColorToText
