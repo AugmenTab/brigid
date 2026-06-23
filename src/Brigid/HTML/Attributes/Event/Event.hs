@@ -74,11 +74,13 @@ module Brigid.HTML.Attributes.Event.Event
   , eventAttributeToBytes
   , eventAttributeToBytesBuilder
   , eventAttributeToText
+  , eventAttributeToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data Event
   -- Window events
@@ -323,3 +325,6 @@ eventAttributeToBytes =
 eventAttributeToText :: Event -> T.Text
 eventAttributeToText e =
   T.pack "on" <> eventToText e
+
+eventAttributeToTextBuilder :: Event -> TBL.Builder
+eventAttributeToTextBuilder = TBL.fromText . eventAttributeToText
