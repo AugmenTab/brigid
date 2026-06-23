@@ -9,11 +9,13 @@ module Brigid.HTML.Types.Vals
   , htmxValsToBytes
   , htmxValsToBytesBuilder
   , htmxValsToText
+  , htmxValsToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -64,3 +66,6 @@ htmxValsToText (HtmxVals vals) =
       . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToText)
       $ Shrubbery.branchEnd
   ) vals
+
+htmxValsToTextBuilder :: HtmxVals -> TBL.Builder
+htmxValsToTextBuilder = TBL.fromText . htmxValsToText

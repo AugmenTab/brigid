@@ -10,6 +10,7 @@ module Brigid.HTML.Types.QuerySelector
   , querySelectorToBytes
   , querySelectorToBytesBuilder
   , querySelectorToText
+  , querySelectorToTextBuilder
   , RawSelector (RawSelector)
   , rawSelectorToBytes
   , rawSelectorToBytesBuilder
@@ -618,6 +619,7 @@ module Brigid.HTML.Types.QuerySelector
   , disabledSelectorToBytes
   , disabledSelectorToBytesBuilder
   , disabledSelectorToText
+  , disabledSelectorToTextBuilder
   , IncludeSelector
   , includeThis
   , includeTarget
@@ -625,12 +627,14 @@ module Brigid.HTML.Types.QuerySelector
   , includeSelectorToBytes
   , includeSelectorToBytesBuilder
   , includeSelectorToText
+  , includeSelectorToTextBuilder
   , Indicator
   , indicateClosest
   , indicateSelector
   , indicatorToBytes
   , indicatorToBytesBuilder
   , indicatorToText
+  , indicatorToTextBuilder
   , HxTarget
   , HxTargetTypes
   , mkHxTarget
@@ -638,6 +642,7 @@ module Brigid.HTML.Types.QuerySelector
   , hxTargetToBytes
   , hxTargetToBytesBuilder
   , hxTargetToText
+  , hxTargetToTextBuilder
   , Swap
   , SwapTypes
   , mkSwap
@@ -645,6 +650,7 @@ module Brigid.HTML.Types.QuerySelector
   , swapToBytes
   , swapToBytesBuilder
   , swapToText
+  , swapToTextBuilder
   , swapInnerHTML
   , swapOuterHTML
   , swapBeforebegin
@@ -699,6 +705,7 @@ module Brigid.HTML.Types.QuerySelector
   , outOfBandSelectToBytes
   , outOfBandSelectToBytesBuilder
   , outOfBandSelectToText
+  , outOfBandSelectToTextBuilder
   , OutOfBandSwap
   , OutOfBandSwapTypes
   , mkOutOfBandSwap
@@ -706,6 +713,7 @@ module Brigid.HTML.Types.QuerySelector
   , outOfBandSwapToBytes
   , outOfBandSwapToBytesBuilder
   , outOfBandSwapToText
+  , outOfBandSwapToTextBuilder
   , TargetSelector
   , htmx_closest
   , htmx_find
@@ -720,6 +728,7 @@ module Brigid.HTML.Types.QuerySelector
   , triggerToBytes
   , triggerToBytesBuilder
   , triggerToText
+  , triggerToTextBuilder
   , TriggerEvent
   , TriggerEventTypes
   , mkTriggerEvent
@@ -781,6 +790,7 @@ import Data.List.NonEmpty qualified as NEL
 import Data.Maybe (catMaybes)
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 (ISO8601, iso8601Show)
 import GHC.TypeLits (KnownNat)
@@ -926,6 +936,9 @@ querySelectorToText =
       . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
   ) . unQuerySelector
+
+querySelectorToTextBuilder :: QuerySelector -> TBL.Builder
+querySelectorToTextBuilder = TBL.fromText . querySelectorToText
 
 newtype RawSelector =
   RawSelector
@@ -4508,6 +4521,9 @@ swapToText =
       $ Shrubbery.branchEnd
   ) . unSwap
 
+swapToTextBuilder :: Swap -> TBL.Builder
+swapToTextBuilder = TBL.fromText . swapToText
+
 data SwapModifier =
   SwapModifier
     { swapModifierStrategy :: SwapStyle
@@ -4840,6 +4856,9 @@ outOfBandSelectToText =
       $ Shrubbery.branchEnd
   ) . unOutOfBandSelect
 
+outOfBandSelectToTextBuilder :: OutOfBandSelect -> TBL.Builder
+outOfBandSelectToTextBuilder = TBL.fromText . outOfBandSelectToText
+
 -- Out of band Swap
 --
 newtype OutOfBandSwap =
@@ -4879,6 +4898,9 @@ outOfBandSwapToText =
       . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
   ) . unOutOfBandSwap
+
+outOfBandSwapToTextBuilder :: OutOfBandSwap -> TBL.Builder
+outOfBandSwapToTextBuilder = TBL.fromText . outOfBandSwapToText
 
 -- Disabled Selector
 --
@@ -4928,6 +4950,9 @@ disabledSelectorToText =
      $ Shrubbery.branchEnd
   ) . unDisabledSelector
 
+disabledSelectorToTextBuilder :: DisabledSelector -> TBL.Builder
+disabledSelectorToTextBuilder = TBL.fromText . disabledSelectorToText
+
 -- Include Selector
 --
 newtype IncludeSelector =
@@ -4973,6 +4998,9 @@ includeSelectorToText =
      $ Shrubbery.branchEnd
   ) . unIncludeSelector
 
+includeSelectorToTextBuilder :: IncludeSelector -> TBL.Builder
+includeSelectorToTextBuilder = TBL.fromText . includeSelectorToText
+
 -- Indicator
 --
 newtype Indicator =
@@ -5014,6 +5042,9 @@ indicatorToText =
      . Shrubbery.branch @TargetSelector targetSelectorToText
      $ Shrubbery.branchEnd
   ) . unIndicator
+
+indicatorToTextBuilder :: Indicator -> TBL.Builder
+indicatorToTextBuilder = TBL.fromText . indicatorToText
 
 -- HxTarget and TargetSelector
 --
@@ -5060,6 +5091,9 @@ hxTargetToText =
       . Shrubbery.branch @RawSelector rawSelectorToText
       $ Shrubbery.branchEnd
   ) . unHxTarget
+
+hxTargetToTextBuilder :: HxTarget -> TBL.Builder
+hxTargetToTextBuilder = TBL.fromText . hxTargetToText
 
 data TargetSelectorType
   = TargetSelector_Closest
@@ -5192,6 +5226,9 @@ triggerToText =
       . Shrubbery.branch @RawTrigger rawTriggerToText
       $ Shrubbery.branchEnd
   ) . unTrigger
+
+triggerToTextBuilder :: Trigger -> TBL.Builder
+triggerToTextBuilder = TBL.fromText . triggerToText
 
 -- TriggerEvent
 --

@@ -23,11 +23,13 @@ module Brigid.Types.Method
   , formMethodToBytes
   , formMethodToBytesBuilder
   , formMethodToText
+  , formMethodToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data Method
   = GET
@@ -97,3 +99,6 @@ formMethodToText method =
   case method of
     FormGET  -> methodToText GET
     FormPOST -> methodToText POST
+
+formMethodToTextBuilder :: FormMethod -> TBL.Builder
+formMethodToTextBuilder = TBL.fromText . formMethodToText

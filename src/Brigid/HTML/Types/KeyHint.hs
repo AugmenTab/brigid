@@ -11,11 +11,13 @@ module Brigid.HTML.Types.KeyHint
   , keyHintOptionToBytes
   , keyHintOptionToBytesBuilder
   , keyHintOptionToText
+  , keyHintOptionToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data KeyHintOption
   = KeyHintEnter
@@ -60,3 +62,6 @@ keyHintOptionToText option =
     KeyHintPrevious -> "previous"
     KeyHintSearch   -> "search"
     KeyHintSend     -> "send"
+
+keyHintOptionToTextBuilder :: KeyHintOption -> TBL.Builder
+keyHintOptionToTextBuilder = TBL.fromText . keyHintOptionToText

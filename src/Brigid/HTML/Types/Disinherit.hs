@@ -10,6 +10,7 @@ module Brigid.HTML.Types.Disinherit
   , disinheritToBytes
   , disinheritToBytesBuilder
   , disinheritToText
+  , disinheritToTextBuilder
   , DisinheritAll (DisinheritAll)
   , InheritableHTMX
       ( HxBoost
@@ -43,6 +44,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -94,6 +96,9 @@ disinheritToText =
       . Shrubbery.branch @(NEL.NonEmpty InheritableHTMX) (T.unwords . fmap inheritableHTMXToText . NEL.toList)
       $ Shrubbery.branchEnd
   ) . unDisinherit
+
+disinheritToTextBuilder :: Disinherit -> TBL.Builder
+disinheritToTextBuilder = TBL.fromText . disinheritToText
 
 data DisinheritAll = DisinheritAll
   deriving (Eq, Show)

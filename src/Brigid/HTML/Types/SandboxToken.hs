@@ -16,11 +16,13 @@ module Brigid.HTML.Types.SandboxToken
   , sandboxTokenToBytes
   , sandboxTokenToBytesBuilder
   , sandboxTokenToText
+  , sandboxTokenToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data SandboxToken
   = AllowForms
@@ -97,3 +99,6 @@ sandboxTokenToText token =
     AllowStorageAccessByUserActivation -> "allow-storage-access-by-user-activation"
     AllowTopNavigation                 -> "allow-top-navigation"
     AllowTopNavigationByUserActivation -> "allow-top-navigation-by-user-activation"
+
+sandboxTokenToTextBuilder :: SandboxToken -> TBL.Builder
+sandboxTokenToTextBuilder = TBL.fromText . sandboxTokenToText

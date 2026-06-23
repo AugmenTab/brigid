@@ -15,6 +15,7 @@ module Brigid.Types.Name
   , nameOptionToBytes
   , nameOptionToBytesBuilder
   , nameOptionToText
+  , nameOptionToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
@@ -91,3 +92,6 @@ nameOptionToText (NameOption nameOption) =
       . Shrubbery.branch @MetadataName metadataNameToText
       $ Shrubbery.branchEnd
   ) nameOption
+
+nameOptionToTextBuilder :: NameOption -> TBL.Builder
+nameOptionToTextBuilder = TBL.fromText . nameOptionToText

@@ -3,11 +3,13 @@ module Brigid.HTML.Types.HyperScript
   , hyperScriptToBytes
   , hyperScriptToBytesBuilder
   , hyperScriptToText
+  , hyperScriptToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 
 import Brigid.Internal.Render qualified as Render
@@ -27,3 +29,6 @@ hyperScriptToBytes =
 hyperScriptToBytesBuilder :: HyperScript -> Builder
 hyperScriptToBytesBuilder =
   TE.encodeUtf8Builder . hyperScriptToText
+
+hyperScriptToTextBuilder :: HyperScript -> TBL.Builder
+hyperScriptToTextBuilder = TBL.fromText . hyperScriptToText

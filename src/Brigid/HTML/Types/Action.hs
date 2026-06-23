@@ -11,12 +11,14 @@ module Brigid.HTML.Types.Action
   , actionToBytes
   , actionToBytesBuilder
   , actionToText
+  , actionToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Function (on)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -79,3 +81,6 @@ actionToText (Action action) =
       . Shrubbery.branch @URL.RawURL             URL.rawURLToText
       $ Shrubbery.branchEnd
   ) action
+
+actionToTextBuilder :: Action -> TBL.Builder
+actionToTextBuilder = TBL.fromText . actionToText

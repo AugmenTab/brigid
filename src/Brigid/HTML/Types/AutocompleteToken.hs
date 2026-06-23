@@ -13,6 +13,7 @@ module Brigid.HTML.Types.AutocompleteToken
   , autocompleteTokenToBytes
   , autocompleteTokenToBytesBuilder
   , autocompleteTokenToText
+  , autocompleteTokenToTextBuilder
   , Modifier
   , section
   , home
@@ -83,6 +84,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Kind (Type)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -560,6 +562,9 @@ autocompleteTokenToText (AutocompleteToken token) =
       . Shrubbery.branch @Photo                                photoToText
       $ Shrubbery.branchEnd
   ) token
+
+autocompleteTokenToTextBuilder :: AutocompleteToken -> TBL.Builder
+autocompleteTokenToTextBuilder = TBL.fromText . autocompleteTokenToText
 
 type family Elem (x :: Type) (xs :: [Type]) :: Bool where
   Elem e '[]       = 'False

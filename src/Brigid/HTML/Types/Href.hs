@@ -10,6 +10,7 @@ module Brigid.HTML.Types.Href
   , hrefToBytes
   , hrefToBytesBuilder
   , hrefToText
+  , hrefToTextBuilder
   , BlankHref (BlankHref)
   , HrefSelectorTypes
   , mkHrefSelector
@@ -22,6 +23,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.PhoneNumber.Util (PhoneNumberFormat (RFC3966), formatNumber)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -98,6 +100,9 @@ hrefToText (Href href) =
       . Shrubbery.branch @URL.RawURL          URL.rawURLToText
       $ Shrubbery.branchEnd
   ) href
+
+hrefToTextBuilder :: Href -> TBL.Builder
+hrefToTextBuilder = TBL.fromText . hrefToText
 
 data BlankHref = BlankHref
   deriving (Eq, Show)

@@ -9,6 +9,7 @@ module Brigid.HTML.Types.RangeBound
   , rangeBoundToBytes
   , rangeBoundToBytesBuilder
   , rangeBoundToText
+  , rangeBoundToTextBuilder
   , RawRangeBound
   , mkRawRangeBound
   , rawRangeBoundToBytes
@@ -19,6 +20,7 @@ import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -90,6 +92,9 @@ rangeBoundToText (RangeBound rangeBound) =
       . Shrubbery.branch @RawRangeBound          rawRangeBoundToText
       $ Shrubbery.branchEnd
   ) rangeBound
+
+rangeBoundToTextBuilder :: RangeBound -> TBL.Builder
+rangeBoundToTextBuilder = TBL.fromText . rangeBoundToText
 
 newtype RawRangeBound =
   RawRangeBound

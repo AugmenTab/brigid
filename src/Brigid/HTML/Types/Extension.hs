@@ -27,6 +27,7 @@ module Brigid.HTML.Types.Extension
   , extensionToBytes
   , extensionToBytesBuilder
   , extensionToText
+  , extensionToTextBuilder
   ) where
 
 import Data.Bool qualified as B
@@ -34,6 +35,7 @@ import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 import Brigid.Internal.Render qualified as Render
 
@@ -138,6 +140,9 @@ extensionToText :: Extension -> T.Text
 extensionToText ext =
   B.bool "" "ignore:" (extensionIgnored ext)
     <> extensionTypeToText (extensionType ext)
+
+extensionToTextBuilder :: Extension -> TBL.Builder
+extensionToTextBuilder = TBL.fromText . extensionToText
 
 data ExtensionType
   = AjaxHeader

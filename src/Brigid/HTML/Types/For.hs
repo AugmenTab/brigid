@@ -9,6 +9,7 @@ module Brigid.HTML.Types.For
   , forOptionToBytes
   , forOptionToBytesBuilder
   , forOptionToText
+  , forOptionToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
@@ -16,6 +17,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -66,6 +68,9 @@ forOptionToText (ForOption for) =
       . Shrubbery.branch @(NEL.NonEmpty Id) renderIdsText
       $ Shrubbery.branchEnd
   ) for
+
+forOptionToTextBuilder :: ForOption -> TBL.Builder
+forOptionToTextBuilder = TBL.fromText . forOptionToText
 
 -- Helpers
 --

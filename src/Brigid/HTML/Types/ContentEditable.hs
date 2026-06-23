@@ -7,11 +7,13 @@ module Brigid.HTML.Types.ContentEditable
   , contentEditableOptionToBytes
   , contentEditableOptionToBytesBuilder
   , contentEditableOptionToText
+  , contentEditableOptionToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data ContentEditableOption
   = Editable
@@ -40,3 +42,6 @@ contentEditableOptionToText option =
     Editable      -> "true"
     NotEditable   -> "false"
     PlaintextOnly -> "plaintext-only"
+
+contentEditableOptionToTextBuilder :: ContentEditableOption -> TBL.Builder
+contentEditableOptionToTextBuilder = TBL.fromText . contentEditableOptionToText

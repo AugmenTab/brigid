@@ -8,6 +8,7 @@ module Brigid.HTML.Types.Headers
   , mkHtmxHeaders
   , htmxHeadersToBytes
   , htmxHeadersToText
+  , htmxHeadersToTextBuilder
   , RequestHeaders (..)
   , emptyRequestHeaders
   , requestHeadersToBytes
@@ -21,6 +22,7 @@ import Data.Foldable (fold)
 import Data.List (intersperse)
 import Data.List.NonEmpty qualified as NEL
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Lazy qualified as TL
 import Data.Text.Lazy.Builder qualified as TLB
 import GHC.TypeLits (KnownNat)
@@ -63,6 +65,9 @@ htmxHeadersToText (HtmxHeaders headers) =
       . Shrubbery.branch @JS.RawJavaScript (("js:" <>) . JS.rawJavaScriptToText)
       $ Shrubbery.branchEnd
   ) headers
+
+htmxHeadersToTextBuilder :: HtmxHeaders -> TBL.Builder
+htmxHeadersToTextBuilder = TBL.fromText . htmxHeadersToText
 
 data RequestHeaders =
   RequestHeaders

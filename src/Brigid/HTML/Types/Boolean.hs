@@ -6,6 +6,7 @@ module Brigid.HTML.Types.Boolean
   , onOffToBytes
   , onOffToBytesBuilder
   , onOffToText
+  , onOffToTextBuilder
   , onOffBool
   , isOn
   , isOff
@@ -16,6 +17,7 @@ module Brigid.HTML.Types.Boolean
   , openClosedToBytes
   , openClosedToBytesBuilder
   , openClosedToText
+  , openClosedToTextBuilder
   , openClosedBool
   , isOpen
   , isClosed
@@ -26,6 +28,7 @@ module Brigid.HTML.Types.Boolean
   , yesNoToBytes
   , yesNoToBytesBuilder
   , yesNoToText
+  , yesNoToTextBuilder
   , yesNoBool
   , isYes
   , isNo
@@ -34,6 +37,7 @@ module Brigid.HTML.Types.Boolean
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data OnOff
   = On
@@ -58,6 +62,9 @@ onOffToText onOff =
   case onOff of
     On  -> "on"
     Off -> "off"
+
+onOffToTextBuilder :: OnOff -> TBL.Builder
+onOffToTextBuilder = TBL.fromText . onOffToText
 
 onOffBool :: Bool -> OnOff
 onOffBool b =
@@ -95,6 +102,9 @@ openClosedToText openClosed =
     Open   -> "open"
     Closed -> "closed"
 
+openClosedToTextBuilder :: OpenClosed -> TBL.Builder
+openClosedToTextBuilder = TBL.fromText . openClosedToText
+
 openClosedBool :: Bool -> OpenClosed
 openClosedBool b =
   if b
@@ -130,6 +140,9 @@ yesNoToText yesNo =
   case yesNo of
     Yes -> "yes"
     No  -> "no"
+
+yesNoToTextBuilder :: YesNo -> TBL.Builder
+yesNoToTextBuilder = TBL.fromText . yesNoToText
 
 yesNoBool :: Bool -> YesNo
 yesNoBool b =

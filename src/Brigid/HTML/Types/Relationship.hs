@@ -9,6 +9,7 @@ module Brigid.HTML.Types.Relationship
   , relationshipToBytes
   , relationshipToBytesBuilder
   , relationshipToText
+  , relationshipToTextBuilder
   , Rel_Alternate (Rel_Alternate)
   , Rel_Author (Rel_Author)
   , Rel_Bookmark (Rel_Bookmark)
@@ -43,6 +44,7 @@ module Brigid.HTML.Types.Relationship
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
@@ -234,6 +236,9 @@ relationshipToText (Relationship rel) =
       . Shrubbery.branch @Rel_Terms_Of_Service (const "terms-of-service")
       $ Shrubbery.branchEnd
   ) rel
+
+relationshipToTextBuilder :: Relationship -> TBL.Builder
+relationshipToTextBuilder = TBL.fromText . relationshipToText
 
 data Rel_Alternate = Rel_Alternate
   deriving (Eq, Show)

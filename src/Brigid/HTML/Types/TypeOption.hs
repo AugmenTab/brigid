@@ -9,6 +9,7 @@ module Brigid.HTML.Types.TypeOption
   , typeOptionToBytes
   , typeOptionToBytesBuilder
   , typeOptionToText
+  , typeOptionToTextBuilder
   , RawTypeOption
   , mkRawTypeOption
   , rawTypeOptionToBytes
@@ -19,6 +20,7 @@ import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -79,6 +81,9 @@ typeOptionToText (TypeOption typeOption) =
       . Shrubbery.branch @RawTypeOption rawTypeOptionToText
       $ Shrubbery.branchEnd
   ) typeOption
+
+typeOptionToTextBuilder :: TypeOption -> TBL.Builder
+typeOptionToTextBuilder = TBL.fromText . typeOptionToText
 
 newtype RawTypeOption =
   RawTypeOption

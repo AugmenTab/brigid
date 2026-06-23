@@ -7,11 +7,13 @@ module Brigid.HTML.Types.RequestParams
       )
   , requestParamsToBytes
   , requestParamsToText
+  , requestParamsToTextBuilder
   ) where
 
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 import Brigid.Internal.Render qualified as Render
 
@@ -53,3 +55,6 @@ requestParamsToText requestParams =
     NoParams         -> "none"
     Not       params -> "not " <> Render.foldToTextWithSeparator id "," params
     Params    params -> Render.foldToTextWithSeparator id "," params
+
+requestParamsToTextBuilder :: RequestParams -> TBL.Builder
+requestParamsToTextBuilder = TBL.fromText . requestParamsToText

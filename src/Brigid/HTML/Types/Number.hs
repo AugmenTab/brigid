@@ -10,6 +10,7 @@ module Brigid.HTML.Types.Number
   , numberToBytes
   , numberToBytesBuilder
   , numberToText
+  , numberToTextBuilder
   , number
   ) where
 
@@ -19,6 +20,7 @@ import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
 import Data.Scientific qualified as Sci
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Text.Read (readMaybe)
 
 data Number =
@@ -85,6 +87,9 @@ numberToBytesBuilder = string8 . formatNumber
 
 numberToText :: Number -> T.Text
 numberToText = T.pack . formatNumber
+
+numberToTextBuilder :: Number -> TBL.Builder
+numberToTextBuilder = TBL.fromText . numberToText
 
 formatNumber :: Number -> String
 formatNumber num =

@@ -3,6 +3,7 @@ module Brigid.HTML.Types.MediaQuery
   , mediaQueryToBytes
   , mediaQueryToBytesBuilder
   , mediaQueryToText
+  , mediaQueryToTextBuilder
   , MediaQueryModifier
       ( MediaNot
       , MediaOnly
@@ -99,6 +100,7 @@ import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Maybe (catMaybes)
 import Data.Ratio (Ratio, denominator, numerator)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Integer (Positive)
 
 import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
@@ -171,6 +173,9 @@ mediaQueryToText query =
                         conds
               ]
       ]
+
+mediaQueryToTextBuilder :: MediaQuery -> TBL.Builder
+mediaQueryToTextBuilder = TBL.fromText . mediaQueryToText
 
 data MediaQueryModifier
   = MediaNot

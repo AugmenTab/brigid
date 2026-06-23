@@ -80,11 +80,13 @@ module Brigid.HTML.Types.Role
   , roleToBytes
   , roleToBytesBuilder
   , roleToText
+  , roleToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data Role
   = RoleAlert
@@ -405,3 +407,6 @@ roleToText role =
     RoleTimer            -> "timer"
     RoleToolbar          -> "toolbar"
     RoleTooltip          -> "tooltip"
+
+roleToTextBuilder :: Role -> TBL.Builder
+roleToTextBuilder = TBL.fromText . roleToText

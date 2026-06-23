@@ -9,9 +9,11 @@ module Brigid.HTML.Types.Aria
   , ariaAttributeToBytes
   , ariaAttributeToBytesBuilder
   , ariaAttributeToText
+  , ariaAttributeToTextBuilder
   , ariaValueToBytes
   , ariaValueToBytesBuilder
   , ariaValueToText
+  , ariaValueToTextBuilder
   , Current.AriaCurrent (..)
   , Current.AriaCurrentTypes
   , Current.CurrentPage (..)
@@ -44,6 +46,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import Integer (Positive)
 import Numeric.Natural (Natural)
@@ -478,6 +481,12 @@ ariaValueToText (Aria aria) =
       . Shrubbery.taggedBranch @"raw" rawAriaValue
       $ Shrubbery.taggedBranchEnd
   ) aria
+
+ariaAttributeToTextBuilder :: Aria -> TBL.Builder
+ariaAttributeToTextBuilder = TBL.fromText . ariaAttributeToText
+
+ariaValueToTextBuilder :: Aria -> TBL.Builder
+ariaValueToTextBuilder = TBL.fromText . ariaValueToText
 
 data RawAria =
   RawAria

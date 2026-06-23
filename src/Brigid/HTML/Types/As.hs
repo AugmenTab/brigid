@@ -16,11 +16,13 @@ module Brigid.HTML.Types.As
   , asToBytes
   , asToBytesBuilder
   , asToText
+  , asToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data As
   = AsAudio
@@ -85,3 +87,6 @@ asToText as =
     AsTrack    -> "track"
     AsVideo    -> "video"
     AsWorker   -> "worker"
+
+asToTextBuilder :: As -> TBL.Builder
+asToTextBuilder = TBL.fromText . asToText

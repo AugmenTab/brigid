@@ -7,6 +7,7 @@ module Brigid.HTML.Types.Integrity
   , integrityToBytes
   , integrityToBytesBuilder
   , integrityToText
+  , integrityToTextBuilder
   ) where
 
 import Crypto.Hash qualified as Hash
@@ -17,6 +18,7 @@ import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Builder qualified as BSB
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 import Brigid.Internal.Render qualified as Render
 
@@ -84,3 +86,6 @@ integrityToText sha content =
           SHA384 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Algorithms.SHA384)
           SHA512 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Algorithms.SHA512)
     ]
+
+integrityToTextBuilder :: IntegrityEncoding -> BS.ByteString -> TBL.Builder
+integrityToTextBuilder sha content = TBL.fromText (integrityToText sha content)

@@ -7,11 +7,13 @@ module Brigid.HTML.Types.PopoverTargetAction
   , popoverTargetActionToBytes
   , popoverTargetActionToBytesBuilder
   , popoverTargetActionToText
+  , popoverTargetActionToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data PopoverTargetAction
   = PopoverShow
@@ -40,3 +42,6 @@ popoverTargetActionToText pta =
     PopoverShow -> "show"
     PopoverHide -> "hide"
     PopoverToggle -> "toggle"
+
+popoverTargetActionToTextBuilder :: PopoverTargetAction -> TBL.Builder
+popoverTargetActionToTextBuilder = TBL.fromText . popoverTargetActionToText

@@ -5,17 +5,20 @@ module Brigid.HTML.Types.Part
   , partToBytes
   , partToBytesBuilder
   , partToText
+  , partToTextBuilder
   , ExportPart
       ( ExportPart
       )
   , exportPartToBytes
   , exportPartToBytesBuilder
   , exportPartToText
+  , exportPartToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 
 import Brigid.Internal.Render qualified as Render
@@ -32,6 +35,9 @@ partToBytesBuilder = TE.encodeUtf8Builder . partToText
 partToText :: Part -> T.Text
 partToText (Part part) = part
 
+partToTextBuilder :: Part -> TBL.Builder
+partToTextBuilder = TBL.fromText . partToText
+
 data ExportPart = ExportPart Part (Maybe T.Text)
   deriving (Eq, Show)
 
@@ -44,3 +50,6 @@ exportPartToBytesBuilder = TE.encodeUtf8Builder . exportPartToText
 exportPartToText :: ExportPart -> T.Text
 exportPartToText (ExportPart part mbExposed) =
   partToText part <> maybe "" (":" <>) mbExposed
+
+exportPartToTextBuilder :: ExportPart -> TBL.Builder
+exportPartToTextBuilder = TBL.fromText . exportPartToText

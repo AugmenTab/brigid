@@ -6,6 +6,7 @@ module Brigid.HTML.Types.SrcsetCandidate
   , srcsetCandidateToBytes
   , srcsetCandidateToBytesBuilder
   , srcsetCandidateToText
+  , srcsetCandidateToTextBuilder
   , SrcsetDescriptor
       ( SrcsetWidth
       , SrcsetDensity
@@ -16,6 +17,7 @@ import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Integer (Positive)
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
@@ -60,6 +62,9 @@ srcsetCandidateToText ssc =
     [ urlToText $ srcsetCandidateURL ssc
     , srcsetDescriptorToText $ srcsetCandidateDescriptor ssc
     ]
+
+srcsetCandidateToTextBuilder :: SrcsetCandidate -> TBL.Builder
+srcsetCandidateToTextBuilder = TBL.fromText . srcsetCandidateToText
 
 data SrcsetDescriptor
   = SrcsetWidth Positive

@@ -8,11 +8,13 @@ module Brigid.HTML.Types.TrackKind
   , trackKindToBytes
   , trackKindToBytesBuilder
   , trackKindToText
+  , trackKindToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 data TrackKind
   = Subtitles
@@ -45,3 +47,6 @@ trackKindToText trackKind =
     Captions  -> "captions"
     Chapters  -> "chapters"
     Metadata  -> "metadata"
+
+trackKindToTextBuilder :: TrackKind -> TBL.Builder
+trackKindToTextBuilder = TBL.fromText . trackKindToText

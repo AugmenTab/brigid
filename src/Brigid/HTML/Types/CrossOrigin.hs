@@ -6,11 +6,13 @@ module Brigid.HTML.Types.CrossOrigin
   , crossOriginFetchToBytes
   , crossOriginFetchToBytesBuilder
   , crossOriginFetchToText
+  , crossOriginFetchToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 
 {-|
    Represents the options available for the 'crossorigin' attribute.
@@ -48,3 +50,6 @@ crossOriginFetchToText cors =
   case cors of
     Anonymous      -> "anonymous"
     UseCredentials -> "use-credentials"
+
+crossOriginFetchToTextBuilder :: CrossOriginFetch -> TBL.Builder
+crossOriginFetchToTextBuilder = TBL.fromText . crossOriginFetchToText

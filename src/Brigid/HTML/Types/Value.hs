@@ -9,11 +9,13 @@ module Brigid.HTML.Types.Value
   , valueToBytes
   , valueToBytesBuilder
   , valueToText
+  , valueToTextBuilder
   ) where
 
 import Data.ByteString.Builder (Builder)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
@@ -123,3 +125,6 @@ valueToText (Value value) =
       . Shrubbery.branch @BTime.Week             BTime.weekToText
       $ Shrubbery.branchEnd
   ) value
+
+valueToTextBuilder :: Value -> TBL.Builder
+valueToTextBuilder = TBL.fromText . valueToText

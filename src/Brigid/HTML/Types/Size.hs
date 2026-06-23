@@ -3,6 +3,7 @@ module Brigid.HTML.Types.Size
   , sizeToBytes
   , sizeToBytesBuilder
   , sizeToText
+  , sizeToTextBuilder
   , SizeLength
       ( SizePx
       , SizeVw
@@ -23,6 +24,7 @@ import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Maybe (catMaybes)
 import Data.Text qualified as T
+import Data.Text.Builder.Linear qualified as TBL
 import Data.Text.Encoding qualified as TE
 
 import Brigid.HTML.Types.MediaQuery (MediaFeature, mediaFeatureToBytes, mediaFeatureToBytesBuilder, mediaFeatureToText)
@@ -59,6 +61,9 @@ sizeToText size =
       [ mediaFeatureToText <$> sizeCondition size
       , Just . sizeLengthToText $ sizeLength size
       ]
+
+sizeToTextBuilder :: Size -> TBL.Builder
+sizeToTextBuilder = TBL.fromText . sizeToText
 
 data SizeLength
   = SizePx Int
