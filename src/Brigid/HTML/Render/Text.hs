@@ -42,7 +42,7 @@ renderTag html =
       fromText "<!-- " <> fromText comment <> fromText " -->"
 
     Tag_Text content ->
-      fromText $ Escape.escape content
+      Escape.escapeTextBuilder content
 
     Tag_Entity entity ->
       fromText $ T.pack entity
@@ -507,18 +507,18 @@ renderAttribute attr =
       Nothing
 
     Attr_Custom name value ->
-      Just . buildAttribute name $ Escape.attributeText value
+      Just . buildAttribute name $ Escape.attributeTextBuilder value
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ Escape.attributeCharText key
+      Just . buildAttribute "accesskey" $ Escape.attributeCharTextBuilder key
 
     Attr_Autocapitalize option ->
       Just
         . buildAttribute "autocapitalize"
-        $ Types.autocapitalizeOptionToText option
+        $ Types.autocapitalizeOptionToTextBuilder option
 
     Attr_Autocorrect autocorrect ->
-      Just . buildAttribute "autocorrect" $ Types.onOffToText autocorrect
+      Just . buildAttribute "autocorrect" $ Types.onOffToTextBuilder autocorrect
 
     Attr_Autofocus autofocus ->
       buildBooleanAttribute "autofocus" autofocus
@@ -526,13 +526,13 @@ renderAttribute attr =
     Attr_Class _class ->
       Just
         . buildAttribute "class"
-        . Escape.attributeText
+        . Escape.attributeTextBuilder
         $ Types.classToText _class
 
     Attr_ContentEditable option ->
       Just
         . buildAttribute "contenteditable"
-        $ Types.contentEditableOptionToText option
+        $ Types.contentEditableOptionToTextBuilder option
 
     Attr_CustomData data_ mbValue ->
       case mbValue of
@@ -540,7 +540,7 @@ renderAttribute attr =
           Just $
             buildAttribute
               ("data-" <> data_)
-              (Escape.attributeText value)
+              (Escape.attributeTextBuilder value)
 
         Nothing ->
           buildBooleanAttribute ("data-" <> data_) True
@@ -551,123 +551,123 @@ renderAttribute attr =
     Attr_Dir directionality ->
       Just
         . buildAttribute "dir"
-        $ Types.directionalityToText directionality
+        $ Types.directionalityToTextBuilder directionality
 
     Attr_Draggable draggable ->
-      Just . buildAttribute "draggable" $ Render.enumBoolToText draggable
+      Just . buildAttribute "draggable" $ Render.enumBoolToTextBuilder draggable
 
     Attr_EnterKeyHint option ->
       Just
         . buildAttribute "enterkeyhint"
-        $ Types.keyHintOptionToText option
+        $ Types.keyHintOptionToTextBuilder option
 
     Attr_ExportParts parts ->
       Just
         . buildAttribute "exportparts"
-        . Render.foldToTextWithSeparator Types.exportPartToText ", "
+        . Render.foldToBuilderWithSeparator Types.exportPartToTextBuilder (fromText ", ")
         $ parts
 
     Attr_Hidden hidden ->
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id id ->
-      Just . buildAttribute "id" . Escape.attributeText $ Types.idToText id
+      Just . buildAttribute "id" . Escape.attributeTextBuilder $ Types.idToText id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
 
     Attr_InputMode mode ->
-      Just . buildAttribute "inputmode" $ Types.inputModeToText mode
+      Just . buildAttribute "inputmode" $ Types.inputModeToTextBuilder mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" $ Escape.attributeText is
+      Just . buildAttribute "is" $ Escape.attributeTextBuilder is
 
     Attr_ItemId itemid ->
-      Just $ buildAttribute "itemid" itemid
+      Just $ buildAttribute "itemid" (fromText itemid)
 
     Attr_ItemProp itemprop ->
-      Just $ buildAttribute "itemprop" itemprop
+      Just $ buildAttribute "itemprop" (fromText itemprop)
 
     Attr_ItemRef itemref ->
       Just
         . buildAttribute "itemref"
-        . Render.foldToTextWithSeparator Types.idToText " "
+        . Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ")
         $ NEL.toList itemref
 
     Attr_ItemScope ->
       buildBooleanAttribute "itemscope" True
 
     Attr_ItemType itemtype ->
-      Just . buildAttribute "itemtype" $ Types.absoluteURLToText itemtype
+      Just . buildAttribute "itemtype" $ Types.absoluteURLToTextBuilder itemtype
 
     Attr_Lang lang ->
-      Just . buildAttribute "lang" $ maybe "" Ogma.bcp_47ToText lang
+      Just . buildAttribute "lang" $ maybe mempty (fromText . Ogma.bcp_47ToText) lang
 
     Attr_Nonce nonce ->
-      Just $ buildAttribute "nonce" nonce
+      Just $ buildAttribute "nonce" (fromText nonce)
 
     Attr_Part parts ->
       Just
         . buildAttribute "part"
-        . Render.foldToTextWithSeparator Types.partToText " "
+        . Render.foldToBuilderWithSeparator Types.partToTextBuilder (fromText " ")
         $ parts
 
     Attr_Popover state ->
       Just
         . buildAttribute "popover"
-        $ Types.popoverStateToText state
+        $ Types.popoverStateToTextBuilder state
 
     Attr_Role role ->
-      Just . buildAttribute "role" $ Types.roleToText role
+      Just . buildAttribute "role" $ Types.roleToTextBuilder role
 
     Attr_Slot slot ->
-      Just . buildAttribute "slot" $ Types.nameToText slot
+      Just . buildAttribute "slot" $ Types.nameToTextBuilder slot
 
     Attr_Spellcheck spellcheck ->
-      Just . buildAttribute "spellcheck" $ Render.enumBoolToText spellcheck
+      Just . buildAttribute "spellcheck" $ Render.enumBoolToTextBuilder spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" $ Escape.attributeText style
+      Just . buildAttribute "style" $ Escape.attributeTextBuilder style
 
     Attr_TabIndex tabindex ->
-      Just . buildAttribute "tabindex" $ Render.showText tabindex
+      Just . buildAttribute "tabindex" $ Render.showBuilder tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" $ Escape.attributeText title
+      Just . buildAttribute "title" $ Escape.attributeTextBuilder title
 
     Attr_Translate translate ->
-      Just . buildAttribute "translate" $ Types.yesNoToText translate
+      Just . buildAttribute "translate" $ Types.yesNoToTextBuilder translate
 
     Attr_WritingSuggestions writingsuggestions ->
       Just
         . buildAttribute "writingsuggestions"
-        $ Render.enumBoolToText writingsuggestions
+        $ Render.enumBoolToTextBuilder writingsuggestions
 
     -- Scoped Attributes
     --
     Attr_Abbreviation abbr ->
-      Just $ buildAttribute "abbr" abbr
+      Just $ buildAttribute "abbr" (fromText abbr)
 
     Attr_Accept accept ->
-      Just . buildAttribute "accept" $ Render.bytesToText accept
+      Just . buildAttribute "accept" . fromText $ Render.bytesToText accept
 
     Attr_AcceptCharset ->
-      Just $ buildAttribute "accept-charset" "UTF-8"
+      Just $ buildAttribute "accept-charset" (fromText "UTF-8")
 
     Attr_Action action ->
-      Just . buildAttribute "action" $ Types.actionToText action
+      Just . buildAttribute "action" $ Types.actionToTextBuilder action
 
     Attr_Allow allow ->
       Just
         . buildAttribute "allow"
-        . Render.foldToTextWithSeparator Types.featurePolicyDirectiveToText "; "
+        . Render.foldToBuilderWithSeparator Types.featurePolicyDirectiveToTextBuilder (fromText "; ")
         $ allow
 
     Attr_Alt alt ->
-      Just $ buildAttribute "alt" alt
+      Just $ buildAttribute "alt" (fromText alt)
 
     Attr_As as ->
-      Just . buildAttribute "as" $ Types.asToText as
+      Just . buildAttribute "as" $ Types.asToTextBuilder as
 
     Attr_Async ->
       buildBooleanAttribute "async" True
@@ -675,49 +675,49 @@ renderAttribute attr =
     Attr_Autocomplete autocomplete ->
       Just
         . buildAttribute "autocomplete"
-        $ Types.autocompleteTokenToText autocomplete
+        $ Types.autocompleteTokenToTextBuilder autocomplete
 
     Attr_Autoplay ->
       buildBooleanAttribute "autoplay" True
 
     Attr_Blocking blocking ->
-      Just . buildAttribute "blocking" $ Types.blockOptionToText blocking
+      Just . buildAttribute "blocking" $ Types.blockOptionToTextBuilder blocking
 
     Attr_Capture mbCapture ->
       maybe
         (buildBooleanAttribute "capture" True)
-        (Just . buildAttribute "capture" . Types.captureMethodToText)
+        (Just . buildAttribute "capture" . Types.captureMethodToTextBuilder)
         mbCapture
 
     Attr_Charset ->
-      Just $ buildAttribute "charset" "utf-8"
+      Just $ buildAttribute "charset" (fromText "utf-8")
 
     Attr_Checked checked ->
       buildBooleanAttribute "checked" checked
 
     Attr_Cite cite ->
-      Just . buildAttribute "cite" $ Types.urlToText cite
+      Just . buildAttribute "cite" $ Types.urlToTextBuilder cite
 
     Attr_Cols cols ->
-      Just . buildAttribute "cols" $ Render.showText cols
+      Just . buildAttribute "cols" $ Render.showBuilder cols
 
     Attr_Colspan colspan ->
-      Just . buildAttribute "colspan" $ Render.showText colspan
+      Just . buildAttribute "colspan" $ Render.showBuilder colspan
 
     Attr_Command command ->
-      Just . buildAttribute "command" $ Types.commandOptionToText command
+      Just . buildAttribute "command" $ Types.commandOptionToTextBuilder command
 
     Attr_CommandFor commandfor ->
-      Just . buildAttribute "commandfor" $ Types.idToText commandfor
+      Just . buildAttribute "commandfor" $ Types.idToTextBuilder commandfor
 
     Attr_Coords coords ->
       Just
         . buildAttribute "coords"
-        . Render.foldToTextWithSeparator Render.showText ","
+        . Render.foldToBuilderWithSeparator Render.showBuilder (fromText ",")
         $ NEL.toList coords
 
     Attr_Content content ->
-      Just $ buildAttribute "content" content
+      Just $ buildAttribute "content" (fromText content)
 
     Attr_Controls ->
       buildBooleanAttribute "controls" True
@@ -725,21 +725,21 @@ renderAttribute attr =
     Attr_ControlsList controlslist ->
       Just
         . buildAttribute "controlslist"
-        $ Types.controlsListToText controlslist
+        $ Types.controlsListToTextBuilder controlslist
 
     Attr_CrossOrigin crossorigin ->
       Just
         . buildAttribute "crossorigin"
-        $ Types.crossOriginFetchToText crossorigin
+        $ Types.crossOriginFetchToTextBuilder crossorigin
 
     Attr_Data _data ->
-      Just . buildAttribute "data" $ Types.urlToText _data
+      Just . buildAttribute "data" $ Types.urlToTextBuilder _data
 
     Attr_Datetime datetime ->
-      Just . buildAttribute "datetime" $ T.pack datetime
+      Just . buildAttribute "datetime" . fromText $ T.pack datetime
 
     Attr_Decoding decoding ->
-      Just . buildAttribute "decoding" $ Types.decodingToText decoding
+      Just . buildAttribute "decoding" $ Types.decodingToTextBuilder decoding
 
     Attr_Default ->
       buildBooleanAttribute "default" True
@@ -748,7 +748,7 @@ renderAttribute attr =
       buildBooleanAttribute "defer" True
 
     Attr_Dirname dirname ->
-      Just $ buildAttribute "dirname" dirname
+      Just $ buildAttribute "dirname" (fromText dirname)
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
@@ -762,118 +762,118 @@ renderAttribute attr =
     Attr_Download download ->
       maybe
         (buildBooleanAttribute "download" True)
-        (Just . buildAttribute "download" . NET.toText)
+        (Just . buildAttribute "download" . fromText . NET.toText)
         download
 
     Attr_ElementTiming elementtiming ->
-      Just $ buildAttribute "elementtiming" elementtiming
+      Just $ buildAttribute "elementtiming" (fromText elementtiming)
 
     Attr_Enctype enctype ->
-      Just . buildAttribute "enctype" $ Render.bytesToText enctype
+      Just . buildAttribute "enctype" . fromText $ Render.bytesToText enctype
 
     Attr_FetchPriority fetchpriority ->
       Just
         . buildAttribute "fetchpriority"
-        $ Types.fetchPriorityToText fetchpriority
+        $ Types.fetchPriorityToTextBuilder fetchpriority
 
     Attr_For for ->
-      Just . buildAttribute "for" $ Types.forOptionToText for
+      Just . buildAttribute "for" $ Types.forOptionToTextBuilder for
 
     Attr_Form form ->
-      Just . buildAttribute "form" $ Types.idToText form
+      Just . buildAttribute "form" $ Types.idToTextBuilder form
 
     Attr_FormAction formaction ->
-      Just . buildAttribute "formaction" $ Types.actionToText formaction
+      Just . buildAttribute "formaction" $ Types.actionToTextBuilder formaction
 
     Attr_FormEnctype formenctype ->
-      Just . buildAttribute "formenctype" $ Render.bytesToText formenctype
+      Just . buildAttribute "formenctype" . fromText $ Render.bytesToText formenctype
 
     Attr_FormMethod formmethod ->
-      Just . buildAttribute "formmethod" $ Types.formMethodToText formmethod
+      Just . buildAttribute "formmethod" $ Types.formMethodToTextBuilder formmethod
 
     Attr_FormNoValidate ->
       buildBooleanAttribute "formnovalidate" True
 
     Attr_FormTarget formtarget ->
-      Just . buildAttribute "formtarget" $ Types.targetToText formtarget
+      Just . buildAttribute "formtarget" $ Types.targetToTextBuilder formtarget
 
     Attr_Headers headers ->
       Just
         . buildAttribute "headers"
-        . Render.foldToTextWithSeparator Types.idToText " "
+        . Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ")
         $ headers
 
     Attr_Height height ->
-      Just . buildAttribute "height" $ Render.showText height
+      Just . buildAttribute "height" $ Render.showBuilder height
 
     Attr_High high ->
-      Just . buildAttribute "high" $ Types.numberToText high
+      Just . buildAttribute "high" $ Types.numberToTextBuilder high
 
     Attr_Href href ->
-      Just . buildAttribute "href" $ Types.hrefToText href
+      Just . buildAttribute "href" $ Types.hrefToTextBuilder href
 
     Attr_HrefLang hreflang ->
-      Just . buildAttribute "hreflang" $ Ogma.bcp_47ToText hreflang
+      Just . buildAttribute "hreflang" . fromText $ Ogma.bcp_47ToText hreflang
 
     Attr_HttpEquiv httpEquiv ->
-      Just . buildAttribute "http-equiv" $ Types.httpEquivTokenToText httpEquiv
+      Just . buildAttribute "http-equiv" $ Types.httpEquivTokenToTextBuilder httpEquiv
 
     Attr_ImageSizes imagesizes ->
       Just
         . buildAttribute "imagesizes"
-        . Render.foldToTextWithSeparator Types.sizeToText ", "
+        . Render.foldToBuilderWithSeparator Types.sizeToTextBuilder (fromText ", ")
         $ NEL.toList imagesizes
 
     Attr_ImageSrcset imagesrcset ->
       Just
         . buildAttribute "imagesrcset"
-        . Render.foldToTextWithSeparator Types.srcsetCandidateToText ", "
+        . Render.foldToBuilderWithSeparator Types.srcsetCandidateToTextBuilder (fromText ", ")
         $ NEL.toList imagesrcset
 
     Attr_Integrity sha content ->
-      Just . buildAttribute "integrity" $ Types.integrityToText sha content
+      Just . buildAttribute "integrity" $ Types.integrityToTextBuilder sha content
 
     Attr_IsMap ->
       buildBooleanAttribute "ismap" True
 
     Attr_Kind kind ->
-      Just . buildAttribute "kind" $ Types.trackKindToText kind
+      Just . buildAttribute "kind" $ Types.trackKindToTextBuilder kind
 
     Attr_Label label ->
-      Just $ buildAttribute "label" label
+      Just $ buildAttribute "label" (fromText label)
 
     Attr_List list ->
-      Just . buildAttribute "label" $ Types.idToText list
+      Just . buildAttribute "label" $ Types.idToTextBuilder list
 
     Attr_Loading loading ->
-      Just . buildAttribute "loading" $ Types.loadOptionToText loading
+      Just . buildAttribute "loading" $ Types.loadOptionToTextBuilder loading
 
     Attr_Loop ->
       buildBooleanAttribute "loop" True
 
     Attr_Low low ->
-      Just . buildAttribute "low" $ Types.numberToText low
+      Just . buildAttribute "low" $ Types.numberToTextBuilder low
 
     Attr_Max max ->
-      Just . buildAttribute "max" $ Types.rangeBoundToText max
+      Just . buildAttribute "max" $ Types.rangeBoundToTextBuilder max
 
     Attr_MaxLength maxlength ->
-      Just . buildAttribute "maxlength" $ Render.showText maxlength
+      Just . buildAttribute "maxlength" $ Render.showBuilder maxlength
 
     Attr_Media media ->
       Just
         . buildAttribute "media"
-        . Render.foldToTextWithSeparator Types.mediaQueryToText ", "
+        . Render.foldToBuilderWithSeparator Types.mediaQueryToTextBuilder (fromText ", ")
         $ NEL.toList media
 
     Attr_Method method ->
-      Just . buildAttribute "method" $ Types.formMethodToText method
+      Just . buildAttribute "method" $ Types.formMethodToTextBuilder method
 
     Attr_Min min ->
-      Just . buildAttribute "min" $ Types.rangeBoundToText min
+      Just . buildAttribute "min" $ Types.rangeBoundToTextBuilder min
 
     Attr_MinLength minlength ->
-      Just . buildAttribute "minlength" $ Render.showText minlength
+      Just . buildAttribute "minlength" $ Render.showBuilder minlength
 
     Attr_Multiple ->
       buildBooleanAttribute "multiple" True
@@ -882,7 +882,7 @@ renderAttribute attr =
       buildBooleanAttribute "muted" muted
 
     Attr_Name name ->
-      Just . buildAttribute "name" $ Types.nameOptionToText name
+      Just . buildAttribute "name" $ Types.nameOptionToTextBuilder name
 
     Attr_NoModule nomodule ->
       buildBooleanAttribute "nomodule" nomodule
@@ -894,36 +894,36 @@ renderAttribute attr =
       buildBooleanAttribute "open" True
 
     Attr_Optimum optimum ->
-      Just . buildAttribute "optimum" $ Types.numberToText optimum
+      Just . buildAttribute "optimum" $ Types.numberToTextBuilder optimum
 
     Attr_Pattern pattern ->
-      Just $ buildAttribute "pattern" pattern
+      Just $ buildAttribute "pattern" (fromText pattern)
 
     Attr_Ping pings ->
       Just
         . buildAttribute "ping"
-        . Render.foldToTextWithSeparator Types.pingToText " "
+        . Render.foldToBuilderWithSeparator Types.pingToTextBuilder (fromText " ")
         $ NEL.toList pings
 
     Attr_Placeholder placeholder ->
-      Just $ buildAttribute "placeholder" placeholder
+      Just $ buildAttribute "placeholder" (fromText placeholder)
 
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
 
     Attr_PopoverTarget popovertarget ->
-      Just . buildAttribute "popovertarget" $ Types.idToText popovertarget
+      Just . buildAttribute "popovertarget" $ Types.idToTextBuilder popovertarget
 
     Attr_PopoverTargetAction popovertargetaction ->
       Just
         . buildAttribute "popovertargetaction"
-        $ Types.popoverTargetActionToText popovertargetaction
+        $ Types.popoverTargetActionToTextBuilder popovertargetaction
 
     Attr_Poster poster ->
-      Just . buildAttribute "poster" $ Types.urlToText poster
+      Just . buildAttribute "poster" $ Types.urlToTextBuilder poster
 
     Attr_Preload preload ->
-      Just . buildAttribute "preload" $ Types.preloadToText preload
+      Just . buildAttribute "preload" $ Types.preloadToTextBuilder preload
 
     Attr_ReadOnly ->
       buildBooleanAttribute "readonly" True
@@ -931,10 +931,10 @@ renderAttribute attr =
     Attr_ReferrerPolicy referrerpolicy ->
       Just
         . buildAttribute "referrerpolicy"
-        $ Types.referrerPolicyToText referrerpolicy
+        $ Types.referrerPolicyToTextBuilder referrerpolicy
 
     Attr_Rel rel ->
-      Just . buildAttribute "rel" $ Types.relationshipToText rel
+      Just . buildAttribute "rel" $ Types.relationshipToTextBuilder rel
 
     Attr_Required required ->
       buildBooleanAttribute "required" required
@@ -943,10 +943,10 @@ renderAttribute attr =
       buildBooleanAttribute "reversed" reversed
 
     Attr_Rows rows ->
-      Just . buildAttribute "rows" $ Render.showText rows
+      Just . buildAttribute "rows" $ Render.showBuilder rows
 
     Attr_Rowspan rowspan ->
-      Just . buildAttribute "rowspan" $ Render.showText rowspan
+      Just . buildAttribute "rowspan" $ Render.showBuilder rowspan
 
     Attr_Sandbox sandbox ->
       if null sandbox
@@ -954,11 +954,11 @@ renderAttribute attr =
         else
           Just
             . buildAttribute "sandbox"
-            . Render.foldToTextWithSeparator Types.sandboxTokenToText " "
+            . Render.foldToBuilderWithSeparator Types.sandboxTokenToTextBuilder (fromText " ")
             $ sandbox
 
     Attr_Scope scope ->
-      Just . buildAttribute "scope" $ Types.scopeToText scope
+      Just . buildAttribute "scope" $ Types.scopeToTextBuilder scope
 
     Attr_Selected selected ->
       buildBooleanAttribute "selected" selected
@@ -966,7 +966,7 @@ renderAttribute attr =
     Attr_ShadowRootMode shadowrootmode ->
       Just
         . buildAttribute "shadowrootmode"
-        $ Types.openClosedToText shadowrootmode
+        $ Types.openClosedToTextBuilder shadowrootmode
 
     Attr_ShadowRootDelegatesFocus ->
       buildBooleanAttribute "shadowrootdelegatesfocus" True
@@ -975,64 +975,65 @@ renderAttribute attr =
       buildBooleanAttribute "shadowrootclonable" True
 
     Attr_Shape shape ->
-      Just . buildAttribute "shape" $ Types.shapeToText shape
+      Just . buildAttribute "shape" $ Types.shapeToTextBuilder shape
 
     Attr_Size size ->
-      Just . buildAttribute "size" $ Render.showText size
+      Just . buildAttribute "size" $ Render.showBuilder size
 
     Attr_Sizes sizes ->
       Just
         . buildAttribute "sizes"
-        . Render.foldToTextWithSeparator Types.sizeToText ", "
+        . Render.foldToBuilderWithSeparator Types.sizeToTextBuilder (fromText ", ")
         $ NEL.toList sizes
 
     Attr_Span span ->
-      Just . buildAttribute "span" $ Render.showText span
+      Just . buildAttribute "span" $ Render.showBuilder span
 
     Attr_Src src ->
-      Just . buildAttribute "src" $ Types.urlToText src
+      Just . buildAttribute "src" $ Types.urlToTextBuilder src
 
     Attr_SrcDoc srcdoc ->
       Just
         . buildAttribute "srcdoc"
+        . fromText
         . Render.lazyBytesToText
         $ Escape.attributeBytes srcdoc
 
     Attr_SrcLang srclang ->
-      Just . buildAttribute "srclang" $ Ogma.bcp_47ToText srclang
+      Just . buildAttribute "srclang" . fromText $ Ogma.bcp_47ToText srclang
 
     Attr_SrcSet srcset ->
       Just
         . buildAttribute "srcset"
-        . Render.foldToTextWithSeparator Types.srcsetCandidateToText ", "
+        . Render.foldToBuilderWithSeparator Types.srcsetCandidateToTextBuilder (fromText ", ")
         $ NEL.toList srcset
 
     Attr_Start start ->
-      Just . buildAttribute "start" $ Render.showText start
+      Just . buildAttribute "start" $ Render.showBuilder start
 
     Attr_Step step ->
-      Just . buildAttribute "step" $ Types.stepToText step
+      Just . buildAttribute "step" $ Types.stepToTextBuilder step
 
     Attr_Target target ->
-      Just . buildAttribute "target" $ Types.targetToText target
+      Just . buildAttribute "target" $ Types.targetToTextBuilder target
 
     Attr_Type type_ ->
-      Just . buildAttribute "type" $ Types.typeOptionToText type_
+      Just . buildAttribute "type" $ Types.typeOptionToTextBuilder type_
 
     Attr_UseMap usemap ->
-      Just . buildAttribute "usemap" . T.cons '#' $ Types.nameToText usemap
+      Just . buildAttribute "usemap" $ fromText "#" <> Types.nameToTextBuilder usemap
 
     Attr_Value value ->
-      Just . buildAttribute "value" $ Types.valueToText value
+      Just . buildAttribute "value" $ Types.valueToTextBuilder value
 
     Attr_Width width ->
-      Just . buildAttribute "width" $ Render.showText width
+      Just . buildAttribute "width" $ Render.showBuilder width
 
     Attr_Wrap wrap ->
-      Just . buildAttribute "wrap" $ Types.wrapToText wrap
+      Just . buildAttribute "wrap" $ Types.wrapToTextBuilder wrap
 
     Attr_XMLNS xmlns ->
-      Just . buildAttribute "xmlns" $ Types.urlToText xmlns
+      Just . buildAttribute "xmlns" $ Types.urlToTextBuilder xmlns
 
     -- ARIA Attributes
     --
@@ -1040,7 +1041,7 @@ renderAttribute attr =
       Just $
         buildAttribute
           (Types.ariaAttributeToText aria)
-          (Types.ariaValueToText aria)
+          (Types.ariaValueToTextBuilder aria)
 
     -- Event Attributes
     --
@@ -1048,7 +1049,7 @@ renderAttribute attr =
       Just $
         buildAttribute
           (eventAttributeToText event)
-          (Types.rawJavaScriptToText script)
+          (Types.rawJavaScriptToTextBuilder script)
 
     -- HTMX Attributes
     --
@@ -1061,13 +1062,13 @@ renderAttribute attr =
               Relative_Put    path -> ("hx-put", path)
               Relative_Patch  path -> ("hx-patch", path)
 
-       in Just $ buildAttribute hxAttr hxPath
+       in Just $ buildAttribute hxAttr (fromText hxPath)
 
     Attr_HxBoost boosted ->
-      Just . buildAttribute "hx-boost" $ Render.enumBoolToText boosted
+      Just . buildAttribute "hx-boost" $ Render.enumBoolToTextBuilder boosted
 
     Attr_HxConfirm confirmation ->
-      Just . buildAttribute "hx-confirm" $ Escape.attributeText confirmation
+      Just . buildAttribute "hx-confirm" $ Escape.attributeTextBuilder confirmation
 
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
@@ -1075,55 +1076,55 @@ renderAttribute attr =
     Attr_HxDisabledElt disabled ->
       Just
         . buildAttribute "hx-disabled-elt"
-        . Render.foldToTextWithSeparator Types.disabledSelectorToText ", "
+        . Render.foldToBuilderWithSeparator Types.disabledSelectorToTextBuilder (fromText ", ")
         $ NEL.toList disabled
 
     Attr_HxDisinherit disinherit ->
-      Just . buildAttribute "hx-disinherit" $ Types.disinheritToText disinherit
+      Just . buildAttribute "hx-disinherit" $ Types.disinheritToTextBuilder disinherit
 
     Attr_HxEncoding ->
-      Just $ buildAttribute "hx-encoding" "multipart/form-data"
+      Just $ buildAttribute "hx-encoding" (fromText "multipart/form-data")
 
     Attr_HxExt exts ->
       Just
         . buildAttribute "hx-ext"
-        . Render.foldToTextWithSeparator Types.extensionToText ","
+        . Render.foldToBuilderWithSeparator Types.extensionToTextBuilder (fromText ",")
         $ NEL.toList exts
 
     Attr_HxHeaders headers ->
       Just
         . buildAttribute "hx-headers"
-        . Escape.attributeText
+        . Escape.attributeTextBuilder
         $ Types.htmxHeadersToText headers
 
     Attr_HxHistory ->
-      Just $ buildAttribute "hx-history" "false"
+      Just $ buildAttribute "hx-history" (fromText "false")
 
     Attr_HxHistoryElt ->
       buildBooleanAttribute "hx-history" True
 
     Attr_HxInclude include ->
-      Just . buildAttribute "hx-include" $ Types.includeSelectorToText include
+      Just . buildAttribute "hx-include" $ Types.includeSelectorToTextBuilder include
 
     Attr_HxIndicator indicator ->
-      Just . buildAttribute "hx-indicator" $ Types.indicatorToText indicator
+      Just . buildAttribute "hx-indicator" $ Types.indicatorToTextBuilder indicator
 
     Attr_HxOn event action ->
       Just
         . buildAttribute ("hx-on" <> Types.hxOnEventText event)
-        $ Escape.attributeText action
+        $ Escape.attributeTextBuilder action
 
     Attr_HxParams params ->
       Just
         . buildAttribute "hx-params"
-        . Escape.attributeText
+        . Escape.attributeTextBuilder
         $ Types.requestParamsToText params
 
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
 
     Attr_HxPrompt prompt ->
-      Just . buildAttribute "hx-prompt" $ Escape.attributeText prompt
+      Just . buildAttribute "hx-prompt" $ Escape.attributeTextBuilder prompt
 
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
@@ -1134,58 +1135,58 @@ renderAttribute attr =
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"
-        . Escape.attributeText
+        . Escape.attributeTextBuilder
         $ Types.querySelectorToText selector
 
     Attr_HxSelectOOB selects ->
       Just
         . buildAttribute "hx-select-oob"
-        . Render.foldToTextWithSeparator Types.outOfBandSelectToText ", "
+        . Render.foldToBuilderWithSeparator Types.outOfBandSelectToTextBuilder (fromText ", ")
         $ NEL.toList selects
 
     Attr_HxSwap swap ->
-      Just . buildAttribute "hx-swap" $ Types.swapToText swap
+      Just . buildAttribute "hx-swap" $ Types.swapToTextBuilder swap
 
     Attr_HxSwapOOB mbSwap ->
       Just
         . buildAttribute "hx-swap-oob"
-        $ maybe "true" Types.outOfBandSwapToText mbSwap
+        $ maybe (fromText "true") Types.outOfBandSwapToTextBuilder mbSwap
 
     Attr_HxTarget target ->
-      Just . buildAttribute "hx-target" $ Types.hxTargetToText target
+      Just . buildAttribute "hx-target" $ Types.hxTargetToTextBuilder target
 
     Attr_HxTrigger triggers ->
       Just
         . buildAttribute "hx-trigger"
-        . Render.foldToTextWithSeparator Types.triggerToText ", "
+        . Render.foldToBuilderWithSeparator Types.triggerToTextBuilder (fromText ", ")
         $ NEL.toList triggers
 
     Attr_HxValidate ->
       buildBooleanAttribute "hx-validate" True
 
     Attr_HxVals vals ->
-      Just . buildAttribute "hx-vals" $ Escape.attributeText (Types.htmxValsToText vals)
+      Just . buildAttribute "hx-vals" $ Escape.attributeTextBuilder (Types.htmxValsToText vals)
 
     -- Other
     --
     Attr_HyperScript hyperscript ->
-      Just . buildAttribute "_" $ Types.hyperScriptToText hyperscript
+      Just . buildAttribute "_" $ Types.hyperScriptToTextBuilder hyperscript
 
-buildAttribute :: T.Text -> T.Text -> Builder
+buildAttribute :: T.Text -> Builder -> Builder
 buildAttribute attr value =
-  fromText attr <> fromText "=\"" <> fromText value <> fromText "\""
+  fromText attr <> fromText "=\"" <> value <> fromText "\""
 
 buildBooleanAttribute :: T.Text -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
   B.bool Nothing (Just $ fromText attr)
 
-renderPushURL :: Types.PushURL -> T.Text
+renderPushURL :: Types.PushURL -> Builder
 renderPushURL =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @Types.AbsoluteURL Types.absoluteURLToText
-      . Shrubbery.branch @(Types.RelativeURL _) Types.relativeURLToText
-      . Shrubbery.branch @Bool Render.enumBoolToText
-      . Shrubbery.branch @Types.RawURL Types.rawURLToText
+      . Shrubbery.branch @Types.AbsoluteURL Types.absoluteURLToTextBuilder
+      . Shrubbery.branch @(Types.RelativeURL _) Types.relativeURLToTextBuilder
+      . Shrubbery.branch @Bool Render.enumBoolToTextBuilder
+      . Shrubbery.branch @Types.RawURL Types.rawURLToTextBuilder
       $ Shrubbery.branchEnd
   ) . Types.unPushURL
