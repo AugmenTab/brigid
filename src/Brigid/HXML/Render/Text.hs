@@ -184,229 +184,226 @@ renderAttribute attr =
       Nothing
 
     Attr_Custom name value ->
-      Just $ buildAttribute name value
+      Just $ buildAttribute name (fromText value)
 
     Attr_ActivityIndicatorColor activityIndicatorColor ->
       Just
         . buildAttribute "activity-indicator-color"
-        $ Types.colorToText activityIndicatorColor
+        $ Types.colorToTextBuilder activityIndicatorColor
 
     Attr_AdjustsFontSizeToFit adjustsFontSizeToFit ->
       Just
         . buildAttribute "adjustsFontSizeToFit"
-        $ Render.enumBoolToText adjustsFontSizeToFit
+        $ Render.enumBoolToTextBuilder adjustsFontSizeToFit
 
     Attr_AllowDeselect allowDeselect ->
       Just
         . buildAttribute "allow-deselect"
-        $ Render.enumBoolToText allowDeselect
+        $ Render.enumBoolToTextBuilder allowDeselect
 
     Attr_AutoFocus autoFocus ->
-      Just . buildAttribute "auto-focus" $ Render.enumBoolToText autoFocus
+      Just . buildAttribute "auto-focus" $ Render.enumBoolToTextBuilder autoFocus
 
     Attr_AvoidKeyboard avoidKeyboard ->
       Just
         . buildAttribute "avoid-keyboard"
-        $ Render.enumBoolToText avoidKeyboard
+        $ Render.enumBoolToTextBuilder avoidKeyboard
 
     Attr_CancelLabel cancelLabel ->
-      Just $ buildAttribute "cancel-label" cancelLabel
+      Just $ buildAttribute "cancel-label" (fromText cancelLabel)
 
     Attr_Color color ->
-      Just . buildAttribute "color" $ Types.hexColorToText color
+      Just . buildAttribute "color" $ Types.hexColorToTextBuilder color
 
     Attr_ContentContainerStyle contentContainerStyle ->
       Just
-        . buildAttributeB "content-container-style"
-        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") contentContainerStyle
+        . buildAttribute "content-container-style"
+        $ Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ") contentContainerStyle
 
     Attr_CursorColor cursorColor ->
-      Just . buildAttribute "cursorColor" $ Types.colorToText cursorColor
+      Just . buildAttribute "cursorColor" $ Types.colorToTextBuilder cursorColor
 
     Attr_DoneLabel doneLabel ->
-      Just $ buildAttribute "done-label" doneLabel
+      Just $ buildAttribute "done-label" (fromText doneLabel)
 
     Attr_FieldStyle fieldStyle ->
       Just
-        . buildAttributeB "field-style"
-        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") fieldStyle
+        . buildAttribute "field-style"
+        $ Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ") fieldStyle
 
     Attr_FieldTextStyle fieldTextStyle ->
       Just
-        . buildAttributeB "field-text-style"
-        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") fieldTextStyle
+        . buildAttribute "field-text-style"
+        $ Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ") fieldTextStyle
 
     Attr_Focused focused ->
-      Just . buildAttribute "focused" $ Render.enumBoolToText focused
+      Just . buildAttribute "focused" $ Render.enumBoolToTextBuilder focused
 
     Attr_Hide hide ->
-      Just . buildAttribute "hide" $ Render.enumBoolToText hide
+      Just . buildAttribute "hide" $ Render.enumBoolToTextBuilder hide
 
     Attr_Href href ->
-      Just . buildAttribute "href" $ Types.urlToText href
+      Just . buildAttribute "href" $ Types.urlToTextBuilder href
 
     Attr_Html html ->
       Just
         . buildAttribute "html"
+        . fromText
         . Render.lazyBytesToText
         $ Escape.attributeBytes html
 
     Attr_Id id ->
-      Just . buildAttribute "id" $ Types.idToText id
+      Just . buildAttribute "id" $ Types.idToTextBuilder id
 
     Attr_InjectedJavaScript injectedJavaScript ->
       Just
         . buildAttribute "injected-java-script"
-        $ Types.rawJavaScriptToText injectedJavaScript
+        $ Types.rawJavaScriptToTextBuilder injectedJavaScript
 
     Attr_ItemHeight itemHeight ->
-      Just . buildAttribute "itemHeight" $ Render.showText itemHeight
+      Just . buildAttribute "itemHeight" $ Render.showIntegerToTextBuilder itemHeight
 
     Attr_Key key ->
-      Just . buildAttribute "key" $ Types.keyToText key
+      Just . buildAttribute "key" $ Types.keyToTextBuilder key
 
     Attr_KeyboardDismissMode keyboardDismissMode ->
       Just
         . buildAttribute "keyboard-dismiss-mode"
-        $ Types.keyboardDismissModeToText keyboardDismissMode
+        $ Types.keyboardDismissModeToTextBuilder keyboardDismissMode
 
     Attr_KeyboardShouldPersistTaps keyboardShouldPersistTaps ->
       Just
         . buildAttribute "keyboard-should-persist-taps"
-        $ Types.keyboardShouldPersistTapsToText keyboardShouldPersistTaps
+        $ Types.keyboardShouldPersistTapsToTextBuilder keyboardShouldPersistTaps
 
     Attr_KeyboardType keyboardType ->
       Just
         . buildAttribute "keyboard-type"
-        $ Types.keyboardTypeToText keyboardType
+        $ Types.keyboardTypeToTextBuilder keyboardType
 
     Attr_Label label ->
-      Just $ buildAttribute "label" label
+      Just $ buildAttribute "label" (fromText label)
 
     Attr_Mask mask ->
-      Just . buildAttribute "mask" $ Types.maskToText mask
+      Just . buildAttribute "mask" $ Types.maskToTextBuilder mask
 
     Attr_Merge merge ->
-      Just . buildAttribute "merge" $ Render.enumBoolToText merge
+      Just . buildAttribute "merge" $ Render.enumBoolToTextBuilder merge
 
     Attr_Modal modal ->
-      Just . buildAttribute "modal" $ Render.enumBoolToText modal
+      Just . buildAttribute "modal" $ Render.enumBoolToTextBuilder modal
 
     Attr_ModalStyle modalStyle ->
       Just
-        . buildAttributeB "modal-style"
-        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") modalStyle
+        . buildAttribute "modal-style"
+        $ Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ") modalStyle
 
     Attr_ModalTextStyle modalTextStyle ->
       Just
-        . buildAttributeB "modal-text-style"
-        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") modalTextStyle
+        . buildAttribute "modal-text-style"
+        $ Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ") modalTextStyle
 
     Attr_Multiline multiline ->
-      Just . buildAttribute "multiline" $ Render.enumBoolToText multiline
+      Just . buildAttribute "multiline" $ Render.enumBoolToTextBuilder multiline
 
     Attr_Name name ->
-      Just . buildAttribute "name" $ Types.nameToText name
+      Just . buildAttribute "name" $ Types.nameToTextBuilder name
 
     Attr_NumberOfLines numberOfLines ->
       Just
         . buildAttribute "numberOfLines"
-        $ Render.showText numberOfLines
+        $ Render.showIntegerToTextBuilder numberOfLines
 
     Attr_Placeholder placeholder ->
-      Just $ buildAttribute "placeholder" placeholder
+      Just $ buildAttribute "placeholder" (fromText placeholder)
 
     Attr_PlaceholderTextColor placeholderTextColor ->
       Just
         . buildAttribute "placeholderTextColor"
-        $ Types.colorToText placeholderTextColor
+        $ Types.colorToTextBuilder placeholderTextColor
 
     Attr_Preformatted preformatted ->
       Just
         . buildAttribute "preformatted"
-        $ Render.enumBoolToText preformatted
+        $ Render.enumBoolToTextBuilder preformatted
 
     Attr_Pressed pressed ->
-      Just . buildAttribute "pressed" $ Render.enumBoolToText pressed
+      Just . buildAttribute "pressed" $ Render.enumBoolToTextBuilder pressed
 
     Attr_SafeArea safeArea ->
-      Just . buildAttribute "safe-area" $ Render.enumBoolToText safeArea
+      Just . buildAttribute "safe-area" $ Render.enumBoolToTextBuilder safeArea
 
     Attr_Scroll scroll ->
-      Just . buildAttribute "scroll" $ Render.enumBoolToText scroll
+      Just . buildAttribute "scroll" $ Render.enumBoolToTextBuilder scroll
 
     Attr_ScrollOrientation scrollOrientation ->
       Just
         . buildAttribute "scroll-orientation"
-        $ Types.scrollOrientationToText scrollOrientation
+        $ Types.scrollOrientationToTextBuilder scrollOrientation
 
     Attr_ScrollToInputOffset scrollToInputOffset ->
       Just
         . buildAttribute "scroll-orientation"
-        $ Render.showText scrollToInputOffset
+        $ Render.showIntegerToTextBuilder scrollToInputOffset
 
     Attr_SecureText secureText ->
-      Just . buildAttribute "secure-text" $ Render.enumBoolToText secureText
+      Just . buildAttribute "secure-text" $ Render.enumBoolToTextBuilder secureText
 
     Attr_Selectable selectable ->
-      Just . buildAttribute "selectable" $ Render.enumBoolToText selectable
+      Just . buildAttribute "selectable" $ Render.enumBoolToTextBuilder selectable
 
     Attr_Selected selected ->
-      Just . buildAttribute "selected" $ Render.enumBoolToText selected
+      Just . buildAttribute "selected" $ Render.enumBoolToTextBuilder selected
 
     Attr_SelectionColor selectionColor ->
       Just
         . buildAttribute "selectionColor"
-        $ Types.colorToText selectionColor
+        $ Types.colorToTextBuilder selectionColor
 
     Attr_SelectionHandleColor selectionHandleColor ->
       Just
         . buildAttribute "selectionHandleColor"
-        $ Types.colorToText selectionHandleColor
+        $ Types.colorToTextBuilder selectionHandleColor
 
     Attr_ShowLoadingIndicator showLoadingIndicator ->
       Just
         . buildAttribute "show-loading-indicator"
-        $ Types.showLoadingIndicatorToText showLoadingIndicator
+        $ Types.showLoadingIndicatorToTextBuilder showLoadingIndicator
 
     Attr_ShowsScrollIndicator showsScrollIndicator ->
       Just
         . buildAttribute "shows-scroll-indicator"
-        $ Render.enumBoolToText showsScrollIndicator
+        $ Render.enumBoolToTextBuilder showsScrollIndicator
 
     Attr_Source source ->
-      Just . buildAttribute "source" $ Types.urlToText source
+      Just . buildAttribute "source" $ Types.urlToTextBuilder source
 
     Attr_Sticky sticky ->
-      Just . buildAttribute "sticky" $ Render.enumBoolToText sticky
+      Just . buildAttribute "sticky" $ Render.enumBoolToTextBuilder sticky
 
     Attr_StickySectionTitles stickySectionTitles ->
       Just
         . buildAttribute "sticky-section-titles"
-        $ Render.enumBoolToText stickySectionTitles
+        $ Render.enumBoolToTextBuilder stickySectionTitles
 
     Attr_Style style ->
       Just
-        . buildAttributeB "style"
-        $ Render.foldToBuilderWithSeparator (fromText . Types.idToText) (fromText " ") style
+        . buildAttribute "style"
+        $ Render.foldToBuilderWithSeparator Types.idToTextBuilder (fromText " ") style
 
     Attr_Type type_ ->
-      Just . buildAttribute "type" $ Types.navigatorTypeToText type_
+      Just . buildAttribute "type" $ Types.navigatorTypeToTextBuilder type_
 
     Attr_Url url ->
-      Just . buildAttribute "url" $ Types.urlToText url
+      Just . buildAttribute "url" $ Types.urlToTextBuilder url
 
     Attr_Value value ->
-      Just $ buildAttribute "value" value
+      Just $ buildAttribute "value" (fromText value)
 
     Attr_XMLNS xmlns ->
-      Just . buildAttribute "xmlns" $ Types.urlToText xmlns
+      Just . buildAttribute "xmlns" $ Types.urlToTextBuilder xmlns
 
-buildAttribute :: T.Text -> T.Text -> Builder
+buildAttribute :: T.Text -> Builder -> Builder
+{-# INLINE buildAttribute #-}
 buildAttribute attr value =
-  fromText attr <> fromText "=\"" <> fromText value <> fromText "\""
-
-buildAttributeB :: T.Text -> Builder -> Builder
-buildAttributeB attr value =
   fromText attr <> fromText "=\"" <> value <> fromText "\""
-
