@@ -15,6 +15,10 @@ import Ogma qualified
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
 
+import Beeline.HTTP.Client (NoPathParams (NoPathParams))
+import Beeline.Routing ((/-))
+import Beeline.Routing qualified as R
+
 import Brigid.HTML.Attributes qualified as A
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Elements.Safe qualified as Safe
@@ -45,6 +49,8 @@ tests =
     , additionalScopedAttributes
     , ariaAttributes
     , eventAttributes
+    , htmxAttributes
+    , hyperscriptAttributes
     ]
 
 -- Helpers
@@ -1613,4 +1619,235 @@ eventAttributes =
         let node = divWith [A.on A.MouseOver (RawJavaScript "this.style.color='red'")]
         RBS.renderHTML node @?= "<div onmouseover=\"js:this.style.color='red'\"></div>"
         RT.renderHTML  node @?= "<div onmouseover=\"js:this.style.color='red'\"></div>"
+    ]
+
+-- HTMX Attributes
+--
+
+htmxAttributes :: TestTree
+htmxAttributes =
+  testGroup "HTMX attributes"
+    [ testCase "hx-get" $ do
+        let node = divWith [A.hxGet (Types.get NoPathParams (R.make NoPathParams /- "items"))]
+        RBS.renderHTML node @?= "<div hx-get=\"/items\"></div>"
+        RT.renderHTML  node @?= "<div hx-get=\"/items\"></div>"
+
+    , testCase "hx-post" $ do
+        let node = divWith [A.hxPost (Types.post NoPathParams (R.make NoPathParams /- "items"))]
+        RBS.renderHTML node @?= "<div hx-post=\"/items\"></div>"
+        RT.renderHTML  node @?= "<div hx-post=\"/items\"></div>"
+
+    , testCase "hx-delete" $ do
+        let node = divWith [A.hxDelete (Types.delete NoPathParams (R.make NoPathParams /- "items"))]
+        RBS.renderHTML node @?= "<div hx-delete=\"/items\"></div>"
+        RT.renderHTML  node @?= "<div hx-delete=\"/items\"></div>"
+
+    , testCase "hx-patch" $ do
+        let node = divWith [A.hxPatch (Types.patch NoPathParams (R.make NoPathParams /- "items"))]
+        RBS.renderHTML node @?= "<div hx-patch=\"/items\"></div>"
+        RT.renderHTML  node @?= "<div hx-patch=\"/items\"></div>"
+
+    , testCase "hx-put" $ do
+        let node = divWith [A.hxPut (Types.put NoPathParams (R.make NoPathParams /- "items"))]
+        RBS.renderHTML node @?= "<div hx-put=\"/items\"></div>"
+        RT.renderHTML  node @?= "<div hx-put=\"/items\"></div>"
+
+    , testCase "hx-on (html event)" $ do
+        let node = divWith [A.hxOn HTML.ClickEvent "doThing()"]
+        RBS.renderHTML node @?= "<div hx-on-click=\"doThing()\"></div>"
+        RT.renderHTML  node @?= "<div hx-on-click=\"doThing()\"></div>"
+
+    , testCase "hx-on (htmx event)" $ do
+        let node = divWith [A.hxOn HTML.HtmxLoad "doThing()"]
+        RBS.renderHTML node @?= "<div hx-on--load=\"doThing()\"></div>"
+        RT.renderHTML  node @?= "<div hx-on--load=\"doThing()\"></div>"
+
+    , testCase "hx-push-url (true)" $ do
+        let node = divWith [A.hxPushURL True]
+        RBS.renderHTML node @?= "<div hx-push-url=\"true\"></div>"
+        RT.renderHTML  node @?= "<div hx-push-url=\"true\"></div>"
+
+    , testCase "hx-push-url (false)" $ do
+        let node = divWith [A.hxPushURL False]
+        RBS.renderHTML node @?= "<div hx-push-url=\"false\"></div>"
+        RT.renderHTML  node @?= "<div hx-push-url=\"false\"></div>"
+
+    , testCase "hx-select" $ do
+        let node = divWith [A.hxSelect (Types.Id (NET.singleton 'x'))]
+        RBS.renderHTML node @?= "<div hx-select=\"#x\"></div>"
+        RT.renderHTML  node @?= "<div hx-select=\"#x\"></div>"
+
+    , testCase "hx-select-oob" $ do
+        let node = divWith
+                     [ A.hxSelectOOB
+                         ( HTML.mkOutOfBandSelect
+                             (HTML.mkQuerySelector (Types.Id (NET.singleton 'x')))
+                           NEL.:| []
+                         )
+                     ]
+        RBS.renderHTML node @?= "<div hx-select-oob=\"#x\"></div>"
+        RT.renderHTML  node @?= "<div hx-select-oob=\"#x\"></div>"
+
+    , testCase "hx-swap" $ do
+        let node = divWith [A.hxSwap (HTML.swapInnerHTML HTML.NoModifier)]
+        RBS.renderHTML node @?= "<div hx-swap=\"innerHTML\"></div>"
+        RT.renderHTML  node @?= "<div hx-swap=\"innerHTML\"></div>"
+
+    , testCase "hx-swap-oob (true)" $ do
+        let node = divWith [A.hxSwapOOB (Nothing :: Maybe HTML.SwapStyle)]
+        RBS.renderHTML node @?= "<div hx-swap-oob=\"true\"></div>"
+        RT.renderHTML  node @?= "<div hx-swap-oob=\"true\"></div>"
+
+    , testCase "hx-swap-oob (style)" $ do
+        let node = divWith [A.hxSwapOOB (Just HTML.OuterHTML)]
+        RBS.renderHTML node @?= "<div hx-swap-oob=\"outerHTML\"></div>"
+        RT.renderHTML  node @?= "<div hx-swap-oob=\"outerHTML\"></div>"
+
+    , testCase "hx-target (this)" $ do
+        let node = divWith [A.hxTarget HTML.This]
+        RBS.renderHTML node @?= "<div hx-target=\"this\"></div>"
+        RT.renderHTML  node @?= "<div hx-target=\"this\"></div>"
+
+    , testCase "hx-trigger" $ do
+        let node = divWith
+                     [ A.hxTrigger
+                         ( HTML.mkTrigger
+                             (HTML.mkTriggerEvent (HTML.mkEvent HTML.ClickEvent) Nothing [])
+                           NEL.:| []
+                         )
+                     ]
+        RBS.renderHTML node @?= "<div hx-trigger=\"click\"></div>"
+        RT.renderHTML  node @?= "<div hx-trigger=\"click\"></div>"
+
+    , testCase "hx-vals" $ do
+        let node = divWith [A.hxVals (HTML.InlineJSON "{}")]
+        RBS.renderHTML node @?= "<div hx-vals=\"{}\"></div>"
+        RT.renderHTML  node @?= "<div hx-vals=\"{}\"></div>"
+
+    , testCase "hx-boost (true)" $ do
+        let node = divWith [A.hxBoost True]
+        RBS.renderHTML node @?= "<div hx-boost=\"true\"></div>"
+        RT.renderHTML  node @?= "<div hx-boost=\"true\"></div>"
+
+    , testCase "hx-boost (false)" $ do
+        let node = divWith [A.hxBoost False]
+        RBS.renderHTML node @?= "<div hx-boost=\"false\"></div>"
+        RT.renderHTML  node @?= "<div hx-boost=\"false\"></div>"
+
+    , testCase "hx-confirm" $ do
+        let node = divWith [A.hxConfirm "Are you sure?"]
+        RBS.renderHTML node @?= "<div hx-confirm=\"Are you sure?\"></div>"
+        RT.renderHTML  node @?= "<div hx-confirm=\"Are you sure?\"></div>"
+
+    , testCase "hx-disable (true)" $ do
+        let node = divWith [A.hxDisable True]
+        RBS.renderHTML node @?= "<div hx-disable></div>"
+        RT.renderHTML  node @?= "<div hx-disable></div>"
+
+    , testCase "hx-disable (false)" $ do
+        let node = divWith [A.hxDisable False]
+        RBS.renderHTML node @?= "<div></div>"
+        RT.renderHTML  node @?= "<div></div>"
+
+    , testCase "hx-disabled-elt" $ do
+        let node = divWith [A.hxDisabledElt (HTML.disableThis NEL.:| [])]
+        RBS.renderHTML node @?= "<div hx-disabled-elt=\"this\"></div>"
+        RT.renderHTML  node @?= "<div hx-disabled-elt=\"this\"></div>"
+
+    , testCase "hx-disinherit (all)" $ do
+        let node = divWith [A.hxDisinherit HTML.DisinheritAll]
+        RBS.renderHTML node @?= "<div hx-disinherit=\"*\"></div>"
+        RT.renderHTML  node @?= "<div hx-disinherit=\"*\"></div>"
+
+    , testCase "hx-disinherit (list)" $ do
+        let node = divWith [A.hxDisinherit (HTML.HxPushURL NEL.:| [HTML.HxPrompt])]
+        RBS.renderHTML node @?= "<div hx-disinherit=\"hx-push-url hx-prompt\"></div>"
+        RT.renderHTML  node @?= "<div hx-disinherit=\"hx-push-url hx-prompt\"></div>"
+
+    , testCase "hx-encoding" $ do
+        let node = divWith [A.hxEncoding]
+        RBS.renderHTML node @?= "<div hx-encoding=\"multipart/form-data\"></div>"
+        RT.renderHTML  node @?= "<div hx-encoding=\"multipart/form-data\"></div>"
+
+    , testCase "hx-ext (single)" $ do
+        let node = divWith [A.hxExt (HTML.extJsonEnc NEL.:| [])]
+        RBS.renderHTML node @?= "<div hx-ext=\"json-enc\"></div>"
+        RT.renderHTML  node @?= "<div hx-ext=\"json-enc\"></div>"
+
+    , testCase "hx-ext (multiple with ignore)" $ do
+        let node = divWith [A.hxExt (HTML.extJsonEnc NEL.:| [HTML.ignore HTML.extAjaxHeader])]
+        RBS.renderHTML node @?= "<div hx-ext=\"json-enc,ignore:ajax-header\"></div>"
+        RT.renderHTML  node @?= "<div hx-ext=\"json-enc,ignore:ajax-header\"></div>"
+
+    , testCase "hx-headers" $ do
+        let node = divWith [A.hxHeaders HTML.emptyRequestHeaders]
+        RBS.renderHTML node @?= "<div hx-headers=\"{}\"></div>"
+        RT.renderHTML  node @?= "<div hx-headers=\"{}\"></div>"
+
+    , testCase "hx-history" $ do
+        let node = divWith [A.hxHistory]
+        RBS.renderHTML node @?= "<div hx-history=\"false\"></div>"
+        RT.renderHTML  node @?= "<div hx-history=\"false\"></div>"
+
+    , testCase "hx-history-elt" $ do
+        let node = divWith [A.hxHistoryElt]
+        RBS.renderHTML node @?= "<div hx-history></div>"
+        RT.renderHTML  node @?= "<div hx-history></div>"
+
+    , testCase "hx-include" $ do
+        let node = divWith [A.hxInclude HTML.includeThis]
+        RBS.renderHTML node @?= "<div hx-include=\"this\"></div>"
+        RT.renderHTML  node @?= "<div hx-include=\"this\"></div>"
+
+    , testCase "hx-indicator" $ do
+        let node = divWith [A.hxIndicator (HTML.indicateSelector (Types.Id (NET.singleton 'x')))]
+        RBS.renderHTML node @?= "<div hx-indicator=\"#x\"></div>"
+        RT.renderHTML  node @?= "<div hx-indicator=\"#x\"></div>"
+
+    , testCase "hx-params (all)" $ do
+        let node = divWith [A.hxParams HTML.AllParams]
+        RBS.renderHTML node @?= "<div hx-params=\"*\"></div>"
+        RT.renderHTML  node @?= "<div hx-params=\"*\"></div>"
+
+    , testCase "hx-params (none)" $ do
+        let node = divWith [A.hxParams HTML.NoParams]
+        RBS.renderHTML node @?= "<div hx-params=\"none\"></div>"
+        RT.renderHTML  node @?= "<div hx-params=\"none\"></div>"
+
+    , testCase "hx-preserve (true)" $ do
+        let node = divWith [A.hxPreserve True]
+        RBS.renderHTML node @?= "<div hx-preserve></div>"
+        RT.renderHTML  node @?= "<div hx-preserve></div>"
+
+    , testCase "hx-preserve (false)" $ do
+        let node = divWith [A.hxPreserve False]
+        RBS.renderHTML node @?= "<div></div>"
+        RT.renderHTML  node @?= "<div></div>"
+
+    , testCase "hx-prompt" $ do
+        let node = divWith [A.hxPrompt "Enter a value"]
+        RBS.renderHTML node @?= "<div hx-prompt=\"Enter a value\"></div>"
+        RT.renderHTML  node @?= "<div hx-prompt=\"Enter a value\"></div>"
+
+    , testCase "hx-replace-url" $ do
+        let node = divWith [A.hxReplaceURL True]
+        RBS.renderHTML node @?= "<div hx-replace-url=\"true\"></div>"
+        RT.renderHTML  node @?= "<div hx-replace-url=\"true\"></div>"
+
+    , testCase "hx-validate" $ do
+        let node = E.form [A.hxValidate] [] :: E.ChildHTML E.Body E.Html
+        RBS.renderHTML node @?= "<form hx-validate></form>"
+        RT.renderHTML  node @?= "<form hx-validate></form>"
+    ]
+
+-- Hyperscript Attributes
+--
+
+hyperscriptAttributes :: TestTree
+hyperscriptAttributes =
+  testGroup "Hyperscript attributes"
+    [ testCase "hyperscript (_)" $ do
+        let node = divWith [A.hyperscript (HTML.HyperScript "on click toggle .active")]
+        RBS.renderHTML node @?= "<div _=\"on click toggle .active\"></div>"
+        RT.renderHTML  node @?= "<div _=\"on click toggle .active\"></div>"
     ]
