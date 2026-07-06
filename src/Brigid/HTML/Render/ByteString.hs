@@ -910,7 +910,7 @@ renderAttribute attr =
 
     Attr_List list ->
       Just
-        . buildAttribute "label"
+        . buildAttribute "list"
         $ Types.idToBytesBuilder list
 
     Attr_Loading loading ->

@@ -843,7 +843,7 @@ renderAttribute attr =
       Just $ buildAttribute "label" (fromText label)
 
     Attr_List list ->
-      Just . buildAttribute "label" $ Types.idToTextBuilder list
+      Just . buildAttribute "list" $ Types.idToTextBuilder list
 
     Attr_Loading loading ->
       Just . buildAttribute "loading" $ Types.loadOptionToTextBuilder loading

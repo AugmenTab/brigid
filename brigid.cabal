@@ -259,6 +259,7 @@ test-suite brigid-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      HTML.Render.Attributes
       HTML.Render.Elements
       Paths_brigid
   autogen-modules:

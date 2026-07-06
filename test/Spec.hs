@@ -15,6 +15,7 @@ import Brigid.HTML.Generation qualified as Gen
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Elements qualified as GE
 import Brigid.HTML.Render.Text (renderHTML)
+import HTML.Render.Attributes qualified as Attrs
 import HTML.Render.Elements qualified as Elements
 
 main :: IO ()
@@ -22,6 +23,7 @@ main = do
   Tasty.defaultMain $
     Tasty.testGroup "Brigid tests"
       [ Elements.tests
+      , Attrs.tests
       , Tasty.testGroup "Attribute generation doesn't produce exceptions" $
           uncurry mkAttributeTestCase <$> allAttributeGenerators
       , Tasty.testGroup "Generated DOM elements are spec compliant" $
