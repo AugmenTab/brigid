@@ -26,8 +26,8 @@ This library is in active development; the API is not yet stable.
    its permitted content, such as what was done with
    `Brigid.HTML.Elements.Safe.Table`. Go through the entire list of elements
    again to determine what qualifies for this.
-5. Add support for the SVG tag.
-6. Add support for MathML.
+5. Add support for the SVG tag. Add render tests once SVG is ready for prime time.
+6. Add support for MathML. Add render tests once MathML is ready for prime time.
 7. Look into safely constructing [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) elements.
 8. Consider `Default` type class that returns the default value for a given
    type or attribute.
@@ -45,7 +45,7 @@ This library is in active development; the API is not yet stable.
 
 ### TODO (XML)
 
-1. Add support for XML.
+1. Add support for XML. Add render tests once XML is ready for prime time.
 2. Add function to produce an XML WSDL from a provided Brigid XML structure?
 
 ### TODO (HXML)
@@ -63,6 +63,8 @@ This library is in active development; the API is not yet stable.
    strict XML, so elements with no children must render as `<tag/>`, never
    `<tag></tag>`. Several tags currently use `buildClosingOrContentTag`
    incorrectly.
+5. Add render tests for HXML elements and attributes (analogous to
+   `test/HTML/Render/Elements.hs` and `test/HTML/Render/Attributes.hs`).
 
 ### Possible optimizations
 
