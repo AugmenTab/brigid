@@ -102,9 +102,12 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - brigid
+      - bytestring
       - hedgehog
       - tasty
       - tasty-hedgehog
+      - tasty-hunit
+      - text
 
 benchmarks:
   brigid-bench:

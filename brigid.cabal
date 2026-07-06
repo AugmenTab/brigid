@@ -259,6 +259,7 @@ test-suite brigid-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      HTML.Render.Elements
       Paths_brigid
   autogen-modules:
       Paths_brigid
@@ -295,6 +296,7 @@ test-suite brigid-test
     , shrubbery
     , tasty
     , tasty-hedgehog
+    , tasty-hunit
     , text
     , text-builder-linear
     , time
