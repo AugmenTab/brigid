@@ -9,7 +9,7 @@ module Brigid.HTML.Types.LoadOption
   , loadOptionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -27,10 +27,7 @@ loadOptionToBytes pta =
 
 loadOptionToBytesBuilder :: LoadOption -> Builder
 {-# INLINE loadOptionToBytesBuilder #-}
-loadOptionToBytesBuilder pta =
-  case pta of
-    Eager -> string8 "eager"
-    Lazy  -> string8 "lazy"
+loadOptionToBytesBuilder = lazyByteString . loadOptionToBytes
 
 loadOptionToText :: LoadOption -> T.Text
 loadOptionToText pta =

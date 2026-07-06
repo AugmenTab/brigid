@@ -10,7 +10,7 @@ module Brigid.HTML.Types.Decoding
   , decodingToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -30,11 +30,7 @@ decodingToBytes decoding =
 
 decodingToBytesBuilder :: Decoding -> Builder
 {-# INLINE decodingToBytesBuilder #-}
-decodingToBytesBuilder decoding =
-  case decoding of
-    DecodeAuto  -> string8 "auto"
-    DecodeSync  -> string8 "sync"
-    DecodeAsync -> string8 "async"
+decodingToBytesBuilder = lazyByteString . decodingToBytes
 
 decodingToText :: Decoding -> T.Text
 decodingToText decoding =

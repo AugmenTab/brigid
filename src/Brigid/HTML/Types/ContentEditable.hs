@@ -10,7 +10,7 @@ module Brigid.HTML.Types.ContentEditable
   , contentEditableOptionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -30,11 +30,7 @@ contentEditableOptionToBytes option =
 
 contentEditableOptionToBytesBuilder :: ContentEditableOption -> Builder
 {-# INLINE contentEditableOptionToBytesBuilder #-}
-contentEditableOptionToBytesBuilder option =
-  case option of
-    Editable      -> string8 "true"
-    NotEditable   -> string8 "false"
-    PlaintextOnly -> string8 "plaintext-only"
+contentEditableOptionToBytesBuilder = lazyByteString . contentEditableOptionToBytes
 
 contentEditableOptionToText :: ContentEditableOption -> T.Text
 contentEditableOptionToText option =

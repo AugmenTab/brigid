@@ -9,7 +9,7 @@ module Brigid.HTML.Types.PopoverState
   , popoverStateToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -27,10 +27,7 @@ popoverStateToBytes pos =
 
 popoverStateToBytesBuilder :: PopoverState -> Builder
 {-# INLINE popoverStateToBytesBuilder #-}
-popoverStateToBytesBuilder pos =
-  case pos of
-    AutoPopover   -> string8 "auto"
-    ManualPopover -> string8 "manual"
+popoverStateToBytesBuilder = lazyByteString . popoverStateToBytes
 
 popoverStateToText :: PopoverState -> T.Text
 popoverStateToText pos =

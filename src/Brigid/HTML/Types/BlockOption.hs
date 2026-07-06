@@ -8,7 +8,7 @@ module Brigid.HTML.Types.BlockOption
   , blockOptionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -24,9 +24,7 @@ blockOptionToBytes bo =
 
 blockOptionToBytesBuilder :: BlockOption -> Builder
 {-# INLINE blockOptionToBytesBuilder #-}
-blockOptionToBytesBuilder bo =
-  case bo of
-    Render -> string8 "render"
+blockOptionToBytesBuilder = lazyByteString . blockOptionToBytes
 
 blockOptionToText :: BlockOption -> T.Text
 blockOptionToText bo =

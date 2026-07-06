@@ -10,7 +10,7 @@ module Brigid.HTML.Types.Preload
   , preloadToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -30,11 +30,7 @@ preloadToBytes preload =
 
 preloadToBytesBuilder :: Preload -> Builder
 {-# INLINE preloadToBytesBuilder #-}
-preloadToBytesBuilder preload =
-  case preload of
-    PreloadNone     -> string8 "none"
-    PreloadMetadata -> string8 "metadata"
-    PreloadAuto     -> string8 "auto"
+preloadToBytesBuilder = lazyByteString . preloadToBytes
 
 preloadToText :: Preload -> T.Text
 preloadToText preload =

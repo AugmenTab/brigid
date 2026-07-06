@@ -14,7 +14,7 @@ module Brigid.HTML.Types.Aria.Current
   , CurrentTime (CurrentTime)
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Shrubbery qualified
@@ -50,17 +50,7 @@ ariaCurrentToBytes (AriaCurrent aria) =
 
 ariaCurrentToBytesBuilder :: AriaCurrent -> Builder
 {-# INLINABLE ariaCurrentToBytesBuilder #-}
-ariaCurrentToBytesBuilder (AriaCurrent aria) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @CurrentPage     ariaPageToBytesBuilder
-      . Shrubbery.branch @CurrentStep     ariaStepToBytesBuilder
-      . Shrubbery.branch @CurrentLocation ariaLocationToBytesBuilder
-      . Shrubbery.branch @CurrentDate     ariaDateToBytesBuilder
-      . Shrubbery.branch @CurrentTime     ariaTimeToBytesBuilder
-      . Shrubbery.branch @Bool            Render.enumBoolToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) aria
+ariaCurrentToBytesBuilder = lazyByteString . ariaCurrentToBytes
 
 ariaCurrentToText :: AriaCurrent -> T.Text
 ariaCurrentToText (AriaCurrent aria) =
@@ -81,10 +71,6 @@ data CurrentDate = CurrentDate
 ariaDateToBytes :: CurrentDate -> LBS.ByteString
 ariaDateToBytes CurrentDate = "date"
 
-ariaDateToBytesBuilder :: CurrentDate -> Builder
-{-# INLINE ariaDateToBytesBuilder #-}
-ariaDateToBytesBuilder CurrentDate = string8 "date"
-
 ariaDateToText :: CurrentDate -> T.Text
 ariaDateToText CurrentDate = "date"
 
@@ -93,10 +79,6 @@ data CurrentLocation = CurrentLocation
 
 ariaLocationToBytes :: CurrentLocation -> LBS.ByteString
 ariaLocationToBytes CurrentLocation = "location"
-
-ariaLocationToBytesBuilder :: CurrentLocation -> Builder
-{-# INLINE ariaLocationToBytesBuilder #-}
-ariaLocationToBytesBuilder CurrentLocation = string8 "location"
 
 ariaLocationToText :: CurrentLocation -> T.Text
 ariaLocationToText CurrentLocation = "location"
@@ -107,10 +89,6 @@ data CurrentPage = CurrentPage
 ariaPageToBytes :: CurrentPage -> LBS.ByteString
 ariaPageToBytes CurrentPage = "page"
 
-ariaPageToBytesBuilder :: CurrentPage -> Builder
-{-# INLINE ariaPageToBytesBuilder #-}
-ariaPageToBytesBuilder CurrentPage = string8 "page"
-
 ariaPageToText :: CurrentPage -> T.Text
 ariaPageToText CurrentPage = "page"
 
@@ -120,10 +98,6 @@ data CurrentStep = CurrentStep
 ariaStepToBytes :: CurrentStep -> LBS.ByteString
 ariaStepToBytes CurrentStep = "step"
 
-ariaStepToBytesBuilder :: CurrentStep -> Builder
-{-# INLINE ariaStepToBytesBuilder #-}
-ariaStepToBytesBuilder CurrentStep = string8 "step"
-
 ariaStepToText :: CurrentStep -> T.Text
 ariaStepToText CurrentStep = "step"
 
@@ -132,10 +106,6 @@ data CurrentTime = CurrentTime
 
 ariaTimeToBytes :: CurrentTime -> LBS.ByteString
 ariaTimeToBytes CurrentTime = "time"
-
-ariaTimeToBytesBuilder :: CurrentTime -> Builder
-{-# INLINE ariaTimeToBytesBuilder #-}
-ariaTimeToBytesBuilder CurrentTime = string8 "time"
 
 ariaTimeToText :: CurrentTime -> T.Text
 ariaTimeToText CurrentTime = "time"

@@ -10,7 +10,7 @@ module Brigid.HTML.Types.FetchPriority
   , fetchPriorityToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -30,11 +30,7 @@ fetchPriorityToBytes fp =
 
 fetchPriorityToBytesBuilder :: FetchPriority -> Builder
 {-# INLINE fetchPriorityToBytesBuilder #-}
-fetchPriorityToBytesBuilder fp =
-  case fp of
-    FetchHigh -> string8 "high"
-    FetchLow  -> string8 "low"
-    FetchAuto -> string8 "auto"
+fetchPriorityToBytesBuilder = lazyByteString . fetchPriorityToBytes
 
 fetchPriorityToText :: FetchPriority -> T.Text
 fetchPriorityToText fp =

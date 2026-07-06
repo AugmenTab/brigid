@@ -36,7 +36,7 @@ module Brigid.HTML.Types.Aria.Option
   , ariaSortOptionToText
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -57,12 +57,7 @@ ariaAutocompleteOptionToBytes option =
 
 ariaAutocompleteOptionToBytesBuilder :: AriaAutocompleteOption -> Builder
 {-# INLINE ariaAutocompleteOptionToBytesBuilder #-}
-ariaAutocompleteOptionToBytesBuilder option =
-  case option of
-    AutocompleteInline -> string8 "inline"
-    AutocompleteList   -> string8 "list"
-    AutocompleteBoth   -> string8 "both"
-    AutocompleteNone   -> string8 "none"
+ariaAutocompleteOptionToBytesBuilder = lazyByteString . ariaAutocompleteOptionToBytes
 
 ariaAutocompleteOptionToText :: AriaAutocompleteOption -> T.Text
 ariaAutocompleteOptionToText option =
@@ -87,11 +82,7 @@ ariaLiveOptionToBytes option =
 
 ariaLiveOptionToBytesBuilder :: AriaLiveOption -> Builder
 {-# INLINE ariaLiveOptionToBytesBuilder #-}
-ariaLiveOptionToBytesBuilder option =
-  case option of
-    LiveAssertive -> string8 "assertive"
-    LivePolite    -> string8 "polite"
-    LiveOff       -> string8 "off"
+ariaLiveOptionToBytesBuilder = lazyByteString . ariaLiveOptionToBytes
 
 ariaLiveOptionToText :: AriaLiveOption -> T.Text
 ariaLiveOptionToText option =
@@ -117,12 +108,7 @@ ariaRelevantOptionToBytes option =
 
 ariaRelevantOptionToBytesBuilder :: AriaRelevantOption -> Builder
 {-# INLINE ariaRelevantOptionToBytesBuilder #-}
-ariaRelevantOptionToBytesBuilder option =
-  case option of
-    RelevantAll       -> string8 "all"
-    RelevantAdditions -> string8 "additions"
-    RelevantRemovals  -> string8 "removals"
-    RelevantText      -> string8 "text"
+ariaRelevantOptionToBytesBuilder = lazyByteString . ariaRelevantOptionToBytes
 
 ariaRelevantOptionToText :: AriaRelevantOption -> T.Text
 ariaRelevantOptionToText option =
@@ -149,12 +135,7 @@ ariaSortOptionToBytes option =
 
 ariaSortOptionToBytesBuilder :: AriaSortOption -> Builder
 {-# INLINE ariaSortOptionToBytesBuilder #-}
-ariaSortOptionToBytesBuilder option =
-  case option of
-    SortAscending  -> string8 "ascending"
-    SortDescending -> string8 "descending"
-    SortNone       -> string8 "none"
-    SortOther      -> string8 "other"
+ariaSortOptionToBytesBuilder = lazyByteString . ariaSortOptionToBytes
 
 ariaSortOptionToText :: AriaSortOption -> T.Text
 ariaSortOptionToText option =

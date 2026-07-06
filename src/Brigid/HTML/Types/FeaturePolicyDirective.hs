@@ -36,7 +36,7 @@ module Brigid.HTML.Types.FeaturePolicyDirective
   , featurePolicyDirectiveToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -108,37 +108,7 @@ featurePolicyDirectiveToBytes directive =
 
 featurePolicyDirectiveToBytesBuilder :: FeaturePolicyDirective -> Builder
 {-# INLINE featurePolicyDirectiveToBytesBuilder #-}
-featurePolicyDirectiveToBytesBuilder directive =
-  case directive of
-    Accelerometer           -> string8 "accelerometer"
-    AmbientLightSensor      -> string8 "ambient-light-sensor"
-    Autoplay                -> string8 "autoplay"
-    Battery                 -> string8 "battery"
-    Camera                  -> string8 "camera"
-    DisplayCapture          -> string8 "display-capture"
-    DocumentDomain          -> string8 "document-domain"
-    EncryptedMedia          -> string8 "encrypted-media"
-    Fullscreen              -> string8 "fullscreen"
-    Geolocation             -> string8 "geolocation"
-    Gyroscope               -> string8 "gyroscope"
-    LayoutAnimations        -> string8 "layout-animations"
-    LegacyImageFormats      -> string8 "legacy-image-formats"
-    Magnetometer            -> string8 "magnetometer"
-    Microphone              -> string8 "microphone"
-    Midi                    -> string8 "midi"
-    NavigationOverride      -> string8 "navigation-override"
-    OversizedImages         -> string8 "oversized-images"
-    Payment                 -> string8 "payment"
-    PictureInPicture        -> string8 "picture-in-picture"
-    PublickeyCredentialsGet -> string8 "publickey-credentials-get"
-    ScreenWakeLock          -> string8 "screen-wake-lock"
-    SyncScript              -> string8 "sync-script"
-    SyncXHR                 -> string8 "sync-xhr"
-    UnoptimizedImages       -> string8 "unoptimized-images"
-    UnsizedMedia            -> string8 "unsized-media"
-    USB                     -> string8 "usb"
-    WebShare                -> string8 "web-share"
-    XRSpatialTracking       -> string8 "xr-spatial-tracking"
+featurePolicyDirectiveToBytesBuilder = lazyByteString . featurePolicyDirectiveToBytes
 
 featurePolicyDirectiveToText :: FeaturePolicyDirective -> T.Text
 featurePolicyDirectiveToText directive =

@@ -28,7 +28,7 @@ module Brigid.HTML.Types.InputType
   , inputTypeToText
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -85,30 +85,7 @@ inputTypeToBytes input =
 
 inputTypeToBytesBuilder :: InputType -> Builder
 {-# INLINE inputTypeToBytesBuilder #-}
-inputTypeToBytesBuilder input =
-  case input of
-    InputButton        -> string8 "button"
-    InputCheckbox      -> string8 "checkbox"
-    InputColor         -> string8 "color"
-    InputDate          -> string8 "date"
-    InputDatetimeLocal -> string8 "datetime-local"
-    InputEmail         -> string8 "email"
-    InputFile          -> string8 "file"
-    InputHidden        -> string8 "hidden"
-    InputImage         -> string8 "image"
-    InputMonth         -> string8 "month"
-    InputNumber        -> string8 "number"
-    InputPassword      -> string8 "password"
-    InputRadio         -> string8 "radio"
-    InputRange         -> string8 "range"
-    InputReset         -> string8 "reset"
-    InputSearch        -> string8 "search"
-    InputSubmit        -> string8 "submit"
-    InputTel           -> string8 "tel"
-    InputText          -> string8 "text"
-    InputTime          -> string8 "time"
-    InputUrl           -> string8 "url"
-    InputWeek          -> string8 "week"
+inputTypeToBytesBuilder = lazyByteString . inputTypeToBytes
 
 inputTypeToText :: InputType -> T.Text
 inputTypeToText input =

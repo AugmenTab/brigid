@@ -15,7 +15,7 @@ module Brigid.HTML.Types.Swap
   , swapStyleToText
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -57,16 +57,7 @@ swapStyleFromText txt =
 
 swapStyleToBytesBuilder :: SwapStyle -> Builder
 {-# INLINE swapStyleToBytesBuilder #-}
-swapStyleToBytesBuilder style =
-  case style of
-    InnerHTML   -> string8 "innerHTML"
-    OuterHTML   -> string8 "outerHTML"
-    BeforeBegin -> string8 "beforebegin"
-    AfterBegin  -> string8 "afterbegin"
-    BeforeEnd   -> string8 "beforeend"
-    AfterEnd    -> string8 "afterend"
-    SwapDelete  -> string8 "delete"
-    SwapNone    -> string8 "none"
+swapStyleToBytesBuilder = lazyByteString . swapStyleToBytes
 
 swapStyleToText :: SwapStyle -> T.Text
 swapStyleToText style =

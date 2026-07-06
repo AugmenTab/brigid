@@ -9,12 +9,12 @@ module Brigid.HTML.Types.Aria.MixedBool
   , ariaMixedBoolToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Shrubbery qualified
 
-import Brigid.HTML.Types.Mixed (Mixed, mixedToBytes, mixedToBytesBuilder, mixedToText)
+import Brigid.HTML.Types.Mixed (Mixed, mixedToBytes, mixedToText)
 import Brigid.Internal.Render qualified as Render
 
 newtype AriaMixedBool = AriaMixedBool (Shrubbery.Union AriaMixedBoolTypes)
@@ -36,13 +36,7 @@ ariaMixedBoolToBytes (AriaMixedBool mb) =
 
 ariaMixedBoolToBytesBuilder :: AriaMixedBool -> Builder
 {-# INLINABLE ariaMixedBoolToBytesBuilder #-}
-ariaMixedBoolToBytesBuilder (AriaMixedBool mb) =
-  ( Shrubbery.dissectUnion
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @Mixed mixedToBytesBuilder
-      . Shrubbery.branch @Bool  Render.enumBoolToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) mb
+ariaMixedBoolToBytesBuilder = lazyByteString . ariaMixedBoolToBytes
 
 ariaMixedBoolToText :: AriaMixedBool -> T.Text
 ariaMixedBoolToText (AriaMixedBool mb) =

@@ -9,7 +9,7 @@ module Brigid.HXML.Types.ShowLoadingIndicator
   , showLoadingIndicatorToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -27,10 +27,7 @@ showLoadingIndicatorToBytes indicator =
 
 showLoadingIndicatorToBytesBuilder :: ShowLoadingIndicator -> Builder
 {-# INLINE showLoadingIndicatorToBytesBuilder #-}
-showLoadingIndicatorToBytesBuilder indicator =
-  case indicator of
-    All          -> string8 "all"
-    DocumentOnly -> string8 "document-only"
+showLoadingIndicatorToBytesBuilder = lazyByteString . showLoadingIndicatorToBytes
 
 showLoadingIndicatorToText :: ShowLoadingIndicator -> T.Text
 showLoadingIndicatorToText indicator =

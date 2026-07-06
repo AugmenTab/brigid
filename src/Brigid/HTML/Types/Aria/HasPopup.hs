@@ -14,9 +14,8 @@ module Brigid.HTML.Types.Aria.HasPopup
   , PopupDialog (PopupDialog)
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Shrubbery qualified
 
@@ -49,17 +48,7 @@ ariaHasPopupToBytes (AriaHasPopup hp) =
 
 ariaHasPopupToBytesBuilder :: AriaHasPopup -> Builder
 {-# INLINABLE ariaHasPopupToBytesBuilder #-}
-ariaHasPopupToBytesBuilder (AriaHasPopup hp) =
-  ( Shrubbery.dissectUnion
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @PopupMenu    popupMenuToBytesBuilder
-      . Shrubbery.branch @PopupListbox popupListboxToBytesBuilder
-      . Shrubbery.branch @PopupTree    popupTreeToBytesBuilder
-      . Shrubbery.branch @PopupGrid    popupGridToBytesBuilder
-      . Shrubbery.branch @PopupDialog  popupDialogToBytesBuilder
-      . Shrubbery.branch @Bool         Render.enumBoolToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) hp
+ariaHasPopupToBytesBuilder = lazyByteString . ariaHasPopupToBytes
 
 ariaHasPopupToText :: AriaHasPopup -> T.Text
 ariaHasPopupToText (AriaHasPopup hp) =
@@ -78,63 +67,43 @@ data PopupMenu = PopupMenu
   deriving (Eq, Show)
 
 popupMenuToBytes :: PopupMenu -> LBS.ByteString
-popupMenuToBytes PopupMenu = LBS8.pack "menu"
-
-popupMenuToBytesBuilder :: PopupMenu -> Builder
-{-# INLINE popupMenuToBytesBuilder #-}
-popupMenuToBytesBuilder PopupMenu = string8 "menu"
+popupMenuToBytes PopupMenu = "menu"
 
 popupMenuToText :: PopupMenu -> T.Text
-popupMenuToText PopupMenu = T.pack "menu"
+popupMenuToText PopupMenu = "menu"
 
 data PopupListbox = PopupListbox
   deriving (Eq, Show)
 
 popupListboxToBytes :: PopupListbox -> LBS.ByteString
-popupListboxToBytes PopupListbox = LBS8.pack "listbox"
-
-popupListboxToBytesBuilder :: PopupListbox -> Builder
-{-# INLINE popupListboxToBytesBuilder #-}
-popupListboxToBytesBuilder PopupListbox = string8 "listbox"
+popupListboxToBytes PopupListbox = "listbox"
 
 popupListboxToText :: PopupListbox -> T.Text
-popupListboxToText PopupListbox = T.pack "listbox"
+popupListboxToText PopupListbox = "listbox"
 
 data PopupTree = PopupTree
   deriving (Eq, Show)
 
 popupTreeToBytes :: PopupTree -> LBS.ByteString
-popupTreeToBytes PopupTree = LBS8.pack "tree"
-
-popupTreeToBytesBuilder :: PopupTree -> Builder
-{-# INLINE popupTreeToBytesBuilder #-}
-popupTreeToBytesBuilder PopupTree = string8 "tree"
+popupTreeToBytes PopupTree = "tree"
 
 popupTreeToText :: PopupTree -> T.Text
-popupTreeToText PopupTree = T.pack "tree"
+popupTreeToText PopupTree = "tree"
 
 data PopupGrid = PopupGrid
   deriving (Eq, Show)
 
 popupGridToBytes :: PopupGrid -> LBS.ByteString
-popupGridToBytes PopupGrid = LBS8.pack "grid"
-
-popupGridToBytesBuilder :: PopupGrid -> Builder
-{-# INLINE popupGridToBytesBuilder #-}
-popupGridToBytesBuilder PopupGrid = string8 "grid"
+popupGridToBytes PopupGrid = "grid"
 
 popupGridToText :: PopupGrid -> T.Text
-popupGridToText PopupGrid = T.pack "grid"
+popupGridToText PopupGrid = "grid"
 
 data PopupDialog = PopupDialog
   deriving (Eq, Show)
 
 popupDialogToBytes :: PopupDialog -> LBS.ByteString
-popupDialogToBytes PopupDialog = LBS8.pack "dialog"
-
-popupDialogToBytesBuilder :: PopupDialog -> Builder
-{-# INLINE popupDialogToBytesBuilder #-}
-popupDialogToBytesBuilder PopupDialog = string8 "dialog"
+popupDialogToBytes PopupDialog = "dialog"
 
 popupDialogToText :: PopupDialog -> T.Text
-popupDialogToText PopupDialog = T.pack "dialog"
+popupDialogToText PopupDialog = "dialog"

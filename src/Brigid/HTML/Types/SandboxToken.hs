@@ -19,7 +19,7 @@ module Brigid.HTML.Types.SandboxToken
   , sandboxTokenToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -69,20 +69,7 @@ sandboxTokenToBytes token =
 
 sandboxTokenToBytesBuilder :: SandboxToken -> Builder
 {-# INLINE sandboxTokenToBytesBuilder #-}
-sandboxTokenToBytesBuilder token =
-  case token of
-    AllowForms                         -> string8 "allow-forms"
-    AllowModals                        -> string8 "allow-modals"
-    AllowOrientationLock               -> string8 "allow-orientation-lock"
-    AllowPointerLock                   -> string8 "allow-pointer-lock"
-    AllowPopups                        -> string8 "allow-popups"
-    AllowPopupsToEscapeSandbox         -> string8 "allow-popups-to-escape-sandbox"
-    AllowPresentation                  -> string8 "allow-presentation"
-    AllowSameOrigin                    -> string8 "allow-same-origin"
-    AllowScripts                       -> string8 "allow-scripts"
-    AllowStorageAccessByUserActivation -> string8 "allow-storage-access-by-user-activation"
-    AllowTopNavigation                 -> string8 "allow-top-navigation"
-    AllowTopNavigationByUserActivation -> string8 "allow-top-navigation-by-user-activation"
+sandboxTokenToBytesBuilder = lazyByteString . sandboxTokenToBytes
 
 sandboxTokenToText :: SandboxToken -> T.Text
 sandboxTokenToText token =

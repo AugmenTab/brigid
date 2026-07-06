@@ -5,20 +5,19 @@ module Brigid.HTML.Types.Mixed
   , mixedToText
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 
 data Mixed = Mixed
   deriving (Eq, Show)
 
 mixedToBytes :: Mixed -> LBS.ByteString
-mixedToBytes Mixed = LBS8.pack "mixed"
+mixedToBytes Mixed = "mixed"
 
 mixedToBytesBuilder :: Mixed -> Builder
 {-# INLINE mixedToBytesBuilder #-}
-mixedToBytesBuilder Mixed = string8 "mixed"
+mixedToBytesBuilder = lazyByteString . mixedToBytes
 
 mixedToText :: Mixed -> T.Text
-mixedToText Mixed = T.pack "mixed"
+mixedToText Mixed = "mixed"

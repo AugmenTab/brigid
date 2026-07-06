@@ -34,7 +34,7 @@ module Brigid.HTML.Types.Boolean
   , isNo
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -52,10 +52,7 @@ onOffToBytes onOff =
 
 onOffToBytesBuilder :: OnOff -> Builder
 {-# INLINE onOffToBytesBuilder #-}
-onOffToBytesBuilder onOff =
-  case onOff of
-    On  -> string8 "on"
-    Off -> string8 "off"
+onOffToBytesBuilder = lazyByteString . onOffToBytes
 
 onOffToText :: OnOff -> T.Text
 onOffToText onOff =
@@ -91,10 +88,7 @@ openClosedToBytes openClosed =
 
 openClosedToBytesBuilder :: OpenClosed -> Builder
 {-# INLINE openClosedToBytesBuilder #-}
-openClosedToBytesBuilder openClosed =
-  case openClosed of
-    Open   -> string8 "open"
-    Closed -> string8 "closed"
+openClosedToBytesBuilder = lazyByteString . openClosedToBytes
 
 openClosedToText :: OpenClosed -> T.Text
 openClosedToText openClosed =
@@ -130,10 +124,7 @@ yesNoToBytes yesNo =
 
 yesNoToBytesBuilder :: YesNo -> Builder
 {-# INLINE yesNoToBytesBuilder #-}
-yesNoToBytesBuilder yesNo =
-  case yesNo of
-    Yes -> string8 "yes"
-    No  -> string8 "no"
+yesNoToBytesBuilder = lazyByteString . yesNoToBytes
 
 yesNoToText :: YesNo -> T.Text
 yesNoToText yesNo =

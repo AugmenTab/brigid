@@ -17,7 +17,7 @@ module Brigid.HTML.Types.MetadataName
   , metadataNameToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -51,18 +51,7 @@ metadataNameToBytes name =
 
 metadataNameToBytesBuilder :: MetadataName -> Builder
 {-# INLINE metadataNameToBytesBuilder #-}
-metadataNameToBytesBuilder name =
-  case name of
-    ApplicationName -> string8 "application-name"
-    Author          -> string8 "author"
-    ColorScheme     -> string8 "color-scheme"
-    Description     -> string8 "description"
-    Generator       -> string8 "generator"
-    Keywords        -> string8 "keywords"
-    Referrer        -> string8 "referrer"
-    Robots          -> string8 "robots"
-    ThemeColor      -> string8 "theme-color"
-    Viewport        -> string8 "viewport"
+metadataNameToBytesBuilder = lazyByteString . metadataNameToBytes
 
 metadataNameToText :: MetadataName -> T.Text
 metadataNameToText name =

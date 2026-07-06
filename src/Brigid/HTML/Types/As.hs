@@ -19,7 +19,7 @@ module Brigid.HTML.Types.As
   , asToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -57,20 +57,7 @@ asToBytes as =
 
 asToBytesBuilder :: As -> Builder
 {-# INLINE asToBytesBuilder #-}
-asToBytesBuilder as =
-  case as of
-    AsAudio    -> string8 "audio"
-    AsDocument -> string8 "document"
-    AsEmbed    -> string8 "embed"
-    AsFetch    -> string8 "fetch"
-    AsFont     -> string8 "font"
-    AsImage    -> string8 "image"
-    AsObject   -> string8 "object"
-    AsScript   -> string8 "script"
-    AsStyle    -> string8 "style"
-    AsTrack    -> string8 "track"
-    AsVideo    -> string8 "video"
-    AsWorker   -> string8 "worker"
+asToBytesBuilder = lazyByteString . asToBytes
 
 asToText :: As -> T.Text
 asToText as =

@@ -15,7 +15,7 @@ module Brigid.HTML.Types.HttpEquivToken
   , httpEquivTokenToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -53,16 +53,7 @@ httpEquivTokenToBytes token =
 
 httpEquivTokenToBytesBuilder :: HttpEquivToken -> Builder
 {-# INLINE httpEquivTokenToBytesBuilder #-}
-httpEquivTokenToBytesBuilder token =
-  case token of
-    ContentType           -> string8 "content-type"
-    DefaultStyle          -> string8 "default-style"
-    Refresh               -> string8 "refresh"
-    X_UA_Compatible       -> string8 "x-ua-compatible"
-    PermissionsPolicy     -> string8 "permissions-policy"
-    CacheControl          -> string8 "cache-control"
-    Pragma                -> string8 "pragma"
-    ContentSecurityPolicy -> string8 "content-security-policy"
+httpEquivTokenToBytesBuilder = lazyByteString . httpEquivTokenToBytes
 
 httpEquivTokenToText :: HttpEquivToken -> T.Text
 httpEquivTokenToText token =

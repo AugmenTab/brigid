@@ -9,7 +9,7 @@ module Brigid.HXML.Types.ScrollOrientation
   , scrollOrientationToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -27,10 +27,7 @@ scrollOrientationToBytes orientation =
 
 scrollOrientationToBytesBuilder :: ScrollOrientation -> Builder
 {-# INLINE scrollOrientationToBytesBuilder #-}
-scrollOrientationToBytesBuilder orientation =
-  case orientation of
-    Vertical   -> string8 "vertical"
-    Horizontal -> string8 "horizontal"
+scrollOrientationToBytesBuilder = lazyByteString . scrollOrientationToBytes
 
 scrollOrientationToText :: ScrollOrientation -> T.Text
 scrollOrientationToText orientation =

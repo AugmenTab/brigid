@@ -11,7 +11,7 @@ module Brigid.HTML.Types.Scope
   , scopeToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -33,12 +33,7 @@ scopeToBytes scope =
 
 scopeToBytesBuilder :: Scope -> Builder
 {-# INLINE scopeToBytesBuilder #-}
-scopeToBytesBuilder scope =
-  case scope of
-    Col      -> string8 "col"
-    Row      -> string8 "row"
-    ColGroup -> string8 "colgroup"
-    RowGroup -> string8 "rowgroup"
+scopeToBytesBuilder = lazyByteString . scopeToBytes
 
 scopeToText :: Scope -> T.Text
 scopeToText scope =
