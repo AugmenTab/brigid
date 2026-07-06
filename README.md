@@ -59,9 +59,12 @@ This library is in active development; the API is not yet stable.
    determine what qualifies for this.
 3. Consider `Default` type class that returns the default value for a given
    type or attribute.
+4. Audit all tags in both renders for self-closing correctness. HXML uses
+   strict XML, so elements with no children must render as `<tag/>`, never
+   `<tag></tag>`. Several tags currently use `buildClosingOrContentTag`
+   incorrectly.
 
 ### Possible optimizations
 
 1. Parallel rendering for DOMs branches with more than 3 children.
-2. Switch to using `text-builder-linear` for all building functions.
 

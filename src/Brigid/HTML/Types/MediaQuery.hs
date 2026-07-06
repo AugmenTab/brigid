@@ -78,7 +78,7 @@ module Brigid.HTML.Types.MediaQuery
   , MediaPrefersContrast
       ( ContrastNoPreference
       , ContrastMore
-      , ConstastLess
+      , ContrastLess
       , ContrastCustom
       )
   , MediaPointerAccuracy
@@ -773,7 +773,7 @@ mediaColorSchemeToBytesBuilder mcs =
 data MediaPrefersContrast
   = ContrastNoPreference
   | ContrastMore
-  | ConstastLess
+  | ContrastLess
   | ContrastCustom
   deriving (Bounded, Enum, Eq, Show)
 
@@ -782,7 +782,7 @@ mediaPrefersContrastToBytes mpc =
   case mpc of
     ContrastNoPreference -> "no-preference"
     ContrastMore -> "more"
-    ConstastLess -> "less"
+    ContrastLess -> "less"
     ContrastCustom -> "custom"
 
 mediaPrefersContrastToText :: MediaPrefersContrast -> T.Text
@@ -790,7 +790,7 @@ mediaPrefersContrastToText mpc =
   case mpc of
     ContrastNoPreference -> "no-preference"
     ContrastMore -> "more"
-    ConstastLess -> "less"
+    ContrastLess -> "less"
     ContrastCustom -> "custom"
 
 mediaPrefersContrastToBytesBuilder :: MediaPrefersContrast -> Builder
@@ -799,7 +799,7 @@ mediaPrefersContrastToBytesBuilder mpc =
   case mpc of
     ContrastNoPreference -> string8 "no-preference"
     ContrastMore         -> string8 "more"
-    ConstastLess         -> string8 "less"
+    ContrastLess         -> string8 "less"
     ContrastCustom       -> string8 "custom"
 
 data MediaPointerAccuracy
