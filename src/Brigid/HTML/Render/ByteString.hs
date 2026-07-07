@@ -1290,6 +1290,11 @@ renderAttribute attr =
         . maybe "true" Types.outOfBandSwapToBytesBuilder
         $ mbSwap
 
+    Attr_HxSync sync ->
+      Just
+        . buildAttribute "hx-sync"
+        $ Types.syncToBytesBuilder sync
+
     Attr_HxTarget target ->
       Just
         . buildAttribute "hx-target"

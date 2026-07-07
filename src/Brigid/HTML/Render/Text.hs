@@ -1161,6 +1161,9 @@ renderAttribute attr =
         . buildAttribute "hx-swap-oob"
         $ maybe (fromText "true") Types.outOfBandSwapToTextBuilder mbSwap
 
+    Attr_HxSync sync ->
+      Just . buildAttribute "hx-sync" $ Types.syncToTextBuilder sync
+
     Attr_HxTarget target ->
       Just . buildAttribute "hx-target" $ Types.hxTargetToTextBuilder target
 

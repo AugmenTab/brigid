@@ -187,6 +187,7 @@ module Brigid.HTML.Attributes.AttributeType
       , HxPut
       , HxReplaceURL
       , HxRequest
+      , HxSync
       , HxValidate
 
       , HyperScript
@@ -389,6 +390,7 @@ data AttributeType
   | HxPut
   | HxReplaceURL
   | HxRequest
+  | HxSync
   | HxValidate
 
   -- HyperScript
@@ -579,6 +581,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage HxPut                    = 'Text "HTMX Put (hx-put)"
   AttributeErrorMessage HxReplaceURL             = 'Text "HTMX Replace URL (hx-replace-url)"
   AttributeErrorMessage HxRequest                = 'Text "HTMX Request (hx-request)"
+  AttributeErrorMessage HxSync                   = 'Text "HTMX Sync (hx-sync)"
   AttributeErrorMessage HxValidate               = 'Text "HTMX Validate (hx-validate)"
 
   AttributeErrorMessage HyperScript              = 'Text "HyperScript (_)"

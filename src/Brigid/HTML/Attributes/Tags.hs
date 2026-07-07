@@ -184,6 +184,7 @@ module Brigid.HTML.Attributes.Tags
   , HxPut
   , HxReplaceURL
   , HxRequest
+  , HxSync
   , HxValidate
 
   , HyperScript
@@ -374,6 +375,7 @@ type HxPrompt = 'AttributeType.HxPrompt
 type HxPut = 'AttributeType.HxPut
 type HxReplaceURL = 'AttributeType.HxReplaceURL
 type HxRequest = 'AttributeType.HxRequest
+type HxSync = 'AttributeType.HxSync
 type HxValidate = 'AttributeType.HxValidate
 
 type HyperScript = 'AttributeType.HyperScript

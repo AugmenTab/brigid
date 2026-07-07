@@ -184,6 +184,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_HxSelectOOB
       , Attr_HxSwap
       , Attr_HxSwapOOB
+      , Attr_HxSync
       , Attr_HxTarget
       , Attr_HxTrigger
       , Attr_HxValidate
@@ -1023,6 +1024,10 @@ data Attribute (tag :: TagType) where
     :: Maybe Types.OutOfBandSwap
     -> Attribute tag
 
+  Attr_HxSync
+    :: Types.Sync
+    -> Attribute tag
+
   Attr_HxTarget
     :: Types.HxTarget
     -> Attribute tag
@@ -1222,6 +1227,7 @@ instance Eq (Attribute tag) where
       (Attr_HxSelectOOB a1, Attr_HxSelectOOB a2) -> a1 == a2
       (Attr_HxSwap a1, Attr_HxSwap a2) -> a1 == a2
       (Attr_HxSwapOOB a1, Attr_HxSwapOOB a2) -> a1 == a2
+      (Attr_HxSync a1, Attr_HxSync a2) -> a1 == a2
       (Attr_HxTarget a1, Attr_HxTarget a2) -> a1 == a2
       (Attr_HxTrigger a1, Attr_HxTrigger a2) -> a1 == a2
       (Attr_HxValidate, Attr_HxValidate) -> True
@@ -1766,6 +1772,9 @@ attributeText attr =
 
     Attr_HxSwapOOB _mbSwap ->
       "hx-swap-oob"
+
+    Attr_HxSync _sync ->
+      "hx-sync"
 
     Attr_HxTarget _target ->
       "hx-target"

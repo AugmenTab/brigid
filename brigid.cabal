@@ -171,6 +171,7 @@ library
       Brigid.HTML.Types.Swap
       Brigid.HTML.Types.SwapTiming
       Brigid.HTML.Types.SwapTransition
+      Brigid.HTML.Types.Sync
       Brigid.HTML.Types.Target
       Brigid.HTML.Types.TargetType
       Brigid.HTML.Types.This

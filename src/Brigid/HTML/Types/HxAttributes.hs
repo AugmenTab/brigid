@@ -160,7 +160,7 @@ inheritableHTMXToBytes htmx =
     HxSelect     -> "hx-select"
     HxSelectOOB  -> "hx-select-oob"
     HxSwap       -> "hx-swap"
-    HxSync       -> "hx-swap"
+    HxSync       -> "hx-sync"
     HxTarget     -> "hx-target"
     HxVals       -> "hx-vals"
 
@@ -185,7 +185,7 @@ inheritableHTMXToBytesBuilder htmx =
     HxSelect     -> "hx-select"
     HxSelectOOB  -> "hx-select-oob"
     HxSwap       -> "hx-swap"
-    HxSync       -> "hx-swap"
+    HxSync       -> "hx-sync"
     HxTarget     -> "hx-target"
     HxVals       -> "hx-vals"
 
@@ -209,6 +209,6 @@ inheritableHTMXToText htmx =
     HxSelect     -> "hx-select"
     HxSelectOOB  -> "hx-select-oob"
     HxSwap       -> "hx-swap"
-    HxSync       -> "hx-swap"
+    HxSync       -> "hx-sync"
     HxTarget     -> "hx-target"
     HxVals       -> "hx-vals"

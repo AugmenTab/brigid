@@ -76,6 +76,7 @@ import Brigid.HTML.Types.Step as Export
 import Brigid.HTML.Types.Swap as Export
 import Brigid.HTML.Types.SwapTiming as Export
 import Brigid.HTML.Types.SwapTransition as Export
+import Brigid.HTML.Types.Sync as Export
 import Brigid.HTML.Types.Target as Export
 import Brigid.HTML.Types.TargetType as Export
 import Brigid.HTML.Types.This as Export

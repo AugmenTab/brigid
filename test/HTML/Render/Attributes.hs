@@ -1765,9 +1765,9 @@ htmxAttributes =
         RT.renderHTML  node @?= "<div hx-disinherit=\"*\"></div>"
 
     , testCase "hx-disinherit (list)" $ do
-        let node = divWith [A.hxDisinherit (HTML.HxPushURL NEL.:| [HTML.HxPrompt])]
-        RBS.renderHTML node @?= "<div hx-disinherit=\"hx-push-url hx-prompt\"></div>"
-        RT.renderHTML  node @?= "<div hx-disinherit=\"hx-push-url hx-prompt\"></div>"
+        let node = divWith [A.hxDisinherit (HTML.HxPushURL NEL.:| [HTML.HxPrompt, HTML.HxSync])]
+        RBS.renderHTML node @?= "<div hx-disinherit=\"hx-push-url hx-prompt hx-sync\"></div>"
+        RT.renderHTML  node @?= "<div hx-disinherit=\"hx-push-url hx-prompt hx-sync\"></div>"
 
     , testCase "hx-encoding" $ do
         let node = divWith [A.hxEncoding]
@@ -1879,6 +1879,26 @@ htmxAttributes =
         let node = divWith [A.hxRequest (RawJavaScript "timeout:getTimeoutSetting()")]
         RBS.renderHTML node @?= "<div hx-request=\"js:timeout:getTimeoutSetting()\"></div>"
         RT.renderHTML  node @?= "<div hx-request=\"js:timeout:getTimeoutSetting()\"></div>"
+
+    , testCase "hx-sync (selector only)" $ do
+        let node = divWith [A.hxSync HTML.This Nothing]
+        RBS.renderHTML node @?= "<div hx-sync=\"this\"></div>"
+        RT.renderHTML  node @?= "<div hx-sync=\"this\"></div>"
+
+    , testCase "hx-sync (with strategy)" $ do
+        let node = divWith [A.hxSync (HTML.mkQuerySelector (Types.Id (NET.singleton 'x'))) (Just HTML.SyncAbort)]
+        RBS.renderHTML node @?= "<div hx-sync=\"#x:abort\"></div>"
+        RT.renderHTML  node @?= "<div hx-sync=\"#x:abort\"></div>"
+
+    , testCase "hx-sync (bare queue)" $ do
+        let node = divWith [A.hxSync HTML.This (Just (HTML.SyncQueue Nothing))]
+        RBS.renderHTML node @?= "<div hx-sync=\"this:queue\"></div>"
+        RT.renderHTML  node @?= "<div hx-sync=\"this:queue\"></div>"
+
+    , testCase "hx-sync (queue last)" $ do
+        let node = divWith [A.hxSync HTML.This (Just (HTML.SyncQueue (Just HTML.SyncQueueLast)))]
+        RBS.renderHTML node @?= "<div hx-sync=\"this:queue last\"></div>"
+        RT.renderHTML  node @?= "<div hx-sync=\"this:queue last\"></div>"
 
     , testCase "hx-validate" $ do
         let node = E.form [A.hxValidate] [] :: E.ChildHTML E.Body E.Html
