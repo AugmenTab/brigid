@@ -1,5 +1,3 @@
-{-# LANGUAGE CPP #-}
-
 module Brigid.HTML.Attributes.Global
   ( AttributeTags.AccessKey, accesskey
   , AttributeTags.Autocapitalize, autocapitalize
@@ -39,9 +37,6 @@ module Brigid.HTML.Attributes.Global
 -- Global Attributes
 --
 
-#if __GLASGOW_HASKELL__ < 910
-import Data.List (foldl')
-#endif
 import Data.List.NonEmpty qualified as NEL
 import Data.Set qualified as Set
 import Data.Text qualified as T
@@ -69,22 +64,25 @@ autofocus = Attr_Autofocus
 class_ :: Types.Class -> Attribute tag
 class_ = Attr_Class
 
--- | Construct a @class@ attribute from a list of classes in raw 'T.Text'. If
--- you want to construct a @class@ attribute from a list of 'Types.Class'es,
--- use the 'Data.Monoid.Monoid' instance for 'HTML.Class'.
+-- | Construct a @class@ attribute from a list of classes, filtering out
+-- empty and duplicate values.
 --
-classes :: [T.Text] -> Attribute tag
+classes :: [Types.Class] -> Attribute tag
 classes =
   let
-    foldClasses (acc, usedClasses) c =
-      if T.null c
-        then (acc, usedClasses)
-        else
-          if Set.member c usedClasses
-            then (acc, usedClasses)
-            else (acc <> Types.Class c, Set.insert c usedClasses)
+    build _    []         = mempty
+    build seen (c : rest)
+      | c == mempty        = build seen rest
+      | Set.member c seen  = build seen rest
+      | otherwise          =
+          let
+            built = build (Set.insert c seen) rest
+          in
+            if built == mempty
+              then c
+              else c <> built
   in
-    class_ . fst . foldl' foldClasses (mempty, Set.empty)
+    class_ . build Set.empty
 
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable

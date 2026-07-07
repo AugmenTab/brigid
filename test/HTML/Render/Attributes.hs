@@ -117,13 +117,13 @@ globalAttributes =
 
     , testCase "classes (multiple)" $ do
         let node = divWith [A.classes ["foo", "bar"]]
-        RBS.renderHTML node @?= "<div class=\" foo bar\"></div>"
-        RT.renderHTML  node @?= "<div class=\" foo bar\"></div>"
+        RBS.renderHTML node @?= "<div class=\"foo bar\"></div>"
+        RT.renderHTML  node @?= "<div class=\"foo bar\"></div>"
 
     , testCase "classes (deduplicates)" $ do
         let node = divWith [A.classes ["foo", "foo", "bar"]]
-        RBS.renderHTML node @?= "<div class=\" foo bar\"></div>"
-        RT.renderHTML  node @?= "<div class=\" foo bar\"></div>"
+        RBS.renderHTML node @?= "<div class=\"foo bar\"></div>"
+        RT.renderHTML  node @?= "<div class=\"foo bar\"></div>"
 
     , testCase "contenteditable (true)" $ do
         let node = divWith [A.contenteditable HTML.Editable]
