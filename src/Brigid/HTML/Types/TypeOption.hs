@@ -16,19 +16,18 @@ module Brigid.HTML.Types.TypeOption
   , rawTypeOptionToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
-import Data.Text.Encoding qualified as TE
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.InputType (InputType, inputTypeToBytes, inputTypeToBytesBuilder, inputTypeToText)
-import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, numberingTypeToBytesBuilder, numberingTypeToText)
-import Brigid.HTML.Types.ScriptType (ScriptType, scriptTypeToBytes, scriptTypeToBytesBuilder, scriptTypeToText)
+import Brigid.HTML.Types.InputType (InputType, inputTypeToBytes, inputTypeToText)
+import Brigid.HTML.Types.NumberingType (NumberingType, numberingTypeToBytes, numberingTypeToText)
+import Brigid.HTML.Types.ScriptType (ScriptType, scriptTypeToBytes, scriptTypeToText)
+import Brigid.Internal.Render qualified as Render
 
 newtype TypeOption =
   TypeOption (Shrubbery.Union TypeOptionTypes)
@@ -61,15 +60,7 @@ typeOptionToBytes (TypeOption typeOption) =
 
 typeOptionToBytesBuilder :: TypeOption -> Builder
 {-# INLINABLE typeOptionToBytesBuilder #-}
-typeOptionToBytesBuilder (TypeOption typeOption) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @InputType     inputTypeToBytesBuilder
-      . Shrubbery.branch @NumberingType numberingTypeToBytesBuilder
-      . Shrubbery.branch @ScriptType    scriptTypeToBytesBuilder
-      . Shrubbery.branch @RawTypeOption (TE.encodeUtf8Builder . rawTypeOptionToText)
-      $ Shrubbery.branchEnd
-  ) typeOption
+typeOptionToBytesBuilder = lazyByteString . typeOptionToBytes
 
 typeOptionToText :: TypeOption -> T.Text
 typeOptionToText (TypeOption typeOption) =
@@ -98,4 +89,4 @@ mkRawTypeOption = RawTypeOption
 
 rawTypeOptionToBytes :: RawTypeOption -> LBS.ByteString
 rawTypeOptionToBytes =
-  LBS8.pack . T.unpack . rawTypeOptionToText
+  Render.textToLazyBytes . rawTypeOptionToText

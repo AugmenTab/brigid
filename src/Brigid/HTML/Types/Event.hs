@@ -136,7 +136,7 @@ module Brigid.HTML.Types.Event
   , triggerRevealedToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
@@ -173,14 +173,7 @@ eventToBytes =
 
 eventToBytesBuilder :: Event -> Builder
 {-# INLINABLE eventToBytesBuilder #-}
-eventToBytesBuilder =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @HTMLEvent htmlEventToBytesBuilder
-      . Shrubbery.branch @TouchEvent touchEventToBytesBuilder
-      . Shrubbery.branch @HtmxEvent htmxEventToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) . unEvent
+eventToBytesBuilder = lazyByteString . eventToBytes
 
 eventToText :: Event -> T.Text
 eventToText =
@@ -203,14 +196,7 @@ hxOnEventBytes =
   ) . unEvent
 
 hxOnEventBytesBuilder :: Event -> Builder
-hxOnEventBytesBuilder =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @HTMLEvent (("-" <>) . htmlEventToBytesBuilder)
-      . Shrubbery.branch @TouchEvent (("-" <>) . touchEventToBytesBuilder)
-      . Shrubbery.branch @HtmxEvent (("--" <>) . htmxEventToBytesBuilder)
-      $ Shrubbery.branchEnd
-  ) . unEvent
+hxOnEventBytesBuilder = lazyByteString . hxOnEventBytes
 
 hxOnEventText :: Event -> T.Text
 hxOnEventText =
@@ -331,58 +317,7 @@ htmlEventToBytes event =
 
 htmlEventToBytesBuilder :: HTMLEvent -> Builder
 {-# INLINE htmlEventToBytesBuilder #-}
-htmlEventToBytesBuilder event =
-  case event of
-    ClickEvent             -> "click"
-    DblClickEvent          -> "dblclick"
-    MouseDownEvent         -> "mousedown"
-    MouseUpEvent           -> "mouseup"
-    MouseOverEvent         -> "mouseover"
-    MouseMoveEvent         -> "mousemove"
-    MouseOutEvent          -> "mouseout"
-    DragStartEvent         -> "dragstart"
-    DragEvent              -> "drag"
-    DragEnterEvent         -> "dragenter"
-    DragLeaveEvent         -> "dragleave"
-    DragOverEvent          -> "dragover"
-    DropEvent              -> "drop"
-    DragEndEvent           -> "dragend"
-    KeyDownEvent           -> "keydown"
-    KeyPressEvent          -> "keypress"
-    KeyUpEvent             -> "keyup"
-    LoadEvent              -> "load"
-    LoadEndEvent           -> "loadend"
-    LoadStartEvent         -> "loadstart"
-    AbortEvent             -> "abort"
-    ErrorEvent             -> "error"
-    ResizeEvent            -> "resize"
-    ScrollEvent            -> "scroll"
-    SelectEvent            -> "select"
-    ChangeEvent            -> "change"
-    SubmitEvent            -> "submit"
-    ResetEvent             -> "reset"
-    FocusEvent             -> "focus"
-    BlurEvent              -> "blur"
-    FocusInEvent           -> "focusin"
-    FocusOutEvent          -> "focusout"
-    ProgressEvent          -> "progress"
-    InputEvent             -> "input"
-    BeforeInputEvent       -> "beforeinput"
-    InvalidEvent           -> "invalid"
-    PointerDownEvent       -> "pointerdown"
-    PointerUpEvent         -> "pointerup"
-    PointerMoveEvent       -> "pointermove"
-    PointerEnterEvent      -> "pointerenter"
-    PointerLeaveEvent      -> "pointerleave"
-    PointerOverEvent       -> "pointerover"
-    PointerOutEvent        -> "pointerout"
-    PointerCancelEvent     -> "pointercancel"
-    WheelEvent             -> "wheel"
-    ContextMenuEvent       -> "contextmenu"
-    AuxClickEvent          -> "auxclick"
-    CompositionStartEvent  -> "compositionstart"
-    CompositionUpdateEvent -> "compositionupdate"
-    CompositionEndEvent    -> "compositionend"
+htmlEventToBytesBuilder = lazyByteString . htmlEventToBytes
 
 htmlEventToText :: HTMLEvent -> T.Text
 htmlEventToText event =
@@ -459,14 +394,7 @@ touchEventToBytes event =
 
 touchEventToBytesBuilder :: TouchEvent -> Builder
 {-# INLINE touchEventToBytesBuilder #-}
-touchEventToBytesBuilder event =
-  case event of
-    TouchStart  -> "touchstart"
-    TouchEnd    -> "touchend"
-    TouchMove   -> "touchmove"
-    TouchEnter  -> "touchenter"
-    TouchLeave  -> "touchleave"
-    TouchCancel -> "touchcancel"
+touchEventToBytesBuilder = lazyByteString . touchEventToBytes
 
 touchEventToText :: TouchEvent -> T.Text
 touchEventToText event =
@@ -571,50 +499,7 @@ htmxEventToBytes event =
 
 htmxEventToBytesBuilder :: HtmxEvent -> Builder
 {-# INLINE htmxEventToBytesBuilder #-}
-htmxEventToBytesBuilder event =
-  case event of
-    HtmxAbort                 -> "abort"
-    HtmxAfterOnLoad           -> "after-on-load"
-    HtmxAfterProcessNode      -> "after-process-node"
-    HtmxAfterRequest          -> "after-request"
-    HtmxAfterSettle           -> "after-settle"
-    HtmxAfterSwap             -> "after-swap"
-    HtmxBeforeCleanupElement  -> "before-cleanup-element"
-    HtmxBeforeOnLoad          -> "before-on-load"
-    HtmxBeforeProcessNode     -> "before-process-node"
-    HtmxBeforeRequest         -> "before-request"
-    HtmxBeforeSwap            -> "before-swap"
-    HtmxBeforeSend            -> "before-send"
-    HtmxConfigRequest         -> "config-request"
-    HtmxConfirm               -> "confirm"
-    HtmxHistoryCacheError     -> "history-cache-error"
-    HtmxHistoryCacheMiss      -> "history-cache-miss"
-    HtmxHistoryCacheMissError -> "history-cache-miss-error"
-    HtmxHistoryCacheMissLoad  -> "history-cache-miss-load"
-    HtmxHistoryRestore        -> "history-restore"
-    HtmxBeforeHistorySave     -> "before-history-save"
-    HtmxLoad                  -> "load"
-    HtmxNoSSESourceError      -> "no-sse-source-error"
-    HtmxOnLoadError           -> "on-load-error"
-    HtmxOOBAfterSwap          -> "oob-after-swap"
-    HtmxOOBBeforeSwap         -> "oob-before-swap"
-    HtmxOOBErrorNoTarget      -> "oob-error-no-target"
-    HtmxPrompt                -> "prompt"
-    HtmxPushedIntoHistory     -> "pushed-into-history"
-    HtmxResponseError         -> "response-error"
-    HtmxSendError             -> "send-error"
-    HtmxSSEError              -> "sse-error"
-    HtmxSSEOpen               -> "sse-open"
-    HtmxSwapError             -> "swap-error"
-    HtmxTargetError           -> "target-error"
-    HtmxTimeout               -> "timeout"
-    HtmxValidate              -> "validation-validate"
-    HtmxValidationFailed      -> "validation-failed"
-    HtmxValidationHalted      -> "validation-halted"
-    HtmxXHRAbort              -> "xhr-abort"
-    HtmxXHRLoadEnd            -> "xhr-loadend"
-    HtmxXHRLoadStart          -> "xhr-loadstart"
-    HtmxXHRProgress           -> "xhr-progress"
+htmxEventToBytesBuilder = lazyByteString . htmxEventToBytes
 
 htmxEventToText :: HtmxEvent -> T.Text
 htmxEventToText event =

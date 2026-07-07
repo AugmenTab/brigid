@@ -39,7 +39,7 @@ module Brigid.HTML.Types.HxAttributes
   , inheritableHTMXToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.List.NonEmpty qualified as NEL
@@ -48,8 +48,6 @@ import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
-
-import Brigid.Internal.Render qualified as Render
 
 -- | The shared value type for both @hx-disinherit@ and @hx-inherit@, which
 -- take the exact same grammar: either @"*"@ (all attributes) or a
@@ -83,14 +81,7 @@ hxAttributesToBytes =
 
 hxAttributesToBytesBuilder :: HxAttributes -> Builder
 {-# INLINABLE hxAttributesToBytesBuilder #-}
-hxAttributesToBytesBuilder =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AllHxAttributes allHxAttributesToBytesBuilder
-      . Shrubbery.branch @(NEL.NonEmpty InheritableHTMX)
-          (Render.foldToBytesBuilderWithSeparator inheritableHTMXToBytesBuilder " " . NEL.toList)
-      $ Shrubbery.branchEnd
-  ) . unHxAttributes
+hxAttributesToBytesBuilder = lazyByteString . hxAttributesToBytes
 
 hxAttributesToText :: HxAttributes -> T.Text
 hxAttributesToText =
@@ -109,10 +100,6 @@ data AllHxAttributes = AllHxAttributes
 
 allHxAttributesToBytes :: AllHxAttributes -> LBS.ByteString
 allHxAttributesToBytes = const "*"
-
-allHxAttributesToBytesBuilder :: AllHxAttributes -> Builder
-{-# INLINE allHxAttributesToBytesBuilder #-}
-allHxAttributesToBytesBuilder = const "*"
 
 allHxAttributesToText :: AllHxAttributes -> T.Text
 allHxAttributesToText = const "*"
@@ -166,28 +153,7 @@ inheritableHTMXToBytes htmx =
 
 inheritableHTMXToBytesBuilder :: InheritableHTMX -> Builder
 {-# INLINE inheritableHTMXToBytesBuilder #-}
-inheritableHTMXToBytesBuilder htmx =
-  case htmx of
-    HxBoost      -> "hx-boost"
-    HxConfirm    -> "hx-confirm"
-    HxDisable    -> "hx-disable"
-    HxDisableElt -> "hx-disable-elt"
-    HxEncoding   -> "hx-encoding"
-    HxExt        -> "hx-ext"
-    HxHeaders    -> "hx-headers"
-    HxInclude    -> "hx-include"
-    HxIndicator  -> "hx-indicator"
-    HxParams     -> "hx-params"
-    HxPrompt     -> "hx-prompt"
-    HxPushURL    -> "hx-push-url"
-    HxReplaceURL -> "hx-replace-url"
-    HxRequest    -> "hx-request"
-    HxSelect     -> "hx-select"
-    HxSelectOOB  -> "hx-select-oob"
-    HxSwap       -> "hx-swap"
-    HxSync       -> "hx-sync"
-    HxTarget     -> "hx-target"
-    HxVals       -> "hx-vals"
+inheritableHTMXToBytesBuilder = lazyByteString . inheritableHTMXToBytes
 
 inheritableHTMXToText :: InheritableHTMX -> T.Text
 inheritableHTMXToText htmx =

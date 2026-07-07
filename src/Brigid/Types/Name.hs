@@ -18,7 +18,7 @@ module Brigid.Types.Name
   , nameOptionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
@@ -28,7 +28,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.MetadataName (MetadataName, metadataNameToBytes, metadataNameToBytesBuilder, metadataNameToText)
+import Brigid.HTML.Types.MetadataName (MetadataName, metadataNameToBytes, metadataNameToText)
 import Brigid.Internal.Render qualified as Render
 
 newtype Name =
@@ -76,13 +76,7 @@ nameOptionToBytes (NameOption nameOption) =
 
 nameOptionToBytesBuilder :: NameOption -> Builder
 {-# INLINABLE nameOptionToBytesBuilder #-}
-nameOptionToBytesBuilder (NameOption nameOption) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @Name         nameToBytesBuilder
-      . Shrubbery.branch @MetadataName metadataNameToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) nameOption
+nameOptionToBytesBuilder = lazyByteString . nameOptionToBytes
 
 nameOptionToText :: NameOption -> T.Text
 nameOptionToText (NameOption nameOption) =

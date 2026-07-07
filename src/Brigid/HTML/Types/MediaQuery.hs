@@ -94,7 +94,7 @@ module Brigid.HTML.Types.MediaQuery
   ) where
 
 import Data.Bool qualified as B
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Maybe (catMaybes)
@@ -103,7 +103,7 @@ import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
 import Integer (Positive)
 
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.Internal.Render qualified as Render
 
 data MediaQuery =
@@ -196,10 +196,7 @@ mediaQueryModifierToText mqm =
 
 mediaQueryModifierToBytesBuilder :: MediaQueryModifier -> Builder
 {-# INLINE mediaQueryModifierToBytesBuilder #-}
-mediaQueryModifierToBytesBuilder mqm =
-  case mqm of
-    MediaNot  -> string8 "not"
-    MediaOnly -> string8 "only"
+mediaQueryModifierToBytesBuilder = lazyByteString . mediaQueryModifierToBytes
 
 data MediaQueryType
   = MediaAll
@@ -226,12 +223,7 @@ mediaQueryTypeToText mt =
 
 mediaQueryTypeToBytesBuilder :: MediaQueryType -> Builder
 {-# INLINE mediaQueryTypeToBytesBuilder #-}
-mediaQueryTypeToBytesBuilder mt =
-  case mt of
-    MediaAll    -> string8 "all"
-    MediaScreen -> string8 "screen"
-    MediaPrint  -> string8 "print"
-    MediaSpeech -> string8 "speech"
+mediaQueryTypeToBytesBuilder = lazyByteString . mediaQueryTypeToBytes
 
 data MediaFeature
   = Width MediaFeatureType MediaLength
@@ -487,116 +479,7 @@ mediaFeatureToText mf =
 
 mediaFeatureToBytesBuilder :: MediaFeature -> Builder
 {-# INLINE mediaFeatureToBytesBuilder #-}
-mediaFeatureToBytesBuilder mf =
-  mconcat
-    [ string8 "("
-    , case mf of
-        Width typ l ->
-          mediaFeatureTypeToBytesBuilder typ <> string8 "width: " <> mediaLengthToBytesBuilder l
-
-        Height typ l ->
-          mediaFeatureTypeToBytesBuilder typ <> string8 "height: " <> mediaLengthToBytesBuilder l
-
-        DeviceWidth typ l ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "device-width: "
-            <> mediaLengthToBytesBuilder l
-
-        DeviceHeight typ l ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "device-height: "
-            <> mediaLengthToBytesBuilder l
-
-        AspectRatio typ ratio ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "aspect-ratio: "
-            <> Render.showIntegerBytesBuilder (numerator ratio)
-            <> string8 "/"
-            <> Render.showIntegerBytesBuilder (denominator ratio)
-
-        DeviceAspectRatio typ ratio ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "device-aspect-ratio: "
-            <> Render.showIntegerBytesBuilder (numerator ratio)
-            <> string8 "/"
-            <> Render.showIntegerBytesBuilder (denominator ratio)
-
-        Orientation o ->
-          string8 "orientation: " <> mediaOrientationToBytesBuilder o
-
-        Resolution typ res ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "resolution: "
-            <> mediaResolutionToBytesBuilder res
-
-        Scan scan ->
-          string8 "scan: " <> mediaScanTypeToBytesBuilder scan
-
-        Grid ->
-          string8 "grid"
-
-        Color (Just (typ, val)) ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "color: "
-            <> Render.showIntegerBytesBuilder val
-
-        Color Nothing ->
-          string8 "color"
-
-        ColorIndex (Just (typ, val)) ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "color-index: "
-            <> Render.showIntegerBytesBuilder val
-
-        ColorIndex Nothing ->
-          string8 "color-index"
-
-        Monochrome (Just (typ, val)) ->
-          mediaFeatureTypeToBytesBuilder typ
-            <> string8 "monochrome: "
-            <> Render.showIntegerBytesBuilder val
-
-        Monochrome Nothing ->
-          string8 "monochrome"
-
-        InvertedColors invert ->
-          string8 "inverted-colors: " <> B.bool (string8 "none") (string8 "inverted") invert
-
-        ForcedColors force ->
-          string8 "forced-colors: " <> B.bool (string8 "none") (string8 "active") force
-
-        PrefersColorScheme scheme ->
-          string8 "prefers-color-scheme: " <> mediaColorSchemeToBytesBuilder scheme
-
-        PrefersReducedMotion reduce ->
-          string8 "prefers-reduced-motion: " <> B.bool (string8 "no-preference") (string8 "reduce") reduce
-
-        PrefersReducedTransparency reduce ->
-          string8 "prefers-reduced-transparency: "
-            <> B.bool (string8 "no-preference") (string8 "reduce") reduce
-
-        PrefersContrast contrast ->
-          string8 "prefers-contrast: " <> mediaPrefersContrastToBytesBuilder contrast
-
-        PrefersReducedData reduce ->
-          string8 "prefers-reduced-data: " <> B.bool (string8 "no-preference") (string8 "reduce") reduce
-
-        Hover hover ->
-          string8 "hover: " <> B.bool (string8 "none") (string8 "hover") hover
-
-        Pointer pointer ->
-          string8 "pointer: " <> mediaPointerAccuracyToBytesBuilder pointer
-
-        AnyHover hover ->
-          string8 "any-hover: " <> B.bool (string8 "none") (string8 "hover") hover
-
-        AnyPointer pointer ->
-          string8 "any-pointer: " <> mediaPointerAccuracyToBytesBuilder pointer
-
-        Update update ->
-          string8 "update: " <> mediaUpdateFrequencyToBytesBuilder update
-    , string8 ")"
-    ]
+mediaFeatureToBytesBuilder = lazyByteString . mediaFeatureToBytes
 
 data MediaFeatureType
   = Min
@@ -617,14 +500,6 @@ mediaFeatureTypeToText mft =
     Min -> "min-"
     Max -> "max-"
     Exact -> T.empty
-
-mediaFeatureTypeToBytesBuilder :: MediaFeatureType -> Builder
-{-# INLINE mediaFeatureTypeToBytesBuilder #-}
-mediaFeatureTypeToBytesBuilder mft =
-  case mft of
-    Min   -> string8 "min-"
-    Max   -> string8 "max-"
-    Exact -> mempty
 
 data MediaLength
   = MediaPx Number
@@ -655,17 +530,6 @@ mediaLengthToText ml =
     MediaPt n -> numberToText n <> "pt"
     MediaPc n -> numberToText n <> "pc"
 
-mediaLengthToBytesBuilder :: MediaLength -> Builder
-{-# INLINE mediaLengthToBytesBuilder #-}
-mediaLengthToBytesBuilder ml =
-  case ml of
-    MediaPx n -> numberToBytesBuilder n <> string8 "px"
-    MediaIn n -> numberToBytesBuilder n <> string8 "in"
-    MediaCm n -> numberToBytesBuilder n <> string8 "cm"
-    MediaMm n -> numberToBytesBuilder n <> string8 "mm"
-    MediaPt n -> numberToBytesBuilder n <> string8 "pt"
-    MediaPc n -> numberToBytesBuilder n <> string8 "pc"
-
 data MediaOrientation
   = Portrait
   | Landscape
@@ -682,13 +546,6 @@ mediaOrientationToText mo =
   case mo of
     Portrait -> "portrait"
     Landscape -> "landscape"
-
-mediaOrientationToBytesBuilder :: MediaOrientation -> Builder
-{-# INLINE mediaOrientationToBytesBuilder #-}
-mediaOrientationToBytesBuilder mo =
-  case mo of
-    Portrait  -> string8 "portrait"
-    Landscape -> string8 "landscape"
 
 data MediaResolution
   = MediaDpi Number
@@ -710,14 +567,6 @@ mediaResolutionToText mr =
     MediaDpcm n -> numberToText n <> "dpcm"
     MediaDppx n -> numberToText n <> "dppx"
 
-mediaResolutionToBytesBuilder :: MediaResolution -> Builder
-{-# INLINE mediaResolutionToBytesBuilder #-}
-mediaResolutionToBytesBuilder mr =
-  case mr of
-    MediaDpi  n -> numberToBytesBuilder n <> string8 "dpi"
-    MediaDpcm n -> numberToBytesBuilder n <> string8 "dpcm"
-    MediaDppx n -> numberToBytesBuilder n <> string8 "dppx"
-
 data MediaScanType
   = Interlace
   | Progressive
@@ -734,13 +583,6 @@ mediaScanTypeToText mst =
   case mst of
     Interlace -> "interlace"
     Progressive -> "progressive"
-
-mediaScanTypeToBytesBuilder :: MediaScanType -> Builder
-{-# INLINE mediaScanTypeToBytesBuilder #-}
-mediaScanTypeToBytesBuilder mst =
-  case mst of
-    Interlace   -> string8 "interlace"
-    Progressive -> string8 "progressive"
 
 data MediaColorScheme
   = ColorNoPreference
@@ -761,14 +603,6 @@ mediaColorSchemeToText mcs =
     ColorNoPreference -> "no-preference"
     ColorLight -> "light"
     ColorDark -> "dark"
-
-mediaColorSchemeToBytesBuilder :: MediaColorScheme -> Builder
-{-# INLINE mediaColorSchemeToBytesBuilder #-}
-mediaColorSchemeToBytesBuilder mcs =
-  case mcs of
-    ColorNoPreference -> string8 "no-preference"
-    ColorLight        -> string8 "light"
-    ColorDark         -> string8 "dark"
 
 data MediaPrefersContrast
   = ContrastNoPreference
@@ -793,15 +627,6 @@ mediaPrefersContrastToText mpc =
     ContrastLess -> "less"
     ContrastCustom -> "custom"
 
-mediaPrefersContrastToBytesBuilder :: MediaPrefersContrast -> Builder
-{-# INLINE mediaPrefersContrastToBytesBuilder #-}
-mediaPrefersContrastToBytesBuilder mpc =
-  case mpc of
-    ContrastNoPreference -> string8 "no-preference"
-    ContrastMore         -> string8 "more"
-    ContrastLess         -> string8 "less"
-    ContrastCustom       -> string8 "custom"
-
 data MediaPointerAccuracy
   = PointerNone
   | PointerCoarse
@@ -822,14 +647,6 @@ mediaPointerAccuracyToText mpa =
     PointerCoarse -> "coarse"
     PointerFine -> "fine"
 
-mediaPointerAccuracyToBytesBuilder :: MediaPointerAccuracy -> Builder
-{-# INLINE mediaPointerAccuracyToBytesBuilder #-}
-mediaPointerAccuracyToBytesBuilder mpa =
-  case mpa of
-    PointerNone   -> string8 "none"
-    PointerCoarse -> string8 "coarse"
-    PointerFine   -> string8 "fine"
-
 data MediaUpdateFrequency
   = UpdateNone
   | UpdateSlow
@@ -849,11 +666,3 @@ mediaUpdateFrequencyToText muf =
     UpdateNone -> "none"
     UpdateSlow -> "slow"
     UpdateFast -> "fast"
-
-mediaUpdateFrequencyToBytesBuilder :: MediaUpdateFrequency -> Builder
-{-# INLINE mediaUpdateFrequencyToBytesBuilder #-}
-mediaUpdateFrequencyToBytesBuilder muf =
-  case muf of
-    UpdateNone -> string8 "none"
-    UpdateSlow -> string8 "slow"
-    UpdateFast -> string8 "fast"

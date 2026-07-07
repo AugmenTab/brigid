@@ -12,7 +12,7 @@ module Brigid.HTML.Types.Vals
   , htmxValsToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -20,7 +20,7 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.InlineJSON (InlineJSON, inlineJSONToBytes, inlineJSONToBytesBuilder, inlineJSONToText)
+import Brigid.HTML.Types.InlineJSON (InlineJSON, inlineJSONToBytes, inlineJSONToText)
 import Brigid.Types.RawJavaScript qualified as RawJS
 
 newtype HtmxVals =
@@ -50,13 +50,7 @@ htmxValsToBytes (HtmxVals vals) =
 
 htmxValsToBytesBuilder :: HtmxVals -> Builder
 {-# INLINABLE htmxValsToBytesBuilder #-}
-htmxValsToBytesBuilder (HtmxVals vals) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @InlineJSON          inlineJSONToBytesBuilder
-      . Shrubbery.branch @RawJS.RawJavaScript RawJS.rawJavaScriptToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) vals
+htmxValsToBytesBuilder = lazyByteString . htmxValsToBytes
 
 htmxValsToText :: HtmxVals -> T.Text
 htmxValsToText (HtmxVals vals) =

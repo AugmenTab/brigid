@@ -7,7 +7,7 @@ module Brigid.HTML.Types.SwapTiming
   , settle
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Numeric.Natural (Natural)
@@ -68,10 +68,7 @@ swapTimingTypeToBytes timingType =
 
 swapTimingTypeToBytesBuilder :: SwapTimingType -> Builder
 {-# INLINE swapTimingTypeToBytesBuilder #-}
-swapTimingTypeToBytesBuilder timingType =
-  case timingType of
-    Swap   -> "swap"
-    Settle -> "settle"
+swapTimingTypeToBytesBuilder = lazyByteString . swapTimingTypeToBytes
 
 swapTimingTypeToText :: SwapTimingType -> T.Text
 swapTimingTypeToText timingType =

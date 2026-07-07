@@ -16,7 +16,7 @@ module Brigid.HXML.Types.Color
   , colorNameToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Function (on)
 import Data.Text qualified as T
@@ -26,7 +26,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.Internal.Render qualified as Render
-import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToBytesBuilder, hexColorToText)
+import Brigid.Types.HexColor (HexColor, hexColorToBytes, hexColorToText)
 
 newtype Color = Color (Shrubbery.Union ColorTypes)
 
@@ -65,13 +65,7 @@ colorToBytes (Color color) =
 
 colorToBytesBuilder :: Color -> Builder
 {-# INLINABLE colorToBytesBuilder #-}
-colorToBytesBuilder (Color color) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @HexColor  hexColorToBytesBuilder
-      . Shrubbery.branch @ColorName colorNameToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) color
+colorToBytesBuilder = lazyByteString . colorToBytes
 
 colorToText :: Color -> T.Text
 colorToText (Color color) =

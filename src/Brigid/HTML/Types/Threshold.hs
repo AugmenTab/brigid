@@ -6,15 +6,13 @@ module Brigid.HTML.Types.Threshold
   , thresholdToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Fixed (Milli)
 import Data.Ratio (Ratio, (%))
 import Data.Text qualified as T
 import Numeric.Natural (Natural)
-
-import Brigid.Internal.Render qualified as Render
 
 newtype Threshold =
   Threshold
@@ -38,8 +36,7 @@ thresholdToBytes =
 
 thresholdToBytesBuilder :: Threshold -> Builder
 {-# INLINE thresholdToBytesBuilder #-}
-thresholdToBytesBuilder =
-  ("threshold:" <>) . Render.showBytesBuilder . toMilli . unThreshold
+thresholdToBytesBuilder = lazyByteString . thresholdToBytes
 
 thresholdToText :: Threshold -> T.Text
 thresholdToText =

@@ -5,7 +5,7 @@ module Brigid.HTML.Types.Window
   , windowToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -17,7 +17,7 @@ windowToBytes = const "window"
 
 windowToBytesBuilder :: Window -> Builder
 {-# INLINE windowToBytesBuilder #-}
-windowToBytesBuilder = const "window"
+windowToBytesBuilder = lazyByteString . windowToBytes
 
 windowToText :: Window -> T.Text
 windowToText = const "window"

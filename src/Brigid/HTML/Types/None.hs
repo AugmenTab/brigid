@@ -5,7 +5,7 @@ module Brigid.HTML.Types.None
   , noneToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -17,7 +17,7 @@ noneToBytes = const "none"
 
 noneToBytesBuilder :: None -> Builder
 {-# INLINE noneToBytesBuilder #-}
-noneToBytesBuilder = const "none"
+noneToBytesBuilder = lazyByteString . noneToBytes
 
 noneToText :: None -> T.Text
 noneToText = const "none"

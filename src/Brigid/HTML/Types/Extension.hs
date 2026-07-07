@@ -31,13 +31,11 @@ module Brigid.HTML.Types.Extension
   ) where
 
 import Data.Bool qualified as B
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
-
-import Brigid.Internal.Render qualified as Render
 
 data Extension =
   Extension
@@ -199,31 +197,7 @@ extensionTypeToBytes ext =
 
 extensionTypeToBytesBuilder :: ExtensionType -> Builder
 {-# INLINE extensionTypeToBytesBuilder #-}
-extensionTypeToBytesBuilder ext =
-  case ext of
-    AjaxHeader          -> "ajax-header"
-    AlpineMorph         -> "alpine-morph"
-    ClassTools          -> "class-tools"
-    ClientSideTemplates -> "client-side-templates"
-    Debug               -> "debug"
-    EventHeader         -> "event-header"
-    HeadSupport         -> "head-support"
-    IncludeVals         -> "include-vals"
-    JsonEnc             -> "json-enc"
-    Idiomorph           -> "idiomorph"
-    LoadingStates       -> "loading-states"
-    MethodOverride      -> "method-override"
-    MorphdomSwap        -> "morphdom-swap"
-    MultiSwap           -> "multi-swap"
-    PathDeps            -> "path-deps"
-    PathParams          -> "path-params"
-    Preload             -> "preload"
-    RemoveMe            -> "remove-me"
-    ResponseTargets     -> "response-targets"
-    Restored            -> "restored"
-    ServerSentEvents    -> "server-sent-events"
-    WebSockets          -> "web-sockets"
-    CustomExtension txt -> Render.textToBytesBuilder txt
+extensionTypeToBytesBuilder = lazyByteString . extensionTypeToBytes
 
 extensionTypeToText :: ExtensionType -> T.Text
 extensionTypeToText ext =

@@ -15,7 +15,7 @@ module Brigid.HTML.Types.TimingDeclaration
   , timingUnitsToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
@@ -68,12 +68,7 @@ timingUnitsToBytes tu =
 
 timingUnitsToBytesBuilder :: TimingUnits -> Builder
 {-# INLINE timingUnitsToBytesBuilder #-}
-timingUnitsToBytesBuilder tu =
-  case tu of
-    Milliseconds -> "ms"
-    Seconds      -> "s"
-    Minutes      -> "m"
-    Hours        -> "h"
+timingUnitsToBytesBuilder = lazyByteString . timingUnitsToBytes
 
 timingUnitsToText :: TimingUnits -> T.Text
 timingUnitsToText tu =

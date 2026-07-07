@@ -14,7 +14,7 @@ module Brigid.HTML.Types.Action
   , actionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Function (on)
 import Data.Text qualified as T
@@ -61,15 +61,7 @@ actionToBytes (Action action) =
 
 actionToBytesBuilder :: Action -> Builder
 {-# INLINABLE actionToBytesBuilder #-}
-actionToBytesBuilder (Action action) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @URL.AbsoluteURL        URL.absoluteURLToBytesBuilder
-      . Shrubbery.branch @(URL.RelativeURL Get)  URL.relativeURLToBytesBuilder
-      . Shrubbery.branch @(URL.RelativeURL Post) URL.relativeURLToBytesBuilder
-      . Shrubbery.branch @URL.RawURL             URL.rawURLToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) action
+actionToBytesBuilder = lazyByteString . actionToBytes
 
 actionToText :: Action -> T.Text
 actionToText (Action action) =

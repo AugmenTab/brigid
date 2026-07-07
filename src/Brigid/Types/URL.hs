@@ -54,7 +54,7 @@ module Brigid.Types.URL
 
 import Beeline.HTTP.Client qualified as B
 import Beeline.Routing qualified as R
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Function (on)
@@ -97,14 +97,7 @@ urlToBytes (URL url) =
 
 urlToBytesBuilder :: URL -> Builder
 {-# INLINABLE urlToBytesBuilder #-}
-urlToBytesBuilder (URL url) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AbsoluteURL       absoluteURLToBytesBuilder
-      . Shrubbery.branch @(RelativeURL Get) relativeURLToBytesBuilder
-      . Shrubbery.branch @RawURL            rawURLToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) url
+urlToBytesBuilder = lazyByteString . urlToBytes
 
 urlToText :: URL -> T.Text
 urlToText (URL url) =
@@ -286,14 +279,7 @@ pingToBytes (Ping ping) =
 
 pingToBytesBuilder :: Ping -> Builder
 {-# INLINABLE pingToBytesBuilder #-}
-pingToBytesBuilder (Ping ping) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @AbsoluteURL         absoluteURLToBytesBuilder
-      . Shrubbery.branch @(RelativeURL Post)  relativeURLToBytesBuilder
-      . Shrubbery.branch @RawURL              rawURLToBytesBuilder
-      $ Shrubbery.branchEnd
-  ) ping
+pingToBytesBuilder = lazyByteString . pingToBytes
 
 pingToText :: Ping -> T.Text
 pingToText (Ping ping) =

@@ -8,12 +8,12 @@ module Brigid.HTML.Types.ClassSelector
   ) where
 
 import Prelude hiding (not)
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 
-import Brigid.HTML.Types.Class (Class, classToBytes, classToBytesBuilder, classToText)
+import Brigid.HTML.Types.Class (Class, classToBytes, classToText)
 
 data ClassSelector =
   ClassSelector
@@ -30,15 +30,12 @@ not cs = cs { classSelectorExcluded = False }
 classSelectorToBytes :: ClassSelector -> LBS.ByteString
 classSelectorToBytes selector =
   if classSelectorExcluded selector
-     then ":not(." <> classToBytes (classSelectorClass selector) <> ")"
-     else LBS8.cons '.' . classToBytes $ classSelectorClass selector
+     then LBS8.cons '.' . classToBytes $ classSelectorClass selector
+     else ":not(." <> classToBytes (classSelectorClass selector) <> ")"
 
 classSelectorToBytesBuilder :: ClassSelector -> Builder
 {-# INLINE classSelectorToBytesBuilder #-}
-classSelectorToBytesBuilder selector =
-  if classSelectorExcluded selector
-     then ":not(." <> classToBytesBuilder (classSelectorClass selector) <> ")"
-     else "." <> classToBytesBuilder (classSelectorClass selector)
+classSelectorToBytesBuilder = lazyByteString . classSelectorToBytes
 
 classSelectorToText :: ClassSelector -> T.Text
 classSelectorToText selector =

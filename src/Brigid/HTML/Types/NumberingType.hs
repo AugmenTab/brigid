@@ -11,7 +11,7 @@ module Brigid.HTML.Types.NumberingType
   , numberingTypeToText
   ) where
 
-import Data.ByteString.Builder (Builder, char8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 
@@ -34,13 +34,7 @@ numberingTypeToBytes nt =
 
 numberingTypeToBytesBuilder :: NumberingType -> Builder
 {-# INLINE numberingTypeToBytesBuilder #-}
-numberingTypeToBytesBuilder nt =
-  case nt of
-    DecimalNumbers         -> char8 '1'
-    UppercaseLatinLetters  -> char8 'A'
-    LowercaseLatinLetters  -> char8 'a'
-    UppercaseRomanNumerals -> char8 'I'
-    LowercaseRomanNumerals -> char8 'i'
+numberingTypeToBytesBuilder = lazyByteString . numberingTypeToBytes
 
 numberingTypeToText :: NumberingType -> T.Text
 numberingTypeToText nt =

@@ -5,7 +5,7 @@ module Brigid.HTML.Types.Once
   , onceToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -17,7 +17,7 @@ onceToBytes = const "once"
 
 onceToBytesBuilder :: Once -> Builder
 {-# INLINE onceToBytesBuilder #-}
-onceToBytesBuilder = const "once"
+onceToBytesBuilder = lazyByteString . onceToBytes
 
 onceToText :: Once -> T.Text
 onceToText = const "once"

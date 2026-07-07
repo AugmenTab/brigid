@@ -12,7 +12,7 @@ module Brigid.HTML.Types.For
   , forOptionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Containers.ListUtils (nubOrdOn)
 import Data.List.NonEmpty qualified as NEL
@@ -22,8 +22,8 @@ import GHC.TypeLits (KnownNat)
 import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.Internal.Render (foldToBytesBuilderWithSeparator, foldToBytesWithSeparator, foldToTextWithSeparator)
-import Brigid.Types.Id (Id, idToBytes, idToBytesBuilder, idToText)
+import Brigid.Internal.Render (foldToBytesWithSeparator, foldToTextWithSeparator)
+import Brigid.Types.Id (Id, idToBytes, idToText)
 
 newtype ForOption =
   ForOption (Shrubbery.Union ForOptionTypes)
@@ -52,13 +52,7 @@ forOptionToBytes (ForOption for) =
 
 forOptionToBytesBuilder :: ForOption -> Builder
 {-# INLINABLE forOptionToBytesBuilder #-}
-forOptionToBytesBuilder (ForOption for) =
-  ( Shrubbery.dissect
-      . Shrubbery.branchBuild
-      . Shrubbery.branch @Id                idToBytesBuilder
-      . Shrubbery.branch @(NEL.NonEmpty Id) renderIdsBuilder
-      $ Shrubbery.branchEnd
-  ) for
+forOptionToBytesBuilder = lazyByteString . forOptionToBytes
 
 forOptionToText :: ForOption -> T.Text
 forOptionToText (ForOption for) =
@@ -74,10 +68,6 @@ forOptionToTextBuilder = TBL.fromText . forOptionToText
 
 -- Helpers
 --
-renderIdsBuilder :: NEL.NonEmpty Id -> Builder
-renderIdsBuilder =
-  foldToBytesBuilderWithSeparator idToBytesBuilder " " . nubOrdOn idToText . NEL.toList
-
 renderIdsBytes :: NEL.NonEmpty Id -> LBS.ByteString
 renderIdsBytes =
   foldToBytesWithSeparator idToBytes " " . nubOrdOn idToBytes . NEL.toList

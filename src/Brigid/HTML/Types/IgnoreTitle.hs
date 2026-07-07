@@ -5,7 +5,7 @@ module Brigid.HTML.Types.IgnoreTitle
   , ignoreTitleToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -17,7 +17,7 @@ ignoreTitleToBytes = const "ignoreTitle:true"
 
 ignoreTitleToBytesBuilder :: IgnoreTitle -> Builder
 {-# INLINE ignoreTitleToBytesBuilder #-}
-ignoreTitleToBytesBuilder = const "ignoreTitle:true"
+ignoreTitleToBytesBuilder = lazyByteString . ignoreTitleToBytes
 
 ignoreTitleToText :: IgnoreTitle -> T.Text
 ignoreTitleToText = const "ignoreTitle:true"

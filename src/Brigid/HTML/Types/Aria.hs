@@ -41,13 +41,12 @@ module Brigid.HTML.Types.Aria
   , RawAria (..)
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.List.NonEmpty qualified as NEL
 import Data.NonEmptyText qualified as NET
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
-import Data.Text.Encoding qualified as TE
 import Integer (Positive)
 import Numeric.Natural (Natural)
 import Shrubbery (type (@=))
@@ -62,7 +61,6 @@ import Brigid.HTML.Types.Number (Number)
 import Brigid.HTML.Types.Orientation
   ( Orientation
   , orientationToBytes
-  , orientationToBytesBuilder
   , orientationToText
   )
 import Brigid.Internal.Render qualified as Render
@@ -187,63 +185,7 @@ ariaAttributeToBytes (Aria aria) =
 
 ariaAttributeToBytesBuilder :: Aria -> Builder
 {-# INLINABLE ariaAttributeToBytesBuilder #-}
-ariaAttributeToBytesBuilder (Aria aria) =
-  ( Shrubbery.dissectTaggedUnion
-      . Shrubbery.taggedBranchBuild
-      . Shrubbery.taggedBranch @"activedescendant"      (const (string8 "aria-activedescendant"))
-      . Shrubbery.taggedBranch @"atomic"                (const (string8 "aria-atomic"))
-      . Shrubbery.taggedBranch @"autocomplete"          (const (string8 "aria-autocomplete"))
-      . Shrubbery.taggedBranch @"braillelabel"          (const (string8 "aria-braillelabel"))
-      . Shrubbery.taggedBranch @"brailleroledescription" (const (string8 "aria-brailleroledescription"))
-      . Shrubbery.taggedBranch @"busy"                  (const (string8 "aria-busy"))
-      . Shrubbery.taggedBranch @"checked"               (const (string8 "aria-checked"))
-      . Shrubbery.taggedBranch @"colcount"              (const (string8 "aria-colcount"))
-      . Shrubbery.taggedBranch @"colindex"              (const (string8 "aria-colindex"))
-      . Shrubbery.taggedBranch @"colindextext"          (const (string8 "aria-colindextext"))
-      . Shrubbery.taggedBranch @"colspan"               (const (string8 "aria-colspan"))
-      . Shrubbery.taggedBranch @"controls"              (const (string8 "aria-controls"))
-      . Shrubbery.taggedBranch @"current"               (const (string8 "aria-current"))
-      . Shrubbery.taggedBranch @"describedby"           (const (string8 "aria-describedby"))
-      . Shrubbery.taggedBranch @"description"           (const (string8 "aria-description"))
-      . Shrubbery.taggedBranch @"details"               (const (string8 "aria-details"))
-      . Shrubbery.taggedBranch @"disabled"              (const (string8 "aria-disabled"))
-      . Shrubbery.taggedBranch @"errormessage"          (const (string8 "aria-errormessage"))
-      . Shrubbery.taggedBranch @"expanded"              (const (string8 "aria-expanded"))
-      . Shrubbery.taggedBranch @"flowto"                (const (string8 "aria-flowto"))
-      . Shrubbery.taggedBranch @"haspopup"              (const (string8 "aria-haspopup"))
-      . Shrubbery.taggedBranch @"hidden"                (const (string8 "aria-hidden"))
-      . Shrubbery.taggedBranch @"invalid"               (const (string8 "aria-invalid"))
-      . Shrubbery.taggedBranch @"keyshortcuts"          (const (string8 "aria-keyshortcuts"))
-      . Shrubbery.taggedBranch @"label"                 (const (string8 "aria-label"))
-      . Shrubbery.taggedBranch @"labelledby"            (const (string8 "aria-labelledby"))
-      . Shrubbery.taggedBranch @"level"                 (const (string8 "aria-level"))
-      . Shrubbery.taggedBranch @"live"                  (const (string8 "aria-live"))
-      . Shrubbery.taggedBranch @"modal"                 (const (string8 "aria-modal"))
-      . Shrubbery.taggedBranch @"multiline"             (const (string8 "aria-multiline"))
-      . Shrubbery.taggedBranch @"multiselectable"       (const (string8 "aria-multiselectable"))
-      . Shrubbery.taggedBranch @"orientation"           (const (string8 "aria-orientation"))
-      . Shrubbery.taggedBranch @"owns"                  (const (string8 "aria-owns"))
-      . Shrubbery.taggedBranch @"placeholder"           (const (string8 "aria-placeholder"))
-      . Shrubbery.taggedBranch @"posinset"              (const (string8 "aria-posinset"))
-      . Shrubbery.taggedBranch @"pressed"               (const (string8 "aria-pressed"))
-      . Shrubbery.taggedBranch @"readonly"              (const (string8 "aria-readonly"))
-      . Shrubbery.taggedBranch @"relevant"              (const (string8 "aria-relevant"))
-      . Shrubbery.taggedBranch @"required"              (const (string8 "aria-required"))
-      . Shrubbery.taggedBranch @"roledescription"       (const (string8 "aria-roledescription"))
-      . Shrubbery.taggedBranch @"rowcount"              (const (string8 "aria-rowcount"))
-      . Shrubbery.taggedBranch @"rowindex"              (const (string8 "aria-rowindex"))
-      . Shrubbery.taggedBranch @"rowindextext"          (const (string8 "aria-rowindextext"))
-      . Shrubbery.taggedBranch @"rowspan"               (const (string8 "aria-rowspan"))
-      . Shrubbery.taggedBranch @"selected"              (const (string8 "aria-selected"))
-      . Shrubbery.taggedBranch @"setsize"               (const (string8 "aria-setsize"))
-      . Shrubbery.taggedBranch @"sort"                  (const (string8 "aria-sort"))
-      . Shrubbery.taggedBranch @"valuemax"              (const (string8 "aria-valuemax"))
-      . Shrubbery.taggedBranch @"valuemin"              (const (string8 "aria-valuemin"))
-      . Shrubbery.taggedBranch @"valuenow"              (const (string8 "aria-valuenow"))
-      . Shrubbery.taggedBranch @"valuetext"             (const (string8 "aria-valuetext"))
-      . Shrubbery.taggedBranch @"raw"                   ((string8 "aria-" <>) . TE.encodeUtf8Builder . NET.toText . rawAriaAttribute)
-      $ Shrubbery.taggedBranchEnd
-  ) aria
+ariaAttributeToBytesBuilder = lazyByteString . ariaAttributeToBytes
 
 ariaAttributeToText :: Aria -> T.Text
 ariaAttributeToText (Aria aria) =
@@ -365,63 +307,7 @@ ariaValueToBytes (Aria aria) =
 
 ariaValueToBytesBuilder :: Aria -> Builder
 {-# INLINABLE ariaValueToBytesBuilder #-}
-ariaValueToBytesBuilder (Aria aria) =
-  ( Shrubbery.dissectTaggedUnion
-      . Shrubbery.taggedBranchBuild
-      . Shrubbery.taggedBranch @"activedescendant"      Types.idToBytesBuilder
-      . Shrubbery.taggedBranch @"atomic"                Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"autocomplete"          Option.ariaAutocompleteOptionToBytesBuilder
-      . Shrubbery.taggedBranch @"braillelabel"          TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"brailleroledescription" TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"busy"                  Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"checked"               MixedBool.ariaMixedBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"colcount"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"colindex"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"colindextext"          TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"colspan"               Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"controls"              (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " ")
-      . Shrubbery.taggedBranch @"current"               Current.ariaCurrentToBytesBuilder
-      . Shrubbery.taggedBranch @"describedby"           (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " ")
-      . Shrubbery.taggedBranch @"description"           TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"details"               (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " ")
-      . Shrubbery.taggedBranch @"disabled"              Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"errormessage"          (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " " . NEL.toList)
-      . Shrubbery.taggedBranch @"expanded"              Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"flowto"                (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " ")
-      . Shrubbery.taggedBranch @"haspopup"              HasPopup.ariaHasPopupToBytesBuilder
-      . Shrubbery.taggedBranch @"hidden"                Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"invalid"               Invalid.ariaInvalidToBytesBuilder
-      . Shrubbery.taggedBranch @"keyshortcuts"          TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"label"                 TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"labelledby"            (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " " . NEL.toList)
-      . Shrubbery.taggedBranch @"level"                 Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"live"                  Option.ariaLiveOptionToBytesBuilder
-      . Shrubbery.taggedBranch @"modal"                 Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"multiline"             Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"multiselectable"       Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"orientation"           orientationToBytesBuilder
-      . Shrubbery.taggedBranch @"owns"                  (Render.foldToBytesBuilderWithSeparator Types.idToBytesBuilder " ")
-      . Shrubbery.taggedBranch @"placeholder"           TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"posinset"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"pressed"               MixedBool.ariaMixedBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"readonly"              Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"relevant"              Option.ariaRelevantOptionToBytesBuilder
-      . Shrubbery.taggedBranch @"required"              Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"roledescription"       (TE.encodeUtf8Builder . NET.toText)
-      . Shrubbery.taggedBranch @"rowcount"              Render.showIntegerBytesBuilder
-      . Shrubbery.taggedBranch @"rowindex"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"rowindextext"          TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"rowspan"               Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"selected"              Render.enumBoolToBytesBuilder
-      . Shrubbery.taggedBranch @"setsize"               Render.showIntegerBytesBuilder
-      . Shrubbery.taggedBranch @"sort"                  Option.ariaSortOptionToBytesBuilder
-      . Shrubbery.taggedBranch @"valuemax"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"valuemin"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"valuenow"              Render.showBytesBuilder
-      . Shrubbery.taggedBranch @"valuetext"             TE.encodeUtf8Builder
-      . Shrubbery.taggedBranch @"raw"                   (Render.textToBytesBuilder . rawAriaValue)
-      $ Shrubbery.taggedBranchEnd
-  ) aria
+ariaValueToBytesBuilder = lazyByteString . ariaValueToBytes
 
 ariaValueToText :: Aria -> T.Text
 ariaValueToText (Aria aria) =

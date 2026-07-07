@@ -13,7 +13,7 @@ module Brigid.HTML.Types.SrcsetCandidate
       )
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString, string8)
 import Data.ByteString.Lazy qualified as LBS
 import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
@@ -22,7 +22,7 @@ import Integer (Positive)
 import GHC.TypeLits (KnownNat)
 import Shrubbery.TypeList (FirstIndexOf)
 
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.Internal.Render qualified as Render
 import Brigid.Types.URL (URL, URLTypes, mkURL, urlToBytes, urlToBytesBuilder, urlToText)
 
@@ -79,10 +79,7 @@ srcsetDescriptorToBytes ssd =
 
 srcsetDescriptorToBytesBuilder :: SrcsetDescriptor -> Builder
 {-# INLINE srcsetDescriptorToBytesBuilder #-}
-srcsetDescriptorToBytesBuilder ssd =
-  case ssd of
-    SrcsetWidth w   -> Render.showIntegerBytesBuilder w <> string8 "w"
-    SrcsetDensity x -> numberToBytesBuilder x <> string8 "x"
+srcsetDescriptorToBytesBuilder = lazyByteString . srcsetDescriptorToBytes
 
 srcsetDescriptorToText :: SrcsetDescriptor -> T.Text
 srcsetDescriptorToText ssd =

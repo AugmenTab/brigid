@@ -14,11 +14,10 @@ module Brigid.HTML.Types.CommandOption
   , commandOptionToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
-import Data.Text.Encoding qualified as TE
 
 import Brigid.Internal.Render qualified as Render
 
@@ -45,15 +44,7 @@ commandOptionToBytes co =
 
 commandOptionToBytesBuilder :: CommandOption -> Builder
 {-# INLINE commandOptionToBytesBuilder #-}
-commandOptionToBytesBuilder co =
-  case co of
-    ShowModal         -> string8 "show-modal"
-    Close             -> string8 "close"
-    RequestClose      -> string8 "request-close"
-    ShowPopover       -> string8 "show-popover"
-    HidePopover       -> string8 "hide-popover"
-    TogglePopover     -> string8 "toggle-popover"
-    CustomCommand cmd -> string8 "--" <> TE.encodeUtf8Builder cmd
+commandOptionToBytesBuilder = lazyByteString . commandOptionToBytes
 
 commandOptionToText :: CommandOption -> T.Text
 commandOptionToText co =

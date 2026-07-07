@@ -6,7 +6,7 @@ module Brigid.HTML.Types.SwapTransition
   ) where
 
 import Data.Bool qualified as B
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -21,8 +21,7 @@ swapTransitionToBytes =
 
 swapTransitionToBytesBuilder :: SwapTransition -> Builder
 {-# INLINE swapTransitionToBytesBuilder #-}
-swapTransitionToBytesBuilder =
-  ("transition:" <>) . B.bool "false" "true" . unSwapTransition
+swapTransitionToBytesBuilder = lazyByteString . swapTransitionToBytes
 
 swapTransitionToText :: SwapTransition -> T.Text
 swapTransitionToText =

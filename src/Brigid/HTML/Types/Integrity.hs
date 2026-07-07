@@ -14,8 +14,7 @@ import Crypto.Hash qualified as Hash
 import Crypto.Hash.Algorithms qualified as Algorithms
 import Data.ByteArray.Encoding (convertToBase, Base (Base64))
 import Data.ByteString qualified as BS
-import Data.ByteString.Builder (Builder, string8)
-import Data.ByteString.Builder qualified as BSB
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
@@ -34,14 +33,6 @@ integrityEncodingToBytes sha =
     SHA256 -> "sha256"
     SHA384 -> "sha384"
     SHA512 -> "sha512"
-
-integrityEncodingToBytesBuilder :: IntegrityEncoding -> Builder
-{-# INLINE integrityEncodingToBytesBuilder #-}
-integrityEncodingToBytesBuilder sha =
-  case sha of
-    SHA256 -> string8 "sha256"
-    SHA384 -> string8 "sha384"
-    SHA512 -> string8 "sha512"
 
 integrityEncodingToText :: IntegrityEncoding -> T.Text
 integrityEncodingToText sha =
@@ -64,16 +55,7 @@ integrityToBytes sha content =
 
 integrityToBytesBuilder :: IntegrityEncoding -> BS.ByteString -> Builder
 {-# INLINE integrityToBytesBuilder #-}
-integrityToBytesBuilder sha content =
-  mconcat
-    [ integrityEncodingToBytesBuilder sha
-    , string8 "-"
-    , BSB.byteString $
-        case sha of
-          SHA256 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA256)
-          SHA384 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA384)
-          SHA512 -> convertToBase Base64 (Hash.hash content :: Hash.Digest Hash.SHA512)
-    ]
+integrityToBytesBuilder sha content = lazyByteString (integrityToBytes sha content)
 
 integrityToText :: IntegrityEncoding -> BS.ByteString -> T.Text
 integrityToText sha content =

@@ -5,7 +5,7 @@ module Brigid.HTML.Types.This
   , thisToText
   ) where
 
-import Data.ByteString.Builder (Builder)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 
@@ -17,7 +17,7 @@ thisToBytes = const "this"
 
 thisToBytesBuilder :: This -> Builder
 {-# INLINE thisToBytesBuilder #-}
-thisToBytesBuilder = const "this"
+thisToBytesBuilder = lazyByteString . thisToBytes
 
 thisToText :: This -> T.Text
 thisToText = const "this"

@@ -9,12 +9,12 @@ module Brigid.HTML.Types.Step
   , stepToTextBuilder
   ) where
 
-import Data.ByteString.Builder (Builder, string8)
+import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
 
-import Brigid.HTML.Types.Number (Number, numberToBytes, numberToBytesBuilder, numberToText)
+import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 
 data Step
   = Any
@@ -29,10 +29,7 @@ stepToBytes step =
 
 stepToBytesBuilder :: Step -> Builder
 {-# INLINE stepToBytesBuilder #-}
-stepToBytesBuilder step =
-  case step of
-    Any    -> string8 "any"
-    Step n -> numberToBytesBuilder n
+stepToBytesBuilder = lazyByteString . stepToBytes
 
 stepToText :: Step -> T.Text
 stepToText step =
