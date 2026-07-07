@@ -27,6 +27,7 @@ module Brigid.HTML.Attributes.HTMX
   , AttributeTags.HxHistoryElt, hxHistoryElt
   , AttributeTags.HxInclude, hxInclude
   , AttributeTags.HxIndicator, hxIndicator
+  , AttributeTags.HxInherit, hxInherit
   , AttributeTags.HxOn, hxOn
   , AttributeTags.HxParams, hxParams
   , AttributeTags.HxPatch, hxPatch
@@ -137,10 +138,10 @@ hxDisabledElt :: NEL.NonEmpty Types.DisabledSelector -> Attribute tag
 hxDisabledElt = Attr_HxDisabledElt
 
 hxDisinherit :: ( KnownNat branchIndex
-                , branchIndex ~ FirstIndexOf disinherit Types.DisinheritTypes
+                , branchIndex ~ FirstIndexOf disinherit Types.HxAttributesTypes
                 )
              => disinherit -> Attribute tag
-hxDisinherit = Attr_HxDisinherit . Types.mkDisinherit
+hxDisinherit = Attr_HxDisinherit . Types.mkHxAttributes
 
 hxEncoding :: Attribute tag
 hxEncoding = Attr_HxEncoding
@@ -165,6 +166,12 @@ hxInclude = Attr_HxInclude
 
 hxIndicator :: Types.Indicator -> Attribute tag
 hxIndicator = Attr_HxIndicator
+
+hxInherit :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf inherit Types.HxAttributesTypes
+             )
+          => inherit -> Attribute tag
+hxInherit = Attr_HxInherit . Types.mkHxAttributes
 
 hxParams :: Types.RequestParams -> Attribute tag
 hxParams = Attr_HxParams

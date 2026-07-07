@@ -821,7 +821,6 @@ import Brigid.HTML.Types.CrossOrigin (CrossOriginFetch, crossOriginFetchToText)
 import Brigid.HTML.Types.Decoding (Decoding, decodingToText)
 import Brigid.HTML.Types.Delay (Delay, delay, delayToBytes, delayToBytesBuilder, delayToText)
 import Brigid.HTML.Types.Directionality (Directionality, directionalityToText)
-import Brigid.HTML.Types.Disinherit (DisinheritTypes, disinheritToText, mkDisinherit)
 import Brigid.HTML.Types.Document (Document, documentToBytes, documentToBytesBuilder, documentToText)
 import Brigid.HTML.Types.Event qualified as Event
 import Brigid.HTML.Types.Every (Every, everyToBytes, everyToBytesBuilder, everyToText)
@@ -833,6 +832,7 @@ import Brigid.HTML.Types.FocusScroll (FocusScroll, focusScrollToBytes, focusScro
 import Brigid.HTML.Types.Headers (HtmxHeadersTypes, mkHtmxHeaders, htmxHeadersToText)
 import Brigid.HTML.Types.Href (HrefSelectorTypes, hrefSelectorToText, mkHrefSelector)
 import Brigid.HTML.Types.HttpEquivToken (HttpEquivToken, httpEquivTokenToText)
+import Brigid.HTML.Types.HxAttributes (HxAttributesTypes, hxAttributesToText, mkHxAttributes)
 import Brigid.HTML.Types.IgnoreTitle (IgnoreTitle, ignoreTitleToBytes, ignoreTitleToBytesBuilder, ignoreTitleToText)
 import Brigid.HTML.Types.InputMode (InputMode, inputModeToText)
 import Brigid.HTML.Types.Integrity (IntegrityEncoding, integrityToText)
@@ -4418,11 +4418,11 @@ attr_hxDisabledElt =
     . NEL.toList
 
 attr_hxDisinherit :: ( KnownNat branchIndex
-                     , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
+                     , branchIndex ~ FirstIndexOf disinherit HxAttributesTypes
                      )
                   => disinherit -> AttributeSelector
 attr_hxDisinherit =
-  (,) Attr_HxDisinherit . Just . disinheritToText . mkDisinherit
+  (,) Attr_HxDisinherit . Just . hxAttributesToText . mkHxAttributes
 
 attr_hxEncoding :: AttributeSelector
 attr_hxEncoding = (Attr_HxEncoding, Just "multipart/form-data")

@@ -1080,7 +1080,7 @@ renderAttribute attr =
         $ NEL.toList disabled
 
     Attr_HxDisinherit disinherit ->
-      Just . buildAttribute "hx-disinherit" $ Types.disinheritToTextBuilder disinherit
+      Just . buildAttribute "hx-disinherit" $ Types.hxAttributesToTextBuilder disinherit
 
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" (fromText "multipart/form-data")
@@ -1108,6 +1108,9 @@ renderAttribute attr =
 
     Attr_HxIndicator indicator ->
       Just . buildAttribute "hx-indicator" $ Types.indicatorToTextBuilder indicator
+
+    Attr_HxInherit inherit ->
+      Just . buildAttribute "hx-inherit" $ Types.hxAttributesToTextBuilder inherit
 
     Attr_HxOn event action ->
       Just

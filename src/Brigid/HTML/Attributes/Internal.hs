@@ -172,6 +172,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_HxHistoryElt
       , Attr_HxInclude
       , Attr_HxIndicator
+      , Attr_HxInherit
       , Attr_HxOn
       , Attr_HxParams
       , Attr_HxPreserve
@@ -944,7 +945,7 @@ data Attribute (tag :: TagType) where
     -> Attribute tag
 
   Attr_HxDisinherit
-    :: Types.Disinherit
+    :: Types.HxAttributes
     -> Attribute tag
 
   Attr_HxEncoding
@@ -970,6 +971,10 @@ data Attribute (tag :: TagType) where
 
   Attr_HxIndicator
     :: Types.Indicator
+    -> Attribute tag
+
+  Attr_HxInherit
+    :: Types.HxAttributes
     -> Attribute tag
 
   Attr_HxOn
@@ -1200,6 +1205,7 @@ instance Eq (Attribute tag) where
       (Attr_HxHistoryElt, Attr_HxHistoryElt) -> True
       (Attr_HxInclude a1, Attr_HxInclude a2) -> a1 == a2
       (Attr_HxIndicator a1, Attr_HxIndicator a2) -> a1 == a2
+      (Attr_HxInherit a1, Attr_HxInherit a2) -> a1 == a2
       (Attr_HxOn e1 t1, Attr_HxOn e2 t2) -> e1 == e2 && t1 == t2
       (Attr_HxParams a1, Attr_HxParams a2) -> a1 == a2
       (Attr_HxPreserve a1, Attr_HxPreserve a2) -> a1 == a2
@@ -1718,6 +1724,9 @@ attributeText attr =
 
     Attr_HxIndicator _indicator ->
       "hx-indicator"
+
+    Attr_HxInherit _inherit ->
+      "hx-inherit"
 
     Attr_HxOn event _action ->
       "hx-on" <> Types.hxOnEventText event

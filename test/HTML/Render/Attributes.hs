@@ -1755,7 +1755,7 @@ htmxAttributes =
         RT.renderHTML  node @?= "<div hx-disabled-elt=\"this\"></div>"
 
     , testCase "hx-disinherit (all)" $ do
-        let node = divWith [A.hxDisinherit HTML.DisinheritAll]
+        let node = divWith [A.hxDisinherit HTML.AllHxAttributes]
         RBS.renderHTML node @?= "<div hx-disinherit=\"*\"></div>"
         RT.renderHTML  node @?= "<div hx-disinherit=\"*\"></div>"
 
@@ -1803,6 +1803,16 @@ htmxAttributes =
         let node = divWith [A.hxIndicator (HTML.indicateSelector (Types.Id (NET.singleton 'x')))]
         RBS.renderHTML node @?= "<div hx-indicator=\"#x\"></div>"
         RT.renderHTML  node @?= "<div hx-indicator=\"#x\"></div>"
+
+    , testCase "hx-inherit (all)" $ do
+        let node = divWith [A.hxInherit HTML.AllHxAttributes]
+        RBS.renderHTML node @?= "<div hx-inherit=\"*\"></div>"
+        RT.renderHTML  node @?= "<div hx-inherit=\"*\"></div>"
+
+    , testCase "hx-inherit (list)" $ do
+        let node = divWith [A.hxInherit (HTML.HxTarget NEL.:| [HTML.HxSelect])]
+        RBS.renderHTML node @?= "<div hx-inherit=\"hx-target hx-select\"></div>"
+        RT.renderHTML  node @?= "<div hx-inherit=\"hx-target hx-select\"></div>"
 
     , testCase "hx-params (all)" $ do
         let node = divWith [A.hxParams HTML.AllParams]

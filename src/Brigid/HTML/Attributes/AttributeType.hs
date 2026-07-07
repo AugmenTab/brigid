@@ -178,6 +178,7 @@ module Brigid.HTML.Attributes.AttributeType
       , HxHistoryElt
       , HxInclude
       , HxIndicator
+      , HxInherit
       , HxOn
       , HxParams
       , HxPatch
@@ -378,6 +379,7 @@ data AttributeType
   | HxHistoryElt
   | HxInclude
   | HxIndicator
+  | HxInherit
   | HxOn
   | HxParams
   | HxPatch
@@ -566,6 +568,7 @@ type family AttributeErrorMessage (attr :: AttributeType) :: ErrorMessage where
   AttributeErrorMessage HxHistoryElt             = 'Text "HTMX History Elt (hx-history-elt)"
   AttributeErrorMessage HxInclude                = 'Text "HTMX Include (hx-include)"
   AttributeErrorMessage HxIndicator              = 'Text "HTMX Indicator (hx-indicator)"
+  AttributeErrorMessage HxInherit                = 'Text "HTMX Inherit (hx-inherit)"
   AttributeErrorMessage HxOn                     = 'Text "HTMX On* (hx-on)"
   AttributeErrorMessage HxParams                 = 'Text "HTMX Params (hx-params)"
   AttributeErrorMessage HxPatch                  = 'Text "HTMX Patch (hx-patch)"

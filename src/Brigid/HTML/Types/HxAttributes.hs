@@ -2,16 +2,16 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Brigid.HTML.Types.Disinherit
-  ( Disinherit
-  , DisinheritTypes
-  , mkDisinherit
-  , unDisinherit
-  , disinheritToBytes
-  , disinheritToBytesBuilder
-  , disinheritToText
-  , disinheritToTextBuilder
-  , DisinheritAll (DisinheritAll)
+module Brigid.HTML.Types.HxAttributes
+  ( HxAttributes
+  , HxAttributesTypes
+  , mkHxAttributes
+  , unHxAttributes
+  , hxAttributesToBytes
+  , hxAttributesToBytesBuilder
+  , hxAttributesToText
+  , hxAttributesToTextBuilder
+  , AllHxAttributes (AllHxAttributes)
   , InheritableHTMX
       ( HxBoost
       , HxConfirm
@@ -51,67 +51,71 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.Internal.Render qualified as Render
 
-newtype Disinherit =
-  Disinherit
-    { unDisinherit :: Shrubbery.Union DisinheritTypes
+-- | The shared value type for both @hx-disinherit@ and @hx-inherit@, which
+-- take the exact same grammar: either @"*"@ (all attributes) or a
+-- space-separated list of specific inheritable attribute names.
+--
+newtype HxAttributes =
+  HxAttributes
+    { unHxAttributes :: Shrubbery.Union HxAttributesTypes
     } deriving (Eq, Show)
 
-type DisinheritTypes =
-  [ DisinheritAll
+type HxAttributesTypes =
+  [ AllHxAttributes
   , NEL.NonEmpty InheritableHTMX
   ]
 
-mkDisinherit :: ( KnownNat branchIndex
-                , branchIndex ~ FirstIndexOf disinherit DisinheritTypes
-                )
-             => disinherit -> Disinherit
-mkDisinherit =
-  Disinherit . Shrubbery.unify
+mkHxAttributes :: ( KnownNat branchIndex
+                  , branchIndex ~ FirstIndexOf attributes HxAttributesTypes
+                  )
+               => attributes -> HxAttributes
+mkHxAttributes =
+  HxAttributes . Shrubbery.unify
 
-disinheritToBytes :: Disinherit -> LBS.ByteString
-disinheritToBytes =
+hxAttributesToBytes :: HxAttributes -> LBS.ByteString
+hxAttributesToBytes =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @DisinheritAll disinheritAllToBytes
+      . Shrubbery.branch @AllHxAttributes allHxAttributesToBytes
       . Shrubbery.branch @(NEL.NonEmpty InheritableHTMX) (LBS8.unwords . fmap inheritableHTMXToBytes . NEL.toList)
       $ Shrubbery.branchEnd
-  ) . unDisinherit
+  ) . unHxAttributes
 
-disinheritToBytesBuilder :: Disinherit -> Builder
-{-# INLINABLE disinheritToBytesBuilder #-}
-disinheritToBytesBuilder =
+hxAttributesToBytesBuilder :: HxAttributes -> Builder
+{-# INLINABLE hxAttributesToBytesBuilder #-}
+hxAttributesToBytesBuilder =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @DisinheritAll disinheritAllToBytesBuilder
+      . Shrubbery.branch @AllHxAttributes allHxAttributesToBytesBuilder
       . Shrubbery.branch @(NEL.NonEmpty InheritableHTMX)
           (Render.foldToBytesBuilderWithSeparator inheritableHTMXToBytesBuilder " " . NEL.toList)
       $ Shrubbery.branchEnd
-  ) . unDisinherit
+  ) . unHxAttributes
 
-disinheritToText :: Disinherit -> T.Text
-disinheritToText =
+hxAttributesToText :: HxAttributes -> T.Text
+hxAttributesToText =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
-      . Shrubbery.branch @DisinheritAll disinheritAllToText
+      . Shrubbery.branch @AllHxAttributes allHxAttributesToText
       . Shrubbery.branch @(NEL.NonEmpty InheritableHTMX) (T.unwords . fmap inheritableHTMXToText . NEL.toList)
       $ Shrubbery.branchEnd
-  ) . unDisinherit
+  ) . unHxAttributes
 
-disinheritToTextBuilder :: Disinherit -> TBL.Builder
-disinheritToTextBuilder = TBL.fromText . disinheritToText
+hxAttributesToTextBuilder :: HxAttributes -> TBL.Builder
+hxAttributesToTextBuilder = TBL.fromText . hxAttributesToText
 
-data DisinheritAll = DisinheritAll
+data AllHxAttributes = AllHxAttributes
   deriving (Eq, Show)
 
-disinheritAllToBytes :: DisinheritAll -> LBS.ByteString
-disinheritAllToBytes = const "*"
+allHxAttributesToBytes :: AllHxAttributes -> LBS.ByteString
+allHxAttributesToBytes = const "*"
 
-disinheritAllToBytesBuilder :: DisinheritAll -> Builder
-{-# INLINE disinheritAllToBytesBuilder #-}
-disinheritAllToBytesBuilder = const "*"
+allHxAttributesToBytesBuilder :: AllHxAttributes -> Builder
+{-# INLINE allHxAttributesToBytesBuilder #-}
+allHxAttributesToBytesBuilder = const "*"
 
-disinheritAllToText :: DisinheritAll -> T.Text
-disinheritAllToText = const "*"
+allHxAttributesToText :: AllHxAttributes -> T.Text
+allHxAttributesToText = const "*"
 
 data InheritableHTMX
   = HxBoost

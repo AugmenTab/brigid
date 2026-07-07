@@ -116,7 +116,6 @@ library
       Brigid.HTML.Types.Decoding
       Brigid.HTML.Types.Delay
       Brigid.HTML.Types.Directionality
-      Brigid.HTML.Types.Disinherit
       Brigid.HTML.Types.Document
       Brigid.HTML.Types.Event
       Brigid.HTML.Types.Every
@@ -128,6 +127,7 @@ library
       Brigid.HTML.Types.Headers
       Brigid.HTML.Types.Href
       Brigid.HTML.Types.HttpEquivToken
+      Brigid.HTML.Types.HxAttributes
       Brigid.HTML.Types.HyperScript
       Brigid.HTML.Types.IgnoreTitle
       Brigid.HTML.Types.InlineJSON

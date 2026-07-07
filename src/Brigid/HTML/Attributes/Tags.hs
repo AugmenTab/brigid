@@ -175,6 +175,7 @@ module Brigid.HTML.Attributes.Tags
   , HxHistoryElt
   , HxInclude
   , HxIndicator
+  , HxInherit
   , HxOn
   , HxParams
   , HxPatch
@@ -363,6 +364,7 @@ type HxHistory = 'AttributeType.HxHistory
 type HxHistoryElt = 'AttributeType.HxHistoryElt
 type HxInclude = 'AttributeType.HxInclude
 type HxIndicator = 'AttributeType.HxIndicator
+type HxInherit = 'AttributeType.HxInherit
 type HxOn = 'AttributeType.HxOn
 type HxParams = 'AttributeType.HxParams
 type HxPatch = 'AttributeType.HxPatch

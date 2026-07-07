@@ -1198,7 +1198,7 @@ renderAttribute attr =
     Attr_HxDisinherit disinherit ->
       Just
         . buildAttribute "hx-disinherit"
-        $ Types.disinheritToBytesBuilder disinherit
+        $ Types.hxAttributesToBytesBuilder disinherit
 
     Attr_HxEncoding ->
       Just $ buildAttribute "hx-encoding" "multipart/form-data"
@@ -1230,6 +1230,11 @@ renderAttribute attr =
       Just
         . buildAttribute "hx-indicator"
         $ Types.indicatorToBytesBuilder indicator
+
+    Attr_HxInherit inherit ->
+      Just
+        . buildAttribute "hx-inherit"
+        $ Types.hxAttributesToBytesBuilder inherit
 
     Attr_HxOn event action ->
       Just $

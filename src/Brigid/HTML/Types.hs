@@ -21,7 +21,6 @@ import Brigid.HTML.Types.CrossOrigin as Export
 import Brigid.HTML.Types.Decoding as Export
 import Brigid.HTML.Types.Delay as Export
 import Brigid.HTML.Types.Directionality as Export
-import Brigid.HTML.Types.Disinherit as Export
 import Brigid.HTML.Types.Document as Export
 import Brigid.HTML.Types.Event as Export
 import Brigid.HTML.Types.Every as Export
@@ -33,6 +32,7 @@ import Brigid.HTML.Types.FocusScroll as Export
 import Brigid.HTML.Types.Headers as Export
 import Brigid.HTML.Types.Href as Export
 import Brigid.HTML.Types.HttpEquivToken as Export
+import Brigid.HTML.Types.HxAttributes as Export
 import Brigid.HTML.Types.HyperScript as Export
 import Brigid.HTML.Types.IgnoreTitle as Export
 import Brigid.HTML.Types.InlineJSON as Export

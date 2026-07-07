@@ -571,7 +571,7 @@ htmxExample =
                , A.hxDisable $ 'a' < 'T'
                ]
         [ E.text "Delete Customer 4"
-        , E.span [ A.hxDisinherit HTML.DisinheritAll ]
+        , E.span [ A.hxDisinherit HTML.AllHxAttributes ]
             [ E.comment "Disinherit all"
             ]
         ]
