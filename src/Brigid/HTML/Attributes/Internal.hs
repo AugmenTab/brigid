@@ -179,6 +179,7 @@ module Brigid.HTML.Attributes.Internal
       , Attr_HxPrompt
       , Attr_HxPushURL
       , Attr_HxReplaceURL
+      , Attr_HxRequest
       , Attr_HxSelect
       , Attr_HxSelectOOB
       , Attr_HxSwap
@@ -1002,6 +1003,10 @@ data Attribute (tag :: TagType) where
     :: Types.PushURL
     -> Attribute tag
 
+  Attr_HxRequest
+    :: Types.HtmxRequest
+    -> Attribute tag
+
   Attr_HxSelect
     :: Types.QuerySelector
     -> Attribute tag
@@ -1212,6 +1217,7 @@ instance Eq (Attribute tag) where
       (Attr_HxPrompt a1, Attr_HxPrompt a2) -> a1 == a2
       (Attr_HxPushURL a1, Attr_HxPushURL a2) -> a1 == a2
       (Attr_HxReplaceURL a1, Attr_HxReplaceURL a2) -> a1 == a2
+      (Attr_HxRequest a1, Attr_HxRequest a2) -> a1 == a2
       (Attr_HxSelect a1, Attr_HxSelect a2) -> a1 == a2
       (Attr_HxSelectOOB a1, Attr_HxSelectOOB a2) -> a1 == a2
       (Attr_HxSwap a1, Attr_HxSwap a2) -> a1 == a2
@@ -1745,6 +1751,9 @@ attributeText attr =
 
     Attr_HxReplaceURL _url ->
       "hx-replace-url"
+
+    Attr_HxRequest _request ->
+      "hx-request"
 
     Attr_HxSelect _selector ->
       "hx-select"

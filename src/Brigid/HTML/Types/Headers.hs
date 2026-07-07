@@ -53,7 +53,7 @@ htmxHeadersToBytes (HtmxHeaders headers) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @RequestHeaders   requestHeadersToBytes
-      . Shrubbery.branch @JS.RawJavaScript (("js:" <>) . JS.rawJavaScriptToBytes)
+      . Shrubbery.branch @JS.RawJavaScript JS.rawJavaScriptToBytes
       $ Shrubbery.branchEnd
   ) headers
 
@@ -62,7 +62,7 @@ htmxHeadersToText (HtmxHeaders headers) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @RequestHeaders   requestHeadersToText
-      . Shrubbery.branch @JS.RawJavaScript (("js:" <>) . JS.rawJavaScriptToText)
+      . Shrubbery.branch @JS.RawJavaScript JS.rawJavaScriptToText
       $ Shrubbery.branchEnd
   ) headers
 

@@ -44,7 +44,7 @@ htmxValsToBytes (HtmxVals vals) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @InlineJSON          inlineJSONToBytes
-      . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToBytes)
+      . Shrubbery.branch @RawJS.RawJavaScript RawJS.rawJavaScriptToBytes
       $ Shrubbery.branchEnd
   ) vals
 
@@ -54,7 +54,7 @@ htmxValsToBytesBuilder (HtmxVals vals) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @InlineJSON          inlineJSONToBytesBuilder
-      . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToBytesBuilder)
+      . Shrubbery.branch @RawJS.RawJavaScript RawJS.rawJavaScriptToBytesBuilder
       $ Shrubbery.branchEnd
   ) vals
 
@@ -63,7 +63,7 @@ htmxValsToText (HtmxVals vals) =
   ( Shrubbery.dissect
       . Shrubbery.branchBuild
       . Shrubbery.branch @InlineJSON          inlineJSONToText
-      . Shrubbery.branch @RawJS.RawJavaScript (("js:" <>) . RawJS.rawJavaScriptToText)
+      . Shrubbery.branch @RawJS.RawJavaScript RawJS.rawJavaScriptToText
       $ Shrubbery.branchEnd
   ) vals
 

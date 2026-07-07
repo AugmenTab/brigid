@@ -1135,6 +1135,12 @@ renderAttribute attr =
     Attr_HxReplaceURL url ->
       Just . buildAttribute "hx-replace-url" $ renderPushURL url
 
+    Attr_HxRequest request ->
+      Just
+        . buildAttribute "hx-request"
+        . Escape.attributeTextBuilder
+        $ Types.htmxRequestToText request
+
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"

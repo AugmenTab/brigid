@@ -157,6 +157,7 @@ library
       Brigid.HTML.Types.Reachability
       Brigid.HTML.Types.ReferrerPolicy
       Brigid.HTML.Types.Relationship
+      Brigid.HTML.Types.RequestConfig
       Brigid.HTML.Types.RequestParams
       Brigid.HTML.Types.Role
       Brigid.HTML.Types.SandboxToken

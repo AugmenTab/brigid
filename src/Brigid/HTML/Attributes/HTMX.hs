@@ -36,6 +36,7 @@ module Brigid.HTML.Attributes.HTMX
   , AttributeTags.HxPrompt, hxPrompt
   , AttributeTags.HxPut, hxPut
   , AttributeTags.HxReplaceURL, hxReplaceURL
+  , AttributeTags.HxRequest, hxRequest
   , AttributeTags.HxValidate, hxValidate
   ) where
 
@@ -192,7 +193,11 @@ hxReplaceURL :: ( KnownNat branchIndex
 hxReplaceURL =
   Attr_HxReplaceURL . Types.mkPushURL
 
--- hx-request
+hxRequest :: ( KnownNat branchIndex
+             , branchIndex ~ FirstIndexOf request Types.HtmxRequestTypes
+             )
+          => request -> Attribute tag
+hxRequest = Attr_HxRequest . Types.mkHtmxRequest
 
 -- hx-sync
 

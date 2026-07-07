@@ -1260,6 +1260,12 @@ renderAttribute attr =
     Attr_HxReplaceURL url ->
       Just . buildAttribute "hx-replace-url" $ renderPushURLBuilder url
 
+    Attr_HxRequest request ->
+      Just
+        . buildAttribute "hx-request"
+        . Escape.lazyBytesAttributeBytesBuilder
+        $ Types.htmxRequestToBytes request
+
     Attr_HxSelect selector ->
       Just
         . buildAttribute "hx-select"

@@ -1724,6 +1724,11 @@ htmxAttributes =
         RBS.renderHTML node @?= "<div hx-vals=\"{}\"></div>"
         RT.renderHTML  node @?= "<div hx-vals=\"{}\"></div>"
 
+    , testCase "hx-vals (js)" $ do
+        let node = divWith [A.hxVals (RawJavaScript "myVals()")]
+        RBS.renderHTML node @?= "<div hx-vals=\"js:myVals()\"></div>"
+        RT.renderHTML  node @?= "<div hx-vals=\"js:myVals()\"></div>"
+
     , testCase "hx-boost (true)" $ do
         let node = divWith [A.hxBoost True]
         RBS.renderHTML node @?= "<div hx-boost=\"true\"></div>"
@@ -1784,6 +1789,11 @@ htmxAttributes =
         RBS.renderHTML node @?= "<div hx-headers=\"{}\"></div>"
         RT.renderHTML  node @?= "<div hx-headers=\"{}\"></div>"
 
+    , testCase "hx-headers (js)" $ do
+        let node = divWith [A.hxHeaders (RawJavaScript "myHeaders()")]
+        RBS.renderHTML node @?= "<div hx-headers=\"js:myHeaders()\"></div>"
+        RT.renderHTML  node @?= "<div hx-headers=\"js:myHeaders()\"></div>"
+
     , testCase "hx-history" $ do
         let node = divWith [A.hxHistory]
         RBS.renderHTML node @?= "<div hx-history=\"false\"></div>"
@@ -1843,6 +1853,32 @@ htmxAttributes =
         let node = divWith [A.hxReplaceURL True]
         RBS.renderHTML node @?= "<div hx-replace-url=\"true\"></div>"
         RT.renderHTML  node @?= "<div hx-replace-url=\"true\"></div>"
+
+    , testCase "hx-request (empty)" $ do
+        let node = divWith [A.hxRequest HTML.emptyRequestConfig]
+        RBS.renderHTML node @?= "<div hx-request=\"{}\"></div>"
+        RT.renderHTML  node @?= "<div hx-request=\"{}\"></div>"
+
+    , testCase "hx-request (timeout)" $ do
+        let node = divWith [A.hxRequest HTML.emptyRequestConfig { HTML.requestConfigTimeout = Just 100 }]
+        RBS.renderHTML node @?= "<div hx-request=\"{&#34;timeout&#34;:100}\"></div>"
+        RT.renderHTML  node @?= "<div hx-request=\"{&#34;timeout&#34;:100}\"></div>"
+
+    , testCase "hx-request (multiple fields)" $ do
+        let node = divWith
+                     [ A.hxRequest
+                         HTML.emptyRequestConfig
+                           { HTML.requestConfigTimeout     = Just 100
+                           , HTML.requestConfigCredentials = Just True
+                           }
+                     ]
+        RBS.renderHTML node @?= "<div hx-request=\"{&#34;timeout&#34;:100,&#34;credentials&#34;:true}\"></div>"
+        RT.renderHTML  node @?= "<div hx-request=\"{&#34;timeout&#34;:100,&#34;credentials&#34;:true}\"></div>"
+
+    , testCase "hx-request (js)" $ do
+        let node = divWith [A.hxRequest (RawJavaScript "timeout:getTimeoutSetting()")]
+        RBS.renderHTML node @?= "<div hx-request=\"js:timeout:getTimeoutSetting()\"></div>"
+        RT.renderHTML  node @?= "<div hx-request=\"js:timeout:getTimeoutSetting()\"></div>"
 
     , testCase "hx-validate" $ do
         let node = E.form [A.hxValidate] [] :: E.ChildHTML E.Body E.Html
