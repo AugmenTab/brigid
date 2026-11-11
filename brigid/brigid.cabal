@@ -15,8 +15,6 @@ copyright:      2023 Tyler Baum
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
-extra-source-files:
-    README.md
 
 source-repository head
   type: git
@@ -32,9 +30,6 @@ library
       Brigid.HTML.Elements.Safe
       Brigid.HTML.Elements.SVG
       Brigid.HTML.Entities
-      Brigid.HTML.Generation
-      Brigid.HTML.Generation.Attributes
-      Brigid.HTML.Generation.Elements
       Brigid.HTML.HTMX.Config
       Brigid.HTML.Render.ByteString
       Brigid.HTML.Render.String
@@ -84,13 +79,6 @@ library
       Brigid.HTML.Elements.TagGroups
       Brigid.HTML.Elements.Tags
       Brigid.HTML.Elements.TagType
-      Brigid.HTML.Generation.Internal.Analysis
-      Brigid.HTML.Generation.Internal.Attributes
-      Brigid.HTML.Generation.Internal.Build
-      Brigid.HTML.Generation.Internal.Convert
-      Brigid.HTML.Generation.Internal.Elements
-      Brigid.HTML.Generation.Internal.Generators
-      Brigid.HTML.Generation.Internal.Types
       Brigid.HTML.Internal.TagOperations
       Brigid.HTML.Types.Action
       Brigid.HTML.Types.Aria
@@ -238,23 +226,19 @@ library
     , extra
     , foldable1-classes-compat
     , hashable
-    , hedgehog
     , html-email-validate
     , http-types
     , integer-types
     , iso3166-country-codes
     , libphonenumber
     , memory
-    , mtl
     , non-empty-text
     , ogma
     , scientific
-    , semigroupoids
     , shrubbery
     , text
     , text-builder-linear
     , time
-    , validation
   default-language: Haskell2010
 
 test-suite brigid-test
@@ -284,74 +268,19 @@ test-suite brigid-test
     , extra
     , foldable1-classes-compat
     , hashable
-    , hedgehog
     , html-email-validate
     , http-types
     , integer-types
     , iso3166-country-codes
     , libphonenumber
     , memory
-    , mtl
     , non-empty-text
     , ogma
     , scientific
-    , semigroupoids
     , shrubbery
     , tasty
-    , tasty-hedgehog
     , tasty-hunit
     , text
     , text-builder-linear
     , time
-    , validation
-  default-language: Haskell2010
-
-benchmark brigid-bench
-  type: exitcode-stdio-1.0
-  main-is: Bench.hs
-  other-modules:
-      Generation.Convert
-      Generation.Convert.Blaze
-      Generation.Convert.Lucid
-      Paths_brigid
-  autogen-modules:
-      Paths_brigid
-  hs-source-dirs:
-      bench
-  default-extensions:
-      ImportQualifiedPost
-      OverloadedStrings
-  ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -fproc-alignment=64 -threaded -rtsopts -with-rtsopts "-N -T -A32m"
-  build-depends:
-      base
-    , beeline-http-client
-    , beeline-routing
-    , blaze-html
-    , brigid
-    , bytestring
-    , constraints
-    , containers
-    , crypton
-    , extra
-    , foldable1-classes-compat
-    , hashable
-    , hedgehog
-    , html-email-validate
-    , http-types
-    , integer-types
-    , iso3166-country-codes
-    , libphonenumber
-    , lucid
-    , memory
-    , mtl
-    , non-empty-text
-    , ogma
-    , scientific
-    , semigroupoids
-    , shrubbery
-    , tasty-bench
-    , text
-    , text-builder-linear
-    , time
-    , validation
   default-language: Haskell2010

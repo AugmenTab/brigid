@@ -8,9 +8,6 @@ copyright:           "2023 Tyler Baum"
 
 language: Haskell2010
 
-extra-source-files:
-- README.md
-
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
 # category:            Web
@@ -35,23 +32,19 @@ dependencies:
 - extra
 - foldable1-classes-compat
 - hashable
-- hedgehog
 - html-email-validate
 - http-types
 - integer-types
 - iso3166-country-codes
 - libphonenumber
 - memory
-- mtl
 - non-empty-text
 - ogma
 - scientific
-- semigroupoids
 - shrubbery
 - text
 - text-builder-linear
 - time
-- validation
 
 ghc-options:
 - -j
@@ -75,9 +68,6 @@ library:
     - Brigid.HTML.Elements.Safe
     - Brigid.HTML.Elements.SVG
     - Brigid.HTML.Entities
-    - Brigid.HTML.Generation
-    - Brigid.HTML.Generation.Attributes
-    - Brigid.HTML.Generation.Elements
     - Brigid.HTML.HTMX.Config
     - Brigid.HTML.Render.ByteString
     - Brigid.HTML.Render.String
@@ -102,24 +92,5 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - brigid
-      - bytestring
-      - hedgehog
       - tasty
-      - tasty-hedgehog
       - tasty-hunit
-      - text
-
-benchmarks:
-  brigid-bench:
-    main:        Bench.hs
-    source-dirs: bench
-    ghc-options:
-      - -fproc-alignment=64
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts "-N -T -A32m"
-    dependencies:
-      - blaze-html
-      - brigid
-      - lucid
-      - tasty-bench

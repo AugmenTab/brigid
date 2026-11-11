@@ -5,6 +5,7 @@
 module Brigid.HTML.Attributes.Aria
   ( AttributeTags.Aria
   , aria
+  , ariaAttribute
   , aria_activedescendant
   , aria_atomic
   , aria_autocomplete
@@ -72,6 +73,12 @@ import Brigid.HTML.Attributes.Tags qualified as AttributeTags
 import Brigid.HTML.Types qualified as Types
 import Brigid.HTML.Types.Aria qualified as Aria
 import Brigid.Types qualified as Types
+
+-- | Builds an attribute from an already-constructed 'Types.Aria' value.
+--
+ariaAttribute :: Types.Aria -> Attribute tag
+ariaAttribute =
+  Attr_Aria
 
 aria :: NET.NonEmptyText -> T.Text -> Attribute tag
 aria name =

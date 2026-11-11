@@ -4,6 +4,16 @@ A library for constructing type-safe and (mostly) spec-compliant HTML.
 
 This library is in active development; the API is not yet stable.
 
+### Packages
+
+This repository contains two packages:
+
+- [`brigid`](./brigid) - the core library for constructing and rendering HTML
+  and HXML.
+- [`brigid-generation`](./brigid-generation) - Hedgehog generators for
+  producing random, spec-compliant Brigid HTML documents, along with the
+  benchmarks comparing Brigid's rendering against blaze-html and lucid.
+
 ### TODO
 
 1. Change HTML entities to an ADT. Change the `ChildHTML` constructor to accept
@@ -64,7 +74,7 @@ This library is in active development; the API is not yet stable.
    `<tag></tag>`. Several tags currently use `buildClosingOrContentTag`
    incorrectly.
 5. Add render tests for HXML elements and attributes (analogous to
-   `test/HTML/Render/Elements.hs` and `test/HTML/Render/Attributes.hs`).
+   `brigid/test/HTML/Render/Elements.hs` and `brigid/test/HTML/Render/Attributes.hs`).
 
 ### Possible optimizations
 

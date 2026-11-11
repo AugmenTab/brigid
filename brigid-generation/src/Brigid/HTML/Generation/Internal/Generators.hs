@@ -82,7 +82,7 @@ import Numeric.Natural (Natural)
 import Prelude hiding (id)
 import Shrubbery qualified
 
-import Brigid.HTML.Attributes.Event.Event (Event)
+import Brigid.HTML.Attributes (Event)
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types
 import Ogma qualified

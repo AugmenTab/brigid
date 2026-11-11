@@ -1,0 +1,141 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.38.1.
+--
+-- see: https://github.com/sol/hpack
+
+name:           brigid-generation
+version:        0.1.0.0
+synopsis:       Hedgehog generators for spec-compliant Brigid HTML documents
+description:    Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
+category:       Web, Testing
+homepage:       https://github.com/AugmenTab/brigid#readme
+bug-reports:    https://github.com/AugmenTab/brigid/issues
+author:         Tyler Baum
+maintainer:     tyler.baum@protonmail.com
+copyright:      2023 Tyler Baum
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/AugmenTab/brigid
+
+library
+  exposed-modules:
+      Brigid.HTML.Generation
+      Brigid.HTML.Generation.Attributes
+      Brigid.HTML.Generation.Elements
+  other-modules:
+      Brigid.HTML.Generation.Internal.Analysis
+      Brigid.HTML.Generation.Internal.Attributes
+      Brigid.HTML.Generation.Internal.Build
+      Brigid.HTML.Generation.Internal.Convert
+      Brigid.HTML.Generation.Internal.Elements
+      Brigid.HTML.Generation.Internal.Generators
+      Brigid.HTML.Generation.Internal.Types
+      Paths_brigid_generation
+  autogen-modules:
+      Paths_brigid_generation
+  hs-source-dirs:
+      src
+  default-extensions:
+      ImportQualifiedPost
+      OverloadedStrings
+  ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans
+  build-depends:
+      base
+    , beeline-http-client
+    , brigid
+    , bytestring
+    , constraints
+    , containers
+    , extra
+    , hedgehog
+    , integer-types
+    , mtl
+    , non-empty-text
+    , ogma
+    , semigroupoids
+    , shrubbery
+    , text
+    , time
+    , validation
+  default-language: Haskell2010
+
+test-suite brigid-generation-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_brigid_generation
+  autogen-modules:
+      Paths_brigid_generation
+  hs-source-dirs:
+      test
+  default-extensions:
+      ImportQualifiedPost
+      OverloadedStrings
+  ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base
+    , beeline-http-client
+    , brigid
+    , brigid-generation
+    , bytestring
+    , constraints
+    , containers
+    , extra
+    , hedgehog
+    , integer-types
+    , mtl
+    , non-empty-text
+    , ogma
+    , semigroupoids
+    , shrubbery
+    , tasty
+    , tasty-hedgehog
+    , text
+    , time
+    , validation
+  default-language: Haskell2010
+
+benchmark brigid-bench
+  type: exitcode-stdio-1.0
+  main-is: Bench.hs
+  other-modules:
+      Generation.Convert
+      Generation.Convert.Blaze
+      Generation.Convert.Lucid
+      Paths_brigid_generation
+  autogen-modules:
+      Paths_brigid_generation
+  hs-source-dirs:
+      bench
+  default-extensions:
+      ImportQualifiedPost
+      OverloadedStrings
+  ghc-options: -j -Werror -Wall -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -fno-warn-orphans -fproc-alignment=64 -threaded -rtsopts -with-rtsopts "-N -T -A32m"
+  build-depends:
+      base
+    , beeline-http-client
+    , blaze-html
+    , brigid
+    , brigid-generation
+    , bytestring
+    , constraints
+    , containers
+    , extra
+    , hedgehog
+    , integer-types
+    , lucid
+    , mtl
+    , non-empty-text
+    , ogma
+    , semigroupoids
+    , shrubbery
+    , tasty-bench
+    , text
+    , time
+    , validation
+  default-language: Haskell2010

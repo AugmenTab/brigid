@@ -4,4 +4,6 @@ set -o errexit
 
 . scripts/lib/run-in-container.sh
 
-stack build --bench --benchmark-arguments '--csv bench/baseline.csv +RTS -T' "$@"
+# Stack runs benchmarks from the package directory, so this writes to
+# brigid-generation/bench/baseline.csv.
+stack build brigid-generation --bench --benchmark-arguments '--csv bench/baseline.csv +RTS -T' "$@"

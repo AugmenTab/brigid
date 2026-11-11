@@ -1,5 +1,6 @@
 packages:
-  - .
+  - brigid
+  - brigid-generation
 
 allow-different-user: true
 

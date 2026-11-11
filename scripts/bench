@@ -4,9 +4,11 @@ set -o errexit
 
 . scripts/lib/run-in-container.sh
 
+# Stack runs benchmarks from the package directory, so the baseline path passed
+# to the benchmark is relative to brigid-generation/.
 BASELINE_ARGS=''
-if [ -f bench/baseline.csv ]; then
+if [ -f brigid-generation/bench/baseline.csv ]; then
   BASELINE_ARGS='--baseline bench/baseline.csv --fail-if-slower 20'
 fi
 
-stack build --bench --benchmark-arguments "$BASELINE_ARGS +RTS -T" "$@"
+stack build brigid-generation --bench --benchmark-arguments "$BASELINE_ARGS +RTS -T" "$@"

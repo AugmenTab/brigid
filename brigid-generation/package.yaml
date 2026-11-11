@@ -1,0 +1,83 @@
+name:                brigid-generation
+version:             0.1.0.0
+github:              "AugmenTab/brigid"
+license:             BSD-3-Clause
+author:              "Tyler Baum"
+maintainer:          "tyler.baum@protonmail.com"
+copyright:           "2023 Tyler Baum"
+
+language: Haskell2010
+
+synopsis:            Hedgehog generators for spec-compliant Brigid HTML documents
+category:            Web, Testing
+
+description:         Please see the README on GitHub at <https://github.com/AugmenTab/brigid#readme>
+
+default-extensions:
+- ImportQualifiedPost
+- OverloadedStrings
+
+dependencies:
+- base
+- beeline-http-client
+- brigid
+- bytestring
+- constraints
+- containers
+- extra
+- hedgehog
+- integer-types
+- mtl
+- non-empty-text
+- ogma
+- semigroupoids
+- shrubbery
+- text
+- time
+- validation
+
+ghc-options:
+- -j
+- -Werror
+- -Wall
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wpartial-fields
+- -Wredundant-constraints
+- -fno-warn-orphans
+
+library:
+  source-dirs: src
+  exposed-modules:
+    - Brigid.HTML.Generation
+    - Brigid.HTML.Generation.Attributes
+    - Brigid.HTML.Generation.Elements
+
+tests:
+  brigid-generation-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - brigid-generation
+      - tasty
+      - tasty-hedgehog
+
+benchmarks:
+  brigid-bench:
+    main:        Bench.hs
+    source-dirs: bench
+    ghc-options:
+      - -fproc-alignment=64
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts "-N -T -A32m"
+    dependencies:
+      - blaze-html
+      - brigid-generation
+      - lucid
+      - tasty-bench

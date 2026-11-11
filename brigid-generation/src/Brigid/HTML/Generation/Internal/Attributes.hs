@@ -168,7 +168,7 @@ import Numeric.Natural (Natural)
 import Ogma qualified
 import Prelude hiding (div, id, map, max, min, reverse, span)
 
-import Brigid.HTML.Attributes.Event.Event (Event, eventAttributeToText)
+import Brigid.HTML.Attributes (Event, eventAttributeToText)
 import Brigid.HTML.Generation.Internal.Generators qualified as Generators
 import Brigid.HTML.Types qualified as Types
 import Brigid.Types qualified as Types

@@ -14,11 +14,12 @@ import Data.Validation qualified as V
 import Prelude hiding (div, max, min, span)
 
 import Brigid.HTML.Attributes qualified as A
-import Brigid.HTML.Attributes.Internal qualified as Attr
 import Brigid.HTML.Elements qualified as E
 import Brigid.HTML.Generation.Attributes qualified as GA
 import Brigid.HTML.Generation.Internal.Types (Element (..), ElementNode (..), ElementType (..), NodeType (..))
-import Brigid.Internal.Use (use)
+
+use :: forall c r. c => (Dict c -> r) -> r
+use r = r Dict
 
 type Validator a =
   V.Validation [String] a
@@ -8590,10 +8591,10 @@ mkGlobalAttr attr =
       V.Success $ A.writingsuggestions writingsuggestions
 
     GA.Aria aria ->
-      V.Success $ Attr.Attr_Aria aria
+      V.Success $ A.ariaAttribute aria
 
     GA.On event script ->
-      V.Success $ Attr.Attr_On event script
+      V.Success $ A.on event script
 
     _attr ->
       V.Failure $
