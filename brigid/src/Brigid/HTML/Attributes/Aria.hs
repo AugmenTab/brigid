@@ -80,6 +80,13 @@ ariaAttribute :: Types.Aria -> Attribute tag
 ariaAttribute =
   Attr_Aria
 
+-- | An arbitrary @aria-*@ attribute. The first argument is the part after
+-- @aria-@.
+--
+-- The value may contain any text; it is escaped when rendered. The name
+-- cannot be escaped, so a name that is empty or contains whitespace, a
+-- control character, or any of @\" ' < > / = &@ is treated as invalid and
+-- the attribute is omitted from the rendered output.
 aria :: NET.NonEmptyText -> T.Text -> Attribute tag
 aria name =
   Attr_Aria

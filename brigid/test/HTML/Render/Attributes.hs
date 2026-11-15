@@ -1355,8 +1355,8 @@ additionalScopedAttributes =
 
     , testCase "srcdoc" $ do
         let node = E.iframe [A.srcdoc (E.p [] [E.text "Hello"] :: E.ChildHTML E.Body E.Html)] :: E.ChildHTML E.Body E.Html
-        RBS.renderHTML node @?= "<iframe srcdoc=\"<p>Hello</p>\"></iframe>"
-        RT.renderHTML  node @?= "<iframe srcdoc=\"<p>Hello</p>\"></iframe>"
+        RBS.renderHTML node @?= "<iframe srcdoc=\"&#60;p&#62;Hello&#60;/p&#62;\"></iframe>"
+        RT.renderHTML  node @?= "<iframe srcdoc=\"&#60;p&#62;Hello&#60;/p&#62;\"></iframe>"
 
     , testCase "srcset (single)" $ do
         let node = E.img
@@ -1617,8 +1617,8 @@ eventAttributes =
 
     , testCase "on mouseover" $ do
         let node = divWith [A.on A.MouseOver (RawJavaScript "this.style.color='red'")]
-        RBS.renderHTML node @?= "<div onmouseover=\"js:this.style.color='red'\"></div>"
-        RT.renderHTML  node @?= "<div onmouseover=\"js:this.style.color='red'\"></div>"
+        RBS.renderHTML node @?= "<div onmouseover=\"js:this.style.color=&#39;red&#39;\"></div>"
+        RT.renderHTML  node @?= "<div onmouseover=\"js:this.style.color=&#39;red&#39;\"></div>"
     ]
 
 -- HTMX Attributes

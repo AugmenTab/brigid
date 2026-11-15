@@ -58,6 +58,8 @@ comment = Tag_Comment
 content :: ValidChild Tags.Content parent => T.Text -> ChildHXML parent
 content = Tag_Content
 
+-- | Unchecked escape hatch: the text is emitted verbatim, without any
+-- escaping or validation. Never pass untrusted input.
 rawHXML :: T.Text -> ChildHXML parent
 rawHXML = Tag_RawHXML
 

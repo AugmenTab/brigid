@@ -184,7 +184,7 @@ renderAttribute attr =
       Nothing
 
     Attr_Custom name value ->
-      Just $ buildAttribute name (fromText value)
+      (`buildTextAttribute` value) <$> safeAttributeName name
 
     Attr_ActivityIndicatorColor activityIndicatorColor ->
       Just
@@ -210,7 +210,7 @@ renderAttribute attr =
         $ Render.enumBoolToTextBuilder avoidKeyboard
 
     Attr_CancelLabel cancelLabel ->
-      Just $ buildAttribute "cancel-label" (fromText cancelLabel)
+      Just $ buildTextAttribute "cancel-label" cancelLabel
 
     Attr_Color color ->
       Just . buildAttribute "color" $ Types.hexColorToTextBuilder color
@@ -224,7 +224,7 @@ renderAttribute attr =
       Just . buildAttribute "cursorColor" $ Types.colorToTextBuilder cursorColor
 
     Attr_DoneLabel doneLabel ->
-      Just $ buildAttribute "done-label" (fromText doneLabel)
+      Just $ buildTextAttribute "done-label" doneLabel
 
     Attr_FieldStyle fieldStyle ->
       Just
@@ -247,10 +247,8 @@ renderAttribute attr =
 
     Attr_Html html ->
       Just
-        . buildAttribute "html"
-        . fromText
-        . Render.lazyBytesToText
-        $ Escape.attributeBytes html
+        . buildTextAttribute "html"
+        $ Render.lazyBytesToText html
 
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToTextBuilder id
@@ -282,7 +280,7 @@ renderAttribute attr =
         $ Types.keyboardTypeToTextBuilder keyboardType
 
     Attr_Label label ->
-      Just $ buildAttribute "label" (fromText label)
+      Just $ buildTextAttribute "label" label
 
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToTextBuilder mask
@@ -315,7 +313,7 @@ renderAttribute attr =
         $ Render.showIntegerToTextBuilder numberOfLines
 
     Attr_Placeholder placeholder ->
-      Just $ buildAttribute "placeholder" (fromText placeholder)
+      Just $ buildTextAttribute "placeholder" placeholder
 
     Attr_PlaceholderTextColor placeholderTextColor ->
       Just
@@ -398,12 +396,36 @@ renderAttribute attr =
       Just . buildAttribute "url" $ Types.urlToTextBuilder url
 
     Attr_Value value ->
-      Just $ buildAttribute "value" (fromText value)
+      Just $ buildTextAttribute "value" value
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToTextBuilder xmlns
 
+-- | Every quoted attribute is emitted by one of the functions below. Each
+-- takes the attribute name and the /raw/, unescaped value, then escapes the
+-- value exactly once for an XML attribute context (see
+-- "Brigid.Internal.Escape"). Branches of 'renderAttribute' must never escape
+-- values themselves.
 buildAttribute :: T.Text -> Builder -> Builder
 {-# INLINE buildAttribute #-}
 buildAttribute attr value =
-  fromText attr <> fromText "=\"" <> value <> fromText "\""
+  fromText attr
+    <> fromText "=\""
+    <> Escape.xmlAttributeTextBuilder value
+    <> fromText "\""
+
+buildTextAttribute :: T.Text -> T.Text -> Builder
+{-# INLINE buildTextAttribute #-}
+buildTextAttribute attr value =
+  fromText attr
+    <> fromText "=\""
+    <> Escape.xmlAttributeText value
+    <> fromText "\""
+
+-- | Attribute names supplied as arbitrary text cannot be escaped. Names that
+-- could break the surrounding markup are rejected, and the attribute is
+-- omitted.
+safeAttributeName :: T.Text -> Maybe T.Text
+safeAttributeName name
+  | Escape.isSafeAttributeName name = Just name
+  | otherwise = Nothing

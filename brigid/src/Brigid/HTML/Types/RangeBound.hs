@@ -18,7 +18,6 @@ module Brigid.HTML.Types.RangeBound
 
 import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
 import GHC.TypeLits (KnownNat)
@@ -27,6 +26,7 @@ import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.Number (Number, numberToBytes, numberToText)
 import Brigid.HTML.Types.Time qualified as BTime
+import Brigid.Internal.Render qualified as Render
 
 newtype RangeBound =
   RangeBound (Shrubbery.Union RangeBoundTypes)
@@ -97,4 +97,4 @@ mkRawRangeBound = RawRangeBound
 
 rawRangeBoundToBytes :: RawRangeBound -> LBS.ByteString
 rawRangeBoundToBytes =
-  LBS8.pack . T.unpack . rawRangeBoundToText
+  Render.textToLazyBytes . rawRangeBoundToText

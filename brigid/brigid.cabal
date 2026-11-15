@@ -245,8 +245,11 @@ test-suite brigid-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Escaping.Oracle
       HTML.Render.Attributes
       HTML.Render.Elements
+      HTML.Render.Escaping
+      HXML.Render.Escaping
       Paths_brigid
   autogen-modules:
       Paths_brigid

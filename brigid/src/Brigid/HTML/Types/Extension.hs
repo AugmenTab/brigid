@@ -33,9 +33,9 @@ module Brigid.HTML.Types.Extension
 import Data.Bool qualified as B
 import Data.ByteString.Builder (Builder, lazyByteString)
 import Data.ByteString.Lazy qualified as LBS
-import Data.ByteString.Lazy.Char8 qualified as LBS8
 import Data.Text qualified as T
 import Data.Text.Builder.Linear qualified as TBL
+import Brigid.Internal.Render qualified as Render
 
 data Extension =
   Extension
@@ -193,7 +193,7 @@ extensionTypeToBytes ext =
     Restored            -> "restored"
     ServerSentEvents    -> "server-sent-events"
     WebSockets          -> "web-sockets"
-    CustomExtension txt -> LBS8.pack $ T.unpack txt
+    CustomExtension txt -> Render.textToLazyBytes txt
 
 extensionTypeToBytesBuilder :: ExtensionType -> Builder
 {-# INLINE extensionTypeToBytesBuilder #-}

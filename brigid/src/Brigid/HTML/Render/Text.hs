@@ -507,10 +507,10 @@ renderAttribute attr =
       Nothing
 
     Attr_Custom name value ->
-      Just . buildAttribute name $ Escape.attributeTextBuilder value
+      (`buildTextAttribute` value) <$> safeAttributeName name
 
     Attr_AccessKey key ->
-      Just . buildAttribute "accesskey" $ Escape.attributeCharTextBuilder key
+      Just . buildTextAttribute "accesskey" $ T.singleton key
 
     Attr_Autocapitalize option ->
       Just
@@ -525,8 +525,7 @@ renderAttribute attr =
 
     Attr_Class _class ->
       Just
-        . buildAttribute "class"
-        . Escape.attributeTextBuilder
+        . buildTextAttribute "class"
         $ Types.classToText _class
 
     Attr_ContentEditable option ->
@@ -537,16 +536,13 @@ renderAttribute attr =
     Attr_CustomData data_ mbValue ->
       case mbValue of
         Just value ->
-          Just $
-            buildAttribute
-              ("data-" <> data_)
-              (Escape.attributeTextBuilder value)
+          (`buildTextAttribute` value) <$> safeAttributeName ("data-" <> data_)
 
         Nothing ->
-          buildBooleanAttribute ("data-" <> data_) True
+          safeAttributeName ("data-" <> data_) >>= (`buildBooleanAttribute` True)
 
     Attr_CustomBoolean name value ->
-      buildBooleanAttribute name value
+      safeAttributeName name >>= (`buildBooleanAttribute` value)
 
     Attr_Dir directionality ->
       Just
@@ -571,7 +567,7 @@ renderAttribute attr =
       buildBooleanAttribute "hidden" hidden
 
     Attr_Id id ->
-      Just . buildAttribute "id" . Escape.attributeTextBuilder $ Types.idToText id
+      Just . buildTextAttribute "id" $ Types.idToText id
 
     Attr_Inert inert ->
       buildBooleanAttribute "inert" inert
@@ -580,13 +576,13 @@ renderAttribute attr =
       Just . buildAttribute "inputmode" $ Types.inputModeToTextBuilder mode
 
     Attr_Is is ->
-      Just . buildAttribute "is" $ Escape.attributeTextBuilder is
+      Just $ buildTextAttribute "is" is
 
     Attr_ItemId itemid ->
-      Just $ buildAttribute "itemid" (fromText itemid)
+      Just $ buildTextAttribute "itemid" itemid
 
     Attr_ItemProp itemprop ->
-      Just $ buildAttribute "itemprop" (fromText itemprop)
+      Just $ buildTextAttribute "itemprop" itemprop
 
     Attr_ItemRef itemref ->
       Just
@@ -604,7 +600,7 @@ renderAttribute attr =
       Just . buildAttribute "lang" $ maybe mempty (fromText . Ogma.bcp_47ToText) lang
 
     Attr_Nonce nonce ->
-      Just $ buildAttribute "nonce" (fromText nonce)
+      Just $ buildTextAttribute "nonce" nonce
 
     Attr_Part parts ->
       Just
@@ -627,13 +623,13 @@ renderAttribute attr =
       Just . buildAttribute "spellcheck" $ Render.enumBoolToTextBuilder spellcheck
 
     Attr_Style style ->
-      Just . buildAttribute "style" $ Escape.attributeTextBuilder style
+      Just $ buildTextAttribute "style" style
 
     Attr_TabIndex tabindex ->
       Just . buildAttribute "tabindex" $ Render.showBuilder tabindex
 
     Attr_Title title ->
-      Just . buildAttribute "title" $ Escape.attributeTextBuilder title
+      Just $ buildTextAttribute "title" title
 
     Attr_Translate translate ->
       Just . buildAttribute "translate" $ Types.yesNoToTextBuilder translate
@@ -646,10 +642,10 @@ renderAttribute attr =
     -- Scoped Attributes
     --
     Attr_Abbreviation abbr ->
-      Just $ buildAttribute "abbr" (fromText abbr)
+      Just $ buildTextAttribute "abbr" abbr
 
     Attr_Accept accept ->
-      Just . buildAttribute "accept" . fromText $ Render.bytesToText accept
+      Just . buildTextAttribute "accept" $ Render.bytesToText accept
 
     Attr_AcceptCharset ->
       Just $ buildAttribute "accept-charset" (fromText "UTF-8")
@@ -664,7 +660,7 @@ renderAttribute attr =
         $ allow
 
     Attr_Alt alt ->
-      Just $ buildAttribute "alt" (fromText alt)
+      Just $ buildTextAttribute "alt" alt
 
     Attr_As as ->
       Just . buildAttribute "as" $ Types.asToTextBuilder as
@@ -717,7 +713,7 @@ renderAttribute attr =
         $ NEL.toList coords
 
     Attr_Content content ->
-      Just $ buildAttribute "content" (fromText content)
+      Just $ buildTextAttribute "content" content
 
     Attr_Controls ->
       buildBooleanAttribute "controls" True
@@ -736,7 +732,7 @@ renderAttribute attr =
       Just . buildAttribute "data" $ Types.urlToTextBuilder _data
 
     Attr_Datetime datetime ->
-      Just . buildAttribute "datetime" . fromText $ T.pack datetime
+      Just . buildTextAttribute "datetime" $ T.pack datetime
 
     Attr_Decoding decoding ->
       Just . buildAttribute "decoding" $ Types.decodingToTextBuilder decoding
@@ -748,7 +744,7 @@ renderAttribute attr =
       buildBooleanAttribute "defer" True
 
     Attr_Dirname dirname ->
-      Just $ buildAttribute "dirname" (fromText dirname)
+      Just $ buildTextAttribute "dirname" dirname
 
     Attr_Disabled disabled ->
       buildBooleanAttribute "disabled" disabled
@@ -762,14 +758,14 @@ renderAttribute attr =
     Attr_Download download ->
       maybe
         (buildBooleanAttribute "download" True)
-        (Just . buildAttribute "download" . fromText . NET.toText)
+        (Just . buildTextAttribute "download" . NET.toText)
         download
 
     Attr_ElementTiming elementtiming ->
-      Just $ buildAttribute "elementtiming" (fromText elementtiming)
+      Just $ buildTextAttribute "elementtiming" elementtiming
 
     Attr_Enctype enctype ->
-      Just . buildAttribute "enctype" . fromText $ Render.bytesToText enctype
+      Just . buildTextAttribute "enctype" $ Render.bytesToText enctype
 
     Attr_FetchPriority fetchpriority ->
       Just
@@ -786,7 +782,7 @@ renderAttribute attr =
       Just . buildAttribute "formaction" $ Types.actionToTextBuilder formaction
 
     Attr_FormEnctype formenctype ->
-      Just . buildAttribute "formenctype" . fromText $ Render.bytesToText formenctype
+      Just . buildTextAttribute "formenctype" $ Render.bytesToText formenctype
 
     Attr_FormMethod formmethod ->
       Just . buildAttribute "formmethod" $ Types.formMethodToTextBuilder formmethod
@@ -813,7 +809,7 @@ renderAttribute attr =
       Just . buildAttribute "href" $ Types.hrefToTextBuilder href
 
     Attr_HrefLang hreflang ->
-      Just . buildAttribute "hreflang" . fromText $ Ogma.bcp_47ToText hreflang
+      Just . buildTextAttribute "hreflang" $ Ogma.bcp_47ToText hreflang
 
     Attr_HttpEquiv httpEquiv ->
       Just . buildAttribute "http-equiv" $ Types.httpEquivTokenToTextBuilder httpEquiv
@@ -840,7 +836,7 @@ renderAttribute attr =
       Just . buildAttribute "kind" $ Types.trackKindToTextBuilder kind
 
     Attr_Label label ->
-      Just $ buildAttribute "label" (fromText label)
+      Just $ buildTextAttribute "label" label
 
     Attr_List list ->
       Just . buildAttribute "list" $ Types.idToTextBuilder list
@@ -897,7 +893,7 @@ renderAttribute attr =
       Just . buildAttribute "optimum" $ Types.numberToTextBuilder optimum
 
     Attr_Pattern pattern ->
-      Just $ buildAttribute "pattern" (fromText pattern)
+      Just $ buildTextAttribute "pattern" pattern
 
     Attr_Ping pings ->
       Just
@@ -906,7 +902,7 @@ renderAttribute attr =
         $ NEL.toList pings
 
     Attr_Placeholder placeholder ->
-      Just $ buildAttribute "placeholder" (fromText placeholder)
+      Just $ buildTextAttribute "placeholder" placeholder
 
     Attr_PlaysInline playsinline ->
       buildBooleanAttribute "playsinline" playsinline
@@ -994,13 +990,11 @@ renderAttribute attr =
 
     Attr_SrcDoc srcdoc ->
       Just
-        . buildAttribute "srcdoc"
-        . fromText
-        . Render.lazyBytesToText
-        $ Escape.attributeBytes srcdoc
+        . buildTextAttribute "srcdoc"
+        $ Render.lazyBytesToText srcdoc
 
     Attr_SrcLang srclang ->
-      Just . buildAttribute "srclang" . fromText $ Ogma.bcp_47ToText srclang
+      Just . buildTextAttribute "srclang" $ Ogma.bcp_47ToText srclang
 
     Attr_SrcSet srcset ->
       Just
@@ -1038,10 +1032,8 @@ renderAttribute attr =
     -- ARIA Attributes
     --
     Attr_Aria aria ->
-      Just $
-        buildAttribute
-          (Types.ariaAttributeToText aria)
-          (Types.ariaValueToTextBuilder aria)
+      (`buildTextAttribute` Types.ariaValueToText aria)
+        <$> safeAttributeName (Types.ariaAttributeToText aria)
 
     -- Event Attributes
     --
@@ -1062,13 +1054,13 @@ renderAttribute attr =
               Relative_Put    path -> ("hx-put", path)
               Relative_Patch  path -> ("hx-patch", path)
 
-       in Just $ buildAttribute hxAttr (fromText hxPath)
+       in Just $ buildTextAttribute hxAttr hxPath
 
     Attr_HxBoost boosted ->
       Just . buildAttribute "hx-boost" $ Render.enumBoolToTextBuilder boosted
 
     Attr_HxConfirm confirmation ->
-      Just . buildAttribute "hx-confirm" $ Escape.attributeTextBuilder confirmation
+      Just $ buildTextAttribute "hx-confirm" confirmation
 
     Attr_HxDisable disabled ->
       buildBooleanAttribute "hx-disable" disabled
@@ -1093,8 +1085,7 @@ renderAttribute attr =
 
     Attr_HxHeaders headers ->
       Just
-        . buildAttribute "hx-headers"
-        . Escape.attributeTextBuilder
+        . buildTextAttribute "hx-headers"
         $ Types.htmxHeadersToText headers
 
     Attr_HxHistory ->
@@ -1114,20 +1105,18 @@ renderAttribute attr =
 
     Attr_HxOn event action ->
       Just
-        . buildAttribute ("hx-on" <> Types.hxOnEventText event)
-        $ Escape.attributeTextBuilder action
+        $ buildTextAttribute ("hx-on" <> Types.hxOnEventText event) action
 
     Attr_HxParams params ->
       Just
-        . buildAttribute "hx-params"
-        . Escape.attributeTextBuilder
+        . buildTextAttribute "hx-params"
         $ Types.requestParamsToText params
 
     Attr_HxPreserve preserved ->
       buildBooleanAttribute "hx-preserve" preserved
 
     Attr_HxPrompt prompt ->
-      Just . buildAttribute "hx-prompt" $ Escape.attributeTextBuilder prompt
+      Just $ buildTextAttribute "hx-prompt" prompt
 
     Attr_HxPushURL url ->
       Just . buildAttribute "hx-push-url" $ renderPushURL url
@@ -1137,14 +1126,12 @@ renderAttribute attr =
 
     Attr_HxRequest request ->
       Just
-        . buildAttribute "hx-request"
-        . Escape.attributeTextBuilder
+        . buildTextAttribute "hx-request"
         $ Types.htmxRequestToText request
 
     Attr_HxSelect selector ->
       Just
-        . buildAttribute "hx-select"
-        . Escape.attributeTextBuilder
+        . buildTextAttribute "hx-select"
         $ Types.querySelectorToText selector
 
     Attr_HxSelectOOB selects ->
@@ -1177,20 +1164,43 @@ renderAttribute attr =
       buildBooleanAttribute "hx-validate" True
 
     Attr_HxVals vals ->
-      Just . buildAttribute "hx-vals" $ Escape.attributeTextBuilder (Types.htmxValsToText vals)
+      Just . buildTextAttribute "hx-vals" $ Types.htmxValsToText vals
 
     -- Other
     --
     Attr_HyperScript hyperscript ->
       Just . buildAttribute "_" $ Types.hyperScriptToTextBuilder hyperscript
 
+-- | Every quoted attribute is emitted by 'buildAttribute' or
+-- 'buildTextAttribute'. Both take the attribute name and the /raw/,
+-- unescaped value, then escape the value exactly once (see
+-- "Brigid.Internal.Escape"). Branches of 'renderAttribute' must never escape
+-- values themselves.
 buildAttribute :: T.Text -> Builder -> Builder
 buildAttribute attr value =
-  fromText attr <> fromText "=\"" <> value <> fromText "\""
+  fromText attr
+    <> fromText "=\""
+    <> Escape.htmlAttributeTextBuilder value
+    <> fromText "\""
+
+buildTextAttribute :: T.Text -> T.Text -> Builder
+buildTextAttribute attr value =
+  fromText attr
+    <> fromText "=\""
+    <> Escape.htmlAttributeText value
+    <> fromText "\""
 
 buildBooleanAttribute :: T.Text -> Bool -> Maybe Builder
 buildBooleanAttribute attr =
   B.bool Nothing (Just $ fromText attr)
+
+-- | Attribute names supplied as arbitrary text cannot be escaped. Names that
+-- could break the surrounding markup are rejected, and the attribute is
+-- omitted.
+safeAttributeName :: T.Text -> Maybe T.Text
+safeAttributeName name
+  | Escape.isSafeAttributeName name = Just name
+  | otherwise = Nothing
 
 renderPushURL :: Types.PushURL -> Builder
 renderPushURL =

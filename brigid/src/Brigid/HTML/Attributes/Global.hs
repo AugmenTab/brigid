@@ -87,9 +87,17 @@ classes =
 contenteditable :: Types.ContentEditableOption -> Attribute tag
 contenteditable = Attr_ContentEditable
 
+-- | A @data-*@ attribute. The first argument is the part after @data-@.
+--
+-- The value may contain any text; it is escaped when rendered. The name
+-- cannot be escaped, so a name that is empty or contains whitespace, a
+-- control character, or any of @\" ' < > / = &@ is treated as invalid and
+-- the attribute is omitted from the rendered output.
 customData :: T.Text -> T.Text -> Attribute tag
 customData d = Attr_CustomData d . Just
 
+-- | A valueless @data-*@ attribute. Invalid names are omitted, as with
+-- 'customData'.
 customDataBool :: T.Text -> Attribute tag
 customDataBool d = Attr_CustomData d Nothing
 

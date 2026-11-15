@@ -155,6 +155,9 @@ texts :: ValidChild Tags.Text parent grandparent
       -> ChildHTML parent grandparent
 texts = text . T.unwords
 
+-- | Unchecked escape hatch: the text is emitted verbatim, without any
+-- escaping or validation. Never pass untrusted input. Use 'text' for text
+-- content.
 rawHTML :: T.Text -> ChildHTML parent grandparent
 rawHTML = Tag_RawHTML
 

@@ -10,6 +10,7 @@ import Prelude hiding (id)
 import Data.ByteString qualified as BS
 import Data.ByteString.Builder (Builder, string8, toLazyByteString)
 import Data.ByteString.Lazy qualified as LBS
+import Data.Text qualified as T
 
 import Brigid.HXML.Attributes.Internal (Attribute (..))
 import Brigid.HXML.Elements.Internal (ChildHXML (..))
@@ -184,7 +185,7 @@ renderAttribute attr =
       Nothing
 
     Attr_Custom name value ->
-      Just $ buildAttribute (Render.textToBytesBuilder name) (Render.textToBytesBuilder value)
+      (`buildTextAttribute` value) <$> safeAttributeName name
 
     Attr_ActivityIndicatorColor activityIndicatorColor ->
       Just
@@ -210,7 +211,7 @@ renderAttribute attr =
         $ Render.enumBoolToBytesBuilder avoidKeyboard
 
     Attr_CancelLabel cancelLabel ->
-      Just . buildAttribute "cancel-label" $ Render.textToBytesBuilder cancelLabel
+      Just $ buildTextAttribute "cancel-label" cancelLabel
 
     Attr_Color color ->
       Just . buildAttribute "color" $ Types.hexColorToBytesBuilder color
@@ -225,7 +226,7 @@ renderAttribute attr =
       Just . buildAttribute "cursorColor" $ Types.colorToBytesBuilder cursorColor
 
     Attr_DoneLabel doneLabel ->
-      Just . buildAttribute "done-label" $ Render.textToBytesBuilder doneLabel
+      Just $ buildTextAttribute "done-label" doneLabel
 
     Attr_FieldStyle fieldStyle ->
       Just
@@ -249,7 +250,7 @@ renderAttribute attr =
       Just . buildAttribute "href" $ Types.urlToBytesBuilder href
 
     Attr_Html html ->
-      Just . buildAttribute "html" $ Escape.lazyBytesAttributeBytesBuilder html
+      Just $ buildLazyBytesAttribute "html" html
 
     Attr_Id id ->
       Just . buildAttribute "id" $ Types.idToBytesBuilder id
@@ -281,7 +282,7 @@ renderAttribute attr =
         $ Types.keyboardTypeToBytesBuilder keyboardType
 
     Attr_Label label ->
-      Just . buildAttribute "label" $ Render.textToBytesBuilder label
+      Just $ buildTextAttribute "label" label
 
     Attr_Mask mask ->
       Just . buildAttribute "mask" $ Types.maskToBytesBuilder mask
@@ -316,7 +317,7 @@ renderAttribute attr =
         $ Render.showBytesBuilder numberOfLines
 
     Attr_Placeholder placeholder ->
-      Just . buildAttribute "placeholder" $ Render.textToBytesBuilder placeholder
+      Just $ buildTextAttribute "placeholder" placeholder
 
     Attr_PlaceholderTextColor placeholderTextColor ->
       Just
@@ -399,13 +400,36 @@ renderAttribute attr =
       Just . buildAttribute "url" $ Types.urlToBytesBuilder url
 
     Attr_Value value ->
-      Just . buildAttribute "value" $ Render.textToBytesBuilder value
+      Just $ buildTextAttribute "value" value
 
     Attr_XMLNS xmlns ->
       Just . buildAttribute "xmlns" $ Types.urlToBytesBuilder xmlns
 
+-- | Every quoted attribute is emitted by one of the functions below. Each
+-- takes the attribute name and the /raw/, unescaped value, then escapes the
+-- value exactly once for an XML attribute context (see
+-- "Brigid.Internal.Escape"). Branches of 'renderAttribute' must never escape
+-- values themselves.
 buildAttribute :: Builder -> Builder -> Builder
 {-# INLINE buildAttribute #-}
 buildAttribute attr value =
-  attr <> "=\"" <> value <> "\""
+  attr <> "=\"" <> Escape.xmlAttributeBytesBuilder value <> "\""
+
+buildTextAttribute :: Builder -> T.Text -> Builder
+{-# INLINE buildTextAttribute #-}
+buildTextAttribute attr value =
+  attr <> "=\"" <> Escape.xmlAttributeTextBytesBuilder value <> "\""
+
+buildLazyBytesAttribute :: Builder -> LBS.ByteString -> Builder
+{-# INLINE buildLazyBytesAttribute #-}
+buildLazyBytesAttribute attr value =
+  attr <> "=\"" <> Escape.xmlAttributeLazyBytesBuilder value <> "\""
+
+-- | Attribute names supplied as arbitrary text cannot be escaped. Names that
+-- could break the surrounding markup are rejected, and the attribute is
+-- omitted.
+safeAttributeName :: T.Text -> Maybe Builder
+safeAttributeName name
+  | Escape.isSafeAttributeName name = Just (Render.textToBytesBuilder name)
+  | otherwise = Nothing
 

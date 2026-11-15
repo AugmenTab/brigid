@@ -67,6 +67,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.Types.Method (Method, Get, Post, Delete, Put, Patch)
+import Brigid.Internal.Render qualified as Render
 
 newtype URL =
   URL (Shrubbery.Union URLTypes)
@@ -195,7 +196,7 @@ patch route =
 
 relativeURLToBytes :: RelativeURL method -> LBS.ByteString
 relativeURLToBytes =
-  LBS8.pack . T.unpack . relativeURLToText
+  Render.textToLazyBytes . relativeURLToText
 
 relativeURLToBytesBuilder :: RelativeURL method -> Builder
 relativeURLToBytesBuilder =
@@ -230,7 +231,7 @@ mkRawURL = RawURL
 
 rawURLToBytes :: RawURL -> LBS.ByteString
 rawURLToBytes =
-  LBS8.pack . T.unpack . rawURLToText
+  Render.textToLazyBytes . rawURLToText
 
 rawURLToBytesBuilder :: RawURL -> Builder
 rawURLToBytesBuilder =

@@ -78,6 +78,12 @@ import Brigid.Types qualified as Types
 noAttribute :: Attribute tag
 noAttribute = Attr_NoAttribute
 
+-- | A custom attribute with an arbitrary name and value.
+--
+-- The value may contain any text; it is escaped when rendered. The name
+-- cannot be escaped, so a name that is empty or contains whitespace, a
+-- control character, or any of @\" ' < > / = &@ is treated as invalid and
+-- the attribute is omitted from the rendered output.
 customAttribute :: T.Text -> T.Text -> Attribute tag
 customAttribute = Attr_Custom
 

@@ -90,6 +90,7 @@ import Shrubbery qualified
 import Shrubbery.TypeList (FirstIndexOf)
 
 import Brigid.HTML.Types.Boolean (OnOff, onOffToBytes, onOffToText)
+import Brigid.Internal.Render qualified as Render
 
 newtype AutocompleteToken =
   AutocompleteToken (Shrubbery.Union AutocompleteTokenTypes)
@@ -654,7 +655,7 @@ modifierToBytes :: (token -> LBS.ByteString) -> Modifier token -> LBS.ByteString
 modifierToBytes toBytes modifier =
   LBS8.unwords $
     case modifier of
-      Section name token -> [ "section-" <> LBS8.pack name, toBytes token ]
+      Section name token -> [ "section-" <> Render.textToLazyBytes (T.pack name), toBytes token ]
       Home         token -> [ "home",                       toBytes token ]
       Work         token -> [ "work",                       toBytes token ]
       Shipping     token -> [ "shipping",                   toBytes token ]

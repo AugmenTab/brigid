@@ -2877,7 +2877,7 @@ attributeTypeToBytes attr =
     --
     Attr_HxGet         -> "hx-get"
     Attr_HxPost        -> "hx-post"
-    Attr_HxOn event    -> "hx-on" <> LBS8.pack (T.unpack event)
+    Attr_HxOn event    -> "hx-on" <> Render.textToLazyBytes event
     Attr_HxPushURL     -> "hx-push-url"
     Attr_HxSelect      -> "hx-select"
     Attr_HxSelectOOB   -> "hx-select-oob"
